@@ -1,22 +1,107 @@
-.App {
-  text-align: center;
+
+html,
+body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
 }
 
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#flexcontainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  /* justify-content:space-between; */
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
+  height: 100%;
+  box-sizing: border-box;
+  overflow:hidden;
+  background-color: black;
+}
+
+#flexcontainer > div  {
+  margin : 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 50%;
+}
+
+#textcontainer {
+  background-color: white;
+  text-align: center;
+  border: 6px dashed black;
+  width: 50%;
+  height: 100%;
+  padding: 15px;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  /* align-content: flex-start; */
+  align-items: center;
+  align-content: center;
+  flex-flow: column;
+}
+
+#textcontainer_top  {
+  /* background-color: orange; */
+  /* width:100%; */
+  padding-bottom:30px;
+}
+
+#textcontainer_inner {
+  /* background-color: red; */
+  display:flex;
+  flex-flow:wrap;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 100%;
+  height:100%;
+  /* align-content: center; */
+  overflow-y: scroll;
+  flex-wrap:wrap;
 }
 
-.App-link {
-  color: #09d3ac;
+#textcontainer_bottom {
+  /* background-color: green; */
+  margin:15px 30px;
+}
+
+#canvascontainer {
+  width:50%;
+  background-color: black;
+}
+
+#defaultCanvas0 {
+  /* flex: 0 1 auto; */
+  display: block;
+}
+
+#buttoncontainer {
+  width: 100%;
+  /* background-color: aqua; */
+  padding: 15px 0px;
+}
+
+fieldset  {
+  box-sizing: border-box;
+}
+
+.flex-inner-wrapper {
+  display: inherit;
+  flex-flow: inherit;
+  justify-content: inherit;
+  align-items: inherit;
+}
+
+.invert  {
+  color: white;
+  background-color: black;
+  padding: 5px;
+}
+
+#buttoncontainer button{
+  margin: 0px 3px;
+
 }
