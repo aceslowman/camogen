@@ -105,3 +105,8 @@ fieldset  {
   margin: 0px 3px;
 
 }
+
+#flexcontainer div{
+height: 100%;
+
+}

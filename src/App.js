@@ -14,7 +14,7 @@ export default class App extends React.Component {
     this.layers = [];
 
     this.state =  {
-      width: window.innerHeight,
+      width: window.innerWidth,
       height: window.innerHeight,
       generateFlag: false,
       snapshotFlag: false,
@@ -179,6 +179,15 @@ export default class App extends React.Component {
     }
   }
 
+  componentDidMount() {
+    // console.log(this.canvas.wrapper);
+    // this.setState( {
+    //   width: this.canvas.wrapper.offsetWidth,
+    //   height: this.canvas.wrapper.offsetHeight
+    // });
+
+  }
+
   render() {
     this.generateLayers();
 
@@ -214,8 +223,7 @@ export default class App extends React.Component {
           </div>
         </div>
         <P5Wrapper 
-
-          id="canvascontainer"
+          ref={(r) => {this.canvas = r}}
           sketch={sketch} 
           width={this.state.width}
           height={this.state.height}
