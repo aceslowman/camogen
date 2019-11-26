@@ -216,7 +216,7 @@ void main() {
 
     vec4 src = texture2D(tex0,uv);
 
-    color += src;
+    color += src*2.;
 
     gl_FragColor = color;
 }
@@ -256,7 +256,21 @@ let layers = [{
 
 let shaders = [];
 let buffers = [];
-let activeBuffer;
+
+// adapted from multipass example at
+// https://www.openprocessing.org/sketch/496452/
+
+let fbo;
+let tex =  {
+    src: null,
+    dst: null,
+    swap: () =>  {
+        let tmp = this.src;
+        this.src = this.dst;
+        this.dst = tmp;
+    }
+}
+const SCREEN_SCALE = 1.0;
 
 export default function sketch(p) {
 
@@ -269,7 +283,7 @@ export default function sketch(p) {
 
         for(let i = 0; i < 2; i++) {
             let pg = p.createGraphics(canvas_width,canvas_height,p.WEBGL);
-            let s = p.createShader(vs, fs);
+            let s = pg.createShader(vs, fs);
             let t;
 
             if(i === 0) {
@@ -283,11 +297,34 @@ export default function sketch(p) {
             s.setUniform('dimensions', [4, 4]);
             s.setUniform('seed', Math.random() * 1000);
 
-            p.shader(s);
+            pg.shader(s);
 
             shaders.push(s);
             buffers.push(pg);
         }
+
+        let gl = canvas.GL;
+        // canvas.drawingContext is also a target
+
+        // create frame buffer
+        fbo = gl.createFramebuffer();
+
+        let def =  {
+            target: gl.TEXTURE_2D, 
+            iformat: gl.RGBA32F, 
+            format: gl.RGBA, 
+            type: gl.FLOAT, 
+            wrap: gl.CLAMP_TO_EDGE, 
+            filter: [gl.NEAREST, gl.LINEAR]
+        }
+
+        let tex_w = Math.ceil(p.width * SCREEN_SCALE);
+        let tex_h = Math.ceil(p.height * SCREEN_SCALE);
+
+        tex.src = gl.texImage2D(def.target, 0, def.iformat, tex_w, tex_h, 0, def.format, def.type, new Float32Array(tex_w * tex_h));
+        tex.dst = gl.texImage2D(def.target, 0, def.iformat, tex_w, tex_h, 0, def.format, def.type, new Float32Array(tex_w * tex_h));
+
+        console.log(shaders[0]);
     }
 
     p.draw = () =>  {
@@ -320,6 +357,7 @@ export default function sketch(p) {
         console.log('first shader',shaders[0]);
         console.log('first buffer',buffers[0]);
 
+        shaders[0].setUniform('tex0', buffers[0]);
         shaders[0].setUniform('resolution', [p.width, p.height]);
         shaders[0].setUniform('dimensions', [4, 4]);
         shaders[0].setUniform('level',0);
@@ -327,10 +365,15 @@ export default function sketch(p) {
 
         buffers[0].shader(shaders[0]);
 
-        // console.log(buffers);
+        // map to quad
         buffers[0].quad(-1, -1, 1, -1, 1, 1, -1, 1);
 
-        shaders[1].setUniform('tex0',buffers[0]);
+        // target ping pong
+        let t_b = buffers[1];
+        buffers[1] = buffers[0];
+        buffers[0] = t_b;
+
+        shaders[1].setUniform('tex0',buffers[1]);
         shaders[1].setUniform('resolution', [p.width, p.height]);
         shaders[1].setUniform('dimensions', [8,8]);
         shaders[1].setUniform('level', 1);
@@ -339,11 +382,12 @@ export default function sketch(p) {
         buffers[1].shader(shaders[1]);
 
         // console.log(buffers);
+        p.texture(buffers[0]);
         p.quad(-1, -1, 1, -1, 1, 1, -1, 1);
         
         // p.background(128);
-        p.image(buffers[0],0,0,100,100);
-        p.image(buffers[1],0,100,100,100);
+        // p.image(buffers[0]._renderer.textures[0],0,0,100,100);
+        // p.image(buffers[1]._renderer.textures[0],0,100,100,100);
         p.noLoop();
     }
 
