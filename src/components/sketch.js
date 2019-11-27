@@ -208,9 +208,9 @@ void main() {
 
     // define
     float g_x = floor(uv.x * dimensions.x) / dimensions.x;
-    g_x *= src.r;
+    // g_x *= src.r;
     float g_y = floor(uv.y * dimensions.y) / dimensions.y;
-    g_y *= src.g;
+    // g_y *= src.g;
 
     vec2 grid = vec2(g_x,g_y);
 
@@ -218,15 +218,20 @@ void main() {
 
     float n = snoise(vec3(grid,seed));
 
-    float s_x = mod(uv.x+src.r, 1.0 / dimensions.x)/(1.0/dimensions.x);
-    float s_y = mod(uv.y+src.g, 1.0 / dimensions.y)/(1.0/dimensions.y);
-    
-    /*
-        
-    */
-    vec4 color = vec4(s_x,s_y,n,1.0);
+    float s_x = mod(uv.x, 1.0 / dimensions.x)/(1.0/dimensions.x);
+    float s_y = mod(uv.y, 1.0 / dimensions.y)/(1.0/dimensions.y);
 
-    gl_FragColor = color;
+    vec3 color = vec3(0.0);
+
+    if(vTexCoord.x < 1./3.) {
+        color = vec3(s_x);
+    } else if (vTexCoord.x > 1./3. && vTexCoord.x < 2./3.) {
+        color = vec3(s_y);
+    } else if (vTexCoord.x > 2./3. && vTexCoord.x < 1.) {
+        color = vec3(n);
+    }
+
+    gl_FragColor = vec4(color,1.0);
 }
 `;
 
