@@ -197,26 +197,34 @@ uniform sampler2D tex0;
 uniform vec2 resolution;
 uniform vec2 dimensions;
 uniform int level; 
-uniform float seed;
+// uniform float seed;
 
 void main() {
-    vec2 uv = vTexCoord;
+    vec4 src = texture2D(tex0, vTexCoord);
 
     float aspect = resolution.x/resolution.y;
+    vec2 uv = vTexCoord;
     uv.x *= aspect;
 
-    float s_x = floor(uv.x * dimensions.x) / dimensions.x;
-    float s_y = floor(uv.y * dimensions.y) / dimensions.y;
-    vec2 grid = vec2(s_x,s_y);
+    // define
+    float g_x = floor(uv.x * dimensions.x) / dimensions.x;
+    g_x *= src.r;
+    float g_y = floor(uv.y * dimensions.y) / dimensions.y;
+    g_y *= src.g;
+
+    vec2 grid = vec2(g_x,g_y);
+
+    float seed = src.b;
 
     float n = snoise(vec3(grid,seed));
 
-    vec4 color = vec4(n,n,level,1.0);
-    // vec4 color = vec4(float(level) / 3., 0.0, , 1.0);
-
-    vec4 src = texture2D(tex0,uv);
-
-    color += src*2.;
+    float s_x = mod(uv.x+src.r, 1.0 / dimensions.x)/(1.0/dimensions.x);
+    float s_y = mod(uv.y+src.g, 1.0 / dimensions.y)/(1.0/dimensions.y);
+    
+    /*
+        
+    */
+    vec4 color = vec4(s_x,s_y,n,1.0);
 
     gl_FragColor = color;
 }
@@ -255,140 +263,78 @@ let layers = [{
 ];
 
 let shaders = [];
-let buffers = [];
-
-// adapted from multipass example at
-// https://www.openprocessing.org/sketch/496452/
-
-let fbo;
-let tex =  {
-    src: null,
-    dst: null,
-    swap: () =>  {
-        let tmp = this.src;
-        this.src = this.dst;
-        this.dst = tmp;
-    }
-}
-const SCREEN_SCALE = 1.0;
+let passes = [];
+let img;
 
 export default function sketch(p) {
 
     p.setup = () => {
-        canvas = p.createCanvas(canvas_width,canvas_height,p.WEBGL);
+        canvas = p.createCanvas(canvas_width,canvas_height);
+
+        img = p.createImage(1,1);
+
+        // img input should be white
+        img.loadPixels();
+        img.pixels.fill(255);
+        // for(let i = 0; i < img.pixels.length*4; i+=4) {
+        //     img.pixels[i] = 1;
+        // }
+        img.updatePixels();
 
         p.smooth();
         p.colorMode(p.HSB, 255);
-        p.background(255);
+        p.background(128);
 
         for(let i = 0; i < 2; i++) {
-            let pg = p.createGraphics(canvas_width,canvas_height,p.WEBGL);
+            let pg = p.createGraphics(p.width,p.height,p.WEBGL);
             let s = pg.createShader(vs, fs);
             let t;
 
             if(i === 0) {
-                t = new p.createImage(1,1);
+                t = img;
             }else {
-                t = buffers[i-1];
+                t = passes[i-1];
             }
             
-            // s.setUniform('tex0', t);
-            s.setUniform('resolution', [p.width, p.height]);
+            s.setUniform('tex0', t);
+            s.setUniform('resolution', [pg.width, pg.height]);
             s.setUniform('dimensions', [4, 4]);
             s.setUniform('seed', Math.random() * 1000);
-
-            pg.shader(s);
+            
+            pg.noStroke();
 
             shaders.push(s);
-            buffers.push(pg);
+            passes.push(pg);
         }
-
-        let gl = canvas.GL;
-        // canvas.drawingContext is also a target
-
-        // create frame buffer
-        fbo = gl.createFramebuffer();
-
-        let def =  {
-            target: gl.TEXTURE_2D, 
-            iformat: gl.RGBA32F, 
-            format: gl.RGBA, 
-            type: gl.FLOAT, 
-            wrap: gl.CLAMP_TO_EDGE, 
-            filter: [gl.NEAREST, gl.LINEAR]
-        }
-
-        let tex_w = Math.ceil(p.width * SCREEN_SCALE);
-        let tex_h = Math.ceil(p.height * SCREEN_SCALE);
-
-        tex.src = gl.texImage2D(def.target, 0, def.iformat, tex_w, tex_h, 0, def.format, def.type, new Float32Array(tex_w * tex_h));
-        tex.dst = gl.texImage2D(def.target, 0, def.iformat, tex_w, tex_h, 0, def.format, def.type, new Float32Array(tex_w * tex_h));
-
-        console.log(shaders[0]);
     }
 
     p.draw = () =>  {
-        // for(let i = 0; i < shaders.length; i++) {
-        //     let s = shaders[i];
-        //     let pg = buffers[i];
-        //     let t;
+        for(let i = 0; i < shaders.length; i++) {
+            let s = shaders[i];
+            let pg = passes[i];
+            let t;
 
-        //     if (i === 0) {
-        //         t = new p.createImage(p.width,p.height);
-        //     } else {
-        //         // let t_b = buffers[i];
-        //         // buffers[i] = buffers[i-1];
-        //         // buffers[i-1] = t_b;
+            if (i === 0) {
+                t = img;
+            } else {
+                t = passes[i-1];
+            }
 
-        //         t = buffers[i-1];
-        //     }
+            s.setUniform('tex0', t);
+            s.setUniform('resolution', [pg.width, pg.height]);
+            s.setUniform('dimensions', [4, 4]);
+            // s.setUniform('level',i);
+            // s.setUniform('seed',Math.random()*100);
 
-        //     // s.setUniform('tex0', t);
-        //     s.setUniform('resolution', [p.width, p.height]);
-        //     s.setUniform('dimensions', [4, 4]);
-        //     s.setUniform('level',i);
-        //     s.setUniform('seed',Math.random()*100);
+            pg.shader(s);
 
-        //     pg.shader(s);
+            pg.quad(-1, -1, 1, -1, 1, 1, -1, 1);
 
-        //     pg.quad(-1, -1, 1, -1, 1, 1, -1, 1);
-        // }
+            // pg.noLoop();
+        }
 
-        console.log('first shader',shaders[0]);
-        console.log('first buffer',buffers[0]);
-
-        shaders[0].setUniform('tex0', buffers[0]);
-        shaders[0].setUniform('resolution', [p.width, p.height]);
-        shaders[0].setUniform('dimensions', [4, 4]);
-        shaders[0].setUniform('level',0);
-        shaders[0].setUniform('seed',Math.random()*100);
-
-        buffers[0].shader(shaders[0]);
-
-        // map to quad
-        buffers[0].quad(-1, -1, 1, -1, 1, 1, -1, 1);
-
-        // target ping pong
-        let t_b = buffers[1];
-        buffers[1] = buffers[0];
-        buffers[0] = t_b;
-
-        shaders[1].setUniform('tex0',buffers[1]);
-        shaders[1].setUniform('resolution', [p.width, p.height]);
-        shaders[1].setUniform('dimensions', [8,8]);
-        shaders[1].setUniform('level', 1);
-        shaders[1].setUniform('seed', Math.random() * 100);
-
-        buffers[1].shader(shaders[1]);
-
-        // console.log(buffers);
-        p.texture(buffers[0]);
-        p.quad(-1, -1, 1, -1, 1, 1, -1, 1);
-        
-        // p.background(128);
-        // p.image(buffers[0]._renderer.textures[0],0,0,100,100);
-        // p.image(buffers[1]._renderer.textures[0],0,100,100,100);
-        p.noLoop();
+        p.image(passes[passes.length-1],0,0,p.width,p.height);
+        // p.noLoop();
     }
 
     p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
@@ -419,6 +365,11 @@ export default function sketch(p) {
         if(props.width !== canvas_width) {
             canvas_width = props.width;
             p.resizeCanvas(canvas_width,canvas_height);
+            
+            for(let i = 0; i < passes.length; i++) {
+                passes[i].resizeCanvas(canvas_width,canvas_height);
+            }
+            
             if(glyph_shader !== undefined) 
                 glyph_shader.setUniform('resolution',[canvas_width,canvas_height]);
         }
@@ -426,6 +377,11 @@ export default function sketch(p) {
         if (props.height !== canvas_height) {
             canvas_height = props.height;
             p.resizeCanvas(canvas_width, canvas_height);
+            
+            for(let i = 0; i < passes.length; i++) {
+                passes[i].resizeCanvas(canvas_width, canvas_height);
+            }
+            
             if(glyph_shader !== undefined) 
                 glyph_shader.setUniform('resolution',[canvas_width,canvas_height]);
         }

@@ -17,7 +17,7 @@ body, #root {
   align-content: stretch;
   height: 100%;
   box-sizing: border-box;
-  overflow:hidden;
+  /* overflow:hidden; */
   background-color: black;
 }
 
@@ -26,6 +26,7 @@ body, #root {
   padding: 0;
   box-sizing: border-box;
   width: 50%;
+  height : 100%;
 }
 
 #textcontainer {
@@ -106,7 +107,7 @@ fieldset  {
 
 }
 
-#flexcontainer div{
+/* #flexcontainer div{
 height: 100%;
 
-}
+} */

@@ -14,7 +14,7 @@ export default class App extends React.Component {
     this.layers = [];
 
     this.state =  {
-      width: window.innerWidth,
+      width: window.innerWidth / 2.,
       height: window.innerHeight,
       generateFlag: false,
       snapshotFlag: false,
@@ -185,7 +185,7 @@ export default class App extends React.Component {
     //   width: this.canvas.wrapper.offsetWidth,
     //   height: this.canvas.wrapper.offsetHeight
     // });
-
+    // this.handleFitScreen();
   }
 
   render() {
