@@ -199,37 +199,54 @@ uniform vec2 dimensions;
 uniform int level; 
 // uniform float seed;
 
+vec2 gridCoordinates(vec2 uv, vec2 dim) {
+
+    // not sure why dim-1.
+    vec2 g = floor(uv * dim) / (dim-1.);
+
+    return g;
+}
+
+vec2 modCoordinates(vec2 uv, vec2 dim) {
+    float s_x = mod(uv.x, 1.0 / dim.x)/(1.0/dim.x);
+    float s_y = mod(uv.y, 1.0 / dim.y)/(1.0/dim.y);
+
+    return vec2(s_x,s_y);
+}
+
 void main() {
+    vec3 color = vec3(0.0);
     vec4 src = texture2D(tex0, vTexCoord);
 
     float aspect = resolution.x/resolution.y;
     vec2 uv = vTexCoord;
     uv.x *= aspect;
 
-    // define
-    float g_x = floor(uv.x * dimensions.x) / dimensions.x;
-    // g_x *= src.r;
-    float g_y = floor(uv.y * dimensions.y) / dimensions.y;
-    // g_y *= src.g;
+    vec2 grid;
+    vec2 m_grid;
 
-    vec2 grid = vec2(g_x,g_y);
+    if(level == 0) {
+        // create base uv layer for first level
+        m_grid = modCoordinates(uv,dimensions);
+        grid = gridCoordinates(m_grid,dimensions);
+    } else {
+        m_grid = modCoordinates(src.rg,dimensions);
+        grid = gridCoordinates(src.rg,dimensions);
+    }
 
     float seed = src.b;
 
-    float n = snoise(vec3(grid,seed));
+    float n = snoise(vec3(grid,seed));    
 
-    float s_x = mod(uv.x, 1.0 / dimensions.x)/(1.0/dimensions.x);
-    float s_y = mod(uv.y, 1.0 / dimensions.y)/(1.0/dimensions.y);
+    // if(vTexCoord.x < 1./3.) {
+    //     color = vec3(grid.y);
+    // } else if (vTexCoord.x > 1./3. && vTexCoord.x < 2./3.) {
+    //     color = vec3(m_grid.y);
+    // } else if (vTexCoord.x > 2./3. && vTexCoord.x < 1.) {
+    //     color = vec3(n);
+    // }
 
-    vec3 color = vec3(0.0);
-
-    if(vTexCoord.x < 1./3.) {
-        color = vec3(s_x);
-    } else if (vTexCoord.x > 1./3. && vTexCoord.x < 2./3.) {
-        color = vec3(s_y);
-    } else if (vTexCoord.x > 2./3. && vTexCoord.x < 1.) {
-        color = vec3(n);
-    }
+    color = vec3(n);
 
     gl_FragColor = vec4(color,1.0);
 }
@@ -278,14 +295,6 @@ export default function sketch(p) {
 
         img = p.createImage(1,1);
 
-        // img input should be white
-        img.loadPixels();
-        img.pixels.fill(255);
-        // for(let i = 0; i < img.pixels.length*4; i+=4) {
-        //     img.pixels[i] = 1;
-        // }
-        img.updatePixels();
-
         p.smooth();
         p.colorMode(p.HSB, 255);
         p.background(128);
@@ -303,7 +312,8 @@ export default function sketch(p) {
             
             s.setUniform('tex0', t);
             s.setUniform('resolution', [pg.width, pg.height]);
-            s.setUniform('dimensions', [4, 4]);
+            s.setUniform('dimensions', [6,6]);
+            s.setUniform('level',i);
             s.setUniform('seed', Math.random() * 1000);
             
             pg.noStroke();
@@ -327,9 +337,8 @@ export default function sketch(p) {
 
             s.setUniform('tex0', t);
             s.setUniform('resolution', [pg.width, pg.height]);
-            s.setUniform('dimensions', [4, 4]);
-            // s.setUniform('level',i);
-            // s.setUniform('seed',Math.random()*100);
+            s.setUniform('dimensions', [6,6]);
+            s.setUniform('level',i);
 
             pg.shader(s);
 
