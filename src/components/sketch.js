@@ -1,7 +1,6 @@
 import DebugShader from './shaders/DebugShader'; 
-import GlyphGenerator from './shaders/GlyphGenerator'; 
+import GlyphShader from './shaders/GlyphShader'; 
 
-let glyphs = [];
 let generateFlag = false;
 let snapshotFlag = false;
 
@@ -10,7 +9,7 @@ let canvas_width = window.innerHeight;
 let canvas_height = window.innerHeight;
 
 // default shaders
-let glyphShader, debugShader;
+let glyphShader;
 
 // https: //stackoverflow.com/questions/16106701/how-to-generate-a-random-string-of-letters-and-numbers-in-javascript
 function stringGen(len) {
@@ -59,12 +58,25 @@ export default function sketch(p) {
         p.colorMode(p.HSB, 255);
         p.background(128);
 
-        for(let i = 0; i < 2; i++) {
+        for(let i = 0; i < 3; i++) {
             let pg = p.createGraphics(p.width,p.height,p.WEBGL);
 
-            // this should be moved over to custom class
-            let s = pg.createShader(DebugShader.vert, DebugShader.frag);
-            let t;
+            let t, s;
+
+            // this will likely need to be changed
+            switch(i) {
+                case 0:
+                    s = pg.createShader(GlyphShader.vert(), GlyphShader.frag());
+                    break;
+                case 1:
+                    s = pg.createShader(GlyphShader.vert(), GlyphShader.frag());
+                    break;
+                case 2:
+                    s = pg.createShader(DebugShader.vert(), DebugShader.frag());
+                    break;
+                default:
+                    break;
+            }
 
             if(i === 0) {
                 t = img;

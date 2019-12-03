@@ -5,13 +5,16 @@ import P5Wrapper from 'react-p5-wrapper';
 import sketch from './components/sketch';
 
 import InputGroup from './components/InputGroup';
-import InputFloat from './components/InputFloat';
+
+// import shaders for gui elements
+import DebugShader from './components/shaders/DebugShader'; 
+import GlyphShader from './components/shaders/GlyphShader'; 
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.layers = [];
+    this.nodes = [];
 
     this.state =  {
       width: window.innerWidth / 2.,
@@ -33,6 +36,46 @@ export default class App extends React.Component {
           dimX: 6,
           dimY: 6
         },
+      }
+    }
+  }
+
+  generateLayers(){
+    this.nodes = [];
+    
+    // this will probably need to be changed at some point
+    for (let i = 0; i < Object.keys(this.state.levels).length; i++) {
+      switch(i) {
+        case 0:
+            this.nodes.push(
+              <GlyphShader 
+                key={i}
+                lvl={0}
+                noiseScale={0.1}
+                noiseStep={2}
+                dimX={6}
+                dimY={6}
+                seed={0}
+                updateParameter={(lvl,s,v) => this.updateParameter(lvl,s,v)}
+              />
+            );
+            break;
+        case 1:
+            this.nodes.push(
+              <DebugShader 
+                key={i}
+              />
+            );
+            break;
+        case 2:
+            this.nodes.push(
+              <DebugShader 
+                key={i}
+              />
+            );
+            break;
+        default:
+            break;
       }
     }
   }
@@ -106,55 +149,6 @@ export default class App extends React.Component {
     // this.handleGenerate();
   }
 
-  generateLayers(){
-    this.layers = [];
-    // return;
-    for (let i = 0; i < Object.keys(this.state.levels).length; i++) {
-      this.layers.push(( 
-        <fieldset key={i} style={{marginBottom:'15px'}}>
-          <small>
-            <legend> lvl {i} </legend>
-            <InputGroup name='noise'>
-              <InputFloat 
-                val={this.state.levels[i].noiseScale} 
-                step="0.1" 
-                name="scale"
-                onChange={(v) => this.updateParameter(i,'noiseScale',v)}
-              />
-              <InputFloat 
-                val={this.state.levels[i].noiseStep} 
-                step="1" 
-                name="step"
-                onChange={(v) => this.updateParameter(i,'noiseStep',v)}
-              />
-            </InputGroup>
-
-            <InputGroup name='dimensions'>
-              <InputFloat 
-                val={this.state.levels[i].dimX} 
-                step="1" 
-                name="x"
-                onChange={(v) => this.updateParameter(i,'dimX',v)}
-              />
-              <InputFloat 
-                val={this.state.levels[i].dimY} 
-                step="1" 
-                name="y"
-                onChange={(v) => this.updateParameter(i,'dimY',v)}
-              />
-            </InputGroup>
-              <InputFloat 
-                val={this.state.levels[i].seed} 
-                step="1" 
-                name="seed"
-                onChange={(v) => this.updateParameter(i,'seed',v)}
-              />
-          </small>
-        </fieldset>
-      ));
-    }
-  }
-
   handleResize(e) {
     this.setState( {
       width: e.target.value,
@@ -188,6 +182,21 @@ export default class App extends React.Component {
     // this.handleFitScreen();
   }
 
+  handleAddNode(type) {
+    switch(type) {
+      case 'glyph':
+        this.nodes.push(<GlyphShader key={this.nodes.length}/>);
+        console.log(this.nodes);
+        break;
+      case 'debug':
+        this.nodes.push(<DebugShader key={this.nodes.length}/>);
+        console.log(this.nodes);
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     this.generateLayers();
 
@@ -198,7 +207,7 @@ export default class App extends React.Component {
             <h1 style={{width: '100%'}}>camogen</h1><sub className="invert">v1.0</sub>
           </div>
           <div id="textcontainer_inner">
-            {this.layers}
+            {this.nodes}
           </div>  
           <div id="textcontainer_bottom">
             <div id="buttoncontainer">
@@ -207,6 +216,8 @@ export default class App extends React.Component {
               <button onClick={() => this.handleSnapshot()}>snapshot</button>
               <button onClick={() => this.handleLevelDown()}>lvl -</button>
               <button onClick={() => this.handleLevelUp()}>lvl +</button>
+              <button onClick={() => this.handleAddNode('glyph')}>add glyph</button>
+              <button onClick={() => this.handleAddNode('debug')}>add debug</button>
             </div>
             <InputGroup name="container dimensions">
               <button onClick={() => this.handleFitScreen()}>fit</button>

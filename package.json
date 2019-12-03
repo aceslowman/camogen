@@ -6,12 +6,13 @@
     "p5": "^0.10.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-draggable": "^4.1.0",
     "react-p5-wrapper": "^2.0.0",
     "react-scripts": "3.2.0"
   },
   "scripts": {
-"start": "react-scripts --max_old_space_size=4096 start",
-"build": "react-scripts --max_old_space_size=4096 build",
+    "start": "react-scripts --max_old_space_size=4096 start",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
