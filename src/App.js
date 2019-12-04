@@ -1,4 +1,6 @@
 import React from 'react';
+import { observer } from 'mobx-react';
+
 import './App.css';
 
 import P5Wrapper from 'react-p5-wrapper';
@@ -10,7 +12,8 @@ import InputGroup from './components/InputGroup';
 import DebugShader from './components/shaders/DebugShader'; 
 import GlyphShader from './components/shaders/GlyphShader'; 
 
-export default class App extends React.Component {
+export default @observer
+class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -21,24 +24,25 @@ export default class App extends React.Component {
       height: window.innerHeight,
       generateFlag: false,
       snapshotFlag: false,
-      levels:{
-        0: {
-          seed: Math.floor(Math.random() * 1000),
-          noiseScale: 0.1,
-          noiseStep: 8,
-          dimX: 20,
-          dimY: 20
-        },
-        1: {
-          seed: Math.floor(Math.random() * 1000),
-          noiseScale: 2,
-          noiseStep: 8,
-          dimX: 6,
-          dimY: 6
-        },
-      }
+      // levels:{
+      //   0: {
+      //     seed: Math.floor(Math.random() * 1000),
+      //     noiseScale: 0.1,
+      //     noiseStep: 8,
+      //     dimX: 20,
+      //     dimY: 20
+      //   },
+      //   1: {
+      //     seed: Math.floor(Math.random() * 1000),
+      //     noiseScale: 2,
+      //     noiseStep: 8,
+      //     dimX: 6,
+      //     dimY: 6
+      //   },
+      // }
     }
   }
+
 
   generateLayers(){
     this.nodes = [];
@@ -198,6 +202,7 @@ export default class App extends React.Component {
   }
 
   render() {
+    const store = this.props.store;
     this.generateLayers();
 
     return (
@@ -234,6 +239,7 @@ export default class App extends React.Component {
           </div>
         </div>
         <P5Wrapper 
+          store={store}
           ref={(r) => {this.canvas = r}}
           sketch={sketch} 
           width={this.state.width}
