@@ -1,3 +1,5 @@
+import { observable, computed, action } from 'mobx';
+
 import DebugShader from './shaders/DebugShader'; 
 import GlyphShader from './shaders/GlyphShader'; 
 
@@ -47,7 +49,7 @@ let shaders = [];
 let passes = [];
 let img;
 
-export default function sketch(p) {
+export default function Sketch(p) {
 
     p.setup = () => {
         canvas = p.createCanvas(canvas_width,canvas_height);
@@ -126,62 +128,63 @@ export default function sketch(p) {
     }
 
     p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
-        if (props.levels && layers) {
-            if(Object.keys(props.levels).length < layers.length) {
-                layers.pop();
-            }
+        console.log(props.store.test);
+        // if (props.levels && layers) {
+        //     if(Object.keys(props.levels).length < layers.length) {
+        //         layers.pop();
+        //     }
 
-            // update local copy of all layers
-            for(let i = 0; i < Object.keys(props.levels).length; i++) {
-                let t_obj = {
-                    noise: {
-                        scale: props.levels[i].noiseScale,
-                        steps: props.levels[i].noiseSteps
-                    },
-                    dim: [props.levels[i].dimX,props.levels[i].dimY],
-                    seed: props.levels[i].seed
-                };
+        //     // update local copy of all layers
+        //     for(let i = 0; i < Object.keys(props.levels).length; i++) {
+        //         let t_obj = {
+        //             noise: {
+        //                 scale: props.levels[i].noiseScale,
+        //                 steps: props.levels[i].noiseSteps
+        //             },
+        //             dim: [props.levels[i].dimX,props.levels[i].dimY],
+        //             seed: props.levels[i].seed
+        //         };
 
-                if(layers[i]) {
-                    layers[i] = t_obj;
-                }else {
-                    layers.push(t_obj);
-                }
-            }
-        }
+        //         if(layers[i]) {
+        //             layers[i] = t_obj;
+        //         }else {
+        //             layers.push(t_obj);
+        //         }
+        //     }
+        // }
 
-        if(props.width !== canvas_width) {
-            canvas_width = props.width;
-            p.resizeCanvas(canvas_width,canvas_height);
+        // if(props.width !== canvas_width) {
+        //     canvas_width = props.width;
+        //     p.resizeCanvas(canvas_width,canvas_height);
             
-            for(let i = 0; i < passes.length; i++) {
-                passes[i].resizeCanvas(canvas_width,canvas_height);
-            }
+        //     for(let i = 0; i < passes.length; i++) {
+        //         passes[i].resizeCanvas(canvas_width,canvas_height);
+        //     }
             
-            if(glyphShader !== undefined) 
-                glyphShader.setUniform('resolution',[canvas_width,canvas_height]);
-        }
+        //     if(glyphShader !== undefined) 
+        //         glyphShader.setUniform('resolution',[canvas_width,canvas_height]);
+        // }
 
-        if (props.height !== canvas_height) {
-            canvas_height = props.height;
-            p.resizeCanvas(canvas_width, canvas_height);
+        // if (props.height !== canvas_height) {
+        //     canvas_height = props.height;
+        //     p.resizeCanvas(canvas_width, canvas_height);
             
-            for(let i = 0; i < passes.length; i++) {
-                passes[i].resizeCanvas(canvas_width, canvas_height);
-            }
+        //     for(let i = 0; i < passes.length; i++) {
+        //         passes[i].resizeCanvas(canvas_width, canvas_height);
+        //     }
             
-            if(glyphShader !== undefined) 
-                glyphShader.setUniform('resolution',[canvas_width,canvas_height]);
-        }
+        //     if(glyphShader !== undefined) 
+        //         glyphShader.setUniform('resolution',[canvas_width,canvas_height]);
+        // }
 
-        if(props.generateFlag !== generateFlag) {
-            // generate();
-            generateFlag = props.generateFlag;
-        }
+        // if(props.generateFlag !== generateFlag) {
+        //     // generate();
+        //     generateFlag = props.generateFlag;
+        // }
 
-        if(props.snapshotFlag !== snapshotFlag) {
-            p.saveCanvas(canvas,'camogen_'+stringGen(6));
-            snapshotFlag = props.snapshotFlag;
-        }
+        // if(props.snapshotFlag !== snapshotFlag) {
+        //     p.saveCanvas(canvas,'camogen_'+stringGen(6));
+        //     snapshotFlag = props.snapshotFlag;
+        // }
     };
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { observer, decorate } from 'mobx-react';
 
 import './App.css';
 
@@ -12,43 +12,43 @@ import InputGroup from './components/InputGroup';
 import DebugShader from './components/shaders/DebugShader'; 
 import GlyphShader from './components/shaders/GlyphShader'; 
 
-export default @observer
-class App extends React.Component {
+const App = observer(class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.nodes = [];
 
+    /*
     this.state =  {
       width: window.innerWidth / 2.,
       height: window.innerHeight,
       generateFlag: false,
       snapshotFlag: false,
-      // levels:{
-      //   0: {
-      //     seed: Math.floor(Math.random() * 1000),
-      //     noiseScale: 0.1,
-      //     noiseStep: 8,
-      //     dimX: 20,
-      //     dimY: 20
-      //   },
-      //   1: {
-      //     seed: Math.floor(Math.random() * 1000),
-      //     noiseScale: 2,
-      //     noiseStep: 8,
-      //     dimX: 6,
-      //     dimY: 6
-      //   },
-      // }
+      levels:{
+        0: {
+          seed: Math.floor(Math.random() * 1000),
+          noiseScale: 0.1,
+          noiseStep: 8,
+          dimX: 20,
+          dimY: 20
+        },
+        1: {
+          seed: Math.floor(Math.random() * 1000),
+          noiseScale: 2,
+          noiseStep: 8,
+          dimX: 6,
+          dimY: 6
+        },
+      }
     }
+    */
   }
-
 
   generateLayers(){
     this.nodes = [];
     
     // this will probably need to be changed at some point
-    for (let i = 0; i < Object.keys(this.state.levels).length; i++) {
+    for (let i = 0; i < 3; i++) {
       switch(i) {
         case 0:
             this.nodes.push(
@@ -203,6 +203,7 @@ class App extends React.Component {
 
   render() {
     const store = this.props.store;
+    console.log(store.test);
     this.generateLayers();
 
     return (
@@ -241,14 +242,11 @@ class App extends React.Component {
         <P5Wrapper 
           store={store}
           ref={(r) => {this.canvas = r}}
-          sketch={sketch} 
-          width={this.state.width}
-          height={this.state.height}
-          levels={this.state.levels}
-          generateFlag={this.state.generateFlag}
-          snapshotFlag={this.state.snapshotFlag}
+          sketch={sketch}
         />
       </div>
     );
   }
-}
+});
+
+export default App;
