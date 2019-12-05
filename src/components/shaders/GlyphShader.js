@@ -1,12 +1,14 @@
 import React from 'react';
 import Draggable from 'react-draggable';
 
+import { observer } from 'mobx-react';
+
 import InputGroup from '../InputGroup';
 import InputFloat from '../InputFloat';
 
 import simplex from './includes/simplex.js';
 
-export default class GlyphShader extends React.Component {
+const GlyphShader = observer(class GlyphShader extends React.Component {
 
 static precision = () => `
 #ifdef GL_ES
@@ -100,6 +102,10 @@ void main() {
 	}
 
 	render() {
+		const store = this.props.store;
+		const node = store.nodes.byId[this.props.node_id];
+		console.log(node);
+
 		return(
 			<Draggable>
 				<fieldset style={{marginBottom:'15px'}} >
@@ -145,4 +151,6 @@ void main() {
 			</Draggable>
 	    )
 	}
-}
+});
+
+export default GlyphShader;

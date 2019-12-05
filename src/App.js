@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, decorate } from 'mobx-react';
+import { observer } from 'mobx-react';
 
 import './App.css';
 
@@ -15,73 +15,50 @@ import GlyphShader from './components/shaders/GlyphShader';
 const App = observer(class App extends React.Component {
   constructor(props) {
     super(props);
-
-    this.nodes = [];
-
-    /*
-    this.state =  {
-      width: window.innerWidth / 2.,
-      height: window.innerHeight,
-      generateFlag: false,
-      snapshotFlag: false,
-      levels:{
-        0: {
-          seed: Math.floor(Math.random() * 1000),
-          noiseScale: 0.1,
-          noiseStep: 8,
-          dimX: 20,
-          dimY: 20
-        },
-        1: {
-          seed: Math.floor(Math.random() * 1000),
-          noiseScale: 2,
-          noiseStep: 8,
-          dimX: 6,
-          dimY: 6
-        },
-      }
-    }
-    */
   }
 
   generateLayers(){
     this.nodes = [];
+
+
     
-    // this will probably need to be changed at some point
-    for (let i = 0; i < 3; i++) {
-      switch(i) {
-        case 0:
-            this.nodes.push(
-              <GlyphShader 
-                key={i}
-                lvl={0}
-                noiseScale={0.1}
-                noiseStep={2}
-                dimX={6}
-                dimY={6}
-                seed={0}
-                updateParameter={(lvl,s,v) => this.updateParameter(lvl,s,v)}
-              />
-            );
-            break;
-        case 1:
-            this.nodes.push(
-              <DebugShader 
-                key={i}
-              />
-            );
-            break;
-        case 2:
-            this.nodes.push(
-              <DebugShader 
-                key={i}
-              />
-            );
-            break;
-        default:
-            break;
-      }
-    }
+    // // this will probably need to be changed at some point
+    // for (let i = 0; i < 3; i++) {
+    //   switch(i) {
+    //     case 0:
+    //         this.nodes.push(
+    //           <GlyphShader 
+    //             store={store}
+    //             node_id={}
+    //             key={i}
+    //             lvl={0}
+    //             noiseScale={0.1}
+    //             noiseStep={2}
+    //             dimX={6}
+    //             dimY={6}
+    //             seed={0}
+    //             updateParameter={(lvl,s,v) => this.updateParameter(lvl,s,v)}
+    //           />
+    //         );
+    //         break;
+    //     case 1:
+    //         this.nodes.push(
+    //           <DebugShader 
+    //             key={i}
+    //           />
+    //         );
+    //         break;
+    //     case 2:
+    //         this.nodes.push(
+    //           <DebugShader 
+    //             key={i}
+    //           />
+    //         );
+    //         break;
+    //     default:
+    //         break;
+    //   }
+    // }
   }
 
   handleGenerate() {
@@ -177,24 +154,13 @@ const App = observer(class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    // console.log(this.canvas.wrapper);
-    // this.setState( {
-    //   width: this.canvas.wrapper.offsetWidth,
-    //   height: this.canvas.wrapper.offsetHeight
-    // });
-    // this.handleFitScreen();
-  }
-
   handleAddNode(type) {
     switch(type) {
       case 'glyph':
-        this.nodes.push(<GlyphShader key={this.nodes.length}/>);
-        console.log(this.nodes);
+        this.nodes.push(<GlyphShader key={this.nodes.length}/>);        
         break;
       case 'debug':
         this.nodes.push(<DebugShader key={this.nodes.length}/>);
-        console.log(this.nodes);
         break;
       default:
         break;
@@ -204,7 +170,25 @@ const App = observer(class App extends React.Component {
   render() {
     const store = this.props.store;
     console.log(store.test);
-    this.generateLayers();
+    // this.generateLayers();
+
+    this.nodes = [];
+
+    for(let i = 0; i < store.nodes.allIds.length; i++) {
+      let id = store.nodes.allIds[i];
+      let node = store.nodes.byId[id];
+
+      switch(node.type) {
+        case 'GlyphShader':
+          this.nodes.push(<GlyphShader key={id} store={store} node_id={id}/>);        
+          break;
+        case 'DebugShader':
+          this.nodes.push(<DebugShader key={id} store={store} node_id={id}/>);
+          break;
+        default:
+          break;
+      }
+    }
 
     return (
       <div id="flexcontainer">
