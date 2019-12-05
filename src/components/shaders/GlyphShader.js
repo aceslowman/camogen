@@ -87,7 +87,6 @@ void main() {
 }
 `;
 
-
 	constructor(props) {
 		super(props);
 
@@ -104,6 +103,7 @@ void main() {
 	render() {
 		const store = this.props.store;
 		const node = store.nodes.byId[this.props.node_id];
+
 		console.log(node);
 
 		return(
@@ -113,38 +113,38 @@ void main() {
 		            <legend> lvl {this.state.lvl} </legend>
 		            <InputGroup name='noise'>
 		              <InputFloat 
-		                val={this.state.noiseScale} 
+		                val={node.noiseScale} 
 		                step="0.1" 
 		                name="scale"
-		                onChange={(v) => this.props.updateParameter(this.state.lvl,'noiseScale',v)}
+		                onChange={(v) => node.noiseScale = v }
 		              />
 		              <InputFloat 
-		                val={this.state.noiseStep} 
+		                val={node.noiseStep} 
 		                step="1" 
 		                name="step"
-		                onChange={(v) => this.props.updateParameter(this.state.lvl,'noiseStep',v)}
+		                onChange={(v) => node.noiseStep = v }
 		              />
 		            </InputGroup>
 
 		            <InputGroup name='dimensions'>
 		              <InputFloat 
-		                val={this.state.dimX} 
+		                val={node.dimX} 
 		                step="1" 
 		                name="x"
-		                onChange={(v) => this.props.updateParameter(this.state.lvl,'dimX',v)}
+		                onChange={(v) => node.dimX = v }
 		              />
 		              <InputFloat 
-		                val={this.state.dimY} 
+		                val={node.dimY} 
 		                step="1" 
 		                name="y"
-		                onChange={(v) => this.props.updateParameter(this.state.lvl,'dimY',v)}
+		                onChange={(v) => node.dimY = v }
 		              />
 		            </InputGroup>
 		              <InputFloat 
-		                val={this.state.seed} 
+		                val={node.seed} 
 		                step="1" 
 		                name="seed"
-		                onChange={(v) => this.props.updateParameter(this.state.lvl,'seed',v)}
+		                onChange={(v) => node.seed = v }
 		              />
 		          </small>
 		        </fieldset>
