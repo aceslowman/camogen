@@ -17,48 +17,24 @@ const App = observer(class App extends React.Component {
     super(props);
   }
 
-  generateLayers(){
+  generateLayers(store){
     this.nodes = [];
 
+    for(let i = 0; i < store.nodes.allIds.length; i++) {
+      let id = store.nodes.allIds[i];
+      let node = store.nodes.byId[id];
 
-    
-    // // this will probably need to be changed at some point
-    // for (let i = 0; i < 3; i++) {
-    //   switch(i) {
-    //     case 0:
-    //         this.nodes.push(
-    //           <GlyphShader 
-    //             store={store}
-    //             node_id={}
-    //             key={i}
-    //             lvl={0}
-    //             noiseScale={0.1}
-    //             noiseStep={2}
-    //             dimX={6}
-    //             dimY={6}
-    //             seed={0}
-    //             updateParameter={(lvl,s,v) => this.updateParameter(lvl,s,v)}
-    //           />
-    //         );
-    //         break;
-    //     case 1:
-    //         this.nodes.push(
-    //           <DebugShader 
-    //             key={i}
-    //           />
-    //         );
-    //         break;
-    //     case 2:
-    //         this.nodes.push(
-    //           <DebugShader 
-    //             key={i}
-    //           />
-    //         );
-    //         break;
-    //     default:
-    //         break;
-    //   }
-    // }
+      switch(node.type) {
+        case 'GlyphShader':
+          this.nodes.push(<GlyphShader key={id} store={store} node_id={id}/>);        
+          break;
+        case 'DebugShader':
+          this.nodes.push(<DebugShader key={id} store={store} node_id={id}/>);
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   handleGenerate() {
@@ -169,26 +145,7 @@ const App = observer(class App extends React.Component {
 
   render() {
     const store = this.props.store;
-    console.log(store.test);
-    // this.generateLayers();
-
-    this.nodes = [];
-
-    for(let i = 0; i < store.nodes.allIds.length; i++) {
-      let id = store.nodes.allIds[i];
-      let node = store.nodes.byId[id];
-
-      switch(node.type) {
-        case 'GlyphShader':
-          this.nodes.push(<GlyphShader key={id} store={store} node_id={id}/>);        
-          break;
-        case 'DebugShader':
-          this.nodes.push(<DebugShader key={id} store={store} node_id={id}/>);
-          break;
-        default:
-          break;
-      }
-    }
+    this.generateLayers(store);
 
     return (
       <div id="flexcontainer">
@@ -206,8 +163,8 @@ const App = observer(class App extends React.Component {
               <button onClick={() => this.handleSnapshot()}>snapshot</button>
               <button onClick={() => this.handleLevelDown()}>lvl -</button>
               <button onClick={() => this.handleLevelUp()}>lvl +</button>
-              <button onClick={() => this.handleAddNode('glyph')}>add glyph</button>
-              <button onClick={() => this.handleAddNode('debug')}>add debug</button>
+              <button onClick={() => store.addNode('glyph')}>add glyph</button>
+              <button onClick={() => store.addNode('debug')}>add debug</button>
             </div>
             <InputGroup name="container dimensions">
               <button onClick={() => this.handleFitScreen()}>fit</button>
