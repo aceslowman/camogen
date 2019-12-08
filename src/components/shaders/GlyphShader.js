@@ -61,7 +61,7 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 
 	    float aspect = resolution.x/resolution.y;
 	    vec2 uv = vTexCoord;
-	    uv.x *= aspect;
+	    uv.x += aspect; 
 
 	    vec2 grid;
 	    vec2 m_grid;
@@ -79,9 +79,8 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 
 	    float n = snoise(vec3(grid,seed));    
 
-	    
-
-	    color = vec3(n);
+	    //color = vec3(n,1.0,0.0);
+	    color = vec3(uv.x,uv.y,1.0);
 
 	    gl_FragColor = vec4(color,1.0);
 	}
@@ -95,42 +94,43 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 			<Draggable>
 				<fieldset style={{marginBottom:'15px'}} >
 		          <small>
-		            <legend> lvl {node.id} </legend>
+		            <legend>GlyphShader</legend>
 		            <InputGroup name='noise'>
 		              <InputFloat 
-		                val={node.noiseScale} 
+		                val={node.uniforms.noiseScale} 
 		                step="0.1" 
 		                name="scale"
-		                onChange={(v) => node.noiseScale = v }
+		                onChange={(v) => node.uniforms.noiseScale = v }
 		              />
 		              <InputFloat 
-		                val={node.noiseStep} 
+		                val={node.uniforms.noiseStep} 
 		                step="1" 
 		                name="step"
-		                onChange={(v) => node.noiseStep = v }
+		                onChange={(v) => node.uniforms.noiseStep = v }
 		              />
 		            </InputGroup>
 
 		            <InputGroup name='dimensions'>
 		              <InputFloat 
-		                val={node.dimX} 
+		                val={node.uniforms.dimensions[0]} 
 		                step="1" 
 		                name="x"
-		                onChange={(v) => node.dimX = v }
+		                onChange={(v) => node.uniforms.dimensions[0] = v }
 		              />
 		              <InputFloat 
-		                val={node.dimY} 
+		                val={node.uniforms.dimensions[1]} 
 		                step="1" 
 		                name="y"
-		                onChange={(v) => node.dimY = v }
+		                onChange={(v) => node.uniforms.dimensions[1] = v }
 		              />
 		            </InputGroup>
-		              <InputFloat 
-		                val={node.seed} 
+		            <InputFloat 
+		                val={node.uniforms.seed} 
 		                step="1" 
 		                name="seed"
-		                onChange={(v) => node.seed = v }
-		              />
+		                onChange={(v) => node.uniforms.seed = v }
+		            />
+		            <button onClick={() => store.removeNode(this.props.node_id)}>remove</button>
 		          </small>
 		        </fieldset>
 			</Draggable>

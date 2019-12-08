@@ -1,17 +1,7 @@
-import { observable, computed, action } from 'mobx';
+import { autorun } from 'mobx';
 
-import DebugShader from './shaders/DebugShader'; 
-import GlyphShader from './shaders/GlyphShader'; 
-
-let generateFlag = false;
-let snapshotFlag = false;
-
-let canvas;
-let canvas_width = window.innerHeight;
-let canvas_height = window.innerHeight;
-
-// default shaders
-let glyphShader;
+// load all shaders from folder
+import * as NODES from './shaders';
 
 // https: //stackoverflow.com/questions/16106701/how-to-generate-a-random-string-of-letters-and-numbers-in-javascript
 function stringGen(len) {
@@ -25,166 +15,156 @@ function stringGen(len) {
     return text;
 }
 
-let layers = [{
-        glyphs: [],
-        dim: [30, 30],
-        seed: Math.random() * 1000,
-        noise: {
-            scale: 0.1,
-            steps: 8
-        }
-    },
-    {
-        glyphs: [],
-        dim: [3, 3],
-        seed: Math.random() * 1000,
-        noise: {
-            scale: 0.1,
-            steps: 6
-        }
-    },
-];
-
 let shaders = [];
 let passes = [];
 let img;
 
-export default function Sketch(p) {
+let store;
+let sketchStarted;
 
-    p.setup = () => {
-        canvas = p.createCanvas(canvas_width,canvas_height);
+const Sketch = (p) => {
 
-        img = p.createImage(1,1);
+    let start = () =>  {
+        console.log(store.dimensions.toString());
+        p.createCanvas(store.canvasWidth,store.canvasHeight);     
+        // p.resizeCanvas(store.canvasWidth,store.canvasHeight);  
+
+        img = p.createImage(1,1); // initial texture
 
         p.smooth();
-        p.colorMode(p.HSB, 255);
-        p.background(128);
+        p.background(128);       
 
-        for(let i = 0; i < 3; i++) {
+        /*
+            Currently, the order of the shaders should be dictated 
+            by the order of nodes.allIds
+        */
+        for(let i = 0; i < store.nodeCount; i++) {
+            // set up render target for shader
             let pg = p.createGraphics(p.width,p.height,p.WEBGL);
 
-            let t, s;
+            let id = store.nodes.allIds[i];
+            let node = store.nodes.byId[id];
+
+            let t, shader;        
 
             // this will likely need to be changed
-            switch(i) {
-                case 0:
-                    s = pg.createShader(GlyphShader.vert(), GlyphShader.frag());
+            switch(node.type) {
+                case 'GlyphShader':
+                    shader = pg.createShader(NODES.GlyphShader.vert(), NODES.GlyphShader.frag());
                     break;
-                case 1:
-                    s = pg.createShader(GlyphShader.vert(), GlyphShader.frag());
-                    break;
-                case 2:
-                    s = pg.createShader(DebugShader.vert(), DebugShader.frag());
+                case 'DebugShader':
+                    shader = pg.createShader(NODES.DebugShader.vert(), NODES.DebugShader.frag());
                     break;
                 default:
+                    shader = pg.createShader(NODES.GlyphShader.vert(), NODES.GlyphShader.frag());
                     break;
             }
 
-            if(i === 0) {
-                t = img;
-            }else {
-                t = passes[i-1];
+            // set empty texture for first pass
+            t = i === 0 ? img : passes[i-1];
+
+            shader.setUniform('tex0',t);
+
+            let uniform_entries = Object.entries(node.uniforms);
+
+            for(let i = 0; i < uniform_entries.length; i++) {
+                shader.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
             }
-            
-            s.setUniform('tex0', t);
-            s.setUniform('resolution', [pg.width, pg.height]);
-            s.setUniform('dimensions', [6,6]);
-            s.setUniform('level',i);
-            s.setUniform('seed', Math.random() * 1000);
+
+            // shader.setUniform('resolution',store.dimensions);
+            shader.setUniform('resolution',[p.width,p.height]);
             
             pg.noStroke();
 
-            shaders.push(s);
+            shaders.push(shader);
             passes.push(pg);
         }
+
+        sketchStarted = true;
+
+        autorun(() =>  {  
+            console.log('autorun');         
+            if (p.width !== store.canvasWidth) {
+                p.resizeCanvas(store.canvasWidth,p.height);
+
+                for(let pass of passes) {
+                    pass.width = store.canvasWidth;
+                }
+            }
+
+            if (p.height !== store.canvasHeight) {
+                p.resizeCanvas(p.width,store.canvasHeight);
+
+                for(let pass of passes) {
+                    pass.height = store.canvasHeight;
+                }
+            }
+
+            for(let i = 0; i < store.nodeCount; i++) {
+                let s = shaders[i];
+
+                let id = store.nodes.allIds[i];
+                let node = store.nodes.byId[id];
+
+                let uniform_entries = Object.entries(node.uniforms);
+
+                for(let i = 0; i < uniform_entries.length; i++) {
+                    s.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
+                }
+
+                s.setUniform('resolution',[p.width,p.height]);
+            }
+        });        
+    }
+
+    p.setup = () => {
+         p.createCanvas(store.canvasWidth,store.canvasHeight);     
     }
 
     p.draw = () =>  {
-        for(let i = 0; i < shaders.length; i++) {
-            let s = shaders[i];
-            let pg = passes[i];
-            let t;
+        if(sketchStarted) {
+            for(let i = 0; i < shaders.length; i++) {
+                let s = shaders[i];
+                let pg = passes[i];
+                let t;
 
-            if (i === 0) {
-                t = img;
-            } else {
-                t = passes[i-1];
+                if (i === 0) {
+                    t = img;
+                } else {
+                    t = passes[i-1];
+                }
+
+                // uniforms have to be set below or else they will not be registered
+                s.setUniform('tex0', t);
+                
+                let id = store.nodes.allIds[i];
+                let node = store.nodes.byId[id];
+
+                let uniform_entries = Object.entries(node.uniforms);
+
+                for(let i = 0; i < uniform_entries.length; i++) {
+                    s.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
+                }
+
+                // universal uniforms
+                s.setUniform('resolution',[p.width,p.height]);
+
+                pg.shader(s);
+
+                pg.quad(-1, -1, 1, -1, 1, 1, -1, 1);
             }
 
-            s.setUniform('tex0', t);
-            s.setUniform('resolution', [pg.width, pg.height]);
-            s.setUniform('dimensions', [6,6]);
-            s.setUniform('level',i);
-
-            pg.shader(s);
-
-            pg.quad(-1, -1, 1, -1, 1, 1, -1, 1);
-
-            // pg.noLoop();
+            p.image(passes[passes.length-1],0,0,p.width,p.height);
         }
-
-        p.image(passes[passes.length-1],0,0,p.width,p.height);
-        // p.noLoop();
     }
 
     p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
-        console.log(props.store.test);
-        // if (props.levels && layers) {
-        //     if(Object.keys(props.levels).length < layers.length) {
-        //         layers.pop();
-        //     }
+        store = props.store;
 
-        //     // update local copy of all layers
-        //     for(let i = 0; i < Object.keys(props.levels).length; i++) {
-        //         let t_obj = {
-        //             noise: {
-        //                 scale: props.levels[i].noiseScale,
-        //                 steps: props.levels[i].noiseSteps
-        //             },
-        //             dim: [props.levels[i].dimX,props.levels[i].dimY],
-        //             seed: props.levels[i].seed
-        //         };
-
-        //         if(layers[i]) {
-        //             layers[i] = t_obj;
-        //         }else {
-        //             layers.push(t_obj);
-        //         }
-        //     }
-        // }
-
-        // if(props.width !== canvas_width) {
-        //     canvas_width = props.width;
-        //     p.resizeCanvas(canvas_width,canvas_height);
-            
-        //     for(let i = 0; i < passes.length; i++) {
-        //         passes[i].resizeCanvas(canvas_width,canvas_height);
-        //     }
-            
-        //     if(glyphShader !== undefined) 
-        //         glyphShader.setUniform('resolution',[canvas_width,canvas_height]);
-        // }
-
-        // if (props.height !== canvas_height) {
-        //     canvas_height = props.height;
-        //     p.resizeCanvas(canvas_width, canvas_height);
-            
-        //     for(let i = 0; i < passes.length; i++) {
-        //         passes[i].resizeCanvas(canvas_width, canvas_height);
-        //     }
-            
-        //     if(glyphShader !== undefined) 
-        //         glyphShader.setUniform('resolution',[canvas_width,canvas_height]);
-        // }
-
-        // if(props.generateFlag !== generateFlag) {
-        //     // generate();
-        //     generateFlag = props.generateFlag;
-        // }
-
-        // if(props.snapshotFlag !== snapshotFlag) {
-        //     p.saveCanvas(canvas,'camogen_'+stringGen(6));
-        //     snapshotFlag = props.snapshotFlag;
-        // }
+        if (store.sketchReady && !sketchStarted) {
+            start();
+        }
     };
 }
+
+export default Sketch;

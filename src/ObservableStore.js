@@ -1,28 +1,26 @@
-import react from 'react';
-import { observable, computed, action, decorate, autorun } from 'mobx';
+import { observable, computed, action, decorate } from 'mobx';
 import uuidv1 from 'uuid/v1';
-
-import GlyphShader from './components/shaders/GlyphShader';
-import DebugShader from './components/shaders/DebugShader';
 
 class ObservableStore {
   nodes = {
     byId: {
       0: {
         type: 'GlyphShader',
-        seed: Math.floor(Math.random() * 1000),
-        noiseScale: 0.1,
-        noiseStep: 8,
-        dimX: 20,
-        dimY: 20
+        uniforms: {
+          seed: Math.floor(Math.random() * 1000),
+          noiseScale: 0.1,
+          noiseStep: 8,
+          dimensions: [20,20]
+        }        
       },
       1: {
         type: 'GlyphShader',
-        seed: Math.floor(Math.random() * 1000),
-        noiseScale: 2,
-        noiseStep: 8,
-        dimX: 6,
-        dimY: 6
+        uniforms: {
+          seed: Math.floor(Math.random() * 1000),
+          noiseScale: 2,
+          noiseStep: 8,
+          dimensions: [6,6]
+        }        
       }
     },
     allIds: [0,1]
@@ -34,11 +32,8 @@ class ObservableStore {
   generateFlag = false;
   snapshotFlag = false;
 
-  constructor() {
-  	autorun(() => console.log(this.report));
-  }
+  sketchReady = false;
 
-  // testing actions
   addNode(type) {
     let n;
 
@@ -46,11 +41,12 @@ class ObservableStore {
       case 'glyph':
         n = {
           type: 'GlyphShader',
-          seed: Math.floor(Math.random() * 1000),
-          noiseScale: 0.1,
-          noiseStep: 8,
-          dimX: 20,
-          dimY: 20
+          uniforms: {
+            seed: Math.floor(Math.random() * 1000),
+            noiseScale: 0.1,
+            noiseStep: 8,
+            dimensions: [20,20]
+          }
         };        
         break;
       case 'debug':
@@ -66,7 +62,43 @@ class ObservableStore {
     this.nodes.allIds.push(id);
     this.nodes.byId[id] = n;
 
-    console.log("added new node",this.nodes);
+    console.group("added new node");
+    console.log("byId",this.nodes.byId);
+    console.log("allIds",this.nodes.allIds);
+    console.groupEnd();
+  }
+
+  removeNode(id) {
+    delete this.nodes.byId[id];
+
+    let index = this.nodes.allIds.indexOf(id);
+    if(index > -1) this.nodes.allIds.splice(index, 1);
+
+    console.log("removed node");
+  }
+
+  resize() {
+    
+  }
+
+  fitScreen() {
+    //
+  }
+
+  randomize(id) {
+    //
+  }
+
+  get dimensions()  {
+    return [this.canvasWidth,this.canvasHeight];
+  }
+
+  get aspect() {
+    return this.canvasWidth / this.canvasHeight;
+  }
+
+  get nodeCount() {
+    return this.nodes.allIds.length;
   }
 }
 
@@ -76,7 +108,15 @@ decorate(ObservableStore, {
   canvasHeight: observable,
   generateFlag: observable,
   snapshotFlag: observable,
-  addNode: action
+  sketchReady: observable,
+  addNode: action,
+  removeNode: action,
+  resize: action,
+  fitScreen: action,
+  randomize: action,
+  dimensions: computed,
+  aspect: computed,
+  nodeCount: computed
 });
 
 const observableStore = new ObservableStore();

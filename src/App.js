@@ -13,9 +13,6 @@ import DebugShader from './components/shaders/DebugShader';
 import GlyphShader from './components/shaders/GlyphShader'; 
 
 const App = observer(class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   generateLayers(store){
     this.nodes = [];
@@ -37,110 +34,17 @@ const App = observer(class App extends React.Component {
     }
   }
 
-  handleGenerate() {
-    this.setState(prevState  =>  ({generateFlag: !prevState.generateFlag}))
+  handleResize() {
+    console.log('resize',[window.innerWidth,window.innerHeight]);
   }
 
-  handleLevelUp() {
-    let next = Object.keys(this.state.levels).length;
+  componentDidMount() {
+    const store = this.props.store;
 
-    this.setState(prevState => ({
-      levels: {
-        ...prevState.levels,
-        [next]: {
-          seed: Math.floor(Math.random() * 1000),
-          noiseScale: Math.random() * 2,
-          noiseStep: 8,
-          dimX: 2,
-          dimY: 2,
-        }
-      }
-    }))
-  }
+    store.canvasWidth = this.canvas.wrapper.clientWidth;
+    store.canvasHeight = this.canvas.wrapper.clientHeight;
 
-  handleLevelDown() {
-    let last = Object.keys(this.state.levels).length - 1;
-
-    let newState = this.state;
-    delete newState.levels[last];
-    this.setState(newState)
-  }
-
-  handleRandomize() {
-    for(let i=0;i<2;i++) {
-      let dim = Math.floor(Math.random() * (60 / (i + 1)));
-
-      this.setState(prevState => ({
-        levels: {
-          ...prevState.levels,
-          [i]: {
-            ...prevState.levels[i],
-            seed: Math.floor(Math.random() * 1000),
-            noiseScale: Math.random() * 2,
-            noiseStep: 8,
-            dimX: dim,
-            dimY: dim,
-          }
-        }
-      }))
-    }
-
-    this.handleGenerate();
-  }
-
-  handleSnapshot() {
-    this.setState(prevState  =>  ({snapshotFlag: !prevState.snapshotFlag}))
-  }
-
-  updateParameter(i,k,v){
-    this.setState(prevState => ({
-      levels: {
-        ...prevState.levels,
-        [i]: {
-          ...prevState.levels[i],
-          [k]: v
-        }
-      }
-    }));
-
-    // this.handleGenerate();
-  }
-
-  handleResize(e) {
-    this.setState( {
-      width: e.target.value,
-      height: e.target.value
-    });
-  }
-
-  handleFitScreen() {
-    let c = document.getElementById('defaultCanvas0').parentNode;
-    console.log(c.offsetHeight);
-
-    if(c.offsetHeight > c.offsetWidth) {
-      this.setState({
-        width: c.offsetHeight,
-        height: c.offsetHeight
-      });
-    }else {
-      this.setState({
-        width: c.offsetWidth,
-        height: c.offsetWidth
-      });
-    }
-  }
-
-  handleAddNode(type) {
-    switch(type) {
-      case 'glyph':
-        this.nodes.push(<GlyphShader key={this.nodes.length}/>);        
-        break;
-      case 'debug':
-        this.nodes.push(<DebugShader key={this.nodes.length}/>);
-        break;
-      default:
-        break;
-    }
+    store.sketchReady = true;
   }
 
   render() {
@@ -158,11 +62,7 @@ const App = observer(class App extends React.Component {
           </div>  
           <div id="textcontainer_bottom">
             <div id="buttoncontainer">
-              <button onClick={() => this.handleGenerate()}>generate</button>
-              <button onClick={() => this.handleRandomize()}>randomize</button>
               <button onClick={() => this.handleSnapshot()}>snapshot</button>
-              <button onClick={() => this.handleLevelDown()}>lvl -</button>
-              <button onClick={() => this.handleLevelUp()}>lvl +</button>
               <button onClick={() => store.addNode('glyph')}>add glyph</button>
               <button onClick={() => store.addNode('debug')}>add debug</button>
             </div>
@@ -183,7 +83,7 @@ const App = observer(class App extends React.Component {
         <P5Wrapper 
           store={store}
           ref={(r) => {this.canvas = r}}
-          sketch={sketch}
+          sketch={sketch}      
         />
       </div>
     );

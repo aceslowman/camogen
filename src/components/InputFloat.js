@@ -15,7 +15,7 @@ export default class InputFloat extends React.Component {
 
     componentDidUpdate(prevProps) {
         if(prevProps.val !== this.props.val) {
-            console.log('something changed')
+            
             this.setState({
                 value: this.props.val
             })
