@@ -59,9 +59,8 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 	    vec3 color = vec3(0.0);
 	    vec4 src = texture2D(tex0, vTexCoord);
 
-	    float aspect = resolution.x/resolution.y;
-	    vec2 uv = vTexCoord;
-	    uv.x *= aspect; 
+	    float aspect = resolution.y/resolution.x;
+	    vec2 uv = vTexCoord * vec2(1.0,aspect);
 
 	    vec2 grid;
 	    vec2 m_grid;
@@ -79,8 +78,8 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 
 	    float n = snoise(vec3(grid,seed));    
 
-	    //color = vec3(n,1.0,0.0);
-	    color = vec3(uv.x,uv.y,1.0);
+	    color = vec3(n);
+	    // color = vec3(uv.x,uv.y/,1.0);
 
 	    gl_FragColor = vec4(color,1.0);
 	}

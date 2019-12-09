@@ -32,7 +32,7 @@ body, #root {
 #textcontainer {
   background-color: white;
   text-align: center;
-  border: 6px dashed black;
+  /*border: 6px dashed black;*/
   width: 50%;
   height: 100%;
   padding: 15px;
@@ -104,10 +104,8 @@ fieldset  {
 
 #buttoncontainer button{
   margin: 0px 3px;
-
 }
 
-/* #flexcontainer div{
-height: 100%;
-
-} */
+input  {
+  font-family: monospace;
+}

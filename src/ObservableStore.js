@@ -34,6 +34,9 @@ class ObservableStore {
 
   sketchReady = false;
 
+  consoleText = 'camogen';
+  helpText = 'this is help text';
+
   addNode(type) {
     let n;
 
@@ -89,6 +92,10 @@ class ObservableStore {
     //
   }
 
+  consoleChanged(text) {
+    this.consoleText = text;
+  }
+
   get dimensions()  {
     return [this.canvasWidth,this.canvasHeight];
   }
@@ -109,11 +116,14 @@ decorate(ObservableStore, {
   generateFlag: observable,
   snapshotFlag: observable,
   sketchReady: observable,
+  consoleText: observable,
+  helpText: observable,
   addNode: action,
   removeNode: action,
   resize: action,
   fitScreen: action,
   randomize: action,
+  consoleChanged: action,
   dimensions: computed,
   aspect: computed,
   nodeCount: computed
