@@ -61,7 +61,7 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 
 	    float aspect = resolution.x/resolution.y;
 	    vec2 uv = vTexCoord;
-	    uv.x += aspect; 
+	    uv.x *= aspect; 
 
 	    vec2 grid;
 	    vec2 m_grid;

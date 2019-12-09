@@ -71,8 +71,8 @@ const Sketch = (p) => {
                 shader.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
             }
 
-            // shader.setUniform('resolution',store.dimensions);
-            shader.setUniform('resolution',[p.width,p.height]);
+            shader.setUniform('resolution',store.dimensions);
+            // shader.setUniform('resolution',[p.width,p.height]);
             
             pg.noStroke();
 
@@ -84,21 +84,14 @@ const Sketch = (p) => {
 
         autorun(() =>  {  
             console.log('autorun');         
-            if (p.width !== store.canvasWidth) {
-                p.resizeCanvas(store.canvasWidth,p.height);
+            if (p.width !== store.canvasWidth || p.height !== store.canvasHeight) {
+                p.resizeCanvas(store.canvasWidth,store.canvasHeight);
 
                 for(let pass of passes) {
                     pass.width = store.canvasWidth;
-                }
-            }
-
-            if (p.height !== store.canvasHeight) {
-                p.resizeCanvas(p.width,store.canvasHeight);
-
-                for(let pass of passes) {
                     pass.height = store.canvasHeight;
                 }
-            }
+            }            
 
             for(let i = 0; i < store.nodeCount; i++) {
                 let s = shaders[i];
@@ -112,7 +105,8 @@ const Sketch = (p) => {
                     s.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
                 }
 
-                s.setUniform('resolution',[p.width,p.height]);
+                s.setUniform('resolution',store.dimensions);
+                // s.setUniform('resolution',[p.width,p.height]);
             }
         });        
     }
