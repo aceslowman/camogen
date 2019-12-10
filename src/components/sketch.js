@@ -83,7 +83,6 @@ const Sketch = (p) => {
         sketchStarted = true;
 
         autorun(() =>  {  
-            console.log('autorun');         
             if (p.width !== store.canvasWidth || p.height !== store.canvasHeight) {
                 p.resizeCanvas(store.canvasWidth,store.canvasHeight);
 
@@ -106,7 +105,6 @@ const Sketch = (p) => {
                 }
 
                 s.setUniform('resolution',store.dimensions);
-                // s.setUniform('resolution',[p.width,p.height]);
             }
         });        
     }
@@ -116,7 +114,7 @@ const Sketch = (p) => {
     }
 
     p.draw = () =>  {
-        if(sketchStarted) {
+        if(sketchStarted && store.nodeCount) {
             for(let i = 0; i < shaders.length; i++) {
                 let s = shaders[i];
                 let pg = passes[i];

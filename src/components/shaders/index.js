@@ -5,3 +5,6 @@ exports.DebugShader = require('./DebugShader.js').default;
 
 // Generators
 exports.UVGenerator = require('./generators/UVGenerator.js').default;
+
+// List of All Types
+exports.types = ["GlyphShader","DebugShader","UVGenerator"];

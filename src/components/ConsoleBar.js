@@ -29,7 +29,7 @@ const style = {
 		height: '100%',
 		fontSize: '1.5em',
 		// border: '1px solid black',
-		border: 'none',
+		border: 'none',		
 	},
 
 	a: {
@@ -37,13 +37,35 @@ const style = {
 		color: 'white',
 	},
 
+	suggest: {
+		color: 'gray',
+		position: 'relative',
+		bottom: '4em',
+	}
 }
 
 const ConsoleBar = observer(class ConsoleBar extends React.Component {
+
+	componentDidMount() {
+		this.ref.addEventListener('keydown', (e) => this.handleKeypress(e));
+	}
+
+	handleKeypress(e) {
+		switch (e.code) {
+			case "Enter":
+				this.store.consoleChanged();
+				break;
+		}
+	}
+
+	handleChange(e) {
+		this.store.consoleText = e.target.value
+		this.store.suggest(e.target.value);
+	}
 		
 	render() {
-		const store = this.props.store;
-
+		this.store = this.props.store;
+		console.log(this.store.suggestText);
 		return (
           <div style={style.wrapper}>
           	<div style={style.version}>
@@ -51,11 +73,18 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
           	</div>
             <div style={style.console}>
             	<input 
-            		style={style.input}
+            		ref={(ref) => this.ref = ref}
+            		style={{...style.input, ...this.store.consoleStyle}}
             		type="text"
-            		placeholder={store.consoleText}
-            		value={store.consoleText}
-            		onChange={(e) => store.consoleChanged(e.target.value)}
+            		placeholder={this.store.consoleText}
+            		value={this.store.consoleText}
+            		onChange={(e) => this.handleChange(e)}
+            	/>
+            	<input
+            		readOnly
+            		type="text"
+            		style={{...style.input, ...this.store.consoleStyle, ...style.suggest}}
+            		value={this.store.suggestText}
             	/>
             </div>            
           </div>

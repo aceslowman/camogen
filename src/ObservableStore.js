@@ -1,6 +1,8 @@
 import { observable, computed, action, decorate } from 'mobx';
 import uuidv1 from 'uuid/v1';
 
+import { types } from './components/shaders';
+
 class ObservableStore {
   nodes = {
     byId: {
@@ -35,7 +37,9 @@ class ObservableStore {
   sketchReady = false;
 
   consoleText = 'camogen';
+  consoleStyle = {color:'black'};
   helpText = 'this is help text';
+  suggestText = '';
 
   addNode(type) {
     let n;
@@ -80,6 +84,13 @@ class ObservableStore {
     console.log("removed node");
   }
 
+  clearAllNodes() {
+    this.nodes.byId = {};
+    this.nodes.allIds = [];
+
+    console.log("removed all nodes");    
+  }
+
   resize() {
     
   }
@@ -92,8 +103,28 @@ class ObservableStore {
     //
   }
 
-  consoleChanged(text) {
-    this.consoleText = text;
+  consoleChanged() {
+    switch (this.consoleText) {
+      case 'clear':
+        this.clearAllNodes();
+        this.consoleText = "";
+        this.consoleStyle = {color:'black'};
+        break;
+      default:
+        this.consoleText = this.consoleText+" isn't a command";
+        this.consoleStyle = {color:'red'};
+        break;
+    }
+  }
+
+  suggest(text) {
+    const regex = new RegExp("^"+text+".*","g");
+    const matched = types.filter((t) => 
+      t.match(regex)
+    );
+
+    this.suggestText = matched.length && text ? matched[0] : '';
+    // console.log('matched',matched);
   }
 
   get dimensions()  {
@@ -118,12 +149,14 @@ decorate(ObservableStore, {
   sketchReady: observable,
   consoleText: observable,
   helpText: observable,
+  suggestText: observable,
   addNode: action,
   removeNode: action,
   resize: action,
   fitScreen: action,
   randomize: action,
   consoleChanged: action,
+  suggest: action,
   dimensions: computed,
   aspect: computed,
   nodeCount: computed
