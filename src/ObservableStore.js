@@ -8,21 +8,23 @@ class ObservableStore {
     byId: {
       0: {
         type: 'GlyphShader',
+        next: 1,
         uniforms: {
           seed: Math.floor(Math.random() * 1000),
           noiseScale: 0.1,
           noiseStep: 8,
           dimensions: [20,20]
-        }        
+        },       
       },
       1: {
         type: 'GlyphShader',
+        next: null,
         uniforms: {
           seed: Math.floor(Math.random() * 1000),
           noiseScale: 2,
           noiseStep: 8,
           dimensions: [6,6]
-        }        
+        },       
       }
     },
     allIds: [0,1]
@@ -45,18 +47,19 @@ class ObservableStore {
     let n;
 
     switch(type) {
-      case 'glyph':
+      case 'GlyphShader':
         n = {
           type: 'GlyphShader',
+          next: null,
           uniforms: {
             seed: Math.floor(Math.random() * 1000),
             noiseScale: 0.1,
             noiseStep: 8,
             dimensions: [20,20]
-          }
+          },
         };        
         break;
-      case 'debug':
+      case 'DebugShader':
         n = {
           type: 'DebugShader'
         };
@@ -111,8 +114,10 @@ class ObservableStore {
         this.consoleStyle = {color:'black'};
         break;
       default:
-        this.consoleText = this.consoleText+" isn't a command";
-        this.consoleStyle = {color:'red'};
+        this.addNode(this.consoleText);
+        this.consoleText = "";
+        this.suggestText = "";
+        // this.consoleStyle = {color:'green'};
         break;
     }
   }

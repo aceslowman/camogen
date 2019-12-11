@@ -3,7 +3,16 @@ import { observer } from 'mobx-react';
 
 const style = {
 	wrapper: {
-		marginTop: '15px'
+		marginTop: '15px',
+		position: 'absolute',
+		top: '0px',
+		left: '0px',
+		width: '50%',
+		zIndex: '99999'
+	},
+
+	text: {
+		backgroundColor: 'white'
 	}
 }
 
@@ -14,7 +23,7 @@ const HelpText = observer(class HelpText extends React.Component {
 
 		return (
 			<div style={style.wrapper}>
-				{store.helpText}
+				<span style={style.text}>{store.helpText}</span>
 			</div>
 		);
 	}

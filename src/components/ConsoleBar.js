@@ -3,17 +3,21 @@ import { observer } from 'mobx-react';
 
 const style = {
 	wrapper: {
-		position: 'relative',
+		position: 'absolute',
 		bottom:'0px',
 		left:'0px',
 		display:'flex',
-		alignItems:'center',
-		width: '100%'
+		alignItems:'flex-end',
+		width: '50%',
+		height : '35px',
 	},
 
 	version: {
 		backgroundColor: 'black',
 		padding: '5px',
+		// height : '100%',
+		// display: 'flex',
+		// alignItems: 'center',
 	},
 
 	console: {
@@ -30,17 +34,21 @@ const style = {
 		fontSize: '1.5em',
 		// border: '1px solid black',
 		border: 'none',		
+		backgroundColor: 'none',
 	},
 
 	a: {
 		textDecoration: 'none',
 		color: 'white',
+
 	},
 
 	suggest: {
 		color: 'gray',
 		position: 'relative',
-		bottom: '4em',
+		bottom: '3.1em',
+		pointerEvents: 'none',
+		backgroundColor: 'transparent'
 	}
 }
 
@@ -55,6 +63,10 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 			case "Enter":
 				this.store.consoleChanged();
 				break;
+			case "Tab":
+				this.store.consoleText = this.store.suggestText;
+				e.preventDefault();
+				break;
 		}
 	}
 
@@ -65,13 +77,13 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 		
 	render() {
 		this.store = this.props.store;
-		console.log(this.store.suggestText);
+
 		return (
           <div style={style.wrapper}>
           	<div style={style.version}>
           		<a style={style.a} href="https://github.com/aceslowman/camogen"><sub>v1.0</sub></a>	
           	</div>
-            <div style={style.console}>
+            <div id="console" style={style.console}>
             	<input 
             		ref={(ref) => this.ref = ref}
             		style={{...style.input, ...this.store.consoleStyle}}

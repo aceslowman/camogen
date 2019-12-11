@@ -15,6 +15,60 @@ import InputGroup from './components/InputGroup';
 import DebugShader from './components/shaders/DebugShader'; 
 import GlyphShader from './components/shaders/GlyphShader'; 
 
+const style = {
+  wrapper: {
+    display: "flex",
+    flexDirection: "row",
+    /* justifyContent: "space-between", */
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "stretch",
+    height: "100%",
+    boxSizing: "border-box",
+    /* overflow: "hidden", */
+    backgroundColor: "black",
+  },
+
+  panel: {
+    margin : "0",
+    padding: "0",
+    boxSizing: "border-box",
+    width: "50%",
+    height : "100%",
+  },
+
+  gui_panel: {
+    backgroundColor: "white",
+    textAlign: "center",
+    width: "50%",
+    height: "100%",
+    padding: "15px",
+    display: "flex",
+    flexFlow: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    flexFlow: "column",
+    /* alignContent: flex-start; */
+    /*border: 6px dashed black;*/    
+  },
+
+  gui_panel_inner: {
+    display: "flex",
+    flexDirection: "column",
+    // flexFlow: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+    boxSizing: "border-box",
+    width: "100%",
+    height: "100%",
+    overflowY: "scroll",
+    /* background-color: red; */
+    /* align-content: center; */
+  }
+
+}
+
 const App = observer(class App extends React.Component {
 
   generateLayers(store){
@@ -59,15 +113,15 @@ const App = observer(class App extends React.Component {
     this.generateLayers(this.store);
 
     return (
-      <div id="flexcontainer">
-        <div id="textcontainer">            
+      <div id="mainWrapper" style={style.wrapper}>
+        <div style={style.gui_panel}>           
           <HelpText store={this.store} />  
-          <div id="textcontainer_inner">
+          <div style={style.gui_panel_inner}>
             {this.nodes}
           </div>  
           <ConsoleBar store={this.store} />
         </div>
-        <P5Wrapper 
+        <P5Wrapper     
           store={this.store}
           ref={(r) => {this.canvas = r}}
           sketch={sketch}      
