@@ -1,5 +1,7 @@
 import React from 'react';
-import Draggable from 'react-draggable';
+import ShaderNode from './ShaderNode';
+
+const style = {};
 
 export default class DebugShader extends React.Component {
 
@@ -48,22 +50,14 @@ export default class DebugShader extends React.Component {
     }
     `;
 
-    constructor() {
-        super();
-
-        this.state = {
-
-
-        };
-    }
-
     render() {
+        const store = this.props.store;
+        const node = store.nodes.byId[this.props.node_id];
+
         return(
-            <Draggable>
-                <fieldset style={{marginBottom:'15px'}}>
-                    <h1>debug shader</h1>
-                </fieldset>
-            </Draggable>            
+            <ShaderNode title={"DebugShader"} node_id={this.props.node_id} store={store}>
+                <legend style={style.legend}>DebugShader</legend>                
+            </ShaderNode>          
         )
     }
 }

@@ -40,7 +40,7 @@ class ObservableStore {
 
   consoleText = 'camogen';
   consoleStyle = {color:'black'};
-  helpText = 'this is help text';
+  helpText = '';
   suggestText = '';
 
   addNode(type) {

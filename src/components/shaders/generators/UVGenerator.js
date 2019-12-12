@@ -1,11 +1,13 @@
 import React from 'react';
-import Draggable from 'react-draggable';
+import ShaderNode from '../ShaderNode';
 
 import { observer } from 'mobx-react';
 
 import InputGroup from '../../InputGroup';
 import InputFloat from '../../InputFloat';
 import InputBool from '../../InputBool';
+
+const style = {};
 
 const UVGenerator = observer(class UVGenerator extends React.Component {
 
@@ -57,10 +59,7 @@ const UVGenerator = observer(class UVGenerator extends React.Component {
 		const node = store.nodes.byId[this.props.node_id];
 
 		return(
-			<Draggable>
-				<fieldset style={{marginBottom:'15px'}} >
-		          <small>
-		            <legend>UVGenerator</legend>
+				<ShaderNode title={"UVGenerator"} node_id={this.props.node_id} store={store}>
 		            <InputGroup name='default'>		              
 		              <InputBool 
 		                val={node.uniforms.bSquare} 
@@ -68,10 +67,7 @@ const UVGenerator = observer(class UVGenerator extends React.Component {
 		                onChange={(v) => node.uniforms.bSquare = v }
 		              />
 		            </InputGroup>
-		            <button onClick={() => store.removeNode(this.props.node_id)}>remove</button>
-		          </small>
-		        </fieldset>
-			</Draggable>
+		        </ShaderNode>
 	    )
 	}
 });

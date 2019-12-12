@@ -1,5 +1,4 @@
 import React from 'react';
-import Draggable from 'react-draggable';
 
 import { observer } from 'mobx-react';
 
@@ -8,61 +7,9 @@ import InputFloat from '../InputFloat';
 
 import simplex from './includes/simplex.js';
 
-const style = {
-	remove: {
-		float: 'left',
-		padding: '5px 10px',
-		position: 'absolute',
-		top: '0px',
-		left: '0px',
-	},
+import ShaderNode from './ShaderNode';
 
-	legend: {		
-		fontWeight: 'bold',
-		marginBottom: '10px',
-		fontSize: '1.6em'
-	},
-
-	fieldset: {
-		marginBottom:'15px', 
-		backgroundColor: 'white'
-	},
-
-	inlets: {
-		width: '100%',
-		listStyle: 'none',
-		margin: '0px',
-		padding: '0px',
-		// backgroundColor: 'yellow',
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-evenly',
-		alignItems: 'flex-start',
-		fontFamily: 'sans-serif',
-	},
-
-	hints: {
-		width: '100%',
-		listStyle: 'none',
-		margin: '0px',
-		padding: '0px',
-		// backgroundColor: 'yellow',
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-evenly',
-		alignItems: 'flex-start',
-	},
-
-	top: {
-		position: 'relative',
-		bottom: '16px'
-	},
-
-	bottom: {
-		position: 'relative',
-		top: '21px',
-	},
-};
+const style = {};
 
 const GlyphShader = observer(class GlyphShader extends React.Component {
 
@@ -146,80 +93,44 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 		const node = store.nodes.byId[this.props.node_id];
 
 		return(
-			<Draggable>
-				<fieldset style={style.fieldset} >
-					<small>
-						<div style={style.top}>
-							<ul style={style.inlets}>
-								<li>◾︎</li>
-								<li>◽︎</li>
-								<li>◽︎</li>
-								<li>◾︎</li>
-							</ul>		
-							<ul style={style.hints}>
-								<li>1</li>
-								<li>2</li>
-								<li>3</li>
-								<li>4</li>
-							</ul>
-						</div>									
-			          	<a style={style.remove} onClick={() => store.removeNode(this.props.node_id)}>x</a>
-			            
-			            <legend style={style.legend}>GlyphShader</legend>
-			            
-			            <InputGroup name='noise'>
-			              <InputFloat 
-			                val={node.uniforms.noiseScale} 
-			                step="0.1" 
-			                name="scale"
-			                onChange={(v) => node.uniforms.noiseScale = v }
-			              />
-			              <InputFloat 
-			                val={node.uniforms.noiseStep} 
-			                step="1" 
-			                name="step"
-			                onChange={(v) => node.uniforms.noiseStep = v }
-			              />
-			            </InputGroup>
-			            
-			            <InputGroup name='dimensions'>
-			              <InputFloat 
-			                val={node.uniforms.dimensions[0]} 
-			                step="1" 
-			                name="x"
-			                onChange={(v) => node.uniforms.dimensions[0] = v }
-			              />
-			              <InputFloat 
-			                val={node.uniforms.dimensions[1]} 
-			                step="1" 
-			                name="y"
-			                onChange={(v) => node.uniforms.dimensions[1] = v }
-			              />
-			            </InputGroup>
-			            
-			            <InputFloat 
-			                val={node.uniforms.seed} 
-			                step="1" 
-			                name="seed"
-			                onChange={(v) => node.uniforms.seed = v }
-			            />		
-			           	<div style={style.bottom}>
-			           		<ul style={style.hints}>
-								<li>1</li>
-								<li>2</li>
-								<li>3</li>
-								<li>4</li>
-							</ul>
-							<ul style={style.inlets}>
-								<li>◾︎</li>
-								<li>◽︎</li>
-								<li>◽︎</li>
-								<li>◾︎</li>
-							</ul>		
-						</div>            
-			         </small>
-		        </fieldset>
-			</Draggable>
+			<ShaderNode title={"GlyphShader"} node_id={this.props.node_id} store={store}>	            
+	            <InputGroup name='noise'>
+	              <InputFloat 
+	                val={node.uniforms.noiseScale} 
+	                step="0.1" 
+	                name="scale"
+	                onChange={(v) => node.uniforms.noiseScale = v }
+	              />
+	              <InputFloat 
+	                val={node.uniforms.noiseStep} 
+	                step="1" 
+	                name="step"
+	                onChange={(v) => node.uniforms.noiseStep = v }
+	              />
+	            </InputGroup>
+	            
+	            <InputGroup name='dimensions'>
+	              <InputFloat 
+	                val={node.uniforms.dimensions[0]} 
+	                step="1" 
+	                name="x"
+	                onChange={(v) => node.uniforms.dimensions[0] = v }
+	              />
+	              <InputFloat 
+	                val={node.uniforms.dimensions[1]} 
+	                step="1" 
+	                name="y"
+	                onChange={(v) => node.uniforms.dimensions[1] = v }
+	              />
+	            </InputGroup>
+	            
+	            <InputFloat 
+	                val={node.uniforms.seed} 
+	                step="1" 
+	                name="seed"
+	                onChange={(v) => node.uniforms.seed = v }
+	            />
+			</ShaderNode>          		
 	    )
 	}
 });

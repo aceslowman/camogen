@@ -62,7 +62,7 @@ const style = {
     boxSizing: "border-box",
     width: "100%",
     height: "100%",
-    overflowY: "scroll",
+    overflowY: "hidden",
     /* background-color: red; */
     /* align-content: center; */
   }
