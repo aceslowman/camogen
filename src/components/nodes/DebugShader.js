@@ -1,5 +1,5 @@
 import React from 'react';
-import ShaderNode from './ShaderNode';
+import NodeContainer from './NodeContainer';
 
 const style = {};
 
@@ -55,9 +55,9 @@ export default class DebugShader extends React.Component {
         const node = store.nodes.byId[this.props.node_id];
 
         return(
-            <ShaderNode title={"DebugShader"} node_id={this.props.node_id} store={store}>
+            <NodeContainer title={"DebugShader"} node_id={this.props.node_id} store={store}>
                 <legend style={style.legend}>DebugShader</legend>                
-            </ShaderNode>          
+            </NodeContainer>          
         )
     }
 }

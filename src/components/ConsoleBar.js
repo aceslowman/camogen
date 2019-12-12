@@ -56,6 +56,7 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 
 	componentDidMount() {
 		this.ref.addEventListener('keydown', (e) => this.handleKeypress(e));
+		this.ref.addEventListener('click', (e) => this.handleClick(e));
 	}
 
 	handleKeypress(e) {
@@ -68,6 +69,11 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 				e.preventDefault();
 				break;
 		}
+	}
+
+	handleClick(e) {
+		console.log(e);
+
 	}
 
 	handleChange(e) {

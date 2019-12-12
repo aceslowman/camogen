@@ -1,11 +1,11 @@
 import React from 'react';
-import ShaderNode from '../ShaderNode';
+import NodeContainer from './NodeContainer';
 
 import { observer } from 'mobx-react';
 
-import InputGroup from '../../InputGroup';
-import InputFloat from '../../InputFloat';
-import InputBool from '../../InputBool';
+import InputGroup from '../InputGroup';
+import InputFloat from '../InputFloat';
+import InputBool from '../InputBool';
 
 const style = {};
 
@@ -59,15 +59,15 @@ const UVGenerator = observer(class UVGenerator extends React.Component {
 		const node = store.nodes.byId[this.props.node_id];
 
 		return(
-				<ShaderNode title={"UVGenerator"} node_id={this.props.node_id} store={store}>
-		            <InputGroup name='default'>		              
-		              <InputBool 
-		                val={node.uniforms.bSquare} 
-		                name="square"
-		                onChange={(v) => node.uniforms.bSquare = v }
-		              />
-		            </InputGroup>
-		        </ShaderNode>
+			<NodeContainer title={"UVGenerator"} node_id={this.props.node_id} store={store}>
+	            <InputGroup name='default'>		              
+	              <InputBool 
+	                val={node.uniforms.bSquare} 
+	                name="square"
+	                onChange={(v) => node.uniforms.bSquare = v }
+	              />
+	            </InputGroup>
+	        </NodeContainer>
 	    )
 	}
 });

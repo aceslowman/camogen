@@ -20,7 +20,8 @@ const style = {
 
 	fieldset: {
 		marginBottom:'15px', 
-		backgroundColor: 'white'
+		backgroundColor: 'white',
+		// width: '186px'
 	},
 
 	inlets: {
@@ -59,7 +60,7 @@ const style = {
 	},
 };
 
-const ShaderNode = observer(class ShaderNode extends React.Component {
+const NodeContainer = observer(class NodeContainer extends React.Component {
 
 	render() {
 		const store = this.props.store;
@@ -109,4 +110,4 @@ const ShaderNode = observer(class ShaderNode extends React.Component {
 	}
 });
 
-export default ShaderNode;
+export default NodeContainer;

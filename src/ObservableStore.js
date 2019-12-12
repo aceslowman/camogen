@@ -7,8 +7,15 @@ class ObservableStore {
   nodes = {
     byId: {
       0: {
-        type: 'GlyphShader',
+        type: 'UVGenerator',
         next: 1,
+        uniforms: {
+          bSquare: false,
+        }
+      },
+      1: {
+        type: 'GlyphShader',
+        next: 2,
         uniforms: {
           seed: Math.floor(Math.random() * 1000),
           noiseScale: 0.1,
@@ -16,18 +23,22 @@ class ObservableStore {
           dimensions: [20,20]
         },       
       },
-      1: {
+      2: {
         type: 'GlyphShader',
-        next: null,
+        next: 3,
         uniforms: {
           seed: Math.floor(Math.random() * 1000),
           noiseScale: 2,
           noiseStep: 8,
           dimensions: [6,6]
         },       
-      }
+      },
+      3: {
+        type: 'RenderTarget',
+        next: null,
+      },
     },
-    allIds: [0,1]
+    allIds: [0,1,2,3]
   };
 
   canvasWidth  = 200;
@@ -44,11 +55,12 @@ class ObservableStore {
   suggestText = '';
 
   addNode(type) {
-    let n;
+    let n = { type: type };
 
     switch(type) {
       case 'GlyphShader':
         n = {
+          ...n,
           type: 'GlyphShader',
           next: null,
           uniforms: {
@@ -61,7 +73,15 @@ class ObservableStore {
         break;
       case 'DebugShader':
         n = {
-          type: 'DebugShader'
+          ...n,
+        };
+        break;
+      case 'UVGenerator':
+        n = {
+          ...n,
+          uniforms: {
+            bSquare: false,
+          }
         };
         break;
       default:

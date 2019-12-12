@@ -24,10 +24,12 @@ let sketchStarted;
 
 const Sketch = (p) => {
 
+    let initShader = () => {
+
+    }
+
     let start = () =>  {
-        console.log(store.dimensions.toString());
         p.createCanvas(store.canvasWidth,store.canvasHeight);     
-        // p.resizeCanvas(store.canvasWidth,store.canvasHeight);  
 
         img = p.createImage(1,1); // initial texture
 
@@ -39,15 +41,16 @@ const Sketch = (p) => {
             by the order of nodes.allIds
         */
         for(let i = 0; i < store.nodeCount; i++) {
-            // set up render target for shader
-            let pg = p.createGraphics(p.width,p.height,p.WEBGL);
-
             let id = store.nodes.allIds[i];
             let node = store.nodes.byId[id];
 
-            let t, shader;        
+            let t, shader; 
+
+            // set up render target for shader
+            let pg = p.createGraphics(p.width,p.height,p.WEBGL);       
 
             // this will likely need to be changed
+            // mainly these aspects should be moved to the individual node class
             switch(node.type) {
                 case 'GlyphShader':
                     shader = pg.createShader(NODES.GlyphShader.vert(), NODES.GlyphShader.frag());
@@ -55,29 +58,36 @@ const Sketch = (p) => {
                 case 'DebugShader':
                     shader = pg.createShader(NODES.DebugShader.vert(), NODES.DebugShader.frag());
                     break;
+                case 'UVGenerator':
+                    shader = pg.createShader(NODES.UVGenerator.vert(), NODES.UVGenerator.frag())
+                    break;
+                case 'RenderTarget':
+                    console.log('RenderTarget');
+                    break;
                 default:
                     shader = pg.createShader(NODES.GlyphShader.vert(), NODES.GlyphShader.frag());
                     break;
             }
 
-            // set empty texture for first pass
-            t = i === 0 ? img : passes[i-1];
+            if(node.type !== 'RenderTarget') {
+                // set empty texture for first pass
+                t = i === 0 ? img : passes[i-1];
 
-            shader.setUniform('tex0',t);
+                shader.setUniform('tex0',t);
 
-            let uniform_entries = Object.entries(node.uniforms);
+                let uniform_entries = Object.entries(node.uniforms);
 
-            for(let i = 0; i < uniform_entries.length; i++) {
-                shader.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
+                for(let i = 0; i < uniform_entries.length; i++) {
+                    shader.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
+                }
+
+                shader.setUniform('resolution',store.dimensions);
+                
+                pg.noStroke();
+
+                shaders.push(shader);
+                passes.push(pg);
             }
-
-            shader.setUniform('resolution',store.dimensions);
-            // shader.setUniform('resolution',[p.width,p.height]);
-            
-            pg.noStroke();
-
-            shaders.push(shader);
-            passes.push(pg);
         }
 
         sketchStarted = true;
@@ -93,18 +103,21 @@ const Sketch = (p) => {
             }            
 
             for(let i = 0; i < store.nodeCount; i++) {
-                let s = shaders[i];
-
                 let id = store.nodes.allIds[i];
                 let node = store.nodes.byId[id];
 
-                let uniform_entries = Object.entries(node.uniforms);
+                // if the node is a shader
+                if(node.uniforms) {
+                    let s = shaders[i];
 
-                for(let i = 0; i < uniform_entries.length; i++) {
-                    s.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
+                    let uniform_entries = Object.entries(node.uniforms);
+
+                    for(let i = 0; i < uniform_entries.length; i++) {
+                        s.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
+                    }
+
+                    s.setUniform('resolution',store.dimensions);
                 }
-
-                s.setUniform('resolution',store.dimensions);
             }
         });        
     }

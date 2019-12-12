@@ -7,7 +7,7 @@ import InputFloat from '../InputFloat';
 
 import simplex from './includes/simplex.js';
 
-import ShaderNode from './ShaderNode';
+import NodeContainer from './NodeContainer';
 
 const style = {};
 
@@ -93,7 +93,7 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 		const node = store.nodes.byId[this.props.node_id];
 
 		return(
-			<ShaderNode title={"GlyphShader"} node_id={this.props.node_id} store={store}>	            
+			<NodeContainer title={"GlyphShader"} node_id={this.props.node_id} store={store}>	            
 	            <InputGroup name='noise'>
 	              <InputFloat 
 	                val={node.uniforms.noiseScale} 
@@ -130,7 +130,7 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 	                name="seed"
 	                onChange={(v) => node.uniforms.seed = v }
 	            />
-			</ShaderNode>          		
+			</NodeContainer>          		
 	    )
 	}
 });

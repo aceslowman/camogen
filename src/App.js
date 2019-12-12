@@ -14,6 +14,7 @@ import InputGroup from './components/InputGroup';
 // import shaders for gui elements
 import DebugShader from './components/shaders/DebugShader'; 
 import GlyphShader from './components/shaders/GlyphShader'; 
+import UVGenerator from './components/shaders/UVGenerator';
 
 const style = {
   wrapper: {
@@ -79,6 +80,7 @@ const App = observer(class App extends React.Component {
       let id = this.store.nodes.allIds[i];
       let node = this.store.nodes.byId[id];
 
+      // TODO there needs to be a better way to do this
       switch(node.type) {
         case 'GlyphShader':
           this.nodes.push(<GlyphShader key={id} store={store} node_id={id}/>);        
@@ -86,6 +88,9 @@ const App = observer(class App extends React.Component {
         case 'DebugShader':
           this.nodes.push(<DebugShader key={id} store={store} node_id={id}/>);
           break;
+        case 'UVGenerator':
+          this.nodes.push(<UVGenerator key={id} store={store} node_id={id}/>);
+          break;  
         default:
           break;
       }
