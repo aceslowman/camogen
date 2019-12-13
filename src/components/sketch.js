@@ -1,7 +1,7 @@
 import { autorun } from 'mobx';
 
 // load all shaders from folder
-import * as NODES from './shaders';
+import * as NODES from './nodes';
 
 // https: //stackoverflow.com/questions/16106701/how-to-generate-a-random-string-of-letters-and-numbers-in-javascript
 function stringGen(len) {
@@ -24,10 +24,6 @@ let sketchStarted;
 
 const Sketch = (p) => {
 
-    let initShader = () => {
-
-    }
-
     let start = () =>  {
         p.createCanvas(store.canvasWidth,store.canvasHeight);     
 
@@ -49,25 +45,8 @@ const Sketch = (p) => {
             // set up render target for shader
             let pg = p.createGraphics(p.width,p.height,p.WEBGL);       
 
-            // this will likely need to be changed
-            // mainly these aspects should be moved to the individual node class
-            switch(node.type) {
-                case 'GlyphShader':
-                    shader = pg.createShader(NODES.GlyphShader.vert(), NODES.GlyphShader.frag());
-                    break;
-                case 'DebugShader':
-                    shader = pg.createShader(NODES.DebugShader.vert(), NODES.DebugShader.frag());
-                    break;
-                case 'UVGenerator':
-                    shader = pg.createShader(NODES.UVGenerator.vert(), NODES.UVGenerator.frag())
-                    break;
-                case 'RenderTarget':
-                    console.log('RenderTarget');
-                    break;
-                default:
-                    shader = pg.createShader(NODES.GlyphShader.vert(), NODES.GlyphShader.frag());
-                    break;
-            }
+            // TODO how do i get rid of 'default'?            
+            shader = NODES.modules[node.type].assemble(pg);
 
             if(node.type !== 'RenderTarget') {
                 // set empty texture for first pass

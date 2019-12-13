@@ -12,9 +12,9 @@ import sketch from './components/sketch';
 import InputGroup from './components/InputGroup';
 
 // import shaders for gui elements
-import DebugShader from './components/shaders/DebugShader'; 
-import GlyphShader from './components/shaders/GlyphShader'; 
-import UVGenerator from './components/shaders/UVGenerator';
+import DebugShader from './components/nodes/DebugShader'; 
+import GlyphShader from './components/nodes/GlyphShader'; 
+import UVGenerator from './components/nodes/UVGenerator';
 
 const style = {
   wrapper: {

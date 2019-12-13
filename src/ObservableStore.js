@@ -1,7 +1,7 @@
 import { observable, computed, action, decorate } from 'mobx';
 import uuidv1 from 'uuid/v1';
 
-import { types } from './components/shaders';
+import * as NODES from './components/nodes';
 
 class ObservableStore {
   nodes = {
@@ -144,7 +144,7 @@ class ObservableStore {
 
   suggest(text) {
     const regex = new RegExp("^"+text+".*","g");
-    const matched = types.filter((t) => 
+    const matched = NODES.types.filter((t) => 
       t.match(regex)
     );
 

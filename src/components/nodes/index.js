@@ -1,10 +1,11 @@
-// this is a directory of all shaders for import
+const types = ["GlyphShader","DebugShader","UVGenerator","RenderTarget"];
+let modules = {};
 
-exports.GlyphShader = require('./GlyphShader.js').default;
-exports.DebugShader = require('./DebugShader.js').default;
+types.forEach((type) => {
+	modules = {
+		...modules,
+		[type]: require('./' + type + '.js').default
+	}	
+});
 
-// Generators
-exports.UVGenerator = require('./UVGenerator.js').default;
-
-// List of All Types
-exports.types = ["GlyphShader","DebugShader","UVGenerator"];
+export {modules,types};

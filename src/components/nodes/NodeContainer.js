@@ -72,10 +72,10 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 					<small>
 						<div style={style.top}>
 							<ul style={style.inlets}>
-								<li>◾︎</li>
-								<li>◽︎</li>
-								<li>◽︎</li>
-								<li>◾︎</li>
+								<li><span role="img" aria-label="something">◾︎</span></li>
+								<li><span role="img" aria-label="something">◽︎</span></li>
+								<li><span role="img" aria-label="something">◽︎</span></li>
+								<li><span role="img" aria-label="something">◾︎</span></li>
 							</ul>		
 							<ul style={style.hints}>
 								<li>1</li>
@@ -97,10 +97,10 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 								<li>4</li>
 							</ul>
 							<ul style={style.inlets}>
-								<li>◾︎</li>
-								<li>◽︎</li>
-								<li>◽︎</li>
-								<li>◾︎</li>
+								<li><span role="img" aria-label="something">◾︎</span></li>
+								<li><span role="img" aria-label="something">◽︎</span></li>
+								<li><span role="img" aria-label="something">◽︎</span></li>
+								<li><span role="img" aria-label="something">◾︎</span></li>
 							</ul>		
 						</div>            
 			         </small>

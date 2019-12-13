@@ -11,6 +11,10 @@ const style = {};
 
 const RenderTarget = observer(class RenderTarget extends React.Component {
 
+	static assemble = (pg) => {		
+		return {};
+	}
+
 	render() {
 		const store = this.props.store;
 		const node = store.nodes.byId[this.props.node_id];

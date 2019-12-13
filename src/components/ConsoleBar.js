@@ -72,8 +72,7 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 	}
 
 	handleClick(e) {
-		console.log(e);
-
+		this.store.consoleText = '';
 	}
 
 	handleChange(e) {
@@ -100,7 +99,7 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
             	/>
             	<input
             		readOnly
-            		type="text"
+            		type="text"            		
             		style={{...style.input, ...this.store.consoleStyle, ...style.suggest}}
             		value={this.store.suggestText}
             	/>

@@ -54,6 +54,12 @@ const UVGenerator = observer(class UVGenerator extends React.Component {
 	}
 	`;
 
+	static assemble = (pg) => {		
+		let shader = pg.createShader(this.vert(), this.frag());
+
+		return shader;
+	}
+
 	render() {
 		const store = this.props.store;
 		const node = store.nodes.byId[this.props.node_id];
