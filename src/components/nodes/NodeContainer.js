@@ -21,7 +21,7 @@ const style = {
 	fieldset: {
 		marginBottom:'15px', 
 		backgroundColor: 'white',
-		// width: '186px'
+		width: '230px'
 	},
 
 	inlets: {

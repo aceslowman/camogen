@@ -15,6 +15,7 @@ import InputGroup from './components/InputGroup';
 import DebugShader from './components/nodes/DebugShader'; 
 import GlyphShader from './components/nodes/GlyphShader'; 
 import UVGenerator from './components/nodes/UVGenerator';
+import RenderTarget from './components/nodes/RenderTarget';
 
 const style = {
   wrapper: {
@@ -90,7 +91,10 @@ const App = observer(class App extends React.Component {
           break;
         case 'UVGenerator':
           this.nodes.push(<UVGenerator key={id} store={store} node_id={id}/>);
-          break;  
+          break; 
+        case 'RenderTarget':
+          this.nodes.push(<RenderTarget key={id} store={store} node_id={id}/>);
+          break; 
         default:
           break;
       }

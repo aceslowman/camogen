@@ -7,15 +7,21 @@ class ObservableStore {
   nodes = {
     byId: {
       0: {
-        type: 'UVGenerator',
-        next: 1,
-        uniforms: {
-          bSquare: false,
-        }
+        type: 'RenderTarget',
+        next: 1,        
       },
       1: {
-        type: 'GlyphShader',
+        type: 'UVGenerator',
         next: 2,
+        target_id: 0,
+        uniforms: {
+          bSquare: false,
+        },
+      },
+      2: {
+        type: 'GlyphShader',
+        next: 3,
+        target_id: 0,
         uniforms: {
           seed: Math.floor(Math.random() * 1000),
           noiseScale: 0.1,
@@ -23,9 +29,10 @@ class ObservableStore {
           dimensions: [20,20]
         },       
       },
-      2: {
+      3: {
         type: 'GlyphShader',
-        next: 3,
+        next: null,
+        target_id: 0,
         uniforms: {
           seed: Math.floor(Math.random() * 1000),
           noiseScale: 2,
@@ -33,12 +40,11 @@ class ObservableStore {
           dimensions: [6,6]
         },       
       },
-      3: {
-        type: 'RenderTarget',
-        next: null,
-      },
     },
-    allIds: [0,1,2,3]
+    allIds: [0,1,2,3],
+    shaderIds: [1,2,3],
+    targetIds: [0],
+    dataIds: []
   };
 
   canvasWidth  = 200;
@@ -152,6 +158,10 @@ class ObservableStore {
     // console.log('matched',matched);
   }
 
+  getNodeById(id) {
+    return this.nodes.byId[id];
+  }
+
   get dimensions()  {
     return [this.canvasWidth,this.canvasHeight];
   }
@@ -184,7 +194,8 @@ decorate(ObservableStore, {
   suggest: action,
   dimensions: computed,
   aspect: computed,
-  nodeCount: computed
+  nodeCount: computed,
+  getNodeById: action,
 });
 
 const observableStore = new ObservableStore();
