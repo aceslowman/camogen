@@ -16,10 +16,8 @@ function stringGen(len) {
 }
 
 let data = {};
-let targets = [];
-let shaders = [];
-
-let img;
+let targets = {};
+let shaders = {};
 
 let store;
 let sketchStarted;
@@ -29,45 +27,51 @@ const Sketch = (p) => {
     let start = () =>  {
         p.createCanvas(store.canvasWidth,store.canvasHeight);     
 
-        img = p.createImage(1,1); // initial texture
-
         p.smooth();
         p.background(128);   
 
         // initialize data nodes
-        for(let data_id of store.nodes.dataIds) {
-            console.log("data",store.getNodeById(data_id).type);
+        for(let d_id of store.nodes.dataIds) {
+            console.log("data",store.getNodeById(d_id).type);
         }
 
         // initialize targets nodes
-        for(let target_id of store.nodes.targetIds) {
-            console.log("targets",store.getNodeById(target_id).type);
+        for(let t_id of store.nodes.targetIds) {
+            console.log("targets",store.getNodeById(t_id).type);
+
             let target = p.createGraphics(p.width,p.height,p.WEBGL);
 
             target.noStroke();
 
-            targets.push(target);
+            targets = {
+                ...targets,
+                [t_id]: target
+            }
         }
 
         // initialize shaders nodes
-        for(let shader_id of store.nodes.shaderIds) {
-            console.log("shaders",store.getNodeById(shader_id).type);
-            let node = store.getNodeById(shader_id);
-            // let target = store.getNodeById(node.target_id);
-            let target = targets[0]; // TEMP
+        for(let s_id of store.nodes.shaderIds) {
+            console.log("shaders",store.getNodeById(s_id).type);
+
+            let node = store.getNodeById(s_id);
+            
+            let target = targets[node.target_id];
             let shader = NODES.modules[node.type].assemble(target);
 
             // shader.setUniform('tex0',t);
 
             let uniform_entries = Object.entries(node.uniforms);
 
-            for(let i = 0; i < uniform_entries.length; i++) {
-                shader.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
+            for(let uniform of uniform_entries) {
+                shader.setUniform(uniform[0],uniform[1]);
             }
 
             shader.setUniform('resolution',store.dimensions);
 
-            shaders.push(shader);
+            shaders = {
+                ...shaders,
+                [s_id]: shader
+            };
         }    
 
         /*
