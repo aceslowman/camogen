@@ -3,6 +3,9 @@ import Draggable from 'react-draggable';
 
 import { observer } from 'mobx-react';
 
+import Inlet from './Inlet';
+import Outlet from './Outlet';
+
 const style = {
 	wrapper: {
 		marginBottom:'15px', 
@@ -12,17 +15,15 @@ const style = {
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
-		alignItems: 'stretch'
+		alignItems: 'stretch',
+		zIndex: '100',
 	},
 
 	buttons: {
-		// flex: '0 1 auto',
 		padding: '5px',
 		// backgroundColor: 'red',
-		// width: '50px',
 		display: 'flex',
 		flexDirection: 'column',
-		// float: 'left',
 		height: '100%',
 		boxSizing: 'border-box',
 		color: 'white',
@@ -39,40 +40,33 @@ const style = {
 		justifyContent: 'center',
 	},
 
-	remove: {
-		// float: 'left',
-		// padding: '5px 10px',
-		// position: 'absolute',
-		// top: '0px',
-		// left: '0px',
-	},
-
-	expand: {
-		// float: 'left',
-
-	},
-
 	legend: {		
 		fontWeight: 'bold',
-		// marginBottom: '10px',
 		// backgroundColor: 'orange',
 		fontSize: '1.6em'
 	},
 
 	inlets: {
-		width: '100%',
-		listStyle: 'none',
-		margin: '0px',
-		padding: '0px',
-		// backgroundColor: 'yellow',
+		minWidth: '10px',
+		height: '13px',
+		border: '1px solid black',
+		backgroundColor: 'white',
+		// zIndex: '99',
+		fontSize: '0.9em',
+		// float: 'left',
 		display: 'flex',
 		flexDirection: 'row',
-		justifyContent: 'space-evenly',
-		alignItems: 'flex-start',
-		fontFamily: 'sans-serif',
 	},
 
-	hints: {
+	inletIcon: {
+		height: '13px',
+		width: '13px',
+		backgroundColor: 'white',
+		borderRight: '1px solid black',
+		boxSizing: 'border-box',
+	},
+
+	inletBar: {
 		width: '100%',
 		listStyle: 'none',
 		margin: '0px',
@@ -82,16 +76,23 @@ const style = {
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
 		alignItems: 'flex-start',
+		zIndex: '99',
+	},
+
+	hint: {
+		padding: '0px 2px',
 	},
 
 	top: {
-		// position: 'relative',
-		// bottom: '16px'
+		position: 'absolute',
+		top: '-15px',
+		left: '18px',
 	},
 
 	bottom: {
-		// position: 'relative',
-		// top: '21px',
+		position: 'absolute',
+		bottom: '-15px',
+		left: '18px',
 	},
 
 	params: {
@@ -106,8 +107,17 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 		super();
 
 		this.state = {
-			expanded: false
+			active: false,
+			expanded: false,
+			dragging: false,
 		};
+	}
+
+	handleClick() {		
+		this.setState(prevState => ({
+			...prevState,
+			active: !prevState.active
+		}));
 	}
 
 	handleExpand() {
@@ -115,6 +125,22 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 			...prevState,
 			expanded: !prevState.expanded
 		}));
+	}
+
+	handleDrag(e) {
+		// console.log('handleDrag', e);
+	}
+
+	handleDragStart(e) {
+		console.log('handleStart', e);
+		this.setState({ dragging: true });
+
+		this.handleClick();
+	}
+
+	handleDragStop(e) {
+		console.log('handleStop', e);
+		this.setState({ dragging: false });
 	}
 
 	render() {
@@ -127,24 +153,39 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 			height: this.state.expanded ? 'auto' : '0%',
 		}
 
+		style.main = {
+			...style.main,
+			boxShadow: this.state.dragging ? '5px 5px' : this.state.active ? '3px 3px' : '0px 0px',
+		};
+
+		let inlets = [];
+		let outlets = [];
+
+		if(this.props.inlets) {
+			for(let inlet of this.props.inlets) {
+				inlets.push(<li><Inlet hint={inlet.hint} /></li>);
+			}
+		}
+
+		if(this.props.outlets) {
+			for(let outlet of this.props.outlets) {
+				outlets.push(<li><Outlet hint={outlet.hint} /></li>);
+			}
+		}
+
 		return(
-			<Draggable>
+			<Draggable
+				onDrag={(e) => this.handleDrag(e)}
+				onStart={(e) => this.handleDragStart(e)}
+				onStop={(e) => this.handleDragStop(e)}
+			>
 				<div style={style.wrapper} >
 					
-						{/*<div style={style.top}>
-							<ul style={style.inlets}>
-								<li><span role="img" aria-label="something">◾︎</span></li>
-								<li><span role="img" aria-label="something">◽︎</span></li>
-								<li><span role="img" aria-label="something">◽︎</span></li>
-								<li><span role="img" aria-label="something">◾︎</span></li>
+						<div style={style.top}>
+							<ul style={style.inletBar}>
+								{inlets}
 							</ul>		
-							<ul style={style.hints}>
-								<li>1</li>
-								<li>2</li>
-								<li>3</li>
-								<li>4</li>
-							</ul>
-						</div>*/}
+						</div>
 
 						<div style={style.buttons}>
 							<a style={style.remove} onClick={() => store.removeNode(this.props.node_id)}>x</a>
@@ -160,20 +201,11 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 				            </div>
 			            </div>
 
-			           	{/*<div style={style.bottom}>
-			           		<ul style={style.hints}>
-								<li>1</li>
-								<li>2</li>
-								<li>3</li>
-								<li>4</li>
-							</ul>
-							<ul style={style.inlets}>
-								<li><span role="img" aria-label="something">◾︎</span></li>
-								<li><span role="img" aria-label="something">◽︎</span></li>
-								<li><span role="img" aria-label="something">◽︎</span></li>
-								<li><span role="img" aria-label="something">◾︎</span></li>
+			           	<div style={style.bottom}>
+							<ul style={style.inletBar}>
+								{outlets}
 							</ul>		
-						</div> */}           
+						</div>          
 			         
 		        </div>
 			</Draggable>

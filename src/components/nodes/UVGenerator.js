@@ -65,7 +65,12 @@ const UVGenerator = observer(class UVGenerator extends React.Component {
 		const node = store.nodes.byId[this.props.node_id];
 
 		return(
-			<NodeContainer title={"UVGenerator"} node_id={this.props.node_id} store={store}>
+			<NodeContainer 
+				title={"UVGenerator"} 
+				node_id={this.props.node_id} 
+				store={store}
+				outlets={[{hint: "tex out"}]}
+			>
 	            <InputGroup name='default'>		              
 	              <InputBool 
 	                val={node.uniforms.bSquare} 

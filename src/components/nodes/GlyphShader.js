@@ -99,7 +99,13 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 		const node = store.nodes.byId[this.props.node_id];
 
 		return(
-			<NodeContainer title={"GlyphShader"} node_id={this.props.node_id} store={store}>	            
+			<NodeContainer 
+				title={"GlyphShader"} 
+				node_id={this.props.node_id} 
+				store={store}
+				inlets={[{hint: "tex in"}]}
+				outlets={[{hint: "tex out"}]}
+			>	            
 	            <InputGroup name='noise'>
 	              <InputFloat 
 	                val={node.uniforms.noiseScale} 
