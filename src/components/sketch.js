@@ -2,6 +2,7 @@ import { autorun } from 'mobx';
 
 let data = {};
 let targets = {};
+let swaps = {};
 let shaders = {};
 
 let store;
@@ -18,6 +19,7 @@ const Sketch = (p) => {
         for(let t_id of store.targets.allIds) {
             let target_node = store.targets.byId[t_id];
             let target = p.createGraphics(p.width,p.height,p.WEBGL);
+            let swap = p.createGraphics(p.width,p.height,p.WEBGL);
             console.log(target_node);
 
             for(let s_id in target_node.shaders) {
@@ -34,15 +36,28 @@ const Sketch = (p) => {
 
                 shader.setUniform('resolution', store.dimensions);
 
+                console.log(shader);
                 shaders = { ...shaders, [s_id]: shader}
             }
 
+            console.log(target);
+
             targets = { ...targets, [t_id]: target };
+            swaps = { ...swaps, [t_id]: swap };
         }  
 
         sketchStarted = true;
 
         autorun(() => {
+            if (p.width !== store.canvasWidth || p.height !== store.canvasHeight) {
+                p.resizeCanvas(store.canvasWidth,store.canvasHeight);
+
+                for(let pass of targets) {
+                    pass.width = store.canvasWidth;
+                    pass.height = store.canvasHeight;
+                }
+            } 
+
             for(let t_id of store.targets.allIds) {
                 let target_node = store.targets.byId[t_id];
                 let target = targets[t_id];
@@ -60,36 +75,7 @@ const Sketch = (p) => {
                     shader.setUniform('resolution', store.dimensions);
                 }
             }            
-        });
-
-        // autorun(() =>  {  
-        //     if (p.width !== store.canvasWidth || p.height !== store.canvasHeight) {
-        //         p.resizeCanvas(store.canvasWidth,store.canvasHeight);
-
-        //         for(let pass of targets) {
-        //             pass.width = store.canvasWidth;
-        //             pass.height = store.canvasHeight;
-        //         }
-        //     }            
-
-        //     for(let i = 0; i < store.nodeCount; i++) {
-        //         let id = store.shaders.allIds[i];
-        //         let node = store.shaders.byId[id];
-
-        //         // if the node is a shader
-        //         if(node.uniforms && shaders[i]) {
-        //             let s = shaders[i];
-
-        //             let uniform_entries = Object.entries(node.uniforms);
-
-        //             for(let i = 0; i < uniform_entries.length; i++) {
-        //                 s.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
-        //             }
-
-        //             s.setUniform('resolution',store.dimensions);
-        //         }
-        //     }
-        // });        
+        });     
     }
 
     p.setup = () => {
@@ -102,6 +88,7 @@ const Sketch = (p) => {
             for(let t_id of store.targets.allIds) {
                 let target_node = store.targets.byId[t_id];
                 let target = targets[t_id];
+                let swap = swaps[t_id];
 
                 for(let s_id in target_node.shaders) {
                     let shader_node = store.shaders.byId[s_id];
@@ -113,13 +100,23 @@ const Sketch = (p) => {
                         shader.setUniform(u_id, uniform);
                     }
 
-                    shader.setUniform('resolution', store.dimensions);
+                    shader.setUniform('tex0', target);
+                    shader.setUniform('resolution', store.dimensions);                    
 
-                    target.shader(shader);
+                    // console.log('s_id',s_id);
+                    // console.log('other',target_node.shaders[target_node.shaders.length-1]);
+
+                    target.shader(shader);             
 
                     target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
-                }
 
+                    // if (s_id !== target_node.shaders[target_node.shaders.length-1]) {
+                    //     // ping pong
+                    //     let t_target = target;
+                    //     target = swap;
+                    //     swap = t_target; 
+                    // }      
+                }
             }  
             
             p.image(targets[0],0,0,p.width,p.height);

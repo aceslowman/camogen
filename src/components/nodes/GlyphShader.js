@@ -72,20 +72,23 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 	    vec2 grid;
 	    vec2 m_grid;
 
-	    if(level == 0) {
-	        // create base uv layer for first level
-	        m_grid = modCoordinates(uv,dimensions);
-	        grid = gridCoordinates(m_grid,dimensions);
-	    } else {
+	    // if(level == 0) {
+	    //     // create base uv layer for first level
+	    //     m_grid = modCoordinates(uv,dimensions);
+	    //     grid = gridCoordinates(m_grid,dimensions);
+	    // } else {
 	        m_grid = modCoordinates(src.rg,dimensions);
 	        grid = gridCoordinates(src.rg,dimensions);
-	    }
+	    // }
 
 	    float seed = src.b;
+	    // float seed = 12.0;
 
 	    float n = snoise(vec3(grid,seed));    
 
 	    color = vec3(n);
+	    // color =	vec3(1.0,src.r,src.g);
+	    // color = vec3(src.rgb/0.2);
 	    // color = vec3(uv.x,uv.y/,1.0);
 
 	    gl_FragColor = vec4(color,1.0);

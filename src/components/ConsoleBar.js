@@ -67,6 +67,8 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 				this.store.consoleText = this.store.suggestText;
 				e.preventDefault();
 				break;
+			default:
+				break;
 		}
 	}
 
