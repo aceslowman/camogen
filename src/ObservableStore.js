@@ -4,23 +4,24 @@ import uuidv1 from 'uuid/v1';
 import * as NODES from './components/nodes';
 
 class ObservableStore {
-  nodes = {
+  data = {
+    byId: {},
+    allIds: [],
+  };
+
+  shaders = {
     byId: {
       0: {
-        type: 'RenderTarget',
-        next: 1,        
-      },
-      1: {
-        type: 'UVGenerator',
-        next: 2,
+        type: NODES.modules.UVGenerator,
+        next: 1,
         target_id: 0,
         uniforms: {
           bSquare: false,
         },
       },
-      2: {
-        type: 'GlyphShader',
-        next: 3,
+      1: {
+        type: NODES.modules.GlyphShader,
+        next: 2,
         target_id: 0,
         uniforms: {
           seed: Math.floor(Math.random() * 1000),
@@ -29,8 +30,8 @@ class ObservableStore {
           dimensions: [20,20]
         },       
       },
-      3: {
-        type: 'GlyphShader',
+      2: {
+        type: NODES.modules.GlyphShader,
         next: null,
         target_id: 0,
         uniforms: {
@@ -41,10 +42,16 @@ class ObservableStore {
         },       
       },
     },
-    allIds: [0,1,2,3],
-    shaderIds: [1,2,3],
-    targetIds: [0],
-    dataIds: []
+    allIds: [0,1,2],
+  };
+
+  targets = {
+    byId: {
+      0: {
+        shaders: [0,1,2],
+      },
+    },
+    allIds: [0]
   };
 
   canvasWidth  = 200;
@@ -105,19 +112,19 @@ class ObservableStore {
   }
 
   removeNode(id) {
-    delete this.nodes.byId[id];
+    delete this.shaders.byId[id];
 
-    let index = this.nodes.allIds.indexOf(id);
-    if(index > -1) this.nodes.allIds.splice(index, 1);
+    let index = this.shaders.allIds.indexOf(id);
+    if(index > -1) this.shaders.allIds.splice(index, 1);
 
     console.log("removed node");
   }
 
   clearAllNodes() {
-    this.nodes.byId = {};
-    this.nodes.allIds = [];
+    this.shaders.byId = {};
+    this.shaders.allIds = [];
 
-    console.log("removed all nodes");    
+    console.log("removed all shaders");    
   }
 
   resize() {
@@ -171,7 +178,7 @@ class ObservableStore {
   }
 
   get nodeCount() {
-    return this.nodes.allIds.length;
+    return this.shaders.allIds.length;
   }
 }
 

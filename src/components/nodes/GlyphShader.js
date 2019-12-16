@@ -2,6 +2,8 @@ import React from 'react';
 
 import { observer } from 'mobx-react';
 
+import MainContext from '../../MainContext';
+
 import InputGroup from '../InputGroup';
 import InputFloat from '../InputFloat';
 
@@ -12,6 +14,8 @@ import NodeContainer from './NodeContainer';
 const style = {};
 
 const GlyphShader = observer(class GlyphShader extends React.Component {
+
+	static contextType = MainContext;
 
 	static precision = () => `
 	#ifdef GL_ES
@@ -95,14 +99,13 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 	}
 
 	render() {
-		const store = this.props.store;
-		const node = store.nodes.byId[this.props.node_id];
+		const store = this.context.store;
+		const node = this.props.node;
 
 		return(
 			<NodeContainer 
 				title={"GlyphShader"} 
 				node_id={this.props.node_id} 
-				store={store}
 				inlets={[{hint: "tex in"}]}
 				outlets={[{hint: "tex out"}]}
 			>	            

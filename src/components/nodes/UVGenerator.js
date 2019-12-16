@@ -3,6 +3,8 @@ import NodeContainer from './NodeContainer';
 
 import { observer } from 'mobx-react';
 
+import MainContext from '../../MainContext';
+
 import InputGroup from '../InputGroup';
 import InputFloat from '../InputFloat';
 import InputBool from '../InputBool';
@@ -10,6 +12,8 @@ import InputBool from '../InputBool';
 const style = {};
 
 const UVGenerator = observer(class UVGenerator extends React.Component {
+
+	static contextType = MainContext;
 
 	static precision = () => `
 	#ifdef GL_ES
@@ -61,14 +65,13 @@ const UVGenerator = observer(class UVGenerator extends React.Component {
 	}
 
 	render() {
-		const store = this.props.store;
-		const node = store.nodes.byId[this.props.node_id];
+		const store = this.context.store;
+		const node = this.props.node;
 
 		return(
 			<NodeContainer 
 				title={"UVGenerator"} 
 				node_id={this.props.node_id} 
-				store={store}
 				outlets={[{hint: "tex out"}]}
 			>
 	            <InputGroup name='default'>		              

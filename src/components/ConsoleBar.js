@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
+import MainContext from '../MainContext';
+
 const style = {
 	wrapper: {
 		position: 'absolute',
@@ -15,9 +17,6 @@ const style = {
 	version: {
 		backgroundColor: 'black',
 		padding: '5px',
-		// height : '100%',
-		// display: 'flex',
-		// alignItems: 'center',
 	},
 
 	console: {
@@ -32,7 +31,6 @@ const style = {
 		boxSizing: 'border-box',
 		height: '100%',
 		fontSize: '1.5em',
-		// border: '1px solid black',
 		border: 'none',		
 		backgroundColor: 'none',
 	},
@@ -40,7 +38,6 @@ const style = {
 	a: {
 		textDecoration: 'none',
 		color: 'white',
-
 	},
 
 	suggest: {
@@ -53,6 +50,8 @@ const style = {
 }
 
 const ConsoleBar = observer(class ConsoleBar extends React.Component {
+
+	static contextType = MainContext;
 
 	componentDidMount() {
 		this.ref.addEventListener('keydown', (e) => this.handleKeypress(e));
@@ -81,7 +80,7 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 	}
 		
 	render() {
-		this.store = this.props.store;
+		this.store = this.context.store;
 
 		return (
           <div style={style.wrapper}>

@@ -3,28 +3,29 @@ import NodeContainer from './NodeContainer';
 
 import { observer } from 'mobx-react';
 
-import InputGroup from '../InputGroup';
-import InputFloat from '../InputFloat';
-import InputBool from '../InputBool';
+import MainContext from '../MainContext';
 
-const style = {};
+const style = {
+	wrapper: {
+		padding: '0px',
+		border: '1px dashed black',
+	},
+};
 
 const RenderTarget = observer(class RenderTarget extends React.Component {
+
+	static contextType = MainContext;
 
 	static assemble = (pg) => {		
 		return {};
 	}
 
 	render() {
-		const store = this.props.store;
-		const node = store.nodes.byId[this.props.node_id];
-
 		return(
-			<NodeContainer title={"RenderTarget"} node_id={this.props.node_id} store={store}>
-	            <InputGroup name='default'>		              
-	              
-	            </InputGroup>
-	        </NodeContainer>
+			<fieldset style={style.wrapper}>
+				<legend>target</legend>
+				{this.props.children}
+			</fieldset>
 	    )
 	}
 });

@@ -1,20 +1,5 @@
 import { autorun } from 'mobx';
 
-// load all shaders from folder
-import * as NODES from './nodes';
-
-// https: //stackoverflow.com/questions/16106701/how-to-generate-a-random-string-of-letters-and-numbers-in-javascript
-function stringGen(len) {
-    var text = "";
-
-    var charset = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (var i = 0; i < len; i++)
-        text += charset.charAt(Math.floor(Math.random() * charset.length));
-
-    return text;
-}
-
 let data = {};
 let targets = {};
 let shaders = {};
@@ -30,118 +15,81 @@ const Sketch = (p) => {
         p.smooth();
         p.background(128);   
 
-        // initialize data nodes
-        for(let d_id of store.nodes.dataIds) {
-            console.log("data",store.getNodeById(d_id).type);
-        }
-
-        // initialize targets nodes
-        for(let t_id of store.nodes.targetIds) {
-            console.log("targets",store.getNodeById(t_id).type);
-
+        for(let t_id of store.targets.allIds) {
+            let target_node = store.targets.byId[t_id];
             let target = p.createGraphics(p.width,p.height,p.WEBGL);
+            console.log(target_node);
 
-            target.noStroke();
+            for(let s_id in target_node.shaders) {
+                let shader_node = store.shaders.byId[s_id];
+                let shader = shader_node.type.assemble(target);
+                console.log(shader_node);
 
-            targets = {
-                ...targets,
-                [t_id]: target
-            }
-        }
+                for(let u_id in shader_node.uniforms) {
+                    let uniform = shader_node.uniforms[u_id];
+                    console.log(u_id, uniform);
 
-        // initialize shaders nodes
-        for(let s_id of store.nodes.shaderIds) {
-            console.log("shaders",store.getNodeById(s_id).type);
+                    shader.setUniform(u_id, uniform);
+                }
 
-            let node = store.getNodeById(s_id);
-            
-            let target = targets[node.target_id];
-            let shader = NODES.modules[node.type].assemble(target);
+                shader.setUniform('resolution', store.dimensions);
 
-            // shader.setUniform('tex0',t);
-
-            let uniform_entries = Object.entries(node.uniforms);
-
-            for(let uniform of uniform_entries) {
-                shader.setUniform(uniform[0],uniform[1]);
+                shaders = { ...shaders, [s_id]: shader}
             }
 
-            shader.setUniform('resolution',store.dimensions);
-
-            shaders = {
-                ...shaders,
-                [s_id]: shader
-            };
-        }    
-
-        /*
-            Currently, the order of the shaders should be dictated 
-            by the order of nodes.allIds
-
-            now moving to target driven approach
-        */
-        // for(let i = 0; i < store.nodeCount; i++) {
-        //     let id = store.nodes.allIds[i];
-        //     let node = store.nodes.byId[id];
-
-        //     let t, shader; 
-
-        //     // set up render target for shader
-        //     let pg = p.createGraphics(p.width,p.height,p.WEBGL);       
-            
-        //     shader = NODES.modules[node.type].assemble(pg);
-
-        //     if(node.type !== 'RenderTarget') {
-        //         // set empty texture for first pass
-        //         t = i === 0 ? img : targets[i-1];
-
-        //         shader.setUniform('tex0',t);
-
-        //         let uniform_entries = Object.entries(node.uniforms);
-
-        //         for(let i = 0; i < uniform_entries.length; i++) {
-        //             shader.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
-        //         }
-
-        //         shader.setUniform('resolution',store.dimensions);
-                
-        //         pg.noStroke();
-
-        //         shaders.push(shader);
-        //         targets.push(pg);
-        //     }
-        // }
+            targets = { ...targets, [t_id]: target };
+        }  
 
         sketchStarted = true;
 
-        autorun(() =>  {  
-            if (p.width !== store.canvasWidth || p.height !== store.canvasHeight) {
-                p.resizeCanvas(store.canvasWidth,store.canvasHeight);
+        autorun(() => {
+            for(let t_id of store.targets.allIds) {
+                let target_node = store.targets.byId[t_id];
+                let target = targets[t_id];
 
-                for(let pass of targets) {
-                    pass.width = store.canvasWidth;
-                    pass.height = store.canvasHeight;
-                }
-            }            
+                for(let s_id in target_node.shaders) {
+                    let shader_node = store.shaders.byId[s_id];
+                    let shader = shaders[s_id];
 
-            for(let i = 0; i < store.nodeCount; i++) {
-                let id = store.nodes.allIds[i];
-                let node = store.nodes.byId[id];
+                    for(let u_id in shader_node.uniforms) {
+                        let uniform = shader_node.uniforms[u_id];
 
-                // if the node is a shader
-                if(node.uniforms && shaders[i]) {
-                    let s = shaders[i];
-
-                    let uniform_entries = Object.entries(node.uniforms);
-
-                    for(let i = 0; i < uniform_entries.length; i++) {
-                        s.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
+                        shader.setUniform(u_id, uniform);
                     }
 
-                    s.setUniform('resolution',store.dimensions);
+                    shader.setUniform('resolution', store.dimensions);
                 }
-            }
-        });        
+            }            
+        });
+
+        // autorun(() =>  {  
+        //     if (p.width !== store.canvasWidth || p.height !== store.canvasHeight) {
+        //         p.resizeCanvas(store.canvasWidth,store.canvasHeight);
+
+        //         for(let pass of targets) {
+        //             pass.width = store.canvasWidth;
+        //             pass.height = store.canvasHeight;
+        //         }
+        //     }            
+
+        //     for(let i = 0; i < store.nodeCount; i++) {
+        //         let id = store.shaders.allIds[i];
+        //         let node = store.shaders.byId[id];
+
+        //         // if the node is a shader
+        //         if(node.uniforms && shaders[i]) {
+        //             let s = shaders[i];
+
+        //             let uniform_entries = Object.entries(node.uniforms);
+
+        //             for(let i = 0; i < uniform_entries.length; i++) {
+        //                 s.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
+        //             }
+
+        //             s.setUniform('resolution',store.dimensions);
+        //         }
+        //     }
+        // });        
     }
 
     p.setup = () => {
@@ -151,58 +99,31 @@ const Sketch = (p) => {
     p.draw = () =>  {
         if(sketchStarted && store.nodeCount) {
 
-            for(let data_id of store.nodes.dataIds) {
-                console.log("data",store.getNodeById(data_id).type);
-            }
+            for(let t_id of store.targets.allIds) {
+                let target_node = store.targets.byId[t_id];
+                let target = targets[t_id];
 
-            for(let target_id of store.nodes.targetIds) {
-                console.log("targets",store.getNodeById(target_id).type);
-            }
+                for(let s_id in target_node.shaders) {
+                    let shader_node = store.shaders.byId[s_id];
+                    let shader = shaders[s_id];
 
-            for(let shader_id of store.nodes.shaderIds) {
-                console.log("shaders",store.getNodeById(shader_id).type);
-            }
+                    for(let u_id in shader_node.uniforms) {
+                        let uniform = shader_node.uniforms[u_id];
+
+                        shader.setUniform(u_id, uniform);
+                    }
+
+                    shader.setUniform('resolution', store.dimensions);
+
+                    target.shader(shader);
+
+                    target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
+                }
+
+            }  
             
+            p.image(targets[0],0,0,p.width,p.height);
         }
-
-        // if(sketchStarted && store.nodeCount) {
-        //     for(let i = 0; i < shaders.length; i++) {
-        //         let s = shaders[i];
-        //         let pg = targets[i];
-        //         let t;
-
-        //         if (i === 0) {
-        //             t = img;
-        //         } else {
-        //             t = targets[i-1];
-        //         }
-
-        //         // uniforms have to be set below or else they will not be registered
-        //         s.setUniform('tex0', t);
-                
-        //         let id = store.nodes.allIds[i];
-        //         let node = store.nodes.byId[id];
-
-        //         if(node.uniforms){
-        //             let uniform_entries = Object.entries(node.uniforms);
-
-        //             for(let i = 0; i < uniform_entries.length; i++) {
-        //                 s.setUniform(uniform_entries[i][0],uniform_entries[i][1]);
-        //             }
-
-        //             // universal uniforms
-        //             s.setUniform('resolution',[p.width,p.height]);
-
-        //             pg.shader(s);
-
-        //             pg.quad(-1, -1, 1, -1, 1, 1, -1, 1);
-        //         }    
-        //     }
-
-        //     p.image(targets[targets.length-1],0,0,p.width,p.height);
-        // }
-
-        p.noLoop();
     }
 
     p.myCustomRedrawAccordingToNewPropsHandler = function (props) {

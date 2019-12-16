@@ -3,12 +3,14 @@ import Draggable from 'react-draggable';
 
 import { observer } from 'mobx-react';
 
+import MainContext from '../../MainContext';
+
 import Inlet from './Inlet';
 import Outlet from './Outlet';
 
 const style = {
 	wrapper: {
-		marginBottom:'15px', 
+		margin:'15px', 
 		backgroundColor: 'white',
 		width: '230px',
 		border: '1px solid black',
@@ -103,6 +105,8 @@ const style = {
 
 const NodeContainer = observer(class NodeContainer extends React.Component {
 
+	static contextType = MainContext;
+
 	constructor() {
 		super();
 
@@ -132,20 +136,20 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 	}
 
 	handleDragStart(e) {
-		console.log('handleStart', e);
+		// console.log('handleStart', e);
 		this.setState({ dragging: true });
 
 		this.handleClick();
 	}
 
 	handleDragStop(e) {
-		console.log('handleStop', e);
+		// console.log('handleStop', e);
 		this.setState({ dragging: false });
 	}
 
 	render() {
-		const store = this.props.store;
-		const node = store.nodes.byId[this.props.node_id];
+		const store = this.context.store;
+		const node = store.shaders.byId[this.props.node_id];
 
 		style.params = {
 			...style.params,
@@ -163,13 +167,13 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 
 		if(this.props.inlets) {
 			for(let inlet of this.props.inlets) {
-				inlets.push(<li><Inlet hint={inlet.hint} /></li>);
+				// inlets.push(<li><Inlet hint={inlet.hint} /></li>);
 			}
 		}
 
 		if(this.props.outlets) {
 			for(let outlet of this.props.outlets) {
-				outlets.push(<li><Outlet hint={outlet.hint} /></li>);
+				// outlets.push(<li><Outlet hint={outlet.hint} /></li>);
 			}
 		}
 

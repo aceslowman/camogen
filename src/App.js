@@ -9,13 +9,9 @@ import ConsoleBar from './components/ConsoleBar';
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from './components/sketch';
 
-import InputGroup from './components/InputGroup';
-
-// import shaders for gui elements
-import DebugShader from './components/nodes/DebugShader'; 
-import GlyphShader from './components/nodes/GlyphShader'; 
-import UVGenerator from './components/nodes/UVGenerator';
 import RenderTarget from './components/nodes/RenderTarget';
+
+import { MainProvider } from './MainContext';
 
 const style = {
   wrapper: {
@@ -46,7 +42,6 @@ const style = {
     height: "100%",
     padding: "15px",
     display: "flex",
-    flexFlow: "wrap",
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
@@ -73,31 +68,14 @@ const style = {
 
 const App = observer(class App extends React.Component {
 
-  generateLayers(store){
+  generateLayers(){
     this.nodes = [];
-    this.store = store;
 
-    for(let i = 0; i < store.nodes.allIds.length; i++) {
-      let id = this.store.nodes.allIds[i];
-      let node = this.store.nodes.byId[id];
+    for(let i = 0; i < this.store.shaders.allIds.length; i++) {
+      let id = this.store.shaders.allIds[i];
+      let node = this.store.shaders.byId[id];
 
-      // TODO there needs to be a better way to do this
-      switch(node.type) {
-        case 'GlyphShader':
-          this.nodes.push(<GlyphShader key={id} store={store} node_id={id}/>);        
-          break;
-        case 'DebugShader':
-          this.nodes.push(<DebugShader key={id} store={store} node_id={id}/>);
-          break;
-        case 'UVGenerator':
-          this.nodes.push(<UVGenerator key={id} store={store} node_id={id}/>);
-          break; 
-        case 'RenderTarget':
-          this.nodes.push(<RenderTarget key={id} store={store} node_id={id}/>);
-          break; 
-        default:
-          break;
-      }
+      this.nodes.push(React.createElement(node.type, { key:id, node:node }));
     }
   }
 
@@ -107,8 +85,6 @@ const App = observer(class App extends React.Component {
   }
 
   componentDidMount() {
-    const store = this.props.store;
-
     this.store.canvasWidth = this.canvas.wrapper.clientWidth;
     this.store.canvasHeight = this.canvas.wrapper.clientHeight;
 
@@ -119,23 +95,33 @@ const App = observer(class App extends React.Component {
 
   render() {
     this.store = this.props.store;
-    this.generateLayers(this.store);
+    this.generateLayers();    
 
-    return (
-      <div id="mainWrapper" style={style.wrapper}>
-        <div style={style.gui_panel}>           
-          <HelpText store={this.store} />  
-          <div style={style.gui_panel_inner}>
-            {this.nodes}
-          </div>  
-          <ConsoleBar store={this.store} />
+    let ctx = {
+      primary: 'blue',
+      secondary: 'orange',
+      store: this.store,
+    }
+
+    return (    
+      <MainProvider value={ctx}>
+        <div id="mainWrapper" style={style.wrapper}>
+          <div style={style.gui_panel}>           
+            <HelpText />  
+            <div style={style.gui_panel_inner}>
+              <RenderTarget target_id={0}>
+                {this.nodes}
+              </RenderTarget>
+            </div>  
+            <ConsoleBar />
+          </div>
+          <P5Wrapper     
+            store={this.store}
+            ref={(r) => {this.canvas = r}}
+            sketch={sketch}      
+          />
         </div>
-        <P5Wrapper     
-          store={this.store}
-          ref={(r) => {this.canvas = r}}
-          sketch={sketch}      
-        />
-      </div>
+      </MainProvider>
     );
   }
 });

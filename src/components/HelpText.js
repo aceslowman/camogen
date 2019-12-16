@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
+import MainContext from '../MainContext';
+
 const style = {
 	wrapper: {
 		marginTop: '15px',
@@ -17,9 +19,10 @@ const style = {
 }
 
 const HelpText = observer(class HelpText extends React.Component {
-		
+	static contextType = MainContext;
+
 	render() {
-		const store = this.props.store;
+		const store = this.context.store;
 
 		return (
 			<div style={style.wrapper}>
