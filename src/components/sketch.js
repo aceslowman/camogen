@@ -20,27 +20,27 @@ const Sketch = (p) => {
             let target_node = store.targets.byId[t_id];
             let target = p.createGraphics(p.width,p.height,p.WEBGL);
             let swap = p.createGraphics(p.width,p.height,p.WEBGL);
-            console.log(target_node);
+            // console.log(target_node);
 
             for(let s_id in target_node.shaders) {
                 let shader_node = store.shaders.byId[s_id];
                 let shader = shader_node.type.assemble(target);
-                console.log(shader_node);
+                // console.log(shader_node);
 
                 for(let u_id in shader_node.uniforms) {
                     let uniform = shader_node.uniforms[u_id];
-                    console.log(u_id, uniform);
+                    // console.log(u_id, uniform);
 
                     shader.setUniform(u_id, uniform);
                 }
 
                 shader.setUniform('resolution', store.dimensions);
 
-                console.log(shader);
+                // console.log(shader);
                 shaders = { ...shaders, [s_id]: shader}
             }
 
-            console.log(target);
+            // console.log(target);
 
             targets = { ...targets, [t_id]: target };
             swaps = { ...swaps, [t_id]: swap };
@@ -103,9 +103,6 @@ const Sketch = (p) => {
                     shader.setUniform('tex0', target);
                     shader.setUniform('resolution', store.dimensions);                    
 
-                    // console.log('s_id',s_id);
-                    // console.log('other',target_node.shaders[target_node.shaders.length-1]);
-
                     target.shader(shader);             
 
                     target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
@@ -127,6 +124,7 @@ const Sketch = (p) => {
         store = props.store;
 
         if (store.sketchReady && !sketchStarted) {
+            console.log('regenerating');
             start();
         }
     };

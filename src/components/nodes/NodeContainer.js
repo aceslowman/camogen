@@ -11,9 +11,9 @@ import Outlet from './Outlet';
 const style = {
 	wrapper: {
 		margin:'15px', 
-		backgroundColor: 'white',
+		backgroundColor: 'black',
+		border: '1px solid white',
 		width: '230px',
-		border: '1px solid black',
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
@@ -22,7 +22,7 @@ const style = {
 	},
 
 	buttons: {
-		padding: '5px',
+		// padding: '5px',
 		// backgroundColor: 'red',
 		display: 'flex',
 		flexDirection: 'column',
@@ -33,9 +33,15 @@ const style = {
 		// fontWeight: 'bold'
 	},
 
+	button: {
+		padding: '2.5px 5px',
+		boxSizing: 'border-box',
+		cursor: 'pointer',
+	},
+
 	main: {
 		flexGrow: '1',
-		// backgroundColor: 'blue',
+		backgroundColor: 'white',
 		padding: '5px',
 		display: 'flex',
 		flexDirection: 'column',
@@ -100,6 +106,8 @@ const style = {
 	params: {
 		overflow: 'hidden',
 		padding: '5px', 
+		backgroundColor: 'white',
+		// pointerEvents: 'none',
 	},
 };
 
@@ -149,7 +157,7 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 
 	render() {
 		const store = this.context.store;
-		const node = store.shaders.byId[this.props.node_id];
+		const node = this.props.node;
 
 		style.params = {
 			...style.params,
@@ -157,8 +165,8 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 			height: this.state.expanded ? 'auto' : '0%',
 		}
 
-		style.main = {
-			...style.main,
+		style.wrapper = {
+			...style.wrapper,
 			boxShadow: this.state.dragging ? '5px 5px' : this.state.active ? '3px 3px' : '0px 0px',
 		};
 
@@ -177,42 +185,40 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 			}
 		}
 
+		// <Draggable
+		// 		onDrag={(e) => this.handleDrag(e)}
+		// 		onStart={(e) => this.handleDragStart(e)}
+		// 		onStop={(e) => this.handleDragStop(e)}
+		// 	>
+
 		return(
-			<Draggable
-				onDrag={(e) => this.handleDrag(e)}
-				onStart={(e) => this.handleDragStart(e)}
-				onStop={(e) => this.handleDragStop(e)}
-			>
-				<div style={style.wrapper} >
-					
-						<div style={style.top}>
-							<ul style={style.inletBar}>
-								{inlets}
-							</ul>		
-						</div>
+			<div style={style.wrapper} >
+				<div style={style.top}>
+					<ul style={style.inletBar}>
+						{inlets}
+					</ul>		
+				</div>
 
-						<div style={style.buttons}>
-							<a style={style.remove} onClick={() => store.removeNode(this.props.node_id)}>x</a>
-			          		<a style={style.expand} onClick={() => this.handleExpand()}>{this.state.expanded ? 'v' : '>'}</a>
-			          		<a style={style.expand} onClick={() => this.handleExpand()}>≡</a>
-			          	</div>
+				<div className='nodeButtons' style={style.buttons}>
+					<a style={style.button} onClick={() => store.removeNode(node.id)}>x</a>
+	          		<a style={style.button} onClick={() => this.handleExpand()}>{this.state.expanded ? 'v' : '>'}</a>
+	          		<a style={style.button} onClick={() => this.handleExpand()}>≡</a>
+	          	</div>
 
-			          	<div style={style.main}>
-				            <legend style={style.legend}>{this.props.title}</legend>				           
+	          	<div style={style.main} onClick={() => this.handleClick()}>
+		            <legend style={style.legend}>{this.props.title}</legend>				           
 
-				            <div style={style.params}>
-				            	{this.props.children}	
-				            </div>
-			            </div>
+		            <div className='params' style={style.params}>
+		            	{this.props.children}	
+		            </div>
+	            </div>
 
-			           	<div style={style.bottom}>
-							<ul style={style.inletBar}>
-								{outlets}
-							</ul>		
-						</div>          
-			         
-		        </div>
-			</Draggable>
+	           	<div style={style.bottom}>
+					<ul style={style.inletBar}>
+						{outlets}
+					</ul>		
+				</div>                  
+	        </div>
 	    )
 	}
 });

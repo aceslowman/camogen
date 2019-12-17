@@ -66,23 +66,13 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 	    vec3 color = vec3(0.0);
 	    vec4 src = texture2D(tex0, vTexCoord);
 
-	    float aspect = resolution.y/resolution.x;
-	    vec2 uv = vTexCoord * vec2(1.0,aspect);
-
 	    vec2 grid;
 	    vec2 m_grid;
-
-	    // if(level == 0) {
-	    //     // create base uv layer for first level
-	    //     m_grid = modCoordinates(uv,dimensions);
-	    //     grid = gridCoordinates(m_grid,dimensions);
-	    // } else {
-	        m_grid = modCoordinates(src.rg,dimensions);
-	        grid = gridCoordinates(src.rg,dimensions);
-	    // }
+	    
+	    m_grid = modCoordinates(src.rg,dimensions);
+	    grid = gridCoordinates(m_grid,dimensions);
 
 	    float seed = src.b;
-	    // float seed = 12.0;
 
 	    float n = snoise(vec3(grid,seed));    
 
@@ -108,7 +98,7 @@ const GlyphShader = observer(class GlyphShader extends React.Component {
 		return(
 			<NodeContainer 
 				title={"GlyphShader"} 
-				node_id={this.props.node_id} 
+				node={this.props.node} 
 				inlets={[{hint: "tex in"}]}
 				outlets={[{hint: "tex out"}]}
 			>	            

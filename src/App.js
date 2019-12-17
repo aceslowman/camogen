@@ -15,16 +15,8 @@ import { MainProvider } from './MainContext';
 
 const style = {
   wrapper: {
-    display: "flex",
-    flexDirection: "row",
-    /* justifyContent: "space-between", */
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "stretch",
     height: "100%",
     boxSizing: "border-box",
-    /* overflow: "hidden", */
-    backgroundColor: "black",
   },
 
   panel: {
@@ -36,32 +28,22 @@ const style = {
   },
 
   gui_panel: {
-    backgroundColor: "white",
-    textAlign: "center",
-    width: "50%",
-    height: "100%",
-    padding: "15px",
+    backgroundColor: "transparent",
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
-    flexFlow: "column",
-    /* alignContent: flex-start; */
-    /*border: 6px dashed black;*/    
+    flexFlow: "column",    
   },
 
   gui_panel_inner: {
     display: "flex",
     flexDirection: "column",
-    // flexFlow: "wrap",
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box",
     width: "100%",
     height: "100%",
     overflowY: "hidden",
-    /* background-color: red; */
-    /* align-content: center; */
   }
 
 }
@@ -69,6 +51,7 @@ const style = {
 const App = observer(class App extends React.Component {
 
   generateLayers(){
+    console.log('generate layers');
     this.nodes = [];
 
     for(let i = 0; i < this.store.shaders.allIds.length; i++) {
@@ -98,14 +81,19 @@ const App = observer(class App extends React.Component {
     this.generateLayers();    
 
     let ctx = {
-      primary: 'blue',
-      secondary: 'orange',
+      primary: 'white',
+      secondary: 'black',
       store: this.store,
     }
 
     return (    
       <MainProvider value={ctx}>
         <div id="mainWrapper" style={style.wrapper}>
+          <P5Wrapper     
+            store={this.store}
+            ref={(r) => {this.canvas = r}}
+            sketch={sketch}      
+          />
           <div style={style.gui_panel}>           
             <HelpText />  
             <div style={style.gui_panel_inner}>
@@ -115,11 +103,6 @@ const App = observer(class App extends React.Component {
             </div>  
             <ConsoleBar />
           </div>
-          <P5Wrapper     
-            store={this.store}
-            ref={(r) => {this.canvas = r}}
-            sketch={sketch}      
-          />
         </div>
       </MainProvider>
     );

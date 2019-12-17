@@ -9,19 +9,23 @@ const style = {
 		bottom:'0px',
 		left:'0px',
 		display:'flex',
-		alignItems:'flex-end',
-		width: '50%',
-		height : '35px',
+		// alignItems:'flex-end',
+		borderTop: '1px solid black',
+		width: '100%',
+		height: '35px',
 	},
 
 	version: {
 		backgroundColor: 'black',
 		padding: '5px',
+		// height : '100%'
 	},
 
 	console: {
 		width: '100%',
 		height: '100%',
+		zIndex: '0',
+		backgroundColor: 'white',
 	},
 
 	input: {
@@ -31,8 +35,9 @@ const style = {
 		boxSizing: 'border-box',
 		height: '100%',
 		fontSize: '1.5em',
-		border: 'none',		
-		backgroundColor: 'none',
+		border: 'none',	
+		zIndex: '1',
+		backgroundColor: 'transparent',
 	},
 
 	a: {
@@ -43,9 +48,10 @@ const style = {
 	suggest: {
 		color: 'gray',
 		position: 'relative',
-		bottom: '3.1em',
+		bottom: '35px',
 		pointerEvents: 'none',
-		backgroundColor: 'transparent'
+		zIndex: '-2',
+		backgroundColor: 'transparent',
 	}
 }
 
@@ -94,7 +100,7 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
             		ref={(ref) => this.ref = ref}
             		style={{...style.input, ...this.store.consoleStyle}}
             		type="text"
-            		placeholder={this.store.consoleText}
+            		placeholder={this.store.suggestText}
             		value={this.store.consoleText}
             		onChange={(e) => this.handleChange(e)}
             	/>

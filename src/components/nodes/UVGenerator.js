@@ -71,7 +71,7 @@ const UVGenerator = observer(class UVGenerator extends React.Component {
 		return(
 			<NodeContainer 
 				title={"UVGenerator"} 
-				node_id={this.props.node_id} 
+				node={node} 
 				outlets={[{hint: "tex out"}]}
 			>
 	            <InputGroup name='default'>		              

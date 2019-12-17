@@ -12,6 +12,7 @@ class ObservableStore {
   shaders = {
     byId: {
       0: {
+        id: 0,
         type: NODES.modules.UVGenerator,
         next: 1,
         target_id: 0,
@@ -20,6 +21,7 @@ class ObservableStore {
         },
       },
       1: {
+        id: 1,
         type: NODES.modules.GlyphShader,
         next: 2,
         target_id: 0,
@@ -31,6 +33,7 @@ class ObservableStore {
         },       
       },
       2: {
+        id: 2,
         type: NODES.modules.GlyphShader,
         next: null,
         target_id: 0,
@@ -112,12 +115,21 @@ class ObservableStore {
   }
 
   removeNode(id) {
+    let shader = this.shaders.byId[id];
+    let target = this.targets.byId[shader.target_id];
+
+    // remove shader node from id list
+    let s_index = this.shaders.allIds.indexOf(id);
+    if(s_index > -1) this.shaders.allIds.splice(s_index, 1);
+
+    // remove shader node from target shader list
+    let t_index = target.shaders.indexOf(id);
+    if(t_index > -1) target.shaders.splice(t_index, 1);
+
     delete this.shaders.byId[id];
 
-    let index = this.shaders.allIds.indexOf(id);
-    if(index > -1) this.shaders.allIds.splice(index, 1);
-
-    console.log("removed node");
+    console.log("removed node", this.shaders.byId);
+    console.log(target.shaders);
   }
 
   clearAllNodes() {
@@ -183,7 +195,9 @@ class ObservableStore {
 }
 
 decorate(ObservableStore, {
-  nodes: observable,
+  shaders: observable,
+  data: observable,
+  targets: observable,
   canvasWidth: observable,
   canvasHeight: observable,
   generateFlag: observable,
