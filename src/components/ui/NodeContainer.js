@@ -17,7 +17,7 @@ const style = {
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
-		alignItems: 'stretch',
+		// alignItems: 'stretch',
 		zIndex: '100',
 	},
 
@@ -42,16 +42,18 @@ const style = {
 	main: {
 		flexGrow: '1',
 		backgroundColor: 'white',
-		padding: '5px',
 		display: 'flex',
 		flexDirection: 'column',
-		justifyContent: 'center',
+		alignItems: 'flex-start',
+		justifyContent: 'space-between',
 	},
 
 	legend: {		
 		fontWeight: 'bold',
 		// backgroundColor: 'orange',
-		fontSize: '1.6em'
+		fontSize: '1.6em',
+		margin: '5px 5px',
+		cursor: 'pointer'
 	},
 
 	inlets: {
@@ -91,21 +93,43 @@ const style = {
 		padding: '0px 2px',
 	},
 
+	// top: {
+	// 	position: 'absolute',
+	// 	top: '-15px',
+	// 	left: '18px',
+	// },
+
+	// bottom: {
+	// 	position: 'absolute',
+	// 	bottom: '-15px',
+	// 	left: '18px',
+	// },
+
 	top: {
-		position: 'absolute',
-		top: '-15px',
-		left: '18px',
+		backgroundColor: 'black',
+		// fontSize: '0.8em',
+		width: '100%',
+		height : '3px',
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		overflow: 'hidden',
 	},
 
 	bottom: {
-		position: 'absolute',
-		bottom: '-15px',
-		left: '18px',
+		backgroundColor: 'black',
+		// fontSize: '0.8em',
+		width: '100%',
+		height : '3px',
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		overflow: 'hidden',
 	},
 
 	params: {
 		overflow: 'hidden',
-		padding: '5px', 
+		padding: '10px', 
 		backgroundColor: 'white',
 		// pointerEvents: 'none',
 	},
@@ -165,6 +189,16 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 			height: this.state.expanded ? 'auto' : '0%',
 		}
 
+		style.top = {
+			...style.top,
+			height: this.state.expanded ? '15px' : '3px',
+		};
+
+		style.bottom = {
+			...style.bottom,
+			height: this.state.expanded ? '15px' : '3px',
+		};
+
 		style.wrapper = {
 			...style.wrapper,
 			boxShadow: this.state.dragging ? '5px 5px' : this.state.active ? '3px 3px' : '0px 0px',
@@ -175,13 +209,13 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 
 		if(this.props.inlets) {
 			for(let inlet of this.props.inlets) {
-				// inlets.push(<li><Inlet hint={inlet.hint} /></li>);
+				inlets.push(<Inlet hint={inlet.hint} />);
 			}
 		}
 
 		if(this.props.outlets) {
 			for(let outlet of this.props.outlets) {
-				// outlets.push(<li><Outlet hint={outlet.hint} /></li>);
+				outlets.push(<Outlet hint={outlet.hint} />);
 			}
 		}
 
@@ -193,11 +227,7 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 
 		return(
 			<div style={style.wrapper} >
-				<div style={style.top}>
-					<ul style={style.inletBar}>
-						{inlets}
-					</ul>		
-				</div>
+
 
 				<div className='nodeButtons' style={style.buttons}>
 					<a style={style.button} onClick={() => store.removeNode(node.id)}>x</a>
@@ -206,18 +236,19 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 	          	</div>
 
 	          	<div style={style.main} onClick={() => this.handleClick()}>
-		            <legend style={style.legend}>{this.props.title}</legend>				           
+	          		<div style={style.top}>						
+						{inlets}						
+					</div>
+		            <legend style={style.legend} onClick={() => this.handleExpand()}>{this.props.title}</legend>				           
 
 		            <div className='params' style={style.params}>
 		            	{this.props.children}	
 		            </div>
-	            </div>
 
-	           	<div style={style.bottom}>
-					<ul style={style.inletBar}>
-						{outlets}
-					</ul>		
-				</div>                  
+		           	<div style={style.bottom}>						
+						{outlets}						
+					</div>  
+	            </div>                
 	        </div>
 	    )
 	}

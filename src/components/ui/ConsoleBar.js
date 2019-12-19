@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import MainContext from '../MainContext';
+import MainContext from '../../MainContext';
 
 const style = {
 	wrapper: {

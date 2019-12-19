@@ -1,5 +1,5 @@
 import React from 'react';
-import NodeContainer from './NodeContainer';
+import NodeContainer from '../../ui/NodeContainer';
 
 const style = {};
 

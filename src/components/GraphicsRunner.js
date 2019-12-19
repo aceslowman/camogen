@@ -8,7 +8,7 @@ let shaders = {};
 let store;
 let sketchStarted;
 
-const Sketch = (p) => {
+const GraphicsRunner = (p) => {
 
     let start = () =>  {
         p.createCanvas(store.canvasWidth,store.canvasHeight);     
@@ -130,4 +130,4 @@ const Sketch = (p) => {
     };
 }
 
-export default Sketch;
+export default GraphicsRunner;

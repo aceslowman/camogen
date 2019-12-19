@@ -3,13 +3,14 @@ import { observer } from 'mobx-react';
 
 import './App.css';
 
-import HelpText from './components/HelpText';
-import ConsoleBar from './components/ConsoleBar';
+import HelpText from './components/ui/HelpText';
+import ConsoleBar from './components/ui/ConsoleBar';
 
 import P5Wrapper from 'react-p5-wrapper';
-import sketch from './components/sketch';
+import GraphicsRunner from './components/GraphicsRunner';
 
-import RenderTarget from './components/nodes/RenderTarget';
+import Target from './components/Target';
+import ParameterDisplay from './components/ParameterDisplay';
 
 import { MainProvider } from './MainContext';
 
@@ -37,7 +38,7 @@ const style = {
 
   gui_panel_inner: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box",
@@ -92,14 +93,15 @@ const App = observer(class App extends React.Component {
           <P5Wrapper     
             store={this.store}
             ref={(r) => {this.canvas = r}}
-            sketch={sketch}      
+            sketch={GraphicsRunner}      
           />
           <div style={style.gui_panel}>           
             <HelpText />  
             <div style={style.gui_panel_inner}>
-              <RenderTarget target_id={0}>
+              <Target data={this.store.targets[0]}>
                 {this.nodes}
-              </RenderTarget>
+              </Target>
+              <ParameterDisplay />
             </div>  
             <ConsoleBar />
           </div>

@@ -1,10 +1,10 @@
-const types = ["GlyphShader","DebugShader","UVGenerator","RenderTarget"];
+const types = ["GlyphShader","DebugShader","UVGenerator"];
 let modules = {};
 
 types.forEach((type) => {
 	modules = {
 		...modules,
-		[type]: require('./' + type + '.js').default
+		[type]: require('./shaders/' + type + '.js').default
 	}	
 });
 

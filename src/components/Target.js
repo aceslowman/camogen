@@ -10,6 +10,7 @@ const style = {
 		padding: '0px',
 		border: '1px dashed white',
 		// backgroundColor: 'white'
+		margin: '15px',
 	},
 	legend: {
 		color: 'white',
@@ -19,7 +20,7 @@ const style = {
 	}
 };
 
-const RenderTarget = observer(class RenderTarget extends React.Component {
+const Target = observer(class Target extends React.Component {
 
 	static contextType = MainContext;
 
@@ -39,4 +40,4 @@ const RenderTarget = observer(class RenderTarget extends React.Component {
 	}
 });
 
-export default RenderTarget;
+export default Target;

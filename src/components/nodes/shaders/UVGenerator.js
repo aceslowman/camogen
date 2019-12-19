@@ -1,13 +1,13 @@
 import React from 'react';
-import NodeContainer from './NodeContainer';
+import NodeContainer from '../../ui/NodeContainer';
 
 import { observer } from 'mobx-react';
 
-import MainContext from '../../MainContext';
+import MainContext from '../../../MainContext';
 
-import InputGroup from '../InputGroup';
-import InputFloat from '../InputFloat';
-import InputBool from '../InputBool';
+import InputGroup from '../../input/InputGroup';
+import InputFloat from '../../input/InputFloat';
+import InputBool from '../../input/InputBool';
 
 const style = {};
 
