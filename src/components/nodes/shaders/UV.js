@@ -35,3 +35,5 @@ const UV = {
     }
 	`
 };
+
+export default UV;
