@@ -1,16 +1,15 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import P5Wrapper from 'react-p5-wrapper';
 
 import './App.css';
 
 import HelpText from './components/ui/HelpText';
 import ConsoleBar from './components/ui/ConsoleBar';
-
-import P5Wrapper from 'react-p5-wrapper';
 import GraphicsRunner from './components/GraphicsRunner';
-
 import Target from './components/Target';
 import ParameterDisplay from './components/ParameterDisplay';
+import Shader from './components/Shader';
 
 import { MainProvider } from './MainContext';
 
@@ -46,7 +45,6 @@ const style = {
     height: "100%",
     overflowY: "hidden",
   }
-
 }
 
 const App = observer(class App extends React.Component {
@@ -59,7 +57,8 @@ const App = observer(class App extends React.Component {
       let id = this.store.shaders.allIds[i];
       let node = this.store.shaders.byId[id];
 
-      this.nodes.push(React.createElement(node.type, { key:id, node:node }));
+      // this.nodes.push(React.createElement(node.type, { key:id, node:node }));
+      this.nodes.push(<Shader data={node} />);
     }
   }
 

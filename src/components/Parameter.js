@@ -2,13 +2,9 @@ import React from 'react';
 
 import { observer } from 'mobx-react';
 
-import MainContext from '../../../MainContext';
+import MainContext from '../MainContext';
 
-const style = {
-    fieldset: {
-        
-    }
-};
+const style = {};
 
 const Parameter = observer(class Parameter extends React.Component {
 
@@ -19,7 +15,7 @@ const Parameter = observer(class Parameter extends React.Component {
         const data = this.props.data;
 
         return(
-            <fieldset style={style.fieldset}>
+            <fieldset>
                 <legend>{data.name}</legend>
                 <input 
                     style={{...this.props.style,...style}}

@@ -9,43 +9,56 @@ class ObservableStore {
     allIds: [],
   };
 
+  // shaders = {
+  //   byId: {
+  //     0: {
+  //       id: 0,
+  //       type: NODES.modules.UVGenerator,
+  //       name : 'UVGenerator',
+  //       next: 1,
+  //       target_id: 0,
+  //       uniforms: {
+  //         bSquare: false,
+  //       },
+  //     },
+  //     1: {
+  //       id: 1,
+  //       type: NODES.modules.GlyphShader,
+  //       name : 'GlyphShader',
+  //       next: 2,
+  //       target_id: 0,
+  //       uniforms: {
+  //         seed: Math.floor(Math.random() * 1000),
+  //         noiseScale: 0.1,
+  //         noiseStep: 8,
+  //         dimensions: [20,20]
+  //       },       
+  //     },
+  //     2: {
+  //       id: 2,
+  //       type: NODES.modules.GlyphShader,
+  //       name : 'GlyphShader',
+  //       next: null,
+  //       target_id: 0,
+  //       uniforms: {
+  //         seed: Math.floor(Math.random() * 1000),
+  //         noiseScale: 2,
+  //         noiseStep: 8,
+  //         dimensions: [6,6]
+  //       },       
+  //     },
+  //   },
+  //   allIds: [0,1,2],
+  // };
+
   shaders = {
-    byId: {
-      0: {
-        id: 0,
-        type: NODES.modules.UVGenerator,
-        next: 1,
-        target_id: 0,
-        uniforms: {
-          bSquare: false,
-        },
-      },
-      1: {
-        id: 1,
-        type: NODES.modules.GlyphShader,
-        next: 2,
-        target_id: 0,
-        uniforms: {
-          seed: Math.floor(Math.random() * 1000),
-          noiseScale: 0.1,
-          noiseStep: 8,
-          dimensions: [20,20]
-        },       
-      },
-      2: {
-        id: 2,
-        type: NODES.modules.GlyphShader,
-        next: null,
-        target_id: 0,
-        uniforms: {
-          seed: Math.floor(Math.random() * 1000),
-          noiseScale: 2,
-          noiseStep: 8,
-          dimensions: [6,6]
-        },       
-      },
-    },
-    allIds: [0,1,2],
+    byId: {},
+    allIds: [],
+  };
+
+  parameters = {
+    byId: {},
+    allIds: [],
   };
 
   targets = {
