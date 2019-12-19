@@ -74,3 +74,5 @@ const Glyph = {
 		}
 	`
 };
+
+export default Glyph;
