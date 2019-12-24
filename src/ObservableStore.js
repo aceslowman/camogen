@@ -69,11 +69,12 @@ decorate(ParameterData, {
 });
 
 class ObservableStore {
+  consoleText = 'camogen';
+  suggestText = '';
+  helpText = '';
 
-  // in progress, removing normalization
-  t_id = uuidv1();
   targets = [{
-    id: this.t_id,
+    id: uuidv1(),
     shaders: [
       new ShaderData("UV"),
       new ShaderData("Glyph"),
@@ -81,116 +82,13 @@ class ObservableStore {
     ],
   }];
 
-  canvasWidth  = 200;
-  canvasHeight = 200;
-
-  sketchReady = false;
-
-  consoleText = 'camogen';
-  consoleStyle = {color:'black'};
-  suggestText = '';
-  helpText = '';
-
-  // addTarget() {    
-  //   let id = uuidv1();
-  //   this.targets.allIds.push(id);
-  //   this.targets.byId[id] = {
-  //     id: id,
-  //     shaders: []
-  //   };
-
-  //   // console.group("added new target");
-  //   // console.log("byId",this.targets.byId);
-  //   // console.log("allIds",this.targets.allIds);
-  //   // console.groupEnd();
-
-  //   return id;
-  // }
-
-  // removeTarget() {}
-
-  // addParameter(data, shader_id) {
-  //   let id = uuidv1();
-
-  //   this.parameters.allIds.push(id);
-  //   this.parameters.byId[id] = {
-  //     ...data,
-  //     id: id
-  //   };
-
-  //   // console.group("added new parameter");
-  //   // console.log("byId",this.parameters.byId);
-  //   // console.log("allIds",this.parameters.allIds);
-  //   // console.groupEnd();
-
-  //   return id;
-  // }
-
-  // addShader(type, target_id) {
-  //   let shader = NODES.modules[type];
-
-  //   let id = uuidv1();
-    
-  //   let uniform_ids = [];
-
-  //   // parse uniforms
-  //   for(let uniform in shader.uniforms) {      
-  //     uniform_ids.push(this.addParameter({
-  //       name: uniform,
-  //       value: shader.uniforms[uniform],
-  //     }, id));
-  //   }
-
-  //   this.shaders.allIds.push(id);
-  //   this.shaders.byId[id] = {
-  //     ...shader,
-  //     id: id,
-  //     uniforms: uniform_ids,
-  //     target_id: target_id,
-  //   };
-
-  //   this.targets.byId[target_id].shaders.push(id);
-
-  //   // console.group("added new shader");
-  //   // console.log("byId",this.shaders.byId);
-  //   // console.log("allIds",this.shaders.allIds);
-  //   // console.groupEnd();
-
-  //   return id;
-  // }
-
-  // removeShader(id) {
-  //   let shader = this.shaders.byId[id];
-  //   console.log(shader);
-  //   let target = this.targets.byId[shader.target_id];
-
-  //   // remove shader node from id list
-  //   let s_index = this.shaders.allIds.indexOf(id);
-  //   if(s_index > -1) this.shaders.allIds.splice(s_index, 1);
-
-  //   // remove shader node from target shader list
-  //   let t_index = target.shaders.indexOf(id);
-  //   if(t_index > -1) target.shaders.splice(t_index, 1);
-
-  //   delete this.shaders.byId[id];
-
-  //   // console.log("removed shader", this.shaders.byId);
-  //   // console.log(target.shaders);
-  // }
-
-  initialize() {
-    // let target_id = this.addTarget();
-
-    // this.addShader('UV', target_id);
-    // this.addShader('Glyph', target_id);
-    // this.addShader('Glyph', target_id);
+  addShader(target, type, index = null) {    
+    let i = index ? index : target.shaders.length;
+    target.shaders.splice(i, 0, new ShaderData(type));
   }
 
-  clearAllNodes() {
-    this.shaders.byId = {};
-    this.shaders.allIds = [];
-
-    console.log("removed all shaders");    
+  removeShader(target, shader) {
+    target.shaders = target.shaders.filter((item) => item !== shader);
   }
 
   consoleChanged() {
@@ -204,7 +102,6 @@ class ObservableStore {
         this.addNode(this.consoleText);
         this.consoleText = "";
         this.suggestText = "";
-        // this.consoleStyle = {color:'green'};
         break;
     }
   }
@@ -216,55 +113,21 @@ class ObservableStore {
     );
 
     this.suggestText = matched.length && text ? matched[0] : '';
-    // console.log('matched',matched);
-  }
-
-  get dimensions()  {
-    return [this.canvasWidth,this.canvasHeight];
-  }
-
-  get aspect() {
-    return this.canvasWidth / this.canvasHeight;
-  }
-
-  getShaderById(id) {
-    return this.shaders.byId[id];
-  }
-
-  get shaderCount() {
-    return this.shaders.allIds.length;
-  }
-
-  get targetCount() {    
-    return  this.targets.allIds.length;
   }
 }
 
-decorate(ObservableStore, {
-  targets: observable,
-  parameters: observable,
-  canvasWidth: observable,
-  canvasHeight: observable,
-  sketchReady: observable,
+decorate(ObservableStore, {  
   consoleText: observable,
   helpText: observable,
   suggestText: observable,
-  initialize: action,
-  addParameter: action,
+
+  targets: observable,
+
   addShader: action,
   removeShader: action,
-  addTarget: action,
-  removeTarget: action,
-  resize: action,
-  fitScreen: action,
-  randomize: action,
+
   consoleChanged: action,
   suggest: action,
-  dimensions: computed,
-  aspect: computed,
-  shaderCount: computed,
-  targetCount: computed,
-  getShaderById: action,
 });
 
 const observableStore = new ObservableStore();

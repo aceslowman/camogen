@@ -26,8 +26,6 @@ const GraphicsRunner = (p) => {
                     shader.setUniform('uniform_node.name', uniform_node.value);
                 }
 
-                console.log(shader);
-
                 shaders = { ...shaders, [shader_node.id]: shader}
             }
 
@@ -42,11 +40,8 @@ const GraphicsRunner = (p) => {
                     let shader = shaders[shader_node.id];                    
 
                     for(let uniform_node of shader_node.uniforms) {
-                        console.log(uniform_node.name, Number(uniform_node.value));
                         shader.setUniform(uniform_node.name, uniform_node.value);
                     }
-
-                    console.log(shader);
 
                     shader.setUniform('resolution', [p.width,p.height]);
                 }
@@ -62,7 +57,6 @@ const GraphicsRunner = (p) => {
                 let shader = shaders[shader_node.id];
 
                 for(let uniform_node of shader_node.uniforms) {
-                    // console.log(uniform_node.name, Number(uniform_node.value));
                     shader.setUniform(uniform_node.name, uniform_node.value);
                 }
 

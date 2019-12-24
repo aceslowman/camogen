@@ -66,12 +66,14 @@ const Shader = observer(class Shader extends React.Component {
 	}
 
 	handleRemove = () => {
-		this.store.removeShader(this.data.id);
+		this.store.removeShader(this.target,this.data);
 	}
 
 	render() {
-		const { data } = this.props;
+		const { data, target } = this.props;
 		this.data = data;
+		this.target = target;
+
 		this.store = this.context.store;
 
 		this.generateParameters();

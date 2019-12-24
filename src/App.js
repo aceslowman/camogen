@@ -52,7 +52,6 @@ const App = observer(class App extends React.Component {
   constructor(props) {
     super(props);
     this.store = props.store;
-    this.store.initialize();
   }
 
   generateLayers(){
@@ -62,7 +61,7 @@ const App = observer(class App extends React.Component {
       let nodes = [];
 
       for(let shader_node of target_node.shaders) {
-          nodes.push(<Shader key={shader_node.id} data={shader_node} />);
+          nodes.push(<Shader key={shader_node.id} data={shader_node} target={target_node}/>);
       }
 
       this.targets.push((
@@ -71,20 +70,6 @@ const App = observer(class App extends React.Component {
         </Target>
       ));
     }
-  }
-
-  handleResize() {
-    this.store.canvasWidth = this.canvas.wrapper.clientWidth;
-    this.store.canvasHeight = this.canvas.wrapper.clientHeight;
-  }
-
-  componentDidMount() {
-    this.store.canvasWidth = this.canvas.wrapper.clientWidth;
-    this.store.canvasHeight = this.canvas.wrapper.clientHeight;
-
-    this.store.sketchReady = true;
-
-    window.addEventListener('resize',() => this.handleResize());
   }
 
   render() {
@@ -109,7 +94,7 @@ const App = observer(class App extends React.Component {
             <HelpText />  
             <div style={style.gui_panel_inner}>
               {this.targets}
-              <ParameterDisplay />
+              {/*<ParameterDisplay />*/}
             </div>  
             <ConsoleBar />
           </div>
