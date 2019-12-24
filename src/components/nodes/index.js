@@ -1,4 +1,4 @@
-const types = ["GlyphShader","DebugShader","UVGenerator"];
+const types = ["Glyph","UV"];
 let modules = {};
 
 types.forEach((type) => {

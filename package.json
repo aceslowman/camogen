@@ -153,5 +153,7 @@
       "react-app"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "mobx-react-devtools": "^6.1.1"
+  }
 }

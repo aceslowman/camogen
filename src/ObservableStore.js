@@ -9,48 +9,6 @@ class ObservableStore {
     allIds: [],
   };
 
-  // shaders = {
-  //   byId: {
-  //     0: {
-  //       id: 0,
-  //       type: NODES.modules.UVGenerator,
-  //       name : 'UVGenerator',
-  //       next: 1,
-  //       target_id: 0,
-  //       uniforms: {
-  //         bSquare: false,
-  //       },
-  //     },
-  //     1: {
-  //       id: 1,
-  //       type: NODES.modules.GlyphShader,
-  //       name : 'GlyphShader',
-  //       next: 2,
-  //       target_id: 0,
-  //       uniforms: {
-  //         seed: Math.floor(Math.random() * 1000),
-  //         noiseScale: 0.1,
-  //         noiseStep: 8,
-  //         dimensions: [20,20]
-  //       },       
-  //     },
-  //     2: {
-  //       id: 2,
-  //       type: NODES.modules.GlyphShader,
-  //       name : 'GlyphShader',
-  //       next: null,
-  //       target_id: 0,
-  //       uniforms: {
-  //         seed: Math.floor(Math.random() * 1000),
-  //         noiseScale: 2,
-  //         noiseStep: 8,
-  //         dimensions: [6,6]
-  //       },       
-  //     },
-  //   },
-  //   allIds: [0,1,2],
-  // };
-
   shaders = {
     byId: {},
     allIds: [],
@@ -62,73 +20,91 @@ class ObservableStore {
   };
 
   targets = {
-    byId: {
-      0: {
-        shaders: [0,1,2],
-      },
-    },
-    allIds: [0]
+    byId: {},
+    allIds: []
   };
 
   canvasWidth  = 200;
   canvasHeight = 200;
 
-  generateFlag = false;
-  snapshotFlag = false;
-
   sketchReady = false;
 
   consoleText = 'camogen';
   consoleStyle = {color:'black'};
-  helpText = '';
   suggestText = '';
+  helpText = '';
 
-  addNode(type) {
-    let n = { type: type };
-
-    switch(type) {
-      case 'GlyphShader':
-        n = {
-          ...n,
-          type: 'GlyphShader',
-          next: null,
-          uniforms: {
-            seed: Math.floor(Math.random() * 1000),
-            noiseScale: 0.1,
-            noiseStep: 8,
-            dimensions: [20,20]
-          },
-        };        
-        break;
-      case 'DebugShader':
-        n = {
-          ...n,
-        };
-        break;
-      case 'UVGenerator':
-        n = {
-          ...n,
-          uniforms: {
-            bSquare: false,
-          }
-        };
-        break;
-      default:
-        break;
-    }
-
+  addTarget() {    
     let id = uuidv1();
-    this.nodes.allIds.push(id);
-    this.nodes.byId[id] = n;
+    this.targets.allIds.push(id);
+    this.targets.byId[id] = {
+      id: id,
+      shaders: []
+    };
 
-    console.group("added new node");
-    console.log("byId",this.nodes.byId);
-    console.log("allIds",this.nodes.allIds);
-    console.groupEnd();
+    // console.group("added new target");
+    // console.log("byId",this.targets.byId);
+    // console.log("allIds",this.targets.allIds);
+    // console.groupEnd();
+
+    return id;
   }
 
-  removeNode(id) {
+  removeTarget() {}
+
+  addParameter(data, shader_id) {
+    let id = uuidv1();
+
+    this.parameters.allIds.push(id);
+    this.parameters.byId[id] = {
+      ...data,
+      id: id
+    };
+
+    // console.group("added new parameter");
+    // console.log("byId",this.parameters.byId);
+    // console.log("allIds",this.parameters.allIds);
+    // console.groupEnd();
+
+    return id;
+  }
+
+  addShader(type, target_id) {
+    let shader = NODES.modules[type];
+
+    let id = uuidv1();
+    
+    let uniform_ids = [];
+
+    // parse uniforms
+    for(let uniform in shader.uniforms) {      
+      uniform_ids.push(this.addParameter({
+        name: uniform,
+        value: shader.uniforms[uniform],
+      }, id));
+    }
+
+    this.shaders.allIds.push(id);
+    this.shaders.byId[id] = {
+      ...shader,
+      id: id,
+      uniforms: uniform_ids,
+      target_id: target_id,
+    };
+
+    this.targets.byId[target_id].shaders.push(id);
+
+    // console.group("added new shader");
+    // console.log("byId",this.shaders.byId);
+    // console.log("allIds",this.shaders.allIds);
+    // console.groupEnd();
+
+    return id;
+  }
+
+  removeShader(id) {
     let shader = this.shaders.byId[id];
+    console.log(shader);
     let target = this.targets.byId[shader.target_id];
 
     // remove shader node from id list
@@ -141,8 +117,16 @@ class ObservableStore {
 
     delete this.shaders.byId[id];
 
-    console.log("removed node", this.shaders.byId);
-    console.log(target.shaders);
+    // console.log("removed shader", this.shaders.byId);
+    // console.log(target.shaders);
+  }
+
+  initialize() {
+    let target_id = this.addTarget();
+
+    this.addShader('UV', target_id);
+    this.addShader('Glyph', target_id);
+    this.addShader('Glyph', target_id);
   }
 
   clearAllNodes() {
@@ -150,18 +134,6 @@ class ObservableStore {
     this.shaders.allIds = [];
 
     console.log("removed all shaders");    
-  }
-
-  resize() {
-    
-  }
-
-  fitScreen() {
-    //
-  }
-
-  randomize(id) {
-    //
   }
 
   consoleChanged() {
@@ -190,10 +162,6 @@ class ObservableStore {
     // console.log('matched',matched);
   }
 
-  getNodeById(id) {
-    return this.nodes.byId[id];
-  }
-
   get dimensions()  {
     return [this.canvasWidth,this.canvasHeight];
   }
@@ -202,8 +170,16 @@ class ObservableStore {
     return this.canvasWidth / this.canvasHeight;
   }
 
-  get nodeCount() {
+  getShaderById(id) {
+    return this.shaders.byId[id];
+  }
+
+  get shaderCount() {
     return this.shaders.allIds.length;
+  }
+
+  get targetCount() {    
+    return  this.targets.allIds.length;
   }
 }
 
@@ -211,16 +187,19 @@ decorate(ObservableStore, {
   shaders: observable,
   data: observable,
   targets: observable,
+  parameters: observable,
   canvasWidth: observable,
   canvasHeight: observable,
-  generateFlag: observable,
-  snapshotFlag: observable,
   sketchReady: observable,
   consoleText: observable,
   helpText: observable,
   suggestText: observable,
-  addNode: action,
-  removeNode: action,
+  initialize: action,
+  addParameter: action,
+  addShader: action,
+  removeShader: action,
+  addTarget: action,
+  removeTarget: action,
   resize: action,
   fitScreen: action,
   randomize: action,
@@ -228,8 +207,9 @@ decorate(ObservableStore, {
   suggest: action,
   dimensions: computed,
   aspect: computed,
-  nodeCount: computed,
-  getNodeById: action,
+  shaderCount: computed,
+  targetCount: computed,
+  getShaderById: action,
 });
 
 const observableStore = new ObservableStore();

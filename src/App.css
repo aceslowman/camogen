@@ -53,6 +53,10 @@ input  {
   outline: none;
 }
 
+.params button:focus {
+  outline: none;
+} 
+
 /*to do*/
 .params {
   height : 0px;

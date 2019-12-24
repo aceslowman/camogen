@@ -1,5 +1,4 @@
 import React from 'react';
-import Draggable from 'react-draggable';
 
 import { observer } from 'mobx-react';
 
@@ -17,40 +16,37 @@ const style = {
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
-		// alignItems: 'stretch',
 		zIndex: '100',
 	},
 
 	buttons: {
-		// padding: '5px',
-		// backgroundColor: 'red',
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100%',
 		boxSizing: 'border-box',
 		color: 'white',
-		backgroundColor: 'black',
-		// fontWeight: 'bold'
 	},
 
 	button: {
 		padding: '2.5px 5px',
 		boxSizing: 'border-box',
-		cursor: 'pointer',
+		backgroundColor: 'black',
+		border: 'none',
+		color: 'white',
 	},
 
 	main: {
-		flexGrow: '1',
+		border: '1px solid black',
 		backgroundColor: 'white',
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'flex-start',
 		justifyContent: 'space-between',
+		width: '100%',
 	},
 
 	legend: {		
 		fontWeight: 'bold',
-		// backgroundColor: 'orange',
 		fontSize: '1.6em',
 		margin: '5px 5px',
 		cursor: 'pointer'
@@ -61,9 +57,7 @@ const style = {
 		height: '13px',
 		border: '1px solid black',
 		backgroundColor: 'white',
-		// zIndex: '99',
 		fontSize: '0.9em',
-		// float: 'left',
 		display: 'flex',
 		flexDirection: 'row',
 	},
@@ -81,7 +75,6 @@ const style = {
 		listStyle: 'none',
 		margin: '0px',
 		padding: '0px',
-		// backgroundColor: 'yellow',
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
@@ -93,21 +86,8 @@ const style = {
 		padding: '0px 2px',
 	},
 
-	// top: {
-	// 	position: 'absolute',
-	// 	top: '-15px',
-	// 	left: '18px',
-	// },
-
-	// bottom: {
-	// 	position: 'absolute',
-	// 	bottom: '-15px',
-	// 	left: '18px',
-	// },
-
 	top: {
 		backgroundColor: 'black',
-		// fontSize: '0.8em',
 		width: '100%',
 		height : '3px',
 		display: 'flex',
@@ -118,7 +98,6 @@ const style = {
 
 	bottom: {
 		backgroundColor: 'black',
-		// fontSize: '0.8em',
 		width: '100%',
 		height : '3px',
 		display: 'flex',
@@ -130,8 +109,7 @@ const style = {
 	params: {
 		overflow: 'hidden',
 		padding: '10px', 
-		backgroundColor: 'white',
-		// pointerEvents: 'none',
+		backgroundColor: 'white',		
 	},
 };
 
@@ -149,14 +127,14 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 		};
 	}
 
-	handleClick() {		
+	handleClick = () => {		
 		this.setState(prevState => ({
 			...prevState,
 			active: !prevState.active
 		}));
 	}
 
-	handleExpand() {
+	handleExpand = () => {
 		this.setState(prevState => ({
 			...prevState,
 			expanded: !prevState.expanded
@@ -181,7 +159,8 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 
 	render() {
 		const store = this.context.store;
-		const node = this.props.node;
+		const { data } = this.props;
+		console.log(data);
 
 		style.params = {
 			...style.params,
@@ -208,38 +187,32 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 		let outlets = [];
 
 		if(this.props.inlets) {
+			let i = 0;
 			for(let inlet of this.props.inlets) {
-				inlets.push(<Inlet hint={inlet.hint} />);
+				inlets.push(<Inlet key={i} hint={inlet.hint} />);
 			}
 		}
 
 		if(this.props.outlets) {
+			let i = 0;
 			for(let outlet of this.props.outlets) {
-				outlets.push(<Outlet hint={outlet.hint} />);
+				outlets.push(<Outlet key={i} hint={outlet.hint} />);
 			}
 		}
 
-		// <Draggable
-		// 		onDrag={(e) => this.handleDrag(e)}
-		// 		onStart={(e) => this.handleDragStart(e)}
-		// 		onStop={(e) => this.handleDragStop(e)}
-		// 	>
-
 		return(
-			<div style={style.wrapper} >
-
-
+			<div style={style.wrapper}>
 				<div className='nodeButtons' style={style.buttons}>
-					<a style={style.button} onClick={() => store.removeNode(node.id)}>x</a>
-	          		<a style={style.button} onClick={() => this.handleExpand()}>{this.state.expanded ? 'v' : '>'}</a>
-	          		<a style={style.button} onClick={() => this.handleExpand()}>≡</a>
+					<button style={style.button} onClick={this.props.onRemove}>x</button>
+	          		<button style={style.button} onClick={this.handleExpand}>{this.state.expanded ? 'v' : '>'}</button>
+	          		<button style={style.button} onClick={this.handleExpand}>≡</button>
 	          	</div>
 
-	          	<div style={style.main} onClick={() => this.handleClick()}>
+	          	<div style={style.main} onClick={this.handleClick}>
 	          		<div style={style.top}>						
 						{inlets}						
 					</div>
-		            <legend style={style.legend} onClick={() => this.handleExpand()}>{this.props.title}</legend>				           
+		            <legend style={style.legend} onClick={this.handleExpand}>{this.props.title}</legend>				           
 
 		            <div className='params' style={style.params}>
 		            	{this.props.children}	

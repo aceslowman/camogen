@@ -49,16 +49,20 @@ const style = {
 
 const App = observer(class App extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.store = props.store;
+    this.store.initialize();
+  }
+
   generateLayers(){
-    console.log('generate layers');
     this.nodes = [];
 
     for(let i = 0; i < this.store.shaders.allIds.length; i++) {
       let id = this.store.shaders.allIds[i];
       let node = this.store.shaders.byId[id];
 
-      // this.nodes.push(React.createElement(node.type, { key:id, node:node }));
-      this.nodes.push(<Shader data={node} />);
+      this.nodes.push(<Shader key={id} data={node} />);
     }
   }
 
