@@ -56,13 +56,20 @@ const App = observer(class App extends React.Component {
   }
 
   generateLayers(){
-    this.nodes = [];
+    this.targets = [];
 
-    for(let i = 0; i < this.store.shaders.allIds.length; i++) {
-      let id = this.store.shaders.allIds[i];
-      let node = this.store.shaders.byId[id];
+    for(let target_node of this.store.targets) {
+      let nodes = [];
 
-      this.nodes.push(<Shader key={id} data={node} />);
+      for(let shader_node of target_node.shaders) {
+          nodes.push(<Shader key={shader_node.id} data={shader_node} />);
+      }
+
+      this.targets.push((
+        <Target key={target_node.id} data={target_node}>
+          {nodes}
+        </Target>
+      ));
     }
   }
 
@@ -101,9 +108,7 @@ const App = observer(class App extends React.Component {
           <div style={style.gui_panel}>           
             <HelpText />  
             <div style={style.gui_panel_inner}>
-              <Target data={this.store.targets[0]}>
-                {this.nodes}
-              </Target>
+              {this.targets}
               <ParameterDisplay />
             </div>  
             <ConsoleBar />

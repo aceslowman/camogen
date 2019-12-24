@@ -160,7 +160,6 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 	render() {
 		const store = this.context.store;
 		const { data } = this.props;
-		console.log(data);
 
 		style.params = {
 			...style.params,
