@@ -18,7 +18,20 @@ const style = {
 
 const Shader = observer(class Shader extends React.Component {
 
-	static contextType = MainContext;
+	static contextType = MainContext;	
+
+ //    static assemble = (pg,data_node) => {	
+	// 	let shader = pg.createShader(
+	//         data_node.vertex,
+	//         data_node.fragment,
+ //        );
+
+ //        for(let uniform_node of data_node.uniforms) {
+ //            shader.setUniform('uniform_node.name', data_node.value);
+ //        }
+
+ //        return shader;
+	// }
 
 	generateParameters() {
 		this.uniforms = [];

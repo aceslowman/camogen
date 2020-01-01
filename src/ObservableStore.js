@@ -80,7 +80,14 @@ class ObservableStore {
       new ShaderData("Glyph"),
       new ShaderData("Glyph"),
     ],
-  }];
+  },
+  // {
+  //   id: uuidv1(),
+  //   shaders: [
+  //     new ShaderData("VideoGrabber"),
+  //   ],
+  // }
+  ];
 
   addShader(target, type, index = null) {    
     let i = index ? index : target.shaders.length;

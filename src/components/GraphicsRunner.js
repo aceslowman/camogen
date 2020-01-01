@@ -1,11 +1,26 @@
+import React from 'react';
 import { autorun } from 'mobx';
+import { observer } from 'mobx-react';
+import MainContext from '../MainContext';
+
+import p5 from 'p5';
 
 let targets = {};
 let shaders = {};
 
-let store;
+const GraphicsRunner = observer(class GraphicsRunner extends React.Component {
+    static contextType = MainContext;
 
-const GraphicsRunner = (p) => {
+    componentDidMount() {        
+        this.context.p5_instance = new p5((p) => sketch(p,this.context.store));
+    }
+
+    render() {        
+        return '';
+    }
+});
+
+const sketch = (p, store) => {
 
     p.setup = () => {    
         p.createCanvas(window.innerWidth,window.innerHeight);     
@@ -13,10 +28,13 @@ const GraphicsRunner = (p) => {
         p.smooth();
         p.background(128);   
 
+        // set up
         for(let target_node of store.targets) {
             let target = p.createGraphics(p.width,p.height,p.WEBGL);
 
             for(let shader_node of target_node.shaders) {
+                console.log(shader_node);
+
                 let shader = target.createShader(
                     shader_node.vertex,
                     shader_node.fragment,
@@ -34,8 +52,6 @@ const GraphicsRunner = (p) => {
 
         autorun(() => {
             for(let target_node of store.targets) {
-                let target = targets[target_node.id];
-
                 for(let shader_node of target_node.shaders) {
                     let shader = shaders[shader_node.id];                    
 

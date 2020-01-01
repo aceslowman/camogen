@@ -10,6 +10,7 @@ import GraphicsRunner from './components/GraphicsRunner';
 import Target from './components/Target';
 import ParameterDisplay from './components/ParameterDisplay';
 import Shader from './components/Shader';
+import Camera from './components/Camera';
 
 import { MainProvider } from './MainContext';
 
@@ -80,21 +81,17 @@ const App = observer(class App extends React.Component {
       primary: 'white',
       secondary: 'black',
       store: this.store,
+      p5_instance: this.instance,
     }
 
     return (    
       <MainProvider value={ctx}>
-        <div id="mainWrapper" style={style.wrapper}>
-          <P5Wrapper     
-            store={this.store}
-            ref={(r) => {this.canvas = r}}
-            sketch={GraphicsRunner}      
-          />
+        <div id="mainWrapper" style={style.wrapper}>          
+          <GraphicsRunner />
           <div style={style.gui_panel}>           
             <HelpText />  
             <div style={style.gui_panel_inner}>
               {this.targets}
-              {/*<ParameterDisplay />*/}
             </div>  
             <ConsoleBar />
           </div>
