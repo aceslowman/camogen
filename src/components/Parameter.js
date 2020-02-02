@@ -1,9 +1,28 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import MainContext from '../MainContext';
+
+let style = {
+    wrapper: {
+        width: '50%',
+        display: 'inline-block',
+        backgroundColor: 'white',
+    },
+    fieldset: {
+        padding: '2px',
+        display: 'inline-block',
+    },
+    input: {
+        boxSizing: 'border-box',
+        width: '100%',
+    },  
+}
 
 const Parameter = observer(class Parameter extends React.Component {
 
-    handleClick = (e) => {        
+    static contextType = MainContext;
+
+    handleChange = e => {        
         if(this.props.isArray) {
             this.props.data.value[this.props.index] = e.target.value;
         } else {
@@ -11,21 +30,31 @@ const Parameter = observer(class Parameter extends React.Component {
         }
     };
 
+    handleClick = e => {
+        const { data, index, isArray } = this.props;
+        this.context.store.activeParameter = data;
+        this.context.store.activeParameterIndex = isArray ? index : null;
+    }
+
     render() {
-        const { data, style, index } = this.props;
+        const { data, index, isArray, name } = this.props;
 
         this.value = this.props.isArray ? data.value[index] : data.value;
 
         return (
-            <React.Fragment>
-                <input 
-                    style={{...style}}
-                    type="number" 
-                    step={0.1}
-                    value={this.value}
-                    onChange={this.handleClick}
-                />
-            </React.Fragment>
+            <div style={style.wrapper}>
+                <fieldset style={style.fieldset}>            
+                    <legend style={style.legend}>{isArray ? name : data.name}</legend>                    
+                        <input 
+                            style={style.input}
+                            type="number" 
+                            step={0.1}
+                            value={this.value}
+                            onChange={this.handleChange}
+                            onClick={this.handleClick}
+                        />                
+                </fieldset>
+            </div>
         )
     }
 });

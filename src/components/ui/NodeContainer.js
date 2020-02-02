@@ -1,9 +1,6 @@
 import React from 'react';
-
 import { observer } from 'mobx-react';
-
 import MainContext from '../../MainContext';
-
 import Inlet from './Inlet';
 import Outlet from './Outlet';
 
@@ -96,6 +93,15 @@ const style = {
 		overflow: 'hidden',
 	},
 
+	inner: {
+		overflow: 'hidden',
+		padding: '10px', 		
+		width: '100%',
+		boxSizing: 'border-box',
+		display: 'flex',
+		flexDirection: 'row',
+	},
+
 	bottom: {
 		backgroundColor: 'black',
 		width: '100%',
@@ -104,12 +110,6 @@ const style = {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		overflow: 'hidden',
-	},
-
-	params: {
-		overflow: 'hidden',
-		padding: '10px', 
-		backgroundColor: 'white',		
 	},
 };
 
@@ -158,11 +158,8 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 	}
 
 	render() {
-		const store = this.context.store;
-		const { data } = this.props;
-
-		style.params = {
-			...style.params,
+		style.inner = {
+			...style.inner,
 			display: this.state.expanded ? 'block' : 'none',
 			height: this.state.expanded ? 'auto' : '0%',
 		}
@@ -211,9 +208,10 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 	          		<div style={style.top}>						
 						{inlets}						
 					</div>
+					
 		            <legend style={style.legend} onClick={this.handleExpand}>{this.props.title}</legend>				           
 
-		            <div className='params' style={style.params}>
+		            <div className='inner' style={style.inner}>
 		            	{this.props.children}	
 		            </div>
 

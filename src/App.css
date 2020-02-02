@@ -53,23 +53,16 @@ input  {
   outline: none;
 }
 
-.params button:focus {
+.inner button:focus {
   outline: none;
 } 
 
 /*to do*/
-.params {
+.inner {
   height : 0px;
  -webkit-transition: height 1s ease;
     -moz-transition: height 1s ease;
       -o-transition: height 1s ease;
      -ms-transition: height 1s ease;
          transition: height 1s ease;
-}
-
-.nodeButtons a:hover{
-  background-color: white;
-  color: black;
-  padding: 1.5px 4px !important;
-  border: 1px solid black;
 }

@@ -1,13 +1,26 @@
 import simplex from './includes/simplex';
+import ParameterData from '../../../stores/ParameterData';
 
 const Glyph = {
 	name: 'Glyph',
-	uniforms: {
-      seed: Math.floor(Math.random() * 1000),
-      noiseScale: 0.1,
-      noiseStep: 8,
-      dimensions: [20,20]
-    },  
+	uniforms: [
+		new ParameterData({
+			name: 'seed',
+			value: Math.floor(Math.random() * 1000),
+		}),
+		new ParameterData({
+			name: 'noiseScale',
+			value: 0.1,
+		}),
+		new ParameterData({
+			name: 'noiseStep',
+			value: 8,
+		}),
+		new ParameterData({
+			name: 'dimensions',
+			value: [20,20],
+		}),				
+	],
 	precision: `
 		#ifdef GL_ES
 		precision highp float;

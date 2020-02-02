@@ -1,18 +1,14 @@
 import React from 'react';
+import { MainProvider } from './MainContext';
 import { observer } from 'mobx-react';
-import P5Wrapper from 'react-p5-wrapper';
-
 import './App.css';
-
 import HelpText from './components/ui/HelpText';
 import ConsoleBar from './components/ui/ConsoleBar';
+import ParameterDisplay from './components/ParameterDisplay';
 import GraphicsRunner from './components/GraphicsRunner';
 import Target from './components/Target';
-import ParameterDisplay from './components/ParameterDisplay';
 import Shader from './components/Shader';
-import Camera from './components/Camera';
-
-import { MainProvider } from './MainContext';
+import SVGLayer from './SVGLayer';
 
 const style = {
   wrapper: {
@@ -50,19 +46,19 @@ const style = {
 
 const App = observer(class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.store = props.store;
-  }
-
-  generateLayers(){
+  generateTargets(){
     this.targets = [];
 
     for(let target_node of this.store.targets) {
       let nodes = [];
 
       for(let shader_node of target_node.shaders) {
-          nodes.push(<Shader key={shader_node.id} data={shader_node} target={target_node}/>);
+          nodes.push((
+            <Shader 
+              key={shader_node.id} 
+              data={shader_node} 
+            />
+          ));
       }
 
       this.targets.push((
@@ -75,11 +71,9 @@ const App = observer(class App extends React.Component {
 
   render() {
     this.store = this.props.store;
-    this.generateLayers();    
+    this.generateTargets();    
 
     let ctx = {
-      primary: 'white',
-      secondary: 'black',
       store: this.store,
       p5_instance: this.instance,
     }
@@ -91,9 +85,17 @@ const App = observer(class App extends React.Component {
           <div style={style.gui_panel}>           
             <HelpText />  
             <div style={style.gui_panel_inner}>
-              {this.targets}
+              <div>
+                {this.targets}
+              </div>
+              { this.store.activeParameter &&
+                <ParameterDisplay data={this.store.activeParameter}/>
+              }
             </div>  
             <ConsoleBar />
+
+            <SVGLayer />
+
           </div>
         </div>
       </MainProvider>

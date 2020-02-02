@@ -1,91 +1,94 @@
 import React from 'react';
-
 import { observer } from 'mobx-react';
-
 import MainContext from '../MainContext';
-
 import Parameter from './Parameter';
-
 import NodeContainer from './ui/NodeContainer';
 
-const style = {
-	uniformGroup: {
-		// display: 'flex',
-		// flexDirection: 'row',
-		// width: '100%',
-	}
-};
+// const style = {};
 
 const Shader = observer(class Shader extends React.Component {
 
-	static contextType = MainContext;	
+	static contextType = MainContext;
 
- //    static assemble = (pg,data_node) => {	
-	// 	let shader = pg.createShader(
-	//         data_node.vertex,
-	//         data_node.fragment,
- //        );
+	constructor(props) {
+		super(props);
 
- //        for(let uniform_node of data_node.uniforms) {
- //            shader.setUniform('uniform_node.name', data_node.value);
- //        }
+		let target = props.target.ref;
 
- //        return shader;
-	// }
+		this.shader = target.createShader(
+	        props.data.vertex,
+	        props.data.fragment,
+        );
+
+        for(let uniform_node in props.data.uniforms) {
+            this.shader.setUniform('uniform_node.name', uniform_node.value);
+        }
+
+        props.data.ref = this.shader;
+	}	
 
 	generateParameters() {
 		this.uniforms = [];
 
-		for(let uniform_node of this.data.uniforms) {
+		for(let uniform_node of this.props.data.uniforms) {
 			let uniform = [];
 
 			switch(uniform_node.value.constructor) {
 	            case Array: 
+	            	let uniform_group = [];
+
 	            	for(let i = 0; i < uniform_node.value.length; i++) {	            		
-						uniform.push((
-							<fieldset key={uniform_node.id+1+i}>
-								<legend>{i}</legend>
-								<Parameter 	
-									isArray={true}						
-									index={i}
-									name={['x','y'][i]}
-									data={uniform_node}
-								/>
-							</fieldset>
-						));
-	            	}	                
-	                break;
-	            case Object: 
+						uniform_group.push((
+							<Parameter 	
+								key={uniform_node.id+i}
+								isArray={true}						
+								index={i}
+								name={['x','y'][i]}
+								data={uniform_node}
+							/>
+						));						
+	            	}	   
+
+	            	uniform.push((
+						<fieldset 
+							key={uniform_node.id}
+							style={{
+								padding: '0px',
+							}}
+						>
+							<legend>{uniform_node.name}</legend>
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'row',
+									width: '100%',
+								}}
+							>
+								{uniform_group}
+							</div>
+						</fieldset>
+					));             
 	                break;
 	            default:
 	            	uniform.push((	            		
 						<Parameter 
-							key={uniform_node.id+1}
+							key={uniform_node.id}
 							data={uniform_node}							
 						/>
 					));
 	                break;	            	            	           
 	        }
 
-	        this.uniforms.push((
-				<fieldset key={uniform_node.id}>					
-	            	<legend>{uniform_node.name}</legend>
-	            	<div style={style.uniformGroup}>
-	            		{uniform}
-	            	</div>
-	            </fieldset>
-			));
+	        this.uniforms.push(uniform);
 		}
 	}
 
 	handleRemove = () => {
-		this.store.removeShader(this.target,this.data);
+		this.store.removeShader(this.props.data, this.props.target);
 	}
 
 	render() {
-		const { data, target } = this.props;
-		this.data = data;
-		this.target = target;
+		const { data } = this.props;
 
 		this.store = this.context.store;
 

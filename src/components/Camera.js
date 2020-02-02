@@ -13,13 +13,12 @@ const Camera = observer(class Camera extends React.Component {
 
 	static contextType = MainContext;
 
-	// static assemble = (pg) => {	
-	// 	let instance = this.context.p5_instance;
-	// 	let capture = pg.createCapture(pg.VIDEO);
-	// 	capture.size(instance.width,instance.height);
-
-	// 	return capture;
-	// }
+	constructor(props, context) {
+		super(props);
+		let pg = context.p5_instance;
+		this.capture = pg.createCapture(pg.VIDEO);
+		this.capture.size(pg.width,pg.height);
+	}
 
 	render() {
 		return(

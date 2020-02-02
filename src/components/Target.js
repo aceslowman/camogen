@@ -1,15 +1,12 @@
 import React from 'react';
 import Draggable from 'react-draggable';
-
 import { observer } from 'mobx-react';
-
 import MainContext from '../MainContext';
 
 const style = {
 	wrapper: {
 		padding: '0px',
 		border: '1px dashed white',
-		// backgroundColor: 'white'
 		margin: '15px',
 	},
 	legend: {
@@ -24,16 +21,36 @@ const Target = observer(class Target extends React.Component {
 
 	static contextType = MainContext;
 
-	static assemble = (pg) => {		
-		return {};
+	constructor(props,context) {
+		super(props);
+		this.context = context;
+
+		let p = context.p5_instance;
+		this.target = p.createGraphics(window.innerWidth,window.innerHeight,p.WEBGL);
+
+		props.data.ref = this.target;
+
+		if(props.data.active) this.makeActive();
+	}
+
+	makeActive = () => {
+		this.context.store.activeTarget = this.target;
 	}
 
 	render() {
+		style.legend = {
+			...style.legend,
+			color: this.context.store.activeTarget === this.target ? 'black' : 'white',
+			backgroundColor: this.context.store.activeTarget === this.target ? 'white' : 'black',
+		}
+
 		return(
 			<Draggable>
 				<fieldset style={style.wrapper}>
-					<legend style={style.legend}>target</legend>
-					{this.props.children}
+					<legend style={style.legend} onClick={this.makeActive}>target</legend>
+					{React.Children.map(this.props.children, child =>
+     					React.cloneElement(child, { target: this.props.data })
+    				)}
 				</fieldset>
 			</Draggable>
 	    )

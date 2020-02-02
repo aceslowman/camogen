@@ -1,8 +1,13 @@
+import ParameterData from '../../../stores/ParameterData';
+
 const UV = {
 	name: 'UV',
-	uniforms: {
-      bSquare: true,
-    },  
+	uniforms: [
+        new ParameterData({
+            name: 'bSquare',
+            value: true,
+        }),
+    ],  
 	precision: `
 		#ifdef GL_ES
 		precision highp float;
