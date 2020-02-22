@@ -18,20 +18,23 @@ export default class App extends React.Component {
       height: window.innerHeight,
       generateFlag: false,
       snapshotFlag: false,
+      autoGenerate: true,
       levels:{
         0: {
           seed: Math.floor(Math.random() * 1000),
           noiseScale: 0.1,
           noiseStep: 8,
           dimX: 20,
-          dimY: 20
+          dimY: 20,
+          padX: 10,
+          padY: 10,
         },
         1: {
           seed: Math.floor(Math.random() * 1000),
           noiseScale: 2,
           noiseStep: 8,
           dimX: 6,
-          dimY: 6
+          dimY: 6,
         },
       }
     }
@@ -53,6 +56,8 @@ export default class App extends React.Component {
           noiseStep: 8,
           dimX: 2,
           dimY: 2,
+          padX: 10,
+          padY: 10, 
         }
       }
     }))
@@ -80,10 +85,41 @@ export default class App extends React.Component {
             noiseStep: 8,
             dimX: dim,
             dimY: dim,
+            padX: Math.random() * 10,
+            padY: Math.random() * 10,
           }
         }
       }))
     }
+
+    this.handleGenerate();
+  }
+
+  handleDefaults(){
+    this.setState({
+      width: window.innerHeight,
+      height: window.innerHeight,
+      generateFlag: false,
+      snapshotFlag: false,
+      levels: {
+        0: {
+          seed: Math.floor(Math.random() * 1000),
+          noiseScale: 0.1,
+          noiseStep: 8,
+          dimX: 20,
+          dimY: 20,
+          padX: 10,
+          padY: 10,
+        },
+        1: {
+          seed: Math.floor(Math.random() * 1000),
+          noiseScale: 2,
+          noiseStep: 8,
+          dimX: 6,
+          dimY: 6
+        },
+      }
+    });
 
     this.handleGenerate();
   }
@@ -103,12 +139,12 @@ export default class App extends React.Component {
       }
     }));
 
-    // this.handleGenerate();
+    if(this.state.autoGenerate) this.handleGenerate();
   }
 
   generateLayers(){
     this.layers = [];
-    // return;
+
     for (let i = 0; i < Object.keys(this.state.levels).length; i++) {
       this.layers.push(( 
         <fieldset key={i} style={{marginBottom:'15px'}}>
@@ -143,6 +179,22 @@ export default class App extends React.Component {
                 onChange={(v) => this.updateParameter(i,'dimY',v)}
               />
             </InputGroup>
+
+            <InputGroup name='padding'>
+              <InputFloat
+                val={this.state.levels[i].padX}
+                step="1"
+                name="x"
+                onChange={(v) => this.updateParameter(i, 'padX', v)}
+              />
+              <InputFloat
+                val={this.state.levels[i].padY}
+                step="1"
+                name="y"
+                onChange={(v) => this.updateParameter(i, 'padY', v)}
+              />
+            </InputGroup>
+
               <InputFloat 
                 val={this.state.levels[i].seed} 
                 step="1" 
@@ -195,6 +247,7 @@ export default class App extends React.Component {
             <div id="buttoncontainer">
               <button onClick={() => this.handleGenerate()}>generate</button>
               <button onClick={() => this.handleRandomize()}>randomize</button>
+              <button onClick={() => this.handleDefaults()}>defaults</button>
               <button onClick={() => this.handleSnapshot()}>snapshot</button>
               <button onClick={() => this.handleLevelDown()}>lvl -</button>
               <button onClick={() => this.handleLevelUp()}>lvl +</button>
@@ -214,7 +267,6 @@ export default class App extends React.Component {
           </div>
         </div>
         <P5Wrapper 
-
           id="canvascontainer"
           sketch={sketch} 
           width={this.state.width}

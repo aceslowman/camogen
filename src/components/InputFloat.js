@@ -23,11 +23,8 @@ export default class InputFloat extends React.Component {
     }
 
     updateValue(e) {
-        this.setState( {
-            value: e.target.value
-        });
-
-        this.props.onChange(e.target.value);
+        this.setState({value: e.target.value});
+        this.props.onChange(Number(e.target.value));
     }
 
     render() {
