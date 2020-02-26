@@ -53,15 +53,18 @@ const Shader = observer(class Shader extends React.Component {
 						<fieldset 
 							key={uniform_node.id}
 							style={{
-								padding: '0px',
+								padding: '2px',
+								marginTop: '10px',
+								display: 'inline-block',
 							}}
 						>
-							<legend>{uniform_node.name}</legend>
+							<legend className="invert" style={{ padding: '2px 4px' }}>{uniform_node.name}</legend>
 							<div
 								style={{
 									display: 'flex',
 									flexDirection: 'row',
 									width: '100%',
+									padding: '0px',
 								}}
 							>
 								{uniform_group}
@@ -96,6 +99,7 @@ const Shader = observer(class Shader extends React.Component {
 
 		return(
 			<NodeContainer 
+				style={{}}
 				title={data.name}
 				data={data} 
 				onRemove={this.handleRemove}

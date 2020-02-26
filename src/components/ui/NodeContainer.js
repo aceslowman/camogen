@@ -197,7 +197,7 @@ const NodeContainer = observer(class NodeContainer extends React.Component {
 		}
 
 		return(
-			<div style={style.wrapper}>
+			<div style={{...this.props.style, ...style.wrapper}}>
 				<div className='nodeButtons' style={style.buttons}>
 					<button style={style.button} onClick={this.props.onRemove}>x</button>
 	          		<button style={style.button} onClick={this.handleExpand}>{this.state.expanded ? 'v' : '>'}</button>

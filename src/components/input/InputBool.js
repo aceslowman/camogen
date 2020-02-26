@@ -7,29 +7,10 @@ const style = {
 export default class InputBool extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            value: props.val
-        };
     }
 
-    componentDidUpdate(prevProps) {
-        if(prevProps.val !== this.props.val) {
-            
-            this.setState({
-                value: this.props.val
-            })
-        }
-    }
-
-    updateValue(e) {
-        this.setState( {
-            value: e.target.checked
-        });
-
+    updateValue = e => {
         this.props.onChange(e.target.checked);
-
-        console.log(e.target.checked);
     }
 
     render() {
@@ -39,8 +20,8 @@ export default class InputBool extends React.Component {
                 <input 
                     style={{...this.props.style,...style}}
                     type="checkbox"         
-                    value={this.state.value}
-                    onChange={(e) => this.updateValue(e)}
+                    value={this.props.value}
+                    onChange={this.updateValue}
                 />
             </fieldset>
         );

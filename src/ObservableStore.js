@@ -15,6 +15,7 @@ class ObservableStore {
       new ShaderData("UV"),
       new ShaderData("Glyph"),
       new ShaderData("Glyph"),
+      new ShaderData("Threshold"),
     ],
   },
   {
