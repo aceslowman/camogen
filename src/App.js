@@ -9,6 +9,7 @@ import GraphicsRunner from './components/GraphicsRunner';
 import Target from './components/Target';
 import Shader from './components/Shader';
 import SVGLayer from './SVGLayer';
+import PageLayout from './components/PageLayout';
 
 const style = {
   wrapper: {
@@ -91,10 +92,11 @@ const App = observer(class App extends React.Component {
               { this.store.activeParameter &&
                 <ParameterDisplay data={this.store.activeParameter}/>
               }
+              <PageLayout />
             </div>  
             <ConsoleBar />
-
-            <SVGLayer />
+            
+              {/*<SVGLayer />*/}
 
           </div>
         </div>
