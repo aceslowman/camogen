@@ -89,9 +89,9 @@ const App = observer(class App extends React.Component {
               <div>
                 {this.targets}
               </div>
-              { this.store.activeParameter &&
+              {/* { this.store.activeParameter &&
                 <ParameterDisplay data={this.store.activeParameter}/>
-              }
+              } */}
               <PageLayout />
             </div>  
             <ConsoleBar />

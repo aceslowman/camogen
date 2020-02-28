@@ -2,11 +2,14 @@ import { observable, action, decorate } from 'mobx';
 import uuidv1 from 'uuid/v1';
 import * as NODES from './components/nodes';
 import ShaderData from './stores/ShaderData';
+import PageData from './stores/PageData';
 
 class ObservableStore {
   consoleText = 'camogen';
   suggestText = '';
   helpText = '';
+
+  page = new PageData();
 
   targets = [{
     id: uuidv1(),
@@ -79,6 +82,8 @@ decorate(ObservableStore, {
 
   consoleChanged: action,
   suggest: action,
+
+  page: observable,
 });
 
 const observableStore = new ObservableStore();
