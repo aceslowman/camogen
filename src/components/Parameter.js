@@ -7,9 +7,7 @@ import InputFloat from '../components/input/InputFloat';
 
 let style = {
     wrapper: {
-        width: '50%',
         display: 'inline-block',
-        backgroundColor: 'white',
     },
     fieldset: {
         padding: '2px',
@@ -31,9 +29,9 @@ const Parameter = observer(class Parameter extends React.Component {
 
     handleChange = e => {  
         if(this.props.isArray) {
-            this.props.data.value[this.props.index] = e;
+            this.props.data.value[this.props.index] = e.target.value;
         } else {
-            this.props.data.value = e;
+            this.props.data.value = e.target.value;
         }
     };
 
@@ -47,6 +45,8 @@ const Parameter = observer(class Parameter extends React.Component {
         const { data, index, isArray, name } = this.props;
 
         this.value = this.props.isArray ? data.value[index] : data.value;
+
+        console.log(this.value);
 
         let input;
 

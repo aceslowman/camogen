@@ -42,7 +42,17 @@ const style = {
     width: "100%",
     height: "100%",
     overflowY: "hidden",
-  }
+  },
+
+  target_groups: {
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "wrap",
+    height: window.innerHeight,
+    alignItems: "center",
+    alignContent: "flex-end",
+    justifyContent: "center",
+  },
 }
 
 const App = observer(class App extends React.Component {
@@ -86,7 +96,7 @@ const App = observer(class App extends React.Component {
           <div style={style.gui_panel}>           
             <HelpText />  
             <div style={style.gui_panel_inner}>
-              <div>
+              <div style={style.target_groups}>
                 {this.targets}
               </div>
               {/* { this.store.activeParameter &&
@@ -96,7 +106,7 @@ const App = observer(class App extends React.Component {
             </div>  
             <ConsoleBar />
             
-              {/*<SVGLayer />*/}
+              {/* <SVGLayer /> */}
 
           </div>
         </div>

@@ -8,12 +8,19 @@ const style = {
 		padding: '0px',
 		border: '1px dashed white',
 		margin: '15px',
+		// height: window.innerHeight,
 	},
 	legend: {
 		color: 'white',
 		backgroundColor: 'black', 
 		border: '1px solid white',
 		marginLeft: '7px'
+	},
+	fieldsetFix: {
+		display: 'flex',
+		flexFlow: 'column wrap',
+		justifyContent: 'center',
+		alignItems: 'center',
 	}
 };
 
@@ -48,9 +55,11 @@ const Target = observer(class Target extends React.Component {
 			<Draggable>
 				<fieldset style={style.wrapper}>
 					<legend style={style.legend} onClick={this.makeActive}>target</legend>
-					{React.Children.map(this.props.children, child =>
-     					React.cloneElement(child, { target: this.props.data })
-    				)}
+					<div style={style.fieldsetFix}>
+						{React.Children.map(this.props.children, child =>
+							React.cloneElement(child, { target: this.props.data })
+						)}
+					</div>					
 				</fieldset>
 			</Draggable>
 	    )

@@ -4,8 +4,6 @@ import MainContext from '../MainContext';
 import Parameter from './Parameter';
 import NodeContainer from './ui/NodeContainer';
 import Draggable from 'react-draggable';
-import InputBool from '../components/input/InputBool';
-import InputFloat from '../components/input/InputFloat';
 
 const parameter_style = {
     wrapper: {
@@ -60,7 +58,7 @@ const style = {
         padding: '0px',
         border: '1px dashed white',
         margin: '15px',
-        padding: '15px', 
+        // padding: '15px', 
     },
     legend: {
         color: 'white',
@@ -77,12 +75,39 @@ const style = {
         display: 'flex',
         flexFlow: 'column',
         margin: '15px',
+        width: '75px',
     }
 };
 
 const PageLayout = observer(class PageLayout extends React.Component {
 
     static contextType = MainContext;
+
+    constructor(){
+        super();
+        this.wrapper_ref = React.createRef();
+
+        this.state = {
+            width: 100,
+            height: 200,
+        }
+    }
+
+    componentDidMount(){
+        this.updateStyle();
+    }
+
+    updateStyle(){
+        if(!this.wrapper_ref.current) return;
+        console.log(this.wrapper_ref);
+
+        const aspect = this.store.page.width.value / this.store.page.height.value;
+        
+        this.setState(previousState => ({
+            height: this.wrapper_ref.current.clientHeight,
+            width: this.wrapper_ref.current.clientHeight * aspect,
+        }));
+    }
 
     render() {
         const { data } = this.props;
@@ -96,13 +121,14 @@ const PageLayout = observer(class PageLayout extends React.Component {
                 flexFlow: 'row',
                 border: '1px dashed black',
                 backgroundColor: 'white',
+                margin: '15px',
             },
             page: {
                 display: 'inline-flex',
                 flexFlow: 'row',
                 border: '1px dashed black',
-                width: this.store.page.width,
-                height: this.store.page.height,
+                height: this.state.height + 'px',
+                width: this.state.width + 'px',
             },
             left_page: {
                 justifyContent: 'flex-end',
@@ -111,66 +137,42 @@ const PageLayout = observer(class PageLayout extends React.Component {
                 justifyContent: 'flex-start',
             },
             content_area: {
-                display: 'inline-block',
+                display: 'block',
                 width: '100%',
-                height: '100%',
                 boxSizing: 'border-box',
                 border: '1px dashed black',
                 backgroundColor: '#eee',
-                margin: this.store.page.margin,
+                margin: this.store.page.margin.value + 'px',
             },
         }
 
         return (
             <Draggable>
-                <fieldset style={style.wrapper}>
+                <fieldset style={style.wrapper} ref={this.wrapper_ref}>
                     <legend style={style.legend}>Page Layout</legend>
                     <div style={style.inner}>
                         <div style={style.parameter_area}>
 
-                            <fieldset style={parameter_style.fieldset}>
-                                <legend className="invert" style={parameter_style.legend}>Margin</legend>                    
-                                <InputFloat
-                                    style={parameter_style.input}
-                                    step={0.1}
-                                    value={this.store.page.margin}
-                                    onChange={this.handleChange}
-                                    onClick={this.handleClick}
-                                />
-                            </fieldset>
+                            <Parameter
+                                name={"margin"}
+                                data={this.store.page.margin}
+                            />
 
-                            <fieldset style={parameter_style.fieldset}>
-                                <legend className="invert" style={parameter_style.legend}>Width</legend>                    
-                                <InputFloat
-                                    style={parameter_style.input}
-                                    step={0.1}
-                                    value={this.store.page.width}
-                                    onChange={this.handleChange}
-                                    onClick={this.handleClick}
-                                />
-                            </fieldset>
+                            <Parameter
+                                name={"width"}
+                                data={this.store.page.width}
+                            />
 
-                            <fieldset style={parameter_style.fieldset}>
-                                <legend className="invert" style={parameter_style.legend}>Height</legend>                    
-                                <InputFloat
-                                    style={parameter_style.input}
-                                    step={0.1}
-                                    value={this.store.page.height}
-                                    onChange={this.handleChange}
-                                    onClick={this.handleClick}
-                                />
-                            </fieldset>  
+                            <Parameter
+                                name={"height"}
+                                data={this.store.page.height}
+                            />
 
-                            <fieldset style={parameter_style.fieldset}>
-                                <legend className="invert" style={parameter_style.legend}>DPI</legend>                    
-                                <InputFloat
-                                    style={parameter_style.input}
-                                    step={0.1}
-                                    value={this.store.page.dpi}
-                                    onChange={this.handleChange}
-                                    onClick={this.handleClick}
-                                />
-                            </fieldset>                                                        
+                            <Parameter
+                                name={"dpi"}
+                                data={this.store.page.dpi}
+                            />        
+
                         </div>
                         <div style={page_style.two_pages}>
                             <div style={{...page_style.page, ...page_style.left_page}}>
