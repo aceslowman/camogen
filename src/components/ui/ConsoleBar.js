@@ -5,20 +5,10 @@ import MainContext from '../../MainContext';
 
 const style = {
 	wrapper: {
-		position: 'absolute',
-		bottom:'0px',
-		left:'0px',
-		display:'flex',
-		// alignItems:'flex-end',
-		borderTop: '1px solid black',
 		width: '100%',
-		height: '35px',
-	},
-
-	version: {
-		backgroundColor: 'black',
-		padding: '5px',
-		// height : '100%'
+		display: 'flex',
+		borderTop: '1px solid black',
+		height: '35px',	
 	},
 
 	console: {
@@ -38,11 +28,6 @@ const style = {
 		border: 'none',	
 		zIndex: '1',
 		backgroundColor: 'transparent',
-	},
-
-	a: {
-		textDecoration: 'none',
-		color: 'white',
 	},
 
 	suggest: {
@@ -92,25 +77,24 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 
 		return (
           <div style={style.wrapper}>
-          	<div style={style.version}>
-          		<a style={style.a} href="https://github.com/aceslowman/camogen"><sub>v1.0</sub></a>	
-          	</div>
-            <div id="console" style={style.console}>
-            	<input 
-            		ref={(ref) => this.ref = ref}
-            		style={{...style.input, ...this.store.consoleStyle}}
-            		type="text"
-            		placeholder={this.store.suggestText}
-            		value={this.store.consoleText}
-            		onChange={(e) => this.handleChange(e)}
-            	/>
-            	<input
-            		readOnly
-            		type="text"            		
-            		style={{...style.input, ...this.store.consoleStyle, ...style.suggest}}
-            		value={this.store.suggestText}
-            	/>
-            </div>            
+
+				<div id="console" style={style.console}>
+					<input
+						ref={(ref) => this.ref = ref}
+						style={{ ...style.input, ...this.store.consoleStyle }}
+						type="text"
+						placeholder={this.store.suggestText}
+						value={this.store.consoleText}
+						onChange={(e) => this.handleChange(e)}
+					/>
+					<input
+						readOnly
+						type="text"
+						style={{ ...style.input, ...this.store.consoleStyle, ...style.suggest }}
+						value={this.store.suggestText}
+					/>
+				</div>   
+         
           </div>
 		);
 	}

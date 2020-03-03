@@ -147,7 +147,7 @@ const PageLayout = observer(class PageLayout extends React.Component {
         }
 
         return (
-            <Draggable>
+            // <Draggable>
                 <fieldset style={style.wrapper} ref={this.wrapper_ref}>
                     <legend style={style.legend}>Page Layout</legend>
                     <div style={style.inner}>
@@ -184,7 +184,7 @@ const PageLayout = observer(class PageLayout extends React.Component {
                         </div>
                     </div>
                 </fieldset>
-            </Draggable>
+            // </Draggable>
         )
     }
 });

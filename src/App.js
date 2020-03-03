@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import './App.css';
 import HelpText from './components/ui/HelpText';
 import ConsoleBar from './components/ui/ConsoleBar';
+import ToolBar from './components/ui/ToolBar';
 import ParameterDisplay from './components/ParameterDisplay';
 import GraphicsRunner from './components/GraphicsRunner';
 import Target from './components/Target';
@@ -14,26 +15,24 @@ import PageLayout from './components/PageLayout';
 const style = {
   wrapper: {
     height: "100%",
+    width: '100%',
     boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "row", 
   },
 
-  panel: {
-    margin : "0",
-    padding: "0",
-    boxSizing: "border-box",
-    width: "50%",
-    height : "100%",
-  },
-
-  gui_panel: {
+  work_area: {
+    flexGrow: '1',
+    // flexShrink: '0',
+    // flexBasis: '50%',
     backgroundColor: "transparent",
     display: "flex",
-    alignItems: "center",
+    alignItems: "flex-end",
     alignContent: "center",
     flexFlow: "column",    
   },
 
-  gui_panel_inner: {
+  work_area_inner: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -93,21 +92,23 @@ const App = observer(class App extends React.Component {
       <MainProvider value={ctx}>
         <div id="mainWrapper" style={style.wrapper}>          
           <GraphicsRunner />
-          <div style={style.gui_panel}>           
-            <HelpText />  
-            <div style={style.gui_panel_inner}>
-              <div style={style.target_groups}>
+
+          <ToolBar />
+
+          <div className="work_area" style={style.work_area}>           
+            
+            <HelpText />              
+            <div className="work_area_inner" style={style.work_area_inner}>
+              <div className="target_group" style={style.target_groups}>
                 {this.targets}
               </div>
               {/* { this.store.activeParameter &&
                 <ParameterDisplay data={this.store.activeParameter}/>
               } */}
               <PageLayout />
-            </div>  
-            <ConsoleBar />
-            
-              {/* <SVGLayer /> */}
+            </div>          
 
+            <ConsoleBar />
           </div>
         </div>
       </MainProvider>

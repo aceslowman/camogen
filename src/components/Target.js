@@ -52,7 +52,7 @@ const Target = observer(class Target extends React.Component {
 		}
 
 		return(
-			<Draggable>
+			// <Draggable>
 				<fieldset style={style.wrapper}>
 					<legend style={style.legend} onClick={this.makeActive}>target</legend>
 					<div style={style.fieldsetFix}>
@@ -61,7 +61,7 @@ const Target = observer(class Target extends React.Component {
 						)}
 					</div>					
 				</fieldset>
-			</Draggable>
+			// </Draggable>
 	    )
 	}
 });
