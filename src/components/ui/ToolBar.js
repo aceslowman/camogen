@@ -44,15 +44,36 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
 
     static contextType = MainContext;
 
+
+    handleNew = () => {
+        console.log("handleNew");
+
+    }
+
+    handleSave = () => {
+        console.log("handleSave");
+
+    }
+
+    handleOpen = () => {
+        console.log("handleOpen");
+
+    }
+
+    handleObj = () => {
+        console.log("handleObj");
+        
+    }
+
     render() {
         this.store = this.context.store;
 
         return (
             <div className="toolbar" style={style.wrapper}>
-                <button className="black_button" style={style.button}>NEW</button>
-                <button className="black_button" style={style.button}>SAVE</button>
-                <button className="black_button" style={style.button}>OPEN</button>
-                <button className="black_button" style={style.button}>OBJ</button>
+                <button className="black_button" style={style.button} onClick={this.handleNew}>NEW</button>
+                <button className="black_button" style={style.button} onClick={this.handleSave}>SAVE</button>
+                <button className="black_button" style={style.button} onClick={this.handleOpen}>OPEN</button>
+                <button className="black_button" style={style.button} onClick={this.handleObj}>OBJ</button>
 
                 <div style={style.version}>
                     <a style={style.a} href="https://github.com/aceslowman/camogen"><sub>v1.0</sub></a>

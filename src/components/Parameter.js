@@ -46,8 +46,6 @@ const Parameter = observer(class Parameter extends React.Component {
 
         this.value = this.props.isArray ? data.value[index] : data.value;
 
-        console.log(this.value);
-
         let input;
 
         switch (this.value.constructor) {

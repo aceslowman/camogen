@@ -4,6 +4,7 @@ import MainContext from '../MainContext';
 import Parameter from './Parameter';
 import NodeContainer from './ui/NodeContainer';
 import Draggable from 'react-draggable';
+import jsPDF from 'jspdf';
 
 const parameter_style = {
     wrapper: {
@@ -91,15 +92,27 @@ const PageLayout = observer(class PageLayout extends React.Component {
             width: 100,
             height: 200,
         }
-    }
+    }         
 
     componentDidMount(){
         this.updateStyle();
     }
 
+    handleCreate = () => {
+        
+
+        // let pdf = new jsPDF({
+        //     orientation: 'portrait',
+        //     unit: 'in',
+        //     format: [this.store.page.width,this.store.page.height],
+        // });
+
+        // pdf.text('main title', 10, 10);
+        // pdf.save('test.pdf');
+    }
+
     updateStyle(){
         if(!this.wrapper_ref.current) return;
-        console.log(this.wrapper_ref);
 
         const aspect = this.store.page.width.value / this.store.page.height.value;
         
@@ -146,6 +159,9 @@ const PageLayout = observer(class PageLayout extends React.Component {
             },
         }
 
+        if (this.context.p5_instance.canvas) 
+            this.canvas = this.context.p5_instance.canvas.cloneNode(true);
+
         return (
             // <Draggable>
                 <fieldset style={style.wrapper} ref={this.wrapper_ref}>
@@ -173,13 +189,14 @@ const PageLayout = observer(class PageLayout extends React.Component {
                                 data={this.store.page.dpi}
                             />        
 
+                            <button onClick={this.handleCreate}>save pdf</button>
                         </div>
                         <div style={page_style.two_pages}>
                             <div style={{...page_style.page, ...page_style.left_page}}>
-                                <div style={page_style.content_area}></div>
+                                <div style={page_style.content_area}>{this.canvas}</div>
                             </div>
                             <div style={{...page_style.page, ...page_style.right_page}}>
-                                <div style={page_style.content_area}></div>
+                                <div style={page_style.content_area}>{this.canvas}</div>
                             </div>
                         </div>
                     </div>
