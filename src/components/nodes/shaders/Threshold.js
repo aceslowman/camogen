@@ -5,11 +5,11 @@ const Threshold = {
 	uniforms: [
         new ParameterData({
             name: 'low',
-            value: 0.5,
+            value: 0.0,
         }),
         new ParameterData({
             name: 'high',
-            value: 0.6,
+            value: 1.0,
         }),
         new ParameterData({
             name: 'invert',

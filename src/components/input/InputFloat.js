@@ -8,7 +8,7 @@ export default class InputFloat extends React.Component {
     }
 
     handleChange = e => {
-        this.props.onChange(e);
+        this.props.onChange(e.target.value);
     }
 
     render() {

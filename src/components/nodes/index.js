@@ -1,4 +1,10 @@
-const types = ["Glyph","UV","Noise","Threshold"];
+const types = [
+	"Glyph",
+	"UV",
+	"Noise",
+	"Threshold",
+	"Invert",
+];
 let modules = {};
 
 types.forEach((type) => {

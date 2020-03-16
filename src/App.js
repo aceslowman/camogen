@@ -83,13 +83,13 @@ const App = observer(class App extends React.Component {
     this.store = this.props.store;
     this.generateTargets();    
 
-    let ctx = {
+    this.ctx = {
+      ...this.ctx,
       store: this.store,
-      p5_instance: this.instance,
     }
 
     return (    
-      <MainProvider value={ctx}>
+      <MainProvider value={this.ctx}>
         <div id="mainWrapper" style={style.wrapper}>          
           <GraphicsRunner />
 

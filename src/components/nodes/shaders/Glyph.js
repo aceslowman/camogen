@@ -9,17 +9,17 @@ const Glyph = {
 			value: Math.floor(Math.random() * 1000),
 		}),
 		new ParameterData({
-			name: 'noiseScale',
-			value: 0.1,
-		}),
-		new ParameterData({
-			name: 'noiseStep',
-			value: 8,
+			name: 'scale',
+			value: [1.,1.],
 		}),
 		new ParameterData({
 			name: 'dimensions',
-			value: [20,20],
-		}),				
+			value: [200,200],
+		}),	
+		new ParameterData({
+			name: 'padding',
+			value: [0.1, 0.1],
+		}),			
 	],
 	precision: `
 		#ifdef GL_ES
@@ -47,8 +47,8 @@ const Glyph = {
 		uniform sampler2D tex0;
 		uniform vec2 resolution;
 		uniform vec2 dimensions;
-		uniform int level; 
-		// uniform float seed;
+		uniform vec2 scale;
+		uniform vec2 padding; 
 
 		vec2 gridCoordinates(vec2 uv, vec2 dim) {
 		    // not sure why dim-1.
@@ -64,24 +64,25 @@ const Glyph = {
 		    return vec2(s_x,s_y);
 		}
 
+		float linearPosition(vec2 uv, vec2 dim){
+			float x_pos = mod(uv.x,1.0/dim.x);
+			float y_pos = mod(uv.y,1.0/dim.y);
+
+			return x_pos;
+		}
+
 		void main() {
 		    vec3 color = vec3(0.0);
 		    vec4 src = texture2D(tex0, vTexCoord);
-
-		    vec2 grid;
-		    vec2 m_grid;
 		    
-		    m_grid = modCoordinates(src.rg,dimensions);
-		    grid = gridCoordinates(m_grid,dimensions);
+		    vec2 m_grid = modCoordinates(src.rg,dimensions);
+		    vec2 grid = gridCoordinates(m_grid,dimensions);
+		    float seed = linearPosition(src.rg,dimensions);
 
-		    float seed = src.b;
+		    float n = snoise(vec3(grid*scale,seed));    
 
-		    float n = snoise(vec3(grid,seed));    
-
-		    color = vec3(n);
-		    // color =	vec3(1.0,src.r,src.g);
-		    // color = vec3(src.rgb/0.2);
-		    // color = vec3(uv.x,uv.y/,1.0);
+			color = vec3(n);
+			// color = vec3(grid,0.0);
 
 		    gl_FragColor = vec4(color,1.0);
 		}

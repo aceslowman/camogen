@@ -29,9 +29,9 @@ const Parameter = observer(class Parameter extends React.Component {
 
     handleChange = e => {  
         if(this.props.isArray) {
-            this.props.data.value[this.props.index] = e.target.value;
+            this.props.data.value[this.props.index] = e;
         } else {
-            this.props.data.value = e.target.value;
+            this.props.data.value = e;         
         }
     };
 
@@ -87,7 +87,7 @@ const Parameter = observer(class Parameter extends React.Component {
                     step={0.1}
                     value={this.value}
                     // name={"none"}
-                    onChange={this.handleChange}
+                    onChange={e=>this.handleChange(e.target.value)}
                     onClick={this.handleClick}
                 />);
             break;

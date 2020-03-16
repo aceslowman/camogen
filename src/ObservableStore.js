@@ -17,21 +17,24 @@ class ObservableStore {
     shaders: [
       new ShaderData("UV"),
       new ShaderData("Glyph"),
-      new ShaderData("Glyph"),
+      // new ShaderData("Glyph"),
       new ShaderData("Threshold"),
+      // new ShaderData("Invert"),
     ],
   },
-  {
-    id: uuidv1(),
-    active: false,
-    shaders: [
-      new ShaderData("Noise"),
-    ],
-  }
+  // {
+  //   id: uuidv1(),
+  //   active: false,
+  //   shaders: [
+  //     new ShaderData("Noise"),
+  //   ],
+  // }
   ];
 
   activeTarget = "";
   activeParameter = "";
+
+  object_list = NODES.types;
 
   addShader(target, type, index = null) {    
     let i = index ? index : target.shaders.length;
@@ -73,6 +76,8 @@ decorate(ObservableStore, {
   suggestText: observable,
 
   activeParameter: observable,
+
+  object_list: observable,
 
   targets: observable,
   activeTarget: observable,

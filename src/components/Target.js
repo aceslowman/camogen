@@ -49,6 +49,7 @@ const Target = observer(class Target extends React.Component {
 			...style.legend,
 			color: this.context.store.activeTarget === this.target ? 'black' : 'white',
 			backgroundColor: this.context.store.activeTarget === this.target ? 'white' : 'black',
+			border: this.context.store.activeTarget === this.target ? '1px solid black' : '1px solid white',
 		}
 
 		return(

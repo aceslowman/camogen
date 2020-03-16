@@ -84,7 +84,7 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 						style={{ ...style.input, ...this.store.consoleStyle }}
 						type="text"
 						placeholder={this.store.suggestText}
-						value={this.store.consoleText}
+						value={'>> '+this.store.consoleText}
 						onChange={(e) => this.handleChange(e)}
 					/>
 					<input
