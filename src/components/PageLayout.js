@@ -149,76 +149,135 @@ const PageLayout = observer(class PageLayout extends React.Component {
             this.pdf.addPage('legal', this.page.isPortrait.value ? 'p' : 'l');       
         }
 
+        console.log(this.context.p5_instance);
+
         for (let i = 0; i <= this.page.count.value; i++) {
             this.makePage(i);
         }
 
-        // generate back side
-        // NOTE: page numbers are reversed on backside
-        // for (let i = 1; i <= this.page.count.value; i += 2) {
+        this.makeTitle();
+        this.makeColophon();
+    }
 
-        //     if (this.page.isSingle.value) {
-        //         this.pdf.addImage(    // SINGLE 
-        //             crop_canvas,      // imageData
-        //             'PNG',         // format
-        //             mT,            // x
-        //             mL,            // y
-        //             w - (mL + mR), // width
-        //             h - (mT + mB), // height
-        //             null,          // alias
-        //             'NONE',        // compression
-        //             0              // rotation
-        //         );
-        //     } else {
-        //         let page_number_l = this.page.count.value - i;
-        //         let t = page_number_l / this.page.count.value;
+    makeTitle = ()=>{
+        let legal = [459, 756];
 
-        //         let _x = mL;
-        //         let _y = mT;
-        //         let _width = (w / 2) - (mL + mR);
-        //         let _height = h - (mT + mB);
+        this.img = this.context.p5_instance.canvas;
 
-        //         this.pdf.addImage(          // LEFT HAND
-        //             crop_canvas,            // imageData
-        //             'PNG',               // format
-        //             lerp(_x, 0, t),                  // x
-        //             lerp(_y, 0, t),                  // y
-        //             lerp(_width, w / 2, t),              // width
-        //             lerp(_height, h, t),             // height
-        //             null,                // alias
-        //             'NONE',              // compression
-        //             0                    // rotation
-        //         );
+        let w = this.page.isPortrait.value ? legal[0] : legal[1];
+        let h = this.page.isPortrait.value ? legal[1] : legal[0];
 
-        //         this.pdf.text(String(page_number_l), 7, h - 7.5);
+        let crop_canvas0 = cloneCanvas(
+            this.img,
+            200,
+            100
+        );
 
-        //         // RIGHT HAND
-        //         let page_number_r = i + 1;
-        //         t = page_number_r / this.page.count.value;
+        let crop_canvas1 = cloneCanvas(
+            this.img,
+            200 / 3,
+            100 / 3
+        );        
 
-        //         _x = (w / 2) + mR;
-        //         _y = mT;
-        //         _width = (w / 2) - (mL + mR);
-        //         _height = h - (mT + mB);
+        this.pdf.setPage(this.page.count.value / 2 + 2);
 
-        //         this.pdf.addImage(          // RIGHT HAND
-        //             crop_canvas,            // imageData
-        //             'PNG',               // format
-        //             lerp(_x, w / 2, t),                  // x
-        //             lerp(_y, 0, t),                  // y
-        //             lerp(_width, w / 2, t),              // width
-        //             lerp(_height, h, t),        // height
-        //             null,                // alias
-        //             'NONE',              // compression
-        //             0                    // rotation
-        //         );
+        this.pdf.addImage(    // SINGLE 
+            crop_canvas0,      // imageData
+            'PNG',         // format
+            0,            // x
+            h / 2 - (h / 4),            // y
+            w/2-4, // width
+            200, // height
+            null,          // alias
+            'NONE',        // compression
+            0              // rotation
+        );
 
+        this.pdf.addImage(    // SINGLE 
+            crop_canvas1,      // imageData
+            'PNG',         // format
+            w/2 + (w/4),            // x
+            h/2 - (h/4),            // y
+            400, // width
+            200, // height
+            null,          // alias
+            'NONE',        // compression
+            0              // rotation
+        );
 
-        //         this.pdf.text(String(page_number_r), w - 20, h - 7.5);
-        //     }
+        let _target = this.store.targets[0];
+        let _glyph = _target.shaders[1];
+        let _dimensions = _glyph.uniforms[2].value;
+        let _scale = _glyph.uniforms[1].value;
+        let _offset = _glyph.uniforms[4].value;
 
-        //     this.pdf.addPage('legal', this.page.isPortrait.value ? 'p' : 'l');
-        // }        
+        _dimensions[0] += 0.5;
+        _dimensions[1] += 0.5;
+        _scale[0] -= 0.1;
+        _scale[1] -= 0.1;
+
+        this.context.p5_instance.draw();
+
+        this.pdf.text(String("THIS IS A TITLE TEST"), w/2 + (w/4), h/2);
+
+        console.log('generating title...');
+    }
+
+    makeColophon = () => {
+        let legal = [459, 756];
+
+        this.img = this.context.p5_instance.canvas;
+
+        let w = this.page.isPortrait.value ? legal[0] : legal[1];
+        let h = this.page.isPortrait.value ? legal[1] : legal[0];
+
+        let crop_canvas = cloneCanvas(
+            this.img,
+            10,
+            10
+        );
+
+        this.pdf.setPage(this.page.count.value/2 + 1);
+
+        this.pdf.addImage(    // SINGLE 
+            crop_canvas,      // imageData
+            'PNG',         // format
+            w / 2,            // x
+            h / 2 - (h / 8),            // y
+            200, // width
+            200, // height
+            null,          // alias
+            'NONE',        // compression
+            0              // rotation
+        );
+        
+        let _target = this.store.targets[0];
+        let _glyph = _target.shaders[1];
+        let _dimensions = _glyph.uniforms[2].value;
+        let _scale = _glyph.uniforms[1].value;
+        let _offset = _glyph.uniforms[4].value;
+
+        _dimensions[0] += 0.5;
+        _dimensions[1] += 0.5;
+        _scale[0] -= 0.1;
+        _scale[1] -= 0.1;
+
+        this.context.p5_instance.draw();
+
+        console.log(this.pdf.getFontList());
+        this.pdf.setFont('times');
+        this.pdf.setFontStyle('italic');
+        this.pdf.setFontSize(12);
+        this.pdf.text(`
+        This book was generated 
+        computationally by 
+        
+        Austin Slominski
+
+        in March of 2020
+        `, 10, h/2 - (h/4));
+
+        console.log('generating colophon...');
     }
 
     makePage = (page_number) => {
@@ -233,17 +292,15 @@ const PageLayout = observer(class PageLayout extends React.Component {
         let w = this.page.isPortrait.value ? legal[0] : legal[1];
         let h = this.page.isPortrait.value ? legal[1] : legal[0];
 
-        let scalar = 1;
+        let scalar = 1.55;
 
         let crop_canvas = cloneCanvas(
             this.img,
-            ((w / 2) - (mL + mR)) * scalar,
-            (h - (mT + mB)) * scalar
+            ((w / 2) - (mL + mR)+4) * scalar,
+            (h - (mT + mB)+5) * (legal[0] / legal[1]) * scalar
         );
 
-        let _target = this.store.targets[0];
-        let _glyph = _target.shaders[1];
-        let _dimensions = _glyph.uniforms[2].value;
+        // _offset[0] += 1.;
 
         if (this.page.isSingle.value) {
             this.pdf.addImage(    // SINGLE 
@@ -271,6 +328,9 @@ const PageLayout = observer(class PageLayout extends React.Component {
                 this.pdf.setPage(this.page.count.value - page_number + 1);
             }
 
+            // this.pdf.setDrawColor(255,255,0);
+            
+
             if(page_number == 0){
                 // this.pdf.text('title', 7, h - 7.5);
             }else if(page_number % 2 == 0){
@@ -279,6 +339,16 @@ const PageLayout = observer(class PageLayout extends React.Component {
                 _y = mT;
                 _width = (w / 2) - (mL + mR);
                 _height = h - (mT + mB);
+
+                let bw = 2;
+
+                // this.pdf.setLineWidth(8);
+                // this.pdf.rect(
+                //     lerp(_x, w / 2, t), 
+                //     lerp(_y, 0, t), 
+                //     lerp(_width, w / 2, t),
+                //     lerp(_height, h, t)
+                // );
 
                 this.pdf.addImage(          // RIGHT HAND
                     crop_canvas,            // imageData
@@ -293,8 +363,29 @@ const PageLayout = observer(class PageLayout extends React.Component {
                 );
 
                 this.pdf.text(String(page_number), w - 20, h - 7.5);
+                this.pdf.setLineWidth((20 * t) + 10);
+                this.pdf.lines(
+                    [
+                        // [0, 0],
+                        [t * (w/2), 0]
+                    ],
+                    w/2,
+                    h,
+                );
+                
             }else{
+
+                let bw = 2;
+
                 // LEFT HAND
+                // this.pdf.setLineWidth(8);
+                // this.pdf.rect(
+                //     lerp(_x, 0, t),
+                //     lerp(_y, 0, t),
+                //     lerp(_width, w / 2, t),
+                //     lerp(_height, h, t)
+                // );
+
                 this.pdf.addImage(
                     crop_canvas,            // imageData
                     'PNG',                  // format
@@ -308,7 +399,30 @@ const PageLayout = observer(class PageLayout extends React.Component {
                 );
 
                 this.pdf.text(String(page_number), 7, h - 7.5);
-            }   
+                this.pdf.setLineWidth((20 * t) + 10);
+                this.pdf.lines(
+                    [
+                        // [0, 0],
+                        [-t * (w/2), 0]
+                    ],
+                    w/2,
+                    h,
+                );
+                this.pdf.setLineWidth(4);
+            } 
+
+            this.context.p5_instance.draw();
+
+            let _target = this.store.targets[0];
+            let _glyph = _target.shaders[1];
+            let _dimensions = _glyph.uniforms[2].value;
+            let _scale = _glyph.uniforms[1].value;
+            let _offset = _glyph.uniforms[4].value;
+
+            _dimensions[0] += 0.5;
+            _dimensions[1] += 0.5;
+            _scale[0] -= 0.1;
+            _scale[1] -= 0.1;
         }
 
         console.log('generating');

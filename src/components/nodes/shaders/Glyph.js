@@ -10,16 +10,20 @@ const Glyph = {
 		}),
 		new ParameterData({
 			name: 'scale',
-			value: [1.,1.],
+			value: [3.,1.],
 		}),
 		new ParameterData({
 			name: 'dimensions',
-			value: [200,200],
+			value: [100,200],
 		}),	
 		new ParameterData({
 			name: 'padding',
 			value: [0.1, 0.1],
 		}),			
+		new ParameterData({
+			name: 'offset',
+			value: [0.0,0.0],
+		})
 	],
 	precision: `
 		#ifdef GL_ES
@@ -49,6 +53,7 @@ const Glyph = {
 		uniform vec2 dimensions;
 		uniform vec2 scale;
 		uniform vec2 padding; 
+		uniform vec2 offset;
 
 		vec2 gridCoordinates(vec2 uv, vec2 dim) {
 		    // not sure why dim-1.
@@ -79,7 +84,7 @@ const Glyph = {
 		    vec2 grid = gridCoordinates(m_grid,dimensions);
 		    float seed = linearPosition(src.rg,dimensions);
 
-		    float n = snoise(vec3(grid*scale,seed));    
+		    float n = snoise(vec3((grid+offset)*scale,seed));    
 
 			color = vec3(n);
 			// color = vec3(grid,0.0);
