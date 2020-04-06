@@ -1,17 +1,17 @@
-import ParameterData from '../../../stores/ParameterData';
+import Parameter from '../../../models/Parameter';
 
 const Threshold = {
 	name: 'Threshold',
 	uniforms: [
-        new ParameterData({
+        new Parameter({
             name: 'low',
             value: 0.0,
         }),
-        new ParameterData({
+        new Parameter({
             name: 'high',
             value: 1.0,
         }),
-        new ParameterData({
+        new Parameter({
             name: 'invert',
             value: false,
         }),

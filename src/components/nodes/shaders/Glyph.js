@@ -1,29 +1,91 @@
 import simplex from './includes/simplex';
-import ParameterData from '../../../stores/ParameterData';
+import Parameter from '../../../models/Parameter';
+import ParameterGraph from '../../../models/ParameterGraph';
+import { store as ElapsedTime } from '../inputs/ElapsedTime';
+import { store as Add } from '../ops/Add';
+import { store as Divide } from '../ops/Divide';
+import { store as Subtract } from '../ops/Subtract';
+import { store as Multiply } from '../ops/Multiply';
+import { store as Modulus } from '../ops/Modulus';
+
+/* 
+	This format can be used to store all configurations and settings
+	 for a user-defined shader. Shader.js is built to parse these
+	  documents.
+*/
 
 const Glyph = {
 	name: 'Glyph',
 	uniforms: [
-		new ParameterData({
+		new Parameter({
 			name: 'seed',
 			value: Math.floor(Math.random() * 1000),
 		}),
-		new ParameterData({
+		{
 			name: 'scale',
-			value: [3.,1.],
-		}),
-		new ParameterData({
+			elements: [
+				new Parameter({
+					name: 'x',
+					value: 3.,
+				}),
+				new Parameter({
+					name: 'y',
+					value: 1.,
+				})
+			],
+		},
+		{
 			name: 'dimensions',
-			value: [100,200],
-		}),	
-		new ParameterData({
+			elements: [
+				new Parameter({
+					name: 'x',
+					value: 100.,
+				}),
+				new Parameter({
+					name: 'y',
+					value: 200.,
+				})
+			],
+		},
+		{
 			name: 'padding',
-			value: [0.1, 0.1],
-		}),			
-		new ParameterData({
+			elements: [
+				new Parameter({
+					name: 'x',
+					value: 0.1,
+				}),
+				new Parameter({
+					name: 'y',
+					value: 0.1,
+				})
+			],
+		},
+		{
 			name: 'offset',
-			value: [0.0,0.0],
-		})
+			elements: [
+				new Parameter({
+					name: 'x',
+					value: 0.0,
+					graph: new ParameterGraph([
+						new ElapsedTime(),
+						new Divide(100),
+						new Add(0),
+						new Subtract(0),
+						new Multiply(1),
+						new Modulus(100),
+					]),
+				}),
+				new Parameter({
+					name: 'y',
+					value: 0.0,
+					graph: new ParameterGraph([
+						new ElapsedTime(),
+						new Divide(100),
+						new Add(0)
+					]),
+				}),
+			],
+		},				
 	],
 	precision: `
 		#ifdef GL_ES

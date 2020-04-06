@@ -1,9 +1,9 @@
-import ParameterData from '../../../stores/ParameterData';
+import Parameter from '../../../models/Parameter';
 
 const UV = {
 	name: 'UV',
 	uniforms: [
-        new ParameterData({
+        new Parameter({
             name: 'bSquare',
             value: true,
         }),

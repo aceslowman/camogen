@@ -54,7 +54,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function(webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
-  const isEnvProduction = webpackEnv === 'production';
+  const isEnvProduction = webpackEnv === 'production';  
 
   // Variable used for enabling profiling in Production
   // passed into alias object. Uses a flag if passed into the build command
@@ -383,6 +383,7 @@ module.exports = function(webpackEnv) {
                 ),
                 
                 plugins: [
+                  'transform-decorators-legacy',
                   [
                     require.resolve('babel-plugin-named-asset-import'),
                     {
@@ -664,16 +665,20 @@ module.exports = function(webpackEnv) {
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
-    node: {
-      module: 'empty',
-      dgram: 'empty',
-      dns: 'mock',
-      fs: 'empty',
-      http2: 'empty',
-      net: 'empty',
-      tls: 'empty',
-      child_process: 'empty',
-    },
+    node: process.env.TARGET_ELECTRON ?
+      undefined :
+      {
+        module: 'empty',
+        dgram: 'empty',
+        dns: 'mock',
+        fs: 'empty',
+        http2: 'empty',
+        net: 'empty',
+        tls: 'empty',
+        child_process: 'empty',
+      },
+      // Support electron-renderer target via environmental flag, default to web
+      target: process.env.TARGET_ELECTRON ? 'electron-renderer' : 'web',
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter
     performance: false,

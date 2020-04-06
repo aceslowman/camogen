@@ -2,72 +2,70 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-
-const style = {
-	wrapper: {
-		padding: '0px',
-		border: '1px dashed white',
-		margin: '15px',
-		minWidth: '200px',
-		minHeight: '200px',
-	},
-	legend: {
-		color: 'white',
-		backgroundColor: 'black', 
-		border: '1px solid white',
-		marginLeft: '7px',
-	},
-	inner: {
-		backgroundColor: 'transparent',
-		display: 'flex',
-		flexFlow: 'column',
-		justifyContent: 'flex-end',
-		alignItems: 'center',
-		justifyItems: 'center',
-		width: '100%',
-		height: '100%',
-		minWidth: '200px',
-		minHeight: '200px',
-	},
-	input: {
-		width: '70px',
-		justifyContent: 'center',
-	},
-};
+import * as NODES from './nodes';
+import Panel from './ui/Panel';
 
 const ParameterDisplay = observer(class ParameterDisplay extends React.Component {
 
 	static contextType = MainContext;
 
-	generateNodes() {
+	constructor(props) {
+		super(props);
 		this.nodes = [];
-		
-		for(let node of this.props.data.graph) {
-			console.log('node',node);
+
+		this.ref = React.createRef();
+	}
+
+	generateNodes() {
+		// render is being called too often IMPORTANT
+		this.nodes = [];
+
+		if (!this.props.data.graph) return;
+		for (let i = 0; i < this.props.data.graph.nodes.length; i++) {
+			let node = this.props.data.graph.nodes[i];
+
+			console.log(NODES);
+			// is there anything better to do here?			
+			let NodeComponent = NODES.all[node.base_type].node;			
+			
+			this.nodes.push((
+				<NodeComponent key={i} data={node}/>
+			));
 		}
+	}
+
+	handleClickAway = e => {
+		if (!this.ref.current.contains(e.target)) {
+			this.context.store.activeParameter = null;
+			document.removeEventListener('click', this.handleClickAway);
+		}
+	}
+
+	componentDidMount() {				
+		this.generateNodes();
 	}
 
 	render() {
 		const { data } = this.props;
-		this.generateNodes();
-		const a_id = this.context.store.activeParameterIndex;
-		this.value = a_id !== null ? data.value[a_id] : data.value
-
+		
 		return(
-			<Draggable>
-				<fieldset style={style.wrapper}>
-					<legend style={style.legend}>{data.name}</legend>
-					<div style={style.inner}>
-						{this.nodes}
-						<input
-							readOnly
-							style={style.input}
-							type="number"
-							value={this.value}
-						/>	
-					</div>
-				</fieldset>
-			</Draggable>
+			<Panel 
+				title={"Parameter"} 
+				onClickAway={this.handleClickAway}
+				onRef={this.ref}
+			>
+				{this.nodes}
+				<input
+					readOnly
+					style={{
+						width: '70px',
+						marginTop: '15px',
+						justifyContent: 'center',
+					}}
+					type="number"
+					value={data.value}
+				/>
+			</Panel>							
 	    )
 	}
 });

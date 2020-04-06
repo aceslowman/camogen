@@ -1,8 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import MainContext from './MainContext';
-
-// let style = {};
+import MainContext from '../MainContext';
 
 const SVGLayer = observer(class SVGLayer extends React.Component {
 

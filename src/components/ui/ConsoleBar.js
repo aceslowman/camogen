@@ -1,44 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-
 import MainContext from '../../MainContext';
-
-const style = {
-	wrapper: {
-		width: '100%',
-		display: 'flex',
-		borderTop: '1px solid black',
-		height: '35px',	
-	},
-
-	console: {
-		width: '100%',
-		height: '100%',
-		zIndex: '0',
-		backgroundColor: 'white',
-	},
-
-	input: {
-		margin:'0',
-		padding: '0px 5px',
-		width: '100%',
-		boxSizing: 'border-box',
-		height: '100%',
-		fontSize: '1.5em',
-		border: 'none',	
-		zIndex: '1',
-		backgroundColor: 'transparent',
-	},
-
-	suggest: {
-		color: 'gray',
-		position: 'relative',
-		bottom: '35px',
-		pointerEvents: 'none',
-		zIndex: '-2',
-		backgroundColor: 'transparent',
-	}
-}
 
 const ConsoleBar = observer(class ConsoleBar extends React.Component {
 
@@ -76,25 +38,24 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 		this.store = this.context.store;
 
 		return (
-          <div style={style.wrapper}>
-
-				<div id="console" style={style.console}>
+          <div id="console">
+				<div>
 					<input
 						ref={(ref) => this.ref = ref}
-						style={{ ...style.input, ...this.store.consoleStyle }}
+						style={this.store.consoleStyle}
 						type="text"
 						placeholder={this.store.suggestText}
-						value={'>> '+this.store.consoleText}
+						value={this.store.consoleText}
 						onChange={(e) => this.handleChange(e)}
 					/>
 					<input
 						readOnly
 						type="text"
-						style={{ ...style.input, ...this.store.consoleStyle, ...style.suggest }}
+						id="suggest"
+						style={this.store.consoleStyle}
 						value={this.store.suggestText}
 					/>
-				</div>   
-         
+				</div>      
           </div>
 		);
 	}

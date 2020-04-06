@@ -1,45 +1,29 @@
 html,
-body, #root {
+body,
+#root {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  /* font-family: monospace; */
-  /* font-family: VCR OSD Mono, monospace; */
-  font-family: Windows Command, monospace;
-  /* font-family: Piacevoli, monospace; */
+  font-family: "Windows Command", monospace;
   font-size: 0.9em;
-  /* font-family: "Lucida Console", Monaco, monospace; */
-  /* font-family: "Courier New", Courier, monospace; */
 }
 
-fieldset  {
+fieldset {
   box-sizing: border-box;
 }
 
-input  {
-  font-family: Windows Command, monospace;
+input {
+  font-family: "Windows Command", monospace;
+  box-sizing: border-box;  
 }
 
 button {
-  font-family: Windows Command, monospace;
+  font-family: "Windows Command", monospace;
 }
 
-.black_button:hover {
-  background-color: white !important;
-  color: black !important;
-}
-
-.white_button:hover {
-  background-color: black !important;
-  color: white !important;
-}
-
-.drawer{
-  -webkit-transition: width 300ms ease-in-out;
-  -moz-transition: width 300ms ease-in-out;
-  -o-transition: width 300ms ease-in-out;
-  transition: width 300ms ease-in-out;
+button:focus {
+  outline: 0;
 }
 
 #defaultCanvas0 {
@@ -57,26 +41,392 @@ button {
   align-items: inherit;
 }
 
-.invert  {
+.invert {
   color: white;
   background-color: black;
   padding: 5px;
 }
 
-#console input:focus {
+.inner button:focus {
   outline: none;
 }
 
-.inner button:focus {
-  outline: none;
-} 
-
 /*to do*/
 .inner {
-  height : 0px;
- -webkit-transition: height 1s ease;
-    -moz-transition: height 1s ease;
-      -o-transition: height 1s ease;
-     -ms-transition: height 1s ease;
-         transition: height 1s ease;
+  height: 0px;
+  -webkit-transition: height 1s ease;
+  -moz-transition: height 1s ease;
+  -o-transition: height 1s ease;
+  -ms-transition: height 1s ease;
+  transition: height 1s ease;
+}
+
+
+/* app.js */
+#mainWrapper {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+}
+
+.work_area {
+  flex-grow: 1;
+  background-color: transparent;
+  display: flex;
+  align-items: flex-end;
+  align-content: center;
+  flex-flow: column;
+}
+
+.work_area_inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.target_group {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: flex-end;
+  justify-content: center;
+}
+
+/* Shader.js */
+
+.uniform_array {
+  padding: 2px;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.uniform_array > div{  
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 0px;
+}
+
+/* ParameterDisplay.js */
+
+/* Parameter.js */
+
+.parameter_wrapper {
+  display: inline-block;
+}
+
+.parameter_wrapper>fieldset {
+  padding: 2px;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.parameter_wrapper>fieldset>legend {
+  padding: 2px 4px;
+}
+
+/* Toolbar.js */
+
+#TOOLBAR {
+  display: flex;
+  flex-flow: row;
+  height: 100%;
+}
+
+.toolbar {
+  display: flex;
+  flex-flow: column wrap;
+  background-color: black;
+  color: white;
+}
+
+.drawer {
+  display: flex;
+  flex-flow: column wrap;
+  background-color: white;
+  color: black;
+  border-right: 1px dotted black;
+  width: 0px;
+  overflow: hidden;
+
+  transition: width 300ms ease-in-out;
+}
+
+.drawer > button {
+  text-align: left;
+}
+
+.black_button {
+  padding: 4px;
+  color: white;
+  background-color: black;
+  border: none;
+  border-bottom: 1px solid white;
+  cursor: pointer;
+}
+
+.white_button {
+  padding: 4px;
+  color: black;
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid black;  
+  cursor: pointer;
+}
+
+.black_button:hover {
+  background-color: white !important;
+  color: black !important;
+}
+
+.white_button:hover {
+  background-color: black !important;
+  color: white !important;
+}
+
+.version {
+  background-color: black;
+  padding: 5px;
+  width: 26px;
+  position: absolute;
+  bottom: 5px;
+  left: -3px;
+}
+
+.version > a {
+  text-decoration: none;
+  color: white;
+  padding: 5px;
+  padding-left: none;
+}
+
+/* ConsoleBar.js */
+
+#console {
+  width: 100%;
+  display: flex;
+  border-top: 1px solid black;
+  height: 35px;
+}
+
+#console > div{
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-color: white;
+}
+
+#console > div > input:focus {
+  outline: none;
+}
+
+#console > div > input {
+  margin: 0;
+  padding: 0px 5px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 100%;
+  font-size: 1.5em;
+  border: none;
+  z-index: 1;
+  background-color: transparent;
+}
+
+#suggest {
+  color: gray;
+  position: relative;
+  bottom: 35px;
+  pointer-events: none;
+  z-index: -2;
+  background-color: transparent;
+}
+
+/* FieldContainer.js */
+
+.panel {
+  padding: 0px;
+  margin: 15px;
+  border: none;
+}
+
+.panel h1 {
+  margin-top: 0px;
+}
+
+.panelContent {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  border: 1px dashed white;
+  border-top: none;
+}
+
+.panelButtons {  
+  display: flex;
+  flex-flow: row;
+  align-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  color: black;
+  background-color: black;
+  border: 1px solid white;
+  position: relative;
+  top: -100%;
+  box-sizing: content-box;
+}
+
+.panelButtons>legend {
+  color: white;  
+  border: none !important;  
+  cursor: pointer;
+}
+
+.panelButtons>button {
+  box-sizing: border-box;
+  background-color: black;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.panelButtons>button:hover {
+  background-color: white;
+  color: black;
+}
+
+.panelButtons>button:focus {
+  outline: 0;
+}
+
+/* Node.js */
+
+.node {
+  width: 250px;
+  margin: 10px;
+  background-color: black;
+  border: 1px solid white;  
+  display: flex;
+  flex-direction: row;
+}
+
+.miniNode {    
+  /* font-size: 0.75em; */
+  /* width: 200px; */
+  margin: 5px 15px;
+  background-color: black;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  align-items: center;
+  justify-content: center;
+}
+
+.miniNode button{    
+  color: white;
+  background-color: black;
+  border: none;
+  border-right: 1px solid white;
+}
+
+.miniNode legend {  
+  height: 100%;
+  min-width: 80px;  
+  padding: 0px 5px;
+}
+
+.miniNode input {
+  text-align: left;
+  padding-left: 5px; 
+  width: 65px;
+}
+
+.node input {
+  width: 100%;
+}
+
+.nodeButtons {
+  height: 100%;
+  box-sizing: border-box;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.nodeButtons > button {
+  padding: 2.5px 5px;  
+  background-color: black;
+  border: none;
+  color: white;
+}
+
+.nodeButtons>button:hover {  
+  background-color: white;
+  color: black;  
+}
+
+.nodeContainerMain {
+  border: 1px solid black;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.nodeContainerMain > legend {		
+  font-weight: bold;
+  font-size: 1.6em;
+  cursor: pointer;
+  width: 100%;
+  padding: 16px 10px;
+  box-sizing: border-box;
+}
+
+.nodeContainerTop {
+  background-color: black;
+  height : 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  overflow: hidden; 
+}
+
+.nodeContainerInner {  	
+  flex-flow: row wrap;
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  transition: max-height 800ms ease-in-out;  
+}
+
+.nodeContainerInnerFix {
+  padding: 10px;
+}
+
+.nodeContainerBottom {
+  background-color: black;
+  width: 100%;
+  height: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Splash */
+
+#SPLASH {    
+  color: white;
+  padding: 15px; 
 }

@@ -2,9 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import Parameter from './Parameter';
-import NodeContainer from './ui/NodeContainer';
-
-// const style = {};
+import Node from './ui/Node';
+import { entries } from 'mobx';
 
 const Shader = observer(class Shader extends React.Component {
 
@@ -13,82 +12,62 @@ const Shader = observer(class Shader extends React.Component {
 	constructor(props) {
 		super(props);
 
-		let target = props.target.ref;
+		// let target = props.target.ref;
 
-		this.shader = target.createShader(
-	        props.data.vertex,
-	        props.data.fragment,
-        );
+		// this.shader = target.createShader(
+	    //     props.data.vertex,
+	    //     props.data.fragment,
+        // );
 
-        for(let uniform_node in props.data.uniforms) {
-            this.shader.setUniform('uniform_node.name', uniform_node.value);
-        }
+        // for(let uniform_node in props.data.uniforms) {
+        //     this.shader.setUniform('uniform_node.name', uniform_node.value);
+        // }
 
-        props.data.ref = this.shader;
+        // props.data.ref = this.shader;
 	}	
 
 	generateParameters() {
-		this.uniforms = [];
+		this.parameters = [];
 
-		for(let uniform_node of this.props.data.uniforms) {
-			let uniform = [];
-
-			switch(uniform_node.value.constructor) {
-	            case Array: 
-	            	let uniform_group = [];
-
-	            	for(let i = 0; i < uniform_node.value.length; i++) {	            		
-						uniform_group.push((
-							<Parameter 	
-								key={uniform_node.id+i}
-								isArray={true}						
-								index={i}
-								name={['x','y'][i]}
-								data={uniform_node}
+		for (let param of this.props.data.uniforms) {			
+			if (param.elements) {
+				this.parameters.push((
+					<fieldset 
+						key={param.id}
+						className="uniform_array"
+					>
+						<legend className="invert" style={{ padding: '2px 4px' }}>{param.name}</legend>
+						<div>
+							{/* TEMPORARY */}
+							<Parameter 
+								key={param.elements[0].id}
+								data={param.elements[0]}							
 							/>
-						));						
-	            	}	   
-
-	            	uniform.push((
-						<fieldset 
-							key={uniform_node.id}
-							style={{
-								padding: '2px',
-								marginTop: '10px',
-								display: 'inline-block',
-							}}
-						>
-							<legend className="invert" style={{ padding: '2px 4px' }}>{uniform_node.name}</legend>
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									width: '100%',
-									padding: '0px',
-								}}
-							>
-								{uniform_group}
-							</div>
-						</fieldset>
-					));             
-	                break;
-	            default:
-	            	uniform.push((	            		
-						<Parameter 
-							key={uniform_node.id}
-							data={uniform_node}							
-						/>
-					));
-	                break;	            	            	           
-	        }
-
-	        this.uniforms.push(uniform);
+							<Parameter 
+								key={param.elements[1].id}
+								data={param.elements[1]}							
+							/>
+						</div>
+					</fieldset>
+				));
+			} else {
+				this.parameters.push((
+					<Parameter 
+						key={param.id}
+						data={param}							
+					/>
+				));
+			}
 		}
 	}
 
 	handleRemove = () => {
-		this.store.removeShader(this.props.data, this.props.target);
+		this.props.target.removeShader(this.props.data);
 	}
+
+	handleSave = () => this.props.data.save();
+
+	handleLoad = () => this.props.data.load();
 
 	render() {
 		const { data } = this.props;
@@ -98,16 +77,17 @@ const Shader = observer(class Shader extends React.Component {
 		this.generateParameters();
 
 		return(
-			<NodeContainer 
-				style={{}}
+			<Node 
 				title={data.name}
 				data={data} 
 				onRemove={this.handleRemove}
+				onSave={this.handleSave}
+				onLoad={this.handleLoad}
 				inlets={[{hint: "tex in"}]}
 				outlets={[{hint: "tex out"}]}
 			>	            
-				{this.uniforms}
-			</NodeContainer>          		
+				{this.parameters}
+			</Node>          		
 	    )
 	}
 });

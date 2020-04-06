@@ -1,15 +1,15 @@
 import simplex from './includes/simplex';
-import ParameterData from '../../../stores/ParameterData';
+import Parameter from '../../../models/Parameter';
 // import ElapsedTime from '../data/ElapsedTime';
 
 const Noise = {
 	name: 'Noise',
 	uniforms: [
-		new ParameterData({
+		new Parameter({
 			name: 'offset',
 			value: [0.0,0.0],
 		}),
-		new ParameterData({
+		new Parameter({
 			name: 'seed',
 			value: Math.floor(Math.random() * 1000),
 		}),

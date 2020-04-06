@@ -2,6 +2,7 @@ import React from 'react';
 import { MainProvider } from './MainContext';
 import { observer } from 'mobx-react';
 import './App.css';
+
 import HelpText from './components/ui/HelpText';
 import ConsoleBar from './components/ui/ConsoleBar';
 import ToolBar from './components/ui/ToolBar';
@@ -9,52 +10,14 @@ import ParameterDisplay from './components/ParameterDisplay';
 import GraphicsRunner from './components/GraphicsRunner';
 import Target from './components/Target';
 import Shader from './components/Shader';
-import SVGLayer from './SVGLayer';
-import PageLayout from './components/PageLayout';
-
-const style = {
-  wrapper: {
-    height: "100%",
-    width: '100%',
-    boxSizing: "border-box",
-    display: "flex",
-    flexDirection: "row", 
-  },
-
-  work_area: {
-    flexGrow: '1',
-    // flexShrink: '0',
-    // flexBasis: '50%',
-    backgroundColor: "transparent",
-    display: "flex",
-    alignItems: "flex-end",
-    alignContent: "center",
-    flexFlow: "column",    
-  },
-
-  work_area_inner: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    boxSizing: "border-box",
-    width: "100%",
-    height: "100%",
-    overflowY: "hidden",
-  },
-
-  target_groups: {
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    height: window.innerHeight,
-    alignItems: "center",
-    alignContent: "flex-end",
-    justifyContent: "center",
-  },
-}
+import Splash from './components/Splash';
 
 const App = observer(class App extends React.Component {
+
+  constructor() {
+    super();
+    this.workAreaRef = React.createRef();
+  }
 
   generateTargets(){
     this.targets = [];
@@ -63,12 +26,13 @@ const App = observer(class App extends React.Component {
       let nodes = [];
 
       for(let shader_node of target_node.shaders) {
-          nodes.push((
-            <Shader 
-              key={shader_node.id} 
-              data={shader_node} 
-            />
-          ));
+        console.log(shader_node);
+        nodes.push((
+          <Shader 
+            key={shader_node.id} 
+            data={shader_node} 
+          />
+        ));
       }
 
       this.targets.push((
@@ -77,7 +41,7 @@ const App = observer(class App extends React.Component {
         </Target>
       ));
     }
-  }
+  }  
 
   render() {
     this.store = this.props.store;
@@ -90,22 +54,25 @@ const App = observer(class App extends React.Component {
 
     return (    
       <MainProvider value={this.ctx}>
-        <div id="mainWrapper" style={style.wrapper}>          
-          <GraphicsRunner />
-
+        <div id="mainWrapper">          
+          <GraphicsRunner 
+            work_area={this.workAreaRef}
+          />
           <ToolBar />
 
-          <div className="work_area" style={style.work_area}>           
+          <div className="work_area">           
             
             <HelpText />              
-            <div className="work_area_inner" style={style.work_area_inner}>
-              <div className="target_group" style={style.target_groups}>
+            <div className="work_area_inner" ref={this.workAreaRef}>
+              <div className="target_group">
                 {this.targets}
               </div>
-              {/* { this.store.activeParameter &&
+              { this.store.activeParameter &&
                 <ParameterDisplay data={this.store.activeParameter}/>
-              } */}
-              <PageLayout />
+              }
+              { this.store.show_splash &&
+                <Splash />
+              }
             </div>          
 
             <ConsoleBar />
