@@ -36,23 +36,21 @@ export default class Shader {
   vert      = "";
   frag      = "";
   ref       = null;
-  target    = null;
-  parent    = null;
+  target    = null;  
 
-  constructor(type = null, parent = null) {
-    if(type) this.load(type);
+  constructor(type = null, target) {
+    if(type) this.load(type); 
 
-    this.parent = parent;
+    this.target = target;
 
-    // set up ref
-    this.ref = this.parent.ref.createShader(
+    this.ref = this.target.ref.createShader(
       this.vertex,
       this.fragment
     );
 
     for (let uniform_node in this.uniforms) {
       this.ref.setUniform(uniform_node.name, uniform_node.value);
-    }
+    } 
   }
 
   load(type = null) {  
@@ -88,21 +86,20 @@ export default class Shader {
           if (err)
             alert("in error has occurred: " + err.message);
           
-          let result = deserialize(Shader, JSON.parse(data));
+          let result = deserialize(
+            Shader, 
+            JSON.parse(data), 
+            (err, res) => {
+              if(err) console.log(err);
+              console.log(res);
+            }
+          );
 
           console.dir(result, { colors: true, depth: 10 })
-
-          // i expect this to be a problem
-          // Object.assign(this, result);
-
-          // but this doesn't seem to work either,
-          // doesn't seem to update within GraphicsRunner
-          this.uuid = uuidv1();
-          this.name = result.name;
-          this.uniforms = result.uniforms;
-          this.precision = result.precision;
-          this.vert = result.vert;
-          this.frag = result.frag;
+          
+          result.target = this.target;
+          result.init();
+          Object.assign(this, result);
         })
       }).catch(err => {
         alert(err);
@@ -142,21 +139,26 @@ export default class Shader {
 }
 
 decorate(Shader, {
-  uuid: observable,
-  name: observable,
-  uniforms: observable,
+  uuid:      observable,
+  target:    observable,
+  name:      observable,
+  uniforms:  observable,
   precision: observable,
-  vert: observable,
-  frag: observable,
-  vertex: computed,
-  fragment: computed,
+  vert:      observable,
+  frag:      observable,
+  vertex:    computed,
+  fragment:  computed,
 });
 
 createModelSchema(Shader, {
-  uuid: identifier(),  
-  name: primitive(),
-  uniforms: list(object(Parameter)),
+  uuid:      identifier(),  
+  target:    object(Parameter),
+  name:      primitive(),
+  uniforms:  list(object(Parameter)),
   precision: primitive(),
-  vert: primitive(),
-  frag: primitive(),
+  vert:      primitive(),
+  frag:      primitive(),
+}, c => {
+  let p = c.parentContext.target;
+  return new Shader(null,p);
 });

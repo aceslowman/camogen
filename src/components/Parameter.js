@@ -17,16 +17,13 @@ const Parameter = observer(class Parameter extends React.Component {
         this.context.store.activeParameterIndex = isArray ? index : null;        
     }
 
-    render() {
-        const { data, index, isArray, name } = this.props;
-
+    componentDidMount() {
+        const { index, data } = this.props;
         this.value = this.props.isArray ? data.value[index] : data.value;
-
-        let input;
 
         switch (this.value.constructor) {
             case Boolean:
-                input = (<InputBool
+                this.input = (<InputBool
                     step={0.1}
                     value={this.value}
                     onChange={this.handleChange}
@@ -34,7 +31,7 @@ const Parameter = observer(class Parameter extends React.Component {
                 />);
             break;
             case Number:
-                input = (<InputFloat
+                this.input = ( < InputFloat
                     step={0.1}
                     value={this.value}
                     // name={"none"}
@@ -43,7 +40,7 @@ const Parameter = observer(class Parameter extends React.Component {
                 />);
             break;
             default:
-                input = (<InputFloat
+                this.input = ( < InputFloat
                     step={0.1}
                     value={this.value}
                     // name={"none"}
@@ -52,12 +49,16 @@ const Parameter = observer(class Parameter extends React.Component {
                 />);
             break;
         }
+    }
+
+    render() {
+        const { data, isArray, name } = this.props;
 
         return (
             <div className="parameter_wrapper">
                 <fieldset>            
                     <legend className="invert">{isArray ? name : data.name}</legend>                    
-                    {input}                                                         
+                    {this.input}                                                         
                 </fieldset>
             </div>
         )

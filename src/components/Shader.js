@@ -3,28 +3,14 @@ import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import Parameter from './Parameter';
 import Node from './ui/Node';
-import { entries } from 'mobx';
 
 const Shader = observer(class Shader extends React.Component {
 
 	static contextType = MainContext;
 
-	constructor(props) {
-		super(props);
-
-		// let target = props.target.ref;
-
-		// this.shader = target.createShader(
-	    //     props.data.vertex,
-	    //     props.data.fragment,
-        // );
-
-        // for(let uniform_node in props.data.uniforms) {
-        //     this.shader.setUniform('uniform_node.name', uniform_node.value);
-        // }
-
-        // props.data.ref = this.shader;
-	}	
+	componentDidMount() {
+		this.generateParameters();
+	}
 
 	generateParameters() {
 		this.parameters = [];
@@ -33,18 +19,18 @@ const Shader = observer(class Shader extends React.Component {
 			if (param.elements) {
 				this.parameters.push((
 					<fieldset 
-						key={param.id}
+						key={param.uuid}
 						className="uniform_array"
 					>
 						<legend className="invert" style={{ padding: '2px 4px' }}>{param.name}</legend>
 						<div>
 							{/* TEMPORARY */}
 							<Parameter 
-								key={param.elements[0].id}
+								key={param.elements[0].uuid}
 								data={param.elements[0]}							
 							/>
 							<Parameter 
-								key={param.elements[1].id}
+								key={param.elements[1].uuid}
 								data={param.elements[1]}							
 							/>
 						</div>
@@ -53,7 +39,7 @@ const Shader = observer(class Shader extends React.Component {
 			} else {
 				this.parameters.push((
 					<Parameter 
-						key={param.id}
+						key={param.uuid}
 						data={param}							
 					/>
 				));
@@ -73,8 +59,6 @@ const Shader = observer(class Shader extends React.Component {
 		const { data } = this.props;
 
 		this.store = this.context.store;
-
-		this.generateParameters();
 
 		return(
 			<Node 

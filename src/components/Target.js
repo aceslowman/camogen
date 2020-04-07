@@ -7,21 +7,8 @@ const Target = observer(class Target extends React.Component {
 
 	static contextType = MainContext;
 
-	constructor(props,context) {
-		super(props);
-		this.context = context;
-
-		// let p = context.p5_instance;
-		// this.target = p.createGraphics(window.innerWidth,window.innerHeight,p.WEBGL);
-
-		// props.data.ref = this.target;
-
-		if(props.data.active) this.handleActive();
-	}
-
 	handleActive = () => {		
-		this.context.store.activeTarget = this.props.data;
-		this.context.store.activeTarget.t = this.target;
+		this.context.store.activeTarget = this.props.data;		
 	}
 
 	handleRemove = () => {

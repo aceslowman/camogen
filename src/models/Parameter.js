@@ -26,8 +26,6 @@ export default class Parameter {
 
       // associate with parent
       if (this.graph) this.graph.parent = this;
-    } else {
-      console.log('no object');
     }
   }
 }

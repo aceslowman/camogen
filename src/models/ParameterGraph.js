@@ -1,5 +1,6 @@
 import { observable, decorate, action } from 'mobx';
 import uuidv1 from 'uuid/v1';
+import Operator from './Operator';
 import {
     createModelSchema,
     primitive,
@@ -12,25 +13,18 @@ import {
 } from "serializr"
 
 export default class ParameterGraph {
-    id = uuidv1();
+    uuid   = uuidv1();
     parent = null;
-    nodes = [];
+    nodes  = [];
 
-    constructor(n) {
-        this.nodes = n;            
-    }
-
-    addNode() {
-
-    }
-
-    removeNode() {
-
-    }
-
-    parent(p) {    
+    constructor(n = null, p) {
+        if(n) this.nodes = n;   
         this.parent = p;
     }
+
+    addNode() {}
+
+    removeNode() {}
 
     update() {
         for(let i = 0; i < this.nodes.length; i++){
@@ -40,17 +34,16 @@ export default class ParameterGraph {
 }
 
 decorate(ParameterGraph, {
-    id: observable,
+    uuid: observable,
     nodes: observable,
     addNode: action,
     removeNode: action,
-    parent: action,
 });
 
 createModelSchema(ParameterGraph, {
     uuid: identifier(),
-    // nodes: primitive(),
-    // addNode: primitive(),
-    // removeNode: primitive(),
-    // parent: primitive(),
+    nodes: list(object(Operator)),
+}, c => {    
+    let p = c.parentContext.target;
+    return new ParameterGraph(null, p);
 });

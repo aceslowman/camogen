@@ -3,28 +3,22 @@ import uuidv1 from 'uuid/v1';
 import Shader from './Shader';
 import {
     createModelSchema,
-    primitive,
-    reference,
+    primitive,    
     list,
     object,
     identifier,
-    serialize,
-    deserialize
 } from "serializr"
 
 export default class Target {
-    uuid = uuidv1();
-    active = true;
+    uuid    = uuidv1();
+    ref     = null;
+    parent  = null;
+    active  = true;
     shaders = [];
-    
-    // experimental
-    parameter_graphs = [];
-    ref = null;
-    parent = null;
 
     constructor(parent) {    
-        this.parent = parent;        
-        console.log(parent);
+        this.parent = parent;
+
         let p = this.parent.p5_instance;
         this.ref = p.createGraphics(
             window.innerWidth,
@@ -32,7 +26,7 @@ export default class Target {
             p.WEBGL
         );
 
-        this.generateDefault();
+        if (this.active) this.parent.activeTarget = this; 
     }
 
     generateDefault() {
@@ -42,28 +36,18 @@ export default class Target {
             new Shader("ToHSV", this),
             new Shader("Wavy", this),
         ];
+
+        return this;
     }
 
-    addShader(type, index = null) {
-        let i = index ? index : this.shaders.length;
-        let shader = new Shader(type);
-
-        if(shader.parameter_graphs.length){
-            this.parameter_graphs.concat(shader.parameter_graphs);
-        }
-
-        this.shaders.splice(i, 0, shader);
+    addShader(type, pos = null) {
+        let shader = new Shader(type,this);
+        this.shaders.splice(pos ? pos : this.shaders.length, 0, shader);
     }
 
     removeShader(shader) {
         this.shaders = this.shaders.filter((item) => item !== shader);
-
-        // this feels like a weird pattern, but currently working
         if(this.shaders.length === 0) this.parent.removeTarget(this);           
-    }
-
-    moveShader(){
-
     }
 }
 
@@ -72,12 +56,14 @@ decorate(Target, {
     active: observable,
     shaders: observable,
     addShader: action,
-    removeShader: action,
-    moveShader: action,
+    removeShader: action,    
 });
 
 createModelSchema(Target, {
     uuid: identifier(),
     active: primitive(),
     shaders: list(object(Shader)),
+}, c => {    
+    let p = c.parentContext.target;
+    return new Target(p);
 });

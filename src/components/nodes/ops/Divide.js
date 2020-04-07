@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { observable, action, decorate } from 'mobx';
 import MainContext from '../../../MainContext';
-import MiniNode from '../../ui/MiniNode';
+import Node from '../../ui/Node';
 
 //----------------------------------------------------------------------
 const store = class DivideStore {
@@ -39,7 +39,7 @@ const node = observer(class Divide extends React.Component {
 	render() {
 		const { data } = this.props;
 		return (
-			<MiniNode 				
+			<Node 				
 				title="/"
 				data={data} 
 				onRemove={this.handleRemove}
@@ -49,7 +49,7 @@ const node = observer(class Divide extends React.Component {
                     value={data.modifier}	
                     onChange={this.handleChange}			
 				/>				
-			</MiniNode>
+			</Node>
 		);
 	}
 });

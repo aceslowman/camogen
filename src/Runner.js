@@ -1,61 +1,19 @@
-import React from 'react';
-import { observer } from 'mobx-react';
-import MainContext from '../MainContext';
+const Runner = (p, store, props) => {
 
-import p5 from 'p5';
-
-const GraphicsRunner = observer(class GraphicsRunner extends React.Component {
-    static contextType = MainContext;
-
-    constructor(props,context) {        
-        super(props);
-        context.p5_instance = new p5((p) => sketch(p,context.store,props));
-    }
-
-    handleResize = e => {
-        this.context.p5_instance.resizeCanvas(
-            this.props.work_area.current.offsetWidth,
-            this.props.work_area.current.offsetHeight
-        );
-
-        // update target dimensions
-        for (let target_data of this.context.store.targets) {
-            let target = target_data.ref;
-
-            target.resizeCanvas(
-                this.props.work_area.current.offsetWidth,
-                this.props.work_area.current.offsetHeight
-            );
-        }
-
-        this.context.p5_instance.draw();
-    }
-
-    componentDidMount() {
-        window.addEventListener('resize', this.handleResize);
-    }
-
-    render() {        
-        return '';
-    }
-});
-
-const sketch = (p, store, props) => {
-
-    p.setup = () => {         
-        p.frameRate(1);   
+    p.setup = () => {
+        // p.frameRate(1);
         p.createCanvas(
             window.innerWidth,
             window.innerHeight
             // props.work_area.current.offsetWidth,
             // props.work_area.current.offsetHeight
         );
-                
-        p.background(255,0,255);      
+
+        p.background(255, 0, 255);
     }
 
-    p.draw = () =>  {        
-        if (store.activeTarget){
+    p.draw = () => {
+        if (store.activeTarget) {
             for (let target_data of store.targets) {
                 // console.log(target_data);
                 let target = target_data.ref;
@@ -80,11 +38,11 @@ const sketch = (p, store, props) => {
                             for (let element of uniform_data.elements) {
                                 elements.push(element.value);
                             }
-                            
+
                             shader.setUniform(uniform_data.name, elements);
-                        }else{
+                        } else {
                             shader.setUniform(uniform_data.name, uniform_data.value);
-                        }                        
+                        }
                     }
 
                     shader.setUniform('tex0', target);
@@ -97,14 +55,14 @@ const sketch = (p, store, props) => {
             }
 
             p.image(store.activeTarget.ref, 0, 0, p.width, p.height);
-        }else{            
+        } else {
             p.background(0);
-        } 
+        }
     }
 
     p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
-        store = props.store;        
+        store = props.store;
     };
 }
 
-export default GraphicsRunner;
+export default Runner;
