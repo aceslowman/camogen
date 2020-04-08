@@ -24,7 +24,7 @@ const win = remote.getCurrentWindow();
 const fs = window.require('fs');
 const path = require('path');
 
-class ObservableStore {
+class MainStore {
   p5_instance = null;
 
   targets = [];
@@ -104,7 +104,7 @@ class ObservableStore {
           let obj = JSON.parse(data);
 
           let result = deserialize(
-            ObservableStore, 
+            MainStore, 
             {...obj, parent: this},
             (err, res) => {
               if (err) console.log(err);
@@ -120,7 +120,7 @@ class ObservableStore {
   }
 }
 
-decorate(ObservableStore, {  
+decorate(MainStore, {  
   consoleText:     observable,  
   suggestText:     observable,  
   object_list:     observable,
@@ -136,18 +136,18 @@ decorate(ObservableStore, {
   load:            action, 
 });
 
-createModelSchema(ObservableStore, {
+createModelSchema(MainStore, {
   targets:      list(object(Target)),
   activeTarget: object(Target),
   show_splash:  primitive(),
 });
 
-const observableStore = new ObservableStore();
+const mainStore = new MainStore();
 
 // set defaults
-observableStore.targets.push(
-  new Target(observableStore).generateDefault()
+mainStore.targets.push(
+  new Target(mainStore).generateDefault()
 );
 
-export default observableStore;
+export default mainStore;
 
