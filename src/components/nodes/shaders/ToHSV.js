@@ -1,13 +1,13 @@
-import Parameter from '../../../models/Parameter';
+import * as Parameter from '../../Parameter';
 
 const ToHSV = {
 	name: '2HSV',
 	uniforms: [
-        new Parameter({
+        new Parameter.store({
             name: 'scale',
             value: 1.0,
         }),
-        new Parameter({
+        new Parameter.store({
             name: 'rotation',
             value: 1.0,
         }),

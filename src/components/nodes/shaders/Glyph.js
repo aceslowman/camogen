@@ -1,6 +1,6 @@
 import simplex from './includes/simplex';
-import Parameter from '../../../models/Parameter';
-import ParameterGraph from '../../../models/ParameterGraph';
+import { store as Parameter } from '../../Parameter';
+import { store as ParameterGraph } from '../../ParameterGraph';
 import { store as ElapsedTime } from '../inputs/ElapsedTime';
 import { store as Add } from '../ops/Add';
 import { store as Divide } from '../ops/Divide';
@@ -66,23 +66,23 @@ const Glyph = {
 				new Parameter({
 					name: 'x',
 					value: 0.0,
-					graph: new ParameterGraph([
-						new ElapsedTime(),
-						new Divide(100),
-						new Add(0),
-						new Subtract(0),
-						new Multiply(1),
-						new Modulus(100),
-					]),
+					// graph: new ParameterGraph([
+					// 	new ElapsedTime(),
+					// 	new Divide(100),
+					// 	new Add(0),
+					// 	new Subtract(0),
+					// 	new Multiply(1),
+					// 	new Modulus(100),
+					// ]),
 				}),
 				new Parameter({
 					name: 'y',
 					value: 0.0,
-					graph: new ParameterGraph([
-						new ElapsedTime(),
-						new Divide(100),
-						new Add(0)
-					]),
+					// graph: new ParameterGraph([
+					// 	new ElapsedTime(),
+					// 	new Divide(100),
+					// 	new Add(0)
+					// ]),
 				}),
 			],
 		},				

@@ -1,17 +1,17 @@
-import Parameter from '../../../models/Parameter';
+import * as Parameter from '../../Parameter';
 
 const Threshold = {
 	name: 'Threshold',
 	uniforms: [
-        new Parameter({
+        new Parameter.store({
             name: 'low',
             value: 0.0,
         }),
-        new Parameter({
+        new Parameter.store({
             name: 'high',
             value: 1.0,
         }),
-        new Parameter({
+        new Parameter.store({
             name: 'invert',
             value: false,
         }),

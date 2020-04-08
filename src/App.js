@@ -5,9 +5,9 @@ import './App.css';
 
 import ConsoleBar from './components/ui/ConsoleBar';
 import ToolBar from './components/ui/ToolBar';
-import ParameterGraph from './components/ParameterGraph';
-import Target from './components/Target';
-import Shader from './components/Shader';
+import { component as ParameterGraph} from './components/ParameterGraph';
+import { component as Target } from './components/Target';
+import { component as Shader} from './components/Shader';
 import Splash from './components/Splash';
 
 const App = observer(class App extends React.Component {

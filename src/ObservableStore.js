@@ -1,7 +1,7 @@
 import { observable, action, decorate } from 'mobx';
 import * as NODES from './components/nodes';
-import Page from './models/Page';
-import Target from './models/Target';
+import Page from './components/Page';
+import { store as Target } from './components/Target';
 import Runner from './Runner';
 import p5 from 'p5';
 import {

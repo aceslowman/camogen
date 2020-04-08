@@ -1,5 +1,5 @@
 import simplex from './includes/simplex';
-import Parameter from '../../../models/Parameter';
+import { store as Parameter } from '../../Parameter';
 // import ElapsedTime from '../data/ElapsedTime';
 
 const Noise = {

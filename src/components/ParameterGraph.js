@@ -1,10 +1,62 @@
+import { observable, decorate, action } from 'mobx';
+import uuidv1 from 'uuid/v1';
+import Operator from './Operator';
+import {
+    createModelSchema,
+    primitive,
+    reference,
+    list,
+    object,
+    identifier,
+    serialize,
+    deserialize
+} from "serializr"
 import React from 'react';
-import { observer } from 'mobx-react';
+import {
+    observer
+} from 'mobx-react';
 import MainContext from '../MainContext';
 import * as NODES from './nodes';
 import Panel from './ui/Panel';
 
-const ParameterGraph = observer(class ParameterGraph extends React.Component {
+class ParameterGraphStore {
+    uuid   = uuidv1();
+    parent = null;
+    nodes  = [];
+
+    constructor(n = null, p) {
+        if(n) this.nodes = n;   
+        this.parent = p;
+    }
+
+    addNode() {}
+
+    removeNode() {}
+
+    update() {
+        for(let i = 0; i < this.nodes.length; i++){
+            this.parent.value = this.nodes[i].update(this.parent.value);
+        }
+    }
+}
+
+decorate(ParameterGraphStore, {
+    uuid: observable,
+    nodes: observable,
+    addNode: action,
+    removeNode: action,
+});
+
+createModelSchema(ParameterGraphStore, {
+    uuid: identifier(),
+    nodes: list(object(Operator)),
+}, c => {    
+    let p = c.parentContext.target;
+    return new ParameterGraphStore(null, p);
+});
+
+
+class ParameterGraphComponent extends React.Component {
 
 	static contextType = MainContext;
 
@@ -65,6 +117,12 @@ const ParameterGraph = observer(class ParameterGraph extends React.Component {
 			</Panel>							
 	    )
 	}
-});
+};
 
-export default ParameterGraph;
+const store = ParameterGraphStore;
+const component = observer(ParameterGraphComponent);
+
+export {
+    store,
+    component
+}

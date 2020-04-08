@@ -1,9 +1,9 @@
-import Parameter from '../../../models/Parameter';
+import * as Parameter from '../../Parameter';
 
 const UV = {
 	name: 'UV',
 	uniforms: [
-        new Parameter({
+        new Parameter.store({
             name: 'bSquare',
             value: true,
         }),

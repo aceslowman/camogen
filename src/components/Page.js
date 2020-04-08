@@ -1,14 +1,8 @@
 import {observable, decorate} from 'mobx';
-import Parameter from './Parameter';
+import { store as Parameter } from './Parameter';
 import {
     createModelSchema,
     primitive,
-    reference,
-    list,
-    object,
-    identifier,
-    serialize,
-    deserialize
 } from "serializr"
 
 export default class Page {

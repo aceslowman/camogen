@@ -1,4 +1,4 @@
-import Parameter from '../../../models/Parameter';
+import { store as Parameter } from '../../Parameter';
 
 const Invert = {
 	name: 'Invert',

@@ -1,11 +1,56 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import { observable, decorate } from 'mobx';
+import uuidv1 from 'uuid/v1';
+import {
+  createModelSchema,
+  primitive,
+  reference,
+  list,
+  object,
+  identifier,
+  serialize,
+  deserialize
+} from "serializr"
+import * as ParameterGraph from './ParameterGraph';
 import MainContext from '../MainContext';
 
-import InputBool from '../components/input/InputBool';
-import InputFloat from '../components/input/InputFloat';
+import InputBool from './input/InputBool';
+import InputFloat from './input/InputFloat';
 
-const Parameter = observer(class Parameter extends React.Component {
+class ParameterStore {
+  uuid  = uuidv1();
+  name  = "";
+  value = null;
+  graph = null;
+
+  constructor (obj = null) {
+    if(obj){
+      this.name = obj.name;
+      this.value = obj.value;
+      this.graph = obj.graph;
+
+      // associate with parent
+      if (this.graph) this.graph.parent = this;
+    }
+  }
+}
+
+decorate(ParameterStore, {
+  uuid: observable,
+  name: observable,
+  value: observable,
+  graph: observable,
+});
+
+createModelSchema(ParameterStore, {
+  uuid: identifier(),
+  name: primitive(),
+  value: primitive(),
+  graph: object(ParameterGraph),
+});
+
+class ParameterComponent extends React.Component {
 
     static contextType = MainContext;
 
@@ -63,6 +108,12 @@ const Parameter = observer(class Parameter extends React.Component {
             </div>
         )
     }
-});
+};
 
-export default Parameter;
+const store = ParameterStore;
+const component = observer(ParameterComponent);
+
+export {
+  store,
+  component
+}
