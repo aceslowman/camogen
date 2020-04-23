@@ -1,21 +1,21 @@
 const Runner = (p, store, props) => {
 
     p.setup = () => {
-        // p.frameRate(1);
-        p.createCanvas(
-            window.innerWidth,
-            window.innerHeight
-            // props.work_area.current.offsetWidth,
-            // props.work_area.current.offsetHeight
+        let c = document.getElementById('WORKAREA_inner')
+        
+        let canvas = p.createCanvas(
+            c.offsetWidth+15,
+            c.offsetHeight
         );
-
+        
+        c.append(canvas.canvas);
+        
         p.background(255, 0, 255);
     }
 
     p.draw = () => {
         if (store.activeTarget) {
             for (let target_data of store.targets) {
-                // console.log(target_data);
                 let target = target_data.ref;
 
                 for (let shader_data of target_data.shaders) {
@@ -30,7 +30,7 @@ const Runner = (p, store, props) => {
                     }
 
                     for (let uniform_data of shader_data.uniforms) {
-                        if (uniform_data.elements) {
+                        if (uniform_data.elements.length > 1) {
 
                             // there should be a more elegant way of doing this
                             let elements = [];
@@ -40,8 +40,8 @@ const Runner = (p, store, props) => {
                             }
 
                             shader.setUniform(uniform_data.name, elements);
-                        } else {
-                            shader.setUniform(uniform_data.name, uniform_data.value);
+                        } else {                            
+                            shader.setUniform(uniform_data.name, uniform_data.elements[0].value);
                         }
                     }
 

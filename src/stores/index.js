@@ -1,12 +1,12 @@
 const shader_types = [
 	"Glyph",
 	"UV",
-	"Noise",
-	"Threshold",
-	"Invert",
+	// "Noise",
+	// "Threshold",
+	// "Invert",
 	"ToHSV",
-	"Wavy",
-	"Sharpen",
+	// "Wavy",
+	// "Sharpen",
 ];
 
 const op_types = [

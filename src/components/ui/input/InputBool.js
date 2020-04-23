@@ -2,9 +2,7 @@ import React from 'react';
 
 export default class InputBool extends React.Component {
 
-    updateValue = e => {
-        this.props.onChange(e.target.checked);
-    }
+    updateValue = e => this.props.onChange(e.target.checked)
 
     render() {
         return (

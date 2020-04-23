@@ -1,11 +1,5 @@
-import { store as Parameter } from '../../Parameter';
-import { store as ParameterGraph } from '../../ParameterGraph';
-import { store as ElapsedTime } from '../inputs/ElapsedTime';
-import { store as Add } from '../ops/Add';
-import { store as Divide } from '../ops/Divide';
-import { store as Subtract } from '../ops/Subtract';
-import { store as Multiply } from '../ops/Multiply';
-import { store as Modulus } from '../ops/Modulus';
+import Parameter from '../ParameterStore';
+import ParameterGraph from '../ParameterGraphStore';
 
 // https://github.com/Sophia-Gold/WebGL-Convolution-Shaders/blob/master/convolution.glsl.js
 

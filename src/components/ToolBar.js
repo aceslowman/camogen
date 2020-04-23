@@ -1,9 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import MainContext from '../../MainContext';
-// import fs from 'fs';
+import MainContext from '../MainContext';
+
 const fs = require('fs');
+
 const ToolBar = observer(class ConsoleBar extends React.Component {
 
     static contextType = MainContext;
@@ -27,12 +28,23 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
         }));
 
         this.drawer_items = (
-            <button 
-                className="white_button"  
-                onClick={()=>this.store.addTarget()}
-            >
-                Target
-            </button>
+            <React.Fragment>
+                <button onClick={()=>this.store.addTarget()}>
+                    Target
+                </button>
+                <button>
+                    Shader
+                </button>
+                <button>
+                    Operator
+                </button>
+                <button>
+                    Text
+                </button>
+                <button>
+                    Image
+                </button>
+            </React.Fragment>            
         );
     }
 

@@ -1,23 +1,30 @@
-import * as Parameter from '../../Parameter';
+import { createModelSchema } from "serializr"
+import Parameter from '../ParameterStore';
+import Uniform from '../UniformStore';
+import ShaderStore from '../ShaderStore';
 
-const ToHSV = {
-	name: '2HSV',
-	uniforms: [
-        new Parameter.store({
-            name: 'scale',
-            value: 1.0,
-        }),
-        new Parameter.store({
-            name: 'rotation',
-            value: 1.0,
-        }),
-    ],  
-	precision: `
+const ToHSV = class ToHSV extends ShaderStore {
+	name = '2HSV';
+	uniforms = [
+        new Uniform('scale', [
+            new Parameter({
+                name: 'scale',
+                value: 1.0,
+            })
+        ]),
+        new Uniform('rotation', [
+            new Parameter({
+                name: 'rotation',
+                value: 1.0,
+            })
+        ]),
+    ];
+	precision = `
 		#ifdef GL_ES
 		precision highp float;
 		#endif 
-	`,
-	vert: `
+	`;
+	vert = `
     attribute vec3 aPosition;
     attribute vec2 aTexCoord;
     varying vec2 vTexCoord;
@@ -27,8 +34,8 @@ const ToHSV = {
         positionVec4.xy = positionVec4.xy * vec2(1.,-1.);
         gl_Position = positionVec4;
     }
-	`,
-	frag: `
+	`;
+	frag = `
     varying vec2 vTexCoord;
     uniform sampler2D tex0;
     uniform vec2 resolution;
@@ -51,5 +58,13 @@ const ToHSV = {
     }
 	`
 };
+
+createModelSchema(ToHSV, {
+    extends: ShaderStore
+}, (c) => {
+    let p = c.parentContext ? c.parentContext.target : null;
+    console.log('ToHSV store factory', p)
+    return new ToHSV(p);
+});
 
 export default ToHSV;

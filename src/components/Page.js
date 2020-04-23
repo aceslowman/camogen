@@ -1,5 +1,5 @@
 import {observable, decorate} from 'mobx';
-import { store as Parameter } from './Parameter';
+import Parameter from './ParameterComponent';
 import {
     createModelSchema,
     primitive,

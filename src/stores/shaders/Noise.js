@@ -1,6 +1,6 @@
 import simplex from './includes/simplex';
-import { store as Parameter } from '../../Parameter';
-// import ElapsedTime from '../data/ElapsedTime';
+import Parameter from '../ParameterStore';
+import ParameterGraph from '../ParameterGraphStore';
 
 const Noise = {
 	name: 'Noise',

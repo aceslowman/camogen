@@ -9,10 +9,6 @@ body,
   font-size: 0.9em;
 }
 
-fieldset {
-  box-sizing: border-box;
-}
-
 input {
   font-family: "Windows Command", monospace;
   box-sizing: border-box;  
@@ -29,41 +25,21 @@ button:focus {
 #defaultCanvas0 {
   display: block;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  /* width: 100% !important;
+  height: 100% !important; */
+  /* top: 0px; */
+  /* left: 0px; */
   z-index: -1;
-}
-
-.flex-inner-wrapper {
-  display: inherit;
-  flex-flow: inherit;
-  justify-content: inherit;
-  align-items: inherit;
 }
 
 .invert {
   color: white;
-  background-color: black;
-  padding: 5px;
-}
-
-.inner button:focus {
-  outline: none;
-}
-
-/*to do*/
-.inner {
-  height: 0px;
-  -webkit-transition: height 1s ease;
-  -moz-transition: height 1s ease;
-  -o-transition: height 1s ease;
-  -ms-transition: height 1s ease;
-  transition: height 1s ease;
+  background-color: black; 
 }
 
 
 /* app.js */
-#mainWrapper {
+#APP {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
@@ -71,7 +47,7 @@ button:focus {
   flex-direction: row;
 }
 
-.work_area {
+#WORKAREA {
   flex-grow: 1;
   background-color: transparent;
   display: flex;
@@ -80,7 +56,7 @@ button:focus {
   flex-flow: column;
 }
 
-.work_area_inner {
+#WORKAREA_inner {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -89,15 +65,6 @@ button:focus {
   width: 100%;
   height: 100%;
   overflow-y: hidden;
-}
-
-.target_group {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  align-content: flex-end;
-  justify-content: center;
 }
 
 /* Shader.js */
@@ -151,10 +118,11 @@ button:focus {
 .drawer {
   display: flex;
   flex-flow: column wrap;
-  background-color: white;
+  /* background-color: white; */
   color: black;
   border-right: 1px dotted black;
   width: 0px;
+  /* position: absolute; */
   overflow: hidden;
 
   transition: width 300ms ease-in-out;
@@ -173,7 +141,7 @@ button:focus {
   cursor: pointer;
 }
 
-.white_button {
+.drawer button {
   padding: 4px;
   color: black;
   background-color: white;
@@ -187,7 +155,7 @@ button:focus {
   color: black !important;
 }
 
-.white_button:hover {
+.drawer button:hover {
   background-color: black !important;
   color: white !important;
 }
@@ -304,10 +272,6 @@ button:focus {
   color: black;
 }
 
-.panelButtons>button:focus {
-  outline: 0;
-}
-
 /* Node.js */
 
 .node {
@@ -319,9 +283,11 @@ button:focus {
   flex-direction: row;
 }
 
+.node input {
+  width: 100%;
+}
+
 .miniNode {    
-  /* font-size: 0.75em; */
-  /* width: 200px; */
   margin: 5px 15px;
   background-color: black;
   border: 1px solid white;
@@ -329,20 +295,6 @@ button:focus {
   flex-direction: row;
   color: white;
   align-items: center;
-  justify-content: center;
-}
-
-.miniNode button{    
-  color: white;
-  background-color: black;
-  border: none;
-  border-right: 1px solid white;
-}
-
-.miniNode legend {  
-  height: 100%;
-  min-width: 80px;  
-  padding: 0px 5px;
 }
 
 .miniNode input {
@@ -351,31 +303,26 @@ button:focus {
   width: 65px;
 }
 
-.node input {
-  width: 100%;
-}
-
-.nodeButtons {
+.nodeTools {
   height: 100%;
-  box-sizing: border-box;
   color: white;
   display: flex;
   flex-direction: column;
 }
 
-.nodeButtons > button {
+.nodeTools > button {
   padding: 2.5px 5px;  
   background-color: black;
   border: none;
   color: white;
 }
 
-.nodeButtons>button:hover {  
+.nodeTools > button:hover {  
   background-color: white;
   color: black;  
 }
 
-.nodeContainerMain {
+.node .nodeContainer {
   border: 1px solid black;
   background-color: white;
   display: flex;
@@ -383,7 +330,7 @@ button:focus {
   flex-grow: 1;
 }
 
-.nodeContainerMain > legend {		
+.node .nodeContainer > legend {		
   font-weight: bold;
   font-size: 1.6em;
   cursor: pointer;
@@ -392,16 +339,17 @@ button:focus {
   box-sizing: border-box;
 }
 
-.nodeContainerTop {
-  background-color: black;
-  height : 3px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  overflow: hidden; 
+.miniNode .nodeContainer > legend {
+  padding: 0px 10px;
 }
 
-.nodeContainerInner {  	
+.miniNode .nodeContainer {
+  display:flex;
+  flex-flow: row;
+  align-items: center;
+}
+
+.nodeInner {  	
   flex-flow: row wrap;
   box-sizing: border-box;
   display: flex;
@@ -410,18 +358,8 @@ button:focus {
   transition: max-height 800ms ease-in-out;  
 }
 
-.nodeContainerInnerFix {
+.node .nodeInner > div {
   padding: 10px;
-}
-
-.nodeContainerBottom {
-  background-color: black;
-  width: 100%;
-  height: 3px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  overflow: hidden;
 }
 
 /* Splash */

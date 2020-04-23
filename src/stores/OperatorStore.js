@@ -11,25 +11,26 @@ import {
     deserialize
 } from "serializr"
 
-export default class Operator {
+export default class OperatorStore {
     uuid  = uuidv1();
     name  = null;
     value = null;
 
-    update = null;
+    update = () => {};
 }
 
-decorate(Operator, {
-    uuid:  observable,
-    name:  observable,
-    value: observable,
+decorate(OperatorStore, {
+    uuid:   observable,
+    name:   observable,
+    value:  observable,
     update: action,
 });
 
-createModelSchema(Operator, {
-    uuid: identifier(),
+createModelSchema(OperatorStore, {
+    uuid:  identifier(),
+    name:  primitive(),
     value: primitive(),
 }, c => {
     let p = c.parentContext.target;
-    return new Operator();
+    return new OperatorStore();
 });

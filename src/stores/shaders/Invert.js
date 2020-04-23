@@ -1,11 +1,12 @@
-import * as Parameter from '../../Parameter';
+import Parameter from '../ParameterStore';
+import ParameterGraph from '../ParameterGraphStore';
 
-const UV = {
-	name: 'UV',
+const Invert = {
+	name: 'Invert',
 	uniforms: [
-        new Parameter.store({
-            name: 'bSquare',
-            value: true,
+        new Parameter({
+            name: 'amount',
+            value: 1.0,
         }),
     ],  
 	precision: `
@@ -28,17 +29,16 @@ const UV = {
     varying vec2 vTexCoord;
     uniform sampler2D tex0;
     uniform vec2 resolution;
-    uniform bool bSquare;
+    uniform float amount;
+
     void main() {
-        vec3 color = vec3(0.0);
-        float aspect = resolution.y/resolution.x;
-        vec2 uv = vTexCoord;
-        if(bSquare) {
-        uv.y *= aspect;	    
-        }
-        gl_FragColor = vec4(uv.x,uv.y,1.0,1.0);
+        vec4 src = texture2D(tex0, vTexCoord);        
+
+        vec3 color = amount - src.rgb;
+
+        gl_FragColor = vec4(color,src.a);
     }
 	`
 };
 
-export default UV;
+export default Invert;

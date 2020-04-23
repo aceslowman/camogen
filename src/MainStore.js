@@ -1,18 +1,19 @@
 import { observable, action, decorate } from 'mobx';
-import * as NODES from './components/nodes';
-import Page from './components/Page';
-import { store as Target } from './components/Target';
+import * as NODES from './stores';
+import Target from './stores/TargetStore';
+import Glyph from './stores/shaders/Glyph';
+import UV from './stores/shaders/UV';
 import Runner from './Runner';
 import p5 from 'p5';
 import {
   createModelSchema,
   primitive,
-  reference,
   list,
   object,
-  identifier,
   serialize,
-  deserialize
+  deserialize,
+  update,
+  reference,
 } from "serializr";
 
 // for electron
@@ -65,7 +66,16 @@ class MainStore {
   }
 
   addTarget() {
-    this.targets.push(new Target(this));
+    // this.targets.push(new Target(this));
+    const t = new Target(this);
+
+    t.shaders = [
+      new UV(t).init(),
+      new Glyph(t).init(),
+    ];
+
+    // set defaults
+    this.targets.push(t);
   }
 
   removeTarget(target) {
@@ -86,13 +96,13 @@ class MainStore {
     }
 
     dialog.showSaveDialog(options).then((f)=>{
-      let content = JSON.stringify(serialize(this));
+      let content = JSON.stringify(serialize(MainStore, this));
 
       fs.writeFile(f.filePath, content, (err)=>{
         if(err)          
           alert("in error has occurred: "+err.message);
       });
-    }).catch(err => alert(err));   
+    }).catch(err => console.error(err));
   }
 
   load() {
@@ -100,21 +110,20 @@ class MainStore {
       let content = f.filePaths[0];
       fs.readFile(content, 'utf-8', (err, data) => {
         if(err)
-          alert("in error has occurred: " + err.message);
-          let obj = JSON.parse(data);
+          alert("in error has occurred: " + err.message);          
 
-          let result = deserialize(
-            MainStore, 
-            {...obj, parent: this},
-            (err, res) => {
-              if (err) console.log(err);
-              console.log(res);
-            }
-          );
+          update(
+            MainStore,
+            this,
+            JSON.parse(data),
+            (err, item) => {
+              if (err) console.error(err)
+              console.log('hit', item)
 
-          console.dir(result, { colors: true, depth: 10 })
-
-          Object.assign(this, result);
+              // item.init();
+            },
+            {target: this}
+          )
       })
     }).catch(err => alert(err));
   }
@@ -138,16 +147,20 @@ decorate(MainStore, {
 
 createModelSchema(MainStore, {
   targets:      list(object(Target)),
-  activeTarget: object(Target),
+  activeTarget: reference(Target),
   show_splash:  primitive(),
 });
 
 const mainStore = new MainStore();
+const t = new Target(mainStore);
+
+t.shaders = [
+  new UV(t).init(),
+  new Glyph(t).init(),
+];
 
 // set defaults
-mainStore.targets.push(
-  new Target(mainStore).generateDefault()
-);
+mainStore.targets.push(t);
 
 export default mainStore;
 

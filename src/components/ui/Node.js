@@ -23,15 +23,17 @@ const Node = observer(class Node extends React.Component {
 	}
 
 	handleExpand = () => {
-		this.setState(prevState => ({
-			...prevState,
-			expanded: !prevState.expanded
-		}));
+		if(!this.props.mini) {
+			this.setState(prevState => ({
+				...prevState,
+				expanded: !prevState.expanded
+			}));
+		}
 	}
 
 	render() {
 		
-		if (this.innerRef.current) {
+		if (this.innerRef.current && !this.props.mini) {
 			style.inner = {
 				...style.inner,
 				maxHeight: this.state.expanded ? this.innerRef.current.scrollHeight + 'px' : '0px', 
@@ -40,21 +42,30 @@ const Node = observer(class Node extends React.Component {
 
 		return(
 			<div className={this.props.mini ? "miniNode" : "node"}>
-				<div className='nodeButtons'>
+				<div className='nodeTools'>
 					<button onClick={this.props.onRemove}>x</button>
-	          		<button onClick={this.handleExpand}>{this.state.expanded ? 'v' : '>'}</button>
-	          		<button onClick={()=>{}}>≡</button>
-					<button onClick={this.props.onSave}>s</button>
-					<button onClick={this.props.onLoad}>l</button>
+					{!this.props.mini && (
+						<React.Fragment>
+							<button onClick={this.handleExpand}>{this.state.expanded ? 'v' : '>'}</button>
+							<button onClick={()=>{}}>≡</button>
+							{this.state.expanded && (
+								<React.Fragment>
+									<button onClick={this.props.onSave}>s</button>
+									<button onClick={this.props.onLoad}>l</button>
+								</React.Fragment>						
+							)}	
+						</React.Fragment>
+					)}
+				
 	          	</div>
 
-	          	<div className='nodeContainerMain' onClick={this.handleClick}>				
+	          	<div className='nodeContainer' onClick={this.handleClick}>				
 		            <legend onClick={this.handleExpand}>
 						{this.props.title}
 					</legend>				           
 
-		            <div className='nodeContainerInner' style={style.inner} ref={this.innerRef}>
-						<div className='nodeContainerInnerFix' >
+		            <div className='nodeInner' style={style.inner} ref={this.innerRef}>
+						<div>
 							{this.props.children}	
 						</div>		            	
 		            </div>

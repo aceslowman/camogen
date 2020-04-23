@@ -3,11 +3,10 @@ import { MainProvider } from './MainContext';
 import { observer } from 'mobx-react';
 import './App.css';
 
-import ConsoleBar from './components/ui/ConsoleBar';
-import ToolBar from './components/ui/ToolBar';
-import { component as ParameterGraph} from './components/ParameterGraph';
-import { component as Target } from './components/Target';
-import { component as Shader} from './components/Shader';
+import ConsoleBar from './components/ConsoleBar';
+import ToolBar from './components/ToolBar';
+import ParameterGraph from './components/ParameterGraphComponent';
+import Target from './components/TargetComponent';
 import Splash from './components/Splash';
 
 const App = observer(class App extends React.Component {
@@ -16,16 +15,12 @@ const App = observer(class App extends React.Component {
     super();
     this.targets = [];
     this.workAreaRef = React.createRef();
-
-    this.state = {      
-      updateFlag: false,
-    }
   }
 
   handleResize = () => {
     this.store.p5_instance.resizeCanvas(
-      this.props.work_area.current.offsetWidth,
-      this.props.work_area.current.offsetHeight
+      this.workAreaRef.current.offsetWidth,
+      this.workAreaRef.current.offsetHeight
     );
 
     // update target dimensions
@@ -33,8 +28,8 @@ const App = observer(class App extends React.Component {
       let target = target_data.ref;
 
       target.resizeCanvas(
-        this.props.work_area.current.offsetWidth,
-        this.props.work_area.current.offsetHeight
+        this.workAreaRef.current.offsetWidth,
+        this.workAreaRef.current.offsetHeight
       );
     }
 
@@ -42,56 +37,36 @@ const App = observer(class App extends React.Component {
   }
 
   componentDidMount() {   
-    this.generateTargets(); 
     window.addEventListener('resize', this.handleResize);
   }
-
-  generateTargets(){
-    this.targets = [];
-    console.log(this.store.targets)
-
-    for(let target_node of this.store.targets) {
-      let nodes = [];
-
-      for(let shader_node of target_node.shaders) {
-        console.log(shader_node.name, shader_node);
-        nodes.push((
-          <Shader 
-            key={shader_node.uuid} 
-            data={shader_node} 
-          />
-        ));
-      }
-
-      this.targets.push((
-        <Target key={target_node.uuid} data={target_node}>
-          {nodes}
-        </Target>
-      ));
-    }
-
-    // force a single re-render
-    this.setState((prevState)=>({updateFlag: !prevState.updateFlag}));
-  }  
 
   render() {
     this.store = this.props.store;
 
     return (    
       <MainProvider value={{store: this.store}}>
-        <div id="mainWrapper">          
+        <div id="APP">          
           <ToolBar />
 
-          <div className="work_area">           
+          <div id="WORKAREA">           
 
-            <div className="work_area_inner" ref={this.workAreaRef}>
-              <div className="target_group">
-                {this.targets}
-              </div>
+            <div id="WORKAREA_inner" ref={this.workAreaRef}>
+
+              {this.store.targets.map((target)=>{
+                return (
+                  <Target 
+                    key={target.uuid} 
+                    data={target}
+                  />
+                );
+              })}
+
               { this.store.activeParameter &&
                 <ParameterGraph data={this.store.activeParameter}/>
               }
+              
               { this.store.show_splash && <Splash /> }
+
             </div>          
 
             <ConsoleBar />
