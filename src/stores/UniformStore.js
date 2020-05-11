@@ -1,8 +1,8 @@
+import uuidv1 from 'uuid/v1';
 import {
     observable,
     decorate
 } from 'mobx';
-import uuidv1 from 'uuid/v1';
 import {
     createModelSchema,
     primitive,
@@ -10,30 +10,29 @@ import {
     list,
     object,
     identifier,
-    serialize,
-    deserialize
 } from "serializr"
 import ParameterStore from './ParameterStore';
 
 export default class UniformStore {
     uuid = uuidv1();
-    name = "";
-    elements = [];
 
-    constructor(name, elements) {    
+    constructor(name = "", elements = []) {    
         this.name = name;
-        this.elements = elements
+        this.elements = elements;
+        this.elements.forEach((e)=>{
+            e.parent = this;
+        })
     }
 }
 
 decorate(UniformStore, {
-    uuid: observable,
+    // uuid: observable,
     name: observable,
     elements: observable,
 });
 
 createModelSchema(UniformStore, {
-    uuid: identifier(),
+    // uuid: identifier(),
     name: primitive(),
     elements: list(object(ParameterStore)),
-});
+}, c => new UniformStore(c.json.name, c.json.elements));

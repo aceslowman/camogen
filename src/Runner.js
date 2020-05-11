@@ -25,9 +25,9 @@ const Runner = (p, store, props) => {
                         Loop through all active parameter graphs to recompute 
                         values in sync with the frame rate
                     */
-                    for (let parameter_graph of shader_data.parameter_graphs) {
-                        parameter_graph.update();
-                    }
+                    // for (let parameter_graph of shader_data.parameter_graphs) {
+                    //     if(parameter_graph.nodes) parameter_graph.update();
+                    // }
 
                     for (let uniform_data of shader_data.uniforms) {
                         if (uniform_data.elements.length > 1) {

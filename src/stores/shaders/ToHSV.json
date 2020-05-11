@@ -1,0 +1,40 @@
+{
+    "name": "2HSV",
+    "precision": "\n\t\t#ifdef GL_ES\n\t\tprecision highp float;\n\t\t#endif \n\t",
+    "vert": "\n    attribute vec3 aPosition;\n    attribute vec2 aTexCoord;\n    varying vec2 vTexCoord;\n    void main() {\n        vTexCoord = aTexCoord;\n        vec4 positionVec4 = vec4(aPosition,1.0);\n        positionVec4.xy = positionVec4.xy * vec2(1.,-1.);\n        gl_Position = positionVec4;\n    }\n\t",
+    "frag": "\n    varying vec2 vTexCoord;\n    uniform sampler2D tex0;\n    uniform vec2 resolution;\n    \n    uniform float scale;\n    uniform float rotation;\n\n    vec3 hsv2rgb(vec3 c) {\n        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n    }\n\n    void main() {\n        vec4 c = texture2D(tex0, vTexCoord);\n\n        vec3 hsv = scale * c.rgb;        \n\n        gl_FragColor = vec4(hsv2rgb(hsv + vec3(rotation, 0., 0.)), 1.0);\n    }\n\t",
+    "uniforms": [{
+        "name": "resolution",
+        "elements": [{
+            "name": "x:",
+            "value": 1,
+            "graph": {
+                "nodes": []
+            }
+        }, {
+            "name": "y:",
+            "value": 1,
+            "graph": {
+                "nodes": []
+            }
+        }]
+    }, {
+        "name": "scale",
+        "elements": [{
+            "name": "",
+            "value": 1,
+            "graph": {
+                "nodes": []
+            }
+        }]
+    }, {
+        "name": "rotation",
+        "elements": [{
+            "name": "",
+            "value": 1,
+            "graph": {
+                "nodes": []
+            }
+        }]
+    }]
+}

@@ -1,25 +1,31 @@
 import { observable, action, decorate } from 'mobx';
+import OperatorStore from '../OperatorStore';
+import {createModelSchema} from "serializr"
 
 //----------------------------------------------------------------------
-const store = class AddStore {
-	name = "Add";
+const store = class AddStore extends OperatorStore{
+	name 	  = "Add";
     value 	  = 0;
-	modifier  = 0;
 	
-	constructor(v) {	
-		this.modifier = v;
+	constructor(p, mod = 0) {	
+		super(p, mod);
+		this.modifier = mod;
 	}
 
-	update(v) {		
+	update = (v) => {		
         return Number(v) + Number(this.modifier);
 	}
 }
 
 decorate(store, {
-	name: observable,
-    value: observable,
+	name:     observable,
+    value: 	  observable,
     modifier: observable,
-	update: action,		
+	update:   action,		
+});
+
+createModelSchema(store, {
+	extends: OperatorStore
 });
 
 export default store;

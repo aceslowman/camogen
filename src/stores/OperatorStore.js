@@ -12,25 +12,31 @@ import {
 } from "serializr"
 
 export default class OperatorStore {
-    uuid  = uuidv1();
-    name  = null;
-    value = null;
+    uuid     = uuidv1();
+    name     = null;
+    value    = null;
+    modifier = null;
+    parent   = null;
 
+    constructor(p, mod){
+        this.parent = p;
+        this.modifier = mod;
+    }
+
+    init = () => this;
     update = () => {};
 }
 
 decorate(OperatorStore, {
-    uuid:   observable,
+    // uuid:   observable,
     name:   observable,
     value:  observable,
+    init:   action,
     update: action,
 });
 
 createModelSchema(OperatorStore, {
-    uuid:  identifier(),
+    // uuid:  identifier(),
     name:  primitive(),
     value: primitive(),
-}, c => {
-    let p = c.parentContext.target;
-    return new OperatorStore();
-});
+}, c => OperatorStore(c.parentContext.target).init());

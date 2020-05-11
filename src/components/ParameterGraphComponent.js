@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import OperatorComponent from './OperatorComponent';
-import Panel from './ui/Panel';
+import Parameter from './ParameterComponent';
 
 const ParameterGraphComponent = observer(class ParameterGraphComponent extends React.Component {
 
@@ -23,43 +23,76 @@ const ParameterGraphComponent = observer(class ParameterGraphComponent extends R
 			let node = this.props.data.graph.nodes[i];
 
 			this.nodes.push((
-				<OperatorComponent key={i} data={node}/>
+				<OperatorComponent key={i} data={node} graph={this.props.data.graph}/>
 			));
 		}
 	}
 
-	handleClickAway = e => {
-		if (!this.ref.current.contains(e.target)) {
-			this.context.store.activeParameter = null;
-			document.removeEventListener('click', this.handleClickAway);
-		}
-	}
-
-	componentDidMount() {				
-		this.generateNodes();
-	}
-
 	render() {
 		const { data } = this.props;
-		
-		return(
-			<Panel 
-				title={"Parameter"} 
-				onClickAway={this.handleClickAway}
-				onRef={this.ref}
-			>
-				{this.nodes}
-				<input
-					readOnly
-					style={{
-						width: '70px',
-						marginTop: '15px',
-						justifyContent: 'center',
-					}}
-					type="number"
-					value={data.value}
-				/>
-			</Panel>							
+		this.generateNodes();		
+
+		return(	
+			<div className="parameter_graph">
+				{data && (<div>	
+					<h4>input:</h4>				
+					<div>
+						<button onClick={
+							() => data.graph.addNode('MIDIListener')
+						}>midi</button>
+						<button onClick={
+							() => data.graph.addNode('OscListener')
+						}>osc</button>
+						<button onClick={
+							() => data.graph.addNode('ElapsedTime')
+						}>time</button>
+					</div>
+					<h4>ops:</h4>				
+					<div>
+						<button onClick={
+							() => data.graph.addNode('Add')
+						}>+</button>
+						<button onClick={
+							() => data.graph.addNode('Subtract')
+						}>-</button>
+						<button onClick={
+							() => data.graph.addNode('Divide')
+						}>/</button>
+						<button onClick={
+							() => data.graph.addNode('Multiply')
+						}>*</button>
+						<button onClick={
+							() => data.graph.addNode('Modulus')
+						}>%</button>
+					</div>
+					<h4>trig:</h4>
+					<div>
+						<button onClick={
+							() => data.graph.addNode('Sin')
+						}>sin</button>
+						<button onClick={
+							() => data.graph.addNode('Cos')
+						}>cos</button>
+						<button onClick={
+							() => data.graph.addNode('Tan')
+						}>tan</button>
+					</div>					
+				</div>)}	
+				<fieldset>
+					{data && (<label>{data.parent.name + ' ' + data.name}</label>)}
+					<div>
+						{!data && (
+						<p><em>click on a parameter to edit its graph</em></p>
+						)}
+						{this.nodes}
+					</div>										
+					{/* {data && (<Parameter 
+						key={data.uuid}
+						data={data}						
+					/>)}				 */}
+				</fieldset>	
+			</div>	
+											
 	    )
 	}
 });

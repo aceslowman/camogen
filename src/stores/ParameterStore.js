@@ -14,32 +14,38 @@ import ParameterGraph from './ParameterGraphStore';
 
 export default class ParameterStore {
     uuid = uuidv1();
-    name = "";
-    value = null;
-    graph = null;
 
-    constructor(obj = null) {
-        if (obj) {
-            this.name = obj.name;
-            this.value = obj.value;
-            this.graph = obj.graph;
-
-            // associate with parent
-            if (this.graph) this.graph.parent = this;
-        }
+    constructor(
+        name = "",
+        value = null, 
+        graph = new ParameterGraph(),        
+    ) {
+        this.name = name;
+        this.value = value;
+        this.graph = graph;
+        this.graph.parent = this;
     }
 }
 
 decorate(ParameterStore, {
-    uuid: observable,
+    // uuid: observable,
     name: observable,
     value: observable,
     graph: observable,
 });
 
 createModelSchema(ParameterStore, {
-    uuid: identifier(),
+    // uuid: identifier(),
     name: primitive(),
     value: primitive(),
     graph: object(ParameterGraph),
+}, c => {    
+    let param = new ParameterStore(
+        c.json.name,
+        c.json.value,
+        c.json.graph
+    );  
+        
+    param.parent = c.parentContext.target;
+    return param;
 });

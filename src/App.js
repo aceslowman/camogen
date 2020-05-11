@@ -5,7 +5,6 @@ import './App.css';
 
 import ConsoleBar from './components/ConsoleBar';
 import ToolBar from './components/ToolBar';
-import ParameterGraph from './components/ParameterGraphComponent';
 import Target from './components/TargetComponent';
 import Splash from './components/Splash';
 
@@ -18,18 +17,18 @@ const App = observer(class App extends React.Component {
   }
 
   handleResize = () => {
+    let bounds = this.workAreaRef.current.getBoundingClientRect();
+
     this.store.p5_instance.resizeCanvas(
-      this.workAreaRef.current.offsetWidth,
-      this.workAreaRef.current.offsetHeight
+      bounds.width,
+      bounds.height
     );
 
     // update target dimensions
     for (let target_data of this.store.targets) {
-      let target = target_data.ref;
-
-      target.resizeCanvas(
-        this.workAreaRef.current.offsetWidth,
-        this.workAreaRef.current.offsetHeight
+      target_data.ref.resizeCanvas(
+        bounds.width,
+          bounds.height
       );
     }
 
@@ -59,11 +58,7 @@ const App = observer(class App extends React.Component {
                     data={target}
                   />
                 );
-              })}
-
-              { this.store.activeParameter &&
-                <ParameterGraph data={this.store.activeParameter}/>
-              }
+              })}              
               
               { this.store.show_splash && <Splash /> }
 
@@ -71,6 +66,7 @@ const App = observer(class App extends React.Component {
 
             <ConsoleBar />
           </div>
+          
         </div>
       </MainProvider>
     );

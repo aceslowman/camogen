@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../../MainContext';
-import Draggable from 'react-draggable';
 
 const style = {
     legend: {
@@ -20,24 +19,7 @@ const Panel = observer(class Panel extends React.Component {
 
 		this.state = {
 			active: props.active,
-			dragging: false,
 		};
-	}
-
-	handleDrag(e) {
-		// console.log('handleDrag', e);
-	}
-
-	handleDragStart(e) {
-		// console.log('handleStart', e);
-		this.setState({ dragging: true });
-
-		this.handleClick();
-	}
-
-	handleDragStop(e) {
-		// console.log('handleStop', e);
-		this.setState({ dragging: false });
 	}
 
 	componentDidMount() {
@@ -57,24 +39,22 @@ const Panel = observer(class Panel extends React.Component {
         }
 
 		return(
-            // <Draggable>
-                <fieldset className="panel" ref={this.props.onRef} style={this.props.style}>
-                    <div className='panelButtons' style={style.buttons}>
-                        <button onClick={this.props.onRemove}>x</button>                                                
-						{ this.props.title && (
-							<legend 
-								style={style.legend} 
-								onClick={this.props.onActive}
-							> {this.props.title}
-							</legend>
-						)}
-	          	    </div>                    
+			<fieldset className="panel" ref={this.props.onRef} style={this.props.style}>
+				<div className='panelButtons' style={style.buttons}>
+					<button onClick={this.props.onRemove}>x</button>                                                
+					{ this.props.title && (
+						<legend 
+							style={style.legend} 
+							onClick={this.props.onActive}
+						> {this.props.title}
+						</legend>
+					)}
+				</div>                    
 
-                    <div className='panelContent'>
-                        {this.props.children}	
-                    </div>              
-                </fieldset>
-            // </Draggable>
+				<div className='panelContent'>
+					{this.props.children}	
+				</div>              
+			</fieldset>
 	    )
 	}
 });

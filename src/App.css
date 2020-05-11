@@ -7,6 +7,7 @@ body,
   padding: 0;
   font-family: "Windows Command", monospace;
   font-size: 0.9em;
+  overflow: hidden;
 }
 
 input {
@@ -16,25 +17,53 @@ input {
 
 button {
   font-family: "Windows Command", monospace;
+  padding: 3px 5px;
+  background-color: black;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: white;
+  color: black;
 }
 
 button:focus {
   outline: 0;
 }
 
+.black_button {
+  color: white;
+  background-color: black;
+  border: none;
+  border-bottom: 1px solid white;
+  cursor: pointer;
+}
+
+.white_button {
+  color: black;
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}
+
 #defaultCanvas0 {
   display: block;
   position: absolute;
-  /* width: 100% !important;
-  height: 100% !important; */
-  /* top: 0px; */
-  /* left: 0px; */
   z-index: -1;
+  top: 0px;
 }
 
 .invert {
-  color: white;
-  background-color: black; 
+  color: white !important;
+  background-color: black !important; 
+}
+
+.invert:hover {
+  background-color: black !important;
+  color: white !important;
 }
 
 
@@ -54,17 +83,19 @@ button:focus {
   align-items: flex-end;
   align-content: center;
   flex-flow: column;
+  overflow: auto;
 }
 
 #WORKAREA_inner {
   display: flex;
-  flex-direction: row;
+  flex-flow: wrap;
+  /* flex-direction: row; */
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  overflow-y: hidden;
+  overflow: auto;
 }
 
 /* Shader.js */
@@ -92,12 +123,23 @@ button:focus {
 
 .parameter_wrapper>fieldset {
   padding: 2px;
-  margin-top: 10px;
-  display: inline-block;
 }
 
-.parameter_wrapper>fieldset>legend {
-  padding: 2px 4px;
+.parameter_wrapper>fieldset>div>legend {
+  padding: 3px;
+  font-style: italic;
+  background-color:white;
+  color:black;
+} 
+
+.parameter_wrapper > fieldset > div {
+  display: flex;
+  flex-direction: row;
+}
+
+.parameter_wrapper>fieldset>div>input {
+  padding-left: 5px;
+
 }
 
 /* Toolbar.js */
@@ -112,19 +154,16 @@ button:focus {
   display: flex;
   flex-flow: column wrap;
   background-color: black;
-  color: white;
 }
 
 .drawer {
+  z-index: 1000;
+  box-shadow: 2px 2px 4px 0px black;
   display: flex;
   flex-flow: column wrap;
-  /* background-color: white; */
-  color: black;
-  border-right: 1px dotted black;
-  width: 0px;
-  /* position: absolute; */
+  border-top: 1px solid white;
+  position: absolute;
   overflow: hidden;
-
   transition: width 300ms ease-in-out;
 }
 
@@ -132,27 +171,8 @@ button:focus {
   text-align: left;
 }
 
-.black_button {
-  padding: 4px;
-  color: white;
-  background-color: black;
-  border: none;
-  border-bottom: 1px solid white;
-  cursor: pointer;
-}
-
 .drawer button {
-  padding: 4px;
-  color: black;
-  background-color: white;
-  border: none;
-  border-bottom: 1px solid black;  
-  cursor: pointer;
-}
-
-.black_button:hover {
-  background-color: white !important;
-  color: black !important;
+  border-bottom: 1px solid black;    
 }
 
 .drawer button:hover {
@@ -275,12 +295,14 @@ button:focus {
 /* Node.js */
 
 .node {
-  width: 250px;
+  /* width: 250px; */
   margin: 10px;
   background-color: black;
   border: 1px solid white;  
   display: flex;
   flex-direction: row;
+  overflow: hidden;
+  transition: max-height 800ms ease-in-out;
 }
 
 .node input {
@@ -304,25 +326,30 @@ button:focus {
 }
 
 .nodeTools {
-  height: 100%;
-  color: white;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
-.nodeTools > button {
-  padding: 2.5px 5px;  
+.nodeTools div {
+  display:flex;
+  flex-direction: column;
+} 
+
+.nodeToolsLabel {
+  /* padding-top: 15px; */
+  cursor: default;
+  /* border-bottom:1px solid white; */
+  /* border-left: 1px solid white; */
+}
+
+.nodeToolsLabel:hover {
   background-color: black;
-  border: none;
   color: white;
-}
-
-.nodeTools > button:hover {  
-  background-color: white;
-  color: black;  
 }
 
 .node .nodeContainer {
+  width: 200px;
   border: 1px solid black;
   background-color: white;
   display: flex;
@@ -335,7 +362,7 @@ button:focus {
   font-size: 1.6em;
   cursor: pointer;
   width: 100%;
-  padding: 16px 10px;
+  padding: 8px 10px;
   box-sizing: border-box;
 }
 
@@ -353,13 +380,102 @@ button:focus {
   flex-flow: row wrap;
   box-sizing: border-box;
   display: flex;
-  width: 100%;
-  overflow: hidden;
-  transition: max-height 800ms ease-in-out;  
+  width: 100%;   
 }
 
 .node .nodeInner > div {
   padding: 10px;
+}
+
+.nodeEdit {
+  color: white;
+  overflow: hidden;
+  transition: max-width 800ms ease-in-out;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.parameter_graph {
+  display:flex;
+  flex-direction: row;
+  height: 100%;
+  padding: 15px;
+}
+
+.parameter_graph > fieldset {
+  border: 1px dotted white;  
+  flex-grow: 2;
+}
+
+.parameter_graph>fieldset>label{
+  position: absolute;
+}
+
+.parameter_graph>fieldset>div{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+
+
+.parameter_graph > div {
+  width:80px;
+  padding-right:15px;
+}
+
+.parameter_graph h4 {
+  border-bottom: 1px dashed white;
+}
+
+.operator {
+  display: flex;
+  padding: 0px 10px;
+  margin: 5px 0px;
+  height: 30px; 
+  align-items: center;
+  justify-content: space-between;
+  border: 1px dotted;
+}
+
+.operator h3 {
+  padding: 0px 10px;
+  margin: 0;
+}
+
+.operator button {
+  border-right: 1px dotted white;
+}
+
+.operator input {
+  width: 60px;
+}
+
+.horizontal_toolbar {
+  display: flex;
+  width:500px;
+  border-bottom: 1px dotted white;
+}
+
+.horizontal_toolbar > div {
+  margin-right: 15px;
+  overflow: hidden;
+}
+
+.horizontal_toolbar > div > button {
+  border-bottom: none !important;
+}
+
+.editor {
+  font-family: "Windows Command", monospace;
+  background-color: #000;
+  border: 2px solid black;  
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 /* Splash */

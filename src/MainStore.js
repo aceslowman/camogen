@@ -1,8 +1,6 @@
 import { observable, action, decorate } from 'mobx';
 import * as NODES from './stores';
 import Target from './stores/TargetStore';
-import Glyph from './stores/shaders/Glyph';
-import UV from './stores/shaders/UV';
 import Runner from './Runner';
 import p5 from 'p5';
 import {
@@ -15,6 +13,7 @@ import {
   update,
   reference,
 } from "serializr";
+import ShaderStore from './stores/ShaderStore';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -33,8 +32,8 @@ class MainStore {
   suggestText = '';  
 
   activeTarget    = null;
-  activeParameter = null;
-
+  activeParameter = null;// delete this
+  
   object_list = NODES.shader_types;
 
   show_splash = true;
@@ -66,15 +65,12 @@ class MainStore {
   }
 
   addTarget() {
-    // this.targets.push(new Target(this));
     const t = new Target(this);
 
     t.shaders = [
-      new UV(t).init(),
-      new Glyph(t).init(),
+      // new UV(t).init(),
     ];
 
-    // set defaults
     this.targets.push(t);
   }
 
@@ -100,7 +96,7 @@ class MainStore {
 
       fs.writeFile(f.filePath, content, (err)=>{
         if(err)          
-          alert("in error has occurred: "+err.message);
+          console.error("an error has occurred: "+err.message);
       });
     }).catch(err => console.error(err));
   }
@@ -110,22 +106,21 @@ class MainStore {
       let content = f.filePaths[0];
       fs.readFile(content, 'utf-8', (err, data) => {
         if(err)
-          alert("in error has occurred: " + err.message);          
+          console.error("an error has occurred: " + err.message);          
 
           update(
             MainStore,
             this,
             JSON.parse(data),
             (err, item) => {
-              if (err) console.error(err)
-              console.log('hit', item)
+              if (err) console.error(err)              
 
               // item.init();
             },
             {target: this}
           )
       })
-    }).catch(err => alert(err));
+    }).catch(err => {/*alert(err)*/});
   }
 }
 
@@ -153,10 +148,10 @@ createModelSchema(MainStore, {
 
 const mainStore = new MainStore();
 const t = new Target(mainStore);
-
+console.log(NODES.shaders)
 t.shaders = [
-  new UV(t).init(),
-  new Glyph(t).init(),
+  deserialize(ShaderStore, NODES.shaders["UV"], ()=>{}, {target: t}).init(),
+  deserialize(ShaderStore, NODES.shaders["Glyph"], ()=>{}, {target: t}).init(),
 ];
 
 // set defaults

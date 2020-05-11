@@ -1,12 +1,12 @@
 const shader_types = [
 	"Glyph",
 	"UV",
-	// "Noise",
-	// "Threshold",
-	// "Invert",
+	"Noise",
+	"Threshold",
+	"Invert",
 	"ToHSV",
-	// "Wavy",
-	// "Sharpen",
+	"Wavy",
+	"Sharpen",
 ];
 
 const op_types = [
@@ -15,6 +15,9 @@ const op_types = [
 	"Divide",
 	"Multiply",
 	"Modulus",	
+	"Sin",
+	"Cos",
+	"Tan",	
 ];
 
 const input_types = [
@@ -40,21 +43,21 @@ let all 	= {};
 shader_types.forEach((type) => {
 	shaders = {
 		...shaders,
-		[type]: require('./shaders/' + type + '.js').default
+		[type]: require('./shaders/' + type + '.json')
 	}	
 });
 
 op_types.forEach((type) => {
 	ops = {
 		...ops,
-		[type]: require('./ops/' + type + '.js')
+		[type]: require('./ops/' + type + '.js').default
 	}
 });
 
 input_types.forEach((type) => {
 	inputs = {
 		...inputs,
-		[type]: require('./inputs/' + type + '.js')
+		[type]: require('./inputs/' + type + '.js').default
 	}
 });
 

@@ -1,45 +1,54 @@
 import { observable, decorate, action } from 'mobx';
 import uuidv1 from 'uuid/v1';
-import Operator from './OperatorStore';
 import {
     createModelSchema,
     list,
     object,
     identifier,
+    custom,
 } from "serializr"
+import * as NODES from './';
 
 export default class ParameterGraphStore {
     uuid = uuidv1();
-    parent = null;
-    nodes = [];
 
-    constructor(n, p) {
+    constructor(n = [], p) {
         this.nodes  = n;
         this.parent = p;
     }
 
-    addNode() {}
+    addNode(type) {
+        this.nodes.push(new NODES.all[type](this).init());
+    }
 
-    removeNode() {}
+    removeNode(node) {
+        this.nodes = this.nodes.filter((item) => item.uuid !== node.uuid);
+    }
 
     update() {        
+        let v = 0;
+        
         for (let i = 0; i < this.nodes.length; i++) {
-            this.parent.value = this.nodes[i].update(this.parent.value);
+            v = this.nodes[i].update(v);// here 
         }
+        
+        this.parent.value = v;
     }
 }
 
 decorate(ParameterGraphStore, {
-    uuid: observable,
+    // uuid: observable,
     nodes: observable,
     addNode: action,
     removeNode: action,
 });
 
 createModelSchema(ParameterGraphStore, {
-    uuid: identifier(),
-    nodes: list(object(Operator)),
-}, c => {
-    let p = c.parentContext.target;
-    return new ParameterGraphStore(c.json.nodes, p);
-});
+    // uuid: identifier(),
+    nodes: list(custom(
+        (v) => ({...v, parent: null}),
+        (v, c) => {
+            return new NODES.all[v.name](c.target,v.modifier).init();
+        },
+    ))
+}, c => new ParameterGraphStore(c.json.nodes, c.parentContext.target));

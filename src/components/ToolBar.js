@@ -5,6 +5,14 @@ import MainContext from '../MainContext';
 
 const fs = require('fs');
 
+let style = {
+    drawer: {
+        width: "0px",
+        top: "0px",
+        left: "0px",
+    }
+}
+
 const ToolBar = observer(class ConsoleBar extends React.Component {
 
     static contextType = MainContext;
@@ -13,6 +21,7 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
         super();
 
         this.drawer_items = [];
+        this.ref = React.createRef();
 
         this.state = {
             openDrawer: false,
@@ -20,48 +29,67 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
         }
     }
 
-    handleNew = () => {
+    componentDidMount() {
+        document.addEventListener('click', this.handleClickAway);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleClickAway);
+    }
+
+    handleClickAway = e => {
+        if (!this.ref.current.contains(e.target)) {
+        	this.setState({openDrawer: false, activeDrawer: ''})        	
+        }
+    }
+
+    handleNew = (e) => {
+        let bounds = e.currentTarget.getBoundingClientRect();
+        
         this.setState(previousState => ({
             ...previousState,
-            openDrawer: !previousState.openDrawer,
+            openDrawer: !(previousState.activeDrawer === 'new' && previousState.openDrawer),
             activeDrawer: 'new',
         }));
 
+        style = {...style, drawer: {
+            top: bounds.top-1,
+            left: bounds.right,
+        }}
+
         this.drawer_items = (
             <React.Fragment>
-                <button onClick={()=>this.store.addTarget()}>
-                    Target
+                <button 
+                    onClick={()=>this.store.addTarget()} 
+                    className="white_button"
+                >Target
                 </button>
-                <button>
-                    Shader
-                </button>
-                <button>
-                    Operator
-                </button>
-                <button>
-                    Text
-                </button>
-                <button>
-                    Image
+                <button 
+                    onClick={()=>this.store.activeTarget.addShader()} 
+                    className="white_button"
+                >Shader
                 </button>
             </React.Fragment>            
         );
     }
 
-    handleSave = () => {        
-        this.context.store.save();
-    }
+    handleSave = () => this.context.store.save();
 
-    handleLoad = () => {        
-        this.context.store.load();
-    }
+    handleLoad = () => this.context.store.load();
 
-    handleObj = () => {
+    handleLib = (e) => {
+        let bounds = e.currentTarget.getBoundingClientRect();
+        
         this.setState(previousState => ({
             ...previousState,
-            openDrawer: !previousState.openDrawer,
+            openDrawer: !(previousState.activeDrawer === 'obj' && previousState.openDrawer),
             activeDrawer: 'obj',
         }));
+
+        style = {...style, drawer: {
+            top: bounds.top-1,
+            left: bounds.right,
+        }}
 
         this.drawer_items = [];
 
@@ -85,32 +113,48 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
         this.store = this.context.store;
 
         return (
-            <div id="TOOLBAR">
+            <div id="TOOLBAR" onClick={this.closeDrawer} ref={this.ref}>
                 <div className="toolbar">
                     <button 
-                        className={this.state.activeDrawer === 'new' ? "white_button" : "black_button"} 
+                        className={
+                            (this.state.activeDrawer === 'new' && this.state.openDrawer) 
+                                ? "white_button" 
+                                : "black_button"
+                        } 
                         onClick={this.handleNew}
                     >
                         NEW
                     </button>
                     <button 
-                        className={this.state.activeDrawer === 'save' ? "white_button" : "black_button"} 
+                        className={
+                            (this.state.activeDrawer === 'save' && this.state.openDrawer) 
+                                ? "white_button" 
+                                : "black_button"
+                        } 
                         onClick={this.handleSave}
                     >
                         SAVE
                     </button>
                     <button 
-                        className={this.state.activeDrawer === 'open' ? "white_button" : "black_button"}                         
+                        className={
+                            (this.state.activeDrawer === 'open' && this.state.openDrawer) 
+                                ? "white_button" 
+                                : "black_button"
+                        }                         
                         onClick={this.handleLoad}
                     >                        
                         LOAD
                         
                     </button>
                     <button 
-                        className={this.state.activeDrawer === 'obj' ? "white_button" : "black_button"} 
-                        onClick={this.handleObj}
+                        className={
+                            (this.state.activeDrawer === 'obj' && this.state.openDrawer) 
+                                ? "white_button" 
+                                : "black_button"
+                        } 
+                        onClick={this.handleLib}
                     >
-                        OBJ
+                        LIB
                     </button>
 
                     <div className="version">
@@ -118,6 +162,7 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
                     </div>
                 </div>
                 <div className="drawer" style={{
+                    ...style.drawer,
                     width: this.state.openDrawer ? '150px' : '0px',
                 }}>
                     {this.drawer_items}

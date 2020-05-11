@@ -8,7 +8,9 @@ import {
     list,
     object,
     identifier,
+    deserialize,
 } from "serializr"
+import ShaderStore from './ShaderStore';
 
 class TargetStore {
     uuid   = uuidv1();
@@ -29,8 +31,17 @@ class TargetStore {
         if (this.active) this.parent.activeTarget = this;
     }
 
-    addShader(type, pos = null) {
-        let shader = new NODES.shaders[type](this).init();
+    addShader(type = null, pos = null) {
+        let shader;
+
+        if(type){
+            // shader = new NODES.shaders[type](this).init();
+            shader = deserialize(ShaderStore, NODES.shaders[type], ()=>{}, {target: this}).init();
+            
+        }else{
+            shader = new ShaderStore(this).init();
+        }
+        
         this.shaders.splice(pos ? pos : this.shaders.length, 0, shader);
     }
 

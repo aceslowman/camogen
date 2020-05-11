@@ -1,16 +1,13 @@
 import { observable, action, decorate } from 'mobx';
+import OperatorStore from '../OperatorStore';
+import {createModelSchema} from "serializr"
 
 //----------------------------------------------------------------------
-const store = class DivideStore {
+const store = class DivideStore extends OperatorStore{
 	name = "Divide";
     value = 0;
-	modifier = 1;
-	
-	constructor(v) {
-		this.modifier = v;
-	}
 
-	update(v) {		
+	update = (v) => {		
         return Number(v) / Number(this.modifier);
 	}
 }
@@ -20,6 +17,10 @@ decorate(store, {
     value: observable,
     modifier: observable,
 	update: action,		
+});
+
+createModelSchema(store, {
+	extends: OperatorStore
 });
 
 export default store;

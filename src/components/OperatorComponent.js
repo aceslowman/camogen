@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-import Node from './ui/Node';
 
 const OperatorComponent = observer(class OperatorComponent extends React.Component {
 	static contextType = MainContext;
@@ -9,24 +8,23 @@ const OperatorComponent = observer(class OperatorComponent extends React.Compone
     handleRemove = () => {}
     
     handleChange = e => {    
-        this.props.data.modifier = e.target.value;
+		this.props.data.modifier = e.target.value;
+		this.props.graph.update();
     }
 
 	render() {
-		const { data } = this.props;
+		const { data, graph } = this.props;
+
 		return (
-            <Node 	
-                mini		
-				title={data.name}
-				data={data} 
-				onRemove={this.handleRemove}
-			>	
+            <div className="operator">
+				<button onClick={()=>graph.removeNode(data)}>x</button>
+				<h3>{data.name}</h3>
 				<input 
 					type="number"
-                    value={data.modifier}	
+                    value={data.modifier ? data.modifier : data.value}	
                     onChange={this.handleChange}			
-				/>				
-			</Node>
+				/>	
+			</div>								
 		);
 	}
 });

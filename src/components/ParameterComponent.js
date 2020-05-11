@@ -9,30 +9,20 @@ const ParameterComponent = observer(class ParameterComponent extends React.Compo
 
     static contextType = MainContext;
 
-    handleChange = e => {
-        console.log(e, this.props.data);
+    handleChange = e => {        
         this.props.data.value = e;
     }
 
-    handleClick = () => {
-        const { data, index, isArray } = this.props;
-        this.context.store.activeParameter = data;
-        this.context.store.activeParameterIndex = isArray ? index : null;        
-    }
-
     generateInputs() {
-        const { index, data } = this.props;
-        // this.value = this.props.isArray ? data.value[index] : data.value;
+        const { data } = this.props;        
         this.value = data.value;
-        // calling too many times
-        // if (!this.value) console.log('HERE',data)
+
         switch (this.value.constructor) {
             case Boolean:
                 this.input = (<InputBool
                     step={0.1}
                     value={this.value}
                     onChange={this.handleChange}
-                    onClick={this.handleClick}
                 />);
             break;
             case Number:
@@ -40,7 +30,6 @@ const ParameterComponent = observer(class ParameterComponent extends React.Compo
                     step={0.1}
                     value={this.value}
                     onChange={this.handleChange}
-                    onClick={this.handleClick}
                 />);
             break;
             default:
@@ -48,10 +37,14 @@ const ParameterComponent = observer(class ParameterComponent extends React.Compo
                     step={0.1}
                     value={this.value}
                     onChange={this.handleChange}
-                    onClick={this.handleClick}
                 />);
             break;
         }
+    }
+
+    handleFocus = e => {
+        if (this.props.onFocus)
+            this.props.onFocus(this.props.data)
     }
 
     render() {
@@ -61,9 +54,13 @@ const ParameterComponent = observer(class ParameterComponent extends React.Compo
 
         return (
             <div className="parameter_wrapper">
-                <fieldset>            
-                    <legend className="invert">{isArray ? name : data.name}</legend>                    
-                    {this.input}                                                         
+                <fieldset onClick={this.handleFocus}>    
+                    <div>
+                        {data.name && (<legend className="invert">
+                            {data.name}
+                        </legend>)}
+                        {this.input}  
+                    </div>                                                                                   
                 </fieldset>
             </div>
         )

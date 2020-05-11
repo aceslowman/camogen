@@ -16,9 +16,9 @@ const UniformComponent = observer(class UniformComponent extends React.Component
             >
                 <legend 
                     className="invert" 
-                    style={{ padding: '2px 4px' }}
+                    style={{ padding: '2px 4px', }}
                 >
-                    {data.name}
+                    <strong>{data.name}</strong>
                 </legend>
                 <div>
                     {data.elements.map((param)=>{                         
@@ -26,6 +26,7 @@ const UniformComponent = observer(class UniformComponent extends React.Component
                             <Parameter 
                                 key={param.uuid}
                                 data={param}
+                                onFocus={e=>this.props.onFocus(e)}
                             />
                         );                     
                     })}
