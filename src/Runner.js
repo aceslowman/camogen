@@ -25,11 +25,17 @@ const Runner = (p, store, props) => {
                         Loop through all active parameter graphs to recompute 
                         values in sync with the frame rate
                     */
-                    // for (let parameter_graph of shader_data.parameter_graphs) {
-                    //     if(parameter_graph.nodes) parameter_graph.update();
-                    // }
+                    for (let op of shader_data.operatorUpdateGroup) {
+                        op.update();
+                        op.parent.update();
+                    }
 
                     for (let uniform_data of shader_data.uniforms) {
+                        // console.log(uniform_data)
+                        // for (let element of uniform_data.elements) {
+                        //     if(element.graph)
+                        // }
+
                         if (uniform_data.elements.length > 1) {
 
                             // there should be a more elegant way of doing this
@@ -45,8 +51,9 @@ const Runner = (p, store, props) => {
                         }
                     }
 
+                    // built-ins
                     shader.setUniform('tex0', target);
-                    shader.setUniform('resolution', [target.width, target.height]);
+                    shader.setUniform('resolution', [target.width, target.height]);                    
 
                     target.shader(shader);
 

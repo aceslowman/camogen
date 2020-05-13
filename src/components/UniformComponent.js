@@ -7,7 +7,8 @@ const UniformComponent = observer(class UniformComponent extends React.Component
     static contextType = MainContext;
     
     render() {    
-        const { data } = this.props;
+        const { data, activeParam } = this.props;
+        // console.log(activeParam === param)
 
         return (
             <fieldset 
@@ -24,9 +25,10 @@ const UniformComponent = observer(class UniformComponent extends React.Component
                     {data.elements.map((param)=>{                         
                         return (
                             <Parameter 
+                                active={activeParam === param}
                                 key={param.uuid}
                                 data={param}
-                                onFocus={e=>this.props.onFocus(e)}
+                                onDblClick={e=>this.props.onDblClick(e)}
                             />
                         );                     
                     })}

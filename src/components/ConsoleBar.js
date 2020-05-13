@@ -38,7 +38,7 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 		this.store = this.context.store;
 
 		return (
-          <div id="console">
+          <div id="CONSOLE">
 				<div>
 					<input
 						ref={(ref) => this.ref = ref}

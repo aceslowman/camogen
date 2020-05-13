@@ -6,19 +6,18 @@ import {
 import {
     createModelSchema,
     primitive,
-    reference,
     list,
     object,
-    identifier,
 } from "serializr"
 import ParameterStore from './ParameterStore';
 
 export default class UniformStore {
     uuid = uuidv1();
 
-    constructor(name = "", elements = []) {    
+    constructor(name = "", elements = [], p) {    
         this.name = name;
         this.elements = elements;
+        this.parent = p;
         this.elements.forEach((e)=>{
             e.parent = this;
         })
@@ -29,10 +28,14 @@ decorate(UniformStore, {
     // uuid: observable,
     name: observable,
     elements: observable,
+    parent: observable,
 });
 
 createModelSchema(UniformStore, {
     // uuid: identifier(),
     name: primitive(),
     elements: list(object(ParameterStore)),
-}, c => new UniformStore(c.json.name, c.json.elements));
+}, c => {
+    return new UniformStore(c.json.name, c.json.elements, c.parentContext.target)
+    }
+);

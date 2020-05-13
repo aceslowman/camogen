@@ -1,14 +1,10 @@
 import {
     createModelSchema,
-    setDefaultModelSchema,
     primitive,
     list,
     object,
-    identifier,
     serialize,
-    deserialize,
     update,
-    reference,
 } from "serializr";
 import {
     observable,
@@ -72,6 +68,8 @@ class ShaderStore {
     ref       = null;
     target    = null;
 
+    operatorUpdateGroup = [];
+
     constructor(
         target, 
         precision = d_prec, 
@@ -87,41 +85,70 @@ class ShaderStore {
     }
 
     extractUniforms(){ 
-        this.uniforms = [];
-        let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9]+);\s+\/?\/?\s({(.*?)})?/g
+        const builtins = ["resolution"];
+        
+        let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9]+);\s+\/?\/?\s?({(.*?)})?/g
         let result = [...this.frag.matchAll(re)];
+        
         // console.log(result)
         result.forEach((e) => {
-            let def, name;
-            let opt = {};
+            // ignore built-ins
+            if(builtins.includes(e[3])) return;
+
+            // ignore if uniform already exists
+            // (preserves graphs)
+            for(let i = 0; i < this.uniforms.length; i++){
+                if(this.uniforms[i].name === e[3]){
+                    return;
+                }
+            }
+
+            let def;
+            let opt = (e[4]) ? JSON.parse(e[4]) : {};
+
             switch(e[2]){
-                case "float":
-                    if (e[4]) opt = JSON.parse(e[4]);
-                    // name = opt.name ? opt.name : e[3];
+                case "float":                                      
                     def = opt.default ? opt.default : 1.0;
 
                     this.uniforms.push(new Uniform(e[3], [
                         new Parameter('',def)
-                    ]));
+                    ], this));
                     break;
-                case "vec2":
-                    if(e[4]) opt = JSON.parse(e[4]);
-                    // name = opt.name ? opt.name : e[3];
+                case "vec2":                  
                     def = opt.default ? opt.default : [1,1];
                     
                     this.uniforms.push(new Uniform(e[3], [
                         new Parameter('x:',def[0]),
                         new Parameter('y:',def[1])
-                    ]));
+                    ], this));
                     break;
-                case "bool":
-                    if (e[4]) opt = JSON.parse(e[4]);
-                    // name = opt.name ? opt.name : e[3];
+                case "vec3":                  
+                    def = opt.default ? opt.default : [1,1,1];
+                    
+                    this.uniforms.push(new Uniform(e[3], [
+                        new Parameter('x:',def[0]),
+                        new Parameter('y:', def[1]),
+                        new Parameter('z:', def[2])
+                    ], this));
+                    break;
+                case "vec4":                  
+                    def = opt.default ? opt.default : [1,1,1,1];
+                    
+                    this.uniforms.push(new Uniform(e[3], [
+                        new Parameter('x:',def[0]),
+                        new Parameter('y:', def[1]),
+                        new Parameter('z:', def[2]),
+                        new Parameter('w:', def[3])
+                    ], this));
+                    break;
+                case "bool":                   
                     def = opt.default ? opt.default : false;
 
                     this.uniforms.push(new Uniform(e[3], [
                         new Parameter('',def)
-                    ]));
+                    ], this));
+                    break;
+                default:
                     break;
             }
         })
@@ -154,8 +181,6 @@ class ShaderStore {
             fs.readFile(content, 'utf-8', (err, data) => {
                 if (err)
                     alert("an error has occurred: " + err.message);
-
-                console.log(data)
 
                 update(
                     this, 
@@ -211,6 +236,7 @@ decorate(ShaderStore, {
     precision:        observable,
     vert:             observable,
     frag:             observable,
+    operatorUpdateGroup: observable,
     vertex:           computed,
     fragment:         computed,
     init:             action,
@@ -226,7 +252,6 @@ createModelSchema(ShaderStore, {
     frag:             primitive(),
     uniforms:         list(object(UniformStore)),
 }, c => {
-    console.log(c)
     let p = c.parentContext ? c.parentContext.target : c.args.target;
     return new ShaderStore(
         p, 

@@ -19,10 +19,8 @@ import ShaderStore from './stores/ShaderStore';
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
 const app = remote.app;
-const win = remote.getCurrentWindow();
 
 const fs = window.require('fs');
-const path = require('path');
 
 class MainStore {
   p5_instance = null;
@@ -36,7 +34,7 @@ class MainStore {
   
   object_list = NODES.shader_types;
 
-  show_splash = true;
+  show_splash = false;
 
   constructor() {  
     this.p5_instance = new p5(p => Runner(p, this));
@@ -148,10 +146,10 @@ createModelSchema(MainStore, {
 
 const mainStore = new MainStore();
 const t = new Target(mainStore);
-console.log(NODES.shaders)
+
 t.shaders = [
   deserialize(ShaderStore, NODES.shaders["UV"], ()=>{}, {target: t}).init(),
-  deserialize(ShaderStore, NODES.shaders["Glyph"], ()=>{}, {target: t}).init(),
+  deserialize(ShaderStore, NODES.shaders["Noise"], ()=>{}, {target: t}).init(),
 ];
 
 // set defaults

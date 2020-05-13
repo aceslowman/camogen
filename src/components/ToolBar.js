@@ -3,8 +3,6 @@ import { observer } from 'mobx-react';
 
 import MainContext from '../MainContext';
 
-const fs = require('fs');
-
 let style = {
     drawer: {
         width: "0px",
@@ -94,9 +92,7 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
         this.drawer_items = [];
 
         // retrieve master list of objects
-        for (let obj of this.store.object_list){   
-            let t = this.store.targets[0];
-            
+        for (let obj of this.store.object_list){               
             this.drawer_items.push((
                 <button 
                     key={obj}

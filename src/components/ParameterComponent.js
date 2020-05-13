@@ -26,14 +26,14 @@ const ParameterComponent = observer(class ParameterComponent extends React.Compo
                 />);
             break;
             case Number:
-                this.input = ( <InputFloat
+                this.input = (<InputFloat
                     step={0.1}
                     value={this.value}
                     onChange={this.handleChange}
                 />);
             break;
             default:
-                this.input = ( <InputFloat
+                this.input = (<InputFloat
                     step={0.1}
                     value={this.value}
                     onChange={this.handleChange}
@@ -42,26 +42,29 @@ const ParameterComponent = observer(class ParameterComponent extends React.Compo
         }
     }
 
-    handleFocus = e => {
-        if (this.props.onFocus)
-            this.props.onFocus(this.props.data)
+    handleDblClick = e => {
+        if (this.props.onDblClick)
+            this.props.onDblClick(this.props.data)
     }
 
     render() {
-        const { data, isArray, name } = this.props;
+        const { data, active } = this.props;
 
         this.generateInputs();
 
         return (
             <div className="parameter_wrapper">
-                <fieldset onClick={this.handleFocus}>    
+                <fieldset onDoubleClick={this.handleDblClick} style={{border: active ? '2px dashed black' : '2px dashed white'}}>    
                     <div>
                         {data.name && (<legend className="invert">
                             {data.name}
                         </legend>)}
                         {this.input}  
-                    </div>                                                                                   
-                </fieldset>
+                    </div>  
+                    {/* {active && (
+                        <div className="param_rail"></div>
+                    )}                                                                                  */}
+                </fieldset>                
             </div>
         )
     }

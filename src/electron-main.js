@@ -1,6 +1,7 @@
 const electron = require('electron');
 // Module to control application life.
 const app = electron.app;
+const session = electron.session;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
@@ -12,6 +13,16 @@ const url = require('url');
 let mainWindow;
 
 function createWindow() {
+    //uncomment in production
+    // session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    //     callback({
+    //         responseHeaders: {
+    //             ...details.responseHeaders,
+    //             'Content-Security-Policy': ['default-src \'self\'']
+    //         }
+    //     })
+    // })
+
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 1000,
@@ -66,3 +77,4 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+

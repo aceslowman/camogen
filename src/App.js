@@ -51,6 +51,8 @@ const App = observer(class App extends React.Component {
 
             <div id="WORKAREA_inner" ref={this.workAreaRef}>
 
+              { this.store.show_splash && <Splash /> }
+
               {this.store.targets.map((target)=>{
                 return (
                   <Target 
@@ -58,9 +60,7 @@ const App = observer(class App extends React.Component {
                     data={target}
                   />
                 );
-              })}              
-              
-              { this.store.show_splash && <Splash /> }
+              })}                          
 
             </div>          
 

@@ -8,22 +8,24 @@ const OperatorComponent = observer(class OperatorComponent extends React.Compone
     handleRemove = () => {}
     
     handleChange = e => {    
-		this.props.data.modifier = e.target.value;
+		this.props.data.modifier = Number(e.target.value);
 		this.props.graph.update();
-    }
+	}
+	
+	componentDidUpdate(){
+		console.log('component did update')
+	}
 
 	render() {
 		const { data, graph } = this.props;
+
+		console.log('rendering',data.inputs)
 
 		return (
             <div className="operator">
 				<button onClick={()=>graph.removeNode(data)}>x</button>
 				<h3>{data.name}</h3>
-				<input 
-					type="number"
-                    value={data.modifier ? data.modifier : data.value}	
-                    onChange={this.handleChange}			
-				/>	
+				{data.inputs}				
 			</div>								
 		);
 	}

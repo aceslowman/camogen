@@ -5,11 +5,11 @@ import {createModelSchema} from "serializr"
 //----------------------------------------------------------------------
 const store = class AddStore extends OperatorStore{
 	name 	  = "Add";
-    value 	  = 0;
+	value 	  = 0;
+	modifier  = 0;
 	
-	constructor(p, mod = 0) {	
+	constructor(p, mod = 5) {	
 		super(p, mod);
-		this.modifier = mod;
 	}
 
 	update = (v) => {		

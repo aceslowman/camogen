@@ -21,10 +21,10 @@ const op_types = [
 ];
 
 const input_types = [
-	"ElapsedTime",
+	"Counter",
 	// "ElapsedFrames",
 	// "osc",
-	// "midi",
+	"MIDI",
 	// "syphon",
 ];
 

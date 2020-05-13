@@ -6,11 +6,15 @@ import ParameterGraph from './ParameterGraphComponent';
 
 import AceEditor from "react-ace";
 
-import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-glsl";
 import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/webpack-resolver";
 
 const style = {
 	zIndex: 10,
+	main: {
+		// maxHeight: '42px',
+	},
 	inner: {
 		maxHeight: '42px',
 	},
@@ -31,7 +35,7 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 		this.state = {
 			expandMain: false,
 			expandEdit: false,
-			editing: '',
+			edit_buffer: '',
 			edit_type: 'param',
 			focus: false,
 			activeParameter: ''
@@ -42,58 +46,50 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 		this.props.data.target.removeShader(this.props.data);
 	}
 
-	handleExpand = () => {
+	handleExpandMain = () => {
 		this.setState(prevState => ({
 			...prevState,
 			expandMain: !prevState.expandMain,
-			expandEdit: !prevState.expandMain ? false : prevState.expandEdit
 		}));
 	}
 
-	handleExpandEdit = () => {
+	handleExpandEdit = (e) => {
 		this.setState(prevState => ({
 			...prevState,
-			expandEdit: !prevState.expandEdit
+			activeParameter: e ? e : '',
+			expandEdit: e ? true : !prevState.expandEdit
 		}));
 	}
 
 	handleVertexEdit = () => {
-		if (!this.props.mini) {
-			this.setState(prevState => ({
-				...prevState,
-				editing: this.props.data.vert,
-				edit_type: 'vert',
-			}));
-		}
+		this.setState(prevState => ({
+			...prevState,
+			edit_buffer: this.props.data.vert,
+			edit_type: 'vert',
+		}));
 	}
 
 	handleFragEdit = () => {
-		if (!this.props.mini) {
-			this.setState(prevState => ({
-				...prevState,
-				editing: this.props.data.frag,
-				edit_type: 'frag',
-			}));
-		}
+		this.setState(prevState => ({
+			...prevState,
+			edit_buffer: this.props.data.frag,
+			edit_type: 'frag',
+		}));
 	}
 
 	handleParamEdit = () => {
-		if (!this.props.mini) {
-			this.setState(prevState => ({
-				...prevState,
-				edit_type: 'param',
-			}));
-		}
+		this.setState(prevState => ({
+			...prevState,
+			edit_type: 'param',
+		}));
 	}
 
 	handleRefresh = () => {
 		this.props.data.init()
 	}
 
-	handleEditorChange = (e) => {
-		this.setState({
-			editing: e
-		})
+	handleEditorChange = e => {		
+		this.setState({ edit_buffer: e });
 		this.props.data[this.state.edit_type] = e;
 	}
 
@@ -101,9 +97,14 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 		this.store = this.context.store;
 		
 		if (this.innerRef.current) {
+			// console.log(this.innerRef.current.offsetHeight)
+			style.main = {
+				...style.main,
+				maxHeight: this.state.expandEdit && this.state.expandMain ? '500px' : '500px',
+			}
 			style.inner = {
 				...style.inner,
-				maxHeight: this.state.expandMain ? '800px' : '42px',
+				maxHeight: this.state.expandMain ? '500px' : '0px',
 			}
 			style.edit = {
 				...style.edit,
@@ -113,39 +114,44 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 
 		return(
 			<div 
-				className={this.props.mini ? "miniNode" : "node"}
+				className="node"
 				onClick={this.handleClick}
-				style={{...style.inner, zIndex: this.state.focus ? 100 : 10}}
+				style={{...style.main, zIndex: this.state.focus ? 100 : 10}}
 			>
 				<div className='nodeTools'>
 					<div style={{}}>
 						<button onClick={this.handleRemove}>x</button>
-						<button onClick={this.handleExpand}>
+						<button onClick={this.handleExpandMain}>
 							{this.state.expandMain ? 'v' : '>'}
 						</button>
-						<button onClick={this.handleExpandEdit}>
-							≡
-						</button>
+						{ this.state.expandMain && (
+							<button onClick={()=>this.handleExpandEdit(null)}>
+								≡
+							</button>
+						)}						
 					</div>													
 	          	</div>
 
 	          	<div className='nodeContainer' onClick={this.handleClick}>				
-		            <legend onClick={this.handleExpand}>
+		            <legend onClick={this.handleExpandMain}>
 						{this.props.data.name}
 					</legend>				           
 
-		            <div className='nodeInner' ref={this.innerRef}>
-						<div>
-							{this.props.data.uniforms.map((uniform)=>{                        
-								return (
-									<Uniform 
-										key={uniform.uuid}
-										data={uniform}	
-										onFocus={e=>this.setState({activeParameter: e})}
-									/>
-								);                     
-							})}
-						</div>		            	
+		            <div className='nodeInner' ref={this.innerRef} style={{...style.inner, overflowY: this.state.expandMain ? 'auto' : 'none'}}>
+						{this.state.expandMain && (
+							<div>
+								{this.props.data.uniforms.map((uniform)=>{                        
+									return (
+										<Uniform 
+											key={uniform.uuid}
+											data={uniform}
+											activeParam={this.state.activeParameter}	
+											onDblClick={this.handleExpandEdit}
+										/>
+									);                     
+								})}
+							</div>
+						)}												            	
 		            </div>
 	            </div>   
 
@@ -200,21 +206,20 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 								onClick={this.handleRefresh}
 							><em>refresh</em></button>
 						</div>															
-					</div>																				
-				
+					</div>
 
-					{(this.state.expandEdit && this.state.expandMain && this.state.edit_type !== 'param' && this.state.editing) && (
+					{(this.state.expandEdit && this.state.expandMain && this.state.edit_type !== 'param') && (
 						<AceEditor
-							mode="javascript"
+							mode="glsl"
 							theme="monokai"
 							onChange={this.handleEditorChange}
-							value={this.state.editing}
+							value={this.state.edit_buffer}
 							width="500px"
 							minHeight="500px"
-							className="editor"	
-							fontSize="12px"	 												
+							className="editor"		 												
 						/>
 					)}
+
 					{(this.state.expandEdit && this.state.expandMain && this.state.edit_type === 'param') && ( 
 						<ParameterGraph 
 							data={this.state.activeParameter}

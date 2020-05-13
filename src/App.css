@@ -198,25 +198,25 @@ button:focus {
 
 /* ConsoleBar.js */
 
-#console {
+#CONSOLE {
   width: 100%;
   display: flex;
   border-top: 1px solid black;
   height: 35px;
 }
 
-#console > div{
+#CONSOLE > div{
   width: 100%;
   height: 100%;
   z-index: 0;
   background-color: white;
 }
 
-#console > div > input:focus {
+#CONSOLE > div > input:focus {
   outline: none;
 }
 
-#console > div > input {
+#CONSOLE > div > input {
   margin: 0;
   padding: 0px 5px;
   width: 100%;
@@ -309,20 +309,12 @@ button:focus {
   width: 100%;
 }
 
-.miniNode {    
-  margin: 5px 15px;
-  background-color: black;
-  border: 1px solid white;
-  display: flex;
-  flex-direction: row;
-  color: white;
-  align-items: center;
+.nodeContainer {
+  transition: max-height 800ms ease-in-out;
 }
 
-.miniNode input {
-  text-align: left;
-  padding-left: 5px; 
-  width: 65px;
+.nodeInner {
+  transition: max-height 800ms ease-in-out;
 }
 
 .nodeTools {
@@ -349,12 +341,12 @@ button:focus {
 }
 
 .node .nodeContainer {
-  width: 200px;
+  width: 250px;
   border: 1px solid black;
   background-color: white;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  flex-grow: 1;  
 }
 
 .node .nodeContainer > legend {		
@@ -362,15 +354,15 @@ button:focus {
   font-size: 1.6em;
   cursor: pointer;
   width: 100%;
-  padding: 8px 10px;
+  padding: 10px;
   box-sizing: border-box;
 }
 
-.miniNode .nodeContainer > legend {
+.nodeContainer > legend {
   padding: 0px 10px;
 }
 
-.miniNode .nodeContainer {
+.nodeContainer {
   display:flex;
   flex-flow: row;
   align-items: center;
@@ -381,6 +373,7 @@ button:focus {
   box-sizing: border-box;
   display: flex;
   width: 100%;   
+  /* padding-bottom: 5px; */
 }
 
 .node .nodeInner > div {
@@ -391,7 +384,7 @@ button:focus {
   color: white;
   overflow: hidden;
   transition: max-width 800ms ease-in-out;
-  height: 500px;
+  /* height: 500px; */
   display: flex;
   flex-direction: column;
 }
@@ -409,7 +402,7 @@ button:focus {
 }
 
 .parameter_graph>fieldset>label{
-  position: absolute;
+  position: relative;
 }
 
 .parameter_graph>fieldset>div{
@@ -420,11 +413,20 @@ button:focus {
   justify-content: center;
 }
 
-
+/* .param_rail {
+  border: 1px dashed red;
+  border-top: none;
+  border-right: none;
+  position: relative;
+  left: 2px;
+  display: inline !important;
+  width: 500px;
+  height: 20px;
+} */
 
 .parameter_graph > div {
   width:80px;
-  padding-right:15px;
+  padding-left:15px;
 }
 
 .parameter_graph h4 {
@@ -433,9 +435,9 @@ button:focus {
 
 .operator {
   display: flex;
-  padding: 0px 10px;
+  padding: 5px 10px;
   margin: 5px 0px;
-  height: 30px; 
+  /* height: 30px;  */
   align-items: center;
   justify-content: space-between;
   border: 1px dotted;
@@ -452,6 +454,11 @@ button:focus {
 
 .operator input {
   width: 60px;
+}
+
+.operator fieldset {
+  display: inherit;
+  border-style: groove;
 }
 
 .horizontal_toolbar {

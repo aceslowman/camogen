@@ -8,9 +8,8 @@ const store = class SubtractStore extends OperatorStore{
     value = 0;
 	modifier = 1;
 	
-	constructor(p, v = 0) {
-		super(p);
-		this.modifier = v;
+	constructor(p, mod = 0) {
+		super(p, mod);
 	}
 
 	update = (v) => {		

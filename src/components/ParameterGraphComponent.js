@@ -33,19 +33,32 @@ const ParameterGraphComponent = observer(class ParameterGraphComponent extends R
 		this.generateNodes();		
 
 		return(	
-			<div className="parameter_graph">
+			<div className="parameter_graph">					
+				<fieldset style={{border: data ? '1px dashed white' : '1px dashed white'}}>
+					{data && (<label>{data.parent.name + ' ' + data.name}</label>)}
+					<div>
+						{!data && (
+						<p><em>double click on a parameter to edit its graph</em></p>
+						)}
+						{this.nodes}
+					</div>										
+					{data && (<Parameter 
+						key={data.uuid}
+						data={data}						
+					/>)}				
+				</fieldset>	
 				{data && (<div>	
 					<h4>input:</h4>				
 					<div>
 						<button onClick={
-							() => data.graph.addNode('MIDIListener')
+							() => data.graph.addNode('MIDI')
 						}>midi</button>
 						<button onClick={
 							() => data.graph.addNode('OscListener')
 						}>osc</button>
 						<button onClick={
-							() => data.graph.addNode('ElapsedTime')
-						}>time</button>
+							() => data.graph.addNode('Counter')
+						}>counter</button>
 					</div>
 					<h4>ops:</h4>				
 					<div>
@@ -77,20 +90,7 @@ const ParameterGraphComponent = observer(class ParameterGraphComponent extends R
 							() => data.graph.addNode('Tan')
 						}>tan</button>
 					</div>					
-				</div>)}	
-				<fieldset>
-					{data && (<label>{data.parent.name + ' ' + data.name}</label>)}
-					<div>
-						{!data && (
-						<p><em>click on a parameter to edit its graph</em></p>
-						)}
-						{this.nodes}
-					</div>										
-					{/* {data && (<Parameter 
-						key={data.uuid}
-						data={data}						
-					/>)}				 */}
-				</fieldset>	
+				</div>)}
 			</div>	
 											
 	    )

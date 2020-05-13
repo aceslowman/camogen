@@ -3,8 +3,6 @@ import uuidv1 from 'uuid/v1';
 import {
     createModelSchema,
     list,
-    object,
-    identifier,
     custom,
 } from "serializr"
 import * as NODES from './';
@@ -37,14 +35,12 @@ export default class ParameterGraphStore {
 }
 
 decorate(ParameterGraphStore, {
-    // uuid: observable,
     nodes: observable,
     addNode: action,
     removeNode: action,
 });
 
 createModelSchema(ParameterGraphStore, {
-    // uuid: identifier(),
     nodes: list(custom(
         (v) => ({...v, parent: null}),
         (v, c) => {

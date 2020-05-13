@@ -8,9 +8,8 @@ const store = class MultiplyStore extends OperatorStore{
     value = 0;
 	modifier = 1;
 	
-	constructor(p, v = 1) {
-		super(p);
-		this.modifier = v;
+	constructor(p, mod = 1) {
+		super(p, mod);
 	}
 
 	update = (v) => {		
