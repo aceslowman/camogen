@@ -14,6 +14,12 @@ import {
   reference,
 } from "serializr";
 import ShaderStore from './stores/ShaderStore';
+import { create, persist } from 'mobx-persist';
+
+const hydrate = create({
+  storage: localStorage,
+  jsonify: true,
+});
 
 // for electron
 const remote = window.require('electron').remote;
@@ -30,7 +36,6 @@ class MainStore {
   suggestText = '';  
 
   activeTarget    = null;
-  activeParameter = null;// delete this
   
   object_list = NODES.shader_types;
 
@@ -38,6 +43,21 @@ class MainStore {
 
   constructor() {  
     this.p5_instance = new p5(p => Runner(p, this));
+
+    const t = new Target(this);
+    const uv = deserialize(ShaderStore, NODES.shaders["UV"], ()=>{}, {target: t}).init();
+    const noise = deserialize(ShaderStore, NODES.shaders["Noise"], ()=>{}, {target: t}).init()
+    
+    uv.connectTo(noise);
+
+    t.shaders = [
+      uv,
+      noise,
+    ];
+
+    this.targets.push(t)
+
+    // hydrate("targets",this,[t]).then(r => console.log("rehydrated",r))
   }
 
   consoleChanged() {
@@ -126,9 +146,8 @@ decorate(MainStore, {
   consoleText:     observable,  
   suggestText:     observable,  
   object_list:     observable,
-  targets:         observable,
+  targets:         [persist('list'),observable],
   activeTarget:    observable,
-  activeParameter: observable,
   show_splash:     observable,
   consoleChanged:  action,
   suggest:         action,
@@ -144,16 +163,20 @@ createModelSchema(MainStore, {
   show_splash:  primitive(),
 });
 
-const mainStore = new MainStore();
-const t = new Target(mainStore);
-
-t.shaders = [
-  deserialize(ShaderStore, NODES.shaders["UV"], ()=>{}, {target: t}).init(),
-  deserialize(ShaderStore, NODES.shaders["Noise"], ()=>{}, {target: t}).init(),
-];
-
-// set defaults
-mainStore.targets.push(t);
-
+const mainStore = new MainStore;
+// const someStore = persist(MainStore)(mainStore);
 export default mainStore;
+// hydrate('some', someStore).then((e) => console.log('someStore has been hydrated',e))
+
+// const t = new Target(mainStore);
+
+// t.shaders = [
+//   deserialize(ShaderStore, NODES.shaders["UV"], ()=>{}, {target: t}).init(),
+//   deserialize(ShaderStore, NODES.shaders["Noise"], ()=>{}, {target: t}).init(),
+// ];
+
+// // set defaults
+// mainStore.targets.push(t);
+
+// export default mainStore;
 

@@ -5,6 +5,8 @@ import {
     object,
     serialize,
     update,
+    reference,
+    identifier,
 } from "serializr";
 import {
     observable,
@@ -21,8 +23,8 @@ import Uniform from './UniformStore';
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
-const app = remote.app;
-const fs = window.require('fs');
+const app    = remote.app;
+const fs     = window.require('fs');
 
 // defaults
 const d_prec = `
@@ -68,6 +70,14 @@ class ShaderStore {
     ref       = null;
     target    = null;
 
+    position = {x: null, y: null}
+
+    texture_inputs = [];
+    texture_outputs = [];
+
+    inlet_refs = [];
+    outlet_refs = [];
+
     operatorUpdateGroup = [];
 
     constructor(
@@ -84,7 +94,7 @@ class ShaderStore {
         this.uniforms = uniforms;        
     }
 
-    extractUniforms(){ 
+    extractUniforms() { 
         const builtins = ["resolution"];
         
         let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9]+);\s+\/?\/?\s?({(.*?)})?/g
@@ -154,7 +164,7 @@ class ShaderStore {
         })
     }
 
-    init(){
+    init() {
         this.parameter_graphs = [];
         this.ref = this.target.ref.createShader(
             this.vertex,
@@ -219,6 +229,18 @@ class ShaderStore {
         });
     }
 
+    connectTo(shader, location = 0) {
+        this.texture_outputs.push({
+            location:location,
+            shader:shader
+        });
+        
+        shader.texture_inputs.push({
+            location:location,
+            shader:this
+        });
+    }
+
     get vertex() {
         return this.precision + this.vert;
     }
@@ -228,28 +250,36 @@ class ShaderStore {
 }
 
 decorate(ShaderStore, {
-    // uuid:             observable,
-    ref:              observable,
-    target:           observable,
-    name:             observable,
-    uniforms:         observable,
-    precision:        observable,
-    vert:             observable,
-    frag:             observable,
+    uuid:                observable,
+    ref:                 observable,
+    target:              observable,
+    name:                observable,
+    uniforms:            observable,
+    precision:           observable,
+    vert:                observable,
+    frag:                observable,
     operatorUpdateGroup: observable,
-    vertex:           computed,
-    fragment:         computed,
-    init:             action,
-    save:             action,
-    load:             action,
+    texture_inputs:      observable,
+    texture_outputs:     observable,
+    position:            observable,
+    inlet_refs:          observable,
+    outlet_refs:         observable,    
+    vertex:              computed,
+    fragment:            computed,
+    init:                action,
+    save:                action,
+    load:                action,
+    connectTo:           action,
 });
 
 createModelSchema(ShaderStore, {
-    // uuid:             identifier(),
+    uuid:             identifier(),
     name:             primitive(),    
     precision:        primitive(),
     vert:             primitive(),
     frag:             primitive(),
+    // texture_inputs:   reference(object(ShaderStore)),  
+    // texture_outputs:  reference(object(ShaderStore)),  
     uniforms:         list(object(UniformStore)),
 }, c => {
     let p = c.parentContext ? c.parentContext.target : c.args.target;

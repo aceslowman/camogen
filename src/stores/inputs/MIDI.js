@@ -83,8 +83,8 @@ decorate(store, {
 	update:        action,	
 	onMIDIConnect: action,
 	handleInputSelect: action,
-	handleMIDIChange: action,
-	init:          action
+	handleMIDIChange:  action,
+	init:          	   action
 });
 
 createModelSchema(store, {

@@ -18,6 +18,8 @@ class TargetStore {
     parent = null;
     active = true;
 
+    bounds = null;
+
     constructor(parent) {
         this.parent = parent;
 
@@ -31,13 +33,16 @@ class TargetStore {
         if (this.active) this.parent.activeTarget = this;
     }
 
+    moveShader(shader, destination) {
+        let index = this.shaders.findIndex((item) => item.uuid === shader.uuid);
+        // console.log(index) 
+    }
+
     addShader(type = null, pos = null) {
         let shader;
 
         if(type){
-            // shader = new NODES.shaders[type](this).init();
-            shader = deserialize(ShaderStore, NODES.shaders[type], ()=>{}, {target: this}).init();
-            
+            shader = deserialize(ShaderStore, NODES.shaders[type], ()=>{}, {target: this}).init();      
         }else{
             shader = new ShaderStore(this).init();
         }

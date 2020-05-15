@@ -39,7 +39,7 @@ const Panel = observer(class Panel extends React.Component {
         }
 
 		return(
-			<fieldset className="panel" ref={this.props.onRef} style={this.props.style}>
+			<fieldset className="panel" style={this.props.style}>
 				<div className='panelButtons' style={style.buttons}>
 					<button onClick={this.props.onRemove}>x</button>                                                
 					{ this.props.title && (
@@ -51,7 +51,7 @@ const Panel = observer(class Panel extends React.Component {
 					)}
 				</div>                    
 
-				<div className='panelContent'>
+				<div className='panelContent' ref={this.props.onRef}>
 					{this.props.children}	
 				</div>              
 			</fieldset>

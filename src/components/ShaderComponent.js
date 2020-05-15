@@ -3,7 +3,9 @@ import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import Uniform from './UniformComponent';
 import ParameterGraph from './ParameterGraphComponent';
+import Draggable from 'react-draggable';
 
+import Anylet from './ui/Anylet';
 import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/mode-glsl";
@@ -11,7 +13,7 @@ import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/webpack-resolver";
 
 const style = {
-	zIndex: 10,
+	// zIndex: 10,
 	main: {
 		// maxHeight: '42px',
 	},
@@ -93,11 +95,21 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 		this.props.data[this.state.edit_type] = e;
 	}
 
+	handleDragStart = e => {}
+
+	handleDrag = (e,d) => {
+		this.props.data.position = {
+			x: d.node.offsetLeft+d.x,
+			y: d.node.offsetTop+d.y
+		}		
+	}
+
+	handleDragStop = (e,d) => {}
+	
 	render() {
 		this.store = this.context.store;
 		
-		if (this.innerRef.current) {
-			// console.log(this.innerRef.current.offsetHeight)
+		if (this.innerRef.current) {			
 			style.main = {
 				...style.main,
 				maxHeight: this.state.expandEdit && this.state.expandMain ? '500px' : '500px',
@@ -110,124 +122,164 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 				...style.edit,
 				maxWidth: (this.state.expandMain && this.state.expandEdit) || (this.state.activeParameter && this.state.expandEdit && this.state.expandMain) ? '500px' : '0px',
 			}
-		}				
+		}	
+		
+		// console.log(this.props.bounds)
 
 		return(
-			<div 
-				className="node"
-				onClick={this.handleClick}
-				style={{...style.main, zIndex: this.state.focus ? 100 : 10}}
+			<Draggable 
+				handle=".nodeLegend"
+				// bounds="parent"
+				// position={this.props.data.position}
+				onStart={this.handleDragStart}
+				onDrag={this.handleDrag}
+				onStop={this.handleDragStop}
 			>
-				<div className='nodeTools'>
-					<div style={{}}>
-						<button onClick={this.handleRemove}>x</button>
-						<button onClick={this.handleExpandMain}>
-							{this.state.expandMain ? 'v' : '>'}
-						</button>
-						{ this.state.expandMain && (
-							<button onClick={()=>this.handleExpandEdit(null)}>
-								≡
+				<div 
+					ref="node"
+					className="node"
+					onClick={this.handleClick}
+					style={{...style.main/*, zIndex: this.state.focus ? 100 : 10*/}}
+				>
+					<div className='nodeTools'>
+						<div style={{}}>
+							<button onClick={this.handleRemove}>x</button>
+							<button onClick={this.handleExpandMain}>
+								{this.state.expandMain ? 'v' : '>'}
 							</button>
-						)}						
-					</div>													
-	          	</div>
-
-	          	<div className='nodeContainer' onClick={this.handleClick}>				
-		            <legend onClick={this.handleExpandMain}>
-						{this.props.data.name}
-					</legend>				           
-
-		            <div className='nodeInner' ref={this.innerRef} style={{...style.inner, overflowY: this.state.expandMain ? 'auto' : 'none'}}>
-						{this.state.expandMain && (
-							<div>
-								{this.props.data.uniforms.map((uniform)=>{                        
-									return (
-										<Uniform 
-											key={uniform.uuid}
-											data={uniform}
-											activeParam={this.state.activeParameter}	
-											onDblClick={this.handleExpandEdit}
-										/>
-									);                     
-								})}
-							</div>
-						)}												            	
-		            </div>
-	            </div>   
-
-				<div className='nodeEdit' style={style.edit}>
-				
-					<div className="horizontal_toolbar">
-						<div>
-							<button className="nodeToolsLabel"><strong>FILE</strong></button>
-							<button 
-								title="save shader" 
-								onClick={()=>this.props.data.save()}
-							><em>save</em></button>
-							<button 
-								title="load shader" 
-								onClick={()=>this.props.data.load()}
-							><em>load</em></button>
-						</div>
-						
-						<div>
-							<button className="nodeToolsLabel">
-								<strong>EDIT</strong>
-							</button>
-							<button 
-								title="edit vertex shader" 
-								onClick={this.handleVertexEdit}
-								className={
-									(this.state.edit_type === 'vert') 
-										? "white_button" 
-										: ""
-								} 
-							><em>vertex</em></button>
-							<button 
-								title="edit fragment shader" 
-								onClick={this.handleFragEdit}
-								className={
-									(this.state.edit_type === 'frag') 
-										? "white_button" 
-										: ""
-								} 
-							><em>fragment</em></button>								
-							<button 
-								title="edit parameters" 
-								onClick={this.handleParamEdit}
-								className={
-									(this.state.edit_type === 'param') 
-										? "white_button"
-										: ""
-								}
-							><em>parameters</em></button>	
-							<button 
-								title="refresh shader" 
-								onClick={this.handleRefresh}
-							><em>refresh</em></button>
-						</div>															
+							{ this.state.expandMain && (
+								<button onClick={()=>this.handleExpandEdit(null)}>
+									≡
+								</button>
+							)}						
+						</div>													
 					</div>
 
-					{(this.state.expandEdit && this.state.expandMain && this.state.edit_type !== 'param') && (
-						<AceEditor
-							mode="glsl"
-							theme="monokai"
-							onChange={this.handleEditorChange}
-							value={this.state.edit_buffer}
-							width="500px"
-							minHeight="500px"
-							className="editor"		 												
-						/>
-					)}
+					<div className='nodeContainer' onClick={this.handleClick}>
+						<div className="anylets">
+							{this.props.data.texture_inputs.map((e,i)=>{
+								return (<Anylet 
+									key={i}
+									data={e}
+									label={'tex'+e.location}									
+								/>)
+							})}		
+						</div>
+										
+						{/* {'texture_inputs: '+this.props.data.texture_inputs}
+						{'texture_outputs: '+this.props.data.texture_outputs}
+						{'position: ['+this.props.data.position.x+', '+this.props.data.position.y+']' } */}
+						
+						<legend className='nodeLegend'>
+							{this.props.data.name}							
+						</legend>				           
 
-					{(this.state.expandEdit && this.state.expandMain && this.state.edit_type === 'param') && ( 
-						<ParameterGraph 
-							data={this.state.activeParameter}
-						/>						
-					)}
+						<div 
+							className='nodeInner' 
+							ref={this.innerRef} 
+							style={{
+								...style.inner, 
+								overflowY: this.state.expandMain ? 'auto' : 'none'
+							}}
+						>
+							{this.state.expandMain && (
+								<div>
+									{this.props.data.uniforms.map((uniform)=>{                        
+										return (
+											<Uniform 
+												key={uniform.uuid}
+												data={uniform}
+												activeParam={this.state.activeParameter}	
+												onDblClick={this.handleExpandEdit}
+											/>
+										);                     
+									})}
+								</div>
+							)}												            	
+						</div>
+						<div className="anylets">
+							{this.props.data.texture_outputs.map((e,i)=>{
+								return (<Anylet 
+									key={i}
+									data={e}
+									label={'out'}									
+								/>)
+							})}		
+						</div>
+					</div>   
+
+					<div className='nodeEdit' style={style.edit}>					
+						<div className="horizontal_toolbar">
+							<div>
+								<button className="nodeToolsLabel"><strong>FILE</strong></button>
+								<button 
+									title="save shader" 
+									onClick={()=>this.props.data.save()}
+								><em>save</em></button>
+								<button 
+									title="load shader" 
+									onClick={()=>this.props.data.load()}
+								><em>load</em></button>
+							</div>
+							
+							<div>
+								<button className="nodeToolsLabel">
+									<strong>EDIT</strong>
+								</button>
+								<button 
+									title="edit vertex shader" 
+									onClick={this.handleVertexEdit}
+									className={
+										(this.state.edit_type === 'vert') 
+											? "white_button" 
+											: ""
+									} 
+								><em>vertex</em></button>
+								<button 
+									title="edit fragment shader" 
+									onClick={this.handleFragEdit}
+									className={
+										(this.state.edit_type === 'frag') 
+											? "white_button" 
+											: ""
+									} 
+								><em>fragment</em></button>								
+								<button 
+									title="edit parameters" 
+									onClick={this.handleParamEdit}
+									className={
+										(this.state.edit_type === 'param') 
+											? "white_button"
+											: ""
+									}
+								><em>parameters</em></button>	
+								<button 
+									title="refresh shader" 
+									onClick={this.handleRefresh}
+								><em>refresh</em></button>
+							</div>															
+						</div>
+
+						{(this.state.expandEdit && this.state.expandMain && this.state.edit_type !== 'param') && (
+							<AceEditor
+								mode="glsl"
+								theme="monokai"
+								onChange={this.handleEditorChange}
+								value={this.state.edit_buffer}
+								width="500px"
+								minHeight="500px"
+								className="editor"		 												
+							/>
+						)}
+
+						{(this.state.expandEdit && this.state.expandMain && this.state.edit_type === 'param') && ( 
+							<ParameterGraph 
+								data={this.state.activeParameter}
+							/>						
+						)}						
+					</div>									
 				</div>
-				 		            
-	        </div>
+			</Draggable>			
 	    )
 	}
 });

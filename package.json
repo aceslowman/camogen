@@ -39,6 +39,7 @@
     "jspdf": "^1.5.3",
     "mini-css-extract-plugin": "0.8.0",
     "mobx": "^5.15.0",
+    "mobx-persist": "^0.4.1",
     "mobx-react": "^6.1.4",
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "p5": "^0.10.2",
