@@ -39,6 +39,11 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 
 		return (
           <div id="CONSOLE">
+			  
+				<div className="version">
+					<a href="https://github.com/aceslowman/camogen"><sub>v1.0</sub></a>
+				</div>
+				
 				<div>
 					<input
 						ref={(ref) => this.ref = ref}

@@ -60,23 +60,57 @@ void main() {
       by the main Store.
 */
 
+class Anylet {
+    uuid = uuidv1();
+
+    constructor(
+        name = '', 
+        next = null,
+        parent = null,
+    ) {
+        this.name = name;
+        this.next = next;
+        this.prev = null;
+        this.parent = parent;    
+    }
+
+    connectTo(destination = null) {
+        this.next = destination;
+        destination.prev = this;
+    }
+
+    disconnect() {
+        // disconnect from previous node
+        if (this.prev) this.prev.next = null;
+        // disconnect from next node
+        if (this.next) this.next.prev = null;
+        delete this
+    }
+}
+
+decorate(Anylet, {
+    uuid: observable,
+    ref: observable,
+    next: observable,
+    connectTo: action,
+    disconnect: action,
+});
+
 class ShaderStore {
     uuid      = uuidv1();
-    name      = "*NEW SHADER*";
+    name      = "NEW";
     uniforms  = [];
     precision = "";
     vert      = "";
     frag      = "";
     ref       = null;
+    component = null;
     target    = null;
 
     position = {x: null, y: null}
 
-    texture_inputs = [];
-    texture_outputs = [];
-
-    inlet_refs = [];
-    outlet_refs = [];
+    inlets  = [];
+    outlets = [];
 
     operatorUpdateGroup = [];
 
@@ -86,12 +120,14 @@ class ShaderStore {
         vert = d_vert, 
         frag = d_frag, 
         uniforms = []
-    ) {
+    ) {        
         this.target = target; 
         this.precision = precision;
         this.vert = vert;
         this.frag = frag;
-        this.uniforms = uniforms;        
+        this.uniforms = uniforms; 
+
+        this.outlets = [new Anylet('out', null, this)];
     }
 
     extractUniforms() { 
@@ -100,15 +136,22 @@ class ShaderStore {
         let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9]+);\s+\/?\/?\s?({(.*?)})?/g
         let result = [...this.frag.matchAll(re)];
         
-        // console.log(result)
         result.forEach((e) => {
             // ignore built-ins
             if(builtins.includes(e[3])) return;
 
-            // ignore if uniform already exists
-            // (preserves graphs)
+            // ignore if uniform already exists (preserves graphs)          
             for(let i = 0; i < this.uniforms.length; i++){
+                // console.log([this.uniforms[i].name, e[3]])
                 if(this.uniforms[i].name === e[3]){
+                    return;
+                }
+            }
+
+            // ignore if uniform already exists (preserves graphs)          
+            for (let i = 0; i < this.inlets.length; i++) {
+                // console.log([this.inlets[i].name, e[3]])
+                if (this.inlets[i].name === e[3]) {
                     return;
                 }
             }
@@ -117,6 +160,10 @@ class ShaderStore {
             let opt = (e[4]) ? JSON.parse(e[4]) : {};
 
             switch(e[2]){
+                case "sampler2D":
+                    // console.log('hit',e[2] + ' ' + e[3])
+                    this.inlets.push(new Anylet(e[3], null, this));
+                    break;
                 case "float":                                      
                     def = opt.default ? opt.default : 1.0;
 
@@ -198,9 +245,6 @@ class ShaderStore {
                     JSON.parse(data), 
                     (err, item) => {
                         if(err) console.error(err)
-                        // console.log('hit', item)
-                        // why is this triggering twice
-                        if(item) item.init();
                     },
                     {target: this.target}
                 )
@@ -210,35 +254,46 @@ class ShaderStore {
         });
     }
 
-    save() {
-        let options = {
-            title: 'testFile',
-            defaultPath: app.getPath("appData"),
-            buttonLabel: "Save Shader File",
-        }
+    async save() {        
+        let path = `${app.getPath("userData")}/shaders`;
 
-        dialog.showSaveDialog(options).then((f) => {            
+        const show_dialog = true;
+
+        if (show_dialog) {
+            let options = {
+                title: this.name + '.shader',
+                defaultPath: path,
+                buttonLabel: "Save Shader File",
+            }
+
+            dialog.showSaveDialog(options).then((f) => {
+                console.log(f)
+                let content = JSON.stringify(serialize(ShaderStore, this));
+
+                fs.writeFile(f.filePath, content, (err) => {
+                    if (err) {
+                        console.log("an error has occurred: " + err.message);
+                    } else {
+                        console.log(f.filePath)
+                        this.target.parent.loadShaders();
+                    }      
+                });
+            }).catch(err => {
+                console.error(err)
+            });
+        } else {
             let content = JSON.stringify(serialize(ShaderStore, this));
 
-            fs.writeFile(f.filePath, content, (err) => {
-                if (err)
-                    console.log("an error has occurred: " + err.message);
-            });
-        }).catch(err => {
-            console.error(err)
-        });
-    }
+            let file = this.name + '.shader';
 
-    connectTo(shader, location = 0) {
-        this.texture_outputs.push({
-            location:location,
-            shader:shader
-        });
-        
-        shader.texture_inputs.push({
-            location:location,
-            shader:this
-        });
+            fs.writeFile(`path/${file}`, content, (err, data) => {
+                if (err) {
+                    console.log("an error has occurred: " + err.message);
+                } else {
+                    console.log('saved!', data);
+                }
+            });
+        }    
     }
 
     get vertex() {
@@ -252,6 +307,7 @@ class ShaderStore {
 decorate(ShaderStore, {
     uuid:                observable,
     ref:                 observable,
+    component:           observable,
     target:              observable,
     name:                observable,
     uniforms:            observable,
@@ -259,11 +315,9 @@ decorate(ShaderStore, {
     vert:                observable,
     frag:                observable,
     operatorUpdateGroup: observable,
-    texture_inputs:      observable,
-    texture_outputs:     observable,
-    position:            observable,
-    inlet_refs:          observable,
-    outlet_refs:         observable,    
+    inlets:              observable,
+    outlets:             observable,
+    position:            observable,    
     vertex:              computed,
     fragment:            computed,
     init:                action,
@@ -273,13 +327,13 @@ decorate(ShaderStore, {
 });
 
 createModelSchema(ShaderStore, {
-    uuid:             identifier(),
+    // uuid:             identifier(),
     name:             primitive(),    
     precision:        primitive(),
     vert:             primitive(),
     frag:             primitive(),
-    // texture_inputs:   reference(object(ShaderStore)),  
-    // texture_outputs:  reference(object(ShaderStore)),  
+    // inlets:   list(object(Anylet)),  
+    // outlets:  list(object(Anylet)),  
     uniforms:         list(object(UniformStore)),
 }, c => {
     let p = c.parentContext ? c.parentContext.target : c.args.target;
@@ -289,7 +343,7 @@ createModelSchema(ShaderStore, {
         c.json.vert,
         c.json.frag,
         c.json.uniforms   
-    ).init();
+    );
 });
 
 export default ShaderStore;

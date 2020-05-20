@@ -50,8 +50,9 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
             activeDrawer: 'new',
         }));
 
+        // console.log(bounds)
         style = {...style, drawer: {
-            top: bounds.top-1,
+            top: bounds.top+bounds.height,
             left: bounds.right,
         }}
 
@@ -84,15 +85,16 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
             activeDrawer: 'obj',
         }));
 
+        // console.log(bounds)
         style = {...style, drawer: {
-            top: bounds.top-1,
+            top: bounds.top+bounds.height,
             left: bounds.right,
         }}
 
         this.drawer_items = [];
 
         // retrieve master list of objects
-        for (let obj of this.store.object_list){               
+        for (let obj in this.store.shader_list){               
             this.drawer_items.push((
                 <button 
                     key={obj}
@@ -110,7 +112,7 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
 
         return (
             <div id="TOOLBAR" onClick={this.closeDrawer} ref={this.ref}>
-                <div className="toolbar">
+                <div>
                     <button 
                         className={
                             (this.state.activeDrawer === 'new' && this.state.openDrawer) 
@@ -152,10 +154,6 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
                     >
                         LIB
                     </button>
-
-                    <div className="version">
-                        <a href="https://github.com/aceslowman/camogen"><sub>v1.0</sub></a>
-                    </div>
                 </div>
                 <div className="drawer" style={{
                     ...style.drawer,

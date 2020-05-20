@@ -42,16 +42,29 @@ class TargetStore {
         let shader;
 
         if(type){
-            shader = deserialize(ShaderStore, NODES.shaders[type], ()=>{}, {target: this}).init();      
+            shader = deserialize(ShaderStore, this.parent.shader_list[type], ()=>{}, {target: this}).init();      
         }else{
             shader = new ShaderStore(this).init();
         }
         
+        let prev_shader = this.shaders[pos ? pos - 1 : this.shaders.length -1];
+        
+        if (shader.inlets[0])
+            prev_shader.outlets[0].connectTo(shader.inlets[0]);
+            
         this.shaders.splice(pos ? pos : this.shaders.length, 0, shader);
     }
 
     removeShader(shader) {
-        this.shaders = this.shaders.filter((item) => item.uuid !== shader.uuid);
+        this.shaders = this.shaders.filter((item) => item.uuid !== shader.uuid);                
+        console.log(shader)
+        shader.inlets.forEach((e) => {
+            e.disconnect();
+        });
+
+        shader.outlets.forEach((e)=>{
+            e.disconnect();
+        });
         if (this.shaders.length === 0) this.parent.removeTarget(this);
     }
 }

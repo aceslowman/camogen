@@ -1,12 +1,18 @@
-const shader_types = [
-	"Glyph",
-	"UV",
-	"Noise",
-	"Threshold",
-	"Invert",
-	"ToHSV",
-	"Wavy",
-	"Sharpen",
+// for electron
+const remote = window.require('electron').remote;
+const dialog = remote.dialog;
+const app = remote.app;
+const fs = window.require('fs');
+
+let shader_types = [
+	// "Glyph",
+	// "UV",
+	// "Noise",
+	// "Threshold",
+	// "Invert",
+	// "ToHSV",
+	// "Wavy",
+	// "Sharpen",
 ];
 
 const op_types = [
@@ -40,12 +46,13 @@ let inputs  = {};
 let outputs = {};
 let all 	= {};
 
-shader_types.forEach((type) => {
-	shaders = {
-		...shaders,
-		[type]: require('./shaders/' + type + '.json')
-	}	
-});
+// could still be useful for web version
+// shader_types.forEach((type) => {
+// 	shaders = {
+// 		...shaders,
+// 		[type]: require('./shaders/' + type + '.json')
+// 	}	
+// });
 
 op_types.forEach((type) => {
 	ops = {

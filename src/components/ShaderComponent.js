@@ -4,6 +4,7 @@ import MainContext from '../MainContext';
 import Uniform from './UniformComponent';
 import ParameterGraph from './ParameterGraphComponent';
 import Draggable from 'react-draggable';
+import Connection from './ui/Connection';
 
 import Anylet from './ui/Anylet';
 import AceEditor from "react-ace";
@@ -18,7 +19,7 @@ const style = {
 		// maxHeight: '42px',
 	},
 	inner: {
-		maxHeight: '42px',
+		// maxHeight: '42px',
 	},
 	edit: {
 		maxWidth: '0px'
@@ -40,8 +41,12 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 			edit_buffer: '',
 			edit_type: 'param',
 			focus: false,
-			activeParameter: ''
+			activeParameter: '',
 		};
+	}
+
+	componentDidMount() {
+		this.props.data.component = this;
 	}
 	
 	handleRemove = () => {
@@ -59,7 +64,17 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 		this.setState(prevState => ({
 			...prevState,
 			activeParameter: e ? e : '',
-			expandEdit: e ? true : !prevState.expandEdit
+			expandEdit: e ? true : !prevState.expandEdit,
+			expandMain: e ? false : true
+		}));
+	}
+
+	handleSelectParameter = (e) => {
+		this.setState(prevState => ({
+			...prevState,
+			activeParameter: e,
+			expandEdit: true,
+			// expandMain: e ? false : true
 		}));
 	}
 
@@ -104,33 +119,37 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 		}		
 	}
 
-	handleDragStop = (e,d) => {}
+	handleDragStop = (e,d) => {
+		// snapback
+		if (!this.state.dragDestination) {
+			d.node.style.transform = 'translate(0px,0px)';
+		}
+	}
 	
 	render() {
 		this.store = this.context.store;
 		
-		if (this.innerRef.current) {			
-			style.main = {
-				...style.main,
-				maxHeight: this.state.expandEdit && this.state.expandMain ? '500px' : '500px',
-			}
+		if (this.innerRef.current) {
+			let bounds = this.innerRef.current.getBoundingClientRect();
+
 			style.inner = {
 				...style.inner,
-				maxHeight: this.state.expandMain ? '500px' : '0px',
+				maxHeight: this.state.expandMain ? `${bounds.height+42}px` : '0px',
 			}
+			
 			style.edit = {
 				...style.edit,
-				maxWidth: (this.state.expandMain && this.state.expandEdit) || (this.state.activeParameter && this.state.expandEdit && this.state.expandMain) ? '500px' : '0px',
+				maxWidth: (this.state.expandMain && this.state.expandEdit) 
+				|| (this.state.activeParameter && this.state.expandEdit 
+					&& this.state.expandMain) 
+						? '500px' : '0px',
 			}
 		}	
 		
-		// console.log(this.props.bounds)
-
 		return(
 			<Draggable 
 				handle=".nodeLegend"
-				// bounds="parent"
-				// position={this.props.data.position}
+				position={{x:0,y:0}}
 				onStart={this.handleDragStart}
 				onDrag={this.handleDrag}
 				onStop={this.handleDragStop}
@@ -147,63 +166,67 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 							<button onClick={this.handleExpandMain}>
 								{this.state.expandMain ? 'v' : '>'}
 							</button>
-							{ this.state.expandMain && (
-								<button onClick={()=>this.handleExpandEdit(null)}>
-									≡
-								</button>
-							)}						
+							<button 
+								className={this.state.expandEdit && this.state.expandMain ? 'white_button' : ''}
+								onClick={()=>this.handleExpandEdit(null)}
+							>
+								≡
+							</button>							
 						</div>													
 					</div>
 
 					<div className='nodeContainer' onClick={this.handleClick}>
-						<div className="anylets">
-							{this.props.data.texture_inputs.map((e,i)=>{
-								return (<Anylet 
-									key={i}
-									data={e}
-									label={'tex'+e.location}									
-								/>)
+						<div className="anylets inlets">
+							{this.props.data.inlets.map((e,i)=>{
+								return (
+									<div className="anylet inlet" key={i}>
+										<label>{e.name}</label>
+										{/* <Connection data={e}/> */}
+									</div> 
+								)
 							})}		
 						</div>
-										
-						{/* {'texture_inputs: '+this.props.data.texture_inputs}
-						{'texture_outputs: '+this.props.data.texture_outputs}
-						{'position: ['+this.props.data.position.x+', '+this.props.data.position.y+']' } */}
 						
 						<legend className='nodeLegend'>
 							{this.props.data.name}							
 						</legend>				           
 
 						<div 
-							className='nodeInner' 
-							ref={this.innerRef} 
-							style={{
+							className='nodeInner' 							style={{
 								...style.inner, 
 								overflowY: this.state.expandMain ? 'auto' : 'none'
 							}}
 						>
-							{this.state.expandMain && (
-								<div>
+							{/* {this.state.expandMain && ( */}
+								<div ref={this.innerRef} >
 									{this.props.data.uniforms.map((uniform)=>{                        
 										return (
 											<Uniform 
+												enabled={this.state.expandMain}
 												key={uniform.uuid}
 												data={uniform}
-												activeParam={this.state.activeParameter}	
-												onDblClick={this.handleExpandEdit}
+												activeParam={
+													this.state.activeParameter
+												}	
+												onDblClick={
+													this.handleSelectParameter
+												}
 											/>
 										);                     
 									})}
 								</div>
-							)}												            	
+							{/* )}												            	 */}
 						</div>
-						<div className="anylets">
-							{this.props.data.texture_outputs.map((e,i)=>{
-								return (<Anylet 
-									key={i}
-									data={e}
-									label={'out'}									
-								/>)
+						<div className="anylets outlets">
+							{this.props.data.outlets.map((e,i)=>{
+								return (
+									<div className="anylet outlet" key={i}>
+										<label>{e.name}</label>
+										{/* <Connection 
+											data={e}
+										/> */}
+									</div> 
+								)
 							})}		
 						</div>
 					</div>   
@@ -211,7 +234,9 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 					<div className='nodeEdit' style={style.edit}>					
 						<div className="horizontal_toolbar">
 							<div>
-								<button className="nodeToolsLabel"><strong>FILE</strong></button>
+								<button className="nodeToolsLabel">
+									<strong>FILE</strong>
+								</button>
 								<button 
 									title="save shader" 
 									onClick={()=>this.props.data.save()}
@@ -260,19 +285,26 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 							</div>															
 						</div>
 
-						{(this.state.expandEdit && this.state.expandMain && this.state.edit_type !== 'param') && (
+						{(	this.state.expandEdit 
+							&& this.state.expandMain 
+							&& this.state.edit_type !== 'param'
+						) && (
 							<AceEditor
 								mode="glsl"
 								theme="monokai"
 								onChange={this.handleEditorChange}
 								value={this.state.edit_buffer}
+								height=""
 								width="500px"
 								minHeight="500px"
 								className="editor"		 												
 							/>
 						)}
 
-						{(this.state.expandEdit && this.state.expandMain && this.state.edit_type === 'param') && ( 
+						{(	this.state.expandEdit 
+							&& this.state.expandMain 
+							&& this.state.edit_type === 'param'
+							) && ( 
 							<ParameterGraph 
 								data={this.state.activeParameter}
 							/>						

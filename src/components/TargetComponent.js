@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import Panel from './ui/Panel';
 import Shader from './ShaderComponent';
+import Slot from './SlotComponent';
 
 let style = {
 	canvas: {
@@ -16,6 +17,8 @@ const TargetComponent = observer(class TargetComponent extends React.Component {
 
 	constructor(){
 		super();
+
+		this.slots = [];
 
 		this.state = {
 			bounds: null
@@ -78,10 +81,62 @@ const TargetComponent = observer(class TargetComponent extends React.Component {
 		this.store.removeTarget(this.props.data);
 	}
 
-	render() {	
-		const { data } = this.props;
+	generateSlots = () => {
+		let rows = [];
 
+		// traverse from root node
+		let shader = this.props.data.shaders[0];
+		let iteration = 0;
+		console.log(shader.outlets[0].next)
+
+		rows.push([(
+			<Slot key={shader.uuid}>
+				<Shader
+					bounds={this.state.bounds}
+					key={shader.uuid}
+					data={shader}	
+					onCanvasUpdate={this.updateCanvas}							
+				/>
+			</Slot>
+		)]);
+		
+		while(shader.outlets[0].next) {
+			shader = shader.outlets[0].next.parent;
+
+			// current slot
+			rows.push([(
+				<Slot key={shader.uuid}>
+					<Shader
+						bounds={this.state.bounds}
+						key={shader.uuid}
+						data={shader}	
+						onCanvasUpdate={this.updateCanvas}							
+					/>
+				</Slot>
+			)]);
+
+			// if shader has more than one inlet...
+			// create a new target, and run up the chain
+
+			iteration++;
+		}
+
+ 		// next output slot
+		// rows.push([(
+		// 	<Slot key={0}/>			 
+		// )]);		
+
+		return rows.map((e,i) => (
+			<div key={i} className="slotRow">
+				{e}
+			</div>
+		));
+	}
+
+	render() {	
 		this.store = this.context.store;
+
+
 
 		return(
 			<Panel 
@@ -91,16 +146,7 @@ const TargetComponent = observer(class TargetComponent extends React.Component {
 				onRemove={this.handleRemove}
 				onActive={this.handleActive}	
 			>				
-				{data.shaders.map((shader)=>{                        
-					return (
-						<Shader 
-							bounds={this.state.bounds}
-							key={shader.uuid}
-							data={shader}	
-							onCanvasUpdate={this.updateCanvas}							
-						/>
-					);                     
-				})}
+				{ this.generateSlots() }
 			</Panel>
 	    )
 	}

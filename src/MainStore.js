@@ -38,26 +38,59 @@ class MainStore {
   activeTarget    = null;
   
   object_list = NODES.shader_types;
+  shader_list = {};
 
   show_splash = false;
 
   constructor() {  
     this.p5_instance = new p5(p => Runner(p, this));
 
-    const t = new Target(this);
-    const uv = deserialize(ShaderStore, NODES.shaders["UV"], ()=>{}, {target: t}).init();
-    const noise = deserialize(ShaderStore, NODES.shaders["Noise"], ()=>{}, {target: t}).init()
-    
-    uv.connectTo(noise);
+    this.loadShaders().then(()=>{
+      console.log('shaders loaded successfully!', this.shader_list);
+      const t = new Target(this);
 
-    t.shaders = [
-      uv,
-      noise,
-    ];
+      const uv = deserialize(ShaderStore, this.shader_list["UV"], ()=>{}, {target: t}).init();
+      const noise = deserialize(ShaderStore, this.shader_list["Noise"], ()=>{}, {target: t}).init()
+      const glyph = deserialize(ShaderStore, this.shader_list["Glyph"], ()=>{}, {target: t}).init()
+      const add = deserialize(ShaderStore, this.shader_list["Add"], () => {}, {target: t}).init()
+      
+      uv.outlets[0].connectTo(glyph.inlets[0]);
+      glyph.outlets[0].connectTo(add.inlets[0])
 
-    this.targets.push(t)
+      t.shaders = [
+        uv,
+        glyph,
+        add
+      ];
 
-    // hydrate("targets",this,[t]).then(r => console.log("rehydrated",r))
+      this.targets.push(t)
+      // localStorage.clear()
+      // hydrate("targets",this,[t]).then(r => console.log("rehydrated",r))
+    }); 
+  }
+
+  async loadShaders() {
+    let path = `${app.getPath("userData")}/shaders`;
+
+    try {
+      await fs.promises.access(path) // check if path exists
+
+      const files = await fs.promises.readdir(path);
+
+      await Promise.all(files.map(async (type) => {
+        const data = JSON.parse(await fs.promises.readFile(path + '/' + type));
+        data.name = type.split('.')[0];
+        this.shader_list = {
+          ...this.shader_list,
+          [data.name]: data
+        }
+      }))
+    } catch (err) {
+      fs.promises.mkdir(path).catch(console.error)
+
+      console.log('new directory created for shaders', path);
+      await this.loadShaders();
+    }  
   }
 
   consoleChanged() {

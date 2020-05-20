@@ -37,7 +37,7 @@ button:focus {
   color: white;
   background-color: black;
   border: none;
-  border-bottom: 1px solid white;
+  /* border-bottom: 1px solid white; */
   cursor: pointer;
 }
 
@@ -45,7 +45,7 @@ button:focus {
   color: black;
   background-color: white;
   border: none;
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
   cursor: pointer;
 }
 
@@ -53,7 +53,7 @@ button:focus {
   display: block;
   position: absolute;
   z-index: -1;
-  top: 0px;
+  /* top: 0px; */
 }
 
 .invert {
@@ -88,8 +88,7 @@ button:focus {
 
 #WORKAREA_inner {
   display: flex;
-  flex-flow: wrap;
-  /* flex-direction: row; */
+  /* flex-flow: wrap;   */
   align-items: center;
   justify-content: space-evenly;
   box-sizing: border-box;
@@ -106,6 +105,7 @@ button:focus {
   display: inline-block;
   box-sizing: border-box;
   width: 100%;
+  min-height: 53px;
 }
 
 .uniform_array > div{  
@@ -122,7 +122,7 @@ button:focus {
 
 .parameter_wrapper {
   display: inline-block;
-  width: 100%;
+  width: 100%;  
 }
 
 .parameter_wrapper>fieldset {
@@ -150,15 +150,9 @@ button:focus {
 /* Toolbar.js */
 
 #TOOLBAR {
-  display: flex;
-  flex-flow: row;
-  height: 100%;
-}
-
-.toolbar {
-  display: flex;
-  flex-flow: column wrap;
+  width: 100%;
   background-color: black;
+  border-bottom: 1px solid white;
 }
 
 .drawer {
@@ -166,7 +160,7 @@ button:focus {
   box-shadow: 2px 2px 4px 0px black;
   display: flex;
   flex-flow: column wrap;
-  border-top: 1px solid white;
+  /* border-top: 1px solid white; */
   position: absolute;
   overflow: hidden;
   transition: width 300ms ease-in-out;
@@ -176,29 +170,9 @@ button:focus {
   text-align: left;
 }
 
-.drawer button {
-  border-bottom: 1px solid black;    
-}
-
 .drawer button:hover {
   background-color: black !important;
   color: white !important;
-}
-
-.version {
-  background-color: black;
-  padding: 5px;
-  width: 26px;
-  position: absolute;
-  bottom: 5px;
-  left: -3px;
-}
-
-.version > a {
-  text-decoration: none;
-  color: white;
-  padding: 5px;
-  padding-left: none;
 }
 
 /* ConsoleBar.js */
@@ -210,11 +184,24 @@ button:focus {
   height: 35px;
 }
 
-#CONSOLE > div{
+/* #CONSOLE > div{
   width: 100%;
   height: 100%;
   z-index: 0;
   background-color: white;
+} */
+
+.version {
+  background-color: black;
+  padding: 9px;
+  width: 26px;
+}
+
+.version>a {
+  text-decoration: none;
+  color: white;
+  /* padding: 5px; */
+  /* padding-left: none; */
 }
 
 #CONSOLE > div > input:focus {
@@ -248,10 +235,11 @@ button:focus {
   padding: 0px;
   margin: 15px;
   border: none;
+  position: absolute;
 }
 
 .panel h1 {
-  margin-top: 0px;
+  margin-top: 0x;
 }
 
 .panelContent {
@@ -300,14 +288,16 @@ button:focus {
 /* Node.js */
 
 .node {
-  /* width: 250px; */
-  margin: 10px;
+  /* margin: 10px; */
   background-color: black;
   border: 1px solid white;  
   display: flex;
   flex-direction: row;
-  /* overflow: hidden; */
   transition: max-height 800ms ease-in-out;
+  z-index: 0;
+  max-height: auto;
+
+  transform-style: preserve-3d;
 }
 
 .node input {
@@ -319,7 +309,11 @@ button:focus {
 }
 
 .nodeInner {
-  transition: max-height 800ms ease-in-out;
+  transition: max-height 800ms ease-in-out;  
+}
+
+.nodeInner > div {
+  min-height: 150px;
 }
 
 .nodeTools {
@@ -351,15 +345,16 @@ button:focus {
   background-color: white;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;  
+  flex-grow: 1; 
+  overflow: hidden; 
 }
 
 .node .nodeContainer > legend {		
   font-weight: bold;
   font-size: 1.6em;
-  cursor: pointer;
+  cursor: grab;
   width: 100%;
-  padding: 10px;
+  padding: 2px 10px;
   /* padding-top: 0px; */
   box-sizing: border-box;
 }
@@ -371,7 +366,6 @@ button:focus {
 .nodeContainer {
   display:flex;
   flex-flow: row;
-  align-items: center;
 }
 
 .nodeInner {  	
@@ -383,7 +377,8 @@ button:focus {
 }
 
 .node .nodeInner > div {
-  padding: 10px;
+  padding: 0px 10px;
+  padding-top: 15px;
 }
 
 .nodeEdit {
@@ -394,6 +389,8 @@ button:focus {
   display: flex;
   flex-direction: column;
 }
+
+
 
 .parameter_graph {
   display:flex;
@@ -415,20 +412,8 @@ button:focus {
   display: flex;
   flex-direction: column;
   height: 100%;
-  /* align-items: center; */
   justify-content: center;
 }
-
-/* .param_rail {
-  border: 1px dashed red;
-  border-top: none;
-  border-right: none;
-  position: relative;
-  left: 2px;
-  display: inline !important;
-  width: 500px;
-  height: 20px;
-} */
 
 .parameter_graph > div {
   width:80px;
@@ -443,7 +428,6 @@ button:focus {
   display: flex;
   padding: 5px 10px;
   margin: 5px 0px;
-  /* height: 30px;  */
   align-items: center;
   justify-content: space-between;
   border: 1px dotted;
@@ -498,8 +482,14 @@ button:focus {
   padding: 15px; 
 }
 
-.anylet {
-  /* border: 1px solid black;   */
+.anylets {
+  width: 100%;
+  height: 18px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.anylet {  
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -510,6 +500,7 @@ button:focus {
 }
 
 .anylet label {
+  font-size: 0.9em;
   margin-right: 5px;
 }
 
@@ -519,14 +510,13 @@ button:focus {
   background-color: white;
   border: 1px solid black;
   cursor: pointer;
-  position: relative;
-  z-index: 3;
+  position: relative;  
   border-radius: 50%;
+  z-index: 4;
 }
 
 .jack:hover {
   background-color: black !important;
-  /* border: 1px solid white; */
 }
 
 .port {
@@ -535,20 +525,37 @@ button:focus {
   background-color: gray;
   border: 1px solid black;
   position: absolute;
-  z-index: 2;
   border-radius: 50%;
+  z-index: 3;
 }
 
 .connectionCanvas {
-  /* width: 100%;
-  height: 100%; */
-  z-index: 1;
+  pointer-events: none;  
   position: absolute;
+  border: 1px solid white;
+  box-sizing: border-box;
+  z-index: 2;
 }
 
-.anylets {
-  width: 100%;
-  height: 18px;
+/* Slot */
+
+.slot {
+  border: 1px dashed white;
+  padding: 5px;
+  min-height: 63px;
+  min-width: 270px;
+  margin: 10px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+}
+
+.slot > label {
+  color: white;
+  font-weight: bold;
+}
+
+.slotRow {
+  display: flex;
+  /* border: 3px solid orange; */
 }

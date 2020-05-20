@@ -45,14 +45,11 @@ const App = observer(class App extends React.Component {
     return (    
       <MainProvider value={{store: this.store}}>
         <div id="APP">          
-          <ToolBar />
-
-          <div id="WORKAREA">           
+          <div id="WORKAREA">    
+            <ToolBar />
 
             <div id="WORKAREA_inner" ref={this.workAreaRef}>
-
               { this.store.show_splash && <Splash /> }
-
               {this.store.targets.map((target)=>{
                 return (
                   <Target 
@@ -61,12 +58,10 @@ const App = observer(class App extends React.Component {
                   />
                 );
               })}                          
-
             </div>          
 
             <ConsoleBar />
-          </div>
-          
+          </div>         
         </div>
       </MainProvider>
     );
