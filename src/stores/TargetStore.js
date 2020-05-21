@@ -1,6 +1,5 @@
 import { observable, action, decorate } from 'mobx';
 import Shader from './ShaderStore';
-import * as NODES from './';
 import uuidv1 from 'uuid/v1';
 import {
     createModelSchema,
@@ -18,8 +17,6 @@ class TargetStore {
     parent = null;
     active = true;
 
-    bounds = null;
-
     constructor(parent) {
         this.parent = parent;
 
@@ -31,11 +28,6 @@ class TargetStore {
         );
 
         if (this.active) this.parent.activeTarget = this;
-    }
-
-    moveShader(shader, destination) {
-        let index = this.shaders.findIndex((item) => item.uuid === shader.uuid);
-        // console.log(index) 
     }
 
     addShader(type = null, pos = null) {
@@ -58,6 +50,7 @@ class TargetStore {
     removeShader(shader) {
         this.shaders = this.shaders.filter((item) => item.uuid !== shader.uuid);                
         console.log(shader)
+
         shader.inlets.forEach((e) => {
             e.disconnect();
         });
@@ -65,6 +58,7 @@ class TargetStore {
         shader.outlets.forEach((e)=>{
             e.disconnect();
         });
+
         if (this.shaders.length === 0) this.parent.removeTarget(this);
     }
 }

@@ -1,5 +1,6 @@
 import { observable, action, decorate } from 'mobx';
 import * as NODES from './stores';
+import Node from './stores/NodeStore';
 import Target from './stores/TargetStore';
 import Runner from './Runner';
 import p5 from 'p5';
@@ -15,6 +16,7 @@ import {
 } from "serializr";
 import ShaderStore from './stores/ShaderStore';
 import { create, persist } from 'mobx-persist';
+import Graph from './stores/GraphStore';
 
 const hydrate = create({
   storage: localStorage,
@@ -31,7 +33,8 @@ const fs = window.require('fs');
 class MainStore {
   p5_instance = null;
 
-  targets = [];
+  shaderGraphs = [];
+  targets = []; // phasing out
   consoleText = 'camogen';
   suggestText = '';  
 
@@ -43,11 +46,12 @@ class MainStore {
   show_splash = false;
 
   constructor() {  
-    this.p5_instance = new p5(p => Runner(p, this));
+    this.p5_instance = new p5(p => Runner(p, this));    
 
     this.loadShaders().then(()=>{
       console.log('shaders loaded successfully!', this.shader_list);
       const t = new Target(this);
+      const g = new Graph(this)
 
       const uv = deserialize(ShaderStore, this.shader_list["UV"], ()=>{}, {target: t}).init();
       const noise = deserialize(ShaderStore, this.shader_list["Noise"], ()=>{}, {target: t}).init()
@@ -55,7 +59,7 @@ class MainStore {
       const add = deserialize(ShaderStore, this.shader_list["Add"], () => {}, {target: t}).init()
       
       uv.outlets[0].connectTo(glyph.inlets[0]);
-      glyph.outlets[0].connectTo(add.inlets[0])
+      glyph.outlets[0].connectTo(add.inlets[0]);
 
       t.shaders = [
         uv,
@@ -63,7 +67,16 @@ class MainStore {
         add
       ];
 
-      this.targets.push(t)
+      const uv_g = new Node(uv);
+      const glyph_g = new Node(glyph);
+      const add_g = new Node(add);
+
+      g.addNodeToEnd(uv_g);
+      g.addNodeToEnd(glyph_g);
+      g.addNodeToEnd(add_g);
+
+      this.targets.push(t); // phasing out
+      this.shaderGraphs.push(g)
       // localStorage.clear()
       // hydrate("targets",this,[t]).then(r => console.log("rehydrated",r))
     }); 
@@ -180,6 +193,7 @@ decorate(MainStore, {
   suggestText:     observable,  
   object_list:     observable,
   targets:         [persist('list'),observable],
+  shaderGraphs:    [persist('list'), observable],
   activeTarget:    observable,
   show_splash:     observable,
   consoleChanged:  action,
@@ -197,19 +211,5 @@ createModelSchema(MainStore, {
 });
 
 const mainStore = new MainStore;
-// const someStore = persist(MainStore)(mainStore);
 export default mainStore;
-// hydrate('some', someStore).then((e) => console.log('someStore has been hydrated',e))
-
-// const t = new Target(mainStore);
-
-// t.shaders = [
-//   deserialize(ShaderStore, NODES.shaders["UV"], ()=>{}, {target: t}).init(),
-//   deserialize(ShaderStore, NODES.shaders["Noise"], ()=>{}, {target: t}).init(),
-// ];
-
-// // set defaults
-// mainStore.targets.push(t);
-
-// export default mainStore;
 

@@ -60,23 +60,23 @@ void main() {
       by the main Store.
 */
 
-class Connection {
+class Anylet {
     uuid = uuidv1();
 
     constructor(
         name = '', 
         next = null,
-        node = null,
+        parent = null,
     ) {
         this.name = name;
         this.next = next;
         this.prev = null;
-        this.node = node;    
+        this.parent = parent;    
     }
 
     connectTo(destination = null) {
-        // this.next = destination;
-        // destination.prev = this;
+        this.next = destination;
+        destination.prev = this;
     }
 
     disconnect() {
@@ -88,7 +88,7 @@ class Connection {
     }
 }
 
-decorate(Connection, {
+decorate(Anylet, {
     uuid: observable,
     ref: observable,
     next: observable,
@@ -106,15 +106,11 @@ class ShaderStore {
     ref       = null;
     component = null;
     target    = null;
-    node      = null;
 
     position = {x: null, y: null}
 
-    // temp
     inlets  = [];
     outlets = [];
-
-    inputs = [];
 
     operatorUpdateGroup = [];
 
@@ -131,7 +127,7 @@ class ShaderStore {
         this.frag = frag;
         this.uniforms = uniforms; 
 
-        this.outlets = [new Connection('out', null, this)];
+        this.outlets = [new Anylet('out', null, this)];
     }
 
     extractUniforms() { 
@@ -165,12 +161,8 @@ class ShaderStore {
 
             switch(e[2]){
                 case "sampler2D":
-                    /*
-                        the inputs here should correspond 
-                        with the parent and child arrays
-                        in the parent node.
-                    */
-                    this.inputs.push(e[3])
+                    // console.log('hit',e[2] + ' ' + e[3])
+                    this.inlets.push(new Anylet(e[3], null, this));
                     break;
                 case "float":                                      
                     def = opt.default ? opt.default : 1.0;
@@ -325,9 +317,7 @@ decorate(ShaderStore, {
     operatorUpdateGroup: observable,
     inlets:              observable,
     outlets:             observable,
-    inputs:              observable,
-    position:            observable, 
-    node:                observable,
+    position:            observable,    
     vertex:              computed,
     fragment:            computed,
     init:                action,
@@ -342,8 +332,8 @@ createModelSchema(ShaderStore, {
     precision:        primitive(),
     vert:             primitive(),
     frag:             primitive(),
-    // inlets:   list(object(Connection)),  
-    // outlets:  list(object(Connection)),  
+    // inlets:   list(object(Anylet)),  
+    // outlets:  list(object(Anylet)),  
     uniforms:         list(object(UniformStore)),
 }, c => {
     let p = c.parentContext ? c.parentContext.target : c.args.target;

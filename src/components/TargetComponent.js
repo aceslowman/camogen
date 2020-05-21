@@ -87,7 +87,7 @@ const TargetComponent = observer(class TargetComponent extends React.Component {
 		// traverse from root node
 		let shader = this.props.data.shaders[0];
 		let iteration = 0;
-		console.log(shader.outlets[0].next)
+		// console.log(shader.outlets[0].next)
 
 		rows.push([(
 			<Slot key={shader.uuid}>
@@ -101,7 +101,7 @@ const TargetComponent = observer(class TargetComponent extends React.Component {
 		)]);
 		
 		while(shader.outlets[0].next) {
-			shader = shader.outlets[0].next.parent;
+			shader = shader.outlets[0].next.node;
 
 			// current slot
 			rows.push([(

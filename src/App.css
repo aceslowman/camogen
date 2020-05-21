@@ -235,7 +235,6 @@ button:focus {
   padding: 0px;
   margin: 15px;
   border: none;
-  position: absolute;
 }
 
 .panel h1 {
@@ -244,7 +243,7 @@ button:focus {
 
 .panelContent {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: column-reverse wrap; 
   justify-content: center;
   align-items: center;
   padding: 0px;
@@ -313,8 +312,9 @@ button:focus {
 }
 
 .nodeInner > div {
-  min-height: 150px;
+  min-height: 1510px;
 }
+
 
 .nodeTools {
   display: flex;
@@ -553,9 +553,18 @@ button:focus {
 .slot > label {
   color: white;
   font-weight: bold;
+  position: absolute;
 }
 
 .slotRow {
   display: flex;
   /* border: 3px solid orange; */
+}
+
+.shaderGraphs {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
 }

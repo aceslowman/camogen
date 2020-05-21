@@ -23,12 +23,9 @@ const SlotComponent = observer(class SlotComponent extends React.Component {
 		this.store = this.context.store;
 
 		return(
-			<div className="slot" style={style}>                
-				{
-					this.props.children 
-						? (this.props.children) 
-						: (<label>{label ? label : 'EMPTY SLOT'}</label>)
-				}
+			<div className="slot" style={style}> 
+				<label>{label ? label : 'EMPTY SLOT'}</label>               
+				{this.props.children}
             </div>
 	    );
 	}
