@@ -19,7 +19,7 @@ const style = {
 		// maxHeight: '42px',
 	},
 	inner: {
-		// maxHeight: '42px',
+		maxHeight: '0px',
 	},
 	edit: {
 		maxWidth: '0px'
@@ -177,10 +177,10 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 
 					<div className='nodeContainer' onClick={this.handleClick}>
 						<div className="anylets inlets">
-							{this.props.data.inlets.map((e,i)=>{
+							{this.props.data.inputs.map((e,i)=>{
 								return (
 									<div className="anylet inlet" key={i}>
-										<label>{e.name}</label>
+										<label>{e}</label>
 										{/* <Connection data={e}/> */}
 									</div> 
 								)
@@ -197,34 +197,30 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 								overflowY: this.state.expandMain ? 'auto' : 'none'
 							}}
 						>
-							{/* {this.state.expandMain && ( */}
-								<div ref={this.innerRef} >
-									{this.props.data.uniforms.map((uniform)=>{                        
-										return (
-											<Uniform 
-												enabled={this.state.expandMain}
-												key={uniform.uuid}
-												data={uniform}
-												activeParam={
-													this.state.activeParameter
-												}	
-												onDblClick={
-													this.handleSelectParameter
-												}
-											/>
-										);                     
-									})}
-								</div>
-							{/* )}												            	 */}
+							<div ref={this.innerRef}>
+								{this.props.data.uniforms.map((uniform)=>{                        
+									return (
+										<Uniform 
+											enabled={this.state.expandMain}
+											key={uniform.uuid}
+											data={uniform}
+											activeParam={
+												this.state.activeParameter
+											}	
+											onDblClick={
+												this.handleSelectParameter
+											}
+										/>
+									);                     
+								})}
+							</div>
 						</div>
 						<div className="anylets outlets">
-							{this.props.data.outlets.map((e,i)=>{
+							{this.props.data.outputs.map((e,i)=>{
 								return (
 									<div className="anylet outlet" key={i}>
-										<label>{e.name}</label>
-										{/* <Connection 
-											data={e}
-										/> */}
+										<label>{e}</label>
+										{/* <Connection data={e}/> */}
 									</div> 
 								)
 							})}		

@@ -18,14 +18,21 @@ const SlotComponent = observer(class SlotComponent extends React.Component {
 	}
 
 	render() {	
-		const { label } = this.props;
+		const { label, hidden } = this.props;
 
 		this.store = this.context.store;
 
+		style = {						
+			...style,
+			border: hidden ? 'none' : '1px dashed white',
+		}
+
 		return(
-			<div className="slot" style={style}> 
-				<label>{label ? label : 'EMPTY SLOT'}</label>               
-				{this.props.children}
+			<div className="slot" style={!hidden ? style : {}}> 
+			{!hidden && (
+				<label>{label ? label : 'EMPTY SLOT'}</label>               				
+			)}
+			{this.props.children}
             </div>
 	    );
 	}

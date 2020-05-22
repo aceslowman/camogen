@@ -57,23 +57,28 @@ class MainStore {
       const noise = deserialize(ShaderStore, this.shader_list["Noise"], ()=>{}, {target: t}).init()
       const glyph = deserialize(ShaderStore, this.shader_list["Glyph"], ()=>{}, {target: t}).init()
       const add = deserialize(ShaderStore, this.shader_list["Add"], () => {}, {target: t}).init()
+      const hsv = deserialize(ShaderStore, this.shader_list["ToHSV"], () => {}, {target: t}).init()
+      // const wavy = deserialize(ShaderStore, this.shader_list["Wavy"], () => {}, {target: t}).init()
       
-      uv.outlets[0].connectTo(glyph.inlets[0]);
-      glyph.outlets[0].connectTo(add.inlets[0]);
-
       t.shaders = [
         uv,
         glyph,
-        add
+        add,
+        hsv,
+        // wavy,
       ];
 
       const uv_g = new Node(uv);
       const glyph_g = new Node(glyph);
       const add_g = new Node(add);
+      const hsv_g = new Node(hsv);
+      // const wavy_g = new Node(wavy);
 
       g.addNodeToEnd(uv_g);
       g.addNodeToEnd(glyph_g);
       g.addNodeToEnd(add_g);
+      g.addNodeToEnd(hsv_g);
+      // g.addNodeToEnd(wavy_g);
 
       this.targets.push(t); // phasing out
       this.shaderGraphs.push(g)

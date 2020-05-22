@@ -53,22 +53,24 @@ class NodeStore {
     parents  = [];
     children = [];
 
-    constructor(data) {
+    constructor(data, name) {
         this.data = data;
-        this.name = data.name;
+        this.name = data ? data.name : name;
 
-        this.parents = this.data.inputs.map(e=>(
-            // new Connection(e, this, null, null)
-            // e
-            null
-        ));
+        if(data) {
+            this.parents = this.data.inputs.map(e => (
+                // new Connection(e, this, null, null)
+                // e
+                new NodeStore(null, e)
+            ));
 
-        this.children = [
-            // new Connection('out', this, null, null)
-            null
-        ];
+            this.children = [
+                // new Connection('out', this, null, null)
+                null
+            ];
 
-        this.data.node = this;
+            this.data.node = this;
+        }        
     }
 
     connectParent(parent, index) {

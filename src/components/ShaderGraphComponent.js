@@ -37,62 +37,48 @@ const ShaderGraphComponent = observer(class ShaderGraphComponent extends React.C
 			currently returning shader, 
 			should return node
 		*/
-		let root = this.props.data.root;
+		// let root = this.props.data.root;
 		// console.log(root.children[0].prev)
+		
+		this.props.data.traverse((next_node, container, distance_from_root) => {
+			// console.log(next_node.name)
+			if (rows.length <= distance_from_root+1) {
+				rows.push([]);
+			}
 
-		rows.push([(
-			<Slot key={root.uuid} label={root.data.name}>
-				<Shader
-					key={root.data.uuid}
-					data={root.data}							
-				/>
-			</Slot>
-		)]);
+			if (next_node.data) {
+				rows[distance_from_root].push((
+					<Slot key={next_node.uuid} label={next_node.data.name}>
+						<Shader
+							key={next_node.data.uuid}
+							data={next_node.data}							
+						/>
+					</Slot>
+				));
+			} else {
+				let count = distance_from_root+2;
+				console.log('COUNT',count)
 
-		// console.log('traversal queue', this.props.data.traverse());
+				// add empty slot above
+				rows[count].push((
+					<Slot key={next_node.uuid} label={next_node.name}>
+					
+					</Slot>
+				));
 
-		this.props.data.traverse(e => {
-			console.log(e.name)
+				//and add placeholders all of the way up
+				for(let i = count + 1; i < rows.length; i++) {
+					rows[i].push((
+						<Slot hidden key={i} />
+					));
+				}
+				
+			}
+			
 		})
+
+		console.log(rows)
 			
-		// root.inlets.forEach( e => {
-		// 	let row = [];
-		// 	let node = e.node;
-
-		// 	// go all of the way up
-
-		// 	// traverse all northern trees
-			
-		// 	while(node.inlets[0]) {
-
-		// 		node.inlets.forEach( e => {
-		// 			let destination = node.inlets[0].prev.node;
-		// 			console.log('inlet', destination)
-
-		// 			// if node has data...
-		// 			if(destination.data) {
-		// 				console.log('this inlet has data')
-		// 			} else {
-		// 				console.log('this inlet DOESNT HAVE data')
-		// 			}
-		// 			// else
-		// 			// add slots above
-		// 			row.push((
-		// 				<Slot key={node.uuid} label={destination.name}>
-		// 					<Shader							
-		// 						key={destination.data.uuid}
-		// 						data={destination.data}	
-		// 					/>
-		// 				</Slot>
-		// 			));
-
-		// 			node = destination;
-		// 		});		
-			
-		// 	}
-			
-		// 	rows.push(row)
-		// })
 
 		return rows.map((e,i) => (
 			<div key={i} className="slotRow">

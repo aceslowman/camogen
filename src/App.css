@@ -312,7 +312,7 @@ button:focus {
 }
 
 .nodeInner > div {
-  min-height: 1510px;
+  min-height: 110px;
 }
 
 
@@ -540,7 +540,7 @@ button:focus {
 /* Slot */
 
 .slot {
-  border: 1px dashed white;
+  /* border: 1px dashed white; */
   padding: 5px;
   min-height: 63px;
   min-width: 270px;

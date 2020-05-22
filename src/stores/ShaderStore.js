@@ -108,13 +108,9 @@ class ShaderStore {
     target    = null;
     node      = null;
 
-    position = {x: null, y: null}
-
     // temp
-    inlets  = [];
-    outlets = [];
-
-    inputs = [];
+    inputs  = [];
+    outputs = ["out"];
 
     operatorUpdateGroup = [];
 
@@ -130,8 +126,6 @@ class ShaderStore {
         this.vert = vert;
         this.frag = frag;
         this.uniforms = uniforms; 
-
-        this.outlets = [new Connection('out', null, this)];
     }
 
     extractUniforms() { 
@@ -153,9 +147,9 @@ class ShaderStore {
             }
 
             // ignore if uniform already exists (preserves graphs)          
-            for (let i = 0; i < this.inlets.length; i++) {
+            for (let i = 0; i < this.inputs.length; i++) {
                 // console.log([this.inlets[i].name, e[3]])
-                if (this.inlets[i].name === e[3]) {
+                if (this.inputs[i] === e[3]) {
                     return;
                 }
             }
@@ -322,18 +316,15 @@ decorate(ShaderStore, {
     precision:           observable,
     vert:                observable,
     frag:                observable,
-    operatorUpdateGroup: observable,
-    inlets:              observable,
-    outlets:             observable,
+    operatorUpdateGroup: observable,    
     inputs:              observable,
-    position:            observable, 
+    outputs:             observable,
     node:                observable,
     vertex:              computed,
     fragment:            computed,
     init:                action,
     save:                action,
     load:                action,
-    connectTo:           action,
 });
 
 createModelSchema(ShaderStore, {
