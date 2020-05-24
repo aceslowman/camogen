@@ -20,89 +20,70 @@ class GraphStore {
     uuid   = uuidv1();
     active = true;
     parent = null;
+    activeNode = null;
+
+    // NOTE: toggle to force a re-render in React
+    updateFlag = false;
 
     nodes = {};
 
     constructor(parent) {
         this.parent = parent;
+        this.addNodeToEnd();
     }    
 
-    addNodeToEnd(node) { 
-        console.groupCollapsed('adding node', node.name);
-        // attach node to root (if inlets exist)
-        console.log('parents',node.parents)
+    update() {
+        let update_queue = this.calculateBranches();        
+        this.afterUpdate(update_queue);
+        this.updateFlag = !this.updateFlag;
+    }
 
-        if(this.root)        
-            this.root.connectChild(node,0);  
-                        
+    addNodeToEnd(node = new Node(this, null, 'ROOT NODE')) {
+        node.graph = this;
+
+        if(this.root) {
+            this.root.setData(node.data);
+            this.root.addChild();
+        }      
+
         this.nodes = {
             ...this.nodes,
             [node.uuid]: node
-        }     
-        console.groupEnd();    
+        }       
+
+        if (this.activeNode) this.activeNode.deselect();
+        node.select();
+
+        return node;
     }
 
-    removeNode(uuid) {}
-
-    traverse(f = null) {
-        console.group('traversing graph', this.nodes);
-
+    traverse(f = null, depthFirst = false) {
         let out = [];
         let container = [this.root];
-        let prev_node, next_node;
+        let next_node;
         let distance_from_root = 0;
 
-        let limit = 10;
-
-        while(limit && container.length) {             
+        while(container.length) {             
             next_node = container.shift();
-            distance_from_root = this.distanceBetween(next_node, this.root);
-
-            if (f) f(next_node, container, distance_from_root);
-
-            if(next_node) {
-                console.log('distance from root', distance_from_root)
-                console.log('traversing', next_node.name)
-                console.log('remaining elements', container)
-
-                if(next_node.parents)
-                    // container = container.concat(next_node.parents); // depth
-                    container = next_node.parents.concat(container); // breadth          
-
-                console.log(next_node.parents)
-
-                out.push(next_node.name);
-            }
-     
-            limit--;
-        }
+            out.push(next_node.uuid);
             
-        console.groupEnd();
+            if(next_node) {
+                distance_from_root = this.distanceBetween(next_node, this.root);
+
+                if (f) f(next_node, container, distance_from_root);
+
+                if(next_node.parents) {
+                    container = depthFirst 
+                        ? container.concat(next_node.parents)
+                        : next_node.parents.concat(container) 
+                }                          
+            }
+        }
 
         return out;
     }
 
-    get root() {
-        console.groupCollapsed('looking for root')
-        
-        let keys = Object.keys(this.nodes);        
-        let node = this.nodes[keys[0]]; 
-
-        console.log(node)
-
-        while(node && node.children[0]){
-            node = node.children[0];
-
-            console.log('checking', node)         
-        }
-
-        // console.log('the root is',node.name);
-        console.groupEnd();
-        return node;
-    }
-
     distanceBetween(a, b) {
-        console.log(`checking distance between ${a.name} and ${b.name}`)
         let node = a;
         let count = 0;
 
@@ -113,15 +94,77 @@ class GraphStore {
 
         return count;
     }
+
+    calculateBranches() {
+        let current_branch = 0;
+        let queue = [];
+
+        this.traverse(next_node => {
+            next_node.branch_index = null;
+            if (next_node.data) {
+                // console.log(next_node.name, next_node);
+
+                // if we hit the topmost shader
+                if (!next_node.hasConnectedParents) {  
+                    let t_node = next_node;
+                    t_node.branch_index = current_branch;
+                    queue.push(t_node);
+
+                    // propogate the new branch down the chain
+                    // until it hits a node already with a branch_index
+                    while (t_node.firstChild && t_node.firstChild.branch_index === null) {
+                        t_node.firstChild.branch_index = current_branch;
+                        t_node = t_node.firstChild;
+                        queue.push(t_node);
+                    }
+
+                    current_branch++;
+                }
+            }
+        });
+
+        return queue;
+    }
+
+    afterUpdate = (t) => {}
+
+    getNodeById(uuid) {
+        let node = this.nodes[uuid];
+
+        if(!node) console.error(`node was not found!`, uuid);
+        return node;
+    }
+
+    get root() {
+        let keys = Object.keys(this.nodes);        
+        let node = this.nodes[keys[0]]; 
+
+        while(node && node.children[0]){
+            node = node.children[0];       
+        }
+
+        return node;
+    }
+
+    get nodeCount() {
+        return Object.keys(this.nodes).length;
+    }
 }
 
 decorate(GraphStore, {
-    uuid:       observable,
-    nodes:      observable,
-    root:       computed,
-    traverse:   action,
-    addNodeToEnd:    action,
-    removeNode: action,
+    uuid:              observable,
+    nodes:             observable,
+    activeNode:        observable,
+    updateFlag:        observable,  
+    update:            action,
+    afterUpdate:       action,
+    addNodeToEnd:      action,
+    traverse:          action,
+    distanceBetween:   action,
+    calculateBranches: action,
+    getNodeById:       action,
+    root:              computed,
+    nodeCount:         computed,
 });
 
 createModelSchema(GraphStore, {

@@ -189,10 +189,13 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 						
 						<legend className='nodeLegend'>
 							{this.props.data.name}							
+							
+							{/* {this.props.data.name + ' bid: ' + this.props.data.node.branch_index}							  */}
 						</legend>				           
 
 						<div 
-							className='nodeInner' 							style={{
+							className='nodeInner' 							
+							style={{
 								...style.inner, 
 								overflowY: this.state.expandMain ? 'auto' : 'none'
 							}}

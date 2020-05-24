@@ -125,7 +125,9 @@ class ShaderStore {
         this.precision = precision;
         this.vert = vert;
         this.frag = frag;
-        this.uniforms = uniforms; 
+        this.uniforms = uniforms;
+        
+        this.extractUniforms();
     }
 
     extractUniforms() { 
@@ -337,7 +339,8 @@ createModelSchema(ShaderStore, {
     // outlets:  list(object(Connection)),  
     uniforms:         list(object(UniformStore)),
 }, c => {
-    let p = c.parentContext ? c.parentContext.target : c.args.target;
+    // let p = c.parentContext ? c.parentContext.target : c.args.target;
+    let p = null;
     return new ShaderStore(
         p, 
         c.json.precision,

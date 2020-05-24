@@ -59,11 +59,13 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
         this.drawer_items = (
             <React.Fragment>
                 <button 
+                    disabled
                     onClick={()=>this.store.addTarget()} 
                     className="white_button"
                 >Target
                 </button>
                 <button 
+                    disabled
                     onClick={()=>this.store.activeTarget.addShader()} 
                     className="white_button"
                 >Shader
@@ -85,7 +87,6 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
             activeDrawer: 'obj',
         }));
 
-        // console.log(bounds)
         style = {...style, drawer: {
             top: bounds.top+bounds.height,
             left: bounds.right,
@@ -99,7 +100,10 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
                 <button 
                     key={obj}
                     className="white_button"  
-                    onClick={()=>this.store.activeTarget.addShader(obj)}
+                    onClick={()=>{
+                        let shader = this.store.getShader(obj);
+                        this.store.activeGraph.activeNode.setData(shader);
+                    }}
                 >
                     {obj}
                 </button>

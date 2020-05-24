@@ -26,59 +26,55 @@ const ShaderGraphComponent = observer(class ShaderGraphComponent extends React.C
 	}
 
 	handleRemove = () => {
-		this.store.removeTarget(this.props.data);
+		this.store.removeGraph(this.props.data);
 	}
 
 	generateSlots = () => {
 		let rows = [];
 
 		// traverse from root node
-		/* 
-			currently returning shader, 
-			should return node
-		*/
-		// let root = this.props.data.root;
-		// console.log(root.children[0].prev)
-		
 		this.props.data.traverse((next_node, container, distance_from_root) => {
-			// console.log(next_node.name)
-			if (rows.length <= distance_from_root+1) {
+			if (distance_from_root === rows.length) {
 				rows.push([]);
 			}
 
 			if (next_node.data) {
 				rows[distance_from_root].push((
-					<Slot key={next_node.uuid} label={next_node.data.name}>
+					<Slot 
+						data={next_node} 
+						key={next_node.uuid} 
+						label={next_node.data.name}
+					>
 						<Shader
 							key={next_node.data.uuid}
 							data={next_node.data}							
 						/>
 					</Slot>
 				));
-			} else {
-				let count = distance_from_root+2;
-				console.log('COUNT',count)
+			} else {				
+				let count = distance_from_root;
 
 				// add empty slot above
 				rows[count].push((
-					<Slot key={next_node.uuid} label={next_node.name}>
-					
-					</Slot>
+					<Slot 
+						data={next_node} 
+						key={next_node.uuid} 
+						label={next_node.name}
+					/>
+				));								
+			}	
+
+			//and add placeholders all of the way up
+			for(let i = distance_from_root + 1; i < rows.length; i++) {
+				rows[i].push((
+					<Slot 
+						hidden
+						data={next_node}  
+						key={i} 
+					/>
 				));
-
-				//and add placeholders all of the way up
-				for(let i = count + 1; i < rows.length; i++) {
-					rows[i].push((
-						<Slot hidden key={i} />
-					));
-				}
-				
-			}
-			
+			}		
 		})
-
-		console.log(rows)
-			
 
 		return rows.map((e,i) => (
 			<div key={i} className="slotRow">
@@ -98,6 +94,7 @@ const ShaderGraphComponent = observer(class ShaderGraphComponent extends React.C
 				onRemove={this.handleRemove}
 				onActive={this.handleActive}	
 			>				
+				{ this.props.data.updateFlag }
 				{ this.generateSlots() }
 			</Panel>
 	    )

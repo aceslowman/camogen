@@ -5,9 +5,10 @@ import './App.css';
 
 import ConsoleBar from './components/ConsoleBar';
 import ToolBar from './components/ToolBar';
-import Target from './components/TargetComponent';
 import ShaderGraph from './components/ShaderGraphComponent';
 import Splash from './components/Splash';
+import DebugInfo from './components/DebugInfo';
+
 
 const App = observer(class App extends React.Component {
 
@@ -52,16 +53,7 @@ const App = observer(class App extends React.Component {
             <div id="WORKAREA_inner" ref={this.workAreaRef}>
               { this.store.show_splash && <Splash /> }
               <div className="shaderGraphs">
-                {/* {this.store.targets.map((target)=>{
-                  return (
-                    <Target 
-                      key={target.uuid} 
-                      data={target}
-                    />
-                  );
-                })}   */}
                 {this.store.shaderGraphs.map((graph)=>{
-                  console.log('shader_graphs')
                   return (
                     <ShaderGraph
                       key={graph.uuid} 
@@ -69,7 +61,9 @@ const App = observer(class App extends React.Component {
                     />
                   );
                 })}
+                <DebugInfo />
               </div>     
+              
             </div>          
 
             <ConsoleBar />

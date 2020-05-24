@@ -16,6 +16,7 @@ class TargetStore {
     ref    = null;
     parent = null;
     active = true;
+    shaders = [];
 
     constructor(parent) {
         this.parent = parent;
@@ -26,36 +27,26 @@ class TargetStore {
             window.innerHeight,
             p.WEBGL
         );
-
-        if (this.active) this.parent.activeTarget = this;
     }
 
-    addShader(type = null, pos = null) {
-        let shader;
+    assignShader(shader) {
+        if(this.shaders.includes(shader)) {
+            console.log(shader.name + ' can be recycled')
 
-        if(type){
-            shader = deserialize(ShaderStore, this.parent.shader_list[type], ()=>{}, {target: this}).init();      
-        }else{
-            shader = new ShaderStore(this).init();
+        } else {
+            console.log(shader.name + ' CANT be recycled')
+            this.shaders.push(shader);
         }
-        
-        let prev_shader = this.shaders[pos ? pos - 1 : this.shaders.length -1];
-        
-        if (shader.inlets[0])
-            prev_shader.outlets[0].connectTo(shader.inlets[0]);
-            
-        this.shaders.splice(pos ? pos : this.shaders.length, 0, shader);
     }
 
     removeShader(shader) {
         this.shaders = this.shaders.filter((item) => item.uuid !== shader.uuid);                
-        console.log(shader)
 
-        shader.inlets.forEach((e) => {
+        shader.inputs.forEach((e) => {
             e.disconnect();
         });
 
-        shader.outlets.forEach((e)=>{
+        shader.outputs.forEach((e)=>{
             e.disconnect();
         });
 
@@ -67,7 +58,7 @@ decorate(TargetStore, {
     uuid:         observable,
     active:       observable,
     shaders:      observable,
-    addShader:    action,
+    assignShader:    action,
     removeShader: action,
 });
 

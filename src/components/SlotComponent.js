@@ -17,22 +17,32 @@ const SlotComponent = observer(class SlotComponent extends React.Component {
 		}
 	}
 
+	handleClick = () => {
+		if (this.props.data.graph.activeNode)
+			this.props.data.graph.activeNode.deselect();
+		this.props.data.select();
+	}	
+
 	render() {	
-		const { label, hidden } = this.props;
+		const { label, hidden, data } = this.props;
 
 		this.store = this.context.store;
 
 		style = {						
 			...style,
-			border: hidden ? 'none' : '1px dashed white',
-		}
+			border: data.selected ? '1px solid #39FF14' : '1px dashed white',			
+		} 
 
 		return(
-			<div className="slot" style={!hidden ? style : {}}> 
-			{!hidden && (
-				<label>{label ? label : 'EMPTY SLOT'}</label>               				
-			)}
-			{this.props.children}
+			<div 
+				className="slot" 
+				style={!hidden ? style : {}}
+				onClick={this.handleClick}
+			> 
+				{!hidden && (
+					<label>{label ? label : 'EMPTY SLOT'}</label>               				
+				)}
+				{this.props.children}
             </div>
 	    );
 	}

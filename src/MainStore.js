@@ -34,13 +34,14 @@ class MainStore {
   p5_instance = null;
 
   shaderGraphs = [];
-  targets = []; // phasing out
+  targets      = []; 
+
   consoleText = 'camogen';
   suggestText = '';  
 
   activeTarget    = null;
+  activeGraph     = null;
   
-  object_list = NODES.shader_types;
   shader_list = {};
 
   show_splash = false;
@@ -50,41 +51,64 @@ class MainStore {
 
     this.loadShaders().then(()=>{
       console.log('shaders loaded successfully!', this.shader_list);
-      const t = new Target(this);
-      const g = new Graph(this)
+      const g = new Graph(this);
 
-      const uv = deserialize(ShaderStore, this.shader_list["UV"], ()=>{}, {target: t}).init();
-      const noise = deserialize(ShaderStore, this.shader_list["Noise"], ()=>{}, {target: t}).init()
-      const glyph = deserialize(ShaderStore, this.shader_list["Glyph"], ()=>{}, {target: t}).init()
-      const add = deserialize(ShaderStore, this.shader_list["Add"], () => {}, {target: t}).init()
-      const hsv = deserialize(ShaderStore, this.shader_list["ToHSV"], () => {}, {target: t}).init()
-      // const wavy = deserialize(ShaderStore, this.shader_list["Wavy"], () => {}, {target: t}).init()
+      const uv    = this.getShader("UV");
+      const glyph = this.getShader("Glyph");
+      const add   = this.getShader("Add");
+      const hsv   = this.getShader("ToHSV");
+
+      g.addNodeToEnd(new Node(g,uv));
+      g.addNodeToEnd(new Node(g,glyph));
+      g.addNodeToEnd(new Node(g,add));
+      g.addNodeToEnd(new Node(g,hsv));
+
+      g.root.select();
       
-      t.shaders = [
-        uv,
-        glyph,
-        add,
-        hsv,
-        // wavy,
-      ];
-
-      const uv_g = new Node(uv);
-      const glyph_g = new Node(glyph);
-      const add_g = new Node(add);
-      const hsv_g = new Node(hsv);
-      // const wavy_g = new Node(wavy);
-
-      g.addNodeToEnd(uv_g);
-      g.addNodeToEnd(glyph_g);
-      g.addNodeToEnd(add_g);
-      g.addNodeToEnd(hsv_g);
-      // g.addNodeToEnd(wavy_g);
-
-      this.targets.push(t); // phasing out
+      g.afterUpdate = (queue) => this.assignTargets(queue);
+      g.update();
+          
       this.shaderGraphs.push(g)
+      this.activeGraph = g;
       // localStorage.clear()
       // hydrate("targets",this,[t]).then(r => console.log("rehydrated",r))
     }); 
+  }
+
+  assignTargets(queue) {
+    queue.forEach(node => {
+      if(node.data) {      
+        // node.data.target = this.targets[node.branch_index]
+        //   ? this.targets[node.branch_index]
+        //   : this.addTarget();
+
+        if (this.targets[node.branch_index]) {
+          node.data.target = this.targets[node.branch_index];
+        } else {
+          node.data.target = this.addTarget();
+          // node.data.target.addShader(node.data)
+        }
+          
+        // node.data.target.shaders.push(node.data);
+        node.data.target.assignShader(node.data);
+        
+        node.data.init();
+      }
+    });
+  }
+
+  addTarget(target = new Target(this)) {
+    this.targets.push(target);
+    return target;
+  }
+
+  getShader(name) {
+    if(Object.keys(this.shader_list).includes(name)){
+      return deserialize(ShaderStore, this.shader_list[name])
+    } else {
+      console.error(`couldn't find shader named '${name}'`);
+      return null;
+    } 
   }
 
   async loadShaders() {
@@ -133,20 +157,15 @@ class MainStore {
     this.suggestText = matched.length && text ? matched[0] : '';
   }
 
-  addTarget() {
-    const t = new Target(this);
-
-    t.shaders = [
-      // new UV(t).init(),
-    ];
-
-    this.targets.push(t);
+  addShaderGraph(t = new Graph(this)) {
+    this.shaderGraphs.push(t);
+    return this.shaderGraphs.length;
   }
 
-  removeTarget(target) {
-    this.targets = this.targets.filter((item) => item !== target);
-    if (this.activeTarget === target) {
-      this.activeTarget = this.targets[0];      
+  removeShaderGraph(graph) {
+    this.shaderGraphs = this.shaderGraphs.filter((item) => item !== graph);
+    if (this.activeGraph === graph) {
+      this.activeGraph = this.shaderGraphs[0];
     }
   }
 
@@ -196,22 +215,22 @@ class MainStore {
 decorate(MainStore, {  
   consoleText:     observable,  
   suggestText:     observable,  
-  object_list:     observable,
-  targets:         [persist('list'),observable],
+  shader_list:     observable,
+  targets:         [persist('list'),observable], // phasing out
   shaderGraphs:    [persist('list'), observable],
-  activeTarget:    observable,
+  activeGraph:     observable,
   show_splash:     observable,
   consoleChanged:  action,
   suggest:         action,
-  addTarget:       action,
-  removeTarget:    action,
+  addGraph:        action,
+  removeGraph:     action,
   save:            action, 
   load:            action, 
 });
 
 createModelSchema(MainStore, {
-  targets:      list(object(Target)),
-  activeTarget: reference(Target),
+  targets:      list(object(Graph)),
+  activeGraph:  reference(Graph),
   show_splash:  primitive(),
 });
 

@@ -10,11 +10,11 @@ const Runner = (p, store, props) => {
         
         c.append(canvas.canvas);
         
-        p.background(255, 0, 255);
+        p.background(120, 80, 50);
     }
 
     p.draw = () => {
-        if (store.activeTarget) {
+        if (store.activeGraph) {
             for (let target_data of store.targets) {
                 let target = target_data.ref;
 
@@ -31,11 +31,6 @@ const Runner = (p, store, props) => {
                     }
 
                     for (let uniform_data of shader_data.uniforms) {
-                        // console.log(uniform_data)
-                        // for (let element of uniform_data.elements) {
-                        //     if(element.graph)
-                        // }
-
                         if (uniform_data.elements.length > 1) {
 
                             // there should be a more elegant way of doing this
@@ -51,8 +46,16 @@ const Runner = (p, store, props) => {
                         }
                     }
 
-                    // built-ins
-                    shader.setUniform('tex0', target);
+                    // setup inputs
+                    for (let i = 0; i < shader_data.inputs.length; i++) {
+                        let input_shader = shader_data.node.parents[i].data;
+                        
+                        if(input_shader) {
+                            let input_target = input_shader.target.ref;
+                            shader.setUniform(shader_data.inputs[i], input_target);                            
+                        }
+                    }
+                                        
                     shader.setUniform('resolution', [target.width, target.height]);                    
 
                     target.shader(shader);
@@ -61,7 +64,7 @@ const Runner = (p, store, props) => {
                 }
             }
 
-            p.image(store.activeTarget.ref, 0, 0, p.width, p.height);
+            p.image(store.targets[0].ref, 0, 0, p.width, p.height);
         } else {
             p.background(0);
         }
