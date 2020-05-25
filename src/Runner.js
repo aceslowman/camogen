@@ -14,7 +14,7 @@ const Runner = (p, store, props) => {
     }
 
     p.draw = () => {
-        if (store.activeGraph) {
+        if (store.activeGraph && store.targets.length) {
             for (let target_data of store.targets) {
                 let target = target_data.ref;
 

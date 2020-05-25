@@ -58,13 +58,11 @@ class MainStore {
       const add   = this.getShader("Add");
       const hsv   = this.getShader("ToHSV");
 
-      g.addNodeToEnd(new Node(g,uv));
-      g.addNodeToEnd(new Node(g,glyph));
-      g.addNodeToEnd(new Node(g,add));
-      g.addNodeToEnd(new Node(g,hsv));
+      g.root.setData(uv);
+      g.root.setData(glyph);
+      g.root.setData(add);
+      g.root.setData(hsv);
 
-      g.root.select();
-      
       g.afterUpdate = (queue) => this.assignTargets(queue);
       g.update();
           
@@ -78,18 +76,12 @@ class MainStore {
   assignTargets(queue) {
     queue.forEach(node => {
       if(node.data) {      
-        // node.data.target = this.targets[node.branch_index]
-        //   ? this.targets[node.branch_index]
-        //   : this.addTarget();
-
         if (this.targets[node.branch_index]) {
           node.data.target = this.targets[node.branch_index];
         } else {
           node.data.target = this.addTarget();
-          // node.data.target.addShader(node.data)
         }
           
-        // node.data.target.shaders.push(node.data);
         node.data.target.assignShader(node.data);
         
         node.data.init();

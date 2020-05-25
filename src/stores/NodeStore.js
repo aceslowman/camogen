@@ -33,63 +33,64 @@ class NodeStore {
         this.name  = data ? data.name : name;
         this.graph = graph;
 
-        if(data) {
-            this.mapInputsToParents();
-            this.mapOutputsToChildren();
-
-            this.data.node = this;
-        }        
-    }
-    
-    mapInputsToParents() {
-        // recycle
-        this.parents = this.data.inputs.map((e,i) => {
-            if(this.parents[i]) {
-                return this.parents[i];
-            } else {
-                let parent = new NodeStore(this.graph, null, e);
-                this.connectParent(parent, 0);
-                return parent;
-            }                    
-        });
-    }
-
-    mapOutputsToChildren() {
-        this.children = this.data.outputs.map(()=>null);
+        if(data) this.setData(data);      
     }
 
     setData(obj) {
         this.data = obj;
         this.name = this.data.name;
-
-        this.mapInputsToParents();
-
         this.data.node = this;
 
-        this.graph.update();  
+        this.mapInputsToParents();
+        this.mapOutputsToChildren();
 
-        if(!this.firstChild) {
-            console.log(this.firstChild)
-            // this.graph.addNodeToEnd();
-        }     
+        this.graph.update();
+
+        console.log('DATA',this)
+    }
+    
+    mapInputsToParents() {     
+        this.parents = this.data.inputs.map((e,i) => {
+            if(this.parents[i]) {
+                return this.parents[i];
+            } else {   
+                let parent = new NodeStore(this.graph, null, e);
+                return this.addParent(parent, i);
+            }                    
+        });
     }
 
+    mapOutputsToChildren() {
+        // this destroys the connection to the existing child, 
+        // ignore this for now. this is functionally
+        // multiinput, but single-output
+        // this.children = this.data.outputs.map(()=>null);
+    }    
+
     connectParent(parent, index) {
-        parent.children[index] = this;
+        parent.firstChild = this;
         this.parents[index] = parent;     
     }
 
     connectChild(child, index) {
         child.parents[index] = this;
-        this.children[index] = child;
+        this.firstChild = child;
     }
 
-    addChild(index = 0) {
-        let node = new NodeStore(this.graph, null, 'ROOT NODE');
+    addParent(node = new NodeStore(this.graph, null, 'input'), index = 0) {
+        this.connectParent(node, index);
+        this.graph.addNode(node);
+        return node;
+    }
+
+    addChild(node = new NodeStore(this.graph, null, 'ROOT NODE'), index = 0) {
         this.connectChild(node, index);
+        this.graph.addNode(node);
+        return node;
     }
 
-    select() {
+    select(solo = false) {
+        if(solo) this.graph.activeNode.selected = false;
         this.graph.activeNode = this;
         this.selected = true;
         return this;

@@ -31,24 +31,16 @@ class TargetStore {
 
     assignShader(shader) {
         if(this.shaders.includes(shader)) {
-            console.log(shader.name + ' can be recycled')
+            // console.log(shader.name + ' can be recycled')
 
         } else {
-            console.log(shader.name + ' CANT be recycled')
+            // console.log(shader.name + ' CANT be recycled')
             this.shaders.push(shader);
         }
     }
 
     removeShader(shader) {
         this.shaders = this.shaders.filter((item) => item.uuid !== shader.uuid);                
-
-        shader.inputs.forEach((e) => {
-            e.disconnect();
-        });
-
-        shader.outputs.forEach((e)=>{
-            e.disconnect();
-        });
 
         if (this.shaders.length === 0) this.parent.removeTarget(this);
     }

@@ -27,34 +27,51 @@ class GraphStore {
 
     nodes = {};
 
-    constructor(parent) {
+    constructor(parent, node = new Node(this, null, 'ROOT NODE')) {
         this.parent = parent;
-        this.addNodeToEnd();
+        this.addNode(node).select();        
     }    
 
     update() {
         let update_queue = this.calculateBranches();        
         this.afterUpdate(update_queue);
+
+        // add new node at end if necessary
+        if(this.root.data) {
+            this.root.addChild().select(true);
+        }            
+        
         this.updateFlag = !this.updateFlag;
     }
 
-    addNodeToEnd(node = new Node(this, null, 'ROOT NODE')) {
+    addNode(node = new Node(this, null, 'ROOT NODE')) {
         node.graph = this;
-
-        if(this.root) {
-            this.root.setData(node.data);
-            this.root.addChild();
-        }      
-
+        
         this.nodes = {
             ...this.nodes,
             [node.uuid]: node
-        }       
-
-        if (this.activeNode) this.activeNode.deselect();
-        node.select();
+        }
 
         return node;
+    }
+
+    // addNodeToEnd(node = new Node(this, null, 'ROOT NODE')) {
+    //     this.root.setData(node.data);             
+
+
+    //     if (this.activeNode) this.activeNode.deselect();
+    //     node.select();
+
+
+    //     return node;
+    // }
+
+    removeNode(uuid) {
+        console.log(this.nodes[uuid])
+        // search through nodes and remove
+
+        delete this.nodes[uuid]
+        this.update();
     }
 
     traverse(f = null, depthFirst = false) {
@@ -70,12 +87,12 @@ class GraphStore {
             if(next_node) {
                 distance_from_root = this.distanceBetween(next_node, this.root);
 
-                if (f) f(next_node, container, distance_from_root);
+                if (f) f(next_node, distance_from_root);
 
                 if(next_node.parents) {
                     container = depthFirst 
-                        ? container.concat(next_node.parents)
-                        : next_node.parents.concat(container) 
+                        ? container.concat(next_node.parents) // depth first search
+                        : next_node.parents.concat(container) // breadth first search
                 }                          
             }
         }
@@ -102,9 +119,8 @@ class GraphStore {
         this.traverse(next_node => {
             next_node.branch_index = null;
             if (next_node.data) {
-                // console.log(next_node.name, next_node);
 
-                // if we hit the topmost shader
+                // if we hit the topmost node
                 if (!next_node.hasConnectedParents) {  
                     let t_node = next_node;
                     t_node.branch_index = current_branch;
@@ -163,6 +179,7 @@ decorate(GraphStore, {
     distanceBetween:   action,
     calculateBranches: action,
     getNodeById:       action,
+    removeNode:        action,
     root:              computed,
     nodeCount:         computed,
 });

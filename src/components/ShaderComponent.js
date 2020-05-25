@@ -49,8 +49,8 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 		this.props.data.component = this;
 	}
 	
-	handleRemove = () => {
-		this.props.data.target.removeShader(this.props.data);
+	handleRemove = () => {		
+		this.props.data.node.graph.removeNode(this.props.data.uuid);
 	}
 
 	handleExpandMain = () => {

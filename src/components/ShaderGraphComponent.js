@@ -5,13 +5,6 @@ import Panel from './ui/Panel';
 import Shader from './ShaderComponent';
 import Slot from './SlotComponent';
 
-let style = {
-	canvas: {
-		width: '10px',
-		height: '10px',
-	}
-}
-
 const ShaderGraphComponent = observer(class ShaderGraphComponent extends React.Component {
 	static contextType = MainContext;
 
@@ -33,7 +26,7 @@ const ShaderGraphComponent = observer(class ShaderGraphComponent extends React.C
 		let rows = [];
 
 		// traverse from root node
-		this.props.data.traverse((next_node, container, distance_from_root) => {
+		this.props.data.traverse((next_node, distance_from_root) => {
 			if (distance_from_root === rows.length) {
 				rows.push([]);
 			}

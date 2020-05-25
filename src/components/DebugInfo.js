@@ -44,7 +44,7 @@ const DebugInfo = observer(class DebugInfo extends React.Component {
 								<ul key={i+1}>
 									<li key={i}>node count: {e.nodeCount}</li>
 									<li key={i+1}>root: {e.root.name}</li>
-									<li key={i+2}>shaders: </li>
+									<li key={i+2}>nodes: </li>
 
 									<ul key={i+3}>
 										{e.traverse().map((uuid)=>(
