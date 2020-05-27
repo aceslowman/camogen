@@ -7,12 +7,9 @@ import Slot from './SlotComponent';
 
 const ShaderGraphComponent = observer(class ShaderGraphComponent extends React.Component {
 	static contextType = MainContext;
-
-	constructor(){
-		super();
-
-		this.slots = [];
-	}
+	slots = [];
+	rows  = [];
+	rails = [];
 
 	handleActive = () => {		
 		this.store.activeTarget = this.props.data;		
@@ -22,8 +19,9 @@ const ShaderGraphComponent = observer(class ShaderGraphComponent extends React.C
 		this.store.removeGraph(this.props.data);
 	}
 
-	generateSlots = () => {
+	generate = () => {
 		let rows = [];
+		let rails = [];
 
 		// traverse from root node
 		this.props.data.traverse((next_node, distance_from_root) => {
@@ -59,36 +57,67 @@ const ShaderGraphComponent = observer(class ShaderGraphComponent extends React.C
 
 			//and add placeholders all of the way up
 			for(let i = distance_from_root + 1; i < rows.length; i++) {
-				rows[i].push((
-					<Slot 
-						hidden
-						data={next_node}  
-						key={i} 
-					/>
-				));
+				// rows[i].push((
+				// 	<Slot 
+				// 		hidden
+				// 		data={next_node}  
+				// 		key={i} 
+				// 	/>
+				// ));
 			}		
-		})
+		})		
 
-		return rows.map((e,i) => (
+		this.rows = rows.map((e,i) => (
 			<div key={i} className="slotRow">
-				{e}
+				{e}	
+				{/* {e.map((n,i) => {
+					console.log(n.ref)
+					return (
+						<div 
+							className="graph_rail"
+							style={{
+								width: '2px',
+							}}
+						></div>
+					);
+				})}		 */}
 			</div>
 		));
+		
+		// this.rails = rows.map((e,i) => (
+		// 	e.map((n,i) => (
+		// 		<div key={i} className="slotRow">
+		// 			<div className="graph_rail"></div>
+		// 		</div>
+		// 	))
+		// ))
 	}
 
 	render() {	
 		this.store = this.context.store;
 
+		this.generate();
+
 		return(
 			<Panel 
 				onRef={(ref)=> this.panelRef = ref }
-				title={"ShaderGraph"}
+				title="ShaderGraph"			
 				active={this.store.activeTarget === this.target}
 				onRemove={this.handleRemove}
-				onActive={this.handleActive}	
+				onActive={this.handleActive}
+				className="shader_graph"	
 			>				
-				{ this.props.data.updateFlag }
-				{ this.generateSlots() }
+				
+				<div className="graph_rows">
+					{ this.rows }
+				</div>
+				{/* <div className="graph_rails">
+					{ this.rails }
+				</div> */}
+
+				{
+					this.props.data.updateFlag
+				}
 			</Panel>
 	    )
 	}

@@ -53,14 +53,18 @@ class MainStore {
       console.log('shaders loaded successfully!', this.shader_list);
       const g = new Graph(this);
 
-      const uv    = this.getShader("UV");
-      const glyph = this.getShader("Glyph");
-      const add   = this.getShader("Add");
-      const hsv   = this.getShader("ToHSV");
+      const uv    = this.getShader("UV",g);
+      const glyph = this.getShader("Glyph",g);
+      const add   = this.getShader("Add",g);
+      const hsv   = this.getShader("ToHSV",g);
 
       g.root.setData(uv);
       g.root.setData(glyph);
-      g.root.setData(add);
+      let add_node = g.root.setData(add);
+      let second_add_node = add_node.addParent(new Node(this.graph, add),1);
+      second_add_node.addParent(new Node(this.graph, uv), 0);
+      second_add_node.addParent(new Node(this.graph, glyph), 1);
+
       g.root.setData(hsv);
 
       g.afterUpdate = (queue) => this.assignTargets(queue);

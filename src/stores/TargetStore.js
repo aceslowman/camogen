@@ -42,7 +42,7 @@ class TargetStore {
     removeShader(shader) {
         this.shaders = this.shaders.filter((item) => item.uuid !== shader.uuid);                
 
-        if (this.shaders.length === 0) this.parent.removeTarget(this);
+        // if (this.shaders.length === 0) this.parent.removeTarget(this);
     }
 }
 

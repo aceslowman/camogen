@@ -130,6 +130,10 @@ class ShaderStore {
         this.extractUniforms();
     }
 
+    onRemove() {
+        this.target.removeShader(this);
+    }
+
     extractUniforms() { 
         const builtins = ["resolution"];
         
@@ -324,6 +328,7 @@ decorate(ShaderStore, {
     node:                observable,
     vertex:              computed,
     fragment:            computed,
+    onRemove:            action,
     init:                action,
     save:                action,
     load:                action,

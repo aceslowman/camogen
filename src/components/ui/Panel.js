@@ -51,7 +51,7 @@ const Panel = observer(class Panel extends React.Component {
 					)}
 				</div>                    
 
-				<div className='panelContent' ref={this.props.onRef}>
+				<div className={'panelContent '+this.props.className} ref={this.props.onRef}>
 					{this.props.children}	
 				</div>              
 			</fieldset>

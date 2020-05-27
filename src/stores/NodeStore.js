@@ -44,9 +44,9 @@ class NodeStore {
         this.mapInputsToParents();
         this.mapOutputsToChildren();
 
-        this.graph.update();
+        if(this.graph) this.graph.update();
 
-        console.log('DATA',this)
+        return this;
     }
     
     mapInputsToParents() {     
@@ -63,7 +63,7 @@ class NodeStore {
     mapOutputsToChildren() {
         // this destroys the connection to the existing child, 
         // ignore this for now. this is functionally
-        // multiinput, but single-output
+        // multiinput, but single
         // this.children = this.data.outputs.map(()=>null);
     }    
 
@@ -79,7 +79,7 @@ class NodeStore {
 
     addParent(node = new NodeStore(this.graph, null, 'input'), index = 0) {
         this.connectParent(node, index);
-        this.graph.addNode(node);
+        if(this.graph) this.graph.addNode(node);
         return node;
     }
 

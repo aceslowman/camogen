@@ -6,6 +6,7 @@ import './App.css';
 import ConsoleBar from './components/ConsoleBar';
 import ToolBar from './components/ToolBar';
 import ShaderGraph from './components/ShaderGraphComponent';
+import Graph from './components/graph/GraphComponent';
 import Splash from './components/Splash';
 import DebugInfo from './components/DebugInfo';
 
@@ -56,6 +57,14 @@ const App = observer(class App extends React.Component {
                 {this.store.shaderGraphs.map((graph)=>{
                   return (
                     <ShaderGraph
+                      key={graph.uuid} 
+                      data={graph}
+                    />
+                  );
+                })}
+                {this.store.shaderGraphs.map((graph)=>{
+                  return (
+                    <Graph
                       key={graph.uuid} 
                       data={graph}
                     />

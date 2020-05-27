@@ -27,18 +27,58 @@ class GraphStore {
 
     nodes = {};
 
+    keymap = {
+
+    }
+
+    onKeyDown(e) {
+        console.log(e.code)
+
+        switch (e.code) {
+            case "ArrowLeft":
+                if (this.activeNode.firstChild) {
+                    let index_in_child = this.activeNode.firstChild.parents.indexOf(this.activeNode);
+                    if (this.activeNode.firstChild.parents[index_in_child - 1])
+                        this.activeNode = this.activeNode.firstChild.parents[index_in_child - 1].select(true);
+                }
+                break;
+            case "ArrowRight":
+                if (this.activeNode.firstChild) {
+                    let index_in_child = this.activeNode.firstChild.parents.indexOf(this.activeNode);
+                    if (this.activeNode.firstChild.parents[index_in_child+1])
+                        this.activeNode = this.activeNode.firstChild.parents[index_in_child + 1].select(true);
+                }
+                break;
+            case "ArrowUp":
+                if (this.activeNode.firstParent)
+                    this.activeNode = this.activeNode.firstParent.select(true);
+                break;
+            case "ArrowDown":
+                if (this.activeNode.firstChild)
+                    this.activeNode = this.activeNode.firstChild.select(true);
+                break;      
+            case "Tab":
+                // open up the node data component
+                break;  
+            default:
+                break;
+        }
+    }
+
     constructor(parent, node = new Node(this, null, 'ROOT NODE')) {
         this.parent = parent;
-        this.addNode(node).select();        
+        this.addNode(node).select();   
+        
+        document.addEventListener('keydown', (e) => this.onKeyDown(e)); 
     }    
 
     update() {
         let update_queue = this.calculateBranches();        
         this.afterUpdate(update_queue);
-
+        
         // add new node at end if necessary
         if(this.root.data) {
-            this.root.addChild().select(true);
+            this.root.addChild().select(true);            
         }            
         
         this.updateFlag = !this.updateFlag;
@@ -55,22 +95,19 @@ class GraphStore {
         return node;
     }
 
-    // addNodeToEnd(node = new Node(this, null, 'ROOT NODE')) {
-    //     this.root.setData(node.data);             
-
-
-    //     if (this.activeNode) this.activeNode.deselect();
-    //     node.select();
-
-
-    //     return node;
-    // }
-
     removeNode(uuid) {
-        console.log(this.nodes[uuid])
-        // search through nodes and remove
+        let node = this.nodes[uuid];
 
-        delete this.nodes[uuid]
+        if (node.parents[0])
+            node.parents[0].children[0] = node.children[0];
+        if (node.children[0])
+            node.children[0].parents[0] = node.parents[0];
+
+        console.log('next child', node.children[0])
+                
+        node.data.onRemove();
+        delete this.nodes[uuid];
+
         this.update();
     }
 
@@ -142,7 +179,8 @@ class GraphStore {
         return queue;
     }
 
-    afterUpdate = (t) => {}
+    afterUpdate = (t) => {        
+    }
 
     getNodeById(uuid) {
         let node = this.nodes[uuid];
@@ -174,11 +212,11 @@ decorate(GraphStore, {
     updateFlag:        observable,  
     update:            action,
     afterUpdate:       action,
-    addNodeToEnd:      action,
     traverse:          action,
     distanceBetween:   action,
     calculateBranches: action,
     getNodeById:       action,
+    addNode:           action,
     removeNode:        action,
     root:              computed,
     nodeCount:         computed,

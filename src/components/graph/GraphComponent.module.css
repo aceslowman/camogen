@@ -1,0 +1,18 @@
+.graph {
+    /* position: relative;     */
+    padding: 10px;
+    background-color: blue;
+}
+
+.graph_rows {
+    display: flex;
+    flex-flow: column-reverse wrap;    
+}
+
+.graph_rows > div {
+    display: flex;
+    justify-content: left;
+    align-items: center;    
+    width: 100%;
+    /* border: 1px solid orange; */
+}

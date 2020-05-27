@@ -242,10 +242,6 @@ button:focus {
 }
 
 .panelContent {
-  display: flex;
-  flex-flow: column-reverse wrap; 
-  justify-content: center;
-  align-items: center;
   padding: 0px;
   border: 1px dashed white;
   border-top: none;
@@ -295,7 +291,7 @@ button:focus {
   transition: max-height 800ms ease-in-out;
   z-index: 0;
   max-height: auto;
-
+  box-sizing: border-box;
   transform-style: preserve-3d;
 }
 
@@ -502,6 +498,7 @@ button:focus {
 
 .anylet label {
   font-size: 0.9em;
+  margin-right: 15px;
 }
 
 .jack {
@@ -539,8 +536,24 @@ button:focus {
 
 /* Slot */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .slot {
-  /* border: 1px dashed white; */
+  /* border: 1px dashed white; */  
   padding: 5px;
   min-height: 63px;
   min-width: 270px;
@@ -548,19 +561,50 @@ button:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing:border-box;
 }
-
 
 .slot > label {
   color: white;
+  background-color: black;
+  padding: 5px 15px;
+  border: 1px solid white;
   font-weight: bold;
   position: absolute;
 }
 
 .slotRow {
   display: flex;
-  /* border: 3px solid orange; */
+  /* border: 1px solid orange;
+  border-top: none */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .shaderGraphs {
   display: flex;
@@ -568,4 +612,42 @@ button:focus {
   align-items: center;
   justify-content: space-evenly;
   height: 100%;
+}
+
+.graph_rail {
+  /* background-color:yellow; */
+  /* border: 3px dashed red; */
+  
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  position: absolute; 
+  box-sizing: border-box;
+  z-index: -1;
+}
+
+.shader_graph > div{
+  flex-flow: column-reverse wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* height: 100%;
+  width: 100%; */
+}
+
+.graph_rows {
+  /* background-color:purple; */
+  z-index: 1;
+} 
+
+.graph_rails {
+  background-color:blue;
+  position: relative;
+  top: 0px;
+  /* z-index: 0; */
+}
+
+.shader_graph {
+  background-color:rgba(0,0,0,0.8);
 }
