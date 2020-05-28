@@ -5,11 +5,15 @@ import './App.css';
 
 import ConsoleBar from './components/ConsoleBar';
 import ToolBar from './components/ToolBar';
-import ShaderGraph from './components/ShaderGraphComponent';
+// import ShaderGraph from './components/ShaderGraphComponent';
 import Graph from './components/graph/GraphComponent';
+import Shelf from './components/shelf/ShelfComponent';
 import Splash from './components/Splash';
 import DebugInfo from './components/DebugInfo';
+import PanelGroup from './components/ui/PanelGroupComponent';
+import Editor from './components/ui/EditorComponent';
 
+import Shader from './components/ShaderComponent';
 
 const App = observer(class App extends React.Component {
 
@@ -54,23 +58,38 @@ const App = observer(class App extends React.Component {
             <div id="WORKAREA_inner" ref={this.workAreaRef}>
               { this.store.show_splash && <Splash /> }
               <div className="shaderGraphs">
-                {this.store.shaderGraphs.map((graph)=>{
+                {/* {this.store.shaderGraphs.map((graph)=>{
                   return (
                     <ShaderGraph
                       key={graph.uuid} 
                       data={graph}
                     />
                   );
-                })}
+                })} */}
                 {this.store.shaderGraphs.map((graph)=>{
                   return (
-                    <Graph
-                      key={graph.uuid} 
-                      data={graph}
-                    />
+                    <PanelGroup key={graph.uuid}>
+                      <Graph
+                        key={graph.uuid+'graph'} 
+                        data={graph}
+                      />
+                      <Shelf
+                        key={graph.uuid+'shelf'} 
+                        data={graph}
+                      >
+                        {graph.nodesArray.map((n)=>(
+                          n.data &&
+                          <Shader
+                            key={n.uuid}
+                            data={n.data}							
+                          />
+                        ))}                        
+                      </Shelf>
+                      <Editor />
+                    </PanelGroup>                    
                   );
                 })}
-                <DebugInfo />
+                {/* <DebugInfo /> */}
               </div>     
               
             </div>          

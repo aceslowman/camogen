@@ -231,54 +231,96 @@ button:focus {
 
 /* FieldContainer.js */
 
-.panel {
-  padding: 0px;
-  margin: 15px;
-  border: none;
-}
 
-.panel h1 {
-  margin-top: 0x;
-}
 
-.panelContent {
-  padding: 0px;
-  border: 1px dashed white;
-  border-top: none;
-}
 
-.panelButtons {  
-  display: flex;
-  flex-flow: row;
-  align-content: center;
-  align-items: center;
-  justify-content: flex-start;
-  color: black;
-  background-color: black;
-  border: 1px solid white;
-  position: relative;
-  top: -100%;
-  box-sizing: content-box;
-}
 
-.panelButtons>legend {
-  color: white;  
-  border: none !important;  
-  cursor: pointer;
-}
 
-.panelButtons>button {
-  box-sizing: border-box;
-  background-color: black;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
 
-.panelButtons>button:hover {
-  background-color: white;
-  color: black;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Node.js */
 
@@ -389,6 +431,33 @@ button:focus {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .parameter_graph {
   display:flex;
   flex-direction: row;
@@ -448,29 +517,6 @@ button:focus {
   border-style: groove;
 }
 
-.horizontal_toolbar {
-  display: flex;
-  width:500px;
-  border-bottom: 1px dotted white;
-}
-
-.horizontal_toolbar > div {
-  margin-right: 15px;
-  overflow: hidden;
-}
-
-.horizontal_toolbar > div > button {
-  border-bottom: none !important;
-}
-
-.editor {
-  font-family: "Windows Command", monospace;
-  background-color: #000;
-  border: 2px solid black;  
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-}
 
 /* Splash */
 

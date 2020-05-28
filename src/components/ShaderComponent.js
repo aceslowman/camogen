@@ -2,27 +2,12 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import Uniform from './UniformComponent';
-import ParameterGraph from './ParameterGraphComponent';
-import Draggable from 'react-draggable';
-import Connection from './ui/Connection';
 
-import Anylet from './ui/Anylet';
-import AceEditor from "react-ace";
-
-import "ace-builds/src-noconflict/mode-glsl";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/webpack-resolver";
+import styles from './ShaderComponent.module.css';
 
 const style = {
-	// zIndex: 10,
-	main: {
-		// maxHeight: '42px',
-	},
 	inner: {
 		maxHeight: '0px',
-	},
-	edit: {
-		maxWidth: '0px'
 	},
 };
 
@@ -42,6 +27,7 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 			edit_type: 'param',
 			focus: false,
 			activeParameter: '',
+			updateFlag: false
 		};
 	}
 
@@ -79,129 +65,97 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 		}));
 	}
 
-	handleVertexEdit = () => {
+
+
+	
+
+	
+
+	// handleDragStart = e => {}
+
+	// handleDrag = (e,d) => {
+	// 	this.props.data.position = {
+	// 		x: d.node.offsetLeft+d.x,
+	// 		y: d.node.offsetTop+d.y
+	// 	}		
+	// }
+
+	// handleDragStop = (e,d) => {
+	// 	// snapback
+	// 	if (!this.state.dragDestination) {
+	// 		d.node.style.transform = 'translate(0px,0px)';
+	// 	}
+	// }
+
+	componentDidMount() {
 		this.setState(prevState => ({
-			...prevState,
-			edit_buffer: this.props.data.vert,
-			edit_type: 'vert',
-		}));
-	}
-
-	handleFragEdit = () => {
-		this.setState(prevState => ({
-			...prevState,
-			edit_buffer: this.props.data.frag,
-			edit_type: 'frag',
-		}));
-	}
-
-	handleParamEdit = () => {
-		this.setState(prevState => ({
-			...prevState,
-			edit_type: 'param',
-		}));
-	}
-
-	handleRefresh = () => {
-		this.props.data.init()
-	}
-
-	handleEditorChange = e => {		
-		this.setState({ edit_buffer: e });
-		this.props.data[this.state.edit_type] = e;
-	}
-
-	handleDragStart = e => {}
-
-	handleDrag = (e,d) => {
-		this.props.data.position = {
-			x: d.node.offsetLeft+d.x,
-			y: d.node.offsetTop+d.y
-		}		
-	}
-
-	handleDragStop = (e,d) => {
-		// snapback
-		if (!this.state.dragDestination) {
-			d.node.style.transform = 'translate(0px,0px)';
-		}
+			updateFlag: !prevState.updateFlag
+		}))
 	}
 	
 	render() {
 		this.store = this.context.store;
-		
+		console.log(this.innerRef)
 		if (this.innerRef.current) {
 			let bounds = this.innerRef.current.getBoundingClientRect();
 
+			console.log(bounds)
+
 			style.inner = {
 				...style.inner,
-				maxHeight: this.state.expandMain ? `${bounds.height+42}px` : '0px',
+				maxHeight: this.state.expandMain ? `${bounds.height}px` : '0px',
 			}
 			
-			style.edit = {
-				...style.edit,
-				maxWidth: (this.state.expandMain && this.state.expandEdit) 
-				|| (this.state.activeParameter && this.state.expandEdit 
-					&& this.state.expandMain) 
-						? '500px' : '0px',
-			}
+			// style.edit = {
+			// 	...style.edit,
+			// 	maxWidth: (this.state.expandMain && this.state.expandEdit) 
+			// 	|| (this.state.activeParameter && this.state.expandEdit 
+			// 		&& this.state.expandMain) 
+			// 			? '500px' : '0px',
+			// }
 		}	
 		
 		return(
-			<Draggable 
-				handle=".nodeLegend"
-				position={{x:0,y:0}}
-				onStart={this.handleDragStart}
-				onDrag={this.handleDrag}
-				onStop={this.handleDragStop}
-			>
+			// <Draggable 
+			// 	handle=".nodeLegend"
+			// 	position={{x:0,y:0}}
+			// 	onStart={this.handleDragStart}
+			// 	onDrag={this.handleDrag}
+			// 	onStop={this.handleDragStop}
+			// >
 				<div 
 					ref="node"
-					className="node"
+					className={styles.node}
 					onClick={this.handleClick}
-					style={{...style.main/*, zIndex: this.state.focus ? 100 : 10*/}}
+					style={{...style.main}}
 				>
-					<div className='nodeTools'>
-						<div style={{}}>
+					<div className={styles.node_bar}>
+						<div className={styles.node_buttons}>
 							<button onClick={this.handleRemove}>x</button>
 							<button onClick={this.handleExpandMain}>
 								{this.state.expandMain ? 'v' : '>'}
 							</button>
-							<button 
-								className={this.state.expandEdit && this.state.expandMain ? 'white_button' : ''}
+							<button 								
 								onClick={()=>this.handleExpandEdit(null)}
-							>
-								≡
-							</button>							
-						</div>													
-					</div>
-
-					<div className='nodeContainer' onClick={this.handleClick}>
-						<div className="anylets inlets">
-							{this.props.data.inputs.map((e,i)=>{
-								return (
-									<div className="anylet inlet" key={i}>
-										<label>{e}</label>
-										{/* <Connection data={e}/> */}
-									</div> 
-								)
-							})}		
+							>≡</button>																		 
 						</div>
-						
-						<legend className='nodeLegend'>
-							{this.props.data.name}							
-							
-							{/* {this.props.data.name + ' bid: ' + this.props.data.node.branch_index}							  */}
-						</legend>				           
+						<div className={styles.node_legend}>
+							<legend>
+								{this.props.data.name}																				
+							</legend>
+						</div>
+					</div>					
 
+					<div className={styles.node_container} onClick={this.handleClick}> 
 						<div 
-							className='nodeInner' 							
+							className={styles.node_container_inner}
+							
 							style={{
 								...style.inner, 
-								overflowY: this.state.expandMain ? 'auto' : 'none'
+								// overflowY: this.state.expandMain ? 'auto' : 'none'
 							}}
-						>
-							<div ref={this.innerRef}>
+						>		
+							<div ref={this.innerRef} >
 								{this.props.data.uniforms.map((uniform)=>{                        
 									return (
 										<Uniform 
@@ -216,21 +170,11 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 											}
 										/>
 									);                     
-								})}
-							</div>
-						</div>
-						<div className="anylets outlets">
-							{this.props.data.outputs.map((e,i)=>{
-								return (
-									<div className="anylet outlet" key={i}>
-										<label>{e}</label>
-										{/* <Connection data={e}/> */}
-									</div> 
-								)
-							})}		
+								})}	
+							</div>																	
 						</div>
 					</div>   
-
+{/* 
 					<div className='nodeEdit' style={style.edit}>					
 						<div className="horizontal_toolbar">
 							<div>
@@ -283,8 +227,8 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 									onClick={this.handleRefresh}
 								><em>refresh</em></button>
 							</div>															
-						</div>
-
+						</div> */}
+{/* 
 						{(	this.state.expandEdit 
 							&& this.state.expandMain 
 							&& this.state.edit_type !== 'param'
@@ -308,10 +252,10 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 							<ParameterGraph 
 								data={this.state.activeParameter}
 							/>						
-						)}						
-					</div>									
+						)}						 */}
+					{/* </div>									 */}
 				</div>
-			</Draggable>			
+			// </Draggable>			
 	    )
 	}
 });

@@ -61,9 +61,9 @@ class MainStore {
       g.root.setData(uv);
       g.root.setData(glyph);
       let add_node = g.root.setData(add);
-      let second_add_node = add_node.addParent(new Node(this.graph, add),1);
-      second_add_node.addParent(new Node(this.graph, uv), 0);
-      second_add_node.addParent(new Node(this.graph, glyph), 1);
+      // let second_add_node = add_node.addParent(new Node(this.graph, add),1);
+      // second_add_node.addParent(new Node(this.graph, uv), 0);
+      // second_add_node.addParent(new Node(this.graph, glyph), 1);
 
       g.root.setData(hsv);
 

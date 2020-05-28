@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-import Panel from './ui/Panel';
+import Panel from './ui/PanelComponent';
 
 const Markdown = observer(class Markdown extends React.Component {
 

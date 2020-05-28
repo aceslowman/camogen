@@ -1,0 +1,4 @@
+.panel_group {
+    display: flex;
+    align-items: stretch;
+}

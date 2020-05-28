@@ -32,7 +32,7 @@ class GraphStore {
     }
 
     onKeyDown(e) {
-        console.log(e.code)
+        // console.log(e.code)
 
         switch (e.code) {
             case "ArrowLeft":
@@ -203,6 +203,10 @@ class GraphStore {
     get nodeCount() {
         return Object.keys(this.nodes).length;
     }
+
+    get nodesArray() {
+        return Object.keys(this.nodes).map((uuid)=>this.getNodeById(uuid))
+    }
 }
 
 decorate(GraphStore, {
@@ -220,6 +224,7 @@ decorate(GraphStore, {
     removeNode:        action,
     root:              computed,
     nodeCount:         computed,
+    nodesArray:        computed,
 });
 
 createModelSchema(GraphStore, {
