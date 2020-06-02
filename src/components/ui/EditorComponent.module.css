@@ -1,6 +1,7 @@
 .editor {
     display: flex;
     flex-flow: column;
+    background-color: black;
 }
 
 .toolbar {
@@ -10,7 +11,7 @@
 }
 
 .toolbar_label {
-
+    
 }
 
 .ace_editor {

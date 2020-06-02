@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import OperatorComponent from './OperatorComponent';
 import Parameter from './ParameterComponent';
+import GraphComponent from './graph/GraphComponent';
 
 const ParameterGraphComponent = observer(class ParameterGraphComponent extends React.Component {
 
@@ -30,7 +31,7 @@ const ParameterGraphComponent = observer(class ParameterGraphComponent extends R
 
 	render() {
 		const { data } = this.props;
-		this.generateNodes();		
+		if(data) this.generateNodes();		
 
 		return(	
 			<div className="parameter_graph">					
@@ -46,7 +47,10 @@ const ParameterGraphComponent = observer(class ParameterGraphComponent extends R
 						key={data.uuid}
 						data={data}						
 					/>)}				
-				</fieldset>	
+				</fieldset>
+				{/* <Graph
+					data={}
+				/>	 */}
 				{data && (<div>	
 					<h4>input:</h4>				
 					<div>

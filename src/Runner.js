@@ -60,7 +60,12 @@ const Runner = (p, store, props) => {
 
                     target.shader(shader);
 
-                    target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
+                    try {
+                        target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
+                    } catch (error) {
+                        console.error(error);
+                        p.noLoop();
+                    }                    
                 }
             }
 

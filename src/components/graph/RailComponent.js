@@ -19,7 +19,7 @@ const RailComponent = observer(class RailComponent extends React.Component {
         let bottomRight = data.children[0] && data.children[0].parents.indexOf(data) < data.children[0].parents.length - 1;
 
         let middleLower = data.children && data.children[0] !== null;
-        let middleUpper = data.parents && data.parents[0] && data.parents[0].data !== null;
+        let middleUpper = data.parents.length && data.parents[0] && data.parents[0].data !== null;
 
         let branch_colors = ['red', 'yellow', 'green', 'purple'];
         let color = data.branch_index !== null ? branch_colors[data.branch_index] : 'gray';
@@ -58,6 +58,10 @@ const RailComponent = observer(class RailComponent extends React.Component {
         }
     }
 
+    handleClick = () => {
+        this.props.data.select(true);
+    }
+
 	render() {	
 		const { label, children, data } = this.props;
 
@@ -80,7 +84,7 @@ const RailComponent = observer(class RailComponent extends React.Component {
                     <div style={this.q4}></div>
                 </div>		
 
-				<label style={{
+				<label onClick={this.handleClick} style={{
                     backgroundColor: data.selected ? '#39FF14' : 'black',
                     color: data.selected ? 'black' : 'white'
                 }}>{label ? label : 'EMPTY SLOT'}</label>     

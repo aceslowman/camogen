@@ -7,9 +7,8 @@ import {
     list,
     object,
     identifier,
-    deserialize,
+    // deserialize,
 } from "serializr"
-import ShaderStore from './ShaderStore';
 
 class TargetStore {
     uuid   = uuidv1();

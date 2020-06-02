@@ -9,7 +9,7 @@ import {
     createModelSchema,
     primitive,
     list,
-    object,
+    // object,
     identifier,
     // deserialize,
     custom,
@@ -27,6 +27,8 @@ class NodeStore {
     children = [null];
     
     selected = false;
+
+    editingParam = null;
 
     constructor(graph, data, name) {      
         this.data  = data;
@@ -51,7 +53,7 @@ class NodeStore {
     
     mapInputsToParents() {     
         this.parents = this.data.inputs.map((e,i) => {
-            if(this.parents[i]) {
+            if(this.parents.length && this.parents[i]) {
                 return this.parents[i];
             } else {   
                 let parent = new NodeStore(this.graph, null, e);
@@ -141,6 +143,7 @@ decorate(NodeStore, {
     children:             observable,
     graph:                observable,
     branch_index:         observable,
+    editingParam:         observable,
     addChild:             action,
     connectChild:         action,
     connectParent:        action,

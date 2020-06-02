@@ -1,6 +1,5 @@
 import { observable, action, decorate } from 'mobx';
 import * as NODES from './stores';
-import Node from './stores/NodeStore';
 import Target from './stores/TargetStore';
 import Runner from './Runner';
 import p5 from 'p5';
@@ -18,10 +17,10 @@ import ShaderStore from './stores/ShaderStore';
 import { create, persist } from 'mobx-persist';
 import Graph from './stores/GraphStore';
 
-const hydrate = create({
-  storage: localStorage,
-  jsonify: true,
-});
+// const hydrate = create({
+//   storage: localStorage,
+//   jsonify: true,
+// });
 
 // for electron
 const remote = window.require('electron').remote;
@@ -60,14 +59,12 @@ class MainStore {
 
       g.root.setData(uv);
       g.root.setData(glyph);
-      let add_node = g.root.setData(add);
-      // let second_add_node = add_node.addParent(new Node(this.graph, add),1);
-      // second_add_node.addParent(new Node(this.graph, uv), 0);
-      // second_add_node.addParent(new Node(this.graph, glyph), 1);
-
+      g.root.setData(add)
       g.root.setData(hsv);
 
       g.afterUpdate = (queue) => this.assignTargets(queue);
+
+      g.root.select(true);
       g.update();
           
       this.shaderGraphs.push(g)
@@ -80,7 +77,7 @@ class MainStore {
   assignTargets(queue) {
     queue.forEach(node => {
       if(node.data) {      
-        if (this.targets[node.branch_index]) {
+        if (this.targets.length && this.targets[node.branch_index]) {
           node.data.target = this.targets[node.branch_index];
         } else {
           node.data.target = this.addTarget();
@@ -98,8 +95,10 @@ class MainStore {
     return target;
   }
 
-  getShader(name) {
-    if(Object.keys(this.shader_list).includes(name)){
+  getShader(name = null) {
+    if(name === null) {
+      console.log(this.shader_list)
+    } else if(Object.keys(this.shader_list).includes(name)){
       return deserialize(ShaderStore, this.shader_list[name])
     } else {
       console.error(`couldn't find shader named '${name}'`);
@@ -212,7 +211,7 @@ decorate(MainStore, {
   consoleText:     observable,  
   suggestText:     observable,  
   shader_list:     observable,
-  targets:         [persist('list'),observable], // phasing out
+  targets:         [persist('list'), observable], 
   shaderGraphs:    [persist('list'), observable],
   activeGraph:     observable,
   show_splash:     observable,

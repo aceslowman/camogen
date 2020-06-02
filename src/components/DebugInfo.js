@@ -16,7 +16,9 @@ const DebugInfo = observer(class DebugInfo extends React.Component {
 		this.store = this.context.store;
 
 		return(
-			<Panel 
+			<Panel
+				collapsed={this.props.collapsed}
+				title="Debug Info" 
 				style={{
 					backgroundColor: 'black',
 				}}
@@ -25,21 +27,21 @@ const DebugInfo = observer(class DebugInfo extends React.Component {
 					<h3>targets ({this.store.targets.length})</h3>
 					<ol start="0">
 						{this.store.targets.map((e,i)=>(
-							<React.Fragment>
+							<div key={i}>
 								<li key={e.uuid}>{e.uuid}</li>
 
-								<ol start="0" key={e.uuid+1}>
-									{e.shaders.map((shader,i)=>(
-										<li key={i}>{shader.name}</li>
+								<ol key={e.uuid+1} start="0">
+									{e.shaders.map((shader)=>(
+										<li key={shader.uuid}>{shader.name}</li>
 									))}
 								</ol>
-							</React.Fragment>							
+							</div>							
 						))}
 					</ol>
 					<h3>shaderGraphs ({this.store.shaderGraphs.length})</h3>
 					<ul>
 						{this.store.shaderGraphs.map((e,i)=>(
-							<React.Fragment>
+							<div key={i}>
 								<li key={i}>{e.uuid}</li>
 								<ul key={i+1}>
 									<li key={i}>node count: {e.nodeCount}</li>
@@ -48,12 +50,11 @@ const DebugInfo = observer(class DebugInfo extends React.Component {
 
 									<ul key={i+3}>
 										{e.traverse().map((uuid)=>(
-											<li>{e.getNodeById(uuid) ? e.getNodeById(uuid).name : "can't find?"}</li>
+											<li key={uuid}>{e.getNodeById(uuid) ? e.getNodeById(uuid).name : "can't find?"}</li>
 										))}
 									</ul>
-								</ul>
-								
-							</React.Fragment>							
+								</ul>							
+							</div>
 						))}
 					</ul>
 					{this.store.activeGraph && (

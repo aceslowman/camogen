@@ -182,6 +182,7 @@ button:focus {
   display: flex;
   border-top: 1px solid black;
   height: 35px;
+  background-color: white;
 }
 
 /* #CONSOLE > div{

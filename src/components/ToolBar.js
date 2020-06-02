@@ -50,7 +50,6 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
             activeDrawer: 'new',
         }));
 
-        // console.log(bounds)
         style = {...style, drawer: {
             top: bounds.top+bounds.height,
             left: bounds.right,
@@ -65,8 +64,10 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
                 >Target
                 </button>
                 <button 
-                    disabled
-                    onClick={()=>this.store.activeTarget.addShader()} 
+                    onClick={()=>{
+                        let shader = this.store.getShader();
+                        this.store.activeGraph.activeNode.setData(shader);
+                    }}
                     className="white_button"
                 >Shader
                 </button>
@@ -117,7 +118,7 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
         return (
             <div id="TOOLBAR" onClick={this.closeDrawer} ref={this.ref}>
                 <div>
-                    <button 
+                    {/* <button 
                         className={
                             (this.state.activeDrawer === 'new' && this.state.openDrawer) 
                                 ? "white_button" 
@@ -126,7 +127,7 @@ const ToolBar = observer(class ConsoleBar extends React.Component {
                         onClick={this.handleNew}
                     >
                         NEW
-                    </button>
+                    </button> */}
                     <button 
                         className={
                             (this.state.activeDrawer === 'save' && this.state.openDrawer) 

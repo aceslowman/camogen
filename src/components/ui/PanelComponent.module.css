@@ -1,5 +1,8 @@
 .panel {    
     color: white;
+    display: flex;
+    flex-flow: column;
+    /* transition: max-width 800ms ease-in-out; */
 }
 
 .panel_buttons {
@@ -9,6 +12,10 @@
     align-items: center;
     border: 1px solid white;
     box-sizing:border-box;
+    word-break: break-all;
+
+
+    
 }
 
 .panel_buttons button:hover {

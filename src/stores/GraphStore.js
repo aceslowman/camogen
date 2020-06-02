@@ -22,6 +22,9 @@ class GraphStore {
     parent = null;
     activeNode = null;
 
+    // for key binding focus
+    focused = false;
+
     // NOTE: toggle to force a re-render in React
     updateFlag = false;
 
@@ -65,11 +68,10 @@ class GraphStore {
         }
     }
 
-    constructor(parent, node = new Node(this, null, 'ROOT NODE')) {
+    constructor(parent, node = new Node(this, null, 'NEW NODE')) {
+        this.onKeyDown = this.onKeyDown.bind(this);
         this.parent = parent;
         this.addNode(node).select();   
-        
-        document.addEventListener('keydown', (e) => this.onKeyDown(e)); 
     }    
 
     update() {
@@ -78,13 +80,13 @@ class GraphStore {
         
         // add new node at end if necessary
         if(this.root.data) {
-            this.root.addChild().select(true);            
+            this.root.addChild();            
         }            
         
         this.updateFlag = !this.updateFlag;
     }
 
-    addNode(node = new Node(this, null, 'ROOT NODE')) {
+    addNode(node = new Node(this, null, 'NEW NODE')) {
         node.graph = this;
         
         this.nodes = {
@@ -189,6 +191,18 @@ class GraphStore {
         return node;
     }
 
+    toggleFocus() {
+        this.focused = !this.focused;
+
+        if (this.focused) {
+            console.log('registering event listener');
+            document.addEventListener('keydown', this.onKeyDown, true);
+        } else {
+            console.log('removing event listener');
+            document.removeEventListener('keydown', this.onKeyDown, true);
+        }
+    }
+
     get root() {
         let keys = Object.keys(this.nodes);        
         let node = this.nodes[keys[0]]; 
@@ -207,6 +221,12 @@ class GraphStore {
     get nodesArray() {
         return Object.keys(this.nodes).map((uuid)=>this.getNodeById(uuid))
     }
+
+    set focused(e) {
+        this.focused = e;
+        
+        return this.focused;
+    }
 }
 
 decorate(GraphStore, {
@@ -214,6 +234,7 @@ decorate(GraphStore, {
     nodes:             observable,
     activeNode:        observable,
     updateFlag:        observable,  
+    focused:             observable,
     update:            action,
     afterUpdate:       action,
     traverse:          action,
@@ -222,6 +243,7 @@ decorate(GraphStore, {
     getNodeById:       action,
     addNode:           action,
     removeNode:        action,
+    toggleFocus:       action,
     root:              computed,
     nodeCount:         computed,
     nodesArray:        computed,

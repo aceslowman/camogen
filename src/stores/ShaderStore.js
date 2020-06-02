@@ -26,75 +26,47 @@ const dialog = remote.dialog;
 const app    = remote.app;
 const fs     = window.require('fs');
 
-// defaults
-const d_prec = `
-#ifdef GL_ES
-precision highp float;
-#endif 
-`;
-
-const d_vert = `
-attribute vec3 aPosition;
-attribute vec2 aTexCoord;
-varying vec2 vTexCoord;
-void main() {
-    vTexCoord = aTexCoord;
-    vec4 positionVec4 = vec4(aPosition, 1.0);
-    positionVec4.xy = positionVec4.xy * vec2(1., -1.);
-    gl_Position = positionVec4;
-}
-`;
-
-const d_frag = `
-varying vec2 vTexCoord;
-uniform sampler2D tex0;
-uniform vec2 resolution;
-void main() {
-    gl_FragColor = vec4(0.0, 1.0, 1.0, 1.0);
-}
-`;
-
 /*
     This class is responsible for parsing an individual
      shader configuration file, making it consumable     
       by the main Store.
 */
 
-class Connection {
-    uuid = uuidv1();
+// class Connection {
+//     uuid = uuidv1();
 
-    constructor(
-        name = '', 
-        next = null,
-        node = null,
-    ) {
-        this.name = name;
-        this.next = next;
-        this.prev = null;
-        this.node = node;    
-    }
+//     constructor(
+//         name = '', 
+//         next = null,
+//         node = null,
+//     ) {
+//         this.name = name;
+//         this.next = next;
+//         this.prev = null;
+//         this.node = node;    
+//     }
 
-    connectTo(destination = null) {
-        // this.next = destination;
-        // destination.prev = this;
-    }
+//     connectTo(destination = null) {
+//         // this.next = destination;
+//         // destination.prev = this;
+//     }
 
-    disconnect() {
-        // disconnect from previous node
-        if (this.prev) this.prev.next = null;
-        // disconnect from next node
-        if (this.next) this.next.prev = null;
-        delete this
-    }
-}
+//     disconnect() {
+//         // disconnect from previous node
+//         if (this.prev) this.prev.next = null;
+//         // disconnect from next node
+//         if (this.next) this.next.prev = null;
+//         delete this
+//     }
+// }
 
-decorate(Connection, {
-    uuid: observable,
-    ref: observable,
-    next: observable,
-    connectTo: action,
-    disconnect: action,
-});
+// decorate(Connection, {
+//     uuid: observable,
+//     ref: observable,
+//     next: observable,
+//     connectTo: action,
+//     disconnect: action,
+// });
 
 class ShaderStore {
     uuid      = uuidv1();
@@ -116,9 +88,9 @@ class ShaderStore {
 
     constructor(
         target, 
-        precision = d_prec, 
-        vert = d_vert, 
-        frag = d_frag, 
+        precision = null, 
+        vert = null, 
+        frag = null, 
         uniforms = []
     ) {        
         this.target = target; 
@@ -139,6 +111,14 @@ class ShaderStore {
         
         let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9]+);\s+\/?\/?\s?({(.*?)})?/g
         let result = [...this.frag.matchAll(re)];
+       
+        this.uniforms = this.uniforms.filter(u => {
+            let match;
+            result.forEach((e) => {
+                match = e.includes(u.name);
+            });
+            return match;     
+        });
         
         result.forEach((e) => {
             // ignore built-ins
@@ -147,9 +127,11 @@ class ShaderStore {
             // ignore if uniform already exists (preserves graphs)          
             for(let i = 0; i < this.uniforms.length; i++){
                 // console.log([this.uniforms[i].name, e[3]])
+                // ignore if necessary
                 if(this.uniforms[i].name === e[3]){
                     return;
                 }
+                // remove if necessary
             }
 
             // ignore if uniform already exists (preserves graphs)          

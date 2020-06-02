@@ -10,8 +10,8 @@ const GraphComponent = observer(class GraphComponent extends React.Component {
     static contextType = MainContext;   
     rows = [];
 
-    handleActive = () => {
-        // this.store.selectGraph(this.props.data);
+    handleFocus = () => {
+        this.props.data.toggleFocus();
     }
 
 	handleRemove = () => {
@@ -32,12 +32,7 @@ const GraphComponent = observer(class GraphComponent extends React.Component {
                         key={node.uuid}    
 						data={node} 						
 						label={node.data.name}
-					>
-						{/* <Shader
-							key={node.data.uuid}
-							data={node.data}							
-						/> */}
-					</Rail>
+					/>
 				));
 			} else {				
 				let count = distance_from_root;
@@ -80,9 +75,12 @@ const GraphComponent = observer(class GraphComponent extends React.Component {
 				onRef={ref => this.panelRef = ref}
 				title="Graph"			
 				active={this.store.activeGraph === this.data}
-				onRemove={this.handleRemove}
-				onActive={this.handleActive}
-				className={styles.graph}	
+				// onRemove={this.handleRemove}
+				onFocus={this.handleFocus}
+				className={styles.graph}
+				style={{
+					backgroundColor: this.props.data.focused ? 'blue' : 'black'
+				}}	
 			>				
 				
 				<div className={styles.graph_rows}>

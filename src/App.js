@@ -5,7 +5,6 @@ import './App.css';
 
 import ConsoleBar from './components/ConsoleBar';
 import ToolBar from './components/ToolBar';
-// import ShaderGraph from './components/ShaderGraphComponent';
 import Graph from './components/graph/GraphComponent';
 import Shelf from './components/shelf/ShelfComponent';
 import Splash from './components/Splash';
@@ -17,11 +16,7 @@ import Shader from './components/ShaderComponent';
 
 const App = observer(class App extends React.Component {
 
-  constructor() {
-    super();
-    this.targets = [];
-    this.workAreaRef = React.createRef();
-  }
+  workAreaRef = React.createRef();
 
   handleResize = () => {
     let bounds = this.workAreaRef.current.getBoundingClientRect();
@@ -58,38 +53,36 @@ const App = observer(class App extends React.Component {
             <div id="WORKAREA_inner" ref={this.workAreaRef}>
               { this.store.show_splash && <Splash /> }
               <div className="shaderGraphs">
-                {/* {this.store.shaderGraphs.map((graph)=>{
+
+                {this.store.shaderGraphs.map((graph,i)=>{
                   return (
-                    <ShaderGraph
-                      key={graph.uuid} 
-                      data={graph}
-                    />
-                  );
-                })} */}
-                {this.store.shaderGraphs.map((graph)=>{
-                  return (
-                    <PanelGroup key={graph.uuid}>
-                      <Graph
-                        key={graph.uuid+'graph'} 
-                        data={graph}
-                      />
+                    <PanelGroup key={i}>
+                      <DebugInfo collapsed />
                       <Shelf
-                        key={graph.uuid+'shelf'} 
+                        key={i+'shelf'} 
                         data={graph}
                       >
-                        {graph.nodesArray.map((n)=>(
+                        {graph.nodesArray.map((n,j)=>(
                           n.data &&
                           <Shader
-                            key={n.uuid}
+                            key={j}
                             data={n.data}							
                           />
                         ))}                        
                       </Shelf>
-                      <Editor />
+                      <Graph
+                        key={i+'graph'} 
+                        data={graph}
+                      />                      
+                      <Editor 
+                        collapsed 
+                        key={i+'editor'}
+                        data={graph.activeNode.data}
+                      />                      
                     </PanelGroup>                    
                   );
                 })}
-                {/* <DebugInfo /> */}
+                
               </div>     
               
             </div>          

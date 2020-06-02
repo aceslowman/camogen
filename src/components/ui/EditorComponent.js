@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../../MainContext';
+import ParameterGraph from "../ParameterGraphComponent";
 import Panel from '../ui/PanelComponent';
 import styles from './EditorComponent.module.css';
 
@@ -17,7 +18,7 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
 
         this.state = {
             edit_buffer: '',
-            edit_type: 'vert',
+            edit_type: 'param',
         };
     }
 
@@ -46,15 +47,23 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
 	        edit_buffer: this.props.data.vert,
 	        edit_type: 'vert',
 	    }));
-	}
+    }
+    
+    handleParamEdit = () => {
+        this.setState(prevState => ({
+            ...prevState,
+            edit_type: 'param',
+        }));
+    }
 
 	render() {	
 		this.store = this.context.store;
 
 		return(
-			<Panel 
+            <Panel 
+                collapsed={this.props.collapsed}
 				title="Editor"			
-				className={styles.editor}	
+                className={styles.editor}	                
 			>		                
                 <div className={styles.toolbar}>
                     <div>
@@ -110,21 +119,30 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
                 </div>
 
 
-				{/* {(	this.state.expandEdit 
-                    && this.state.expandMain 
-                    && this.state.edit_type !== 'param'
-                ) && ( */}
-                    <AceEditor
-                        mode="glsl"
-                        theme="monokai"
-                        onChange={this.handleEditorChange}
-                        value={this.state.edit_buffer}
-                        height=""
-                        width="500px"
-                        minHeight="500px"
-                        className={styles.ace_editor}		 												
-                    />
-                {/* )} */}
+                {
+                    (this.props.data && this.state.edit_type !== 'param'
+                    ) && (
+                        <AceEditor
+                            mode="glsl"
+                            theme="monokai"
+                            onChange={this.handleEditorChange}
+                            value={this.state.edit_buffer}
+                            height=""
+                            width="500px"
+                            minHeight="500px"
+                            className={styles.ace_editor}		 												
+                        />
+                    )
+                }
+                
+                {
+                    (this.props.data && this.state.edit_type === 'param'
+                    ) && ( 
+                        <ParameterGraph data = {
+                            this.props.data.node.editingParam
+                        }/>						
+                    )
+                }
 			</Panel>
 	    )
 	}
