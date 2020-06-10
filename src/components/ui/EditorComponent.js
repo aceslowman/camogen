@@ -23,6 +23,7 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
     }
 
     handleRefresh = () => {
+        this.store.p5_instance.loop();
         this.props.data.init()
     }
 
@@ -34,19 +35,23 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
     }
 
     handleFragEdit = () => {
-        this.setState(prevState => ({
-            ...prevState,
-            edit_buffer: this.props.data.frag,
-            edit_type: 'frag',
-        }));
+        if(this.props.data) {
+            this.setState(prevState => ({
+                ...prevState,
+                edit_buffer: this.props.data.frag,
+                edit_type: 'frag',
+            }));
+        }
     }
 
 	handleVertexEdit = () => {
-	    this.setState(prevState => ({
-	        ...prevState,
-	        edit_buffer: this.props.data.vert,
-	        edit_type: 'vert',
-	    }));
+        if(this.props.data) {
+            this.setState(prevState => ({
+                ...prevState,
+                edit_buffer: this.props.data.vert,
+                edit_type: 'vert',
+            }));
+        }
     }
     
     handleParamEdit = () => {
@@ -63,7 +68,9 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
             <Panel 
                 collapsed={this.props.collapsed}
 				title="Editor"			
-                className={styles.editor}	                
+                className={styles.editor}
+                defaultWidth={500}
+                defaultHeight={500}
 			>		                
                 <div className={styles.toolbar}>
                     <div>
@@ -118,7 +125,6 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
                     </div>															
                 </div>
 
-
                 {
                     (this.props.data && this.state.edit_type !== 'param'
                     ) && (
@@ -128,7 +134,7 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
                             onChange={this.handleEditorChange}
                             value={this.state.edit_buffer}
                             height=""
-                            width="500px"
+                            width=""
                             minHeight="500px"
                             className={styles.ace_editor}		 												
                         />
@@ -141,6 +147,12 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
                         <ParameterGraph data = {
                             this.props.data.node.editingParam
                         }/>						
+                    )
+                }
+
+                {
+                    !this.props.data && (
+                        <p><em> no node selected</em></p>
                     )
                 }
 			</Panel>

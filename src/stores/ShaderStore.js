@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     createModelSchema,
     primitive,
@@ -5,7 +6,7 @@ import {
     object,
     serialize,
     update,
-    reference,
+    // reference,
     identifier,
 } from "serializr";
 import {
@@ -26,61 +27,18 @@ const dialog = remote.dialog;
 const app    = remote.app;
 const fs     = window.require('fs');
 
-/*
-    This class is responsible for parsing an individual
-     shader configuration file, making it consumable     
-      by the main Store.
-*/
-
-// class Connection {
-//     uuid = uuidv1();
-
-//     constructor(
-//         name = '', 
-//         next = null,
-//         node = null,
-//     ) {
-//         this.name = name;
-//         this.next = next;
-//         this.prev = null;
-//         this.node = node;    
-//     }
-
-//     connectTo(destination = null) {
-//         // this.next = destination;
-//         // destination.prev = this;
-//     }
-
-//     disconnect() {
-//         // disconnect from previous node
-//         if (this.prev) this.prev.next = null;
-//         // disconnect from next node
-//         if (this.next) this.next.prev = null;
-//         delete this
-//     }
-// }
-
-// decorate(Connection, {
-//     uuid: observable,
-//     ref: observable,
-//     next: observable,
-//     connectTo: action,
-//     disconnect: action,
-// });
-
 class ShaderStore {
     uuid      = uuidv1();
-    name      = "NEW";
+    name      = "";
     uniforms  = [];
     precision = "";
     vert      = "";
     frag      = "";
     ref       = null;
-    component = null;
+    // component = null;
     target    = null;
     node      = null;
 
-    // temp
     inputs  = [];
     outputs = ["out"];
 
@@ -102,9 +60,101 @@ class ShaderStore {
         this.extractUniforms();
     }
 
-    onRemove() {
-        this.target.removeShader(this);
+    init() {
+        this.parameter_graphs = [];
+        this.ref = this.target.ref.createShader(
+            this.vertex,
+            this.fragment
+        );
+
+        this.extractUniforms();
+
+        for (let uniform of this.uniforms) {
+            this.ref.setUniform(uniform.name, uniform.elements);
+
+            for (let param of uniform.elements) {
+                if (param.graph)
+                    this.parameter_graphs.push(param.graph)
+            }
+        }
+
+        return this;
     }
+
+    update(p) {
+        let shader = this.ref;
+        let target = this.target.ref;
+
+        /* 
+            Loop through all active parameter graphs to recompute 
+            values in sync with the frame rate
+        */
+        for (let op of this.operatorUpdateGroup) {
+            op.update();
+            op.parent.update();
+        }
+
+        for (let uniform_data of this.uniforms) {
+            if (uniform_data.elements.length > 1) {
+
+                // there should be a more elegant way of doing this
+                let elements = [];
+
+                for (let element of uniform_data.elements) {
+                    elements.push(element.value);
+                }
+
+                shader.setUniform(uniform_data.name, elements);
+            } else {
+                shader.setUniform(uniform_data.name, uniform_data.elements[0].value);
+            }
+        }
+
+        // setup inputs
+        for (let i = 0; i < this.inputs.length; i++) {
+            let input_shader = this.node.parents[i].data;
+
+            if (input_shader) {
+                let input_target = input_shader.target.ref;
+                shader.setUniform(this.inputs[i], input_target);
+            }
+        }
+
+        shader.setUniform('resolution', [target.width, target.height]);
+
+        target.shader(shader);
+
+        try {
+            target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
+        } catch (error) {
+            console.error(error);
+            console.log('frag', shader)
+            p.noLoop();
+        }
+    }
+
+    load() {
+        dialog.showOpenDialog().then((f) => {
+            let content = f.filePaths[0];
+            fs.readFile(content, 'utf-8', (err, data) => {
+                if (err)
+                    alert("an error has occurred: " + err.message);
+
+                update(
+                    this,
+                    this,
+                    JSON.parse(data),
+                    (err, item) => {
+                        if (err) console.error(err)
+                    }, {
+                        target: this.target
+                    }
+                )
+            })
+        }).catch(err => {
+            console.error(err);
+        });
+    }    
 
     extractUniforms() { 
         const builtins = ["resolution"];
@@ -201,49 +251,6 @@ class ShaderStore {
         })
     }
 
-    init() {
-        this.parameter_graphs = [];
-        this.ref = this.target.ref.createShader(
-            this.vertex,
-            this.fragment
-        );
-
-        this.extractUniforms();
-
-        for (let uniform of this.uniforms) {
-            this.ref.setUniform(uniform.name, uniform.elements);
-            
-            for(let param of uniform.elements){
-                if(param.graph)
-                    this.parameter_graphs.push(param.graph)
-            }
-        }
-
-        return this;
-    }
-
-    load() {
-        dialog.showOpenDialog().then((f) => {
-            let content = f.filePaths[0];
-            fs.readFile(content, 'utf-8', (err, data) => {
-                if (err)
-                    alert("an error has occurred: " + err.message);
-
-                update(
-                    this, 
-                    this, 
-                    JSON.parse(data), 
-                    (err, item) => {
-                        if(err) console.error(err)
-                    },
-                    {target: this.target}
-                )
-            })
-        }).catch(err => {
-            console.error(err);
-        });
-    }
-
     async save() {        
         let path = `${app.getPath("userData")}/shaders`;
 
@@ -289,8 +296,13 @@ class ShaderStore {
     get vertex() {
         return this.precision + this.vert;
     }
+
     get fragment() {
         return this.precision + this.frag;
+    }
+
+    onRemove() {
+        this.target.removeShader(this);
     }
 }
 
@@ -317,17 +329,16 @@ decorate(ShaderStore, {
 });
 
 createModelSchema(ShaderStore, {
-    // uuid:             identifier(),
+    uuid:             identifier(),
     name:             primitive(),    
     precision:        primitive(),
     vert:             primitive(),
     frag:             primitive(),
-    // inlets:   list(object(Connection)),  
-    // outlets:  list(object(Connection)),  
+    inputs:           list(primitive()),
+    outputs:          list(primitive()), 
     uniforms:         list(object(UniformStore)),
 }, c => {
-    // let p = c.parentContext ? c.parentContext.target : c.args.target;
-    let p = null;
+    let p = c.parentContext ? c.parentContext.target : null;    
     return new ShaderStore(
         p, 
         c.json.precision,

@@ -28,6 +28,10 @@ class TargetStore {
         );
     }
 
+    clear() {
+        this.shaders = [];
+    }
+
     assignShader(shader) {
         if(this.shaders.includes(shader)) {
             // console.log(shader.name + ' can be recycled')

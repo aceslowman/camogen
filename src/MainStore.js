@@ -16,11 +16,13 @@ import {
 import ShaderStore from './stores/ShaderStore';
 import { create, persist } from 'mobx-persist';
 import Graph from './stores/GraphStore';
+import ImageInput from './stores/inputs/ImageInput';
+import WebcamInput from './stores/inputs/WebcamInput';
 
-// const hydrate = create({
-//   storage: localStorage,
-//   jsonify: true,
-// });
+const hydrate = create({
+  storage: localStorage,
+  jsonify: true,
+});
 
 // for electron
 const remote = window.require('electron').remote;
@@ -57,7 +59,12 @@ class MainStore {
       const add   = this.getShader("Add",g);
       const hsv   = this.getShader("ToHSV",g);
 
-      g.root.setData(uv);
+      // const img   = this.getShaderInput("ImageInput",g);
+      const webcam = this.getShaderInput("WebcamInput", g);
+
+      // g.root.setData(uv);
+      // g.root.setData(img);
+      g.root.setData(webcam);
       g.root.setData(glyph);
       g.root.setData(add)
       g.root.setData(hsv);
@@ -67,11 +74,25 @@ class MainStore {
       g.root.select(true);
       g.update();
           
-      this.shaderGraphs.push(g)
-      this.activeGraph = g;
-      // localStorage.clear()
-      // hydrate("targets",this,[t]).then(r => console.log("rehydrated",r))
+      // this.shaderGraphs.push(g)
+      // this.activeGraph = g;
+      localStorage.clear()
+
+      const initial_state = {
+        shaderGraphs: [g],
+        activeGraph: g
+      }
+
+      hydrate("main",this, initial_state).then(r => console.log("hydrated",r))
     }); 
+  }
+
+  resetAndClear() {
+    console.log('clearing from store')
+    this.targets.forEach(e=>{
+      e.clear();
+    });
+    this.activeGraph.clear();
   }
 
   assignTargets(queue) {
@@ -104,6 +125,12 @@ class MainStore {
       console.error(`couldn't find shader named '${name}'`);
       return null;
     } 
+  }
+
+  getShaderInput(name = null, graph = null) {
+    // temporary
+    // return new ImageInput();    
+    return new WebcamInput();
   }
 
   async loadShaders() {
@@ -205,28 +232,74 @@ class MainStore {
       })
     }).catch(err => {/*alert(err)*/});
   }
+
+  async snapshot() {
+    var dataURL = this.p5_instance.canvas.toDataURL("image/png");
+
+    var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
+    var content = new Buffer(data, 'base64');
+    
+    let path = `${app.getPath("userData")}/snapshots`;
+
+    const show_dialog = true;
+
+    if (show_dialog) {
+      let options = {
+        title: this.name + '.shader',
+        defaultPath: path,
+        buttonLabel: "Save Shader File",
+      }
+
+      dialog.showSaveDialog(options).then((f) => {      
+        fs.writeFile(f.filePath, content, "base64", (err) => {
+          if (err) {
+            console.log("an error has occurred: " + err.message);
+          } else {
+            console.log("snapshot saved",f.filePath);            
+          }
+        });
+      }).catch(err => {
+        console.error(err)
+      });
+    } else {
+      let content = JSON.stringify(serialize(ShaderStore, this));
+
+      let file = this.name + '.shader';
+
+      fs.writeFile(`path/${file}`, content, "base64", (err, data) => {
+        if (err) {
+          console.log("an error has occurred: " + err.message);
+        } else {
+          console.log('saved!', data);
+        }
+      });
+    }
+  }
 }
 
 decorate(MainStore, {  
   consoleText:     observable,  
   suggestText:     observable,  
   shader_list:     observable,
-  targets:         [persist('list'), observable], 
-  shaderGraphs:    [persist('list'), observable],
-  activeGraph:     observable,
+  targets:         [persist('list', Target), observable],  
+  shaderGraphs:    [persist('list', Graph), observable],
+  activeGraph:     [persist('object', Graph), observable],
   show_splash:     observable,
+  resetAndClear: action,
   consoleChanged:  action,
   suggest:         action,
   addGraph:        action,
   removeGraph:     action,
   save:            action, 
   load:            action, 
+  snapshot:        action,
 });
 
 createModelSchema(MainStore, {
-  targets:      list(object(Graph)),
+  shaderGraphs: list(object(Graph)),
+  targets:      list(object(Target)),
   activeGraph:  reference(Graph),
-  show_splash:  primitive(),
+  show_splash:  primitive(),  
 });
 
 const mainStore = new MainStore;

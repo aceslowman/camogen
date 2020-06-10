@@ -13,7 +13,9 @@ const ShelfComponent = observer(class ShelfComponent extends React.Component {
 		return(
 			<Panel 
 				title="Shelf"			
-				className={styles.shelf}	
+				className={styles.shelf}
+				defaultWidth={300}
+                defaultHeight={500}
 			>				
 				{this.props.children}
 			</Panel>

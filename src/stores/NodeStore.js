@@ -9,11 +9,13 @@ import {
     createModelSchema,
     primitive,
     list,
-    // object,
+    object,
     identifier,
+    reference,
     // deserialize,
-    custom,
+    // custom,
 } from "serializr"
+import ShaderStore from './ShaderStore';
 
 class NodeStore {
     uuid  = uuidv1();
@@ -138,7 +140,6 @@ decorate(NodeStore, {
     name:                 observable,
     selected:             observable,
     data:                 observable,
-    position:             observable,
     parents:              observable,
     children:             observable,
     graph:                observable,
@@ -157,15 +158,28 @@ decorate(NodeStore, {
 createModelSchema(NodeStore, {
     uuid:     identifier(),    
     name:     primitive(),
-    selected: primitive(),  
-    data:     list(custom(
-        (v) => {},
-        (v, context) => {},
-    )), // Shader or Operator
+    selected: primitive(),
+    parents:  list(reference(NodeStore)),
+    children: list(reference(NodeStore)),
+    data:     object(ShaderStore),  
+    // data:     list(custom(
+        // (v) => {
+        //     // serialize
+        //     console.log('serialize',v)
+
+        //     return (v)
+        // },
+        // (v, c) => {
+        //     // deserialize
+        //     console.log('deserialize',c)
+        //     return (v)
+        // },
+    // )), // Shader or Operator
 }, c => {
     let p = c.parentContext.target;
     console.log('Node store factory', p)
-    return new NodeStore(p);
+    console.log(c)
+    return new NodeStore(p, c.json.data);
 });
 
 export default NodeStore;

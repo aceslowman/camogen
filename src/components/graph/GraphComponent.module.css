@@ -9,12 +9,14 @@
 
 .graph_rows {
     display: flex;
-    flex-flow: column-reverse wrap;    
+    flex-flow: column-reverse wrap;  
+    width: 100%;  
 }
 
 .graph_rows > div {
     display: flex;
-    justify-content: left;
+    /* justify-content: left; */
+    justify-content: center;
     align-items: center;    
     width: 100%;
     /* border: 1px solid orange; */

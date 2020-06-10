@@ -6,8 +6,10 @@ import {
     primitive,
     map,
     identifier,
+    object,
     reference,
     deserialize,
+    mapAsArray,
 } from "serializr"
 
 function findNodeById(uuid, callback) {
@@ -73,6 +75,13 @@ class GraphStore {
         this.parent = parent;
         this.addNode(node).select();   
     }    
+
+    clear() {
+        console.log('clearing graph')
+        this.nodes = {};
+        this.addNode().select();
+        this.update(); 
+    }
 
     update() {
         let update_queue = this.calculateBranches();        
@@ -234,7 +243,7 @@ decorate(GraphStore, {
     nodes:             observable,
     activeNode:        observable,
     updateFlag:        observable,  
-    focused:             observable,
+    focused:           observable,
     update:            action,
     afterUpdate:       action,
     traverse:          action,
@@ -244,6 +253,7 @@ decorate(GraphStore, {
     addNode:           action,
     removeNode:        action,
     toggleFocus:       action,
+    clear:             action,
     root:              computed,
     nodeCount:         computed,
     nodesArray:        computed,
@@ -251,8 +261,7 @@ decorate(GraphStore, {
 
 createModelSchema(GraphStore, {
     uuid:    identifier(),
-    nodes:   map(),
-    root:    reference(Node, findNodeById),
+    nodes:   map(object(Node)),   
 }, c => {
     let p = c.parentContext.target;
     console.log('Graph store factory', p)

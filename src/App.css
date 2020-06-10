@@ -87,7 +87,8 @@ button:focus {
 }
 
 #WORKAREA_inner {
-  display: flex;
+  /* display: flex; */
+  display: inherit;
   /* flex-flow: wrap;   */
   align-items: center;
   justify-content: space-evenly;

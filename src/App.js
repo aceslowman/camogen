@@ -52,11 +52,11 @@ const App = observer(class App extends React.Component {
 
             <div id="WORKAREA_inner" ref={this.workAreaRef}>
               { this.store.show_splash && <Splash /> }
-              <div className="shaderGraphs">
 
                 {this.store.shaderGraphs.map((graph,i)=>{
                   return (
-                    <PanelGroup key={i}>
+                    // <PanelGroup key={i}>
+                    <React.Fragment key={i}>
                       <DebugInfo collapsed />
                       <Shelf
                         key={i+'shelf'} 
@@ -67,7 +67,7 @@ const App = observer(class App extends React.Component {
                           <Shader
                             key={j}
                             data={n.data}							
-                          />
+                       />
                         ))}                        
                       </Shelf>
                       <Graph
@@ -78,13 +78,12 @@ const App = observer(class App extends React.Component {
                         collapsed 
                         key={i+'editor'}
                         data={graph.activeNode.data}
-                      />                      
-                    </PanelGroup>                    
+                      />  
+                    </React.Fragment>                                          
+                    // </PanelGroup>                    
                   );
                 })}
-                
-              </div>     
-              
+                             
             </div>          
 
             <ConsoleBar />
