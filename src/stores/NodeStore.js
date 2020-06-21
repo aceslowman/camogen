@@ -100,6 +100,10 @@ class NodeStore {
         return this;
     }
 
+    edit() {
+        this.graph.parent.edit(this);
+    }
+
     deselect() {
         this.graph.activeNode = null;
         this.selected = false;
@@ -133,6 +137,10 @@ class NodeStore {
     get hasConnectedParents() {
         return this.parents.some(e => e.data !== null)
     }
+
+    get isBeingEdited() {
+        return this.data === this.graph.parent.currentlyEditing;
+    }
 }
 
 decorate(NodeStore, {
@@ -149,10 +157,12 @@ decorate(NodeStore, {
     connectChild:         action,
     connectParent:        action,
     select:               action,
+    edit:                 action,
     deselect:             action,
     setData:              action,
     hasConnectedChildren: computed,
     hasConnectedParents:  computed,
+    isBeingEdited:        computed,
 });
 
 createModelSchema(NodeStore, {

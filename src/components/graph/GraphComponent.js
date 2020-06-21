@@ -75,9 +75,7 @@ const GraphComponent = observer(class GraphComponent extends React.Component {
 				onRef={ref => this.panelRef = ref}
 				title="Graph"			
 				active={this.store.activeGraph === this.data}
-				// onRemove={this.handleRemove}
-				defaultWidth={200}
-                defaultHeight={500}
+				// onRemove={this.handleRemove}				
 				onFocus={this.handleFocus}
 				className={styles.graph}
 				style={{

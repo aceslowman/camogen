@@ -42,6 +42,8 @@ class MainStore {
 
   activeTarget    = null;
   activeGraph     = null;
+
+  currentlyEditing = null;
   
   shader_list = {};
 
@@ -60,11 +62,11 @@ class MainStore {
       const hsv   = this.getShader("ToHSV",g);
 
       // const img   = this.getShaderInput("ImageInput",g);
-      const webcam = this.getShaderInput("WebcamInput", g);
+      // const webcam = this.getShaderInput("WebcamInput", g);
 
-      // g.root.setData(uv);
+      g.root.setData(uv);
       // g.root.setData(img);
-      g.root.setData(webcam);
+      // g.root.setData(webcam);
       g.root.setData(glyph);
       g.root.setData(add)
       g.root.setData(hsv);
@@ -191,6 +193,10 @@ class MainStore {
     }
   }
 
+  edit(node) {
+    this.currentlyEditing = node.data;
+  }
+
   save() {
     let options = {
       title: 'testFile',
@@ -231,6 +237,12 @@ class MainStore {
           )
       })
     }).catch(err => {/*alert(err)*/});
+  }
+
+  breakout() {
+    let new_window = window.open('/output_window.html');
+    new_window.gl = this.p5_instance.canvas.getContext('2d'); 
+    // new_window.dimensions = []
   }
 
   async snapshot() {
@@ -285,14 +297,17 @@ decorate(MainStore, {
   shaderGraphs:    [persist('list', Graph), observable],
   activeGraph:     [persist('object', Graph), observable],
   show_splash:     observable,
-  resetAndClear: action,
+  currentlyEditing:observable,
+  resetAndClear:   action,
   consoleChanged:  action,
   suggest:         action,
   addGraph:        action,
   removeGraph:     action,
   save:            action, 
   load:            action, 
+  edit:            action,
   snapshot:        action,
+  breakout:        action,
 });
 
 createModelSchema(MainStore, {
@@ -302,6 +317,6 @@ createModelSchema(MainStore, {
   show_splash:  primitive(),  
 });
 
-const mainStore = new MainStore;
+const mainStore = new MainStore();
 export default mainStore;
 

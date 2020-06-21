@@ -62,7 +62,7 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
     }
 
 	render() {	
-		this.store = this.context.store;
+        this.store = this.context.store;
 
 		return(
             <Panel 
@@ -132,7 +132,7 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
                             mode="glsl"
                             theme="monokai"
                             onChange={this.handleEditorChange}
-                            value={this.state.edit_buffer}
+                            value={this.props.data[this.state.edit_type]}
                             height=""
                             width=""
                             minHeight="500px"
@@ -155,6 +155,8 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
                         <p><em> no node selected</em></p>
                     )
                 }
+
+                { this.props.data && this.props.data.node.graph.updateFlag ? '' : '' }
 			</Panel>
 	    )
 	}

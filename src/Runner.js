@@ -1,14 +1,14 @@
-const Runner = (p, store, props) => {
+const Runner = (p, store) => {
 
     p.setup = () => {
-        let c = document.getElementById('WORKAREA_inner')
+        let container = document.getElementById('WORKAREA_inner')
         
-        let canvas = p.createCanvas(
-            c.offsetWidth+15,
-            c.offsetHeight
+        let c = p.createCanvas(
+            container.offsetWidth+15,
+            container.offsetHeight
         );
         
-        c.append(canvas.canvas);
+        container.append(c.canvas);
         
         p.background(120, 80, 50);
     }

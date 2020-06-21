@@ -24,6 +24,9 @@ const DebugInfo = observer(class DebugInfo extends React.Component {
 				}}
 			>
 				<div id="SPLASH">
+					<h3> currentlyEditing: {
+						this.store.currentlyEditing ? this.store.currentlyEditing.name : 'nothing'
+					} </h3>
 					<h3>targets ({this.store.targets.length})</h3>
 					<ol start="0">
 						{this.store.targets.map((e,i)=>(

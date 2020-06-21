@@ -1,0 +1,25 @@
+.toolbar {
+    width: 100%;
+    background-color: black;
+    border-bottom: 1px solid white;
+}
+
+.drawer {
+    z-index: 1000;
+    box-shadow: 2px 2px 4px 0px black;
+    display: flex;
+    flex-flow: column wrap;
+    /* border-top: 1px solid white; */
+    position: absolute;
+    overflow: hidden;
+    transition: width 300ms ease-in-out;
+}
+
+.drawer > button {
+    text-align: left;
+}
+
+.drawer button:hover {
+    background-color: black !important;
+    color: white !important;
+}

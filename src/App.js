@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import './App.css';
 
 import ConsoleBar from './components/ConsoleBar';
-import ToolBar from './components/ToolBar';
+// import ToolBar from './components/ToolBar';
 import Graph from './components/graph/GraphComponent';
 import Shelf from './components/shelf/ShelfComponent';
 import Splash from './components/Splash';
@@ -34,7 +34,7 @@ const App = observer(class App extends React.Component {
       );
     }
 
-    this.store.p5_instance.draw();
+    // this.store.p5_instance.draw();
   }
 
   componentDidMount() {   
@@ -48,15 +48,12 @@ const App = observer(class App extends React.Component {
       <MainProvider value={{store: this.store}}>
         <div id="APP">          
           <div id="WORKAREA">    
-            <ToolBar />
-
             <div id="WORKAREA_inner" ref={this.workAreaRef}>
               { this.store.show_splash && <Splash /> }
 
                 {this.store.shaderGraphs.map((graph,i)=>{
                   return (
-                    // <PanelGroup key={i}>
-                    <React.Fragment key={i}>
+                    <PanelGroup key={i}>
                       <DebugInfo collapsed />
                       <Shelf
                         key={i+'shelf'} 
@@ -77,15 +74,12 @@ const App = observer(class App extends React.Component {
                       <Editor 
                         collapsed 
                         key={i+'editor'}
-                        data={graph.activeNode.data}
-                      />  
-                    </React.Fragment>                                          
-                    // </PanelGroup>                    
+                        data={this.store.currentlyEditing}
+                      />                      
+                    </PanelGroup>                    
                   );
-                })}
-                             
+                })}                            
             </div>          
-
             <ConsoleBar />
           </div>         
         </div>

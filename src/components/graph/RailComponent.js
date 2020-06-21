@@ -60,6 +60,7 @@ const RailComponent = observer(class RailComponent extends React.Component {
 
     handleClick = () => {
         this.props.data.select(true);
+        this.props.data.edit();
     }
 
 	render() {	

@@ -36,15 +36,16 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 		this.props.data.node.graph.removeNode(this.props.data.node.uuid);
 	}
 
+	handleEdit = () => {
+		console.log(this.props.data.node.isBeingEdited)
+		this.props.data.node.edit();
+	}
+
 	handleExpandMain = () => {
 		this.setState(prevState => ({
 			...prevState,
 			expandMain: !prevState.expandMain,
 		}));
-	}
-
-	handleSelectParameter = (e) => {
-		this.props.data.node.editingParam = e
 	}
 
 	componentDidMount() {
@@ -74,13 +75,15 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 			>
 				<div className={styles.node_bar}>
 					<div className={styles.node_buttons}>
-						<button onClick={this.handleRemove}>x</button>
-						<button onClick={this.handleExpandMain}>
-							{this.state.expandMain ? 'v' : '>'}
+						<button className="large_symbol" onClick={this.handleRemove}>×</button>
+						<button className="large_symbol" onClick={this.handleExpandMain}>
+							{
+								this.state.expandMain ? '↥' : '↧'
+							}
 						</button>
-						<button 								
-							onClick={()=>this.handleExpandEdit(null)}
-						>≡</button>																		 
+						<button className={`large_symbol ${this.props.data.node.isBeingEdited ? 'white_button' : ''}`}
+							onClick={()=>this.handleEdit(null)}
+						> {/*≡*/}✎ </button>																		 
 					</div>
 					<div className={styles.node_legend}>
 						<legend>
@@ -98,22 +101,19 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 							// overflowY: this.state.expandMain ? 'auto' : 'none'
 						}}
 					>		
-						<div ref={this.innerRef} >
-							{this.props.data.uniforms.map((uniform)=>{                        
-								return (
-									<Uniform 
-										enabled={this.state.expandMain || this.props.data.node.selected}
-										key={uniform.uuid}
-										data={uniform}
-										activeParam={
-											this.props.data.node.editingParam
-										}	
-										onDblClick={
-											this.handleSelectParameter
-										}
-									/>
-								);                     
-							})}	
+						<div ref={this.innerRef} >							
+							{
+								React.Children.map(this.props.data.controls, child => {
+									// Checking isValidElement is the safe way and avoids a TS error too.
+									if (React.isValidElement(child)) {
+										return React.cloneElement(child, {
+											enabled: this.state.expandMain || this.props.data.node.selected
+										})
+									}
+
+									return child;
+								})
+							}
 						</div>																	
 					</div>
 				</div>   

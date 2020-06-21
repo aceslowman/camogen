@@ -6,7 +6,6 @@ import { ResizableBox } from 'react-resizable';
 import Draggable from 'react-draggable';
 import 'react-resizable/css/styles.css';
 
-
 let style = {
 	content: {},
 	label: {}
@@ -22,7 +21,7 @@ const PanelComponent = observer(class PanelComponent extends React.Component {
 		this.state = {
 			active: props.active,
 			expand: !props.collapsed,
-			width: props.defaultWidth ? props.defaultWidth : 500,
+			width: props.defaultWidth ? props.defaultWidth : 400,
 			height: props.defaultHeight ? props.defaultHeight : 500,
 		};
 	}
@@ -50,7 +49,7 @@ const PanelComponent = observer(class PanelComponent extends React.Component {
 			...style.toolbar,
 			flexFlow: this.state.expand ? 'row' : 'column',
 			height: this.state.expand ? 'auto' : '100%',
-			width: this.state.expand ? 'auto' : 'min-content',
+			// width: this.state.expand ? 'auto' : 'min-content',
 		}
 
 		style.label = {
@@ -59,50 +58,49 @@ const PanelComponent = observer(class PanelComponent extends React.Component {
 		}
 		
 		return(
-			<Draggable handle=".drag_handle">
-				<div>
-					<ResizableBox
-						className={styles.panel} 
-						height={this.state.height} 
-						width={this.state.expand ? this.state.width : 20} 
-						onResize={this.onResize} 
-						resizeHandles={['se','e','s']}
-						minConstraints={[170,170]}
-						maxConstraints={[1000,1000]}
-					>
-						
-							<div className={"drag_handle "+styles.panel_buttons} style={style.toolbar}>
+			<ResizableBox
+				className={`${styles.panel} ${this.state.expand ? 'expanded' : ''}`} 
+				// height={this.state.height}
+				// height={Infinity} 
+				// handle={(<div>drag</div>)}
+				width={this.state.expand ? this.state.width : 20} 
+				onResize={this.onResize} 
+				resizeHandles={['e']}
+				axis={'x'}
+				minConstraints={[170,170]}
+				maxConstraints={[1000,1000]}
+			>
+				
+					<div className={styles.panel_buttons} style={style.toolbar}>
 
-								{ this.props.onRemove && (
-									<button onClick={this.props.onRemove}>
-										x
-									</button>
-								)}
+						{ this.props.onRemove && (
+							<button onClick={this.props.onRemove}>
+								x
+							</button>
+						)}
 
-								<button onClick={this.handleExpand}>
-									{
-										this.state.expand ? '>' : 'v'
-									}
-								</button>
+						<button 
+							title={this.state.expand ? 'collapse' : 'expand'}
+							className="large_symbol" 
+							onClick={this.handleExpand}
+						>
+							{
+								this.state.expand ? '↤' : '↦'
+							}
+						</button>
 
-								{/* <button className="drag_handle">
-									≡
-								</button> */}
+						<legend style={style.label} onClick={this.props.onFocus}> 
+							{this.props.title}
+						</legend>
+					</div>                    
 
-								<legend style={style.label} onClick={this.props.onFocus}> 
-									{this.props.title}
-								</legend>
-							</div>                    
-
-							{this.state.expand && (
-								<div style={{...this.props.style, ...style.content}} className={styles.panel_content + ' ' + this.props.className} ref={this.props.onRef}>
-									{this.props.children}	
-								</div>
-							)}
-							
-					</ResizableBox>	
-				</div>				
-			</Draggable>					
+					{this.state.expand && (
+						<div style={{...this.props.style, ...style.content}} className={styles.panel_content + ' ' + this.props.className} ref={this.props.onRef}>
+							{this.props.children}	
+						</div>
+					)}
+					
+			</ResizableBox>				
 	    )
 	}
 });

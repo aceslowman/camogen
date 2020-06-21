@@ -20,6 +20,7 @@ import uuidv1 from 'uuid/v1';
 import UniformStore from './UniformStore';
 import Parameter from './ParameterStore';
 import Uniform from './UniformStore';
+import UniformComponent from '../components/UniformComponent';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -36,6 +37,7 @@ class ShaderStore {
     frag      = "";
     ref       = null;
     // component = null;
+    controls  = [];
     target    = null;
     node      = null;
 
@@ -77,6 +79,21 @@ class ShaderStore {
                     this.parameter_graphs.push(param.graph)
             }
         }
+
+        this.controls = this.uniforms.map((uniform)=>{                        
+            return (
+                <UniformComponent                     
+                    key={uniform.uuid}
+                    data={uniform}
+                    activeParam={
+                        this.node.editingParam
+                    }	
+                    onDblClick={
+                        (e) => this.node.editingParam = e
+                    }
+                />
+            );                     
+        });
 
         return this;
     }

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     decorate,
     observable
@@ -35,11 +36,11 @@ class WebcamInput extends ShaderStore {
             uniform sampler2D tex0;
             void main() {                
                 vec3 color = vec3(0.0);
-                float aspect = img_dimensions.x / img_dimensions.y;
+                float aspect = img_dimensions.y / img_dimensions.x;
                 vec2 uv = vTexCoord;
-                // if (bSquare) {
+                if (bSquare) {
                     uv.y *= aspect;
-                // }
+                }
                 vec4 src0 = texture2D(tex0, uv);
                 gl_FragColor = vec4(src0);
             }`,
@@ -67,7 +68,66 @@ class WebcamInput extends ShaderStore {
 
         let p = this.target.parent.p5_instance;
 
-        this.grabber = p.createCapture(p.VIDEO);
+        let constraints = {
+            video: {
+                mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720
+                },
+                // optional: [{
+                    // maxFrameRate: 10
+                // }]
+            },
+            deviceId: 0,
+            audio: false,
+        };
+
+        this.grabber = p.createCapture(constraints, ()=>{
+            console.log('grabber activated')
+        });
+
+        // if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+        //     console.log("enumerateDevices() not supported.");
+        //     return;
+        // }
+
+        // // List cameras and microphones.
+        // navigator.mediaDevices.enumerateDevices()
+        //     .then((devices) => {
+        //         console.log(devices)
+        //         devices.forEach(function (device) {
+        //             console.log(device.kind + ": " + device.label +
+        //                 " id = " + device.deviceId);
+        //         });
+        //     })
+        //     .catch((err) => {
+        //         console.log(err.name + ": " + err.message);
+        //     });
+
+
+        this.controls = (
+			<React.Fragment>
+				<fieldset key={this.uuid}>
+					<label key={this.uuid+1}>Input Device</label>
+					{/* <select key={this.uuid+2} onChange={this.handleInputSelect}>
+						{thi.map((e,i)=>{
+							return (<option key={i} value={e.name}>{e.name}</option>);
+						})}						
+					</select>					 */}
+				</fieldset>
+				<fieldset key={this.uuid+1}>
+					{/* <label key={this.uuid+1}>(0-1)</label>
+					<input 
+						key={this.uuid+2}
+						type="checkbox"
+						defaultChecked={this.modifier === 127}                
+						onChange={(e)=>{
+							this.modifier = e.target.checked ? 127 : 1
+						}}			
+					/> */}
+				</fieldset>				
+			</React.Fragment>								
+		);
 
         return this;
     }
