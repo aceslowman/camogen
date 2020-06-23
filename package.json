@@ -1,6 +1,12 @@
 {
   "name": "camogen",
-  "version": "0.1.0",
+  "description": "a webgl video synthesizer and toolkit",
+  "version": "0.0.1",
+  "author": {
+    "name": "Austin Slominski",
+    "email": "austin@aceslowman.com",
+    "url": "https://aceslowman.com/"
+  },
   "private": true,
   "dependencies": {
     "@babel/core": "7.6.0",
@@ -18,7 +24,6 @@
     "css-loader": "2.1.1",
     "dotenv": "6.2.0",
     "dotenv-expand": "5.1.0",
-    "electron": "^8.2.0",
     "electron-window-manager": "^1.0.6",
     "eslint-config-react-app": "^5.0.2",
     "eslint-loader": "3.0.2",
@@ -78,10 +83,36 @@
     "build": "react-scripts --max_old_space_size=4096 build",
     "test": "node scripts/test.js",
     "electron": "electron .",
-    "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron ."
+    "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "appId": "yourappid",
+    "files": [
+      "build",
+      "src"
+    ],
+    "mac": {
+      "category": "your.app.category.type"
+    },    
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "build/icon.ico"
+    },
+    "directories": {
+      "buildResources": "public"
+    }
   },
   "homepage": "./",
-  "main": "src/electron-main",
+  "main": "src/electron-main.js",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -145,5 +176,8 @@
       "jest-watch-typeahead/testname"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "electron": "^8.3.3",
+    "electron-builder": "^22.7.0"
+  }
 }
