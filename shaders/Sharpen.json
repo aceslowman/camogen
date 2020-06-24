@@ -1,0 +1,7 @@
+{
+    "name": "Sharpen",
+    "precision": "\n#ifdef GL_ES\nprecision highp float;\n#endif \n",
+    "vert": "attribute vec3 aPosition;\nattribute vec2 aTexCoord;\n\nuniform vec2 resolution;\nuniform float width;\nvarying vec2 texcoord11;\nvarying vec2 texcoord00;\nvarying vec2 texcoord02;\nvarying vec2 texcoord20;\nvarying vec2 texcoord22;\nvoid main() {\n    gl_Position = vec4(((aPosition.xy / resolution) * 2.0 - 1.0) * vec2(1.0, -1.0), 0.0, 1.0);\n    texcoord11 = aTexCoord;\n    texcoord00 = aTexCoord + vec2(-width, -width);\n    texcoord02 = aTexCoord + vec2(width, -width);\n    texcoord20 = aTexCoord + vec2(width, width);\n    texcoord22 = aTexCoord + vec2(-width, width);\n}",
+    "frag": "varying vec2 texcoord11;\nvarying vec2 texcoord00;\nvarying vec2 texcoord02;\nvarying vec2 texcoord20;\nvarying vec2 texcoord22;\n\nuniform sampler2D tex0;\n\nvoid main() {\t\n    vec4 s11 = texture2D(tex0, texcoord11);\n    vec4 s00 = texture2D(tex0, texcoord00);\n    vec4 s02 = texture2D(tex0, texcoord02);\n    vec4 s20 = texture2D(tex0, texcoord20);\n    vec4 s22 = texture2D(tex0, texcoord22);\n    \n    vec4 sharp = 5.0 * s11 - (s00 + s02 + s20 + s22);\n    gl_FragColor = sharp;\n}",
+    "uniforms": []
+}

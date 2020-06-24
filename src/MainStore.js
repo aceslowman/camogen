@@ -18,6 +18,7 @@ import { create, persist } from 'mobx-persist';
 import Graph from './stores/GraphStore';
 import ImageInput from './stores/inputs/ImageInput';
 import WebcamInput from './stores/inputs/WebcamInput';
+const path = require('path');
 
 const hydrate = create({
   storage: localStorage,
@@ -136,25 +137,39 @@ class MainStore {
   }
 
   async loadShaders() {
-    let path = `${app.getPath("userData")}/shaders`;
+    console.log('app.isPacked', app.isPackaged)
+    let default_shaders_path = app.isPackaged 
+      ? path.join(app.getAppPath(), '../shaders')
+      : path.join(app.getAppPath(), 'shaders');
+    let user_shaders_path = path.join(app.getPath("userData"),'shaders');
 
     try {
-      await fs.promises.access(path) // check if path exists
+      await fs.promises.access(user_shaders_path) // check if path exists
 
-      const files = await fs.promises.readdir(path);
+      let files = await fs.promises.readdir(user_shaders_path);
 
       await Promise.all(files.map(async (type) => {
-        const data = JSON.parse(await fs.promises.readFile(path + '/' + type));
+        const data = JSON.parse(await fs.promises.readFile(user_shaders_path + '/' + type));
         data.name = type.split('.')[0];
         this.shader_list = {
           ...this.shader_list,
           [data.name]: data
         }
       }))
-    } catch (err) {
-      fs.promises.mkdir(path).catch(console.error)
+    } catch (err) { // if user data shaders doesn't exist
+      fs.promises.mkdir(user_shaders_path).catch(console.error);
+      
+      console.log('new directory created for shaders', user_shaders_path);
+      console.log('copy default shaders from', default_shaders_path);
 
-      console.log('new directory created for shaders', path);
+      let default_files = await fs.promises.readdir(default_shaders_path).catch(console.error);
+
+      // copy default to user
+      default_files.forEach((filename)=>{
+        console.log(filename)
+        fs.promises.copyFile(path.join(default_shaders_path, filename), path.join(user_shaders_path,filename))
+      });
+      
       await this.loadShaders();
     }  
   }
