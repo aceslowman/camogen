@@ -5,6 +5,7 @@ import Toolbar from './ToolbarComponent';
 
 import styles from './PanelGroupComponent.module.css';
 import {Rnd} from 'react-rnd';
+import { ResizableBox } from 'react-resizable';
 
 
 const PanelGroupComponent = observer(class PanelGroupComponent extends React.Component {
@@ -16,8 +17,8 @@ const PanelGroupComponent = observer(class PanelGroupComponent extends React.Com
 		this.ref = React.createRef();
 
 		this.state = {			
-			width: props.defaultWidth ? props.defaultWidth : 500,
-			height: props.defaultHeight ? props.defaultHeight : 500,
+			width: props.defaultWidth ? props.defaultWidth : 550,
+			height: props.defaultHeight ? props.defaultHeight : 650,
 			fullscreen: false,
 		};
 	}
@@ -107,93 +108,109 @@ const PanelGroupComponent = observer(class PanelGroupComponent extends React.Com
 		this.store = this.context.store;
           
 		return(
-			<Rnd
+			<ResizableBox
 				className={`${styles.panel_group} ${this.state.fullscreen ? styles.fullscreen : ''}`}
-				minWidth={500}
-				minHeight={400}
-				maxWidth="100%"
-				maxHeight="100%"
-				bounds='#WORKAREA_inner'
-				default={{
-					x: Math.floor((window.innerWidth / 2) - 325),
-					y: Math.floor((window.innerHeight / 2) - 325),
-					width: '650px',
-					height: '650px'
-				}}
-				dragHandleClassName='drag_handle'
-				enableResizing={{
-					bottom: true,
-					bottomLeft: false,
-					bottomRight: true,
-					left: false,
-					right: true,
-					top: false,
-					topLeft: false,
-					topRight: false,
-				}}
+				height={this.state.height}
+				width={this.state.width} 
+				onResize={this.onResize} 
+				resizeHandles={this.state.fullscreen ? [] : ['e','se','s']}
+				minConstraints={[550,650]}
+				// maxConstraints={[1000,1000]}
 			>
+				<div>
 
-				<Toolbar 
-					drawer={this.drawer_items}
-					activeDrawer={this.state.activeDrawer}
-					openDrawer={this.state.openDrawer}
-					drawerPosition={this.state.drawerPosition}
-				>
-					<div ref={this.ref}>
-						<button 
-							className="large symbol drag_handle"
-						>
-							≡
-						</button>
-						<button 
-							title={this.state.fullscreen ? 'shrink' : 'expand'}
-							className={"large_symbol"} 
-							onClick={()=>this.handleExpand()}
-						>
-							{this.state.fullscreen ? '⊡' : '⧈'}
-						</button>
-						<button 
-							// className={"large_symbol"} 
-							onClick={this.handleNew}
-						>
-							NEW
-						</button>
-						<button 
-							// className={"large_symbol"} 
-							onClick={this.handleSave}
-						>
-							SAVE
-						</button>
-						<button 
-							// className={"large_symbol"}                         
-							onClick={this.handleLoad}
-						>                        
-							LOAD							
-						</button>
-						<button 
-							// className={"large_symbol"} 
-							onClick={this.handleLib}
-						>
-							LIB
-						</button>
-						<button 
-							// className={"large_symbol"} 
-							onClick={this.handleSnapshot}
-						>
-							SNAP
-						</button>
-						<button 
-							// className={"large_symbol"}  
-							onClick={this.handleBreakout}
-						>
-							BREAKOUT
-						</button>
+
+				{/* <Rnd
+					className={`${styles.panel_group} ${this.state.fullscreen ? styles.fullscreen : ''}`}
+					minWidth={500}
+					minHeight={400}
+					disableDragging
+					maxWidth="100%"
+					maxHeight="100%"
+					bounds='#WORKAREA_inner'
+					// default={{
+					// 	x: Math.floor((window.innerWidth / 2) - 325),
+					// 	y: Math.floor((window.innerHeight / 2) - 325),
+					// 	width: '650px',
+					// 	height: '650px'
+					// }}
+					dragHandleClassName='drag_handle'
+					enableResizing={{
+						bottom: true,
+						bottomLeft: false,
+						bottomRight: true,
+						left: false,
+						right: true,
+						top: false,
+						topLeft: false,
+						topRight: false,
+					}}
+				> */}
+
+					<Toolbar 
+						drawer={this.drawer_items}
+						activeDrawer={this.state.activeDrawer}
+						openDrawer={this.state.openDrawer}
+						drawerPosition={this.state.drawerPosition}
+					>
+						<div ref={this.ref}>
+							{/* <button 
+								className="large symbol drag_handle"
+							>
+								≡
+							</button> */}
+							<button 
+								title={this.state.fullscreen ? 'shrink' : 'expand'}
+								className={"large_symbol"} 
+								onClick={()=>this.handleExpand()}
+							>
+								{this.state.fullscreen ? '⊡' : '⧈'}
+							</button>
+							<button 
+								// className={"large_symbol"} 
+								onClick={this.handleNew}
+							>
+								NEW
+							</button>
+							<button 
+								// className={"large_symbol"} 
+								onClick={this.handleSave}
+							>
+								SAVE
+							</button>
+							<button 
+								// className={"large_symbol"}                         
+								onClick={this.handleLoad}
+							>                        
+								LOAD							
+							</button>
+							<button 
+								// className={"large_symbol"} 
+								onClick={this.handleLib}
+							>
+								LIB
+							</button>
+							<button 
+								// className={"large_symbol"} 
+								onClick={this.handleSnapshot}
+							>
+								SNAP
+							</button>
+							<button 
+								// className={"large_symbol"}  
+								onClick={this.handleBreakout}
+							>
+								BREAKOUT
+							</button>
+						</div>
+					</Toolbar>
+					<div className={styles.panel_group_container}> 	                
+						{children}
 					</div>
-				</Toolbar>
-				<div className={styles.panel_group_container}> 	                
-					{children}
+				{/* </Rnd> */}
 				</div>
-			</Rnd>
+
+			</ResizableBox>
 	    );
 	}
 });

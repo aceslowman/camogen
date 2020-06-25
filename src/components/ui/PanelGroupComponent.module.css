@@ -1,9 +1,14 @@
-.panel_group {
-    display: flex !important;    
-    flex-flow: column; 
+.panel_group { 
     border: 1px solid white;
     max-height: 100%;
     max-width: 100%;
+}
+
+.panel_group > div {
+    display: flex !important;
+    flex-flow: column;
+    height:100%;
+    width:100%;
 }
 
 .panel_group_container {
