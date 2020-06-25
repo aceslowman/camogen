@@ -3,7 +3,7 @@ import { MainProvider } from './MainContext';
 import { observer } from 'mobx-react';
 import './App.css';
 
-import ConsoleBar from './components/ConsoleBar';
+import ConsoleBar from './components/ConsoleBarComponent';
 // import ToolBar from './components/ToolBar';
 import Graph from './components/graph/GraphComponent';
 import Shelf from './components/shelf/ShelfComponent';

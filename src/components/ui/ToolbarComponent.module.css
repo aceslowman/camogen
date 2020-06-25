@@ -4,6 +4,10 @@
     border-bottom: 1px solid white;
 }
 
+.toolbar div {
+    display:flex;
+}
+
 .drawer {
     z-index: 1000;
     box-shadow: 2px 2px 4px 0px black;

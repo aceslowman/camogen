@@ -14,6 +14,7 @@
     /* box-sizing: border-box; */
     word-break: break-all;
     z-index: 1;   
+    font-size: 1.1em;
 }
 
 .panel_buttons button:hover {

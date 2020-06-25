@@ -152,7 +152,7 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
 
                 {
                     !this.props.data && (
-                        <p><em> no node selected</em></p>
+                        <p className={styles.no_node_selected}><em> no node selected</em></p>
                     )
                 }
 

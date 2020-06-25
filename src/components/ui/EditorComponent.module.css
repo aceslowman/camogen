@@ -14,8 +14,12 @@
     
 }
 
+.no_node_selected {
+    align-self: center;
+}
+
 .ace_editor {
-    font-family: "Windows Command", monospace;
+    font-family: 'IBM Plex Mono', monospace;
     background-color: #000;
     border: 2px solid black;  
     width: 100%;

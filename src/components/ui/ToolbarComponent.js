@@ -46,8 +46,6 @@ const Toolbar = observer(class Toolbar extends React.Component {
     render() {
         this.store = this.context.store;
 
-        // let bounds = e.currentTarget.getBoundingClientRect();
-
         style = {...style, drawer: this.props.drawerPosition};
 
         return (

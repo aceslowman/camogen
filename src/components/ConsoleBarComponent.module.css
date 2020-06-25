@@ -1,0 +1,43 @@
+.console {
+    width: 100%;
+    display: flex;
+    border-top: 1px solid black;
+    height: 35px;
+    background-color: white;
+}
+
+.console_inputs input {
+    margin: 0;
+    padding: 0px 5px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+    font-size: 1.3em;
+    border: none;
+    z-index: 1;
+    background-color: transparent;
+}
+
+.console_inputs input:focus {
+    outline: none;
+}
+
+.version {
+    background-color: black;
+    padding: 12px;
+    font-size: 0.7em;
+}
+
+.version > a {
+    text-decoration: none;
+    color: white;
+}
+
+#suggest {
+    color: gray;
+    position: relative;
+    bottom: 35px;
+    pointer-events: none;
+    z-index: -2;
+    background-color: transparent;
+}

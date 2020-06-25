@@ -24,7 +24,7 @@ const OperatorComponent = observer(class OperatorComponent extends React.Compone
 		return (
             <div className="operator">
 				<button onClick={()=>graph.removeNode(data)}>x</button>
-				<h3>{data.name}</h3>
+				<label>{data.name}</label>
 				{data.inputs}				
 			</div>								
 		);

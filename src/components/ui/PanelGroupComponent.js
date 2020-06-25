@@ -1,11 +1,9 @@
 import React from 'react';
 import MainContext from '../../MainContext';
 import { observer } from 'mobx-react';
-import { ResizableBox } from 'react-resizable';
 import Toolbar from './ToolbarComponent';
 
 import styles from './PanelGroupComponent.module.css';
-import Draggable from 'react-draggable';
 import {Rnd} from 'react-rnd';
 
 
@@ -113,6 +111,8 @@ const PanelGroupComponent = observer(class PanelGroupComponent extends React.Com
 				className={`${styles.panel_group} ${this.state.fullscreen ? styles.fullscreen : ''}`}
 				minWidth={500}
 				minHeight={400}
+				maxWidth="100%"
+				maxHeight="100%"
 				bounds='#WORKAREA_inner'
 				default={{
 					x: Math.floor((window.innerWidth / 2) - 325),

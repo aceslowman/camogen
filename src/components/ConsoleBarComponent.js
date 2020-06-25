@@ -1,8 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
+import styles from './ConsoleBarComponent.module.css';
+// import { app } from 'electron';
 
-const ConsoleBar = observer(class ConsoleBar extends React.Component {
+// for electron
+const remote = window.require('electron').remote;
+const app = remote.app;
+
+const ConsoleBarComponent = observer(class ConsoleBar extends React.Component {
 
 	static contextType = MainContext;
 
@@ -38,13 +44,13 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 		this.store = this.context.store;
 
 		return (
-          <div id="CONSOLE">
+          <div className={styles.console}>
 			  
-				<div className="version">
-					<a href="https://github.com/aceslowman/camogen"><sub>v1.0</sub></a>
+				<div className={styles.version}>
+		<a href="https://github.com/aceslowman/camogen">v{app.getVersion()}</a>
 				</div>
 				
-				<div>
+				<div className={styles.console_inputs}>
 					<input
 						ref={(ref) => this.ref = ref}
 						style={this.store.consoleStyle}
@@ -66,4 +72,4 @@ const ConsoleBar = observer(class ConsoleBar extends React.Component {
 	}
 });
 
-export default ConsoleBar;
+export default ConsoleBarComponent;
