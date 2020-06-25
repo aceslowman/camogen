@@ -28,6 +28,7 @@
 }
 
 .panel_content {    
+    overflow-y: auto;
     box-sizing: border-box;
     flex-grow: 2;
     border: 1px dotted white;

@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import styles from './ConsoleBarComponent.module.css';
-// import { app } from 'electron';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -47,7 +46,7 @@ const ConsoleBarComponent = observer(class ConsoleBar extends React.Component {
           <div className={styles.console}>
 			  
 				<div className={styles.version}>
-		<a href="https://github.com/aceslowman/camogen">v{app.getVersion()}</a>
+					<a href="https://github.com/aceslowman/camogen">v{app.getVersion()}</a>
 				</div>
 				
 				<div className={styles.console_inputs}>

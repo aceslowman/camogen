@@ -17,8 +17,8 @@ const PanelGroupComponent = observer(class PanelGroupComponent extends React.Com
 		this.ref = React.createRef();
 
 		this.state = {			
-			width: props.defaultWidth ? props.defaultWidth : 550,
-			height: props.defaultHeight ? props.defaultHeight : 650,
+			width: props.defaultWidth ? props.defaultWidth : 1200,
+			height: props.defaultHeight ? props.defaultHeight : 750,
 			fullscreen: false,
 		};
 	}
@@ -114,7 +114,7 @@ const PanelGroupComponent = observer(class PanelGroupComponent extends React.Com
 				width={this.state.width} 
 				onResize={this.onResize} 
 				resizeHandles={this.state.fullscreen ? [] : ['e','se','s']}
-				minConstraints={[550,650]}
+				minConstraints={[750,650]}
 				// maxConstraints={[1000,1000]}
 			>
 				<div>

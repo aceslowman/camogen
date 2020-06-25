@@ -4,15 +4,19 @@ import { observer } from 'mobx-react';
 import './App.css';
 
 import ConsoleBar from './components/ConsoleBarComponent';
-// import ToolBar from './components/ToolBar';
 import Graph from './components/graph/GraphComponent';
 import Shelf from './components/shelf/ShelfComponent';
-import Splash from './components/Splash';
-import DebugInfo from './components/DebugInfo';
+import Splash from './components/SplashComponent';
+import DebugInfo from './components/DebugInfoComponent';
+import Help from './components/HelpComponent';
 import PanelGroup from './components/ui/PanelGroupComponent';
 import Editor from './components/ui/EditorComponent';
 
 import Shader from './components/ShaderComponent';
+
+// for electron
+const remote = window.require('electron').remote;
+const app = remote.app;
 
 const App = observer(class App extends React.Component {
 
@@ -54,7 +58,8 @@ const App = observer(class App extends React.Component {
                 {this.store.shaderGraphs.map((graph,i)=>{
                   return (
                     <PanelGroup key={i}>
-                      <DebugInfo collapsed />
+                      { !app.isPackaged && <DebugInfo collapsed /> }
+                      <Help />                      
                       <Shelf
                         key={i+'shelf'} 
                         data={graph}
@@ -72,7 +77,6 @@ const App = observer(class App extends React.Component {
                         data={graph}
                       />                      
                       <Editor 
-                        collapsed 
                         key={i+'editor'}
                         data={this.store.currentlyEditing}
                       />                      

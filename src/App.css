@@ -33,6 +33,10 @@ button {
   cursor: pointer;
 }
 
+ol li {
+  padding: 5px 0px;
+}
+
 label {
   font-size: 0.75em;
 }
