@@ -17,7 +17,7 @@ import Shader from './components/ShaderComponent';
 const remote = window.require('electron').remote;
 const app = remote.app;
 
-const App = observer(class App extends React.Component {
+export default @observer class App extends React.Component {
 
   workAreaRef = React.createRef();
 
@@ -30,14 +30,14 @@ const App = observer(class App extends React.Component {
     );
 
     // update target dimensions
-    for (let target_data of this.store.targets) {
+    for (let target_data of this.store.scenes[0].targets) {
       target_data.ref.resizeCanvas(
         bounds.width,
           bounds.height
       );
     }
 
-    // this.store.p5_instance.draw();
+    this.store.p5_instance.draw();
   }
 
   componentDidMount() {   
@@ -53,7 +53,7 @@ const App = observer(class App extends React.Component {
           <div id="WORKAREA">    
             <div id="WORKAREA_inner" ref={this.workAreaRef}>
 
-                {this.store.shaderGraphs.map((graph,i)=>{
+                {this.store.ready && this.store.scenes[0].shaderGraphs.map((graph,i)=>{
                   return (
                     <PanelGroup key={i}>
                       { !app.isPackaged && <DebugInfo collapsed /> }
@@ -76,18 +76,18 @@ const App = observer(class App extends React.Component {
                       />                      
                       <Editor 
                         key={i+'editor'}
-                        data={this.store.currentlyEditing}
+                        data={this.store.scenes[0].currentlyEditing}
+                        data={this.store.scenes[0].currentlyEditing}
                       />                      
                     </PanelGroup>                    
                   );
-                })}                            
+                })} 
+                                           
             </div>          
-            <ConsoleBar />
+            <ConsoleBar data={this.store.console}/>
           </div>         
         </div>
       </MainProvider>
     );
   }
-});
-
-export default App;
+};

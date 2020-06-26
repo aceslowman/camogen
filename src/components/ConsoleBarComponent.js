@@ -52,18 +52,18 @@ export default @observer class ConsoleBar extends React.Component {
 				<div className={styles.console_inputs}>
 					<input
 						ref={(ref) => this.ref = ref}
-						style={this.store.consoleStyle}
+						style={this.props.data.consoleStyle}
 						type="text"
-						placeholder={this.store.suggestText}
-						value={this.store.consoleText}
+						placeholder={this.props.data.suggestText}
+						value={this.props.data.consoleText}
 						onChange={(e) => this.handleChange(e)}
 					/>
 					<input
 						readOnly
 						type="text"
 						id="suggest"
-						style={this.store.consoleStyle}
-						value={this.store.suggestText}
+						style={this.props.data.consoleStyle}
+						value={this.props.data.suggestText}
 					/>
 				</div>      
           </div>

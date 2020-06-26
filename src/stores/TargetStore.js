@@ -49,14 +49,6 @@ class TargetStore {
     }
 }
 
-// decorate(TargetStore, {
-//     uuid:         observable,
-//     active:       observable,
-//     shaders:      observable,
-//     assignShader:    action,
-//     removeShader: action,
-// });
-
 createModelSchema(TargetStore, {
     uuid:    identifier(),
     active:  primitive(),

@@ -27,23 +27,26 @@ export default @observer class DebugInfo extends React.Component {
 					<h3> currentlyEditing: {
 						this.store.currentlyEditing ? this.store.currentlyEditing.name : 'nothing'
 					} </h3>
-					<h3>targets ({this.store.targets.length})</h3>
+					<h3>targets ({this.store.scenes[0].targets.length})</h3>
 					<ol start="0">
-						{this.store.targets.map((e,i)=>(
-							<div key={i}>
-								<li key={e.uuid}>{e.uuid}</li>
+						{
+							this.store.scenes[0].targets.map((e,i)=>(
+								<div key={i}>
+									<li key={e.uuid}>{e.uuid}</li>
 
-								<ol key={e.uuid+1} start="0">
-									{e.shaders.map((shader)=>(
-										<li key={shader.uuid}>{shader.name}</li>
-									))}
-								</ol>
-							</div>							
-						))}
+									<ol key={e.uuid+1} start="0">
+										{e.shaders.map((shader)=>(
+											<li key={shader.uuid}>{shader.name}</li>
+										))}
+									</ol>
+								</div>							
+							))
+						}
 					</ol>
-					<h3>shaderGraphs ({this.store.shaderGraphs.length})</h3>
+					<h3>shaderGraphs ({this.store.scenes[0].shaderGraphs.length})</h3>
 					<ul>
-						{this.store.shaderGraphs.map((e,i)=>(
+						{
+							this.store.scenes[0].shaderGraphs.map((e, i) => (
 							<div key={i}>
 								<li key={i}>{e.uuid}</li>
 								<ul key={i+1}>
@@ -58,11 +61,12 @@ export default @observer class DebugInfo extends React.Component {
 									</ul>
 								</ul>							
 							</div>
-						))}
+							))
+						}
 					</ul>
 					{this.store.activeGraph && (
 						<React.Fragment>
-							<h3>active node: {this.store.activeGraph.activeNode.name}</h3>							
+							<h3>active node: {this.store.scenes[0].activeGraph.activeNode.name}</h3>							
 						</React.Fragment>							
 					)}
 					

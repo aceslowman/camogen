@@ -63,7 +63,7 @@ export default @observer class PanelGroupComponent extends React.Component {
 
     handleBreakout = () => {
         this.context.store.breakout();
-        this.props.handleExpand(true);
+        this.handleExpand(true);
     };
 
     handleSave = () => this.context.store.save();
@@ -93,7 +93,7 @@ export default @observer class PanelGroupComponent extends React.Component {
                     className="white_button"  
                     onClick={()=>{
                         let shader = this.store.getShader(obj);
-                        this.store.activeGraph.activeNode.setData(shader);
+                        this.store.scenes[0].activeGraph.activeNode.setData(shader);
                     }}
                 >
                     {obj}

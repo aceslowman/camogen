@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 // import * as NODES from './stores';
 
-class ConsoleStore {
+export default class ConsoleStore {
     @observable consoleText = 'camogen';
     
     @observable suggestText = '';
@@ -30,5 +30,3 @@ class ConsoleStore {
         // this.suggestText = matched.length && text ? matched[0] : '';
     }
 }
-
-export default ConsoleStore;
