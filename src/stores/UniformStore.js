@@ -1,7 +1,6 @@
 import uuidv1 from 'uuid/v1';
 import {
-    observable,
-    decorate
+    observable
 } from 'mobx';
 import {
     createModelSchema,
@@ -12,7 +11,10 @@ import {
 import ParameterStore from './ParameterStore';
 
 export default class UniformStore {
-    uuid = uuidv1();
+    @observable uuid = uuidv1();
+    @observable name = null;
+    @observable elements = null;
+    @observable parent = null;
 
     constructor(name = "", elements = [], p) {    
         this.name = name;
@@ -23,13 +25,6 @@ export default class UniformStore {
         })
     }
 }
-
-decorate(UniformStore, {
-    // uuid: observable,
-    name: observable,
-    elements: observable,
-    parent: observable,
-});
 
 createModelSchema(UniformStore, {
     // uuid: identifier(),

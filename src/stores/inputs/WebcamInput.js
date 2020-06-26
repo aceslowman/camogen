@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-    decorate,
-    observable
+    observable,
+    action
 } from "mobx";
 import ShaderStore from "../ShaderStore";
 
 class WebcamInput extends ShaderStore {
-    name = "WEBCAM";
-    grabber = null;
-    controls = null;
+    @observable name = "WEBCAM";
+    @observable grabber = null;
+    @observable controls = null;
 
     constructor(
         target = null,
@@ -48,7 +48,7 @@ class WebcamInput extends ShaderStore {
     }
 
     // extending
-    init() {
+    @action init() {
         this.parameter_graphs = [];
         this.ref = this.target.ref.createShader(
             this.vertex,
@@ -133,7 +133,7 @@ class WebcamInput extends ShaderStore {
     }
 
     // extending
-    update(p) {
+    @action update(p) {
         let shader = this.ref;
         let target = this.target.ref;
 
@@ -177,13 +177,5 @@ class WebcamInput extends ShaderStore {
         }
     }
 }
-
-decorate(WebcamInput, {
-    uuid: observable,
-    name: observable,
-    target: observable,
-    img: observable,
-    node: observable,
-})
 
 export default WebcamInput;

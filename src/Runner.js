@@ -16,7 +16,7 @@ const Runner = (p, store) => {
     p.draw = () => {
         if (store.activeGraph && store.targets.length) {
             for (let target_data of store.targets) {
-                let target = target_data.ref;
+                // let target = target_data.ref;
 
                 for (let shader_data of target_data.shaders) {
                     shader_data.update(p);                                       

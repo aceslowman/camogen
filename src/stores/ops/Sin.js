@@ -1,25 +1,19 @@
 import {
     observable,
-    action,
-    decorate
+    action
 } from 'mobx';
 import OperatorStore from '../OperatorStore';
 import { createModelSchema } from "serializr"
 
 //----------------------------------------------------------------------
 const store = class SinStore extends OperatorStore {
-    name = "Sin";
-    value = 0;
+    @observable name = "Sin";
+    @observable value = 0;
 
-    update = (v) => {
+    @action update = (v) => {
         return Number(Math.sin(v));
     }
 }
-
-decorate(store, {
-    value: observable,
-    update: action,
-});
 
 createModelSchema(store, {
     extends: OperatorStore

@@ -3,9 +3,9 @@ import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import OperatorComponent from './OperatorComponent';
 import Parameter from './ParameterComponent';
-import GraphComponent from './graph/GraphComponent';
+// import GraphComponent from './graph/GraphComponent';
 
-const ParameterGraphComponent = observer(class ParameterGraphComponent extends React.Component {
+export default @observer class ParameterGraphComponent extends React.Component {
 
 	static contextType = MainContext;
 
@@ -99,6 +99,4 @@ const ParameterGraphComponent = observer(class ParameterGraphComponent extends R
 											
 	    )
 	}
-});
-
-export default ParameterGraphComponent;
+};

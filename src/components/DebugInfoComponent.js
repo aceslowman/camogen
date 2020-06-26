@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import Panel from './ui/PanelComponent';
 
-const DebugInfo = observer(class DebugInfo extends React.Component {
+export default @observer class DebugInfo extends React.Component {
 
 	static contextType = MainContext;
 
@@ -70,6 +70,4 @@ const DebugInfo = observer(class DebugInfo extends React.Component {
 			</Panel>		
 	    )
 	}
-});
-
-export default DebugInfo;
+};

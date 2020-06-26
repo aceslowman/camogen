@@ -1,8 +1,8 @@
 // for electron
-const remote = window.require('electron').remote;
-const dialog = remote.dialog;
-const app = remote.app;
-const fs = window.require('fs');
+// const remote = window.require('electron').remote;
+// const dialog = remote.dialog;
+// const app = remote.app;
+// const fs = window.require('fs');
 
 let shader_types = [
 	// "Glyph",

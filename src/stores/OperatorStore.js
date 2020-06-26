@@ -1,5 +1,5 @@
 import React from 'react';
-import { observable, decorate, action } from 'mobx';
+import { observable, action } from 'mobx';
 import uuidv1 from 'uuid/v1';
 import {
     createModelSchema,
@@ -7,12 +7,12 @@ import {
 } from "serializr"
 
 export default class OperatorStore {
-    uuid     = uuidv1();
-    name     = null;
-    value    = null;
-    modifier = null;
-    parent   = null;
-    inputs   = null;
+    @observable uuid     = uuidv1();
+    @observable name     = null;
+    @observable value    = null;
+    @observable modifier = null;
+    @observable parent   = null;
+    @observable inputs   = null;
 
     constructor(p, mod){
         this.parent = p;
@@ -28,22 +28,14 @@ export default class OperatorStore {
         );
     }
 
-    handleChange = e => {
+    @action handleChange = e => {
         this.modifier = Number(e.target.value);
         this.parent.parent.graph.update();
     }
 
-    init = () => this;
-    update = () => {};
+    @action init = () => this;
+    @action update = () => {};
 }
-
-decorate(OperatorStore, {    
-    name:    observable,
-    value:   observable,
-    inputs:  observable,
-    init:    action,
-    update:  action,
-});
 
 createModelSchema(OperatorStore, {
     name:  primitive(),

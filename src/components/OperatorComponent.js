@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 
-const OperatorComponent = observer(class OperatorComponent extends React.Component {
+export default @observer class OperatorComponent extends React.Component {
 	static contextType = MainContext;
 
     handleRemove = () => {}
@@ -29,6 +29,4 @@ const OperatorComponent = observer(class OperatorComponent extends React.Compone
 			</div>								
 		);
 	}
-});
-
-export default OperatorComponent;
+};

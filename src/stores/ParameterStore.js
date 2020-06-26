@@ -1,4 +1,4 @@
-import { observable, decorate } from 'mobx';
+import { observable } from 'mobx';
 import uuidv1 from 'uuid/v1';
 import {
   createModelSchema,
@@ -8,7 +8,9 @@ import {
 import ParameterGraph from './ParameterGraphStore';
 
 export default class ParameterStore {
-    uuid = uuidv1();
+    @observable uuid = uuidv1();
+    @observable value = null;
+    @observable graph = null;
 
     constructor(
         name = "",
@@ -21,13 +23,6 @@ export default class ParameterStore {
         this.graph.parent = this;
     }
 }
-
-decorate(ParameterStore, {
-    // uuid: observable,
-    name: observable,
-    value: observable,
-    graph: observable,
-});
 
 createModelSchema(ParameterStore, {
     // uuid: identifier(),

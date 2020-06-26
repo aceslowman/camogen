@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 import MainContext from '../../MainContext';
 import styles from './PanelComponent.module.css';
 import { ResizableBox } from 'react-resizable';
-import Draggable from 'react-draggable';
 import 'react-resizable/css/styles.css';
 
 let style = {
@@ -11,7 +10,7 @@ let style = {
 	label: {}
 }
 
-const PanelComponent = observer(class PanelComponent extends React.Component {
+export default @observer class PanelComponent extends React.Component {
 
 	static contextType = MainContext;
 
@@ -60,15 +59,13 @@ const PanelComponent = observer(class PanelComponent extends React.Component {
 		return(
 			<ResizableBox
 				className={`${styles.panel} ${this.state.expand ? 'expanded' : ''}`} 
-				// height={this.state.height}
-				// height={Infinity} 
-				// handle={(<div>drag</div>)}
+				height={Infinity} 		
 				width={this.state.expand ? this.state.width : 20} 
 				onResize={this.onResize} 
 				resizeHandles={['e']}
 				axis={'x'}
 				minConstraints={[170,170]}
-				maxConstraints={[1000,1000]}
+				// maxConstraints={[1000,1000]}
 			>
 				
 					<div className={styles.panel_buttons} style={style.toolbar}>
@@ -103,6 +100,4 @@ const PanelComponent = observer(class PanelComponent extends React.Component {
 			</ResizableBox>				
 	    )
 	}
-});
-
-export default PanelComponent;
+};

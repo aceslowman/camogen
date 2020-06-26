@@ -1,4 +1,4 @@
-import { observable, decorate, action } from 'mobx';
+import { observable, action } from 'mobx';
 import uuidv1 from 'uuid/v1';
 import {
     createModelSchema,
@@ -8,22 +8,22 @@ import {
 import * as NODES from './';
 
 export default class ParameterGraphStore {
-    uuid = uuidv1();
+    @observable uuid = uuidv1();
 
     constructor(n = [], p) {
         this.nodes  = n;
         this.parent = p;
     }
 
-    addNode(type) {
+    @action addNode(type) {
         this.nodes.push(new NODES.all[type](this).init());
     }
 
-    removeNode(node) {
+    @action removeNode(node) {
         this.nodes = this.nodes.filter((item) => item.uuid !== node.uuid);
     }
 
-    update() {        
+    @action update() {        
         let v = 0;
         
         for (let i = 0; i < this.nodes.length; i++) {
@@ -33,12 +33,6 @@ export default class ParameterGraphStore {
         this.parent.value = v;
     }
 }
-
-decorate(ParameterGraphStore, {
-    nodes: observable,
-    addNode: action,
-    removeNode: action,
-});
 
 createModelSchema(ParameterGraphStore, {
     nodes: list(custom(

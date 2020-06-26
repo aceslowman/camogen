@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import Parameter from './ParameterComponent';
 
-const UniformComponent = observer(class UniformComponent extends React.Component {
+export default @observer class UniformComponent extends React.Component {
     static contextType = MainContext;
     
     render() {    
@@ -40,6 +40,4 @@ const UniformComponent = observer(class UniformComponent extends React.Component
             </fieldset>            
         );
     }
-});
-
-export default UniformComponent;
+};

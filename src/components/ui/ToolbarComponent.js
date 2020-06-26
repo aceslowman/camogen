@@ -13,7 +13,7 @@ let style = {
     }
 }
 
-const Toolbar = observer(class Toolbar extends React.Component {
+export default @observer class Toolbar extends React.Component {
 
     static contextType = MainContext;
 
@@ -61,6 +61,4 @@ const Toolbar = observer(class Toolbar extends React.Component {
             </div>                            
         );
     }
-});
-
-export default Toolbar;
+};

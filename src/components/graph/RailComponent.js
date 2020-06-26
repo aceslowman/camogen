@@ -4,7 +4,7 @@ import MainContext from '../../MainContext';
 
 import styles from './RailComponent.module.css';
 
-const RailComponent = observer(class RailComponent extends React.Component {
+export default @observer class RailComponent extends React.Component {
     static contextType = MainContext;
 
     q1 = {};
@@ -97,6 +97,4 @@ const RailComponent = observer(class RailComponent extends React.Component {
             </div>
 	    );
 	}
-});
-
-export default RailComponent; 
+};

@@ -1,4 +1,4 @@
-import { observable, action, decorate } from 'mobx';
+import { observable, action } from 'mobx';
 import Shader from './ShaderStore';
 import uuidv1 from 'uuid/v1';
 import {
@@ -11,11 +11,11 @@ import {
 } from "serializr"
 
 class TargetStore {
-    uuid   = uuidv1();
-    ref    = null;
-    parent = null;
-    active = true;
-    shaders = [];
+    @observable uuid   = uuidv1();
+    @observable ref    = null;
+    @observable parent = null;
+    @observable active = true;
+    @observable shaders = [];
 
     constructor(parent) {
         this.parent = parent;
@@ -28,11 +28,11 @@ class TargetStore {
         );
     }
 
-    clear() {
+    @action clear() {
         this.shaders = [];
     }
 
-    assignShader(shader) {
+    @action assignShader(shader) {
         if(this.shaders.includes(shader)) {
             // console.log(shader.name + ' can be recycled')
 
@@ -42,20 +42,20 @@ class TargetStore {
         }
     }
 
-    removeShader(shader) {
+    @action removeShader(shader) {
         this.shaders = this.shaders.filter((item) => item.uuid !== shader.uuid);                
 
         // if (this.shaders.length === 0) this.parent.removeTarget(this);
     }
 }
 
-decorate(TargetStore, {
-    uuid:         observable,
-    active:       observable,
-    shaders:      observable,
-    assignShader:    action,
-    removeShader: action,
-});
+// decorate(TargetStore, {
+//     uuid:         observable,
+//     active:       observable,
+//     shaders:      observable,
+//     assignShader:    action,
+//     removeShader: action,
+// });
 
 createModelSchema(TargetStore, {
     uuid:    identifier(),

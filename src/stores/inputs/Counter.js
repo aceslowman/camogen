@@ -1,19 +1,19 @@
-import React from 'react';
-import { observable, action, decorate } from 'mobx';
+// // import React from 'react';
+import { observable, action } from 'mobx';
 import OperatorStore from '../OperatorStore';
 import {createModelSchema} from "serializr"
 
 //----------------------------------------------------------------------
 const store = class CounterStore extends OperatorStore {
-	name  	 = "Counter";
-	modifier = 100;
-	value 	 = 0;
+	@observable name  	 = "Counter";
+	@observable modifier = 100;
+	@observable value 	 = 0;
 
 	constructor(p, mod=100) {
 		super(p,mod)
 	}
 
-	init = () => {			
+	@action init = () => {			
 		let graph = this.parent;
 		let param = graph.parent;
 		let uniform = param.parent;
@@ -24,20 +24,12 @@ const store = class CounterStore extends OperatorStore {
 		return this;
 	}
 
-	update = () => {
+	@action update = () => {
 		return this.modifier !== 0 
 			? Number(this.value += (1 / this.modifier)) 
 			: Number(this.value);
 	}
 }
-
-decorate(store, {
-	name:   observable,
-	value:  observable,
-	modifier: observable,
-	update: action,		
-	init:   action
-});
 
 createModelSchema(store, {
 	extends: OperatorStore

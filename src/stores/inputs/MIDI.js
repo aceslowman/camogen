@@ -1,23 +1,23 @@
 import React from 'react';
-import { observable, action, decorate } from 'mobx';
+import { observable, action } from 'mobx';
 import OperatorStore from '../OperatorStore';
 import {createModelSchema} from "serializr"
 
 //----------------------------------------------------------------------
 const store = class MIDIStore extends OperatorStore {
-	name     = "MIDI";
-	modifier = 127;
-	value 	 = 0;
-	inputs   = null;
-	activeInput = null;
-	activeChannel = null;
+	@observable name     = "MIDI";
+	@observable modifier = 127;
+	@observable value 	 = 0;
+	@observable inputs   = null;
+	@observable activeInput = null;
+	@observable activeChannel = null;
 	
 	constructor(p, mod = 127) {
 		super(p, mod)		
 		navigator.requestMIDIAccess().then(this.onMIDIConnect);
 	}
 
-	onMIDIConnect = (access) => {
+	@action onMIDIConnect = (access) => {
 		this.MIDIInputs = [...access.inputs.values()];
 
 		this.inputs = (
@@ -51,7 +51,7 @@ const store = class MIDIStore extends OperatorStore {
 		};
 	}
 
-	handleMIDIChange = (v) => {
+	@action handleMIDIChange = (v) => {
 		if(this.activeChannel === null) this.activeChannel = v.data[1];
 		if(this.activeChannel === v.data[1]){
 			this.value = Number(v.data[2]);
@@ -59,11 +59,11 @@ const store = class MIDIStore extends OperatorStore {
 		}
 	}
 
-	update = () => {
+	@action update = () => {
 		return this.value / this.modifier
 	}
 
-	handleInputSelect = (e) => {
+	@action handleInputSelect = (e) => {
 		this.MIDIInputs.forEach(input=>{			
 			if (input.name === e.target.value) {
 				this.activeInput = input;
@@ -73,19 +73,6 @@ const store = class MIDIStore extends OperatorStore {
 		});
 	}
 }
-
-decorate(store, {
-	name:          observable,
-	value:         observable,
-	modifier: 	   observable,
-	inputs:        observable,
-	activeChannel: observable,
-	update:        action,	
-	onMIDIConnect: action,
-	handleInputSelect: action,
-	handleMIDIChange:  action,
-	init:          	   action
-});
 
 createModelSchema(store, {
 	extends: OperatorStore

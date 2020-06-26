@@ -1,9 +1,9 @@
-import { decorate, observable } from "mobx";
+import { observable, action } from "mobx";
 import ShaderStore from "../ShaderStore";
 
 class ImageInput extends ShaderStore{
-    name = "IMAGE";
-    img = null;
+    @observable name = "IMAGE";
+    @observable img = null;
 
     constructor(
         target = null,
@@ -48,7 +48,7 @@ class ImageInput extends ShaderStore{
     }
 
     // extending
-    init() {
+    @action init() {
         this.parameter_graphs = [];
         this.ref = this.target.ref.createShader(
             this.vertex,
@@ -78,7 +78,7 @@ class ImageInput extends ShaderStore{
     }
 
     // extending
-    update(p) {
+    @action update(p) {
         // let p = this.target.parent.p5_instance;
 
         let shader = this.ref;
@@ -128,13 +128,5 @@ class ImageInput extends ShaderStore{
         }
     }
 }
-
-decorate(ImageInput, {
-    uuid: observable,
-    name: observable,
-    target: observable,
-    img: observable,
-    node: observable,
-})
 
 export default ImageInput;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-import Uniform from './UniformComponent';
+// import Uniform from './UniformComponent';
 
 import styles from './ShaderComponent.module.css';
 
@@ -11,7 +11,7 @@ const style = {
 	},
 };
 
-const ShaderComponent = observer(class ShaderComponent extends React.Component {
+export default @observer class ShaderComponent extends React.Component {
 
 	static contextType = MainContext;
 
@@ -28,9 +28,9 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		this.props.data.component = this;
-	}
+	// componentDidMount() {
+	// 	this.props.data.component = this;
+	// }
 	
 	handleRemove = () => {		
 		this.props.data.node.graph.removeNode(this.props.data.node.uuid);
@@ -120,6 +120,4 @@ const ShaderComponent = observer(class ShaderComponent extends React.Component {
 			</div>
 	    )
 	}
-});
-
-export default ShaderComponent;
+};

@@ -1,11 +1,11 @@
-import { observable, action, decorate } from 'mobx';
-import * as NODES from './stores';
+import { observable, action } from 'mobx';
+// import * as NODES from './stores';
 import Target from './stores/TargetStore';
 import Runner from './Runner';
 import p5 from 'p5';
 import {
   createModelSchema,
-  primitive,
+  // primitive,
   list,
   object,
   serialize,
@@ -14,9 +14,10 @@ import {
   reference,
 } from "serializr";
 import ShaderStore from './stores/ShaderStore';
-import { create, persist } from 'mobx-persist';
+import ConsoleStore from './stores/ConsoleStore';
+import { create } from 'mobx-persist';
 import Graph from './stores/GraphStore';
-import ImageInput from './stores/inputs/ImageInput';
+// import ImageInput from './stores/inputs/ImageInput';
 import WebcamInput from './stores/inputs/WebcamInput';
 const path = require('path');
 
@@ -33,22 +34,19 @@ const app = remote.app;
 const fs = window.require('fs');
 
 class MainStore {
-  p5_instance = null;
+  @observable p5_instance = null;
 
-  shaderGraphs = [];
-  targets      = []; 
+  @observable shaderGraphs = [];
+  @observable targets      = []; 
 
-  consoleText = 'camogen';
-  suggestText = '';  
+  @observable activeTarget    = null;
+  @observable activeGraph     = null;
 
-  activeTarget    = null;
-  activeGraph     = null;
-
-  currentlyEditing = null;
+  @observable currentlyEditing = null;
   
-  shader_list = {};
+  @observable shader_list = {};
 
-  show_splash = false;
+  @observable console = new ConsoleStore();
 
   constructor() {  
     this.p5_instance = new p5(p => Runner(p, this));    
@@ -90,15 +88,16 @@ class MainStore {
     }); 
   }
 
-  resetAndClear() {
-    console.log('clearing from store')
-    this.targets.forEach(e=>{
-      e.clear();
-    });
-    this.activeGraph.clear();
+  @action resetAndClear() {
+    if(window.confirm('this will clear all shaders, continue?')){
+      this.targets.forEach(e => {
+        e.clear();
+      });
+      this.activeGraph.clear();
+    }
   }
 
-  assignTargets(queue) {
+  @action assignTargets(queue) {
     queue.forEach(node => {
       if(node.data) {      
         if (this.targets.length && this.targets[node.branch_index]) {
@@ -114,12 +113,12 @@ class MainStore {
     });
   }
 
-  addTarget(target = new Target(this)) {
+  @action addTarget(target = new Target(this)) {
     this.targets.push(target);
     return target;
   }
 
-  getShader(name = null) {
+  @action getShader(name = null) {
     if(name === null) {
       console.log(this.shader_list)
     } else if(Object.keys(this.shader_list).includes(name)){
@@ -130,14 +129,13 @@ class MainStore {
     } 
   }
 
-  getShaderInput(name = null, graph = null) {
+  @action getShaderInput(name = null, graph = null) {
     // temporary
     // return new ImageInput();    
     return new WebcamInput();
   }
 
-  async loadShaders() {
-    console.log('app.isPacked', app.isPackaged)
+  @action async loadShaders() {
     let default_shaders_path = app.isPackaged 
       ? path.join(app.getAppPath(), '../shaders')
       : path.join(app.getAppPath(), 'shaders');
@@ -174,45 +172,23 @@ class MainStore {
     }  
   }
 
-  consoleChanged() {
-    switch (this.consoleText) {
-      case 'clear':
-        this.targets = [];
-        this.consoleText = "";
-        this.consoleStyle = {color:'black'};
-        break;
-      default:        
-        this.activeTarget.addShader(this.consoleText);
-        this.consoleText = "";
-        this.suggestText = "";
-        break;
-    }
-  }
-
-  suggest(text) {
-    const regex = new RegExp("^"+text+".*","g");
-    const matched = NODES.shader_types.filter(t=>t.match(regex));
-
-    this.suggestText = matched.length && text ? matched[0] : '';
-  }
-
-  addShaderGraph(t = new Graph(this)) {
+  @action addShaderGraph(t = new Graph(this)) {
     this.shaderGraphs.push(t);
     return this.shaderGraphs.length;
   }
 
-  removeShaderGraph(graph) {
+  @action removeShaderGraph(graph) {
     this.shaderGraphs = this.shaderGraphs.filter((item) => item !== graph);
     if (this.activeGraph === graph) {
       this.activeGraph = this.shaderGraphs[0];
     }
   }
 
-  edit(node) {
+  @action edit(node) {
     this.currentlyEditing = node.data;
   }
 
-  save() {
+  @action save() {
     let options = {
       title: 'testFile',
       defaultPath: app.getPath("desktop"), 
@@ -232,7 +208,7 @@ class MainStore {
     }).catch(err => console.error(err));
   }
 
-  load() {
+  @action load() {
     dialog.showOpenDialog().then((f) => {
       let content = f.filePaths[0];
       fs.readFile(content, 'utf-8', (err, data) => {
@@ -254,13 +230,13 @@ class MainStore {
     }).catch(err => {/*alert(err)*/});
   }
 
-  breakout() {
+  @action breakout() {
     let new_window = window.open('/output_window.html');
     new_window.gl = this.p5_instance.canvas.getContext('2d'); 
     // new_window.dimensions = []
   }
 
-  async snapshot() {
+  @action async snapshot() {
     var dataURL = this.p5_instance.canvas.toDataURL("image/png");
 
     var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
@@ -304,32 +280,10 @@ class MainStore {
   }
 }
 
-decorate(MainStore, {  
-  consoleText:     observable,  
-  suggestText:     observable,  
-  shader_list:     observable,
-  targets:         [persist('list', Target), observable],  
-  shaderGraphs:    [persist('list', Graph), observable],
-  activeGraph:     [persist('object', Graph), observable],
-  show_splash:     observable,
-  currentlyEditing:observable,
-  resetAndClear:   action,
-  consoleChanged:  action,
-  suggest:         action,
-  addGraph:        action,
-  removeGraph:     action,
-  save:            action, 
-  load:            action, 
-  edit:            action,
-  snapshot:        action,
-  breakout:        action,
-});
-
 createModelSchema(MainStore, {
   shaderGraphs: list(object(Graph)),
   targets:      list(object(Target)),
   activeGraph:  reference(Graph),
-  show_splash:  primitive(),  
 });
 
 const mainStore = new MainStore();

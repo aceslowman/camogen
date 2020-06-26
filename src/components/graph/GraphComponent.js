@@ -6,7 +6,7 @@ import Rail from './RailComponent';
 
 import styles from './GraphComponent.module.css';
 
-const GraphComponent = observer(class GraphComponent extends React.Component {
+export default @observer class GraphComponent extends React.Component {
     static contextType = MainContext;   
     rows = [];
 
@@ -91,6 +91,4 @@ const GraphComponent = observer(class GraphComponent extends React.Component {
 			</Panel>
 	    )
 	}
-});
-
-export default GraphComponent;
+};

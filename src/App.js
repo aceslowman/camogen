@@ -6,7 +6,6 @@ import './App.css';
 import ConsoleBar from './components/ConsoleBarComponent';
 import Graph from './components/graph/GraphComponent';
 import Shelf from './components/shelf/ShelfComponent';
-import Splash from './components/SplashComponent';
 import DebugInfo from './components/DebugInfoComponent';
 import Help from './components/HelpComponent';
 import PanelGroup from './components/ui/PanelGroupComponent';
@@ -53,7 +52,6 @@ const App = observer(class App extends React.Component {
         <div id="APP">          
           <div id="WORKAREA">    
             <div id="WORKAREA_inner" ref={this.workAreaRef}>
-              { this.store.show_splash && <Splash /> }
 
                 {this.store.shaderGraphs.map((graph,i)=>{
                   return (

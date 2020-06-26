@@ -1,38 +1,34 @@
-import { observable, action, decorate, computed } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import Node from './NodeStore';
 import uuidv1 from 'uuid/v1';
 import {
     createModelSchema,
-    primitive,
     map,
     identifier,
     object,
-    reference,
-    deserialize,
-    mapAsArray,
 } from "serializr"
 
-function findNodeById(uuid, callback) {
-    // let result = this.nodes.find((item) => item.uuid !== uuid);
-    let result = "";
-    callback(null, result);
-}
+// function findNodeById(uuid, callback) {
+//     // let result = this.nodes.find((item) => item.uuid !== uuid);
+//     let result = "";
+//     callback(null, result);
+// }
 
 class GraphStore {
-    uuid   = uuidv1();
-    active = true;
-    parent = null;
-    activeNode = null;
+    @observable uuid   = uuidv1();
+    @observable active = true;
+    @observable parent = null;
+    @observable activeNode = null;
 
     // for key binding focus
-    focused = false;
+    @observable focused = false;
 
     // NOTE: toggle to force a re-render in React
-    updateFlag = false;
+    @observable updateFlag = false;
 
-    nodes = {};
+    @observable nodes = {};
 
-    keymap = {
+    @observable keymap = {
 
     }
 
@@ -76,14 +72,13 @@ class GraphStore {
         this.addNode(node).select();   
     }    
 
-    clear() {
-        console.log('clearing graph')
+    @action clear() {
         this.nodes = {};
         this.addNode().select();
         this.update(); 
     }
 
-    update() {
+    @action update() {
         let update_queue = this.calculateBranches();        
         this.afterUpdate(update_queue);
         
@@ -95,7 +90,7 @@ class GraphStore {
         this.updateFlag = !this.updateFlag;
     }
 
-    addNode(node = new Node(this, null, 'NEW NODE')) {
+    @action addNode(node = new Node(this, null, 'NEW NODE')) {
         node.graph = this;
         
         this.nodes = {
@@ -106,7 +101,7 @@ class GraphStore {
         return node;
     }
 
-    removeNode(uuid) {
+    @action removeNode(uuid) {
         let node = this.nodes[uuid];
 
         if (node.parents[0])
@@ -122,7 +117,7 @@ class GraphStore {
         this.update();
     }
 
-    traverse(f = null, depthFirst = false) {
+    @action traverse(f = null, depthFirst = false) {
         let out = [];
         let container = [this.root];
         let next_node;
@@ -148,7 +143,7 @@ class GraphStore {
         return out;
     }
 
-    distanceBetween(a, b) {
+    @action distanceBetween(a, b) {
         let node = a;
         let count = 0;
 
@@ -160,7 +155,7 @@ class GraphStore {
         return count;
     }
 
-    calculateBranches() {
+    @action calculateBranches() {
         let current_branch = 0;
         let queue = [];
 
@@ -190,17 +185,17 @@ class GraphStore {
         return queue;
     }
 
-    afterUpdate = (t) => {        
+    @action afterUpdate = (t) => {        
     }
 
-    getNodeById(uuid) {
+    @action getNodeById(uuid) {
         let node = this.nodes[uuid];
 
         if(!node) console.error(`node was not found!`, uuid);
         return node;
     }
 
-    toggleFocus() {
+    @action toggleFocus() {
         this.focused = !this.focused;
 
         if (this.focused) {
@@ -212,7 +207,7 @@ class GraphStore {
         }
     }
 
-    get root() {
+    @computed get root() {
         let keys = Object.keys(this.nodes);        
         let node = this.nodes[keys[0]]; 
 
@@ -223,41 +218,20 @@ class GraphStore {
         return node;
     }
 
-    get nodeCount() {
+    @computed get nodeCount() {
         return Object.keys(this.nodes).length;
     }
 
-    get nodesArray() {
+    @computed get nodesArray() {
         return Object.keys(this.nodes).map((uuid)=>this.getNodeById(uuid))
     }
 
-    set focused(e) {
-        this.focused = e;
+    // @computed set focused(e) {
+    //     this.focused = e;
         
-        return this.focused;
-    }
+    //     return this.focused;
+    // }
 }
-
-decorate(GraphStore, {
-    uuid:              observable,
-    nodes:             observable,
-    activeNode:        observable,
-    updateFlag:        observable,  
-    focused:           observable,
-    update:            action,
-    afterUpdate:       action,
-    traverse:          action,
-    distanceBetween:   action,
-    calculateBranches: action,
-    getNodeById:       action,
-    addNode:           action,
-    removeNode:        action,
-    toggleFocus:       action,
-    clear:             action,
-    root:              computed,
-    nodeCount:         computed,
-    nodesArray:        computed,
-});
 
 createModelSchema(GraphStore, {
     uuid:    identifier(),

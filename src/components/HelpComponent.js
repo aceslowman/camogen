@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import Panel from './ui/PanelComponent';
 
-const HelpComponent = observer(class HelpComponent extends React.Component {
+export default @observer class HelpComponent extends React.Component {
 
 	static contextType = MainContext;
 
@@ -72,6 +72,4 @@ const HelpComponent = observer(class HelpComponent extends React.Component {
 			</Panel>		
 	    )
 	}
-});
-
-export default HelpComponent;
+};

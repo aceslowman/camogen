@@ -10,7 +10,7 @@ import "ace-builds/src-noconflict/mode-glsl";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/webpack-resolver";
 
-const EditorComponent = observer(class EditorComponent extends React.Component {
+export default @observer class EditorComponent extends React.Component {
     static contextType = MainContext;  
 
     constructor() {
@@ -160,6 +160,4 @@ const EditorComponent = observer(class EditorComponent extends React.Component {
 			</Panel>
 	    )
 	}
-});
-
-export default EditorComponent;
+};

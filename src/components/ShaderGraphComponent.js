@@ -5,7 +5,7 @@ import Panel from './ui/PanelComponent';
 import Shader from './ShaderComponent';
 import Slot from './SlotComponent';
 
-const ShaderGraphComponent = observer(class ShaderGraphComponent extends React.Component {
+export default @observer class ShaderGraphComponent extends React.Component {
 	static contextType = MainContext;
 	slots = [];
 	rows  = [];
@@ -121,6 +121,4 @@ const ShaderGraphComponent = observer(class ShaderGraphComponent extends React.C
 			</Panel>
 	    )
 	}
-});
-
-export default ShaderGraphComponent;
+};

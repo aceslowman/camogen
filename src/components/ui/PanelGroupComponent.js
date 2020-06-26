@@ -4,11 +4,11 @@ import { observer } from 'mobx-react';
 import Toolbar from './ToolbarComponent';
 
 import styles from './PanelGroupComponent.module.css';
-import {Rnd} from 'react-rnd';
+// import {Rnd} from 'react-rnd';
 import { ResizableBox } from 'react-resizable';
 
 
-const PanelGroupComponent = observer(class PanelGroupComponent extends React.Component {
+export default @observer class PanelGroupComponent extends React.Component {
 	static contextType = MainContext;
 
 	constructor(props) {
@@ -213,6 +213,4 @@ const PanelGroupComponent = observer(class PanelGroupComponent extends React.Com
 			</ResizableBox>
 	    );
 	}
-});
-
-export default PanelGroupComponent; 
+};

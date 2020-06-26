@@ -12,7 +12,6 @@ import {
 import {
     observable,
     computed,
-    decorate,
     action
 } from 'mobx';
 
@@ -29,22 +28,21 @@ const app    = remote.app;
 const fs     = window.require('fs');
 
 class ShaderStore {
-    uuid      = uuidv1();
-    name      = "";
-    uniforms  = [];
-    precision = "";
-    vert      = "";
-    frag      = "";
-    ref       = null;
-    // component = null;
-    controls  = [];
-    target    = null;
-    node      = null;
+    @observable uuid      = uuidv1();
+    @observable name      = "";
+    @observable uniforms  = [];
+    @observable precision = "";
+    @observable vert      = "";
+    @observable frag      = "";
+    @observable ref       = null;
+    @observable controls  = [];
+    @observable target    = null;
+    @observable node      = null;
 
-    inputs  = [];
-    outputs = ["out"];
+    @observable inputs  = [];
+    @observable outputs = ["out"];
 
-    operatorUpdateGroup = [];
+    @observable operatorUpdateGroup = [];
 
     constructor(
         target, 
@@ -62,7 +60,7 @@ class ShaderStore {
         this.extractUniforms();
     }
 
-    init() {
+    @action init() {
         this.parameter_graphs = [];
         this.ref = this.target.ref.createShader(
             this.vertex,
@@ -98,7 +96,7 @@ class ShaderStore {
         return this;
     }
 
-    update(p) {
+    @action update(p) {
         let shader = this.ref;
         let target = this.target.ref;
 
@@ -150,7 +148,7 @@ class ShaderStore {
         }
     }
 
-    load() {
+    @action load() {
         dialog.showOpenDialog().then((f) => {
             let content = f.filePaths[0];
             fs.readFile(content, 'utf-8', (err, data) => {
@@ -173,7 +171,7 @@ class ShaderStore {
         });
     }    
 
-    extractUniforms() { 
+    @action extractUniforms() { 
         const builtins = ["resolution"];
         
         let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9]+);\s+\/?\/?\s?({(.*?)})?/g
@@ -268,7 +266,7 @@ class ShaderStore {
         })
     }
 
-    async save() {        
+    @action async save() {        
         let path = `${app.getPath("userData")}/shaders`;
 
         const show_dialog = true;
@@ -310,40 +308,18 @@ class ShaderStore {
         }    
     }
 
-    get vertex() {
+    @computed get vertex() {
         return this.precision + this.vert;
     }
 
-    get fragment() {
+    @computed get fragment() {
         return this.precision + this.frag;
     }
 
-    onRemove() {
+    @action onRemove() {
         this.target.removeShader(this);
     }
 }
-
-decorate(ShaderStore, {
-    uuid:                observable,
-    ref:                 observable,
-    component:           observable,
-    target:              observable,
-    name:                observable,
-    uniforms:            observable,
-    precision:           observable,
-    vert:                observable,
-    frag:                observable,
-    operatorUpdateGroup: observable,    
-    inputs:              observable,
-    outputs:             observable,
-    node:                observable,
-    vertex:              computed,
-    fragment:            computed,
-    onRemove:            action,
-    init:                action,
-    save:                action,
-    load:                action,
-});
 
 createModelSchema(ShaderStore, {
     uuid:             identifier(),

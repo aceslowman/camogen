@@ -7,7 +7,7 @@ import styles from './ConsoleBarComponent.module.css';
 const remote = window.require('electron').remote;
 const app = remote.app;
 
-const ConsoleBarComponent = observer(class ConsoleBar extends React.Component {
+export default @observer class ConsoleBar extends React.Component {
 
 	static contextType = MainContext;
 
@@ -69,6 +69,4 @@ const ConsoleBarComponent = observer(class ConsoleBar extends React.Component {
           </div>
 		);
 	}
-});
-
-export default ConsoleBarComponent;
+};

@@ -4,7 +4,7 @@ import MainContext from '../../MainContext';
 import Panel from '../ui/PanelComponent';
 import styles from './ShelfComponent.module.css';
 
-const ShelfComponent = observer(class ShelfComponent extends React.Component {
+export default @observer class ShelfComponent extends React.Component {
     static contextType = MainContext;   	
 
 	render() {	
@@ -21,6 +21,4 @@ const ShelfComponent = observer(class ShelfComponent extends React.Component {
 			</Panel>
 	    )
 	}
-});
-
-export default ShelfComponent;
+};
