@@ -1,0 +1,42 @@
+.panel {    
+    color: white;    
+    display: flex;
+    flex-flow: column;    
+    flex-grow: 0;
+}
+
+.panel_buttons {
+    display: flex;
+    background-color: black;
+    align-content: center;
+    align-items: center;
+    border: 1px solid white;
+    /* box-sizing: border-box; */
+    word-break: break-all;
+    z-index: 1;   
+    font-size: 1.1em;
+}
+
+.panel_buttons button:hover {
+    color: black;
+    background-color: white;
+}
+
+.panel_buttons > label {
+    color: white;
+    background-color: black;    
+}
+
+.panel_content {    
+    overflow-y: auto;
+    box-sizing: border-box;
+    flex-grow: 2;
+    border: 1px dotted white;
+    max-height: -webkit-fill-available;
+    border-top: none;
+}
+
+.expanded {
+    flex-grow: 2 !important;
+}
+

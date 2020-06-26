@@ -1,0 +1,33 @@
+.panel_group { 
+    border: 1px solid white;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.panel_group > div {
+    display: flex !important;
+    flex-flow: column;
+    height:100%;
+    width:100%;
+}
+
+.panel_group_container {
+    height: 100%;
+    display: flex;
+    flex-flow: row;
+    padding: 15px;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.fullscreen {
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    align-items: center;
+    box-sizing: border-box;
+    border: none;
+}
+
+
+

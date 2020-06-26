@@ -1,5 +1,3 @@
-# Camogen
+# CAMOGEN
 
-A pattern generator. 
-
-camogen.aceslowman.com
+a visuals synthesizer built on webgl

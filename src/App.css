@@ -1,107 +1,669 @@
+html {
+  font-size: 100%;
+}
 
 html,
-body, #root {
+body,
+#root {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: monospace;
+  font-family: 'IBM Plex Mono', monospace;
+  /* font-family: 'Cousine', monospace; */
+  /* font-family: 'Ubuntu Mono', monospace; */
+  overflow: hidden;
 }
 
-#flexcontainer {
-  display: flex;
-  flex-direction: row;
-  /* justify-content:space-between; */
-  justify-content: center;
-  align-items: center;
-  align-content: stretch;
-  height: 100%;
-  box-sizing: border-box;
-  overflow:hidden;
+input {
+  font-family: 'IBM Plex Mono', monospace;
+  /* font-family: 'Cousine', monospace; */
+  /* font-family: 'Ubuntu Mono', monospace; */
+  box-sizing: border-box;  
+}
+
+button {
+  font-family: 'IBM Plex Mono', monospace;
+  /* font-family: 'Cousine', monospace; */
+  /* font-family: 'Ubuntu Mono', monospace; */
+  padding: 3px 5px;
   background-color: black;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
 
-#flexcontainer > div  {
-  margin : 0;
-  padding: 0;
-  box-sizing: border-box;
-  width: 50%;
+ol li {
+  padding: 5px 0px;
 }
 
-#textcontainer {
+label {
+  font-size: 0.75em;
+}
+
+legend {
+  font-size: 0.75em;
+}
+
+button:hover {
   background-color: white;
-  text-align: center;
-  border: 6px dashed black;
-  width: 50%;
-  height: 100%;
-  padding: 15px;
-  display: flex;
-  flex-flow: wrap;
-  justify-content: center;
-  /* align-content: flex-start; */
-  align-items: center;
-  align-content: center;
-  flex-flow: column;
+  color: black;
 }
 
-#textcontainer_top  {
-  /* background-color: orange; */
-  /* width:100%; */
-  padding-bottom:30px;
+button:focus {
+  outline: 0;
 }
 
-#textcontainer_inner {
-  /* background-color: red; */
-  display:flex;
-  flex-flow:wrap;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height:100%;
-  /* align-content: center; */
-  overflow-y: scroll;
-  flex-wrap:wrap;
-}
-
-#textcontainer_bottom {
-  /* background-color: green; */
-  margin:15px 30px;
-}
-
-#canvascontainer {
-  width:50%;
+.black_button {
+  color: white;
   background-color: black;
+  border: none;
+  /* border-bottom: 1px solid white; */
+  cursor: pointer;
+}
+
+.white_button {
+  color: black;
+  background-color: white;
+  border: none;
+  /* border-bottom: 1px solid black; */
+  cursor: pointer;
+}
+
+.large_symbol {
+  font-size: 1.1em;
+  padding: 0px 5px;
+  padding-bottom: 2px;
+  background-color: transparent;
+}
+
+.drag_handle {
+  cursor: move;
 }
 
 #defaultCanvas0 {
-  /* flex: 0 1 auto; */
   display: block;
+  position: absolute;
+  z-index: -1;
+  /* top: 0px; */
 }
 
-#buttoncontainer {
+.invert {
+  color: white !important;
+  background-color: black !important; 
+}
+
+.invert:hover {
+  background-color: black !important;
+  color: white !important;
+}
+
+
+/* app.js */
+#APP {
+  height: 100%;
   width: 100%;
-  /* background-color: aqua; */
-  padding: 15px 0px;
-}
-
-fieldset  {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
 }
 
-.flex-inner-wrapper {
+#WORKAREA {
+  flex-grow: 1;
+  background-color: transparent;
+  display: flex;
+  align-items: flex-end;
+  align-content: center;
+  flex-flow: column;
+  /* overflow: auto; */
+}
+
+#WORKAREA_inner {
+  /* display: flex; */
   display: inherit;
-  flex-flow: inherit;
-  justify-content: inherit;
-  align-items: inherit;
+  /* flex-flow: wrap;   */
+  align-items: center;
+  justify-content: space-evenly;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  /* overflow: auto; */
 }
 
-.invert  {
+/* Shader.js */
+
+.uniform_array {
+  padding: 2px;
+  margin: 5px 0px;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 56px;
+}
+
+.uniform_array > div{  
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 0px;
+  justify-content: center;
+}
+
+/* ParameterDisplay.js */
+
+/* Parameter.js */
+
+.parameter_wrapper {
+  display: inline-block;
+  width: 100%;  
+}
+
+.parameter_wrapper>fieldset {
+  padding: 2px;
+}
+
+.parameter_wrapper>fieldset>div>legend {
+  padding: 3px;
+  font-style: italic;
+  background-color:white;
+  color:black;
+} 
+
+.parameter_wrapper > fieldset > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.parameter_wrapper>fieldset>div>input {
+  padding-left: 5px;
+
+}
+
+/* ConsoleBar.js */
+
+
+
+/* FieldContainer.js */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.react-resizable-handle-se {
+    border: 4px solid white;
+    border-style: groove;
+    background-image: none !important;
+    border-top: none;
+    border-left: none;
+}
+
+.react-resizable-handle-e {
+  right: 0;
+  /* -webkit-transform: rotate(315deg); */
+  border: 4px solid white;
+  border-style: groove;
+  background-image: none !important;
+  border-top: none;
+  border-bottom: none;
+  border-left: none;
+  /* transform: rotate(315deg); */
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Node.js */
+
+.node {
+  /* margin: 10px; */
+  background-color: black;
+  border: 1px solid white;  
+  display: flex;
+  flex-direction: row;
+  transition: max-height 800ms ease-in-out;
+  z-index: 0;
+  max-height: auto;
+  box-sizing: border-box;
+  transform-style: preserve-3d;
+}
+
+.node input {
+  width: 100%;
+}
+
+.nodeContainer {
+  transition: max-height 800ms ease-in-out;
+}
+
+.nodeInner {
+  transition: max-height 800ms ease-in-out;  
+}
+
+.nodeInner > div {
+  min-height: 110px;
+}
+
+
+.nodeTools {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nodeTools div {
+  display:flex;
+  flex-direction: column;
+} 
+
+.nodeToolsLabel {
+  /* padding-top: 15px; */
+  cursor: default;
+  /* border-bottom:1px solid white; */
+  /* border-left: 1px solid white; */
+}
+
+.nodeToolsLabel:hover {
+  background-color: black;
+  color: white;
+}
+
+.node .nodeContainer {
+  width: 250px;
+  border: 1px solid black;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; 
+  overflow: hidden; 
+}
+
+.node .nodeContainer > legend {		
+  font-weight: bold;
+  /* font-size: 1.6em; */
+  cursor: grab;
+  width: 100%;
+  padding: 2px 10px;
+  /* padding-top: 0px; */
+  box-sizing: border-box;
+  /* text-align: center; */
+}
+
+.nodeContainer > legend {
+  padding: 0px 10px;
+}
+
+.nodeContainer {
+  display:flex;
+  flex-flow: row;
+}
+
+.nodeInner {  	
+  flex-flow: row wrap;
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;   
+  /* padding-bottom: 5px; */
+}
+
+.node .nodeInner > div {
+  padding: 0px 10px;
+  padding-top: 15px;
+}
+
+.nodeEdit {
+  color: white;
+  overflow: hidden;
+  transition: max-width 800ms ease-in-out;
+  /* height: 500px; */
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.parameter_graph {
+  display:flex;
+  flex-direction: row;
+  height: 100%;
+  padding: 15px;
+}
+
+.parameter_graph > fieldset {
+  border: 1px dotted white;  
+  flex-grow: 2;
+}
+
+.parameter_graph>fieldset>label{
+  position: relative;
+}
+
+.parameter_graph>fieldset>div{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+}
+
+.parameter_graph > div {
+  width:80px;
+  padding-left:15px;
+}
+
+.parameter_graph h4 {
+  border-bottom: 1px dashed white;
+}
+
+.operator {
+  display: flex;
+  padding: 5px 10px;
+  margin: 5px 0px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px dotted;
+}
+
+.operator h3 {
+  padding: 0px 10px;
+  margin: 0;
+}
+
+.operator button {
+  border-right: 1px dotted white;
+}
+
+.operator input {
+  width: 60px;
+}
+
+.operator fieldset {
+  display: inherit;
+  border-style: groove;
+}
+
+
+/* Splash */
+
+#SPLASH {    
+  color: white;
+  padding: 15px;
+  font-size: 0.8em;
+}
+
+.anylets {
+  width: 100%;
+  height: 18px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.anylet {  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 5px;
+  height: 100%;
+  box-sizing: border-box;
+  align-self: flex-end;
+}
+
+.anylet label {
+  /* font-size: 0.9em; */
+  margin-right: 15px;
+}
+
+.jack {
+  height: 10px;
+  width: 10px;
+  background-color: white;
+  border: 1px solid black;
+  cursor: pointer;
+  position: relative;  
+  border-radius: 50%;
+  z-index: 4;
+}
+
+.jack:hover {
+  background-color: black !important;
+}
+
+.port {
+  height: 10px;
+  width: 10px;
+  background-color: gray;
+  border: 1px solid black;
+  position: absolute;
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.connectionCanvas {
+  pointer-events: none;  
+  position: absolute;
+  border: 1px solid white;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+/* Slot */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.slot {
+  /* border: 1px dashed white; */  
+  padding: 5px;
+  min-height: 63px;
+  min-width: 270px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing:border-box;
+}
+
+.slot > label {
   color: white;
   background-color: black;
-  padding: 5px;
+  padding: 5px 15px;
+  border: 1px solid white;
+  font-weight: bold;
+  position: absolute;
 }
 
-#buttoncontainer button{
-  margin: 0px 3px;
+.slotRow {
+  display: flex;
+  /* border: 1px solid orange;
+  border-top: none */
+}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.shaderGraphs {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+.graph_rail {
+  /* background-color:yellow; */
+  /* border: 3px dashed red; */
+  
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  position: absolute; 
+  box-sizing: border-box;
+  z-index: -1;
+}
+
+.shader_graph > div{
+  flex-flow: column-reverse wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* height: 100%;
+  width: 100%; */
+}
+
+.graph_rows {
+  /* background-color:purple; */
+  z-index: 1;
+} 
+
+.graph_rails {
+  background-color:blue;
+  position: relative;
+  top: 0px;
+  /* z-index: 0; */
+}
+
+.shader_graph {
+  background-color:rgba(0,0,0,0.8);
 }
