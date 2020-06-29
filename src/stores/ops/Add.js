@@ -3,13 +3,25 @@ import OperatorStore from '../OperatorStore';
 import {createModelSchema} from "serializr"
 
 //----------------------------------------------------------------------
-const store = class AddStore extends OperatorStore{
+export default class AddStore extends OperatorStore {
 	@observable name 	  = "Add";
 	@observable value 	  = 0;
 	@observable modifier  = 0;
+	@observable inputs 	  = ["input1","input2"];
 	
-	constructor(p, mod = 5) {	
-		super(p, mod);
+	constructor(parent, mod = 5) {	
+		super(parent, mod);
+	}
+
+	@action init = () => {
+		let graph = this.node;
+		let param = graph.parent;
+		let uniform = param.parent;
+		let shader = uniform.parent;
+
+		shader.operatorUpdateGroup.push(this)
+
+		return this;
 	}
 
 	@action update = (v) => {		
@@ -17,8 +29,6 @@ const store = class AddStore extends OperatorStore{
 	}
 }
 
-createModelSchema(store, {
+createModelSchema(AddStore, {
 	extends: OperatorStore
 });
-
-export default store;

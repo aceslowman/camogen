@@ -1,4 +1,4 @@
-html {
+1html {
   font-size: 100%;
 }
 
@@ -63,15 +63,15 @@ button:focus {
 }
 
 .white_button {
-  color: black;
-  background-color: white;
-  border: none;
+  color: black !important;
+  background-color: white !important;
+  border: none !important;
   /* border-bottom: 1px solid black; */
-  cursor: pointer;
+  /* cursor: pointer !important; */
 }
 
 .large_symbol {
-  font-size: 1.1em;
+  font-size: 1.3em;
   padding: 0px 5px;
   padding-bottom: 2px;
   background-color: transparent;
@@ -427,37 +427,6 @@ button:focus {
 
 
 
-.parameter_graph {
-  display:flex;
-  flex-direction: row;
-  height: 100%;
-  padding: 15px;
-}
-
-.parameter_graph > fieldset {
-  border: 1px dotted white;  
-  flex-grow: 2;
-}
-
-.parameter_graph>fieldset>label{
-  position: relative;
-}
-
-.parameter_graph>fieldset>div{
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: center;
-}
-
-.parameter_graph > div {
-  width:80px;
-  padding-left:15px;
-}
-
-.parameter_graph h4 {
-  border-bottom: 1px dashed white;
-}
 
 .operator {
   display: flex;
@@ -484,15 +453,6 @@ button:focus {
 .operator fieldset {
   display: inherit;
   border-style: groove;
-}
-
-
-/* Splash */
-
-#SPLASH {    
-  color: white;
-  padding: 15px;
-  font-size: 0.8em;
 }
 
 .anylets {

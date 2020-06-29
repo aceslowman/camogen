@@ -1,12 +1,9 @@
 import React from 'react';
-import MainContext from '../../MainContext';
+import MainContext from '../MainContext';
 import { observer } from 'mobx-react';
 import Toolbar from './ToolbarComponent';
-
 import styles from './PanelGroupComponent.module.css';
-// import {Rnd} from 'react-rnd';
 import { ResizableBox } from 'react-resizable';
-
 
 export default @observer class PanelGroupComponent extends React.Component {
 	static contextType = MainContext;
@@ -24,7 +21,6 @@ export default @observer class PanelGroupComponent extends React.Component {
 	}
 
 	handleResize = (event, {element, size, handle}) => {
-		// console.log(event)
 		this.setState({width: size.width, height: size.height});
 	};
 
@@ -66,9 +62,9 @@ export default @observer class PanelGroupComponent extends React.Component {
         this.handleExpand(true);
     };
 
-    handleSave = () => this.context.store.save();
+    handleSave = () => this.context.store.scenes[0].save();
 
-    handleLoad = () => this.context.store.load();
+    handleLoad = () => this.context.store.scenes[0].load();
 
     handleLib = (e) => {
 		let p_bounds = this.ref.current.getBoundingClientRect();
@@ -86,17 +82,14 @@ export default @observer class PanelGroupComponent extends React.Component {
         this.drawer_items = [];
 
         // retrieve master list of objects
-        for (let obj in this.store.shader_list){               
+        for (let name in this.store.shader_list){               
             this.drawer_items.push((
                 <button 
-                    key={obj}
+                    key={name}
                     className="white_button"  
-                    onClick={()=>{
-                        let shader = this.store.getShader(obj);
-                        this.store.scenes[0].activeGraph.activeNode.setData(shader);
-                    }}
+                    onClick={()=>this.store.scenes[0].shaderGraphs[0].setSelectedByName(name)}
                 >
-                    {obj}
+                    {name}
                 </button>
             ));
         }
@@ -114,7 +107,7 @@ export default @observer class PanelGroupComponent extends React.Component {
 				width={this.state.width} 
 				onResize={this.onResize} 
 				resizeHandles={this.state.fullscreen ? [] : ['e','se','s']}
-				minConstraints={[750,650]}
+				minConstraints={[400,400]}
 				// maxConstraints={[1000,1000]}
 			>
 				<div>

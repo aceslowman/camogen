@@ -8,11 +8,12 @@ import {
     createModelSchema,
     primitive,
     list,
-    object,
     identifier,
     reference,
+    custom,
+    object,
 } from "serializr"
-import ShaderStore from './ShaderStore';
+import NodeDataStore from './NodeDataStore';
 
 class NodeStore {
     @observable uuid  = uuidv1();
@@ -20,14 +21,15 @@ class NodeStore {
     @observable data  = null;
     @observable graph = null;
 
-    @observable branch_index = null;
+    @observable branch_index = null;    
 
-    @observable parents  = [];
+    // filled with null so that mobx never
+    // attempts to access unavailable [0]
+    // (firstChild)
     @observable children = [null];
+    @observable parents = [];
     
     @observable selected = false;
-
-    @observable editingParam = null;
 
     constructor(graph, data, name) {      
         this.data  = data;
@@ -43,14 +45,13 @@ class NodeStore {
         this.data.node = this;
 
         this.mapInputsToParents();
-        this.mapOutputsToChildren();
-
+        
         if(this.graph) this.graph.update();
 
         return this;
     }
     
-    @action mapInputsToParents() {     
+    @action mapInputsToParents() { 
         this.parents = this.data.inputs.map((e,i) => {
             if(this.parents.length && this.parents[i]) {
                 return this.parents[i];
@@ -59,14 +60,7 @@ class NodeStore {
                 return this.addParent(parent, i);
             }                    
         });
-    }
-
-    @action mapOutputsToChildren() {
-        // this destroys the connection to the existing child, 
-        // ignore this for now. this is functionally
-        // multiinput, but single
-        // this.children = this.data.outputs.map(()=>null);
-    }    
+    }   
 
     @action connectParent(parent, index) {
         parent.firstChild = this;
@@ -98,7 +92,7 @@ class NodeStore {
     }
 
     @action edit() {
-        this.graph.parent.edit(this);
+        if(this.graph.edit) this.graph.edit(this);
     }
 
     @action deselect() {
@@ -134,10 +128,6 @@ class NodeStore {
     @computed get hasConnectedParents() {
         return this.parents.some(e => e.data !== null)
     }
-
-    @computed get isBeingEdited() {
-        return this.data === this.graph.parent.currentlyEditing;
-    }
 }
 
 createModelSchema(NodeStore, {
@@ -145,26 +135,18 @@ createModelSchema(NodeStore, {
     name:     primitive(),
     selected: primitive(),
     parents:  list(reference(NodeStore)),
-    children: list(reference(NodeStore)),
-    data:     object(ShaderStore),  
-    // data:     list(custom(
-        // (v) => {
-        //     // serialize
-        //     console.log('serialize',v)
-
-        //     return (v)
-        // },
-        // (v, c) => {
-        //     // deserialize
-        //     console.log('deserialize',c)
-        //     return (v)
-        // },
-    // )), // Shader or Operator
+    children: list(reference(NodeStore)), // causes stack overflow?
+    // data:     object(ShaderStore), 
+    data:     object(NodeDataStore),
+// });
 }, c => {
     let p = c.parentContext.target;
     console.log('Node store factory', p)
-    console.log(c)
-    return new NodeStore(p, c.json.data);
+    console.log('CHECK CONTEXT', c)
+    console.log('node store graph', p.graph)
+    let new_node = new NodeStore(p, c.json.data);
+    console.log('resulting node', new_node)
+    return new_node;
 });
 
 export default NodeStore;

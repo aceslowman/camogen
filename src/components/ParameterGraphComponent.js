@@ -1,102 +1,100 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
+import GraphComponent from './GraphComponent';
+import ShelfComponent from './ShelfComponent';
 import OperatorComponent from './OperatorComponent';
-import Parameter from './ParameterComponent';
-// import GraphComponent from './graph/GraphComponent';
+
+import styles from './ParameterGraphComponent.module.css';
 
 export default @observer class ParameterGraphComponent extends React.Component {
 
 	static contextType = MainContext;
 
 	constructor(props) {
-		super(props);
+		super(props); 
 		this.nodes = [];
 
 		this.ref = React.createRef();
 	}
 
-	generateNodes() {
-		this.nodes = [];
-
-		if (!this.props.data.graph) return;
-		for (let i = 0; i < this.props.data.graph.nodes.length; i++) {
-			let node = this.props.data.graph.nodes[i];
-
-			this.nodes.push((
-				<OperatorComponent key={i} data={node} graph={this.props.data.graph}/>
-			));
-		}
-	}
-
 	render() {
-		const { data } = this.props;
-		if(data) this.generateNodes();		
+		const { data } = this.props;	
+		// should not show up after every op update...
+		console.log('SHOULD APPEAR AFTER ADDING OP',this.props.data)
 
 		return(	
-			<div className="parameter_graph">					
-				<fieldset style={{border: data ? '1px dashed white' : '1px dashed white'}}>
+			<div className={styles.parameter_graph}>					
+				<div className={styles.inner} style={{border: data ? '1px dashed white' : '1px dashed white'}}>
 					{data && (<label>{data.parent.name + ' ' + data.name}</label>)}
-					<div>
 						{!data && (
 						<p><em>double click on a parameter to edit its graph</em></p>
 						)}
-						{this.nodes}
-					</div>										
-					{data && (<Parameter 
-						key={data.uuid}
-						data={data}						
-					/>)}				
-				</fieldset>
-				{/* <Graph
-					data={}
-				/>	 */}
-				{data && (<div>	
+						{ 
+						<React.Fragment>
+							<GraphComponent data={data.graph} />
+							<ShelfComponent style={{'flexShrink': 2, 'border-top': '1px solid white'}}>
+								{data.graph.nodesArray.map((n,j)=>{
+									console.log(n)
+									return (n.data &&
+										<OperatorComponent
+											key={j}
+											data={n.data}							
+										/>
+									)
+								})}                        
+							</ShelfComponent>
+						</React.Fragment>							
+						}																		 
+				</div>
+				
+				{data && (<div className={styles.inventory}>	
 					<h4>input:</h4>				
 					<div>
 						<button onClick={
-							() => data.graph.addNode('MIDI')
+							() => data.graph.setSelectedByName('MIDI')
 						}>midi</button>
 						<button onClick={
-							() => data.graph.addNode('OscListener')
+							() => data.graph.setSelectedByName('OscListener')
 						}>osc</button>
 						<button onClick={
-							() => data.graph.addNode('Counter')
+							() => data.graph.setSelectedByName('Counter')
 						}>counter</button>
 					</div>
 					<h4>ops:</h4>				
 					<div>
 						<button onClick={
-							() => data.graph.addNode('Add')
+							() => data.graph.setSelectedByName('Add')
 						}>+</button>
 						<button onClick={
-							() => data.graph.addNode('Subtract')
+							() => data.graph.setSelectedByName('Subtract')
 						}>-</button>
 						<button onClick={
-							() => data.graph.addNode('Divide')
+							() => data.graph.setSelectedByName('Divide')
 						}>/</button>
 						<button onClick={
-							() => data.graph.addNode('Multiply')
+							() => data.graph.setSelectedByName('Multiply')
 						}>*</button>
 						<button onClick={
-							() => data.graph.addNode('Modulus')
+							() => data.graph.setSelectedByName('Modulus')
 						}>%</button>
 					</div>
 					<h4>trig:</h4>
 					<div>
 						<button onClick={
-							() => data.graph.addNode('Sin')
+							() => data.graph.setSelectedByName('Sin')
 						}>sin</button>
 						<button onClick={
-							() => data.graph.addNode('Cos')
+							() => data.graph.setSelectedByName('Cos')
 						}>cos</button>
 						<button onClick={
-							() => data.graph.addNode('Tan')
+							() => data.graph.setSelectedByName('Tan')
 						}>tan</button>
 					</div>					
 				</div>)}
-			</div>	
-											
+
+				{ data.graph.updateFlag }
+			</div>									
 	    )
 	}
 };

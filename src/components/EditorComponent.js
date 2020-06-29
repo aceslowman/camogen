@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import MainContext from '../../MainContext';
-import ParameterGraph from "../ParameterGraphComponent";
-import Panel from '../ui/PanelComponent';
+import MainContext from '../MainContext';
+import ParameterGraph from "./ParameterGraphComponent";
+import Panel from './PanelComponent';
 import styles from './EditorComponent.module.css';
 
 import AceEditor from "react-ace";
@@ -69,8 +69,7 @@ export default @observer class EditorComponent extends React.Component {
                 collapsed={this.props.collapsed}
 				title="Editor"			
                 className={styles.editor}
-                defaultWidth={500}
-                defaultHeight={500}
+                style={{minWidth:400,flexGrow:2,flexShrink:0}}
 			>		                
                 <div className={styles.toolbar}>
                     <div>
@@ -142,10 +141,13 @@ export default @observer class EditorComponent extends React.Component {
                 }
                 
                 {
-                    (this.props.data && this.state.edit_type === 'param'
+                    (
+                        this.props.data
+                        && this.props.data.selectedParameter
+                        && this.state.edit_type === 'param'
                     ) && ( 
                         <ParameterGraph data = {
-                            this.props.data.node.editingParam
+                            this.props.data.selectedParameter
                         }/>						
                     )
                 }

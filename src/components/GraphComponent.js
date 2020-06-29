@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import MainContext from '../../MainContext';
-import Panel from '../ui/PanelComponent';
+import MainContext from '../MainContext';
 import Rail from './RailComponent';
 
 import styles from './GraphComponent.module.css';
@@ -10,16 +9,8 @@ export default @observer class GraphComponent extends React.Component {
     static contextType = MainContext;   
     rows = [];
 
-    handleFocus = () => {
-        this.props.data.toggleFocus();
-    }
-
-	handleRemove = () => {
-		this.store.removeGraph(this.props.data);
-	}
-
 	generate = () => {
-        let rows = [];
+		let rows = [];
     
 		this.props.data.traverse((node, distance_from_root) => {
 			if (distance_from_root === rows.length) {
@@ -31,7 +22,7 @@ export default @observer class GraphComponent extends React.Component {
                     <Rail 
                         key={node.uuid}    
 						data={node} 						
-						label={node.data.name}
+						label={node.name}
 					/>
 				));
 			} else {				
@@ -70,25 +61,14 @@ export default @observer class GraphComponent extends React.Component {
 
 		this.generate();
 
-		return(
-			<Panel 
-				onRef={ref => this.panelRef = ref}
-				title="Graph"			
-				active={this.store.activeGraph === this.data}
-				// onRemove={this.handleRemove}				
-				onFocus={this.handleFocus}
-				className={styles.graph}
-				style={{
-					backgroundColor: this.props.data.focused ? 'blue' : 'black'
-				}}	
-			>				
-				
+		return(						
+			<div className={styles.graph}>
 				<div className={styles.graph_rows}>
 					{ this.rows }
 				</div>
 
-				{ this.props.data.updateFlag ? '' : '' }
-			</Panel>
+				{ this.props.data.updateFlag }
+			</div>				
 	    )
 	}
 };

@@ -1,44 +1,68 @@
-import { observable, action } from 'mobx';
-import uuidv1 from 'uuid/v1';
 import {
-    createModelSchema,
-    list,
-    custom,
+    createModelSchema
 } from "serializr"
-import * as NODES from './';
+import GraphStore from './GraphStore';
+import { action, computed } from 'mobx';
 
-export default class ParameterGraphStore {
-    @observable uuid = uuidv1();
+export default class ParameterGraphStore extends GraphStore { 
+    @action afterUpdate(queue) {
+        // let v = 0;
 
-    constructor(n = [], p) {
-        this.nodes  = n;
-        this.parent = p;
+        // queue.forEach(node => {
+        //     // console.log(node.name, node)
+        //     // calculate
+        //     // if not root node
+        //     if(node.data) v = node.data.update(v);
+        //     // console.log(v, this.parent)
+
+        //     this.parent.value = v;
+        // });
     }
 
-    @action addNode(type) {
-        this.nodes.push(new NODES.all[type](this).init());
-    }
-
-    @action removeNode(node) {
-        this.nodes = this.nodes.filter((item) => item.uuid !== node.uuid);
-    }
-
-    @action update() {        
+    // experimental
+    @action recalculate() {
         let v = 0;
-        
-        for (let i = 0; i < this.nodes.length; i++) {
-            v = this.nodes[i].update(v);// here 
+
+        let queue = this.calculateBranches();
+        queue.forEach(node => {
+            // console.log(node.name, node)
+            // calculate
+            // if not root node
+            if (node.data) v = node.data.update(v);
+            // console.log(v, this.parent)
+
+            this.parent.value = v;
+        });
+    }
+
+    @action setSelectedByName(name) {
+        // TODO need to delete operator if the node
+        // was occupied
+        let data = this.getOperator(name);
+        this.activeNode.setData(data).select(true);
+        this.update();
+    }
+
+    @action getOperator(name = null) {
+        if (name === null) {
+            console.log(this.mainStore.operator_list)
+        } else if (Object.keys(this.mainStore.operator_list).includes(name)) {
+            return new this.mainStore.operator_list[name](this).init();            
+        } else {
+            console.error(`couldn't find operator named '${name}'`);
+            return null;
         }
+    }
+
+    @computed get mainStore() {
+        return this.parent.parent.parent.node.graph.parent.parent;
+    }
+
+    @action edit() {
         
-        this.parent.value = v;
     }
 }
 
 createModelSchema(ParameterGraphStore, {
-    nodes: list(custom(
-        (v) => ({...v, parent: null}),
-        (v, c) => {
-            return new NODES.all[v.name](c.target,v.modifier).init();
-        },
-    ))
-}, c => new ParameterGraphStore(c.json.nodes, c.parentContext.target));
+    extends: GraphStore
+});

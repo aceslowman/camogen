@@ -2,7 +2,7 @@
     color: white;    
     display: flex;
     flex-flow: column;    
-    flex-grow: 0;
+    /* flex-grow: 0; */
 }
 
 .panel_buttons {
@@ -13,7 +13,7 @@
     border: 1px solid white;
     /* box-sizing: border-box; */
     word-break: break-all;
-    z-index: 1;   
+    /* z-index: 1;    */
     font-size: 1.1em;
 }
 
@@ -37,6 +37,10 @@
 }
 
 .expanded {
-    flex-grow: 2 !important;
+    /* flex-grow: 2 !important; */
 }
 
+.collapsed {
+    flex-grow: 0 !important;
+    min-width: 20px !important;
+}

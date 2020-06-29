@@ -7,13 +7,14 @@ import {
     primitive,
     list,
     object,
+    identifier
 } from "serializr"
 import ParameterStore from './ParameterStore';
 
 export default class UniformStore {
     @observable uuid = uuidv1();
     @observable name = null;
-    @observable elements = null;
+    @observable elements = [];
     @observable parent = null;
 
     constructor(name = "", elements = [], p) {    
@@ -27,10 +28,10 @@ export default class UniformStore {
 }
 
 createModelSchema(UniformStore, {
-    // uuid: identifier(),
+    uuid: identifier(),
     name: primitive(),
     elements: list(object(ParameterStore)),
 }, c => {
-    return new UniformStore(c.json.name, c.json.elements, c.parentContext.target)
+        return new UniformStore(c.json.name, c.json.elements, c.parentContext.target)
     }
 );

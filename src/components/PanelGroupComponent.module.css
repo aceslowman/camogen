@@ -1,5 +1,5 @@
 .panel_group { 
-    border: 1px solid white;
+    /* border: 1px s1olid white; */
     max-height: 100%;
     max-width: 100%;
 }
@@ -14,10 +14,13 @@
 .panel_group_container {
     height: 100%;
     display: flex;
+    /* box-sizing: border-box; */
     flex-flow: row;
-    padding: 15px;
+    /* margin: 15px; */
+    background-color: #070808;
+    overflow: auto;
     align-items: stretch;
-    justify-content: center;
+    justify-content: left;
 }
 
 .fullscreen {
@@ -25,7 +28,7 @@
     height: 100% !important;
     transform: none !important;
     align-items: center;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     border: none;
 }
 

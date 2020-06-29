@@ -5,18 +5,11 @@ import {
     createModelSchema,
     map,
     identifier,
-    object,
+    object
 } from "serializr"
-
-// function findNodeById(uuid, callback) {
-//     // let result = this.nodes.find((item) => item.uuid !== uuid);
-//     let result = "";
-//     callback(null, result);
-// }
 
 class GraphStore {
     @observable uuid   = uuidv1();
-    @observable active = true;
     @observable parent = null;
     @observable activeNode = null;
 
@@ -28,9 +21,7 @@ class GraphStore {
 
     @observable nodes = {};
 
-    @observable keymap = {
-
-    }
+    @observable keymap = {};
 
     onKeyDown(e) {
         // console.log(e.code)
@@ -69,6 +60,8 @@ class GraphStore {
     constructor(parent, node = new Node(this, null, 'NEW NODE')) {
         this.onKeyDown = this.onKeyDown.bind(this);
         this.parent = parent;
+
+        //set initial root node
         this.addNode(node).select();   
     }    
 
@@ -97,7 +90,8 @@ class GraphStore {
             ...this.nodes,
             [node.uuid]: node
         }
-
+        // NOTE: it's a red flag that this triggers so often
+        // console.log('node added!', this.nodes)
         return node;
     }
 
@@ -108,9 +102,7 @@ class GraphStore {
             node.parents[0].children[0] = node.children[0];
         if (node.children[0])
             node.children[0].parents[0] = node.parents[0];
-
-        console.log('next child', node.children[0])
-                
+         
         node.data.onRemove();
         delete this.nodes[uuid];
 
@@ -118,14 +110,14 @@ class GraphStore {
     }
 
     @action traverse(f = null, depthFirst = false) {
-        let out = [];
+        let result = [];
         let container = [this.root];
         let next_node;
         let distance_from_root = 0;
 
         while(container.length) {             
             next_node = container.shift();
-            out.push(next_node.uuid);
+            result.push(next_node.uuid);
             
             if(next_node) {
                 distance_from_root = this.distanceBetween(next_node, this.root);
@@ -136,11 +128,11 @@ class GraphStore {
                     container = depthFirst 
                         ? container.concat(next_node.parents) // depth first search
                         : next_node.parents.concat(container) // breadth first search
-                }                          
+                } 
             }
         }
 
-        return out;
+        return result;
     }
 
     @action distanceBetween(a, b) {
@@ -185,9 +177,6 @@ class GraphStore {
         return queue;
     }
 
-    @action afterUpdate = (t) => {        
-    }
-
     @action getNodeById(uuid) {
         let node = this.nodes[uuid];
 
@@ -225,12 +214,6 @@ class GraphStore {
     @computed get nodesArray() {
         return Object.keys(this.nodes).map((uuid)=>this.getNodeById(uuid))
     }
-
-    // @computed set focused(e) {
-    //     this.focused = e;
-        
-    //     return this.focused;
-    // }
 }
 
 createModelSchema(GraphStore, {

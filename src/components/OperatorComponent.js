@@ -1,32 +1,23 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
+import NodeDataComponent from './NodeDataComponent';
 
 export default @observer class OperatorComponent extends React.Component {
 	static contextType = MainContext;
 
-    handleRemove = () => {}
-    
     handleChange = e => {    
 		this.props.data.modifier = Number(e.target.value);
 		this.props.graph.update();
 	}
-	
-	componentDidUpdate(){
-		console.log('component did update')
-	}
 
 	render() {
-		const { data, graph } = this.props;
+		this.store = this.context.store;
 
-		console.log('rendering',data.inputs)
+		return(
+			<NodeDataComponent data={this.props.data}>
 
-		return (
-            <div className="operator">
-				<button onClick={()=>graph.removeNode(data)}>x</button>
-				<label>{data.name}</label>
-				{data.inputs}				
-			</div>								
-		);
+			</NodeDataComponent>
+	    )
 	}
 };

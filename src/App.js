@@ -4,13 +4,13 @@ import { observer } from 'mobx-react';
 import './App.css';
 
 import ConsoleBar from './components/ConsoleBarComponent';
-import Graph from './components/graph/GraphComponent';
-import Shelf from './components/shelf/ShelfComponent';
+import ShaderGraph from './components/ShaderGraphComponent';
+import Shelf from './components/ShelfComponent';
 import DebugInfo from './components/DebugInfoComponent';
 import Help from './components/HelpComponent';
-import PanelGroup from './components/ui/PanelGroupComponent';
-import Editor from './components/ui/EditorComponent';
-
+import Panel from './components/PanelComponent';
+import PanelGroup from './components/PanelGroupComponent';
+import Editor from './components/EditorComponent';
 import Shader from './components/ShaderComponent';
 
 // for electron
@@ -47,41 +47,38 @@ export default @observer class App extends React.Component {
   render() {
     this.store = this.props.store;
 
+    let scene = this.store.scenes[0];
+
     return (    
       <MainProvider value={{store: this.store}}>
         <div id="APP">          
           <div id="WORKAREA">    
             <div id="WORKAREA_inner" ref={this.workAreaRef}>
 
-                {this.store.ready && this.store.scenes[0].shaderGraphs.map((graph,i)=>{
-                  return (
-                    <PanelGroup key={i}>
+                {this.store.ready && 
+                  (
+                    <PanelGroup>
                       { !app.isPackaged && <DebugInfo collapsed /> }
-                      <Help />                      
-                      <Shelf
-                        key={i+'shelf'} 
-                        data={graph}
-                      >
-                        {graph.nodesArray.map((n,j)=>(
-                          n.data &&
-                          <Shader
-                            key={j}
-                            data={n.data}							
-                       />
-                        ))}                        
-                      </Shelf>
-                      <Graph
-                        key={i+'graph'} 
-                        data={graph}
-                      />                      
-                      <Editor 
-                        key={i+'editor'}
-                        data={this.store.scenes[0].currentlyEditing}
-                        data={this.store.scenes[0].currentlyEditing}
-                      />                      
+                      <Help />      
+                      <Panel 
+                        title="Effect Controls"			                        
+                        style={{minWidth:'200px'}}
+                      >                
+                        <Shelf>
+                          {scene.shaderGraphs[0].nodesArray.map((n,j)=>(
+                            n.data &&
+                            <Shader
+                              key={j}
+                              data={n.data}							
+                            />
+                          ))}                        
+                        </Shelf>
+                      </Panel>
+                      <ShaderGraph data={scene.shaderGraphs[0]} />                      
+                      <Editor data={scene.shaderGraphs[0].currentlyEditing} />                      
                     </PanelGroup>                    
-                  );
-                })} 
+                  )
+                } 
                                            
             </div>          
             <ConsoleBar data={this.store.console}/>

@@ -1,24 +1,21 @@
 import React from 'react';
 import { observable, action } from 'mobx';
-import uuidv1 from 'uuid/v1';
 import {
-    createModelSchema,
-    primitive,
+    createModelSchema
 } from "serializr"
+import NodeDataStore from './NodeDataStore';
 
-export default class OperatorStore {
-    @observable uuid     = uuidv1();
-    @observable name     = null;
+export default class OperatorStore extends NodeDataStore {
     @observable value    = null;
     @observable modifier = null;
-    @observable parent   = null;
-    @observable inputs   = null;
+    @observable controls   = [];
 
-    constructor(p, mod){
-        this.parent = p;
+    constructor(node, mod = null){
+        super(node);
+
         this.modifier = mod;
 
-        this.inputs = (
+        this.controls.push(
             <input 
                 key={this.uuid}
                 type="number"
@@ -30,14 +27,10 @@ export default class OperatorStore {
 
     @action handleChange = e => {
         this.modifier = Number(e.target.value);
-        this.parent.parent.graph.update();
+        this.node.graph.update();
     }
-
-    @action init = () => this;
-    @action update = () => {};
 }
 
 createModelSchema(OperatorStore, {
-    name:  primitive(),
-    value: primitive(),
-}, c => OperatorStore(c.parentContext.target).init());
+    extends: NodeDataStore
+});

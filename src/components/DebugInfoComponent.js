@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-import Panel from './ui/PanelComponent';
+import Panel from './PanelComponent';
 
 export default @observer class DebugInfo extends React.Component {
 

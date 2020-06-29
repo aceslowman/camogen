@@ -14,12 +14,11 @@ import {
     computed,
     action
 } from 'mobx';
-
-import uuidv1 from 'uuid/v1';
 import UniformStore from './UniformStore';
 import Parameter from './ParameterStore';
 import Uniform from './UniformStore';
 import UniformComponent from '../components/UniformComponent';
+import NodeDataStore from './NodeDataStore';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -27,35 +26,31 @@ const dialog = remote.dialog;
 const app    = remote.app;
 const fs     = window.require('fs');
 
-class ShaderStore {
-    @observable uuid      = uuidv1();
-    @observable name      = "";
+export default class ShaderStore extends NodeDataStore {    
     @observable uniforms  = [];
     @observable precision = "";
     @observable vert      = "";
     @observable frag      = "";
-    @observable ref       = null;
-    @observable controls  = [];
+    @observable ref       = null;    
     @observable target    = null;
-    @observable node      = null;
-
-    @observable inputs  = [];
-    @observable outputs = ["out"];
-
     @observable operatorUpdateGroup = [];
+    @observable selectedParameter = null;
 
     constructor(
         target, 
         precision = null, 
         vert = null, 
         frag = null, 
-        uniforms = []
-    ) {        
+        uniforms = [],
+        node = null
+    ) {       
+        super(node);
+        
         this.target = target; 
         this.precision = precision;
         this.vert = vert;
         this.frag = frag;
-        this.uniforms = uniforms;
+        this.uniforms = uniforms;        
         
         this.extractUniforms();
     }
@@ -84,10 +79,10 @@ class ShaderStore {
                     key={uniform.uuid}
                     data={uniform}
                     activeParam={
-                        this.node.editingParam
+                        this.selectedParameter
                     }	
                     onDblClick={
-                        (e) => this.node.editingParam = e
+                        (e) => this.selectedParameter = e
                     }
                 />
             );                     
@@ -105,8 +100,9 @@ class ShaderStore {
             values in sync with the frame rate
         */
         for (let op of this.operatorUpdateGroup) {
+            // console.log(op)
             op.update();
-            op.parent.update();
+            op.node.graph.recalculate();
         }
 
         for (let uniform_data of this.uniforms) {
@@ -319,6 +315,10 @@ class ShaderStore {
     @action onRemove() {
         this.target.removeShader(this);
     }
+
+    @computed get isBeingEdited() {
+        return this === this.node.graph.currentlyEditing;
+    }
 }
 
 createModelSchema(ShaderStore, {
@@ -331,14 +331,15 @@ createModelSchema(ShaderStore, {
     outputs:          list(primitive()), 
     uniforms:         list(object(UniformStore)),
 }, c => {
-    let p = c.parentContext ? c.parentContext.target : null;    
+    let target = c.parentContext ? c.parentContext.target : null; 
+    let parent_node = c.parentContext ? c.parentContext.node : null;
+
     return new ShaderStore(
-        p, 
+        target, 
         c.json.precision,
         c.json.vert,
         c.json.frag,
-        c.json.uniforms   
+        c.json.uniforms,
+        parent_node
     );
 });
-
-export default ShaderStore;

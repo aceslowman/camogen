@@ -1,6 +1,4 @@
 import { observable, action } from 'mobx';
-// import * as NODES from './stores';
-import Target from './stores/TargetStore';
 import Runner from './Runner';
 import p5 from 'p5';
 import {
@@ -8,23 +6,25 @@ import {
   list,
   object,
   serialize,
-  deserialize,
-  update,
-  reference,
 } from "serializr";
 import ShaderStore from './stores/ShaderStore';
 import ConsoleStore from './stores/ConsoleStore';
-import { create } from 'mobx-persist';
+// import { create } from 'mobx-persist';
 import Graph from './stores/GraphStore';
 // import ImageInput from './stores/inputs/ImageInput';
 import WebcamInput from './stores/inputs/WebcamInput';
-import SceneStore from './stores/SceneStore';
+import Scene from './stores/SceneStore';
+
+// operators
+import Add from './stores/ops/Add';
+import Counter from './stores/inputs/Counter'; // should be in ops?
+
 const path = require('path');
 
-const hydrate = create({
-  storage: localStorage,
-  jsonify: true,
-});
+// const hydrate = create({
+//   storage: localStorage,
+//   jsonify: true, 
+// });
 
 // for electron
 const remote = window.require('electron').remote;
@@ -32,10 +32,41 @@ const dialog = remote.dialog;
 const app = remote.app;
 const fs = window.require('fs');
 
+/*
+                          [MainStore]
+                              |
+              [SceneStore] ------- [ConsoleStore] 
+                   |
+   [TargetStore] ----- [GraphStore] 
+                            |
+           [ShaderGraph] -- or -- [ParameterGraph]
+                  |______________________|
+                            |
+                        [NodeStore] 
+                            |
+          [ShaderStore] -- or -- [OperatorStore] 
+                |
+          [UniformStore]
+                |
+        [ParameterStore]
+*/
+
 class MainStore {
   @observable p5_instance = null;
   
+  // populated by loadShaderFiles()
   @observable shader_list = {};
+
+  @observable input_list = {};
+
+  // at this moment there are no
+  // user-defined operators, so
+  // operators can be loaded 
+  // manually here.
+  @observable operator_list = {
+    'Add': Add,
+    'Counter': Counter
+  };
 
   @observable scenes = [];
 
@@ -43,12 +74,12 @@ class MainStore {
 
   @observable ready = false;
 
+  @observable activeScene = null;
+
   constructor() {  
-    this.loadShaders().then(() => {
+    this.loadShaderFiles().then(() => {
       this.p5_instance = new p5(p => Runner(p, this));
-      this.scenes.push(new SceneStore(this));
-      // console.log('shaders loaded successfully!', this.shader_list);
-      // hydrate("main", this, initial_state).then(r => console.log("hydrated", r))
+      this.scenes.push(new Scene(this));
       this.ready = true;
     });
   }
@@ -62,24 +93,14 @@ class MainStore {
     }
   }
 
-  @action getShader(name = null) {
-    if(name === null) {
-      console.log(this.shader_list)
-    } else if(Object.keys(this.shader_list).includes(name)){
-      return deserialize(ShaderStore, this.shader_list[name])
-    } else {
-      console.error(`couldn't find shader named '${name}'`);
-      return null;
-    } 
-  }
-
+  // removing
   @action getShaderInput(name = null, graph = null) {
     // temporary
     // return new ImageInput();    
     return new WebcamInput();
   }
 
-  @action async loadShaders() {
+  @action async loadShaderFiles() {
     let default_shaders_path = app.isPackaged 
       ? path.join(app.getAppPath(), '../shaders')
       : path.join(app.getAppPath(), 'shaders');
@@ -108,11 +129,10 @@ class MainStore {
 
       // copy default to user
       default_files.forEach((filename)=>{
-        console.log(filename)
         fs.promises.copyFile(path.join(default_shaders_path, filename), path.join(user_shaders_path,filename))
       });
       
-      await this.loadShaders();
+      await this.loadShaderFiles();
     }  
   }
 
@@ -121,10 +141,10 @@ class MainStore {
     return this.shaderGraphs.length;
   }
 
-  @action removeShaderGraph(graph) {
-    this.shaderGraphs = this.shaderGraphs.filter((item) => item !== graph);
-    if (this.activeGraph === graph) {
-      this.activeGraph = this.shaderGraphs[0];
+  @action removeScene(scene) {
+    this.scene = this.scene.filter((item) => item !== scene);
+    if (this.activeScene === scene) {
+      this.activeScene = this.scene[0];
     }
   }
 
@@ -179,9 +199,8 @@ class MainStore {
 }
 
 createModelSchema(MainStore, {
-  shaderGraphs: list(object(Graph)),
-  targets:      list(object(Target)),
-  activeGraph:  reference(Graph),
+  scenes: list(object(Scene)),
+  activeScene: object(Scene),
 });
 
 const mainStore = new MainStore();

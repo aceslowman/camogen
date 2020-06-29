@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import Shader from './ShaderStore';
+import ShaderStore from './ShaderStore';
 import uuidv1 from 'uuid/v1';
 import {
     createModelSchema,
@@ -52,11 +52,11 @@ class TargetStore {
 createModelSchema(TargetStore, {
     uuid:    identifier(),
     active:  primitive(),
-    shaders: list(object(Shader)),
+    shaders: list(object(ShaderStore)),
 }, c => {
     let p = c.parentContext.target;
     console.log('Target store factory', p)
-    return new TargetStore(p);
+    return new TargetStore(p.parent);
 });
 
 export default TargetStore;

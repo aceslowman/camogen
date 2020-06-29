@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import MainContext from '../../MainContext';
-import Panel from '../ui/PanelComponent';
+import MainContext from '../MainContext';
 import styles from './ShelfComponent.module.css';
 
 export default @observer class ShelfComponent extends React.Component {
@@ -11,14 +10,9 @@ export default @observer class ShelfComponent extends React.Component {
 		this.store = this.context.store;
 
 		return(
-			<Panel 
-				title="Shelf"			
-				className={styles.shelf}
-				defaultWidth={300}
-                defaultHeight={500}
-			>				
+			<div className={styles.shelf} style={this.props.style}>								
 				{this.props.children}
-			</Panel>
+			</div>			
 	    )
 	}
 };

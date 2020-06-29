@@ -1,20 +1,20 @@
 // // import React from 'react';
 import { observable, action } from 'mobx';
 import OperatorStore from '../OperatorStore';
-import {createModelSchema} from "serializr"
+import {createModelSchema} from "serializr";
 
 //----------------------------------------------------------------------
-const store = class CounterStore extends OperatorStore {
+export default class CounterStore extends OperatorStore {
 	@observable name  	 = "Counter";
 	@observable modifier = 100;
 	@observable value 	 = 0;
 
-	constructor(p, mod=100) {
-		super(p,mod)
+	constructor(parent, mod=100) {
+		super(parent,mod)
 	}
 
-	@action init = () => {			
-		let graph = this.parent;
+	@action init = () => {		
+		let graph = this.node;
 		let param = graph.parent;
 		let uniform = param.parent;
 		let shader = uniform.parent;
@@ -31,8 +31,6 @@ const store = class CounterStore extends OperatorStore {
 	}
 }
 
-createModelSchema(store, {
+createModelSchema(CounterStore, {
 	extends: OperatorStore
 });
-
-export default store;

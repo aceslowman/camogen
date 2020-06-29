@@ -1,7 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-import Panel from './ui/PanelComponent';
+import Panel from './PanelComponent';
+import TextComponent from './TextComponent';
 
 export default @observer class HelpComponent extends React.Component {
 
@@ -23,8 +24,8 @@ export default @observer class HelpComponent extends React.Component {
 					backgroundColor: 'black',
 				}}
 			>
-				<div id="SPLASH">
-					<h1>camogen</h1>
+				<TextComponent>
+                    <h1>camogen</h1>
                     <p>hello! this is the <span style={{color: 'orange'}}>first build</span>. some, 
                         but not all features exist, and only 
                         some of those features work fully or
@@ -68,7 +69,7 @@ export default @observer class HelpComponent extends React.Component {
                             under 'Editor', click 'Counter'
                         </li>
                     </ol>
-				</div>
+                </TextComponent>					
 			</Panel>		
 	    )
 	}
