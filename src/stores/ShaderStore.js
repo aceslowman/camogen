@@ -16,8 +16,9 @@ import {
 } from 'mobx';
 import UniformStore from './UniformStore';
 import Parameter from './ParameterStore';
+import ParameterComponent from '../components/ParameterComponent';
 import Uniform from './UniformStore';
-import UniformComponent from '../components/UniformComponent';
+import ControlGroupComponent from '../components/ControlGroupComponent';
 import NodeDataStore from './NodeDataStore';
 
 // for electron
@@ -75,16 +76,18 @@ export default class ShaderStore extends NodeDataStore {
 
         this.controls = this.uniforms.map((uniform)=>{                        
             return (
-                <UniformComponent                     
-                    key={uniform.uuid}
-                    data={uniform}
-                    activeParam={
-                        this.selectedParameter
-                    }	
-                    onDblClick={
-                        (e) => this.selectedParameter = e
-                    }
-                />
+                <ControlGroupComponent name={uniform.name}>
+                    {uniform.elements.map((param)=>{                         
+                        return (
+                            <ParameterComponent
+                                active={this.selectedParameter === param}
+                                key={param.uuid}
+                                data={param}
+                                onDblClick={(e) => this.selectedParameter = e}
+                            />
+                        );                     
+                    })}
+                </ControlGroupComponent>                    
             );                     
         });
 

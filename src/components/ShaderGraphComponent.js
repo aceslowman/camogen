@@ -13,10 +13,6 @@ export default @observer class ShaderGraphComponent extends React.Component {
 		this.props.data.toggleFocus();
 	}
 
-	handleActive = () => {		
-		this.store.activeTarget = this.props.data;		
-	}
-
 	render() {	
 		this.store = this.context.store;
 
@@ -24,10 +20,7 @@ export default @observer class ShaderGraphComponent extends React.Component {
 			<Panel 
 				onRef={(ref)=> this.panelRef = ref }
 				title="ShaderGraph"			
-				active={this.store.activeTarget === this.target}
-				onActive={this.handleActive}
 				className={styles.shader_graph}	
-				// styles={{minWidth: 230}}
 			>				
 				<GraphComponent data={this.props.data}/>
 

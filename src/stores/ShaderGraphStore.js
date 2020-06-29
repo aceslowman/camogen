@@ -6,9 +6,6 @@ import GraphStore from './GraphStore';
 import ShaderStore from './ShaderStore';
 
 export default class ShaderGraphStore extends GraphStore {
-    @observable activeTarget = null;
-    @observable currentlyEditing = null;
-
     // assignTargets
     @action afterUpdate(queue) {
         queue.forEach(node => {
@@ -55,6 +52,18 @@ export default class ShaderGraphStore extends GraphStore {
 
     @computed get mainStore() {
         return this.parent.parent;
+    }
+
+    @computed get ready() {
+        /*
+            this is a hacky solution that helps check
+            to see if there are any nodes that are 
+            ready for output. if there is only a 
+            root node, then the Runner will just output
+            the default background color.
+        */
+    //    console.log(this)
+        return this.nodesArray.length > 1;
     }
 
     @action edit(node) {

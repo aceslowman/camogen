@@ -33,7 +33,7 @@ export default @observer class ParameterGraphComponent extends React.Component {
 						{ 
 						<React.Fragment>
 							<GraphComponent data={data.graph} />
-							<ShelfComponent style={{'flexShrink': 2, 'border-top': '1px solid white'}}>
+							<ShelfComponent style={{'flexShrink': 2, 'borderTop': '1px solid white'}}>
 								{data.graph.nodesArray.map((n,j)=>{
 									console.log(n)
 									return (n.data &&

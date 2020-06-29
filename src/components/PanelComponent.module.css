@@ -32,6 +32,7 @@
     box-sizing: border-box;
     flex-grow: 2;
     border: 1px dotted white;
+    border-bottom: 1px solid white;
     max-height: -webkit-fill-available;
     border-top: none;
 }

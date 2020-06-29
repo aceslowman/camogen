@@ -14,7 +14,10 @@ const Runner = (p, store) => {
     }
 
     p.draw = () => {
-        if (store.scenes[0].activeShaderGraph && store.scenes[0].targets.length) {
+        if (
+            store.scenes[0].activeShaderGraph
+            && store.scenes[0].activeShaderGraph.ready
+        ) {
             for (let target_data of store.scenes[0].targets) {
                 for (let shader_data of target_data.shaders) {
                     shader_data.update(p);                                       

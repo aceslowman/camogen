@@ -12,6 +12,8 @@ class GraphStore {
     @observable uuid   = uuidv1();
     @observable parent = null;
     @observable activeNode = null;
+    @observable currentlyEditing = null;
+
 
     // for key binding focus
     @observable focused = false;
@@ -67,6 +69,7 @@ class GraphStore {
 
     @action clear() {
         this.nodes = {};
+        this.currentlyEditing = null;
         this.addNode().select();
         this.update(); 
     }
@@ -90,6 +93,7 @@ class GraphStore {
             ...this.nodes,
             [node.uuid]: node
         }
+
         // NOTE: it's a red flag that this triggers so often
         // console.log('node added!', this.nodes)
         return node;
@@ -106,7 +110,13 @@ class GraphStore {
         node.data.onRemove();
         delete this.nodes[uuid];
 
-        this.update();
+        // console.log(uuid, this.nodes)
+
+        if(this.nodesArray.length < 2) {
+            this.clear();
+        } else {
+            this.update();
+        }   
     }
 
     @action traverse(f = null, depthFirst = false) {
@@ -117,9 +127,9 @@ class GraphStore {
 
         while(container.length) {             
             next_node = container.shift();
-            result.push(next_node.uuid);
             
             if(next_node) {
+                result.push(next_node.uuid);
                 distance_from_root = this.distanceBetween(next_node, this.root);
 
                 if (f) f(next_node, distance_from_root);

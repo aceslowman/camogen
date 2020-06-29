@@ -16,7 +16,7 @@
 
 .parameter_graph>fieldset>div {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     height: 100%;
     justify-content: center;
 }
@@ -30,13 +30,4 @@
     flex-grow: 2;
     display: flex;
     flex-flow: column;
-}
-
-.inner label {
-    padding: 5px; 
-    position:absolute;
-}
-
-.parameter_graph h4 {
-    border-bottom: 1px dashed white;
 }

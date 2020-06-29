@@ -18,6 +18,7 @@ import Scene from './stores/SceneStore';
 // operators
 import Add from './stores/ops/Add';
 import Counter from './stores/inputs/Counter'; // should be in ops?
+import MIDI from './stores/inputs/MIDI';
 
 const path = require('path');
 
@@ -65,7 +66,8 @@ class MainStore {
   // manually here.
   @observable operator_list = {
     'Add': Add,
-    'Counter': Counter
+    'Counter': Counter,
+    'MIDI': MIDI,
   };
 
   @observable scenes = [];
@@ -82,22 +84,6 @@ class MainStore {
       this.scenes.push(new Scene(this));
       this.ready = true;
     });
-  }
-
-  @action resetAndClear() {
-    if(window.confirm('this will clear all shaders, continue?')){
-      this.targets.forEach(e => {
-        e.clear();
-      });
-      this.activeGraph.clear();
-    }
-  }
-
-  // removing
-  @action getShaderInput(name = null, graph = null) {
-    // temporary
-    // return new ImageInput();    
-    return new WebcamInput();
   }
 
   @action async loadShaderFiles() {
@@ -134,11 +120,6 @@ class MainStore {
       
       await this.loadShaderFiles();
     }  
-  }
-
-  @action addShaderGraph(t = new Graph(this)) {
-    this.shaderGraphs.push(t);
-    return this.shaderGraphs.length;
   }
 
   @action removeScene(scene) {

@@ -1,27 +1,32 @@
 import React from 'react';
 import { observable, action } from 'mobx';
 import OperatorStore from '../OperatorStore';
-import {createModelSchema} from "serializr"
+import {createModelSchema} from "serializr";
+import ControlGroupComponent from '../../components/ControlGroupComponent';
 
 //----------------------------------------------------------------------
-const store = class MIDIStore extends OperatorStore {
+export default class MIDIStore extends OperatorStore {
 	@observable name     = "MIDI";
 	@observable modifier = 127;
 	@observable value 	 = 0;
-	@observable inputs   = null;
+
 	@observable activeInput = null;
 	@observable activeChannel = null;
 	
-	constructor(p, mod = 127) {
-		super(p, mod)		
+	constructor(parent, mod = 127) {
+		super(parent, mod)		
 		navigator.requestMIDIAccess().then(this.onMIDIConnect);
+	}
+
+	@action init = () => {
+		return this;
 	}
 
 	@action onMIDIConnect = (access) => {
 		this.MIDIInputs = [...access.inputs.values()];
 
-		this.inputs = (
-			<React.Fragment>
+		this.controls.push(
+			<ControlGroupComponent name="MIDI Settings">
 				<fieldset key={this.uuid}>
 					<label key={this.uuid+1}>MIDI Device</label>
 					<select key={this.uuid+2} onChange={this.handleInputSelect}>
@@ -41,9 +46,8 @@ const store = class MIDIStore extends OperatorStore {
 						}}			
 					/>
 				</fieldset>
-				{/* <div key={this.uuid+1}>{this.activeChannel}</div> */}
-			</React.Fragment>								
-		)
+			</ControlGroupComponent>								
+		);
 		
 		access.onstatechange = function (e) {
 			// Print information about the (dis)connected MIDI controller
@@ -74,8 +78,6 @@ const store = class MIDIStore extends OperatorStore {
 	}
 }
 
-createModelSchema(store, {
+createModelSchema(MIDIStore, {
 	extends: OperatorStore
 });
-
-export default store;

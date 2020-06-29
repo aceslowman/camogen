@@ -109,6 +109,7 @@ export default @observer class NodeDataComponent extends React.Component {
 							{
 								React.Children.map(this.props.data.controls, child => {
 									// Checking isValidElement is the safe way and avoids a TS error too.
+									console.log(child)
 									if (React.isValidElement(child)) {
 										return React.cloneElement(child, {
 											enabled: this.state.expandMain || this.props.data.node.selected

@@ -132,22 +132,7 @@ button:focus {
 
 /* Shader.js */
 
-.uniform_array {
-  padding: 2px;
-  margin: 5px 0px;
-  display: inline-block;
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 56px;
-}
 
-.uniform_array > div{  
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  padding: 0px;
-  justify-content: center;
-}
 
 /* ParameterDisplay.js */
 

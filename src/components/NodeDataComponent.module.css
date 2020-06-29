@@ -8,6 +8,7 @@
 
 .node input {
     width: 100%;
+    max-width: 100px;
 }
 
 .node_bar {
@@ -41,6 +42,27 @@
 .node_container_inner > div {
     /* min-height: 110px; */
     padding: 10px;
+    display:flex;
+    flex-flow: column;
+    width: 100%;
+    color:black;
+}
+
+.node_container_inner > div > fieldset {
+    padding: 2px;
+    margin: 5px 0px;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 56px;
+}
+
+.node_container_inner fieldset>div {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0px;
+    justify-content: center;
 }
 
 .node_legend {

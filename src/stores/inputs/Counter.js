@@ -1,4 +1,5 @@
-// // import React from 'react';
+import React from 'react';
+import ControlGroupComponent from '../../components/ControlGroupComponent';
 import { observable, action } from 'mobx';
 import OperatorStore from '../OperatorStore';
 import {createModelSchema} from "serializr";
@@ -11,6 +12,34 @@ export default class CounterStore extends OperatorStore {
 
 	constructor(parent, mod=100) {
 		super(parent,mod)
+
+		this.controls.push(
+			<ControlGroupComponent>
+				{/* <fieldset key={this.uuid}>
+					<legend key={this.uuid+1}>elapsed</legend>
+					<input 
+						key={this.uuid+2}
+						type="number"
+						value={this.value}
+						readOnly	
+					/>
+				</fieldset> */}
+				<fieldset key={this.uuid+1}>
+					<legend key={this.uuid+1}>speed</legend>
+					<input 
+						key={this.uuid+2}
+						type="number"
+						defaultValue={this.modifier}                
+						onChange={this.handleChange}			
+					/>
+				</fieldset>
+			</ControlGroupComponent>								
+		);
+	}
+
+	@action handleChange = e => {
+		this.modifier = Number(e.target.value);
+		this.node.graph.update();
 	}
 
 	@action init = () => {		

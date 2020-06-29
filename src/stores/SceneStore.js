@@ -32,8 +32,8 @@ export default class SceneStore {
         // DEFAULTS (FOR NOW)
         g.addNodeByName("UV");
         g.addNodeByName("Glyph");
-        // g.addNodeByName("Add");
-        // g.addNodeByName("ToHSV");
+        g.addNodeByName("Add");
+        g.addNodeByName("ToHSV");
 
         this.shaderGraphs.push(g);
         this.activeShaderGraph = g;        
@@ -42,6 +42,23 @@ export default class SceneStore {
     @action addTarget(target = new Target(this.parent)) {
         this.targets.push(target);
         return target;
+    }
+
+    @action clear() {
+        if(window.confirm('this will remove all effects, continue?')){
+            for (let graph of this.shaderGraphs) {
+                graph.clear();
+            }
+
+            for(let target of this.targets) {
+                target.clear();
+            }
+   
+            // TEMP
+            this.activeShaderGraph = this.shaderGraphs[0];
+        }
+
+        console.log(this)
     }
 
     @action save() {

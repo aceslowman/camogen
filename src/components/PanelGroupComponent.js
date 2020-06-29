@@ -31,30 +31,6 @@ export default @observer class PanelGroupComponent extends React.Component {
 		}));
 	}
 
-	handleNew = (e) => {        
-		let p_bounds = this.ref.current.getBoundingClientRect();
-		let bounds = e.currentTarget.getBoundingClientRect();
-
-		this.setState(previousState => ({
-			...previousState,
-			openDrawer: !(previousState.activeDrawer === 'new' && previousState.openDrawer),
-			activeDrawer: 'new',
-			drawerPosition: {
-				left: bounds.left - p_bounds.left
-			}
-		}));    
-
-        this.drawer_items = (
-            <React.Fragment>
-                <button 
-                    onClick={()=>this.store.resetAndClear()} 
-                    className="white_button"
-                >Project
-                </button>                
-            </React.Fragment>            
-        );
-    }
-
     handleSnapshot = () => this.context.store.snapshot();
 
     handleBreakout = () => {
@@ -161,9 +137,9 @@ export default @observer class PanelGroupComponent extends React.Component {
 							</button>
 							<button 
 								// className={"large_symbol"} 
-								onClick={this.handleNew}
+								onClick={()=>this.store.scenes[0].clear()}
 							>
-								NEW
+								CLEAR
 							</button>
 							<button 
 								// className={"large_symbol"} 

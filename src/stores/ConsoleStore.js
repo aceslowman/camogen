@@ -16,7 +16,6 @@ export default class ConsoleStore {
                 };
                 break;
             default:
-                this.activeTarget.addShader(this.consoleText);
                 this.consoleText = "";
                 this.suggestText = "";
                 break;

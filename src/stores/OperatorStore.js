@@ -14,21 +14,7 @@ export default class OperatorStore extends NodeDataStore {
         super(node);
 
         this.modifier = mod;
-
-        this.controls.push(
-            <input 
-                key={this.uuid}
-                type="number"
-                defaultValue={this.modifier}                
-                onChange={this.handleChange}			
-            />
-        );
-    }
-
-    @action handleChange = e => {
-        this.modifier = Number(e.target.value);
-        this.node.graph.update();
-    }
+    }  
 }
 
 createModelSchema(OperatorStore, {
