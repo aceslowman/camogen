@@ -6,7 +6,7 @@ import GraphComponent from './GraphComponent';
 
 import styles from './ShaderGraphComponent.module.css'
 
-export default @observer class ShaderGraphComponent extends React.Component {
+export default @observer class ShaderGraphComponent extends React.PureComponent {
 	static contextType = MainContext;
 
 	handleFocus = () => {
@@ -19,7 +19,7 @@ export default @observer class ShaderGraphComponent extends React.Component {
 		return(
 			<Panel 
 				onRef={(ref)=> this.panelRef = ref }
-				title="ShaderGraph"			
+				title="Shader Graph"			
 				className={styles.shader_graph}	
 			>				
 				<GraphComponent data={this.props.data}/>

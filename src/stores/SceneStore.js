@@ -1,16 +1,24 @@
 import { observable, action } from 'mobx';
 import {
     createModelSchema,
+    primitive,
+    reference,
     list,
     object,
+    identifier,
     serialize,
-    reference,
-    update
-} from "serializr";
-
+    deserialize,
+    getDefaultModelSchema,
+    serializable,
+    update,
+    custom
+} from "serializr"
+import uuidv1 from 'uuid/v1';
 import Target from './TargetStore';
 import ShaderGraph from './ShaderGraphStore';
 import path from 'path';
+import ShaderGraphStore from './ShaderGraphStore';
+import GraphStore from './GraphStore';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -19,9 +27,45 @@ const app = remote.app;
 const fs = window.require('fs');
 
 export default class SceneStore {
+
+    @observable
+    @serializable(identifier())
+    uuid = uuidv1();
+    
     @observable parent = null;
 
-    @observable shaderGraphs = [];
+    @observable    
+    // @serializable(list(object(ShaderGraphStore.schema)))
+    @serializable(list(custom(
+        v => {
+            console.log('HERE', v)
+            // let new_node_keys = Object.keys(v.nodes);
+            
+            console.log('HERE AGAIN', serialize(ShaderGraphStore.schema, v))
+            return serialize(ShaderGraphStore.schema, v);
+            // return {
+            //     ...v,
+            //     activeNode: v.activeNode.uuid,
+            //     parent: v.parent.uuid,
+            //     nodes: 
+            // };
+            // console.log(v.nodes)
+            // let ids = Object.keys(v.nodes);
+            // let serializedGraph = {};
+
+            // // try to manually serialize 
+            // ids.forEach((id)=>{
+            //     serializedGraph.nodes = {...v.nodes, v.nodes[id].uuid}
+            // });
+            
+            // return serializedGraph
+        },
+        (v, c) => {
+            return v
+        }
+    )))
+    shaderGraphs = [];
+    
     @observable targets = [];
     
     constructor(parent) {
@@ -54,11 +98,8 @@ export default class SceneStore {
                 target.clear();
             }
    
-            // TEMP
             this.activeShaderGraph = this.shaderGraphs[0];
         }
-
-        console.log(this)
     }
 
     @action save() {
@@ -72,12 +113,16 @@ export default class SceneStore {
         }
 
         dialog.showSaveDialog(options).then((f)=>{
-            let content = JSON.stringify(serialize(SceneStore, this));
+            let content = JSON.stringify(serialize(this));
 
             fs.writeFile(f.filePath, content, (err)=>{
-                if(err)          
-                console.error("an error has occurred: "+err.message);
+                if(err) {         
+                    console.error("an error has occurred: "+err.message);
+                } else {
+                    console.log('scene has been saved at '+f.filePaths)
+                }                
             });
+            
         }).catch(err => console.error(err));
     }
 
@@ -113,11 +158,3 @@ export default class SceneStore {
         }).catch(err => {/*alert(err)*/});
     }
 };
-
-createModelSchema(SceneStore, {
-    shaderShaderGraphs: list(object(ShaderGraph)),
-    targets: list(object(Target)),
-}, c => {
-    let p = c.parentContext ? c.parentContext.target : null;
-    return new SceneStore(p);
-});

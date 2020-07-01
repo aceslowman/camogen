@@ -31,3 +31,7 @@
     display: flex;
     flex-flow: column;
 }
+
+.inner_label {
+    padding: 5px;
+}

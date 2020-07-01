@@ -28,7 +28,3 @@ export default class AddStore extends OperatorStore {
         return Number(v) + Number(this.modifier);
 	}
 }
-
-createModelSchema(AddStore, {
-	extends: OperatorStore
-});

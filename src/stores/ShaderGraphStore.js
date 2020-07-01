@@ -1,7 +1,7 @@
 import {
-    createModelSchema, deserialize
+    createModelSchema, deserialize, custom, getDefaultModelSchema
 } from "serializr";
-import { action, computed, observable } from 'mobx';
+import { action, computed } from 'mobx';
 import GraphStore from './GraphStore';
 import ShaderStore from './ShaderStore';
 
@@ -42,8 +42,8 @@ export default class ShaderGraphStore extends GraphStore {
     @action getShader(name = null) {
         if (name === null) {
             console.log(this.mainStore.shader_list)
-        } else if (Object.keys(this.mainStore.shader_list).includes(name)) {
-            return deserialize(ShaderStore, this.mainStore.shader_list[name])
+        } else if (Object.keys(this.mainStore.shader_list).includes(name)) {            
+            return deserialize(ShaderStore.schema, this.mainStore.shader_list[name]);
         } else {
             console.error(`couldn't find shader named '${name}'`);
             return null;
@@ -71,6 +71,14 @@ export default class ShaderGraphStore extends GraphStore {
     }
 }
 
-createModelSchema(ShaderGraphStore, {
-    extends: GraphStore
-});
+ShaderGraphStore.schema = {
+    factory: c => {
+        let target = c.parentContext ? c.parentContext.target : null;
+
+        return new ShaderGraphStore(
+            target
+        );
+    },
+    extends: getDefaultModelSchema(GraphStore), // maybe try creating custom type for NodeData
+    props: getDefaultModelSchema(ShaderGraphStore).props
+}

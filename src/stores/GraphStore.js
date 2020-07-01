@@ -1,27 +1,69 @@
 import { observable, action, computed } from 'mobx';
-import Node from './NodeStore';
+import NodeStore from './NodeStore';
 import uuidv1 from 'uuid/v1';
 import {
     createModelSchema,
     map,
+    getDefaultModelSchema,
     identifier,
-    object
+    object,
+    custom,
+    serializable,
+    serialize
 } from "serializr"
 
-class GraphStore {
-    @observable uuid   = uuidv1();
-    @observable parent = null;
-    @observable activeNode = null;
-    @observable currentlyEditing = null;
+export default class GraphStore {
+    @serializable(identifier())
+    @observable uuid = uuidv1();
 
+    // @serializable(map(object(NodeStore.schema)))
+    // https://github.com/mobxjs/serializr/issues/129
+    @serializable(map(custom(
+        (v) => {
+            // if(s.data) s.data.node = s.uuid; 
+            console.log(v)
+
+            return serialize(NodeStore.schema, v)
+
+            // return {
+            //     ...s,
+            //     data: {
+            //         ...s.data,
+            //         node: s.uuid,
+            //         graph: s.graph.uuid,
+            //     },
+            //     // graph: {
+            //     //     ...s.graph,
+            //     //     activeNode: s.graph.activeNode.uuid
+            //     // }
+            // };
+        },
+        (jsonValue, context, _oldValue, done) => {
+            console.log(jsonValue)
+            // this is basically what reference() does
+            context.rootContext.await(
+                getDefaultModelSchema(NodeStore),
+                jsonValue,
+                context.rootContext.createCallback(done),
+            )
+        },
+    )))
+    @observable nodes = {};
+
+    // @serializable(object(SceneStore))
+    @observable parent = null;
+
+    // @serializable(object(NodeStore))
+    @observable activeNode = null;
+
+    // @serializable(object(NodeStore))
+    @observable currentlyEditing = null;
 
     // for key binding focus
     @observable focused = false;
 
     // NOTE: toggle to force a re-render in React
     @observable updateFlag = false;
-
-    @observable nodes = {};
 
     @observable keymap = {};
 
@@ -59,12 +101,12 @@ class GraphStore {
         }
     }
 
-    constructor(parent, node = new Node(this, null, 'NEW NODE')) {
+    constructor(parent) {
         this.onKeyDown = this.onKeyDown.bind(this);
         this.parent = parent;
 
         //set initial root node
-        this.addNode(node).select();   
+        this.addNode().select();   
     }    
 
     @action clear() {
@@ -86,7 +128,7 @@ class GraphStore {
         this.updateFlag = !this.updateFlag;
     }
 
-    @action addNode(node = new Node(this, null, 'NEW NODE')) {
+    @action addNode(node = new NodeStore(this, null, 'NEW NODE')) {
         node.graph = this;
         
         this.nodes = {
@@ -225,14 +267,3 @@ class GraphStore {
         return Object.keys(this.nodes).map((uuid)=>this.getNodeById(uuid))
     }
 }
-
-createModelSchema(GraphStore, {
-    uuid:    identifier(),
-    nodes:   map(object(Node)),   
-}, c => {
-    let p = c.parentContext.target;
-    console.log('Graph store factory', p)
-    return new GraphStore(p);
-});
-
-export default GraphStore;

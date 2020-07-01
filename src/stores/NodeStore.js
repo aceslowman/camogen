@@ -6,19 +6,46 @@ import {
 import uuidv1 from 'uuid/v1';
 import {
     createModelSchema,
+    getDefaultModelSchema,
     primitive,
     list,
     identifier,
     reference,
     custom,
     object,
+    serializable,
 } from "serializr"
 import NodeDataStore from './NodeDataStore';
+import GraphStore from './GraphStore';
 
-class NodeStore {
+export default class NodeStore {
+    @serializable(identifier())
     @observable uuid  = uuidv1();
+
+    @serializable(primitive())
     @observable name  = "";
+
+    @serializable(custom(
+        (s) => {
+            console.log('something',s)
+
+            return {
+                ...s,
+                node: s ? s.node.uuid : null,
+            };
+        },
+        (jsonValue, context, _oldValue, done) => {
+            // this is basically what reference() does
+            context.rootContext.await(
+                getDefaultModelSchema(NodeDataStore),
+                jsonValue,
+                context.rootContext.createCallback(done),
+            )
+        },
+    ))
     @observable data  = null;
+
+    // @serializable(object(GraphStore))
     @observable graph = null;
 
     @observable branch_index = null;    
@@ -130,23 +157,10 @@ class NodeStore {
     }
 }
 
-createModelSchema(NodeStore, {
-    uuid:     identifier(),    
-    name:     primitive(),
-    selected: primitive(),
-    parents:  list(reference(NodeStore)),
-    children: list(reference(NodeStore)), // causes stack overflow?
-    // data:     object(ShaderStore), 
-    data:     object(NodeDataStore),
-// });
-}, c => {
-    let p = c.parentContext.target;
-    console.log('Node store factory', p)
-    console.log('CHECK CONTEXT', c)
-    console.log('node store graph', p.graph)
-    let new_node = new NodeStore(p, c.json.data);
-    console.log('resulting node', new_node)
-    return new_node;
-});
-
-export default NodeStore;
+NodeStore.schema = {
+    factory: c => {
+        let p = c.parentContext.target;
+        return new NodeStore(p, c.json.data);
+    },    
+    props: getDefaultModelSchema(NodeStore).props
+}

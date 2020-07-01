@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import GraphComponent from './GraphComponent';
 import ShelfComponent from './ShelfComponent';
-import OperatorComponent from './OperatorComponent';
+import NodeDataComponent from './NodeDataComponent';
 
 import styles from './ParameterGraphComponent.module.css';
 
@@ -26,7 +26,7 @@ export default @observer class ParameterGraphComponent extends React.Component {
 		return(	
 			<div className={styles.parameter_graph}>					
 				<div className={styles.inner} style={{border: data ? '1px dashed white' : '1px dashed white'}}>
-					{data && (<label>{data.parent.name + ' ' + data.name}</label>)}
+					{data && (<label className={styles.inner_label}>{data.parent.name + ' ' + data.name}</label>)}
 						{!data && (
 						<p><em>double click on a parameter to edit its graph</em></p>
 						)}
@@ -37,7 +37,7 @@ export default @observer class ParameterGraphComponent extends React.Component {
 								{data.graph.nodesArray.map((n,j)=>{
 									console.log(n)
 									return (n.data &&
-										<OperatorComponent
+										<NodeDataComponent
 											key={j}
 											data={n.data}							
 										/>

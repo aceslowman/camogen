@@ -8,6 +8,9 @@ import {
     update,
     // reference,
     identifier,
+    serializable,
+    custom, 
+    getDefaultModelSchema
 } from "serializr";
 import {
     observable,
@@ -28,10 +31,21 @@ const app    = remote.app;
 const fs     = window.require('fs');
 
 export default class ShaderStore extends NodeDataStore {    
+    @serializable(list(object(UniformStore)))
     @observable uniforms  = [];
-    @observable precision = "";
-    @observable vert      = "";
-    @observable frag      = "";
+
+    @serializable(primitive())
+    @observable
+    precision = "";
+    
+    @serializable(primitive())
+    @observable 
+    vert      = "";
+    
+    @serializable(primitive())
+    @observable 
+    frag      = "";
+
     @observable ref       = null;    
     @observable target    = null;
     @observable operatorUpdateGroup = [];
@@ -324,25 +338,21 @@ export default class ShaderStore extends NodeDataStore {
     }
 }
 
-createModelSchema(ShaderStore, {
-    uuid:             identifier(),
-    name:             primitive(),    
-    precision:        primitive(),
-    vert:             primitive(),
-    frag:             primitive(),
-    inputs:           list(primitive()),
-    outputs:          list(primitive()), 
-    uniforms:         list(object(UniformStore)),
-}, c => {
-    let target = c.parentContext ? c.parentContext.target : null; 
-    let parent_node = c.parentContext ? c.parentContext.node : null;
+ShaderStore.schema = {
+    factory: c => {
+        console.log(getDefaultModelSchema(ShaderStore).props)
+        let target = c.parentContext ? c.parentContext.target : null;
+        let parent_node = c.parentContext ? c.parentContext.node : null;
 
-    return new ShaderStore(
-        target, 
-        c.json.precision,
-        c.json.vert,
-        c.json.frag,
-        c.json.uniforms,
-        parent_node
-    );
-});
+        return new ShaderStore(
+            target,
+            c.json.precision,
+            c.json.vert,
+            c.json.frag,
+            c.json.uniforms,
+            parent_node
+        );
+    },
+    extends: getDefaultModelSchema(NodeDataStore), // maybe try creating custom type for NodeData
+    props: getDefaultModelSchema(ShaderStore).props
+}

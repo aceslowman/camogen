@@ -11,7 +11,7 @@ import Help from './components/HelpComponent';
 import Panel from './components/PanelComponent';
 import PanelGroup from './components/PanelGroupComponent';
 import Editor from './components/EditorComponent';
-import Shader from './components/ShaderComponent';
+import NodeDataComponent from './components/NodeDataComponent';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -60,21 +60,22 @@ export default @observer class App extends React.Component {
                     <PanelGroup>
                       { !app.isPackaged && <DebugInfo collapsed /> }
                       <Help />      
-                      <Panel 
-                        title="Effect Controls"			                        
-                        style={{minWidth:'200px'}}
-                      >                
-                        <Shelf>
-                          {scene.shaderGraphs[0].nodesArray.map((n,j)=>(
-                            n.data &&
-                            <Shader
-                              key={j}
-                              data={n.data}							
-                            />
-                          ))}                        
-                        </Shelf>
-                      </Panel>
+                    
                       <ShaderGraph data={scene.shaderGraphs[0]} />                      
+                        <Panel 
+                            title="Effect Controls"			                        
+                            style={{minWidth:'200px'}}
+                        >                
+                          <Shelf>
+                            {scene.shaderGraphs[0].nodesArray.map((n,j)=>(
+                              n.data &&
+                              <NodeDataComponent
+                                key={j}
+                                data={n.data}							
+                              />
+                            ))}                        
+                          </Shelf>
+                        </Panel>
                       <Editor data={scene.shaderGraphs[0].currentlyEditing} />                      
                     </PanelGroup>                    
                   )

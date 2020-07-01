@@ -1,11 +1,27 @@
 import uuidv1 from 'uuid/v1';
-import { observable, action } from 'mobx';
-import { createModelSchema, identifier, primitive, list } from 'serializr';
+import { observable } from 'mobx';
+import { identifier, primitive, serializable, custom, getDefaultModelSchema } from 'serializr';
+import NodeStore from './NodeStore';
 
 export default class NodeDataStore {
+    @serializable(identifier()) 
     @observable uuid = uuidv1();
+
+    @serializable(primitive())
     @observable name = null;
 
+    // @serializable(custom(
+    //     (obj) => obj.uuid,
+    //     (jsonValue, context, _oldValue, done) => {
+    //         // this is basically what reference() does
+    //         console.log(context)
+    //         context.rootContext.await(
+    //             getDefaultModelSchema(NodeStore),
+    //             jsonValue,
+    //             context.rootContext.createCallback(done),
+    //         )
+    //     },
+    // ))
     @observable node = null;
 
     @observable inputs = [];
@@ -17,10 +33,3 @@ export default class NodeDataStore {
         this.node = node;
     }
 }
-
-createModelSchema(NodeDataStore, {
-    uuid: identifier(),
-    name: primitive(),
-    inputs: list(primitive()),
-    outputs: list(primitive()),
-});
