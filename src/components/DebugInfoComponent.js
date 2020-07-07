@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import Panel from './PanelComponent';
+import TextComponent from './TextComponent';
 
 export default @observer class DebugInfo extends React.Component {
 
@@ -23,7 +24,7 @@ export default @observer class DebugInfo extends React.Component {
 					backgroundColor: 'black',
 				}}
 			>
-				<div id="SPLASH">
+				<TextComponent>
 					<h3> currentlyEditing: {
 						this.store.currentlyEditing ? this.store.currentlyEditing.name : 'nothing'
 					} </h3>
@@ -35,9 +36,12 @@ export default @observer class DebugInfo extends React.Component {
 									<li key={e.uuid}>{e.uuid}</li>
 
 									<ol key={e.uuid+1} start="0">
-										{e.shaders.map((shader)=>(
-											<li key={shader.uuid}>{shader.name}</li>
-										))}
+										{e.shaders.map((shader)=>{
+											console.log('shader '+shader.uuid, shader)
+											return (
+												<li key={shader.uuid}>{shader.name}</li>
+											)
+										})}
 									</ol>
 								</div>							
 							))
@@ -70,7 +74,7 @@ export default @observer class DebugInfo extends React.Component {
 						</React.Fragment>							
 					)}
 					
-				</div>
+				</TextComponent>
 			</Panel>		
 	    )
 	}

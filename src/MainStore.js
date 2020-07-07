@@ -10,9 +10,9 @@ import {
 import ShaderStore from './stores/ShaderStore';
 import ConsoleStore from './stores/ConsoleStore';
 // import { create } from 'mobx-persist';
-import Graph from './stores/GraphStore';
+// import Graph from './stores/GraphStore';
 // import ImageInput from './stores/inputs/ImageInput';
-import WebcamInput from './stores/inputs/WebcamInput';
+// import WebcamInput from './stores/inputs/WebcamInput';
 import Scene from './stores/SceneStore';
 
 // operators
@@ -21,11 +21,6 @@ import Counter from './stores/inputs/Counter'; // should be in ops?
 import MIDI from './stores/inputs/MIDI';
 
 const path = require('path');
-
-// const hydrate = create({
-//   storage: localStorage,
-//   jsonify: true, 
-// });
 
 // for electron
 const remote = window.require('electron').remote;
@@ -179,11 +174,11 @@ class MainStore {
   }
 }
 
-createModelSchema(MainStore, {
-  scenes: list(object(Scene)),
-  activeScene: object(Scene),
-});
-
+/* 
+  for some reason this needs to be here, this 
+  seems to be related to a circular dependency 
+  issue i had
+*/
 const mainStore = new MainStore();
 export default mainStore;
 

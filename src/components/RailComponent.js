@@ -4,6 +4,10 @@ import MainContext from '../MainContext';
 
 import styles from './RailComponent.module.css';
 
+// for electron
+const remote = window.require('electron').remote;
+const app = remote.app;
+
 export default @observer class RailComponent extends React.Component {
     static contextType = MainContext;
 
@@ -88,7 +92,10 @@ export default @observer class RailComponent extends React.Component {
 				<label onClick={this.handleClick} style={{
                     backgroundColor: data.selected ? '#39FF14' : 'black',
                     color: data.selected ? 'black' : 'white'
-                }}>{label ? label : 'EMPTY SLOT'}</label>     
+                }}>
+                    {label ? label : 'EMPTY SLOT'}
+                    {!app.isPackaged && (<p><small>{data.uuid}</small></p>)}
+                </label> 
 
                 <div className={styles.content}>
                     {children}

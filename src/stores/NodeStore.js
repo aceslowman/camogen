@@ -12,11 +12,12 @@ import {
     identifier,
     reference,
     custom,
-    object,
     serializable,
+    serialize,
+    deserialize
 } from "serializr"
-import NodeDataStore from './NodeDataStore';
-import GraphStore from './GraphStore';
+import ShaderStore from './ShaderStore';
+import ParameterStore from './ParameterStore';
 
 export default class NodeStore {
     @serializable(identifier())
@@ -25,27 +26,9 @@ export default class NodeStore {
     @serializable(primitive())
     @observable name  = "";
 
-    @serializable(custom(
-        (s) => {
-            console.log('something',s)
-
-            return {
-                ...s,
-                node: s ? s.node.uuid : null,
-            };
-        },
-        (jsonValue, context, _oldValue, done) => {
-            // this is basically what reference() does
-            context.rootContext.await(
-                getDefaultModelSchema(NodeDataStore),
-                jsonValue,
-                context.rootContext.createCallback(done),
-            )
-        },
-    ))
+    // check note in constructor
     @observable data  = null;
 
-    // @serializable(object(GraphStore))
     @observable graph = null;
 
     @observable branch_index = null;    
@@ -58,7 +41,70 @@ export default class NodeStore {
     
     @observable selected = false;
 
-    constructor(graph, data, name) {      
+    constructor(graph, data, name) { 
+        /*
+            NOTE: the below code is meant to provide polymorphism to the
+            NodeDataStore, serializing it as either a ParameterStore
+            or a ShaderStore. 
+
+            this does honestly still feel clunky, so it's worth keeping
+            an eye out for a new solution
+        */
+        getDefaultModelSchema(NodeStore).props["data"] = custom(
+            (v) => {
+                if(v) {
+                    switch (v.constructor.name) {
+                        case "ParameterStore": 
+                            console.log("serializing ParameterStore")
+                            return serialize(ParameterStore, v);
+                        case "ShaderStore":
+                            console.log("serializing ShaderStore")
+                            return serialize(ShaderStore, v);
+                        default:
+                            return null;
+                    }
+                } else {
+                    return null;
+                }
+            },
+            (v, c) => {
+                if (v) {
+                    switch (c.parentContext.target.constructor.name) {
+                        case "ParameterGraphStore":
+                            return deserialize(
+                                ParameterStore.schema, 
+                                v, 
+                                v=>console.log('onready callback', v), 
+                                {
+                                    node: this,
+                                    graph: c.target.graph
+                                }
+                            );
+                        case "ShaderGraphStore":
+                            return deserialize(
+                                ShaderStore.schema, 
+                                v, 
+                                (err)=>{
+                                    if(err)
+                                        console.error(err)
+                                }, 
+                                {
+                                    node: this,
+                                    graph: c.target.graph
+                                }
+                            );
+                        default:
+                            return null;
+                    }
+                } else {
+                    return null;
+                }
+            }
+        )
+
+        getDefaultModelSchema(NodeStore).props["children"] = list(reference(NodeStore.schema));
+        getDefaultModelSchema(NodeStore).props["parents"] = list(reference(NodeStore.schema));
+
         this.data  = data;
         this.name  = data ? data.name : name;
         this.graph = graph;
@@ -72,6 +118,11 @@ export default class NodeStore {
         this.data.node = this;
 
         this.mapInputsToParents();
+
+        // if there are no children, make one
+        if (!this.firstChild) {
+            this.addChild();            
+        } 
         
         if(this.graph) this.graph.update();
 
@@ -159,8 +210,8 @@ export default class NodeStore {
 
 NodeStore.schema = {
     factory: c => {
-        let p = c.parentContext.target;
-        return new NodeStore(p, c.json.data);
+        let parent_graph = c.parentContext.target;
+        return new NodeStore(parent_graph, c.json.data, null, c.json.uuid);        
     },    
     props: getDefaultModelSchema(NodeStore).props
 }

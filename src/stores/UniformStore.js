@@ -3,35 +3,49 @@ import {
     observable
 } from 'mobx';
 import {
-    createModelSchema,
     primitive,
+    identifier,
+    serializable,
+    reference,
     list,
     object,
-    identifier
-} from "serializr"
+    getDefaultModelSchema
+} from "serializr";
+import ShaderStore from './ShaderStore';
 import ParameterStore from './ParameterStore';
 
 export default class UniformStore {
+    @serializable(identifier())
     @observable uuid = uuidv1();
+
+    @serializable(primitive())
     @observable name = null;
+
+    @serializable(list(object(ParameterStore.schema)))
     @observable elements = [];
+
+    // see note in constructor
     @observable parent = null;
 
-    constructor(name = "", elements = [], p) {    
+    constructor(name = "", elements = [], parent) {  
+        // getDefaultModelSchema(UniformStore.schema).props["parent"] = reference(ShaderStore.schema)
+        
         this.name = name;
         this.elements = elements;
-        this.parent = p;
+        this.parent = parent;
         this.elements.forEach((e)=>{
             e.parent = this;
         })
     }
 }
 
-createModelSchema(UniformStore, {
-    uuid: identifier(),
-    name: primitive(),
-    elements: list(object(ParameterStore)),
-}, c => {
-        return new UniformStore(c.json.name, c.json.elements, c.parentContext.target)
-    }
-);
+UniformStore.schema = {
+    factory: c => {
+        return new UniformStore(
+            c.json.name, 
+            c.json.elements, 
+            c.parentContext.target
+        )
+    },
+    props: getDefaultModelSchema(UniformStore).props
+}

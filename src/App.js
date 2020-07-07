@@ -58,9 +58,8 @@ export default @observer class App extends React.Component {
                 {this.store.ready && 
                   (
                     <PanelGroup>
-                      { !app.isPackaged && <DebugInfo collapsed /> }
-                      <Help />      
-                    
+                      { !app.isPackaged && <DebugInfo /> }
+                      <Help collapsed />                          
                       <ShaderGraph data={scene.shaderGraphs[0]} />                      
                         <Panel 
                             title="Effect Controls"			                        

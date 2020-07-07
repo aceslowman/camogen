@@ -20,7 +20,7 @@ const Runner = (p, store) => {
         ) {
             for (let target_data of store.scenes[0].targets) {
                 for (let shader_data of target_data.shaders) {
-                    shader_data.update(p);                                       
+                    if(shader_data.ready) shader_data.update(p);                                       
                 }
             }
 

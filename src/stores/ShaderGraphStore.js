@@ -1,12 +1,11 @@
 import {
-    createModelSchema, deserialize, custom, getDefaultModelSchema
+    deserialize, getDefaultModelSchema
 } from "serializr";
 import { action, computed } from 'mobx';
 import GraphStore from './GraphStore';
 import ShaderStore from './ShaderStore';
 
 export default class ShaderGraphStore extends GraphStore {
-    // assignTargets
     @action afterUpdate(queue) {
         queue.forEach(node => {
             if (node.data) {
@@ -16,9 +15,8 @@ export default class ShaderGraphStore extends GraphStore {
                     node.data.target = this.parent.addTarget();
                 }
 
-                node.data.target.assignShader(node.data);
-
-                node.data.init();
+                node.data.target.assignShader(node.data);                                
+                node.data.sync();    
             }
         });
     }
@@ -62,7 +60,6 @@ export default class ShaderGraphStore extends GraphStore {
             root node, then the Runner will just output
             the default background color.
         */
-    //    console.log(this)
         return this.nodesArray.length > 1;
     }
 
@@ -73,12 +70,12 @@ export default class ShaderGraphStore extends GraphStore {
 
 ShaderGraphStore.schema = {
     factory: c => {
-        let target = c.parentContext ? c.parentContext.target : null;
-
-        return new ShaderGraphStore(
-            target
-        );
+        let parent = c.parentContext ? c.parentContext.target : null;
+        // console.log(parent)
+        let newGraph = new ShaderGraphStore(parent);
+        // newGraph.uuid = c.json.uuid;
+        return newGraph;
     },
-    extends: getDefaultModelSchema(GraphStore), // maybe try creating custom type for NodeData
+    extends: getDefaultModelSchema(GraphStore), 
     props: getDefaultModelSchema(ShaderGraphStore).props
 }

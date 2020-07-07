@@ -1,5 +1,5 @@
 import {
-    createModelSchema
+    getDefaultModelSchema
 } from "serializr"
 import GraphStore from './GraphStore';
 import { action, computed } from 'mobx';
@@ -47,7 +47,7 @@ export default class ParameterGraphStore extends GraphStore {
         if (name === null) {
             console.log(this.mainStore.operator_list)
         } else if (Object.keys(this.mainStore.operator_list).includes(name)) {
-            return new this.mainStore.operator_list[name](this).init();            
+            return new this.mainStore.operator_list[name](this);            
         } else {
             console.error(`couldn't find operator named '${name}'`);
             return null;
@@ -63,6 +63,13 @@ export default class ParameterGraphStore extends GraphStore {
     }
 }
 
-createModelSchema(ParameterGraphStore, {
-    extends: GraphStore
-});
+ParameterGraphStore.schema = {
+    factory: c => {
+        let parent = c.parentContext ? c.parentContext.target : null;
+        let newGraph = new ParameterGraphStore(parent);
+        newGraph.uuid = c.json.uuid;
+        return newGraph;
+    },
+    extends: getDefaultModelSchema(GraphStore),
+    props: getDefaultModelSchema(ParameterGraphStore).props
+}

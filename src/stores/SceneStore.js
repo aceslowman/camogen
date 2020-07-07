@@ -10,15 +10,12 @@ import {
     deserialize,
     getDefaultModelSchema,
     serializable,
-    update,
-    custom
+    update
 } from "serializr"
 import uuidv1 from 'uuid/v1';
 import Target from './TargetStore';
-import ShaderGraph from './ShaderGraphStore';
 import path from 'path';
 import ShaderGraphStore from './ShaderGraphStore';
-import GraphStore from './GraphStore';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -27,57 +24,27 @@ const app = remote.app;
 const fs = window.require('fs');
 
 export default class SceneStore {
-
-    @observable
     @serializable(identifier())
-    uuid = uuidv1();
+    @observable uuid = uuidv1();
     
+    @serializable(list(object(ShaderGraphStore.schema)))
+    @observable shaderGraphs = [];
+
+    @observable activeShaderGraph = null;
+
     @observable parent = null;
-
-    @observable    
-    // @serializable(list(object(ShaderGraphStore.schema)))
-    @serializable(list(custom(
-        v => {
-            console.log('HERE', v)
-            // let new_node_keys = Object.keys(v.nodes);
-            
-            console.log('HERE AGAIN', serialize(ShaderGraphStore.schema, v))
-            return serialize(ShaderGraphStore.schema, v);
-            // return {
-            //     ...v,
-            //     activeNode: v.activeNode.uuid,
-            //     parent: v.parent.uuid,
-            //     nodes: 
-            // };
-            // console.log(v.nodes)
-            // let ids = Object.keys(v.nodes);
-            // let serializedGraph = {};
-
-            // // try to manually serialize 
-            // ids.forEach((id)=>{
-            //     serializedGraph.nodes = {...v.nodes, v.nodes[id].uuid}
-            // });
-            
-            // return serializedGraph
-        },
-        (v, c) => {
-            return v
-        }
-    )))
-    shaderGraphs = [];
     
     @observable targets = [];
     
     constructor(parent) {
         this.parent = parent;        
-
-        const g = new ShaderGraph(this);
+        const g = new ShaderGraphStore(this);
 
         // DEFAULTS (FOR NOW)
         g.addNodeByName("UV");
         g.addNodeByName("Glyph");
-        g.addNodeByName("Add");
-        g.addNodeByName("ToHSV");
+        // g.addNodeByName("Add");
+        // g.addNodeByName("ToHSV");
 
         this.shaderGraphs.push(g);
         this.activeShaderGraph = g;        
@@ -119,7 +86,7 @@ export default class SceneStore {
                 if(err) {         
                     console.error("an error has occurred: "+err.message);
                 } else {
-                    console.log('scene has been saved at '+f.filePaths)
+                    console.log('scene has been saved at file:/'+f.filePath)
                 }                
             });
             

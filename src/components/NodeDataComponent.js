@@ -53,7 +53,7 @@ export default @observer class NodeDataComponent extends React.Component {
 			let bounds = this.innerRef.current.getBoundingClientRect();
 
 			style.inner = {
-				...style.inner,
+				...style.inner,				
 				maxHeight: this.state.expandMain || this.props.data.node.selected ? `${bounds.height}px` : '0px',
 			}					
 		}	

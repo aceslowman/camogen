@@ -9,54 +9,22 @@ import {
     object,
     custom,
     serializable,
-    serialize
+    serialize,
+    reference
 } from "serializr"
-
 export default class GraphStore {
     @serializable(identifier())
     @observable uuid = uuidv1();
 
-    // @serializable(map(object(NodeStore.schema)))
-    // https://github.com/mobxjs/serializr/issues/129
-    @serializable(map(custom(
-        (v) => {
-            // if(s.data) s.data.node = s.uuid; 
-            console.log(v)
-
-            return serialize(NodeStore.schema, v)
-
-            // return {
-            //     ...s,
-            //     data: {
-            //         ...s.data,
-            //         node: s.uuid,
-            //         graph: s.graph.uuid,
-            //     },
-            //     // graph: {
-            //     //     ...s.graph,
-            //     //     activeNode: s.graph.activeNode.uuid
-            //     // }
-            // };
-        },
-        (jsonValue, context, _oldValue, done) => {
-            console.log(jsonValue)
-            // this is basically what reference() does
-            context.rootContext.await(
-                getDefaultModelSchema(NodeStore),
-                jsonValue,
-                context.rootContext.createCallback(done),
-            )
-        },
-    )))
+    @serializable(map(object(NodeStore.schema)))
     @observable nodes = {};
 
-    // @serializable(object(SceneStore))
+    // see note in constructor
     @observable parent = null;
 
-    // @serializable(object(NodeStore))
+    // see note in constructor
     @observable activeNode = null;
 
-    // @serializable(object(NodeStore))
     @observable currentlyEditing = null;
 
     // for key binding focus
@@ -65,69 +33,42 @@ export default class GraphStore {
     // NOTE: toggle to force a re-render in React
     @observable updateFlag = false;
 
-    @observable keymap = {};
-
-    onKeyDown(e) {
-        // console.log(e.code)
-
-        switch (e.code) {
-            case "ArrowLeft":
-                if (this.activeNode.firstChild) {
-                    let index_in_child = this.activeNode.firstChild.parents.indexOf(this.activeNode);
-                    if (this.activeNode.firstChild.parents[index_in_child - 1])
-                        this.activeNode = this.activeNode.firstChild.parents[index_in_child - 1].select(true);
-                }
-                break;
-            case "ArrowRight":
-                if (this.activeNode.firstChild) {
-                    let index_in_child = this.activeNode.firstChild.parents.indexOf(this.activeNode);
-                    if (this.activeNode.firstChild.parents[index_in_child+1])
-                        this.activeNode = this.activeNode.firstChild.parents[index_in_child + 1].select(true);
-                }
-                break;
-            case "ArrowUp":
-                if (this.activeNode.firstParent)
-                    this.activeNode = this.activeNode.firstParent.select(true);
-                break;
-            case "ArrowDown":
-                if (this.activeNode.firstChild)
-                    this.activeNode = this.activeNode.firstChild.select(true);
-                break;      
-            case "Tab":
-                // open up the node data component
-                break;  
-            default:
-                break;
-        }
-    }
-
     constructor(parent) {
-        this.onKeyDown = this.onKeyDown.bind(this);
-        this.parent = parent;
+        // NOTE: workaround for circular dependency        
+        // getDefaultModelSchema(GraphStore).props["activeNode"] = reference(NodeStore.schema);
 
+        this.parent = parent;
+    
+        // triggering too often!
         //set initial root node
         this.addNode().select();   
+        // console.log('initializing '+this.uuid,this)        
     }    
 
     @action clear() {
+        // re-initialize the nodes map
         this.nodes = {};
+        // assure that no nodes are in editing
         this.currentlyEditing = null;
+        // create root node, select it
         this.addNode().select();
+        // recalculate 
         this.update(); 
     }
 
     @action update() {
         let update_queue = this.calculateBranches();        
-        this.afterUpdate(update_queue);
-        
-        // add new node at end if necessary
-        if(this.root.data) {
-            this.root.addChild();            
-        }            
-        
+        this.afterUpdate(update_queue);       
         this.updateFlag = !this.updateFlag;
     }
 
+    /*
+        addNode(node = new NodeStore(this, null, 'NEW NODE'))
+
+        this method adds new nodes to the graph. 
+        this does not assume that the node has any 
+        associated data.
+    */
     @action addNode(node = new NodeStore(this, null, 'NEW NODE')) {
         node.graph = this;
         
@@ -137,12 +78,18 @@ export default class GraphStore {
         }
 
         // NOTE: it's a red flag that this triggers so often
-        // console.log('node added!', this.nodes)
+        // it might be causing issues with serialization
+        // console.log(node.name+' node added!', this.nodes)
         return node;
     }
 
-    @action removeNode(uuid) {
+    /*
+        removeNode(uuid)
+    */
+    @action removeNode(uuid) {        
         let node = this.nodes[uuid];
+
+        // console.log('Removing node '+node.name, uuid)
 
         if (node.parents[0])
             node.parents[0].children[0] = node.children[0];
@@ -152,8 +99,6 @@ export default class GraphStore {
         node.data.onRemove();
         delete this.nodes[uuid];
 
-        // console.log(uuid, this.nodes)
-
         if(this.nodesArray.length < 2) {
             this.clear();
         } else {
@@ -161,7 +106,17 @@ export default class GraphStore {
         }   
     }
 
+    /*
+        traverse(f = null, depthFirst = false)
+
+        this method will crawl through the graph structure
+        either depth first or breadth first.
+
+        it's first argument is function that will be called
+        during each step of the traversal.
+    */
     @action traverse(f = null, depthFirst = false) {
+        // console.log('performing traversal on graph', this)
         let result = [];
         let container = [this.root];
         let next_node;

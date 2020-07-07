@@ -31,7 +31,7 @@ const app    = remote.app;
 const fs     = window.require('fs');
 
 export default class ShaderStore extends NodeDataStore {    
-    @serializable(list(object(UniformStore)))
+    @serializable(list(object(UniformStore.schema)))
     @observable uniforms  = [];
 
     @serializable(primitive())
@@ -51,61 +51,80 @@ export default class ShaderStore extends NodeDataStore {
     @observable operatorUpdateGroup = [];
     @observable selectedParameter = null;
 
+    @observable ready = null;
+
     constructor(
         target, 
         precision = null, 
         vert = null, 
         frag = null, 
         uniforms = [],
-        node = null
+        node = null,
     ) {       
         super(node);
         
         this.target = target; 
-        this.precision = precision;
-        this.vert = vert;
-        this.frag = frag;
-        this.uniforms = uniforms;        
+        // this.precision = precision;
+        // this.vert = vert;
+        // this.frag = frag;
+        // this.uniforms = uniforms; 
         
-        this.extractUniforms();
+        // this.extractUniforms();
+        // this.init();
     }
 
+    /*
+        init()
+
+        the target needs to be assigned before
+        this function is called.
+    */
     @action init() {
-        this.parameter_graphs = [];
-        this.ref = this.target.ref.createShader(
-            this.vertex,
-            this.fragment
-        );
+        if(!this.ref) {
+            this.ref = this.target.ref.createShader(
+                this.vertex,
+                this.fragment
+            )
+        }
 
         this.extractUniforms();
 
         for (let uniform of this.uniforms) {
             this.ref.setUniform(uniform.name, uniform.elements);
-
-            for (let param of uniform.elements) {
-                if (param.graph)
-                    this.parameter_graphs.push(param.graph)
-            }
         }
 
-        this.controls = this.uniforms.map((uniform)=>{                        
+        this.controls = this.uniforms.map((uniform)=>{ 
             return (
-                <ControlGroupComponent name={uniform.name}>
-                    {uniform.elements.map((param)=>{                         
+                <ControlGroupComponent key={uniform.uuid} name={uniform.name}>
+                    {uniform.elements.map((param)=>{ 
                         return (
                             <ParameterComponent
-                                active={this.selectedParameter === param}
                                 key={param.uuid}
+                                active={this.selectedParameter === param}
                                 data={param}
                                 onDblClick={(e) => this.selectedParameter = e}
                             />
-                        );                     
+                        );                                                            
                     })}
                 </ControlGroupComponent>                    
             );                     
         });
 
+        this.ready = true;
         return this;
+    }
+
+    /*
+        sync()
+
+        synchronizes the shader with it's graph, updating
+        the shader target 
+
+        this is called in ShaderGraphStore.afterUpdate(),
+        following each tree traversal
+    */
+    @action sync() {
+
     }
 
     @action update(p) {
@@ -156,7 +175,6 @@ export default class ShaderStore extends NodeDataStore {
             target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
         } catch (error) {
             console.error(error);
-            console.log('frag', shader)
             p.noLoop();
         }
     }
@@ -340,19 +358,17 @@ export default class ShaderStore extends NodeDataStore {
 
 ShaderStore.schema = {
     factory: c => {
-        console.log(getDefaultModelSchema(ShaderStore).props)
         let target = c.parentContext ? c.parentContext.target : null;
-        let parent_node = c.parentContext ? c.parentContext.node : null;
-
+        
         return new ShaderStore(
             target,
             c.json.precision,
             c.json.vert,
             c.json.frag,
             c.json.uniforms,
-            parent_node
+            c.args ? c.args.node : null,            
         );
     },
-    extends: getDefaultModelSchema(NodeDataStore), // maybe try creating custom type for NodeData
+    extends: getDefaultModelSchema(NodeDataStore),
     props: getDefaultModelSchema(ShaderStore).props
 }

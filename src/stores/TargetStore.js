@@ -1,21 +1,16 @@
 import { observable, action } from 'mobx';
-import ShaderStore from './ShaderStore';
 import uuidv1 from 'uuid/v1';
-import {
-    createModelSchema,
-    primitive,
-    list,
-    object,
-    identifier,
-    // deserialize,
-} from "serializr"
 
-class TargetStore {
+export default class TargetStore {
     @observable uuid   = uuidv1();
+
     @observable ref    = null;
+
     @observable parent = null;
-    @observable active = true;
+
     @observable shaders = [];
+
+    @observable active = true;
 
     constructor(parent) {
         this.parent = parent;
@@ -48,15 +43,3 @@ class TargetStore {
         // if (this.shaders.length === 0) this.parent.removeTarget(this);
     }
 }
-
-createModelSchema(TargetStore, {
-    uuid:    identifier(),
-    active:  primitive(),
-    shaders: list(object(ShaderStore)),
-}, c => {
-    let p = c.parentContext.target;
-    console.log('Target store factory', p)
-    return new TargetStore(p.parent);
-});
-
-export default TargetStore;

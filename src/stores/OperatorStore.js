@@ -1,12 +1,15 @@
-import React from 'react';
-import { observable, action } from 'mobx';
+import { observable } from 'mobx';
 import {
-    createModelSchema
+    getDefaultModelSchema, 
+    serializable,
+    primitive,
 } from "serializr"
 import NodeDataStore from './NodeDataStore';
 
 export default class OperatorStore extends NodeDataStore {
     @observable value    = null;
+
+    @serializable(primitive())
     @observable modifier = null;
     @observable controls   = [];
 
@@ -17,6 +20,15 @@ export default class OperatorStore extends NodeDataStore {
     }  
 }
 
-createModelSchema(OperatorStore, {
-    extends: NodeDataStore
-});
+OperatorStore.schema = {
+    factory: c => {
+        let parent_node = c.parentContext ? c.parentContext.node : null;
+        console.log(parent_node)
+        return new OperatorStore(
+            // parent_node
+            c.args ? c.args.node : null
+        );
+    },
+    extends: getDefaultModelSchema(NodeDataStore),// maybe try creating custom type for NodeData
+    props: getDefaultModelSchema(OperatorStore).props
+}

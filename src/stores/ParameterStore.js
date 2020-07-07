@@ -1,15 +1,15 @@
 import { observable } from 'mobx';
 import uuidv1 from 'uuid/v1';
 import {
-  createModelSchema,
   getDefaultModelSchema,
   primitive,
   object,
+  reference,
   identifier,
-  serializable
+  serializable,
+  deserialize
 } from "serializr";
-import ParameterGraph from './ParameterGraphStore';
-import NodeDataStore from './NodeDataStore';
+import ParameterGraphStore from './ParameterGraphStore';
 import GraphStore from './GraphStore';
 
 export default class ParameterStore {
@@ -19,16 +19,18 @@ export default class ParameterStore {
     @serializable(primitive())
     @observable value = null;
     
-    @serializable(object(GraphStore))
+    @serializable(object(ParameterGraphStore.schema))
     @observable graph = null;
     
+    // see note in constructor
     @observable parent = null;
 
     constructor(
         name = "",
         value = null, 
-        graph = new ParameterGraph(this),        
+        graph = new ParameterGraphStore(),
     ) {
+        // getDefaultModelSchema(ParameterStore).props["parent"] = reference(GraphStore.schema);
         this.name = name;
         this.value = value;
         this.graph = graph;
@@ -37,15 +39,14 @@ export default class ParameterStore {
 
 ParameterStore.schema = {
     factory: c => {
+        // console.log(c)
         let param = new ParameterStore(
             c.json.name,
             c.json.value,
-            c.json.graph
+            deserialize(ParameterGraphStore.schema, c.json.graph)
         );
 
-        param.parent = c.parentContext.target;
         return param;
-    },
-    extends: getDefaultModelSchema(NodeDataStore), 
+    }, 
     props: getDefaultModelSchema(ParameterStore).props
 }
