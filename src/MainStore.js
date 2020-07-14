@@ -2,23 +2,20 @@ import { observable, action } from 'mobx';
 import Runner from './Runner';
 import p5 from 'p5';
 import {
-  createModelSchema,
-  list,
-  object,
   serialize,
 } from "serializr";
 import ShaderStore from './stores/ShaderStore';
 import ConsoleStore from './stores/ConsoleStore';
-// import { create } from 'mobx-persist';
-// import Graph from './stores/GraphStore';
-// import ImageInput from './stores/inputs/ImageInput';
-// import WebcamInput from './stores/inputs/WebcamInput';
-import Scene from './stores/SceneStore';
+import SceneStore from './stores/SceneStore';
 
 // operators
 import Add from './stores/ops/Add';
 import Counter from './stores/inputs/Counter'; // should be in ops?
 import MIDI from './stores/inputs/MIDI';
+
+// inputs
+import ImageInput from './stores/inputs/ImageInput';
+import WebcamInput from './stores/inputs/WebcamInput';
 
 const path = require('path');
 
@@ -36,7 +33,6 @@ const fs = window.require('fs');
    [TargetStore] ----- [GraphStore] 
                             |
            [ShaderGraph] -- or -- [ParameterGraph]
-                  |______________________|
                             |
                         [NodeStore] 
                             |
@@ -50,15 +46,17 @@ const fs = window.require('fs');
 class MainStore {
   @observable p5_instance = null;
   
-  // populated by loadShaderFiles()
+  /* 
+    populated automatically using the
+    loadShaderFiles() function. 
+  */
   @observable shader_list = {};
 
-  @observable input_list = {};
+  @observable input_list = {
+    'ImageInput': ImageInput,
+    'WebcamInput': WebcamInput,
+  };
 
-  // at this moment there are no
-  // user-defined operators, so
-  // operators can be loaded 
-  // manually here.
   @observable operator_list = {
     'Add': Add,
     'Counter': Counter,
@@ -66,21 +64,34 @@ class MainStore {
   };
 
   @observable scenes = [];
+  @observable activeScene = null;
 
   @observable console = new ConsoleStore();
 
   @observable ready = false;
 
-  @observable activeScene = null;
-
   constructor() {  
     this.loadShaderFiles().then(() => {
       this.p5_instance = new p5(p => Runner(p, this));
-      this.scenes.push(new Scene(this));
+      this.scenes.push(new SceneStore(this));
       this.ready = true;
     });
   }
 
+  /*
+    loadShaderFiles()
+
+    loads all custom shaders from the users directory
+
+    if no factory shaders are found, they will be automatically
+    loaded from `default_shaders_path`. 
+
+    the user shaders are located at:
+    
+      macOS: ~/Library/Application Support
+      Linux: ~/.config
+      Windows: %APPDATA%
+  */
   @action async loadShaderFiles() {
     let default_shaders_path = app.isPackaged 
       ? path.join(app.getAppPath(), '../shaders')
@@ -88,19 +99,48 @@ class MainStore {
     let user_shaders_path = path.join(app.getPath("userData"),'shaders');
 
     try {
-      await fs.promises.access(user_shaders_path) // check if path exists
+      // check if path exists
+      await fs.promises.access(user_shaders_path) 
 
       let files = await fs.promises.readdir(user_shaders_path);
 
-      await Promise.all(files.map(async (type) => {
-        const data = JSON.parse(await fs.promises.readFile(user_shaders_path + '/' + type));
-        data.name = type.split('.')[0];
-        this.shader_list = {
-          ...this.shader_list,
-          [data.name]: data
+      // add each shader from nested folders
+      await Promise.all(files.map(async (filename) => {
+        let filepath = user_shaders_path + '/' + filename;
+
+        // console.log(filename, fs.lstatSync(filepath).isDirectory())
+        
+        if (fs.lstatSync(filepath).isDirectory()) {
+          let sub_files = await fs.promises.readdir(filepath); 
+          
+          await Promise.all(sub_files.map(async f => {
+            // console.log('subdirectory files', filepath + '/' + f)
+            
+            const data = JSON.parse(await fs.promises.readFile(filepath+'/'+f));
+
+            // get first part of filename
+            // data.name = f.split('.')[0];
+            this.shader_list = {
+              ...this.shader_list,
+              [filename]: {
+                ...this.shader_list[filename],
+                _isDirectory: true,
+                [data.name]: data
+              }
+            }
+          }))
+        } else {
+          const data = JSON.parse(await fs.promises.readFile(filepath));
+          data.name = filename.split('.')[0];
+          this.shader_list = {
+            ...this.shader_list,
+            [data.name]: data
+          }
         }
       }))
-    } catch (err) { // if user data shaders doesn't exist
+    } catch (err) { // if user data shaders doesn't exist    
+      if(err) console.error(err)
+
       fs.promises.mkdir(user_shaders_path).catch(console.error);
       
       console.log('new directory created for shaders', user_shaders_path);
@@ -117,19 +157,17 @@ class MainStore {
     }  
   }
 
-  @action removeScene(scene) {
-    this.scene = this.scene.filter((item) => item !== scene);
-    if (this.activeScene === scene) {
-      this.activeScene = this.scene[0];
-    }
-  }
-
   @action breakout() {
     let new_window = window.open('/output_window.html');
     new_window.gl = this.p5_instance.canvas.getContext('2d'); 
     // new_window.dimensions = []
   }
 
+  /*
+    snapshot()
+
+    saves a png of the current scene
+  */
   @action async snapshot() {
     var dataURL = this.p5_instance.canvas.toDataURL("image/png");
 
@@ -177,7 +215,7 @@ class MainStore {
 /* 
   for some reason this needs to be here, this 
   seems to be related to a circular dependency 
-  issue i had
+  issue I had
 */
 const mainStore = new MainStore();
 export default mainStore;

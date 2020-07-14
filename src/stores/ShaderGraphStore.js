@@ -16,7 +16,7 @@ export default class ShaderGraphStore extends GraphStore {
                 }
 
                 node.data.target.assignShader(node.data);                                
-                node.data.sync();    
+                node.data.init();    
             }
         });
     }
@@ -37,11 +37,44 @@ export default class ShaderGraphStore extends GraphStore {
         this.activeNode.setData(data);
     }
     
+    /*
+        getShader(name = null)
+
+        retrieves shader with matching name
+        this method searches MainStore.shader_list
+        for matches, including in subdirectories.
+    */
     @action getShader(name = null) {
-        if (name === null) {
-            console.log(this.mainStore.shader_list)
-        } else if (Object.keys(this.mainStore.shader_list).includes(name)) {            
-            return deserialize(ShaderStore.schema, this.mainStore.shader_list[name]);
+        // const exists = Object.keys(this.mainStore.shader_list).includes(name);
+        let result = null;
+
+        for (let key in this.mainStore.shader_list) {
+            let item = this.mainStore.shader_list[key];
+            // console.log(item)
+            if(item._isDirectory) {
+                // console.log('return directory',item)
+
+                for(let subkey of Object.keys(item)) {
+                    // console.log(subkey)
+                    if(subkey==='_isDirectory') continue;
+                    let subItem = item[subkey]
+                    // console.log(subItem.name, name)
+                    if (subItem.name === name) {
+                        result = subItem.name === name ? subItem : null;
+                        break;
+                    }                    
+                }
+
+            } else {
+                if(key === name){
+                    result = item;
+                    break;
+                }
+            }
+        }
+
+        if (result) {           
+            return deserialize(ShaderStore.schema, result);
         } else {
             console.error(`couldn't find shader named '${name}'`);
             return null;
@@ -71,10 +104,8 @@ export default class ShaderGraphStore extends GraphStore {
 ShaderGraphStore.schema = {
     factory: c => {
         let parent = c.parentContext ? c.parentContext.target : null;
-        // console.log(parent)
-        let newGraph = new ShaderGraphStore(parent);
-        // newGraph.uuid = c.json.uuid;
-        return newGraph;
+        console.log(parent)
+        return new ShaderGraphStore(parent);
     },
     extends: getDefaultModelSchema(GraphStore), 
     props: getDefaultModelSchema(ShaderGraphStore).props

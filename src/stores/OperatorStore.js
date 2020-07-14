@@ -22,11 +22,10 @@ export default class OperatorStore extends NodeDataStore {
 
 OperatorStore.schema = {
     factory: c => {
-        let parent_node = c.parentContext ? c.parentContext.node : null;
+        let parent_node = c.args ? c.args.node : null
         console.log(parent_node)
         return new OperatorStore(
-            // parent_node
-            c.args ? c.args.node : null
+            parent_node            
         );
     },
     extends: getDefaultModelSchema(NodeDataStore),// maybe try creating custom type for NodeData

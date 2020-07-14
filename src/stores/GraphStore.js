@@ -19,7 +19,6 @@ export default class GraphStore {
     @serializable(map(object(NodeStore.schema)))
     @observable nodes = {};
 
-    // see note in constructor
     @observable parent = null;
 
     // see note in constructor
@@ -35,7 +34,7 @@ export default class GraphStore {
 
     constructor(parent) {
         // NOTE: workaround for circular dependency        
-        // getDefaultModelSchema(GraphStore).props["activeNode"] = reference(NodeStore.schema);
+        getDefaultModelSchema(GraphStore).props["activeNode"] = reference(NodeStore.schema);
 
         this.parent = parent;
     
@@ -56,20 +55,28 @@ export default class GraphStore {
         this.update(); 
     }
 
+    /* 
+        update()
+
+        this method will calculate the branches of the
+        graph structure and then call afterUpdate()
+    */
     @action update() {
         let update_queue = this.calculateBranches();        
-        this.afterUpdate(update_queue);       
+        this.afterUpdate(update_queue);   
+        
+        // to force a react re-render
         this.updateFlag = !this.updateFlag;
     }
 
     /*
-        addNode(node = new NodeStore(this, null, 'NEW NODE'))
+        addNode(node = new NodeStore('NEW NODE', this))
 
         this method adds new nodes to the graph. 
         this does not assume that the node has any 
         associated data.
     */
-    @action addNode(node = new NodeStore(this, null, 'NEW NODE')) {
+    @action addNode(node = new NodeStore('NEW NODE', this)) {
         node.graph = this;
         
         this.nodes = {
@@ -189,18 +196,6 @@ export default class GraphStore {
 
         if(!node) console.error(`node was not found!`, uuid);
         return node;
-    }
-
-    @action toggleFocus() {
-        this.focused = !this.focused;
-
-        if (this.focused) {
-            console.log('registering event listener');
-            document.addEventListener('keydown', this.onKeyDown, true);
-        } else {
-            console.log('removing event listener');
-            document.removeEventListener('keydown', this.onKeyDown, true);
-        }
     }
 
     @computed get root() {

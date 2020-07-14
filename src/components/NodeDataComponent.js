@@ -9,7 +9,7 @@ const style = {
 	},
 };
 
-export default @observer class NodeDataComponent extends React.Component {
+export default @observer class NodeDataComponent extends React.PureComponent {
 	static contextType = MainContext;
 
 	constructor() {

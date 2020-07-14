@@ -19,6 +19,7 @@ export default class ParameterStore {
     @serializable(primitive())
     @observable value = null;
     
+    // TEMPORARILY NOT SERIALIZING PARAMETER GRAPHS
     @serializable(object(ParameterGraphStore.schema))
     @observable graph = null;
     
@@ -28,7 +29,7 @@ export default class ParameterStore {
     constructor(
         name = "",
         value = null, 
-        graph = new ParameterGraphStore(),
+        graph = new ParameterGraphStore(this),
     ) {
         // getDefaultModelSchema(ParameterStore).props["parent"] = reference(GraphStore.schema);
         this.name = name;
@@ -39,11 +40,10 @@ export default class ParameterStore {
 
 ParameterStore.schema = {
     factory: c => {
-        // console.log(c)
         let param = new ParameterStore(
             c.json.name,
             c.json.value,
-            deserialize(ParameterGraphStore.schema, c.json.graph)
+            c.json.graph
         );
 
         return param;

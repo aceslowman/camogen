@@ -36,8 +36,7 @@ export default @observer class DebugInfo extends React.Component {
 									<li key={e.uuid}>{e.uuid}</li>
 
 									<ol key={e.uuid+1} start="0">
-										{e.shaders.map((shader)=>{
-											console.log('shader '+shader.uuid, shader)
+										{e.shaders.map((shader)=>{											
 											return (
 												<li key={shader.uuid}>{shader.name}</li>
 											)

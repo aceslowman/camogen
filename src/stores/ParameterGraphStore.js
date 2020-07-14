@@ -5,31 +5,17 @@ import GraphStore from './GraphStore';
 import { action, computed } from 'mobx';
 
 export default class ParameterGraphStore extends GraphStore { 
-    @action afterUpdate(queue) {
-        // let v = 0;
-
-        // queue.forEach(node => {
-        //     // console.log(node.name, node)
-        //     // calculate
-        //     // if not root node
-        //     if(node.data) v = node.data.update(v);
-        //     // console.log(v, this.parent)
-
-        //     this.parent.value = v;
-        // });
+    @action afterUpdate() {
+        this.recalculate();
     }
 
-    // experimental
     @action recalculate() {
         let v = 0;
 
         let queue = this.calculateBranches();
         queue.forEach(node => {
-            // console.log(node.name, node)
-            // calculate
             // if not root node
             if (node.data) v = node.data.update(v);
-            // console.log(v, this.parent)
 
             this.parent.value = v;
         });
@@ -55,6 +41,7 @@ export default class ParameterGraphStore extends GraphStore {
     }
 
     @computed get mainStore() {
+        console.log(this)
         return this.parent.parent.parent.node.graph.parent.parent;
     }
 
@@ -66,9 +53,7 @@ export default class ParameterGraphStore extends GraphStore {
 ParameterGraphStore.schema = {
     factory: c => {
         let parent = c.parentContext ? c.parentContext.target : null;
-        let newGraph = new ParameterGraphStore(parent);
-        newGraph.uuid = c.json.uuid;
-        return newGraph;
+        return new ParameterGraphStore(parent);
     },
     extends: getDefaultModelSchema(GraphStore),
     props: getDefaultModelSchema(ParameterGraphStore).props

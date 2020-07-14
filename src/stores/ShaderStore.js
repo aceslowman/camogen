@@ -64,13 +64,13 @@ export default class ShaderStore extends NodeDataStore {
         super(node);
         
         this.target = target; 
-        // this.precision = precision;
-        // this.vert = vert;
-        // this.frag = frag;
-        // this.uniforms = uniforms; 
+        this.precision = precision;
+        this.vert = vert;
+        this.frag = frag;
+        this.uniforms = uniforms; 
         
-        // this.extractUniforms();
-        // this.init();
+        // should find a way to call this only once
+        this.extractUniforms();
     }
 
     /*
@@ -136,7 +136,6 @@ export default class ShaderStore extends NodeDataStore {
             values in sync with the frame rate
         */
         for (let op of this.operatorUpdateGroup) {
-            // console.log(op)
             op.update();
             op.node.graph.recalculate();
         }
@@ -310,22 +309,20 @@ export default class ShaderStore extends NodeDataStore {
             }
 
             dialog.showSaveDialog(options).then((f) => {
-                console.log(f)
-                let content = JSON.stringify(serialize(ShaderStore, this));
+                let content = JSON.stringify(serialize(ShaderStore.schema, this));
 
                 fs.writeFile(f.filePath, content, (err) => {
                     if (err) {
                         console.log("an error has occurred: " + err.message);
                     } else {
-                        console.log(f.filePath)
-                        this.target.parent.loadShaders();
+                        this.target.parent.loadShaderFiles();
                     }      
                 });
             }).catch(err => {
                 console.error(err)
             });
         } else {
-            let content = JSON.stringify(serialize(ShaderStore, this));
+            let content = JSON.stringify(serialize(ShaderStore.schema, this));
 
             let file = this.name + '.shader';
 

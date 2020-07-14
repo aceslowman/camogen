@@ -94,7 +94,7 @@ export default @observer class RailComponent extends React.Component {
                     color: data.selected ? 'black' : 'white'
                 }}>
                     {label ? label : 'EMPTY SLOT'}
-                    {!app.isPackaged && (<p><small>{data.uuid}</small></p>)}
+                    {/* {!app.isPackaged && (<p><small>{data.uuid}</small></p>)} */}
                 </label> 
 
                 <div className={styles.content}>

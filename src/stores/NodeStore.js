@@ -33,15 +33,16 @@ export default class NodeStore {
 
     @observable branch_index = null;    
 
-    // filled with null so that mobx never
-    // attempts to access unavailable [0]
-    // (firstChild)
     @observable children = [null];
     @observable parents = [];
     
     @observable selected = false;
 
-    constructor(graph, data, name) { 
+    constructor(
+        name, 
+        graph, 
+        data = null
+    ) { 
         /*
             NOTE: the below code is meant to provide polymorphism to the
             NodeDataStore, serializing it as either a ParameterStore
@@ -52,7 +53,7 @@ export default class NodeStore {
         */
         getDefaultModelSchema(NodeStore).props["data"] = custom(
             (v) => {
-                if(v) {
+                if (v) {
                     switch (v.constructor.name) {
                         case "ParameterStore": 
                             console.log("serializing ParameterStore")
@@ -74,7 +75,9 @@ export default class NodeStore {
                             return deserialize(
                                 ParameterStore.schema, 
                                 v, 
-                                v=>console.log('onready callback', v), 
+                                (err)=>{
+                                    if(err) console.error(err)
+                                }, 
                                 {
                                     node: this,
                                     graph: c.target.graph
@@ -85,8 +88,7 @@ export default class NodeStore {
                                 ShaderStore.schema, 
                                 v, 
                                 (err)=>{
-                                    if(err)
-                                        console.error(err)
+                                    if(err) console.error(err)
                                 }, 
                                 {
                                     node: this,
@@ -112,29 +114,44 @@ export default class NodeStore {
         if(data) this.setData(data);      
     }
 
-    @action setData(obj) {
-        this.data = obj;
-        this.name = this.data.name;
-        this.data.node = this;
+    @action setData(nodeData) {
+        this.data = nodeData;
 
-        this.mapInputsToParents();
+        /*
+            this masks an issue where the failure
+            to load a shader causes a crash
+        */
+        // if(this.data) {
+            this.name = this.data.name;
+            this.data.node = this;
 
-        // if there are no children, make one
-        if (!this.firstChild) {
-            this.addChild();            
-        } 
-        
-        if(this.graph) this.graph.update();
+            this.mapInputsToParents();
 
-        return this;
+            // if there are no children, make one
+            if (!this.firstChild) {
+                this.addChild();
+            }
+
+            if (this.graph) this.graph.update();
+        // }
     }
     
+    /*
+        mapInputsToParents()
+
+        this method will go through the nodeData 
+        and create connections to other nodes based
+        on the inputs and outputs that are defined.
+
+        this helps when a shader has multiple shader
+        inputs for example
+    */
     @action mapInputsToParents() { 
         this.parents = this.data.inputs.map((e,i) => {
             if(this.parents.length && this.parents[i]) {
                 return this.parents[i];
             } else {   
-                let parent = new NodeStore(this.graph, null, e);
+                let parent = new NodeStore(e, this.graph);
                 return this.addParent(parent, i);
             }                    
         });
@@ -150,13 +167,13 @@ export default class NodeStore {
         this.firstChild = child;
     }
 
-    @action addParent(node = new NodeStore(this.graph, null, 'input'), index = 0) {
+    @action addParent(node = new NodeStore('input',this.graph), index = 0) {
         this.connectParent(node, index);
-        if(this.graph) this.graph.addNode(node);
+        this.graph.addNode(node);
         return node;
     }
 
-    @action addChild(node = new NodeStore(this.graph, null, 'ROOT NODE'), index = 0) {
+    @action addChild(node = new NodeStore('ROOT NODE',this.graph), index = 0) {
         this.connectChild(node, index);
         this.graph.addNode(node);
         return node;
@@ -169,14 +186,14 @@ export default class NodeStore {
         return this;
     }
 
-    @action edit() {
-        if(this.graph.edit) this.graph.edit(this);
-    }
-
     @action deselect() {
         this.graph.activeNode = null;
         this.selected = false;
         return this;
+    }
+
+    @action edit() {
+        this.graph.edit(this);
     }
 
     @computed get firstChild() {
@@ -211,7 +228,11 @@ export default class NodeStore {
 NodeStore.schema = {
     factory: c => {
         let parent_graph = c.parentContext.target;
-        return new NodeStore(parent_graph, c.json.data, null, c.json.uuid);        
+        return new NodeStore(
+            null,
+            parent_graph, 
+            c.json.data, 
+        );        
     },    
     props: getDefaultModelSchema(NodeStore).props
 }

@@ -35,6 +35,10 @@ export default class CounterStore extends OperatorStore {
 				</fieldset>
 			</ControlGroupComponent>								
 		);
+
+		// NOTE: if the operators stop moving, it 
+		// may be because init() was not called.
+		this.init()
 	}
 
 	@action handleChange = e => {
@@ -48,12 +52,16 @@ export default class CounterStore extends OperatorStore {
 		let uniform = param.parent;
 		let shader = uniform.parent;
 		
+		/*
+			each shader is responsible for keeping
+			track of it's operator graphs. 
+		*/
 		shader.operatorUpdateGroup.push(this)
 
 		return this;
 	}
 
-	@action update = () => {
+	@action update = () => {		
 		return this.modifier !== 0 
 			? Number(this.value += (1 / this.modifier)) 
 			: Number(this.value);

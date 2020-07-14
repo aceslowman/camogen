@@ -11,7 +11,7 @@ import {
 import NodeStore from './NodeStore';
 
 export default class NodeDataStore {
-    // @serializable(identifier()) 
+    @serializable(identifier()) 
     @observable uuid = uuidv1();
 
     @serializable(primitive())

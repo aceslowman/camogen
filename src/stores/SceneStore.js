@@ -41,6 +41,7 @@ export default class SceneStore {
         const g = new ShaderGraphStore(this);
 
         // DEFAULTS (FOR NOW)
+        // console.log(this.parent.shader_list)
         g.addNodeByName("UV");
         g.addNodeByName("Glyph");
         // g.addNodeByName("Add");

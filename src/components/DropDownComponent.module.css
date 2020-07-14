@@ -1,0 +1,27 @@
+.drawer {
+    z-index: 1000;
+    /* box-shadow: 2px 2px 4px 0px black; */
+    display: flex;
+    flex-flow: column wrap;
+    /* border-top: 1px solid white; */
+    /* position: absolute; */
+    position: fixed;
+    overflow: hidden;
+    /* overflow-y: auto; */
+    transition: width 300ms ease-in-out;
+}
+
+.drawer>button {
+    text-align: left;
+    /* word-break: break-all; */
+}
+
+.drawer>button:hover {
+    background-color: black !important;
+    color: white !important;
+}
+
+.activeButton {
+    background-color: black;
+    color: white;
+}
