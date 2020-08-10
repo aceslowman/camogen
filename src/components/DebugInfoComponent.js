@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-import Panel from './PanelComponent';
-import TextComponent from './TextComponent';
+import Panel from './ui/PanelComponent';
+import TextComponent from './ui/TextComponent';
 
 export default @observer class DebugInfo extends React.Component {
 
@@ -19,7 +19,8 @@ export default @observer class DebugInfo extends React.Component {
 		return(
 			<Panel
 				collapsed={this.props.collapsed}
-				title="Debug Info" 
+				onRemove={()=>this.store.removePanel('Debug')}
+				title="Debug" 
 				style={{
 					backgroundColor: 'black',
 				}}
@@ -69,7 +70,7 @@ export default @observer class DebugInfo extends React.Component {
 					</ul>
 					{this.store.activeGraph && (
 						<React.Fragment>
-							<h3>active node: {this.store.scenes[0].activeGraph.activeNode.name}</h3>							
+							<h3>active node: {this.store.scenes[0].activeGraph.selectedNode.name}</h3>							
 						</React.Fragment>							
 					)}
 					

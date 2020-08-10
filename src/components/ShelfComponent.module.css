@@ -11,4 +11,5 @@
     #222;
     background-size: 16px 24px;
     overflow-y: auto;
+    min-width:200px;
 }

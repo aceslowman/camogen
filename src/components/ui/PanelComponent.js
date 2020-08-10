@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import MainContext from '../MainContext';
+import MainContext from '../../MainContext';
 import styles from './PanelComponent.module.css';
 import { ResizableBox } from 'react-resizable';
 import 'react-resizable/css/styles.css';
@@ -57,51 +57,42 @@ export default @observer class PanelComponent extends React.Component {
 		}
 		
 		return(
-			// <ResizableBox
-			// 	className={`${styles.panel} ${this.state.expand ? 'expanded' : ''}`} 
-			// 	height={Infinity} 		
-			// 	width={this.state.expand ? this.state.width : 25} 
-			// 	onResize={this.onResize} 
-			// 	resizeHandles={['e']}
-			// 	axis={'x'}
-			// 	minConstraints={[170,170]}
-			// 	// maxConstraints={[1000,1000]}
-			// >
-				<div 
-					style={this.props.style}
-					className={`${styles.panel} ${this.state.expand ? styles.expanded : styles.collapsed}`}
-				>
-					<div className={styles.panel_buttons} style={style.toolbar}>
+			<div 
+				style={this.props.style}
+				className={`${styles.panel} ${this.state.expand ? styles.expanded : styles.collapsed}`}
+			>
+				<div className={styles.panel_buttons} style={style.toolbar}>
 
-						{ this.props.onRemove && (
-							<button onClick={this.props.onRemove}>
-								x
-							</button>
-						)}
-
+					{ this.props.onRemove && (
 						<button 
-							title={this.state.expand ? 'collapse' : 'expand'}
 							className="large_symbol" 
-							onClick={this.handleExpand}
+							onClick={this.props.onRemove}
 						>
-							{
-								this.state.expand ? '↤' : '↦'
-							}
+							x
 						</button>
-
-						<legend style={style.label} onClick={this.props.onFocus}> 
-							{this.props.title}
-						</legend>
-					</div>                    
-
-					{this.state.expand && (
-						<div style={{...style.content}} className={styles.panel_content + ' ' + this.props.className} ref={this.props.onRef}>
-							{this.props.children}	
-						</div>
 					)}
-				</div>					
-					
-			// </ResizableBox>				
+
+					<button 
+						title={this.state.expand ? 'collapse' : 'expand'}
+						className="large_symbol" 
+						onClick={this.handleExpand}
+					>
+						{
+							this.state.expand ? '↤' : '↦'
+						}
+					</button>
+
+					<legend style={style.label} onClick={this.props.onFocus}> 
+						<strong>{this.props.title}</strong>
+					</legend>
+				</div>                    
+
+				{this.state.expand && (
+					<div style={{...style.content}} className={styles.panel_content + ' ' + this.props.className} ref={this.props.onRef}>
+						{this.props.children}	
+					</div>
+				)}
+			</div>													
 	    )
 	}
 };

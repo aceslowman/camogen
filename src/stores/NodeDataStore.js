@@ -6,7 +6,8 @@ import {
     serializable,
     list,
     getDefaultModelSchema,
-    reference
+    reference,
+    deserialize
 } from 'serializr';
 import NodeStore from './NodeStore';
 
@@ -23,6 +24,8 @@ export default class NodeDataStore {
     @serializable(list(primitive()))
     @observable outputs = ["out"];
 
+    @observable component_ref = null;
+
     // see workaround in constructor
     @observable node = null;
 
@@ -30,7 +33,13 @@ export default class NodeDataStore {
 
     constructor(node) {        
         //workaround for circular dependency
-        getDefaultModelSchema(NodeDataStore).props["node"] = reference(NodeStore);
+        // getDefaultModelSchema(NodeDataStore).props["node"] = reference(NodeStore, (id,callback,context) => {
+        //     console.log(id,context)
+        //     console.log(node.graph)
+        //     // return false;
+        //     return context.args.node;
+        // });
+        // getDefaultModelSchema(NodeDataStore).props["node"] = reference(NodeStore);
         
         this.node = node;
     }

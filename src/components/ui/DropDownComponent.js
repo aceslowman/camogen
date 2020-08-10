@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import MainContext from '../MainContext';
+import MainContext from '../../MainContext';
 import styles from './DropDownComponent.module.css';
 
 let style = {
@@ -53,6 +53,29 @@ export default @observer class DropDownComponent extends React.PureComponent {
             })
         });
     }
+
+    handleClickAway = e => {
+        if (!this.ref.current.contains(e.target)) {
+            this.setState({
+                dropDownOpen: false,
+                activeItem: null
+            });
+        }
+    }
+
+    componentDidUpdate(){
+        /*
+            this will make sure that the
+            subdropdown closes when the main
+            dropdown closes. prevents the 
+            dropdown from reopening with open
+            subdropdowns
+        */
+        if (!this.props.open) this.setState({
+            subDropDownOpen: false,
+            activeItem: null
+        })
+    }
 	
 	render() {
         this.store = this.context.store;
@@ -74,7 +97,6 @@ export default @observer class DropDownComponent extends React.PureComponent {
             >			
                 {this.props.items && this.props.items.map((item,i)=>{
                     if(item._isDirectory) {         
-                        // console.log(item)               
                         return (
                             <React.Fragment key={i}>
                                 <button
@@ -83,7 +105,7 @@ export default @observer class DropDownComponent extends React.PureComponent {
                                     onClick={e=>this.handleDirClick(e.target,i,item)}
                                 >
                                     {item.label} 
-                                    <span style={{float:'right'}}>></span>
+                                    <span style={{float:'right'}}>{'>'}</span>
                                 </button>
                                 <DropDownComponent 
                                     key={i+'dd'}

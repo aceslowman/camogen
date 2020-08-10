@@ -12,6 +12,7 @@
             position: absolute;
             top: 0px;
             left: 0px;
+            font-family: 'IBM Plex Mono', monospace;
         }
         #container {
             display: flex;
@@ -19,23 +20,50 @@
             align-items: center;
             background-color: black;
         }
+        p {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            color: greenyellow;
+            padding: 15px; 
+        }
     </style>  
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap"
+        rel="stylesheet">
 </head>
 <body>
     <div id="container">
         <canvas id="output_canvas"></canvas>
+        <p><strong>dimensions: </strong><span id="dimensions"></span></p>
     </div>
     
     <script>
+        window.addEventListener('resize', onWindowResize);
         var canvas = document.getElementById('output_canvas');
         var ctx = canvas.getContext('2d');        
 
-        canvas.width = parent.gl.canvas.width;
-        canvas.height = parent.gl.canvas.height;
+        // canvas.width = parent.gl.canvas.width;
+        // canvas.height = parent.gl.canvas.height;
+        // canvas.width = parent.dimensions[0];
+        // canvas.height = parent.dimensions[1];
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
 
         function animate() {
             ctx.drawImage(parent.gl.canvas, 0, 0);
             window.requestAnimationFrame(animate);
+        }
+
+        function onWindowResize(e) {
+            console.log('output window dimensions', [window.innerWidth, window.innerHeight]);
+            document.getElementById('dimensions').innerHTML = `[${window.innerWidth}, ${window.innerHeight}]`;
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            parent.updateDimensions(window.innerWidth, window.innerHeight);
         }
         
         animate();

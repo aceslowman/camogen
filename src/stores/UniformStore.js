@@ -27,15 +27,11 @@ export default class UniformStore {
     // see note in constructor
     @observable parent = null;
 
-    constructor(name = "", elements = [], parent) {  
+    constructor(name = "", parent) {  
         getDefaultModelSchema(UniformStore.schema).props["parent"] = reference(ShaderStore.schema)
         
         this.name = name;
-        this.elements = elements;
         this.parent = parent;
-        this.elements.forEach((e)=>{
-            e.parent = this;
-        })
     }
 }
 

@@ -1,20 +1,18 @@
 import React from 'react';
+import styles from './InputBool.module.css';
 
-export default class InputBool extends React.Component {
+export default class InputBool extends React.PureComponent {
 
     updateValue = e => this.props.onChange(e.target.checked)
 
     render() {
         return (
-            <fieldset style={{border:'1px dashed gray'}}>
-                <legend>{this.props.name}</legend>
-                <input 
-                    style={this.props.style}
-                    type="checkbox"         
-                    value={this.props.value}
-                    onChange={this.updateValue}
-                />
-            </fieldset>
+            <input 
+                style={this.props.style}
+                type="checkbox"         
+                value={this.props.value}
+                onChange={this.updateValue}
+            />
         );
     }
 }

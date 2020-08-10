@@ -5,6 +5,8 @@ import MainContext from '../MainContext';
 import InputBool from './ui/input/InputBool';
 import InputFloat from './ui/input/InputFloat';
 
+import styles from './ParameterComponent.module.css';
+
 const ParameterComponent = observer(class ParameterComponent extends React.Component {
 
     static contextType = MainContext;
@@ -53,17 +55,21 @@ const ParameterComponent = observer(class ParameterComponent extends React.Compo
         this.generateInputs();
 
         return (
-            <div className="parameter_wrapper">
-                <fieldset onDoubleClick={this.handleDblClick} style={{border: active ? '2px dashed black' : '2px dashed white'}}>    
+            <div className={styles.parameter_wrapper}>
+                <fieldset 
+                    onDoubleClick={this.handleDblClick} 
+                    style={{
+                        border: active ? '2px dashed black' : '2px dashed white'
+                    }}
+                >    
                     <div>
-                        {data.name && (<legend className="invert">
-                            {data.name}
-                        </legend>)}
+                        {data.name && (
+                            <legend className="invert">
+                                {data.name}
+                            </legend>
+                        )}
                         {this.input}  
-                    </div>  
-                    {/* {active && (
-                        <div className="param_rail"></div>
-                    )}                                                                                  */}
+                    </div>                                                                    
                 </fieldset>                
             </div>
         )

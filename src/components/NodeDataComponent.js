@@ -43,7 +43,9 @@ export default @observer class NodeDataComponent extends React.PureComponent {
 	componentDidMount() {
 		this.setState(prevState => ({
 			updateFlag: !prevState.updateFlag
-		}))
+		}));
+
+		this.props.data.component_ref = this;
 	}
 	
 	render() {

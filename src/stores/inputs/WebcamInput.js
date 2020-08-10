@@ -4,11 +4,13 @@ import {
     action
 } from "mobx";
 import ShaderStore from "../ShaderStore";
+import ControlGroupComponent from '../../components/ControlGroupComponent';
 
 class WebcamInput extends ShaderStore {
     @observable name = "WEBCAM";
     @observable grabber = null;
-    @observable controls = null;
+
+    @observable input_options = [];
 
     constructor(
         target = null,
@@ -32,19 +34,43 @@ class WebcamInput extends ShaderStore {
             `varying vec2 vTexCoord;
             uniform vec2 resolution;
             uniform vec2 img_dimensions;
-            uniform bool bSquare;
+            uniform bool bAspect;
             uniform sampler2D tex0;
             void main() {                
                 vec3 color = vec3(0.0);
                 float aspect = img_dimensions.y / img_dimensions.x;
                 vec2 uv = vTexCoord;
-                if (bSquare) {
+                if (bAspect) {
                     uv.y *= aspect;
                 }
                 vec4 src0 = texture2D(tex0, uv);
                 gl_FragColor = vec4(src0);
             }`,
         );
+    }
+
+    @action handleInputSelect(e) {
+        console.log('handleInputSelect',e.target.value)
+
+        let constraints = {
+            video: {
+                mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720
+                },
+                // optional: [{
+                // maxFrameRate: 10
+                // }]
+            },
+            deviceId: e.target.value,
+            audio: false,
+        };
+
+        let p = this.target.parent.p5_instance;
+
+        this.grabber = p.createCapture(constraints, () => {
+            console.log('new grabber activated')
+        });
     }
 
     // extending
@@ -71,8 +97,8 @@ class WebcamInput extends ShaderStore {
         let constraints = {
             video: {
                 mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720
+                    minWidth: 1920,
+                    minHeight: 1080
                 },
                 // optional: [{
                     // maxFrameRate: 10
@@ -86,48 +112,62 @@ class WebcamInput extends ShaderStore {
             console.log('grabber activated')
         });
 
-        // if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-        //     console.log("enumerateDevices() not supported.");
-        //     return;
-        // }
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            console.log("enumerateDevices() not supported.");
+            return;
+        }
 
-        // // List cameras and microphones.
-        // navigator.mediaDevices.enumerateDevices()
-        //     .then((devices) => {
-        //         console.log(devices)
-        //         devices.forEach(function (device) {
-        //             console.log(device.kind + ": " + device.label +
-        //                 " id = " + device.deviceId);
-        //         });
-        //     })
-        //     .catch((err) => {
-        //         console.log(err.name + ": " + err.message);
-        //     });
+        // List cameras and microphones.
+        navigator.mediaDevices.enumerateDevices()
+            .then((devices) => {
+                console.log(devices)
+                console.log(this)
+                this.input_options = devices;
+                devices.forEach(function (device) {
+                    console.log(device.kind + ": " + device.label +
+                        " id = " + device.deviceId);
+                });   
+                
+                this.controls.push(
+                    <fieldset key={this.uuid}>
+                        <label key={this.uuid+1}>Input Device</label>
+                        <select key={this.uuid+2} onChange={(e)=>this.handleInputSelect(e)}>
+                            {this.input_options.map((e,i)=>{
+                                console.log(e)
+                                return (
+                                    <option key={i} value={e.deviceId}>
+                                        {`${e.label} (${e.kind})`}
+                                    </option>
+                                );
+                            })}						
+                        </select>					
+                    </fieldset>									
+                );     
+            })
+            .catch((err) => {
+                console.log(err.name + ": " + err.message);
+            });
 
+        // generate from uniforms
+        this.generateControls();
 
-        this.controls = (
-			<React.Fragment>
-				<fieldset key={this.uuid}>
-					<label key={this.uuid+1}>Input Device</label>
-					{/* <select key={this.uuid+2} onChange={this.handleInputSelect}>
-						{thi.map((e,i)=>{
-							return (<option key={i} value={e.name}>{e.name}</option>);
-						})}						
-					</select>					 */}
-				</fieldset>
-				<fieldset key={this.uuid+1}>
-					{/* <label key={this.uuid+1}>(0-1)</label>
-					<input 
-						key={this.uuid+2}
-						type="checkbox"
-						defaultChecked={this.modifier === 127}                
-						onChange={(e)=>{
-							this.modifier = e.target.checked ? 127 : 1
-						}}			
-					/> */}
-				</fieldset>				
-			</React.Fragment>								
-		);
+        // add other controls
+        this.controls.push(
+            <ControlGroupComponent key={this.uuid} name="Input Device">
+                <select key={this.uuid+2} onChange={this.handleInputSelect}>
+                    {this.input_options.map((e,i)=>{
+                        return (<option key={i} value={e.deviceId}>{e.name}</option>);
+                    })}						
+                </select>					
+            </ControlGroupComponent>								
+        );
+        
+        // prevents init() from being called twice
+        this.ready = true;
+
+        // removes 'tex0' from inputs, since it's provided
+        // by the webcam stream.
+        this.inputs = [];
 
         return this;
     }
@@ -165,6 +205,8 @@ class WebcamInput extends ShaderStore {
         shader.setUniform('tex0', this.grabber);
         shader.setUniform('resolution', [target.width, target.height]);
         shader.setUniform('img_dimensions', [this.grabber.width, this.grabber.height]);
+
+        // console.log([this.grabber.width, this.grabber.height])
 
         target.shader(shader);
 

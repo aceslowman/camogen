@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-import Panel from './PanelComponent';
-import TextComponent from './TextComponent';
+import Panel from './ui/PanelComponent';
+import TextComponent from './ui/TextComponent';
 
 export default @observer class HelpComponent extends React.Component {
 
@@ -19,7 +19,8 @@ export default @observer class HelpComponent extends React.Component {
 		return(
 			<Panel
 				collapsed={this.props.collapsed}
-				title="Help" 
+                title="Help" 
+                onRemove={()=>this.store.removePanel('Help')}
 				style={{
 					backgroundColor: 'black',
 				}}

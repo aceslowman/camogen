@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import MainContext from '../MainContext';
+import MainContext from '../../MainContext';
 import styles from './ToolbarComponent.module.css';
 import DropDownComponent from './DropDownComponent';
 
@@ -78,10 +78,11 @@ export default @observer class ToolbarComponent extends React.Component {
                     return (
                         <button
                             key={i}
-                            className={i === this.state.activeItem ? styles.activeButton : ''}
-                            onClick={(e)=>this.handleItemClick(e.target,i,item)}
+                            className={i === this.state.activeItem ? styles.activeButton : styles.button}
+                            onClick={(e)=>this.handleItemClick(e.currentTarget,i,item)}
                         >
-                            {item.label}                            
+                            {item.label}   
+                            {item.dropDown && (<span className={styles.itemDecoration}>▾</span>)}                         
                         </button>
                     )
                 })}

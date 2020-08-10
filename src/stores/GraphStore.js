@@ -21,8 +21,7 @@ export default class GraphStore {
 
     @observable parent = null;
 
-    // see note in constructor
-    @observable activeNode = null;
+    @observable selectedNode = null;
 
     @observable currentlyEditing = null;
 
@@ -33,9 +32,6 @@ export default class GraphStore {
     @observable updateFlag = false;
 
     constructor(parent) {
-        // NOTE: workaround for circular dependency        
-        getDefaultModelSchema(GraphStore).props["activeNode"] = reference(NodeStore.schema);
-
         this.parent = parent;
     
         // triggering too often!

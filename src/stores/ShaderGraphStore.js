@@ -6,6 +6,16 @@ import GraphStore from './GraphStore';
 import ShaderStore from './ShaderStore';
 
 export default class ShaderGraphStore extends GraphStore {
+
+    /*
+        afterUpdate(queue)
+
+        after graph updates, the shader graph updates targets
+        and syncs the shaders with the targets
+
+        accepts an array of nodes, ordered using either depth or
+        breadth first search
+    */
     @action afterUpdate(queue) {
         queue.forEach(node => {
             if (node.data) {
@@ -15,26 +25,60 @@ export default class ShaderGraphStore extends GraphStore {
                     node.data.target = this.parent.addTarget();
                 }
 
-                node.data.target.assignShader(node.data);                                
-                node.data.init();    
+                node.data.target.assignShader(node.data);  
+
+                /*
+                    if this is the first time a node 
+                    has been updated, initialize,
+                    otherwise, synchronize.
+                */ 
+                if(node.data.ready) {
+                    node.data.sync();
+                } else {
+                    node.data.init();
+                }                                             
             }
         });
     }
 
+    /*
+        addNodeByName(name = null)
+
+        adds a new node to the graph with data
+        that matches the 'name' argument. since
+        this will look for all shaders with that
+        name, it's worth keeping all shader names 
+        unique.
+    */
     @action addNodeByName(name = null) {
         let data = this.getShader(name);
 
         // by default, add to empty root node
         this.root.setData(data);
-        this.root.select(true);
+        // this.root.select(true);
         this.update();
+
+        return this.root;
     }
 
+    /*
+        setSelectedByName(name)
+
+        for the current selectedNode, retrieve
+        shader with the corresponding name and
+        set it as the nodeData        
+    */
     @action setSelectedByName(name) {
-        // TODO need to delete shader if the node
-        // was occupied
         let data = this.getShader(name);
-        this.activeNode.setData(data);
+
+        if(this.selectedNode.data) {
+            let target = this.selectedNode.data.target;
+            target.removeShader(this.selectedNode.data);
+        }        
+
+        this.selectedNode.setData(data);
+
+        return this.selectedNode;
     }
     
     /*
@@ -45,26 +89,34 @@ export default class ShaderGraphStore extends GraphStore {
         for matches, including in subdirectories.
     */
     @action getShader(name = null) {
-        // const exists = Object.keys(this.mainStore.shader_list).includes(name);
         let result = null;
 
+        // first, check built-in inputs
+        for (let key in this.mainStore.input_list) {            
+            let item = this.mainStore.input_list[key];
+
+            if (key === name) {
+                result = item;
+                break;
+            }
+        }
+
+        if(result) return new result;
+
+        // and check custom-shaders. matches will override built-in inputs
         for (let key in this.mainStore.shader_list) {
             let item = this.mainStore.shader_list[key];
-            // console.log(item)
-            if(item._isDirectory) {
-                // console.log('return directory',item)
 
+            if(item._isDirectory) {
                 for(let subkey of Object.keys(item)) {
-                    // console.log(subkey)
                     if(subkey==='_isDirectory') continue;
                     let subItem = item[subkey]
-                    // console.log(subItem.name, name)
+                    
                     if (subItem.name === name) {
                         result = subItem.name === name ? subItem : null;
                         break;
                     }                    
                 }
-
             } else {
                 if(key === name){
                     result = item;
@@ -81,6 +133,10 @@ export default class ShaderGraphStore extends GraphStore {
         }
     }
 
+    @action edit(node) {
+        this.currentlyEditing = node.data;
+    }
+
     @computed get mainStore() {
         return this.parent.parent;
     }
@@ -94,10 +150,6 @@ export default class ShaderGraphStore extends GraphStore {
             the default background color.
         */
         return this.nodesArray.length > 1;
-    }
-
-    @action edit(node) {
-        this.currentlyEditing = node.data;
     }
 }
 

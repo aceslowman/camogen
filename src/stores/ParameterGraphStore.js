@@ -25,7 +25,7 @@ export default class ParameterGraphStore extends GraphStore {
         // TODO need to delete operator if the node
         // was occupied
         let data = this.getOperator(name);
-        this.activeNode.setData(data).select(true);
+        this.selectedNode.setData(data).select(true);
         this.update();
     }
 

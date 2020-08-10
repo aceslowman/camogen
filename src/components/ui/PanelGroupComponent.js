@@ -1,5 +1,5 @@
 import React from 'react';
-import MainContext from '../MainContext';
+import MainContext from '../../MainContext';
 import { observer } from 'mobx-react';
 import Toolbar from './ToolbarComponent';
 import styles from './PanelGroupComponent.module.css';
@@ -15,12 +15,23 @@ export default @observer class PanelGroupComponent extends React.Component {
 
 		this.ref = React.createRef();
 
+		let defaultWidth = window.innerWidth * 0.75;
+		let defaultHeight = window.innerHeight * 0.75;
+		// let defaultWidth = '100%';
+		// let defaultHeight = '100%';
+
 		this.state = {			
-			width: props.defaultWidth ? props.defaultWidth : 1200,
-			height: props.defaultHeight ? props.defaultHeight : 750,
+			width: props.defaultWidth ? props.defaultWidth : defaultWidth,
+			height: props.defaultHeight ? props.defaultHeight : defaultHeight,
+			maxWidth: window.innerWidth,
+			maxHeight: window.innerHeight,
+			// maxWidth: '100%',
+			// maxHeight: '100%',
 			fullscreen: false,
 		};
 	}
+
+	// adjustMaxConstraints = () => 
 
 	handleResize = (event, {element, size, handle}) => {
 		this.setState({width: size.width, height: size.height});
@@ -77,7 +88,7 @@ export default @observer class PanelGroupComponent extends React.Component {
 		const { children } = this.props;	
 
 		this.store = this.context.store;
-          
+		 
 		return(
 			<ResizableBox
 				className={`${styles.panel_group} ${this.state.fullscreen ? styles.fullscreen : ''}`}
@@ -86,18 +97,71 @@ export default @observer class PanelGroupComponent extends React.Component {
 				onResize={this.onResize} 
 				resizeHandles={this.state.fullscreen ? [] : ['e','se','s']}
 				minConstraints={[400,400]}
-				// maxConstraints={[1000,1000]}
+				// maxConstraints={[
+				// 	this.state.maxWidth,
+				// 	this.state.maxHeight
+				// ]}
 			>
 				<div>
 					<Toolbar 
 						items={[
 							{
-								label: "SAVE",
-								onClick: this.context.store.scenes[0].save
+								label: "FILE",
+								dropDown: [
+									{
+										label: "Save Scene",
+										onClick: ()=>this.context.store.scenes[0].save()
+									}, {
+										label: "Load Scene",
+										onClick: ()=>this.context.store.scenes[0].load()
+									},
+								]
+							},	
+							{
+								label: "PANELS",
+								dropDown: [
+									{
+										label: "Shader Graph",
+										onClick: () => this.context.store.addPanel("Shader Graph")
+									},
+									{
+										label: "Shader Editor",
+										onClick: () => this.context.store.addPanel("Shader Editor")
+									},
+									{
+										label: "Shader Controls",
+										onClick: () => this.context.store.addPanel("Shader Controls")
+									},
+									{
+										label: "Parameter Editor",
+										onClick: () => this.context.store.addPanel("Parameter Editor")
+									},
+									{
+										label: "Help",
+										onClick: () => this.context.store.addPanel("Help")
+									},
+									{
+										label: "Debug",
+										onClick: () => this.context.store.addPanel("Debug")
+									},
+								]
 							},
 							{
-								label: "LOAD",
-								onClick: this.context.store.scenes[0].load
+								label: "LIBRARY",
+								dropDown: this.handleLib()
+							},
+							{
+								label: "INPUTS",
+								dropDown: [
+									{
+										label: "WEBCAM",
+										onClick: () => this.store.scenes[0].shaderGraphs[0].setSelectedByName("WebcamInput")
+									},
+									{
+										label: "IMAGE",
+										onClick: () => this.store.scenes[0].shaderGraphs[0].setSelectedByName("ImageInput")
+									},
+								]
 							},
 							{
 								label: "CLEAR",
@@ -107,11 +171,7 @@ export default @observer class PanelGroupComponent extends React.Component {
 								label: "EXPAND",
 								symbol: this.state.fullscreen ? '⊡' : '⧈',
 								onClick: this.handleExpand
-							},
-							{
-								label: "LIBRARY",
-								dropDown: this.handleLib()
-							},
+							},							
 							{
 								label: "SNAPSHOT",
 								onClick: this.context.store.snapshot

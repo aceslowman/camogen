@@ -6,10 +6,23 @@
     box-sizing: border-box;
 }
 
+/* 
+    primary input element styling
+*/
 .node input {
     width: 100%;
     max-width: 100px;
 }
+
+.node input[type='checkbox'] {
+    width: 30px;
+}
+
+
+
+
+
+
 
 .node_bar {
     display: flex;
@@ -55,6 +68,10 @@
     box-sizing: border-box;
     width: 100%;
     min-height: 56px;
+}
+
+.node_container_inner select {
+    width:100%;
 }
 
 .node_container_inner fieldset>div {

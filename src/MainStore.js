@@ -1,3 +1,4 @@
+import React from 'react';
 import { observable, action } from 'mobx';
 import Runner from './Runner';
 import p5 from 'p5';
@@ -7,6 +8,16 @@ import {
 import ShaderStore from './stores/ShaderStore';
 import ConsoleStore from './stores/ConsoleStore';
 import SceneStore from './stores/SceneStore';
+
+// panel components
+import DebugInfoComponent from './components/DebugInfoComponent';
+import HelpComponent from './components/HelpComponent';
+import Panel from './components/ui/PanelComponent';
+import ShaderEditorComponent from './components/ShaderEditorComponent';
+import ParameterEditorComponent from './components/ParameterEditorComponent';
+import NodeDataComponent from './components/NodeDataComponent';
+import ShaderGraphComponent from './components/ShaderGraphComponent';
+import ShaderControlsComponent from './components/ShaderControlsComponent';
 
 // operators
 import Add from './stores/ops/Add';
@@ -70,11 +81,22 @@ class MainStore {
 
   @observable ready = false;
 
+  @observable breakoutControlled = false;
+
+  @observable openPanels = [];
+
+  @observable selectedParameter = null;
+
   constructor() {  
     this.loadShaderFiles().then(() => {
       this.p5_instance = new p5(p => Runner(p, this));
       this.scenes.push(new SceneStore(this));
       this.ready = true;
+
+      this.addPanel('Help');
+      this.addPanel('Shader Graph');
+      this.addPanel('Shader Editor');
+      this.addPanel('Shader Controls');
     });
   }
 
@@ -141,26 +163,108 @@ class MainStore {
     } catch (err) { // if user data shaders doesn't exist    
       if(err) console.error(err)
 
-      fs.promises.mkdir(user_shaders_path).catch(console.error);
-      
-      console.log('new directory created for shaders', user_shaders_path);
-      console.log('copy default shaders from', default_shaders_path);
+      if(window.confirm('No shaders found. Import default shaders? (recommended)')){
+        fs.promises.mkdir(user_shaders_path).catch(console.error);
 
-      let default_files = await fs.promises.readdir(default_shaders_path).catch(console.error);
+        console.log('new directory created for shaders', user_shaders_path);
+        console.log('copy default shaders from', default_shaders_path);
 
-      // copy default to user
-      default_files.forEach((filename)=>{
-        fs.promises.copyFile(path.join(default_shaders_path, filename), path.join(user_shaders_path,filename))
-      });
-      
-      await this.loadShaderFiles();
+        let default_files = await fs.promises.readdir(default_shaders_path).catch(console.error);
+
+        // copy default to user
+        default_files.forEach((filename) => {
+          fs.promises.copyFile(path.join(default_shaders_path, filename), path.join(user_shaders_path, filename))
+        });
+
+        await this.loadShaderFiles();
+      }
     }  
   }
 
+  /*
+    removePanel(name)
+  */
+  @action removePanel(name) {
+    let index = this.openPanels.indexOf(name);
+    if (index > -1) {
+      this.openPanels.splice(index, 1)
+    }
+  }
+
+  /*
+    addPanel(name)
+
+    this method adds a panel component to the group
+  */
+  @action addPanel(name) {
+    this.openPanels.push(name)
+    // switch (name) {
+    //   case 'Shader Graph':
+    //     this.openPanels.push((
+    //       <ShaderGraphComponent 
+    //         key={this.openPanels.length}
+    //         data={this.scenes[0].shaderGraphs[0]}
+    //       />
+    //     ));
+    //     break;
+    //   case 'Shader Editor':
+    //     this.openPanels.push((
+    //       <ShaderEditorComponent 
+    //         key={this.openPanels.length}
+    //         data={this.scenes[0].shaderGraphs[0].currentlyEditing}
+    //       />
+    //     ));
+    //     break;
+    //   case 'Shader Controls':
+    //     this.openPanels.push((
+    //       <ShaderControlsComponent 
+    //         key={this.openPanels.length}
+    //         data={this.scenes[0].shaderGraphs[0]}
+    //       />
+    //     ));
+    //     break;
+    //   case 'Help':
+    //     this.openPanels.push((
+    //       <HelpComponent 
+    //         key={this.openPanels.length}            
+    //       />
+    //     ));
+    //     break;
+    //   case 'Debug':
+    //     this.openPanels.push((
+    //       <DebugInfoComponent 
+    //         key={this.openPanels.length}           
+    //       />
+    //     ));
+    //     break;   
+        
+    //   default:
+    //     break;
+    // }
+  }
+
+  /*
+    breakout()
+  */
   @action breakout() {
     let new_window = window.open('/output_window.html');
-    new_window.gl = this.p5_instance.canvas.getContext('2d'); 
-    // new_window.dimensions = []
+    new_window.updateDimensions = (w,h) => this.onBreakoutResize(w,h);
+    new_window.gl = this.p5_instance.canvas.getContext('2d');
+    
+    this.breakoutControlled = true;
+  }
+
+  @action onBreakoutResize(w,h) {
+    console.log('new dimensions',[w,h])
+
+    this.p5_instance.resizeCanvas(w,h);
+
+    // update target dimensions
+    for (let target_data of this.scenes[0].targets) {
+      target_data.ref.resizeCanvas(w,h);
+    }
+
+    this.p5_instance.draw();
   }
 
   /*

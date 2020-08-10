@@ -15,6 +15,12 @@
     word-break: break-all;
     /* z-index: 1;    */
     font-size: 1.1em;
+    /* padding-right: 15px; */
+}
+
+.panel_buttons > legend {
+    /* padding-right: 15px; */
+    /* margin-right: 15px; */
 }
 
 .panel_buttons button:hover {

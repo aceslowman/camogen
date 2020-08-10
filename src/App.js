@@ -4,14 +4,16 @@ import { observer } from 'mobx-react';
 import './App.css';
 
 import ConsoleBar from './components/ConsoleBarComponent';
-import ShaderGraph from './components/ShaderGraphComponent';
-import Shelf from './components/ShelfComponent';
-import DebugInfo from './components/DebugInfoComponent';
-import Help from './components/HelpComponent';
-import Panel from './components/PanelComponent';
-import PanelGroup from './components/PanelGroupComponent';
-import Editor from './components/EditorComponent';
-import NodeDataComponent from './components/NodeDataComponent';
+import ShaderGraphComponent from './components/ShaderGraphComponent';
+import ShaderControlsComponent from './components/ShaderControlsComponent';
+// import Shelf from './components/ShelfComponent';
+import DebugInfoComponent from './components/DebugInfoComponent';
+import HelpComponent from './components/HelpComponent';
+// import Panel from './components/PanelComponent';
+import PanelGroup from './components/ui/PanelGroupComponent';
+import ShaderEditorComponent from './components/ShaderEditorComponent';
+import ParameterEditorComponent from './components/ParameterEditorComponent';
+// import NodeDataComponent from './components/NodeDataComponent';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -22,6 +24,8 @@ export default @observer class App extends React.Component {
   workAreaRef = React.createRef();
 
   handleResize = () => {
+    if(this.store.breakoutControlled) return;
+    
     let bounds = this.workAreaRef.current.getBoundingClientRect();
 
     this.store.p5_instance.resizeCanvas(
@@ -58,28 +62,49 @@ export default @observer class App extends React.Component {
                 {this.store.ready && 
                   (
                     <PanelGroup>
-                      { !app.isPackaged && <DebugInfo /> }
-                      <Help collapsed />                          
-                      <ShaderGraph data={scene.shaderGraphs[0]} />                      
-                        <Panel 
-                            title="Effect Controls"			                        
-                            style={{minWidth:'200px'}}
-                        >                
-                          <Shelf>
-                            {scene.shaderGraphs[0].nodesArray.map((n,j)=>(
-                              n.data &&
-                              <NodeDataComponent
-                                key={j}
-                                data={n.data}							
+                      {this.store.openPanels.map((name,i)=>{
+                        switch (name) {
+                          case 'Shader Graph':                            
+                            return (<ShaderGraphComponent 
+                                key={i}
+                                data={this.store.scenes[0].shaderGraphs[0]}
                               />
-                            ))}                        
-                          </Shelf>
-                        </Panel>
-                      <Editor data={scene.shaderGraphs[0].currentlyEditing} />                      
+                            );
+                          case 'Shader Editor':                            
+                            return (<ShaderEditorComponent 
+                                key={i}
+                                data={this.store.scenes[0].shaderGraphs[0].currentlyEditing}
+                              />
+                            );
+                          case 'Shader Controls':                            
+                            return (<ShaderControlsComponent 
+                                key={i}
+                                data={this.store.scenes[0].shaderGraphs[0]}
+                              />
+                            );
+                          case 'Parameter Editor':  
+                            return (<ParameterEditorComponent 
+                                key={i}
+                                data={this.store.selectedParameter}
+                              />
+                            );
+                          case 'Help':                            
+                            return (<HelpComponent 
+                                key={i}            
+                              />
+                            );
+                          case 'Debug':                            
+                            return (<DebugInfoComponent 
+                                key={i}           
+                              />
+                            );                             
+                          default:
+                            break;
+                        }
+                      })}
                     </PanelGroup>                    
                   )
-                } 
-                                           
+                }                                            
             </div>          
             <ConsoleBar data={this.store.console}/>
           </div>         

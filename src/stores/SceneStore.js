@@ -42,8 +42,11 @@ export default class SceneStore {
 
         // DEFAULTS (FOR NOW)
         // console.log(this.parent.shader_list)
-        g.addNodeByName("UV");
-        g.addNodeByName("Glyph");
+        // g.addNodeByName("WebcamInput");
+        // g.root.select(true);
+        g.addNodeByName("Debug");
+        // g.addNodeByName("UV");
+        // g.addNodeByName("Glyph");
         // g.addNodeByName("Add");
         // g.addNodeByName("ToHSV");
 
@@ -110,7 +113,8 @@ export default class SceneStore {
         fs.readFile(content, 'utf-8', (err, data) => {
             if(err)
             console.error("an error has occurred: " + err.message);          
-
+            this.targets = [];
+            // this.shaderGraphs = 
             update(
                 SceneStore,
                 this,

@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-    createModelSchema,
+    // createModelSchema,
     primitive,
     list,
     object,
     serialize,
     update,
     // reference,
-    identifier,
+    // identifier,
     serializable,
-    custom, 
+    // custom, 
     getDefaultModelSchema
 } from "serializr";
 import {
@@ -35,20 +35,20 @@ export default class ShaderStore extends NodeDataStore {
     @observable uniforms  = [];
 
     @serializable(primitive())
-    @observable
-    precision = "";
+    @observable precision = "";
     
     @serializable(primitive())
-    @observable 
-    vert      = "";
+    @observable vert      = "";
     
     @serializable(primitive())
-    @observable 
-    frag      = "";
+    @observable frag      = "";
 
-    @observable ref       = null;    
+    @observable ref       = null; 
+
     @observable target    = null;
+
     @observable operatorUpdateGroup = [];
+
     @observable selectedParameter = null;
 
     @observable ready = null;
@@ -68,50 +68,75 @@ export default class ShaderStore extends NodeDataStore {
         this.vert = vert;
         this.frag = frag;
         this.uniforms = uniforms; 
-        
-        // should find a way to call this only once
+
         this.extractUniforms();
     }
 
     /*
         init()
 
+        initializes shader
+
         the target needs to be assigned before
         this function is called.
+
+        it is currently being triggered during
+        ShaderGraphStore.afterUpdate(), but I'm 
+        not entirely sure where it should end up.
     */
     @action init() {
-        if(!this.ref) {
-            this.ref = this.target.ref.createShader(
-                this.vertex,
-                this.fragment
-            )
-        }
+        // create shader for given target
+        this.ref = this.target.ref.createShader(
+            this.vertex,
+            this.fragment
+        )
 
+        // extract and assign uniforms to shader
         this.extractUniforms();
 
         for (let uniform of this.uniforms) {
             this.ref.setUniform(uniform.name, uniform.elements);
         }
 
+        this.generateControls();
+    
+        // flag as ready to render
+        this.ready = true;
+        return this;
+    }
+
+    /*
+        generateControls()
+
+        creates the control interface from the extracted
+        uniforms. 
+
+        important to use ControlGroupComponent, for styling
+        and for the 'enabled' attribute that allows it to be
+        removed when not in use.
+    */
+    @action generateControls() {
+        console.log(`generating controls for ${this.name}`,this)
         this.controls = this.uniforms.map((uniform)=>{ 
             return (
                 <ControlGroupComponent key={uniform.uuid} name={uniform.name}>
                     {uniform.elements.map((param)=>{ 
+                        // name is currently missing
                         return (
                             <ParameterComponent
                                 key={param.uuid}
                                 active={this.selectedParameter === param}
                                 data={param}
-                                onDblClick={(e) => this.selectedParameter = e}
+                                onDblClick={(e) => {
+                                    this.selectedParameter = e;
+                                    this.node.graph.parent.parent.selectedParameter = e;
+                                }}
                             />
                         );                                                            
                     })}
                 </ControlGroupComponent>                    
             );                     
         });
-
-        this.ready = true;
-        return this;
     }
 
     /*
@@ -124,10 +149,23 @@ export default class ShaderStore extends NodeDataStore {
         following each tree traversal
     */
     @action sync() {
+        this.extractUniforms();
+        if(!this.node) {
+            console.error('There is no parent node for this shader!', this)
+        }
 
+        this.node.mapInputsToParents();
     }
 
+    /*
+        update(p5_instance)
+
+        this method is triggered within Runner.js
+        and draws shaders to quads.
+    */
     @action update(p) {
+        if(!this.ready) return;
+
         let shader = this.ref;
         let target = this.target.ref;
 
@@ -176,124 +214,131 @@ export default class ShaderStore extends NodeDataStore {
             console.error(error);
             p.noLoop();
         }
-    }
-
-    @action load() {
-        dialog.showOpenDialog().then((f) => {
-            let content = f.filePaths[0];
-            fs.readFile(content, 'utf-8', (err, data) => {
-                if (err)
-                    alert("an error has occurred: " + err.message);
-
-                update(
-                    this,
-                    this,
-                    JSON.parse(data),
-                    (err, item) => {
-                        if (err) console.error(err)
-                    }, {
-                        target: this.target
-                    }
-                )
-            })
-        }).catch(err => {
-            console.error(err);
-        });
     }    
 
+    /*
+        extractUniforms()
+
+        extracts all uniform variables from
+        shader code. these then populate the
+        interfaces. controls and input elements
+        are created here
+
+        special options can be passed to a uniform
+        to provide default values, and eventually
+        annotations and UI knob/slider/dial type.
+
+        camogen extracts: 
+        0: "uniform vec2 offset; // {"name":"off","default":[0.0,0.0]}"
+        1: "uniform"
+        2: "vec2"
+        3: "offset"
+        4: "{"name":"off","default":[0.0,0.0]}"
+    */
     @action extractUniforms() { 
+        console.group();
+        console.log(`uniforms are being extracted from ${this.name}`,this)
         const builtins = ["resolution"];
         
-        let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9]+);\s+\/?\/?\s?({(.*?)})?/g
+        let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
         let result = [...this.frag.matchAll(re)];
+
+        console.log('the extracted uniforms:', result)
        
+        // retain only uniforms that show up in the result set
         this.uniforms = this.uniforms.filter(u => {
             let match;
             result.forEach((e) => {
                 match = e.includes(u.name);
-            });
-            return match;     
+                return match;
+            });             
         });
         
         result.forEach((e) => {
+            console.log('result',e)
+            let uniform_type    = e[2];
+            let uniform_name    = e[3];
+            let uniform_options = e[4];
+
             // ignore built-ins
-            if(builtins.includes(e[3])) return;
+            if (builtins.includes(uniform_name)) return;
 
             // ignore if uniform already exists (preserves graphs)          
-            for(let i = 0; i < this.uniforms.length; i++){
-                // console.log([this.uniforms[i].name, e[3]])
-                // ignore if necessary
-                if(this.uniforms[i].name === e[3]){
-                    return;
-                }
-                // remove if necessary
-            }
+            // for(let i = 0; i < this.uniforms.length; i++){
+            //     console.log([this.uniforms[i].name, uniform_name])
+            //     // ignore if necessary
+            //     if (this.uniforms[i].name === uniform_name) {
+            //         return;
+            //     }
+            //     // remove if necessary
+            // }
 
-            // ignore if uniform already exists (preserves graphs)          
+            // ignore if input already exists (preserves graphs)          
             for (let i = 0; i < this.inputs.length; i++) {
-                // console.log([this.inlets[i].name, e[3]])
-                if (this.inputs[i] === e[3]) {
+                // console.log([this.inlets[i].name, uniform_name])
+                if (this.inputs[i] === uniform_name) {
                     return;
                 }
             }
-
+ 
             let def;
-            let opt = (e[4]) ? JSON.parse(e[4]) : {};
+            let opt = (uniform_options) ? JSON.parse(uniform_options) : {};
+            console.log('opt',opt)
 
-            switch(e[2]){
+            let uniform = new Uniform(uniform_name,this);
+
+            switch(uniform_type){
                 case "sampler2D":
                     /*
                         the inputs here should correspond 
                         with the parent and child arrays
                         in the parent node.
+
+                        the parent node will need to re-sync
+                        with the input... need to fix
                     */
-                    this.inputs.push(e[3])
+                    this.inputs.push(uniform_name)
                     break;
-                case "float":                                      
+                case "float":          
+                    // console.log(e[3], e)
                     def = opt.default ? opt.default : 1.0;
 
-                    this.uniforms.push(new Uniform(e[3], [
-                        new Parameter('',def)
-                    ], this));
+                    uniform.elements.push(new Parameter('', def, uniform));
                     break;
                 case "vec2":                  
                     def = opt.default ? opt.default : [1,1];
                     
-                    this.uniforms.push(new Uniform(e[3], [
-                        new Parameter('x:',def[0]),
-                        new Parameter('y:',def[1])
-                    ], this));
+                    uniform.elements.push(new Parameter('x:', def[0], uniform));
+                    uniform.elements.push(new Parameter('y:', def[1], uniform));
                     break;
                 case "vec3":                  
                     def = opt.default ? opt.default : [1,1,1];
                     
-                    this.uniforms.push(new Uniform(e[3], [
-                        new Parameter('x:',def[0]),
-                        new Parameter('y:', def[1]),
-                        new Parameter('z:', def[2])
-                    ], this));
+                    uniform.elements.push(new Parameter('x:', def[0], uniform));
+                    uniform.elements.push(new Parameter('y:', def[1], uniform));
+                    uniform.elements.push(new Parameter('z:', def[2], uniform));
                     break;
                 case "vec4":                  
                     def = opt.default ? opt.default : [1,1,1,1];
                     
-                    this.uniforms.push(new Uniform(e[3], [
-                        new Parameter('x:',def[0]),
-                        new Parameter('y:', def[1]),
-                        new Parameter('z:', def[2]),
-                        new Parameter('w:', def[3])
-                    ], this));
+                    uniform.elements.push(new Parameter('x:', def[0], uniform));
+                    uniform.elements.push(new Parameter('y:', def[1], uniform));
+                    uniform.elements.push(new Parameter('z:', def[2], uniform));
+                    uniform.elements.push(new Parameter('w:', def[3], uniform));
                     break;
                 case "bool":                   
                     def = opt.default ? opt.default : false;
 
-                    this.uniforms.push(new Uniform(e[3], [
-                        new Parameter('',def)
-                    ], this));
+                    uniform.elements.push(new Parameter('', def, uniform));
                     break;
                 default:
+                    console.log('check here',e)
                     break;
             }
+
+            this.uniforms.push(uniform);
         })
+        console.groupEnd();
     }
 
     @action async save() {        
@@ -336,16 +381,57 @@ export default class ShaderStore extends NodeDataStore {
         }    
     }
 
+    /*
+        load()
+
+        not currently in use. allows a shader to be loaded
+        from file. this isn't really necessary, as saved
+        shaders will be available in the library as soon as
+        they are saved.
+    */
+    @action load() {
+        let path = `${app.getPath("userData")}/shaders`;
+        
+        let options = {
+            title: this.name + '.shader',
+            defaultPath: path,
+            buttonLabel: "Load Shader File",
+        }
+
+        dialog.showOpenDialog(options).then((f) => {
+            let content = f.filePaths[0];
+            if(!content) return;
+
+            fs.readFile(content, 'utf-8', (err, data) => {
+                if (err)
+                    alert("an error has occurred: " + err.message);
+
+                update(
+                    this,
+                    this,
+                    JSON.parse(data),
+                    (err, item) => {
+                        if (err) console.error(err)
+                    }, {
+                        target: this.target
+                    }
+                )
+            })
+        }).catch(err => {
+            console.error(err);
+        });
+    }
+
+    @action onRemove() {
+        this.target.removeShader(this);
+    }
+
     @computed get vertex() {
         return this.precision + this.vert;
     }
 
     @computed get fragment() {
         return this.precision + this.frag;
-    }
-
-    @action onRemove() {
-        this.target.removeShader(this);
     }
 
     @computed get isBeingEdited() {
@@ -363,7 +449,7 @@ ShaderStore.schema = {
             c.json.vert,
             c.json.frag,
             c.json.uniforms,
-            c.args ? c.args.node : null,            
+            c.args ? c.args.node : null            
         );
     },
     extends: getDefaultModelSchema(NodeDataStore),

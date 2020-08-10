@@ -1,0 +1,37 @@
+.editor {
+    display: flex;
+    flex-flow: column;
+    background-color: black;
+}
+
+.toolbar {
+    display: flex;
+    border-bottom: 1px dotted white;
+    background-color: black;
+}
+
+.content {
+    /* width: 100%; */
+    /* height: 100%; */
+    flex-grow: 2;
+    /* padding: 15px; */
+    border-top: 1px dotted white;
+}
+
+.toolbar_label {
+    
+}
+
+.no_node_selected {
+    align-self: center;
+    margin: 15px;
+}
+
+.ace_editor {
+    font-family: 'IBM Plex Mono', monospace;
+    background-color: #000;
+    border: 2px solid black;  
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}

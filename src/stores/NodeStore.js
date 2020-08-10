@@ -68,11 +68,14 @@ export default class NodeStore {
                     return null;
                 }
             },
+            // deserialize
             (v, c) => {
                 if (v) {
+                    let node_data; 
+
                     switch (c.parentContext.target.constructor.name) {
                         case "ParameterGraphStore":
-                            return deserialize(
+                            node_data = deserialize(
                                 ParameterStore.schema, 
                                 v, 
                                 (err)=>{
@@ -83,8 +86,13 @@ export default class NodeStore {
                                     graph: c.target.graph
                                 }
                             );
+                            // console.log(node_data)
+                            this.setData(node_data);
+                            // node_data.init()
+                            node_data.generateControls();
+                            return node_data;
                         case "ShaderGraphStore":
-                            return deserialize(
+                            node_data = deserialize(
                                 ShaderStore.schema, 
                                 v, 
                                 (err)=>{
@@ -95,6 +103,11 @@ export default class NodeStore {
                                     graph: c.target.graph
                                 }
                             );
+                            console.log(`deserializing ${node_data.name}`,node_data)
+                            this.setData(node_data);
+                            // node_data.init()
+                            node_data.generateControls();
+                            return node_data;
                         default:
                             return null;
                     }
@@ -121,19 +134,20 @@ export default class NodeStore {
             this masks an issue where the failure
             to load a shader causes a crash
         */
-        // if(this.data) {
-            this.name = this.data.name;
-            this.data.node = this;
+        console.log(this.data)
+        this.name = this.data.name;
+        this.data.node = this;
 
-            this.mapInputsToParents();
+        this.mapInputsToParents();
 
-            // if there are no children, make one
-            if (!this.firstChild) {
-                this.addChild();
-            }
+        // if there are no children, make one
+        if (!this.firstChild) {
+            this.addChild();
+        }
 
-            if (this.graph) this.graph.update();
-        // }
+        if (this.graph) this.graph.update();
+        
+        return this;
     }
     
     /*
@@ -147,6 +161,11 @@ export default class NodeStore {
         inputs for example
     */
     @action mapInputsToParents() { 
+        if(!this.data) {
+            console.error(`(${this.name}) is missing data!`,this); 
+            return;
+        }
+        
         this.parents = this.data.inputs.map((e,i) => {
             if(this.parents.length && this.parents[i]) {
                 return this.parents[i];
@@ -180,14 +199,14 @@ export default class NodeStore {
     }
 
     @action select(solo = false) {
-        if(solo) this.graph.activeNode.selected = false;
-        this.graph.activeNode = this;
+        if(solo) this.graph.selectedNode.selected = false;
+        this.graph.selectedNode = this;
         this.selected = true;
         return this;
     }
 
     @action deselect() {
-        this.graph.activeNode = null;
+        this.graph.selectedNode = null;
         this.selected = false;
         return this;
     }
@@ -221,7 +240,7 @@ export default class NodeStore {
     }
 
     @computed get hasConnectedParents() {
-        return this.parents.some(e => e.data !== null)
+        return this.parents.some(e => e ? e.data !== null : false)
     }
 }
 

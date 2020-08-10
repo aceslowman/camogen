@@ -1,0 +1,27 @@
+.toolbar {
+    width: 100%;
+    background-color: black;
+    /* border: 1px solid white; */
+    border-bottom: none;
+}
+
+.toolbar div {
+    display:flex;
+}
+
+.activeButton {
+    border-right: 1px dotted white;
+    background-color: white;
+    color: black;
+    padding: 2px 5px;
+}
+
+.button {
+    border-right: 1px dotted white;
+    padding: 2px 5px;
+}
+
+.itemDecoration {
+    padding-left:5px;
+    float: right;
+}
