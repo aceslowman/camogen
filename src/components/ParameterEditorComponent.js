@@ -2,14 +2,12 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import ParameterGraph from "./ParameterGraphComponent";
-import ToolbarComponent from "./ui/ToolbarComponent";
-import Panel from './ui/PanelComponent';
 import styles from './ParameterEditorComponent.module.css';
 
-import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/mode-glsl";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/webpack-resolver";
+import {
+    PanelComponent,
+    ToolbarComponent,
+} from 'maco-ui';
 
 export default @observer class ParameterEditorComponent extends React.Component {
     static contextType = MainContext;  
@@ -18,7 +16,7 @@ export default @observer class ParameterEditorComponent extends React.Component 
         this.store = this.context.store;
 
 		return(
-            <Panel 
+            <PanelComponent 
                 collapsed={this.props.collapsed}
                 onRemove={()=>this.store.removePanel('Parameter Editor')}
 				title="Parameter Editor"			
@@ -100,7 +98,7 @@ export default @observer class ParameterEditorComponent extends React.Component 
                     }
                 </div>                
 
-            </Panel>
+            </PanelComponent>
 	    )
 	}
 };

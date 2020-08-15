@@ -1,4 +1,3 @@
-import React from 'react';
 import { observable, action } from 'mobx';
 import Runner from './Runner';
 import p5 from 'p5';
@@ -8,16 +7,6 @@ import {
 import ShaderStore from './stores/ShaderStore';
 import ConsoleStore from './stores/ConsoleStore';
 import SceneStore from './stores/SceneStore';
-
-// panel components
-import DebugInfoComponent from './components/DebugInfoComponent';
-import HelpComponent from './components/HelpComponent';
-import Panel from './components/ui/PanelComponent';
-import ShaderEditorComponent from './components/ShaderEditorComponent';
-import ParameterEditorComponent from './components/ParameterEditorComponent';
-import NodeDataComponent from './components/NodeDataComponent';
-import ShaderGraphComponent from './components/ShaderGraphComponent';
-import ShaderControlsComponent from './components/ShaderControlsComponent';
 
 // operators
 import Add from './stores/ops/Add';

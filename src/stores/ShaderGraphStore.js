@@ -101,7 +101,7 @@ export default class ShaderGraphStore extends GraphStore {
             }
         }
 
-        if(result) return new result;
+        if(result) return new result();
 
         // and check custom-shaders. matches will override built-in inputs
         for (let key in this.mainStore.shader_list) {

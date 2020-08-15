@@ -2,15 +2,15 @@ import { observable, action, computed } from 'mobx';
 import NodeStore from './NodeStore';
 import uuidv1 from 'uuid/v1';
 import {
-    createModelSchema,
+    // createModelSchema,
     map,
-    getDefaultModelSchema,
+    // getDefaultModelSchema,
     identifier,
     object,
-    custom,
+    // custom,
     serializable,
-    serialize,
-    reference
+    // serialize,
+    // reference
 } from "serializr"
 export default class GraphStore {
     @serializable(identifier())

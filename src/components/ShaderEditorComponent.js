@@ -1,14 +1,17 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-import ToolbarComponent from "./ui/ToolbarComponent";
-import Panel from './ui/PanelComponent';
 import styles from './ShaderEditorComponent.module.css';
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-glsl";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/webpack-resolver";
+
+import {
+    PanelComponent,
+    ToolbarComponent,
+} from 'maco-ui';
 
 export default @observer class ShaderEditorComponent extends React.Component {
     static contextType = MainContext;  
@@ -23,7 +26,6 @@ export default @observer class ShaderEditorComponent extends React.Component {
     }
 
     handleRefresh = () => {
-        console.log('|refreshing')
         // restore the draw loop, if stopped
         this.store.p5_instance.loop();
         // re-initialize the data
@@ -68,61 +70,58 @@ export default @observer class ShaderEditorComponent extends React.Component {
         this.store = this.context.store;
 
 		return(
-            <Panel 
-                collapsed={this.props.collapsed}
+            <PanelComponent 
+                collapsible
                 onRemove={()=>this.store.removePanel('Shader Editor')}
-				title="Shader Editor"			
-                className={styles.editor}
+				title="Shader Editor"	
                 style={{minWidth:400,flexGrow:2,flexShrink:0}}
+                toolbar={(
+                    <ToolbarComponent  
+                        items={[
+                            {
+                                label: 'Save Shader',
+                                onClick: () => this.props.data.save()
+                            },
+                            {
+                                label: 'Edit Fragment',
+                                onClick: () => this.handleFragEdit()
+                            }, 
+                            {
+                                label: 'Edit Vertex',
+                                onClick: () => this.handleVertexEdit()
+                            },
+                            {
+                                label: 'Refresh',
+                                onClick: () => this.handleRefresh()
+                            },
+                        ]}
+                    /> 
+                )}
 			>		
-                <ToolbarComponent  
-                    items={[
-                        {
-                            label: 'Save Shader',
-                            onClick: () => this.props.data.save()
-                        },
-                        {
-                            label: 'Edit Fragment',
-                            onClick: () => this.handleFragEdit()
-                        }, 
-                        {
-                            label: 'Edit Vertex',
-                            onClick: () => this.handleVertexEdit()
-                        },
-                        {
-                            label: 'Refresh',
-                            onClick: () => this.handleRefresh()
-                        },
-                    ]}
-                />   
+                  
+                {
+                    this.props.data && (<AceEditor
+                        mode="glsl"
+                        theme="monokai"
+                        onChange={this.handleEditorChange}
+                        value={this.props.data[this.state.edit_type]}
+                        height=""
+                        width=""
+                        minHeight="500px"
+                        className={styles.ace_editor}		 												
+                    />)
+                }
 
-                <div className={styles.content}>
-
-                    {
-                        this.props.data && (<AceEditor
-                            mode="glsl"
-                            theme="monokai"
-                            onChange={this.handleEditorChange}
-                            value={this.props.data[this.state.edit_type]}
-                            height=""
-                            width=""
-                            minHeight="500px"
-                            className={styles.ace_editor}		 												
-                        />)
-                    }
-
-                    {
-                        !this.props.data && (
-                            <p className={styles.no_node_selected}>
-                                <em> no shader node selected</em>
-                            </p>
-                        )
-                    }
-                                         
-                </div>                
+                {
+                    !this.props.data && (
+                        <p className={styles.no_node_selected}>
+                            <em> no shader node selected</em>
+                        </p>
+                    )
+                }
 
                 { this.props.data && this.props.data.node.graph.updateFlag ? '' : '' }
-			</Panel>
+			</PanelComponent>
 	    )
 	}
 };

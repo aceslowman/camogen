@@ -1,7 +1,7 @@
 const Runner = (p, store) => {
 
     p.setup = () => {
-        let container = document.getElementById('WORKAREA_inner')
+        let container = document.getElementById('APP')
         
         let c = p.createCanvas(
             container.offsetWidth+15,

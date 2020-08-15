@@ -2,7 +2,10 @@ import React from 'react';
 import { observable, action } from 'mobx';
 import OperatorStore from '../OperatorStore';
 import {createModelSchema} from "serializr";
-import ControlGroupComponent from '../../components/ControlGroupComponent';
+
+import {
+	ControlGroupComponent,
+} from 'maco-ui';
 
 //----------------------------------------------------------------------
 export default class MIDIStore extends OperatorStore {

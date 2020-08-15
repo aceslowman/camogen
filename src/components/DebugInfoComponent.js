@@ -1,10 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-import Panel from './ui/PanelComponent';
-import TextComponent from './ui/TextComponent';
+import {
+	PanelComponent,
+	TextComponent
+} from 'maco-ui';
 
-export default @observer class DebugInfo extends React.Component {
+export default @observer class DebugInfo extends React.PureComponent {
 
 	static contextType = MainContext;
 
@@ -17,13 +19,10 @@ export default @observer class DebugInfo extends React.Component {
 		this.store = this.context.store;
 
 		return(
-			<Panel
+			<PanelComponent
+				title="Debug"
 				collapsed={this.props.collapsed}
-				onRemove={()=>this.store.removePanel('Debug')}
-				title="Debug" 
-				style={{
-					backgroundColor: 'black',
-				}}
+				onRemove={()=>this.store.removePanel('Debug')}				
 			>
 				<TextComponent>
 					<h3> currentlyEditing: {
@@ -75,7 +74,7 @@ export default @observer class DebugInfo extends React.Component {
 					)}
 					
 				</TextComponent>
-			</Panel>		
+			</PanelComponent>		
 	    )
 	}
 };

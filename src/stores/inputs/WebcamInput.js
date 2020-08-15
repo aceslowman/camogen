@@ -4,7 +4,9 @@ import {
     action
 } from "mobx";
 import ShaderStore from "../ShaderStore";
-import ControlGroupComponent from '../../components/ControlGroupComponent';
+import {
+    ControlGroupComponent,
+} from 'maco-ui';
 
 class WebcamInput extends ShaderStore {
     @observable name = "WEBCAM";

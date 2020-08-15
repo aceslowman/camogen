@@ -2,8 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
 import GraphComponent from './GraphComponent';
-import ShelfComponent from './ShelfComponent';
-import NodeDataComponent from './NodeDataComponent';
+import { PanelComponent } from 'maco-ui';
 
 import styles from './ParameterGraphComponent.module.css';
 
@@ -31,17 +30,19 @@ export default @observer class ParameterGraphComponent extends React.Component {
 						{ 
 						<React.Fragment>
 							<GraphComponent data={data.graph} />
-							<ShelfComponent style={{'flexShrink': 2, 'borderTop': '1px solid white'}}>
-								{data.graph.nodesArray.map((n,j)=>{
-									console.log(n)
-									return (n.data &&
-										<NodeDataComponent
-											key={j}
-											data={n.data}							
-										/>
-									)
-								})}                        
-							</ShelfComponent>
+							{data.graph.nodesArray.map((n,j)=>{
+								console.log(n)
+								return (n.data && (
+									<PanelComponent 
+										key={j}
+										title={n.data.name}
+										collapsible
+										vertical
+									>
+										{n.data.controls}
+									</PanelComponent>)
+								)
+							})}                  
 						</React.Fragment>							
 						}																		 
 				</div>				

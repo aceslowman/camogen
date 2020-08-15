@@ -21,8 +21,11 @@ import UniformStore from './UniformStore';
 import Parameter from './ParameterStore';
 import ParameterComponent from '../components/ParameterComponent';
 import Uniform from './UniformStore';
-import ControlGroupComponent from '../components/ControlGroupComponent';
 import NodeDataStore from './NodeDataStore';
+
+import {
+    ControlGroupComponent, InputBool, InputFloat,
+} from 'maco-ui';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -98,45 +101,9 @@ export default class ShaderStore extends NodeDataStore {
             this.ref.setUniform(uniform.name, uniform.elements);
         }
 
-        this.generateControls();
-    
         // flag as ready to render
         this.ready = true;
         return this;
-    }
-
-    /*
-        generateControls()
-
-        creates the control interface from the extracted
-        uniforms. 
-
-        important to use ControlGroupComponent, for styling
-        and for the 'enabled' attribute that allows it to be
-        removed when not in use.
-    */
-    @action generateControls() {
-        console.log(`generating controls for ${this.name}`,this)
-        this.controls = this.uniforms.map((uniform)=>{ 
-            return (
-                <ControlGroupComponent key={uniform.uuid} name={uniform.name}>
-                    {uniform.elements.map((param)=>{ 
-                        // name is currently missing
-                        return (
-                            <ParameterComponent
-                                key={param.uuid}
-                                active={this.selectedParameter === param}
-                                data={param}
-                                onDblClick={(e) => {
-                                    this.selectedParameter = e;
-                                    this.node.graph.parent.parent.selectedParameter = e;
-                                }}
-                            />
-                        );                                                            
-                    })}
-                </ControlGroupComponent>                    
-            );                     
-        });
     }
 
     /*
@@ -236,26 +203,26 @@ export default class ShaderStore extends NodeDataStore {
         4: "{"name":"off","default":[0.0,0.0]}"
     */
     @action extractUniforms() { 
-        console.group();
-        console.log(`uniforms are being extracted from ${this.name}`,this)
+        // console.group();
+        // console.log(`uniforms are being extracted from ${this.name}`,this)
         const builtins = ["resolution"];
         
         let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
         let result = [...this.frag.matchAll(re)];
 
-        console.log('the extracted uniforms:', result)
+        // console.log('the extracted uniforms:', result)
        
         // retain only uniforms that show up in the result set
         this.uniforms = this.uniforms.filter(u => {
             let match;
-            result.forEach((e) => {
+            return result.forEach((e) => {
                 match = e.includes(u.name);
                 return match;
             });             
         });
         
         result.forEach((e) => {
-            console.log('result',e)
+            // console.log('result',e)
             let uniform_type    = e[2];
             let uniform_name    = e[3];
             let uniform_options = e[4];
@@ -283,7 +250,7 @@ export default class ShaderStore extends NodeDataStore {
  
             let def;
             let opt = (uniform_options) ? JSON.parse(uniform_options) : {};
-            console.log('opt',opt)
+            // console.log('opt',opt)
 
             let uniform = new Uniform(uniform_name,this);
 
@@ -332,13 +299,13 @@ export default class ShaderStore extends NodeDataStore {
                     uniform.elements.push(new Parameter('', def, uniform));
                     break;
                 default:
-                    console.log('check here',e)
+                    // console.log('check here',e)
                     break;
             }
 
             this.uniforms.push(uniform);
         })
-        console.groupEnd();
+        // console.groupEnd();
     }
 
     @action async save() {        

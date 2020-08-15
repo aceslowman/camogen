@@ -5,7 +5,7 @@ import {
 } from 'mobx';
 import uuidv1 from 'uuid/v1';
 import {
-    createModelSchema,
+    // createModelSchema,
     getDefaultModelSchema,
     primitive,
     list,
@@ -134,7 +134,7 @@ export default class NodeStore {
             this masks an issue where the failure
             to load a shader causes a crash
         */
-        console.log(this.data)
+        // console.log(this.data)
         this.name = this.data.name;
         this.data.node = this;
 

@@ -1,14 +1,14 @@
 import { observable, action } from 'mobx';
 import {
-    createModelSchema,
-    primitive,
-    reference,
+    // createModelSchema,
+    // primitive,
+    // reference,
     list,
     object,
     identifier,
     serialize,
-    deserialize,
-    getDefaultModelSchema,
+    // deserialize,
+    // getDefaultModelSchema,
     serializable,
     update
 } from "serializr"
@@ -44,9 +44,9 @@ export default class SceneStore {
         // console.log(this.parent.shader_list)
         // g.addNodeByName("WebcamInput");
         // g.root.select(true);
-        g.addNodeByName("Debug");
-        // g.addNodeByName("UV");
-        // g.addNodeByName("Glyph");
+        // g.addNodeByName("Debug");
+        g.addNodeByName("UV");
+        g.addNodeByName("Glyph");
         // g.addNodeByName("Add");
         // g.addNodeByName("ToHSV");
 

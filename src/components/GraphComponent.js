@@ -5,7 +5,7 @@ import Rail from './RailComponent';
 
 import styles from './GraphComponent.module.css';
 
-export default @observer class GraphComponent extends React.Component {
+export default @observer class GraphComponent extends React.PureComponent {
     static contextType = MainContext;   
     rows = [];
 

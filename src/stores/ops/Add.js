@@ -1,6 +1,5 @@
 import { observable, action } from 'mobx';
 import OperatorStore from '../OperatorStore';
-import {createModelSchema} from "serializr"
 
 //----------------------------------------------------------------------
 export default class AddStore extends OperatorStore {

@@ -1,10 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import MainContext from '../MainContext';
-import Panel from './ui/PanelComponent';
-import TextComponent from './ui/TextComponent';
+import {
+    PanelComponent,
+    TextComponent,
+} from 'maco-ui';
 
-export default @observer class HelpComponent extends React.Component {
+export default @observer class HelpComponent extends React.PureComponent {
 
 	static contextType = MainContext;
 
@@ -17,13 +19,10 @@ export default @observer class HelpComponent extends React.Component {
 		this.store = this.context.store;
 
 		return(
-			<Panel
-				collapsed={this.props.collapsed}
+			<PanelComponent
                 title="Help" 
                 onRemove={()=>this.store.removePanel('Help')}
-				style={{
-					backgroundColor: 'black',
-				}}
+                vertical
 			>
 				<TextComponent>
                     <h1>camogen</h1>
@@ -71,7 +70,7 @@ export default @observer class HelpComponent extends React.Component {
                         </li>
                     </ol>
                 </TextComponent>					
-			</Panel>		
+			</PanelComponent>		
 	    )
 	}
 };

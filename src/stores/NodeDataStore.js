@@ -5,11 +5,11 @@ import {
     primitive,
     serializable,
     list,
-    getDefaultModelSchema,
-    reference,
-    deserialize
+    // getDefaultModelSchema,
+    // reference,
+    // deserialize
 } from 'serializr';
-import NodeStore from './NodeStore';
+// import NodeStore from './NodeStore';
 
 export default class NodeDataStore {
     @serializable(identifier()) 

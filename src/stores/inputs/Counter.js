@@ -1,8 +1,11 @@
 import React from 'react';
-import ControlGroupComponent from '../../components/ControlGroupComponent';
 import { observable, action } from 'mobx';
 import OperatorStore from '../OperatorStore';
 import {createModelSchema} from "serializr";
+
+import {
+	ControlGroupComponent
+} from 'maco-ui';
 
 //----------------------------------------------------------------------
 export default class CounterStore extends OperatorStore {

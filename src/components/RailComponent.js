@@ -4,10 +4,6 @@ import MainContext from '../MainContext';
 
 import styles from './RailComponent.module.css';
 
-// for electron
-const remote = window.require('electron').remote;
-const app = remote.app;
-
 export default @observer class RailComponent extends React.Component {
     static contextType = MainContext;
 

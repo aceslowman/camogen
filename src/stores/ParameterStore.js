@@ -4,13 +4,13 @@ import {
   getDefaultModelSchema,
   primitive,
   object,
-  reference,
+//   reference,
   identifier,
   serializable,
-  deserialize
+//   deserialize
 } from "serializr";
 import ParameterGraphStore from './ParameterGraphStore';
-import GraphStore from './GraphStore';
+// import GraphStore from './GraphStore';
 
 export default class ParameterStore {
     @serializable(identifier()) 
