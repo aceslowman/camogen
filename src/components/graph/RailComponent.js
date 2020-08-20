@@ -1,20 +1,15 @@
 import React from 'react';
-import { observer } from 'mobx-react';
-import MainContext from '../MainContext';
-
 import styles from './RailComponent.module.css';
 
-export default @observer class RailComponent extends React.Component {
-    static contextType = MainContext;
+const RailComponent = (props) => {
+    const { label, children, data } = props;
 
-    q1 = {};
-    q2 = {};
-    q3 = {};
-    q4 = {};
+    let q1 = {};
+    let q2 = {};
+    let q3 = {};
+    let q4 = {};
     
-    configureRails() {
-        const { data } = this.props;
-
+    const configureRails = () => {
         let bottomLeft = data.children[0] && data.children[0].parents.indexOf(data) > 0;
         let bottomRight = data.children[0] && data.children[0].parents.indexOf(data) < data.children[0].parents.length - 1;
 
@@ -25,32 +20,31 @@ export default @observer class RailComponent extends React.Component {
         let color = data.branch_index !== null ? branch_colors[data.branch_index] : 'gray';
 
         let defaultBorder = '1px dotted gray';
-        // let defaultBorder = 'none';
         let activeBorder = `2px solid ${color}`;
         let thickerBorder = `4px solid ${color}`;
 
-        this.q1 = {
+        q1 = {
             // borderLeft: ? activeBorder : defaultBorder,
             borderRight: middleUpper ? activeBorder : defaultBorder,
             // borderTop: ? activeBorder : defaultBorder,
             // borderBottom: ? activeBorder : defaultBorder,
         }
 
-        this.q2 = {
+        q2 = {
             borderLeft: middleUpper ? activeBorder : defaultBorder,
             // borderRight: ? activeBorder : defaultBorder,
             // borderTop: ? activeBorder : defaultBorder,
             // borderBottom: ? activeBorder : defaultBorder,
         }
 
-        this.q3 = {
+        q3 = {
             // borderLeft: ? activeBorder : defaultBorder,
             borderRight: middleLower ? activeBorder : defaultBorder,
             // borderTop: ? activeBorder : defaultBorder,
             borderBottom: bottomLeft ? thickerBorder : defaultBorder,
         }
 
-        this.q4 = {
+        q4 = {
             borderLeft: middleLower ? activeBorder : defaultBorder,
             // borderRight: ? '' : defaultBorder,
             // borderTop: ? '' : defaultBorder,
@@ -58,46 +52,42 @@ export default @observer class RailComponent extends React.Component {
         }
     }
 
-    handleClick = () => {
-        this.props.data.select(true);
-        this.props.data.edit();
+    const handleClick = () => {
+        props.data.select(true);
+        props.data.edit();
     }
 
-	render() {	
-		const { label, children, data } = this.props;
+    if(data) configureRails();
 
-        this.store = this.context.store;
-          
-        if(data) this.configureRails();
+    return(
+        <div className={styles.rail_wrapper}> 	
+            <div 
+                className={styles.rails}                    
+                style={{
+                    // borderColor: data.selected ? '#39FF14' : 'white',
+                    // borderStyle: data.selected ? 'solid' : 'dashed',
+                }}
+            >
+                <div style={q1}></div>
+                <div style={q2}></div>
+                <div style={q3}></div>
+                <div style={q4}></div>
+            </div>		
 
-		return(
-			<div className={styles.rail_wrapper}> 	
-                <div 
-                    className={styles.rails}                    
-                    style={{
-                        // borderColor: data.selected ? '#39FF14' : 'white',
-                        // borderStyle: data.selected ? 'solid' : 'dashed',
-                    }}
-                >
-                    <div style={this.q1}></div>
-                    <div style={this.q2}></div>
-                    <div style={this.q3}></div>
-                    <div style={this.q4}></div>
-                </div>		
+            <label onClick={handleClick} style={{
+                backgroundColor: data.selected ? '#39FF14' : 'black',
+                color: data.selected ? 'black' : 'white'
+            }}>
+                {label ? label : 'EMPTY SLOT'}
+                {/* {!app.isPackaged && (<p><small>{data.uuid}</small></p>)} */}
+            </label> 
 
-				<label onClick={this.handleClick} style={{
-                    backgroundColor: data.selected ? '#39FF14' : 'black',
-                    color: data.selected ? 'black' : 'white'
-                }}>
-                    {label ? label : 'EMPTY SLOT'}
-                    {/* {!app.isPackaged && (<p><small>{data.uuid}</small></p>)} */}
-                </label> 
-
-                <div className={styles.content}>
-                    {children}
-                </div>
-								
+            <div className={styles.content}>
+                {children}
             </div>
-	    );
-	}
-};
+                            
+        </div>
+    );
+}
+
+export default RailComponent;

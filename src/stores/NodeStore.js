@@ -89,7 +89,7 @@ export default class NodeStore {
                             // console.log(node_data)
                             this.setData(node_data);
                             // node_data.init()
-                            node_data.generateControls();
+                            // node_data.generateControls();
                             return node_data;
                         case "ShaderGraphStore":
                             node_data = deserialize(
@@ -106,7 +106,7 @@ export default class NodeStore {
                             console.log(`deserializing ${node_data.name}`,node_data)
                             this.setData(node_data);
                             // node_data.init()
-                            node_data.generateControls();
+                            // node_data.generateControls();
                             return node_data;
                         default:
                             return null;

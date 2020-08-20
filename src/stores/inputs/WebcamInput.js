@@ -151,7 +151,7 @@ class WebcamInput extends ShaderStore {
             });
 
         // generate from uniforms
-        this.generateControls();
+        // this.generateControls();
 
         // add other controls
         this.controls.push(

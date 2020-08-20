@@ -1,19 +1,19 @@
 import React from 'react';
 import { MainProvider } from './MainContext';
 import { observer } from 'mobx-react';
-import './App.css';
 
-import ShaderGraphComponent from './components/ShaderGraphComponent';
-import ShaderControlsComponent from './components/ShaderControlsComponent';
-import DebugInfoComponent from './components/DebugInfoComponent';
-import HelpComponent from './components/HelpComponent';
-import ShaderEditorComponent from './components/ShaderEditorComponent';
-import ParameterEditorComponent from './components/ParameterEditorComponent';
+import ShaderGraphComponent from './components/panels/ShaderGraphComponent';
+import ShaderControlsComponent from './components/panels/ShaderControlsComponent';
+import DebugInfoComponent from './components/panels/DebugInfoComponent';
+import HelpComponent from './components/panels/HelpComponent';
+import ShaderEditorComponent from './components/panels/ShaderEditorComponent';
+import ParameterEditorComponent from './components/panels/ParameterEditorComponent';
 
 import {
   PanelComponent,
   ThemeContext,
   ToolbarComponent,
+  SplitContainer,
   Themes
 } from 'maco-ui';
 
@@ -75,9 +75,8 @@ export default @observer class App extends React.Component {
 				}
 
 				return {
-					_isDirectory: true,
 					label: name,					
-					items: subItems
+					dropDown: subItems
 				};
 			} else {
 				return {
@@ -181,48 +180,49 @@ export default @observer class App extends React.Component {
                   floating
                   toolbar={main_panel_toolbar}
                 >
-                  {this.store.openPanels.map((name,i)=>{
-                    switch (name) {
-                      case 'Shader Graph':                            
-                        return (<ShaderGraphComponent 
-                            key={i}
-                            data={this.store.scenes[0].shaderGraphs[0]}
-                          />
-                        );
-                      case 'Shader Editor':                            
-                        return (<ShaderEditorComponent 
-                            key={i}
-                            data={this.store.scenes[0].shaderGraphs[0].currentlyEditing}
-                          />
-                        );
-                      case 'Shader Controls':                            
-                        return (<ShaderControlsComponent 
-                            key={i}
-                            data={this.store.scenes[0].shaderGraphs[0]}
-                          />
-                        );
-                      case 'Parameter Editor':  
-                        return (<ParameterEditorComponent 
-                            key={i}
-                            data={this.store.selectedParameter}
-                          />
-                        );
-                      case 'Help':                            
-                        return (<HelpComponent 
-                            key={i}            
-                          />
-                        );
-                      case 'Debug':                            
-                        return (<DebugInfoComponent 
-                            key={i}           
-                          />
-                        );                             
-                      default:
-                        break;
-                    }
-
-                    return null;
-                  })}
+                  <SplitContainer horizontal>
+                    {this.store.openPanels.map((name,i)=>{
+                      switch (name) {
+                        case 'Shader Graph':                            
+                          return (<ShaderGraphComponent 
+                              key={i}
+                              data={this.store.scenes[0].shaderGraphs[0]}
+                            />
+                          );
+                        case 'Shader Editor':                            
+                          return (<ShaderEditorComponent 
+                              key={i}
+                              data={this.store.scenes[0].shaderGraphs[0].currentlyEditing}
+                            />
+                          );
+                        case 'Shader Controls':                            
+                          return (<ShaderControlsComponent 
+                              key={i}
+                              data={this.store.scenes[0].shaderGraphs[0]}
+                            />
+                          );
+                        case 'Parameter Editor':  
+                          return (<ParameterEditorComponent 
+                              key={i}
+                              data={this.store.selectedParameter}
+                            />
+                          );
+                        case 'Help':                            
+                          return (<HelpComponent 
+                              key={i}            
+                            />
+                          );
+                        case 'Debug':                            
+                          return (<DebugInfoComponent 
+                              key={i}           
+                            />
+                          );                             
+                        default:
+                          break;
+                      }
+                      return null;
+                    })}
+                  </SplitContainer>                                   
                 </PanelComponent>                    
               )
             }                                            

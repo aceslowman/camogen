@@ -11,6 +11,7 @@
     background-color: black;
     padding: 5px 15px;
     border: 1px solid white;
+    font-size: 0.7em;
     font-weight: bold;
     position: absolute;
 }
@@ -33,7 +34,5 @@
 }
 
 .content {
-    /* width: 100%; */
-    /* he}ight: 100%; */
     position: absolute;
 }

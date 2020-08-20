@@ -1,18 +1,12 @@
 import React from 'react';
-import { observer } from 'mobx-react';
-import MainContext from '../MainContext';
 import Rail from './RailComponent';
-
 import styles from './GraphComponent.module.css';
 
-export default @observer class GraphComponent extends React.PureComponent {
-    static contextType = MainContext;   
-    rows = [];
-
-	generate = () => {
+const GraphComponent = (props) => {
+	const generate = () => {
 		let rows = [];
     
-		this.props.data.traverse((node, distance_from_root) => {
+		props.data.traverse((node, distance_from_root) => {
 			if (distance_from_root === rows.length) {
 				rows.push([]);
 			}
@@ -49,26 +43,24 @@ export default @observer class GraphComponent extends React.PureComponent {
 			}		
 		})		
 
-		this.rows = rows.map((e,i) => (
+		rows = rows.map((e,i) => (
 			<div key={i}>
 				{e}	
 			</div>
 		));            
+
+		return rows;
 	}
 
-	render() {	
-		this.store = this.context.store;
+	return (						
+		<div className={styles.graph}>
+			<div className={styles.graph_rows}>
+				{ generate() }
+			</div>
 
-		this.generate();
+			{ props.data.updateFlag }
+		</div>				
+	);
+}
 
-		return(						
-			<div className={styles.graph}>
-				<div className={styles.graph_rows}>
-					{ this.rows }
-				</div>
-
-				{ this.props.data.updateFlag }
-			</div>				
-	    )
-	}
-};
+export default GraphComponent;

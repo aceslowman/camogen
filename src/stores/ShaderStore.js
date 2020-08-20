@@ -19,13 +19,8 @@ import {
 } from 'mobx';
 import UniformStore from './UniformStore';
 import Parameter from './ParameterStore';
-import ParameterComponent from '../components/ParameterComponent';
 import Uniform from './UniformStore';
 import NodeDataStore from './NodeDataStore';
-
-import {
-    ControlGroupComponent, InputBool, InputFloat,
-} from 'maco-ui';
 
 // for electron
 const remote = window.require('electron').remote;

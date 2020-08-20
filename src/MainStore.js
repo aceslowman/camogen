@@ -5,7 +5,6 @@ import {
   serialize,
 } from "serializr";
 import ShaderStore from './stores/ShaderStore';
-import ConsoleStore from './stores/ConsoleStore';
 import SceneStore from './stores/SceneStore';
 
 // operators
@@ -64,9 +63,8 @@ class MainStore {
   };
 
   @observable scenes = [];
+  
   @observable activeScene = null;
-
-  @observable console = new ConsoleStore();
 
   @observable ready = false;
 
@@ -85,7 +83,7 @@ class MainStore {
       this.addPanel('Help');
       this.addPanel('Shader Graph');
       this.addPanel('Shader Editor');
-      this.addPanel('Shader Controls');
+      // this.addPanel('Shader Controls');
     });
   }
 
@@ -186,50 +184,7 @@ class MainStore {
     this method adds a panel component to the group
   */
   @action addPanel(name) {
-    this.openPanels.push(name)
-    // switch (name) {
-    //   case 'Shader Graph':
-    //     this.openPanels.push((
-    //       <ShaderGraphComponent 
-    //         key={this.openPanels.length}
-    //         data={this.scenes[0].shaderGraphs[0]}
-    //       />
-    //     ));
-    //     break;
-    //   case 'Shader Editor':
-    //     this.openPanels.push((
-    //       <ShaderEditorComponent 
-    //         key={this.openPanels.length}
-    //         data={this.scenes[0].shaderGraphs[0].currentlyEditing}
-    //       />
-    //     ));
-    //     break;
-    //   case 'Shader Controls':
-    //     this.openPanels.push((
-    //       <ShaderControlsComponent 
-    //         key={this.openPanels.length}
-    //         data={this.scenes[0].shaderGraphs[0]}
-    //       />
-    //     ));
-    //     break;
-    //   case 'Help':
-    //     this.openPanels.push((
-    //       <HelpComponent 
-    //         key={this.openPanels.length}            
-    //       />
-    //     ));
-    //     break;
-    //   case 'Debug':
-    //     this.openPanels.push((
-    //       <DebugInfoComponent 
-    //         key={this.openPanels.length}           
-    //       />
-    //     ));
-    //     break;   
-        
-    //   default:
-    //     break;
-    // }
+    this.openPanels.push(name);
   }
 
   /*
