@@ -31,6 +31,8 @@ export default class GraphStore {
     // NOTE: toggle to force a re-render in React
     @observable updateFlag = false;
 
+    @observable coord_bounds = null;
+
     constructor(parent) {
         this.parent = parent;
     
@@ -129,7 +131,7 @@ export default class GraphStore {
             next_node = container.shift();
             
             if(next_node) {
-                result.push(next_node.uuid);
+                result.push(next_node);
                 distance_from_root = this.distanceBetween(next_node, this.root);
 
                 if (f) f(next_node, distance_from_root);
@@ -212,4 +214,62 @@ export default class GraphStore {
     @computed get nodesArray() {
         return Object.keys(this.nodes).map((uuid)=>this.getNodeById(uuid))
     }
+
+    /*
+        calculateCoordinates()
+
+        for visualization
+    */
+    @action calculateCoordinates() {
+        let used_coords = [];
+        let x = 0;
+        let y = 0;
+
+        return this.traverse((node, dist) => {
+            y = dist;
+            node.coordinates.x = x;
+            node.coordinates.y = y;
+            // console.log('node ' + node.name, node)
+
+            // y++;
+
+            if(!node.parents.length) {
+                x++;
+                // y = 0;
+            }
+
+            // console.log('used',used_coords)
+            // console.log('node ' + node.name,node.coordinates)
+
+            if(used_coords.find((coord) => coord.x === x && coord.y === y)) {
+				console.log('node space occupied! shift now!')
+			}
+
+            used_coords.push(node.coordinates);            
+        });
+    }
+
+    /*
+        calculateCoordinateBounds()
+
+        returns an object representing the size of the graph,
+        for centering, scaling, and positioning visualization
+    */
+    @action calculateCoordinateBounds() {
+        let max_x = 0;
+        let max_y = 0;
+
+        this.nodesArray.forEach((v) => {
+            max_x = v.coordinates.x > max_x ? v.coordinates.x : max_x;
+            max_y = v.coordinates.y > max_y ? v.coordinates.y : max_y;
+        });
+
+        this.coord_bounds = {
+            x: max_x,
+            y: max_y
+        };
+
+        return this.coord_bounds;
+    }
+
 }

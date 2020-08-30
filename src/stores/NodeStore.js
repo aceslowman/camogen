@@ -38,6 +38,8 @@ export default class NodeStore {
     
     @observable selected = false;
 
+    @observable coordinates = { x: 0, y: 0 };
+
     constructor(
         name, 
         graph, 

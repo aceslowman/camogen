@@ -1,22 +1,41 @@
-.graph {    
-    height:100%;
+.wrapper {
     width:100%;
+    height:100%;
+    overflow: hidden;
+}
+
+.canvas {
+    width:100%;
+    height:100%; 
+    position:relative;
+    float:left;
+}
+
+.labels {
+    width:100%;
+    height:100%;
+    position:relative;
+}
+
+.label {
+    position: absolute;
+    width: 30px;
+	height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px;
-    overflow: hidden;
+    white-space: pre;
+    font-weight: bold;
     box-sizing:border-box;
 }
 
-.graph_rows {
-    display: flex;
-    flex-flow: column-reverse;  
+.label label {
+    padding: 0px 5px;
+    border: 1px solid black;
+    white-space: break-spaces;
+    font-size: 0.8em;
 }
 
-.graph_rows > div {
-    display: flex;
-    justify-content: left;
-    align-items: center;    
-    width: 100%;
+.selected label {
+    /* border-style: dashed; */
 }
