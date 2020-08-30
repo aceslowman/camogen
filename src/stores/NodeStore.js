@@ -38,6 +38,19 @@ export default class NodeStore {
     
     @observable selected = false;
 
+    @serializable(list(primitive()))
+    @observable inputs = [];
+
+    @serializable(list(primitive()))
+    @observable outputs = ["out"];
+
+    @observable component_ref = null;
+
+    // see workaround in constructor
+    @observable node = null;
+
+    @observable controls = [];
+
     @observable coordinates = { x: 0, y: 0 };
 
     constructor(

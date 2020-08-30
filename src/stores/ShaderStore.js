@@ -20,7 +20,7 @@ import {
 import UniformStore from './UniformStore';
 import Parameter from './ParameterStore';
 import Uniform from './UniformStore';
-import NodeDataStore from './NodeDataStore';
+import NodeStore from './NodeStore';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -28,7 +28,7 @@ const dialog = remote.dialog;
 const app    = remote.app;
 const fs     = window.require('fs');
 
-export default class ShaderStore extends NodeDataStore {    
+export default class ShaderStore extends NodeStore {    
     @serializable(list(object(UniformStore.schema)))
     @observable uniforms  = [];
 
@@ -414,6 +414,6 @@ ShaderStore.schema = {
             c.args ? c.args.node : null            
         );
     },
-    extends: getDefaultModelSchema(NodeDataStore),
+    extends: getDefaultModelSchema(NodeStore),
     props: getDefaultModelSchema(ShaderStore).props
 }
