@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { MainProvider } from './MainContext';
 import { observer } from 'mobx-react';
 
@@ -19,49 +19,48 @@ import {
 
 import 'maco-ui/dist/index.css';
 
-export default @observer class App extends React.Component {
+const App = observer((props) => {
 
-  mainRef = React.createRef();
+  const mainRef = useRef(null);
 
-  handleResize = () => {
-    if(this.store.breakoutControlled) return;
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  }, []);
+
+  const handleResize = () => {
+    if(props.store.breakoutControlled) return;
     
-    let bounds = this.mainRef.current.getBoundingClientRect();
+    let bounds = mainRef.current.getBoundingClientRect();
 
-    this.store.p5_instance.resizeCanvas(
+    props.store.p5_instance.resizeCanvas(
       bounds.width,
       bounds.height
     );
 
     // update target dimensions
-    for (let target_data of this.store.scenes[0].targets) {
+    for (let target_data of props.store.scene.targets) {
       target_data.ref.resizeCanvas(
         bounds.width,
           bounds.height
       );
     }
 
-    this.store.p5_instance.draw();
+    props.store.p5_instance.draw();
   }
 
-  componentDidMount() {   
-    window.addEventListener('resize', this.handleResize);
-  }
-
-  handleBreakout = () => {
-    this.store.breakout();
-    this.handleExpand(true);
+  const handleBreakout = () => {
+    props.store.breakout();
   };
 
-  handleLib = () => {
-		let keys = Object.keys(this.store.shader_list);
+  const handleLib = () => {
+		let keys = Object.keys(props.store.shader_list);
 
 		keys.sort((a,b)=>{
 			return a._isDirectory ? 1 : -1
 		})
 
 		return keys.map((name)=>{
-			let item = this.store.shader_list[name];
+			let item = props.store.shader_list[name];
 
 			if (item._isDirectory) {
 				let subItems = [];
@@ -70,7 +69,7 @@ export default @observer class App extends React.Component {
 					if (name == '_isDirectory') continue;
 					subItems.push({
 						label: name,
-						onClick: () => this.store.scene.shaderGraph.setSelectedByName(name)
+						onClick: () => props.store.scene.shaderGraph.setSelectedByName(name)
 					});
 				}
 
@@ -81,154 +80,152 @@ export default @observer class App extends React.Component {
 			} else {
 				return {
 					label: item.name,
-					onClick: () => this.store.scene.shaderGraph.setSelectedByName(item.name)
+					onClick: () => props.store.scene.shaderGraph.setSelectedByName(item.name)
 				};
 			}
 		});
   }
 
-  render() {
-    this.store = this.props.store;
+  const main_panel_toolbar = (
+    <ToolbarComponent 
+        items={[
+          {
+            label: "FILE",
+            dropDown: [
+              {
+                label: "Save Scene",
+                onClick: ()=>props.store.scenes[0].save()
+              }, {
+                label: "Load Scene",
+                onClick: ()=>props.store.scenes[0].load()
+              },
+            ]
+          },	
+          {
+            label: "PANELS",
+            dropDown: [
+              {
+                label: "Shader Graph",
+                onClick: () => props.store.addPanel("Shader Graph")
+              },
+              {
+                label: "Shader Editor",
+                onClick: () => props.store.addPanel("Shader Editor")
+              },
+              {
+                label: "Shader Controls",
+                onClick: () => props.store.addPanel("Shader Controls")
+              },  
+              {
+                label: "Parameter Editor",
+                onClick: () => props.store.addPanel("Parameter Editor")
+              },
+              {
+                label: "Help",
+                onClick: () => props.store.addPanel("Help")
+              },
+              {
+                label: "Debug",
+                onClick: () => props.store.addPanel("Debug")
+              },
+            ]
+          },
+          {
+            label: "LIBRARY",
+            dropDown: handleLib()
+          },
+          {
+            label: "INPUTS",
+            dropDown: [
+              {
+                label: "WEBCAM",
+                onClick: () => props.store.scene.shaderGraph.setSelectedByName("WebcamInput")
+              },
+              {
+                label: "IMAGE",
+                onClick: () => props.store.scene.shaderGraph.setSelectedByName("ImageInput")
+              },
+            ]
+          },
+          {
+            label: "CLEAR",
+            onClick: () => props.store.scenes[0].clear()
+          },						
+          {
+            label: "SNAPSHOT",
+            onClick: props.store.snapshot
+          },
+          {
+            label: "BREAKOUT",
+            onClick: handleBreakout
+          },
+        ]}
+      />
+  );
 
-    const main_panel_toolbar = (
-      <ToolbarComponent 
-          items={[
-            {
-              label: "FILE",
-              dropDown: [
-                {
-                  label: "Save Scene",
-                  onClick: ()=>this.store.scenes[0].save()
-                }, {
-                  label: "Load Scene",
-                  onClick: ()=>this.store.scenes[0].load()
-                },
-              ]
-            },	
-            {
-              label: "PANELS",
-              dropDown: [
-                {
-                  label: "Shader Graph",
-                  onClick: () => this.store.addPanel("Shader Graph")
-                },
-                {
-                  label: "Shader Editor",
-                  onClick: () => this.store.addPanel("Shader Editor")
-                },
-                {
-                  label: "Shader Controls",
-                  onClick: () => this.store.addPanel("Shader Controls")
-                },  
-                {
-                  label: "Parameter Editor",
-                  onClick: () => this.store.addPanel("Parameter Editor")
-                },
-                {
-                  label: "Help",
-                  onClick: () => this.store.addPanel("Help")
-                },
-                {
-                  label: "Debug",
-                  onClick: () => this.store.addPanel("Debug")
-                },
-              ]
-            },
-            {
-              label: "LIBRARY",
-              dropDown: this.handleLib()
-            },
-            {
-              label: "INPUTS",
-              dropDown: [
-                {
-                  label: "WEBCAM",
-                  onClick: () => this.store.scene.shaderGraph.setSelectedByName("WebcamInput")
-                },
-                {
-                  label: "IMAGE",
-                  onClick: () => this.store.scene.shaderGraph.setSelectedByName("ImageInput")
-                },
-              ]
-            },
-            {
-              label: "CLEAR",
-              onClick: () => this.store.scenes[0].clear()
-            },						
-            {
-              label: "SNAPSHOT",
-              onClick: this.store.snapshot
-            },
-            {
-              label: "BREAKOUT",
-              onClick: this.handleBreakout
-            },
-          ]}
-        />
-    );
+  return (    
+    <MainProvider value={{store: props.store}}>
+      <ThemeContext.Provider value={Themes.yutani}>
+        <div id="APP" ref={mainRef}>          
+          {props.store.ready && 
+            (
+              <PanelComponent
+                title={(<h1>camogen</h1>)}
+                horizontal 
+                fullscreen
+                floating
+                toolbar={main_panel_toolbar}
+              >
+                <SplitContainer horizontal>
+                  {props.store.openPanels.map((name,i)=>{
+                    switch (name) {
+                      case 'Shader Graph':                            
+                        return (<ShaderGraphComponent 
+                            key={i}
+                            data={props.store.scene.shaderGraph}
+                          />
+                        );
+                      case 'Shader Editor':                            
+                        return (<ShaderEditorComponent 
+                            key={i}
+                            data={props.store.scene.shaderGraph.currentlyEditing}
+                          />
+                        );
+                      case 'Shader Controls':                            
+                        return (<ShaderControlsComponent 
+                            key={i}
+                            data={props.store.scene.shaderGraph}
+                          />
+                        );
+                      case 'Parameter Editor':  
+                        return (<ParameterEditorComponent 
+                            key={i}
+                            data={props.store.selectedParameter}
+                          />
+                        );
+                      case 'Help':                            
+                        return (<HelpComponent 
+                            key={i}            
+                          />
+                        );
+                      case 'Debug':                            
+                        return (<DebugInfoComponent 
+                            key={i}           
+                          />
+                        );                             
+                      default:
+                        break;
+                    }
+                    return null;
+                  })}
+                </SplitContainer>                                   
+              </PanelComponent>                    
+            )
+          }                                            
+        </div>          
+      </ThemeContext.Provider>        
+    </MainProvider>
+  );
+});
 
-    return (    
-      <MainProvider value={{store: this.store}}>
-        <ThemeContext.Provider value={Themes.yutani}>
-          <div id="APP" ref={this.mainRef}>          
-            {this.store.ready && 
-              (
-                <PanelComponent
-                  title={(<h1>camogen</h1>)}
-                  horizontal 
-                  fullscreen
-                  floating
-                  toolbar={main_panel_toolbar}
-                >
-                  <SplitContainer horizontal>
-                    {this.store.openPanels.map((name,i)=>{
-                      switch (name) {
-                        case 'Shader Graph':                            
-                          return (<ShaderGraphComponent 
-                              key={i}
-                              data={this.store.scene.shaderGraph}
-                            />
-                          );
-                        case 'Shader Editor':                            
-                          return (<ShaderEditorComponent 
-                              key={i}
-                              data={this.store.scene.shaderGraph.currentlyEditing}
-                            />
-                          );
-                        case 'Shader Controls':                            
-                          return (<ShaderControlsComponent 
-                              key={i}
-                              data={this.store.scene.shaderGraph}
-                            />
-                          );
-                        case 'Parameter Editor':  
-                          return (<ParameterEditorComponent 
-                              key={i}
-                              data={this.store.selectedParameter}
-                            />
-                          );
-                        case 'Help':                            
-                          return (<HelpComponent 
-                              key={i}            
-                            />
-                          );
-                        case 'Debug':                            
-                          return (<DebugInfoComponent 
-                              key={i}           
-                            />
-                          );                             
-                        default:
-                          break;
-                      }
-                      return null;
-                    })}
-                  </SplitContainer>                                   
-                </PanelComponent>                    
-              )
-            }                                            
-          </div>          
-        </ThemeContext.Provider>        
-      </MainProvider>
-    );
-  }
-};
+export default App;

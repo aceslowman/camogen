@@ -30,9 +30,9 @@
 }
 
 .label label {
-    padding: 0px 5px;
+    padding: 3px 7px;
     border: 1px solid black;
-    white-space: break-spaces;
+    /* white-space: break-spaces; */
     font-size: 0.8em;
 }
 

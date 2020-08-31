@@ -207,7 +207,7 @@ export default class NodeStore {
         return node;
     }
 
-    @action addChild(node = new NodeStore('ROOT NODE',this.graph), index = 0) {
+    @action addChild(node = new NodeStore('ROOT',this.graph), index = 0) {
         this.connectChild(node, index);
         this.graph.addNode(node);
         return node;

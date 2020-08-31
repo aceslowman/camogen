@@ -84,15 +84,13 @@ export default class GraphStore {
     @action removeNode(uuid) {        
         let node = this.nodes[uuid];
 
-        // console.log('Removing node '+node.name, uuid)
-
         if (node.parents[0])
             node.parents[0].children[0] = node.children[0];
         if (node.children[0])
             node.children[0].parents[0] = node.parents[0];
          
         node.data.onRemove();
-        delete this.nodes[uuid];
+        this.nodes.delete(uuid);
 
         if(this.nodes.size < 2) {
             this.clear();
@@ -111,7 +109,6 @@ export default class GraphStore {
         during each step of the traversal.
     */
     @action traverse(f = null, depthFirst = false) {
-        // console.log('performing traversal on graph', this)
         let result = [];
         let container = [this.root];
         let next_node;
@@ -179,13 +176,6 @@ export default class GraphStore {
         return queue;
     }
 
-    @action getNodeById(uuid) {
-        let node = this.nodes[uuid];
-
-        if(!node) console.error(`node was not found!`, uuid);
-        return node;
-    }
-
     @computed get root() {
         let node = this.nodes.values().next().value;
 
@@ -195,10 +185,6 @@ export default class GraphStore {
         }
 
         return node;
-    }
-
-    @computed get nodeCount() {
-        return Object.keys(this.nodes).length;
     }
 
     /*
@@ -215,17 +201,10 @@ export default class GraphStore {
             y = dist;
             node.coordinates.x = x;
             node.coordinates.y = y;
-            // console.log('node ' + node.name, node)
-
-            // y++;
 
             if(!node.parents.length) {
                 x++;
-                // y = 0;
             }
-
-            // console.log('used',used_coords)
-            // console.log('node ' + node.name,node.coordinates)
 
             if(used_coords.find((coord) => coord.x === x && coord.y === y)) {
 				console.log('node space occupied! shift now!')
@@ -257,5 +236,4 @@ export default class GraphStore {
 
         return this.coord_bounds;
     }
-
 }

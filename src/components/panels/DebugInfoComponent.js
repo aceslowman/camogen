@@ -48,7 +48,7 @@ const DebugInfo = (props) => {
 
 								<ul key={i+3}>
 									{e.traverse().map((uuid)=>(
-										<li key={uuid}>{e.getNodeById(uuid) ? e.getNodeById(uuid).name : "can't find?"}</li>
+										<li key={uuid}>{e.nodes.get(uuid) ? e.nodes.get(uuid).name : "can't find?"}</li>
 									))}
 								</ul>
 							</ul>							
