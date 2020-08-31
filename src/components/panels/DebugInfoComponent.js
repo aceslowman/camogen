@@ -42,7 +42,7 @@ const DebugInfo = (props) => {
 						<div key={i}>
 							<li key={i}>{e.uuid}</li>
 							<ul key={i+1}>
-								<li key={i}>node count: {e.nodeCount}</li>
+								<li key={i}>node count: {e.nodes.size}</li>
 								<li key={i+1}>root: {e.root.name}</li>
 								<li key={i+2}>nodes: </li>
 

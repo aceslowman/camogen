@@ -17,7 +17,7 @@ const ParameterGraph = (props) => {
 					{ 
 						<React.Fragment>
 							<GraphComponent data={data.graph} />
-							{data.graph.nodesArray.map((n,j)=>{
+							{data.graph.nodes.values().map((n,j)=>{
 								return (n.data && (
 									<PanelComponent 
 										key={j}

@@ -87,7 +87,7 @@ const ShaderControls = observer((props) => {
 			className={styles.shader_graph}	
 			vertical
 		>	
-			{props.data.nodesArray.map((n,j)=>(
+			{props.data.nodes.values().map((n,j)=>(
 				n.data && (
 				<PanelComponent 
 					key={j}

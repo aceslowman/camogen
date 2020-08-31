@@ -73,7 +73,7 @@ class MainStore {
   @observable selectedParameter = null;
 
   constructor() {  
-    this.loadShaderFiles().then(() => {
+    this.loadShaderFiles().then(() => {      
       this.p5_instance = new p5(p => Runner(p, this));
       this.scene = new SceneStore(this);
       this.ready = true;

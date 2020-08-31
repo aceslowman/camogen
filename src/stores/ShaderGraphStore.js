@@ -149,7 +149,7 @@ export default class ShaderGraphStore extends GraphStore {
             root node, then the Runner will just output
             the default background color.
         */
-        return this.nodesArray.length > 1;
+        return this.nodes.size > 1;
     }
 }
 

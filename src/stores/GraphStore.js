@@ -17,16 +17,13 @@ export default class GraphStore {
     @observable uuid = uuidv1();
 
     @serializable(map(object(NodeStore.schema)))
-    @observable nodes = {};
+    @observable nodes = new Map();
 
     @observable parent = null;
 
     @observable selectedNode = null;
 
     @observable currentlyEditing = null;
-
-    // for key binding focus
-    @observable focused = false;
 
     // NOTE: toggle to force a re-render in React
     @observable updateFlag = false;
@@ -44,7 +41,7 @@ export default class GraphStore {
 
     @action clear() {
         // re-initialize the nodes map
-        this.nodes = {};
+        this.nodes.clear();
         // assure that no nodes are in editing
         this.currentlyEditing = null;
         // create root node, select it
@@ -76,16 +73,9 @@ export default class GraphStore {
     */
     @action addNode(node = new NodeStore('NEW NODE', this)) {
         node.graph = this;
-        
-        this.nodes = {
-            ...this.nodes,
-            [node.uuid]: node
-        }
 
-        // NOTE: it's a red flag that this triggers so often
-        // it might be causing issues with serialization
-        // console.log(node.name+' node added!', this.nodes)
-        return node;
+        this.nodes.set(node.uuid, node);
+        return this.nodes.get(node.uuid)
     }
 
     /*
@@ -104,7 +94,7 @@ export default class GraphStore {
         node.data.onRemove();
         delete this.nodes[uuid];
 
-        if(this.nodesArray.length < 2) {
+        if(this.nodes.size < 2) {
             this.clear();
         } else {
             this.update();
@@ -197,11 +187,11 @@ export default class GraphStore {
     }
 
     @computed get root() {
-        let keys = Object.keys(this.nodes);        
-        let node = this.nodes[keys[0]]; 
+        let node = this.nodes.values().next().value;
 
-        while(node && node.children[0]){
-            node = node.children[0];       
+        while (node && node.children[0]) {
+        // while (node && node.children.length) {
+            node = node.children[0];
         }
 
         return node;
@@ -209,10 +199,6 @@ export default class GraphStore {
 
     @computed get nodeCount() {
         return Object.keys(this.nodes).length;
-    }
-
-    @computed get nodesArray() {
-        return Object.keys(this.nodes).map((uuid)=>this.getNodeById(uuid))
     }
 
     /*
@@ -259,7 +245,7 @@ export default class GraphStore {
         let max_x = 0;
         let max_y = 0;
 
-        this.nodesArray.forEach((v) => {
+        this.nodes.forEach((v) => {
             max_x = v.coordinates.x > max_x ? v.coordinates.x : max_x;
             max_y = v.coordinates.y > max_y ? v.coordinates.y : max_y;
         });
