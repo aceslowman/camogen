@@ -27,10 +27,8 @@ export default class SceneStore {
     @serializable(identifier())
     @observable uuid = uuidv1();
     
-    @serializable(list(object(ShaderGraphStore.schema)))
-    @observable shaderGraphs = [];
-
-    @observable activeShaderGraph = null;
+    @serializable(object(ShaderGraphStore.schema))
+    @observable shaderGraph = null;
 
     @observable parent = null;
     
@@ -50,8 +48,7 @@ export default class SceneStore {
         // g.addNodeByName("Add");
         // g.addNodeByName("ToHSV");
 
-        this.shaderGraphs.push(g);
-        this.activeShaderGraph = g;        
+        this.shaderGraph = g;    
     }
 
     @action addTarget(target = new Target(this.parent)) {
@@ -61,15 +58,11 @@ export default class SceneStore {
 
     @action clear() {
         if(window.confirm('this will remove all effects, continue?')){
-            for (let graph of this.shaderGraphs) {
-                graph.clear();
-            }
+            this.shaderGraph.clear();
 
             for(let target of this.targets) {
                 target.clear();
             }
-   
-            this.activeShaderGraph = this.shaderGraphs[0];
         }
     }
 

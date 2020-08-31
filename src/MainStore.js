@@ -62,9 +62,7 @@ class MainStore {
     'MIDI': MIDI,
   };
 
-  @observable scenes = [];
-  
-  @observable activeScene = null;
+  @observable scene = null;
 
   @observable ready = false;
 
@@ -77,7 +75,7 @@ class MainStore {
   constructor() {  
     this.loadShaderFiles().then(() => {
       this.p5_instance = new p5(p => Runner(p, this));
-      this.scenes.push(new SceneStore(this));
+      this.scene = new SceneStore(this);
       this.ready = true;
 
       this.addPanel('Help');

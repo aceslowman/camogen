@@ -35,10 +35,10 @@ const DebugInfo = (props) => {
 						))
 					}
 				</ol>
-				<h3>shaderGraphs ({store.scenes[0].shaderGraphs.length})</h3>
+				<h3>shaderGraph ({store.scene.shaderGraph.uuid})</h3>
 				<ul>
 					{
-						store.scenes[0].shaderGraphs.map((e, i) => (
+						store.scene.shaderGraph.map((e, i) => (
 						<div key={i}>
 							<li key={i}>{e.uuid}</li>
 							<ul key={i+1}>
@@ -58,7 +58,7 @@ const DebugInfo = (props) => {
 				</ul>
 
 				{store.activeGraph && (
-					<h3>active node: {store.scenes[0].activeGraph.selectedNode.name}</h3>													
+					<h3>active node: {store.scene.shaderGraph.selectedNode.name}</h3>													
 				)}
 				
 			</TextComponent>

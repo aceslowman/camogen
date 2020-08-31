@@ -70,7 +70,7 @@ export default @observer class App extends React.Component {
 					if (name == '_isDirectory') continue;
 					subItems.push({
 						label: name,
-						onClick: () => this.store.scenes[0].shaderGraphs[0].setSelectedByName(name)
+						onClick: () => this.store.scene.shaderGraph.setSelectedByName(name)
 					});
 				}
 
@@ -81,7 +81,7 @@ export default @observer class App extends React.Component {
 			} else {
 				return {
 					label: item.name,
-					onClick: () => this.store.scenes[0].shaderGraphs[0].setSelectedByName(item.name)
+					onClick: () => this.store.scene.shaderGraph.setSelectedByName(item.name)
 				};
 			}
 		});
@@ -143,11 +143,11 @@ export default @observer class App extends React.Component {
               dropDown: [
                 {
                   label: "WEBCAM",
-                  onClick: () => this.store.scenes[0].shaderGraphs[0].setSelectedByName("WebcamInput")
+                  onClick: () => this.store.scene.shaderGraph.setSelectedByName("WebcamInput")
                 },
                 {
                   label: "IMAGE",
-                  onClick: () => this.store.scenes[0].shaderGraphs[0].setSelectedByName("ImageInput")
+                  onClick: () => this.store.scene.shaderGraph.setSelectedByName("ImageInput")
                 },
               ]
             },
@@ -186,19 +186,19 @@ export default @observer class App extends React.Component {
                         case 'Shader Graph':                            
                           return (<ShaderGraphComponent 
                               key={i}
-                              data={this.store.scenes[0].shaderGraphs[0]}
+                              data={this.store.scene.shaderGraph}
                             />
                           );
                         case 'Shader Editor':                            
                           return (<ShaderEditorComponent 
                               key={i}
-                              data={this.store.scenes[0].shaderGraphs[0].currentlyEditing}
+                              data={this.store.scene.shaderGraph.currentlyEditing}
                             />
                           );
                         case 'Shader Controls':                            
                           return (<ShaderControlsComponent 
                               key={i}
-                              data={this.store.scenes[0].shaderGraphs[0]}
+                              data={this.store.scene.shaderGraph}
                             />
                           );
                         case 'Parameter Editor':  
