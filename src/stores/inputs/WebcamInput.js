@@ -169,7 +169,7 @@ class WebcamInput extends ShaderStore {
 
         // removes 'tex0' from inputs, since it's provided
         // by the webcam stream.
-        this.inputs = [];
+        this.parents = [];
 
         return this;
     }

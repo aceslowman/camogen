@@ -40,14 +40,17 @@ export default class SceneStore {
 
         // DEFAULTS (FOR NOW)
         // console.log(this.parent.shader_list)
-        // g.addNodeByName("WebcamInput");
-        // g.root.select(true);
-        // g.addNodeByName("Debug");
+        // g.addNodeByName("WebcamInput");        
         g.addNodeByName("UV");
-        g.addNodeByName("Glyph");
-        // g.addNodeByName("Add");
-        // g.addNodeByName("ToHSV");
 
+        setTimeout(() => {
+            g.addNodeByName("Glyph");
+        }, 1000)
+
+        setTimeout(() => {
+            g.addNodeByName("Invert");
+        }, 2000)
+        
         this.shaderGraph = g;    
     }
 

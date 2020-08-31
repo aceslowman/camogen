@@ -51,6 +51,8 @@ export default class ShaderStore extends NodeStore {
 
     @observable ready = null;
 
+    @observable sampler_labels = [];
+
     constructor(
         target, 
         precision = null, 
@@ -156,13 +158,13 @@ export default class ShaderStore extends NodeStore {
             }
         }
 
-        // setup inputs
-        for (let i = 0; i < this.inputs.length; i++) {
+        // setup samplers
+        for (let i = 0; i < this.sampler_labels.length; i++) {
             let input_shader = this.node.parents[i].data;
 
             if (input_shader) {
                 let input_target = input_shader.target.ref;
-                shader.setUniform(this.inputs[i], input_target);
+                shader.setUniform(this.sampler_labels[i], input_target);
             }
         }
 
@@ -236,9 +238,9 @@ export default class ShaderStore extends NodeStore {
             // }
 
             // ignore if input already exists (preserves graphs)          
-            for (let i = 0; i < this.inputs.length; i++) {
+            for (let i = 0; i < this.sampler_labels.length; i++) {
                 // console.log([this.inlets[i].name, uniform_name])
-                if (this.inputs[i] === uniform_name) {
+                if (this.sampler_labels[i] === uniform_name) {
                     return;
                 }
             }
@@ -259,7 +261,7 @@ export default class ShaderStore extends NodeStore {
                         the parent node will need to re-sync
                         with the input... need to fix
                     */
-                    this.inputs.push(uniform_name)
+                    this.sampler_labels.push(uniform_name)
                     break;
                 case "float":          
                     // console.log(e[3], e)

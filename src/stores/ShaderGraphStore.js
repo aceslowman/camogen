@@ -52,6 +52,7 @@ export default class ShaderGraphStore extends GraphStore {
     */
     @action addNodeByName(name = null) {
         let data = this.getShader(name);
+        data.graph = this.graph; // TEMP!
 
         // by default, add to empty root node
         this.root.setData(data);
@@ -70,6 +71,7 @@ export default class ShaderGraphStore extends GraphStore {
     */
     @action setSelectedByName(name) {
         let data = this.getShader(name);
+        data.graph = this.graph; // TEMP!
 
         if(this.selectedNode.data) {
             let target = this.selectedNode.data.target;

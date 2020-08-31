@@ -14,20 +14,25 @@ const Runner = (p, store) => {
     }
 
     p.draw = () => {
-        if (
-            store.scene.shaderGraph
-            && store.scene.shaderGraph.ready
-        ) {
-            for (let target_data of store.scene.targets) {
-                for (let shader_data of target_data.shaders) {
-                    shader_data.update(p);                                       
+        try {
+            if (
+                store.scene.shaderGraph
+                && store.scene.shaderGraph.ready
+            ) {
+                for (let target_data of store.scene.targets) {
+                    for (let shader_data of target_data.shaders) {
+                        shader_data.update(p);                                       
+                    }
                 }
-            }
 
-            p.image(store.scene.targets[0].ref, 0, 0, p.width, p.height);
-        } else {
-            p.background(0);
-        }
+                p.image(store.scene.targets[0].ref, 0, 0, p.width, p.height);
+            } else {
+                p.background(0);
+            }
+        } catch (error) {
+            console.error(error);
+            p.noLoop();
+        }        
     }
 
     p.myCustomRedrawAccordingToNewPropsHandler = function (props) {

@@ -6,7 +6,7 @@ export default class AddStore extends OperatorStore {
 	@observable name 	  = "Add";
 	@observable value 	  = 0;
 	@observable modifier  = 0;
-	@observable inputs 	  = ["input1","input2"];
+	@observable parents   = ["input1","input2"];
 	
 	constructor(parent, mod = 5) {	
 		super(parent, mod);
