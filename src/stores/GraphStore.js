@@ -79,25 +79,46 @@ export default class GraphStore {
     }
 
     /*
-        removeNode(uuid)
+        removeSelected()
     */
-    @action removeNode(uuid) {        
-        let node = this.nodes[uuid];
+    @action removeSelected() {
+        this.removeNode(this.selectedNode);
+    }
 
-        if (node.parents[0])
-            node.parents[0].children[0] = node.children[0];
-        if (node.children[0])
-            node.children[0].parents[0] = node.parents[0];
-         
+    /*
+        removeNode(node)
+    */
+    @action removeNode(node) {
+        if (node === this.root) return;
+
+        /*
+            if node being removed has a parent, make
+            sure to reconnect those parent nodes to the
+            next child node.
+        */
+        if (node.parents.length) {
+            node.parents.forEach((parent,i) => {
+                parent.children[0] = node.children[0];
+                node.children[0].parents[0] = node.parents[0];
+            });
+        } else {
+            let idx = node.children[0].parents.indexOf(node);
+            console.log(idx)
+            node.children[0].parents.splice(idx, 1);
+        }
+
+        this.selectedNode = node.children[0]
+
         node.data.onRemove();
-        this.nodes.delete(uuid);
-
-        if(this.nodes.size < 2) {
+        this.nodes.delete(node);
+        
+        if (this.nodes.size < 2) {
             this.clear();
         } else {
             this.update();
-        }   
+        }  
     }
+
 
     /*
         traverse(f = null, depthFirst = false)

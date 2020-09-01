@@ -108,8 +108,7 @@ export default class NodeStore {
         return node;
     }
 
-    @action select(solo = false) {
-        if(solo) this.graph.selectedNode.selected = false;
+    @action select() {
         this.graph.selectedNode = this;
         this.selected = true;
         return this;

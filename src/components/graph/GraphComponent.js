@@ -147,7 +147,10 @@ const GraphComponent = observer((props) => {
 	
 	const resize = useResizeObserver(drawGraph, wrapper_ref);
 
-	const handleLabelClick = (node) => props.data.selectedNode = node;
+	const handleLabelClick = (node) => {
+		node.select();
+		node.edit();
+	}
 	
 	useLayoutEffect(() => {
 		drawGraph();	

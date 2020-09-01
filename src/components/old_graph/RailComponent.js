@@ -53,7 +53,7 @@ const RailComponent = (props) => {
     }
 
     const handleClick = () => {
-        props.data.select(true);
+        props.data.select();
         props.data.edit();
     }
 

@@ -94,10 +94,10 @@ const App = observer((props) => {
             dropDown: [
               {
                 label: "Save Scene",
-                onClick: ()=>props.store.scenes[0].save()
+                onClick: ()=>props.store.scene.save()
               }, {
                 label: "Load Scene",
-                onClick: ()=>props.store.scenes[0].load()
+                onClick: ()=>props.store.scene.load()
               },
             ]
           },	
