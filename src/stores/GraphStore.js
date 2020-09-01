@@ -119,7 +119,6 @@ export default class GraphStore {
         }  
     }
 
-
     /*
         traverse(f = null, depthFirst = false)
 

@@ -312,6 +312,13 @@ export default class ShaderStore extends NodeDataStore {
             }
 
             dialog.showSaveDialog(options).then((f) => {
+                // change name of shader to name provided in save dialog
+                this.name = f.filePath.split('/').pop();
+                this.node.name = this.name;
+
+                // rerender elements
+                this.node.graph.updateFlag = !this.node.graph.updateFlag;
+
                 let content = JSON.stringify(serialize(ShaderStore.schema, this));
 
                 fs.writeFile(f.filePath, content, (err) => {
