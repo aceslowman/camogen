@@ -20,7 +20,7 @@ import {
 import UniformStore from './UniformStore';
 import Parameter from './ParameterStore';
 import Uniform from './UniformStore';
-import NodeStore from './NodeStore';
+import NodeDataStore from './NodeDataStore';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -28,7 +28,7 @@ const dialog = remote.dialog;
 const app    = remote.app;
 const fs     = window.require('fs');
 
-export default class ShaderStore extends NodeStore {    
+export default class ShaderStore extends NodeDataStore {    
     @serializable(list(object(UniformStore.schema)))
     @observable uniforms  = [];
 
@@ -51,7 +51,7 @@ export default class ShaderStore extends NodeStore {
 
     @observable ready = null;
 
-    @observable sampler_labels = [];
+    @observable inputs = [];
 
     constructor(
         target, 
@@ -159,12 +159,12 @@ export default class ShaderStore extends NodeStore {
         }
 
         // setup samplers
-        for (let i = 0; i < this.sampler_labels.length; i++) {
+        for (let i = 0; i < this.inputs.length; i++) {
             let input_shader = this.node.parents[i].data;
 
             if (input_shader) {
                 let input_target = input_shader.target.ref;
-                shader.setUniform(this.sampler_labels[i], input_target);
+                shader.setUniform(this.inputs[i], input_target);
             }
         }
 
@@ -200,15 +200,11 @@ export default class ShaderStore extends NodeStore {
         4: "{"name":"off","default":[0.0,0.0]}"
     */
     @action extractUniforms() { 
-        // console.group();
-        // console.log(`uniforms are being extracted from ${this.name}`,this)
         const builtins = ["resolution"];
         
         let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
         let result = [...this.frag.matchAll(re)];
 
-        // console.log('the extracted uniforms:', result)
-       
         // retain only uniforms that show up in the result set
         this.uniforms = this.uniforms.filter(u => {
             let match;
@@ -219,7 +215,6 @@ export default class ShaderStore extends NodeStore {
         });
         
         result.forEach((e) => {
-            // console.log('result',e)
             let uniform_type    = e[2];
             let uniform_name    = e[3];
             let uniform_options = e[4];
@@ -238,9 +233,9 @@ export default class ShaderStore extends NodeStore {
             // }
 
             // ignore if input already exists (preserves graphs)          
-            for (let i = 0; i < this.sampler_labels.length; i++) {
+            for (let i = 0; i < this.inputs.length; i++) {
                 // console.log([this.inlets[i].name, uniform_name])
-                if (this.sampler_labels[i] === uniform_name) {
+                if (this.inputs[i] === uniform_name) {
                     return;
                 }
             }
@@ -261,7 +256,7 @@ export default class ShaderStore extends NodeStore {
                         the parent node will need to re-sync
                         with the input... need to fix
                     */
-                    this.sampler_labels.push(uniform_name)
+                    this.inputs.push(uniform_name)
                     break;
                 case "float":          
                     // console.log(e[3], e)
@@ -302,7 +297,6 @@ export default class ShaderStore extends NodeStore {
 
             this.uniforms.push(uniform);
         })
-        // console.groupEnd();
     }
 
     @action async save() {        
@@ -416,6 +410,6 @@ ShaderStore.schema = {
             c.args ? c.args.node : null            
         );
     },
-    extends: getDefaultModelSchema(NodeStore),
+    extends: getDefaultModelSchema(NodeDataStore),
     props: getDefaultModelSchema(ShaderStore).props
 }

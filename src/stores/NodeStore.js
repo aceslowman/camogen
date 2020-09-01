@@ -5,19 +5,11 @@ import {
 } from 'mobx';
 import uuidv1 from 'uuid/v1';
 import {
-    // createModelSchema,
     getDefaultModelSchema,
     primitive,
-    list,
     identifier,
-    reference,
-    custom,
     serializable,
-    serialize,
-    deserialize
-} from "serializr"
-import ShaderStore from './ShaderStore';
-import ParameterStore from './ParameterStore';
+} from "serializr";
 
 export default class NodeStore {
     @serializable(identifier())
@@ -26,7 +18,6 @@ export default class NodeStore {
     @serializable(primitive())
     @observable name  = "";
 
-    // check note in constructor
     @observable data  = null;
 
     @observable graph = null;
@@ -34,13 +25,11 @@ export default class NodeStore {
     @observable branch_index = null;    
 
     @observable children = [null];
+
     @observable parents = [];
     
     @observable selected = false;
 
-    @observable component_ref = null;
-
-    // see workaround in constructor
     @observable node = null;
 
     @observable controls = [];
@@ -52,88 +41,9 @@ export default class NodeStore {
         graph, 
         data = null
     ) { 
-        /*
-            NOTE: the below code is meant to provide polymorphism to the
-            NodeDataStore, serializing it as either a ParameterStore
-            or a ShaderStore. 
-
-            this does honestly still feel clunky, so it's worth keeping
-            an eye out for a new solution
-        */
-        // getDefaultModelSchema(NodeStore).props["data"] = custom(
-        //     (v) => {
-        //         if (v) {
-        //             switch (v.constructor.name) {
-        //                 case "ParameterStore": 
-        //                     console.log("serializing ParameterStore")
-        //                     return serialize(ParameterStore, v);
-        //                 case "ShaderStore":
-        //                     console.log("serializing ShaderStore")
-        //                     return serialize(ShaderStore, v);
-        //                 default:
-        //                     return null;
-        //             }
-        //         } else {
-        //             return null;
-        //         }
-        //     },
-        //     // deserialize
-        //     (v, c) => {
-        //         if (v) {
-        //             let node_data; 
-
-        //             switch (c.parentContext.target.constructor.name) {
-        //                 case "ParameterGraphStore":
-        //                     node_data = deserialize(
-        //                         ParameterStore.schema, 
-        //                         v, 
-        //                         (err)=>{
-        //                             if(err) console.error(err)
-        //                         }, 
-        //                         {
-        //                             node: this,
-        //                             graph: c.target.graph
-        //                         }
-        //                     );
-        //                     // console.log(node_data)
-        //                     this.setData(node_data);
-        //                     // node_data.init()
-        //                     // node_data.generateControls();
-        //                     return node_data;
-        //                 case "ShaderGraphStore":
-        //                     node_data = deserialize(
-        //                         ShaderStore.schema, 
-        //                         v, 
-        //                         (err)=>{
-        //                             if(err) console.error(err)
-        //                         }, 
-        //                         {
-        //                             node: this,
-        //                             graph: c.target.graph
-        //                         }
-        //                     );
-        //                     console.log(`deserializing ${node_data.name}`,node_data)
-        //                     this.setData(node_data);
-        //                     // node_data.init()
-        //                     // node_data.generateControls();
-        //                     return node_data;
-        //                 default:
-        //                     return null;
-        //             }
-        //         } else {
-        //             return null;
-        //         }
-        //     }
-        // )
-
-        // getDefaultModelSchema(NodeStore).props["children"] = list(reference(NodeStore.schema));
-        // getDefaultModelSchema(NodeStore).props["parents"] = list(reference(NodeStore.schema));
-
         this.data  = data;
         this.name  = data ? data.name : name;
-        this.graph = graph;
-
-        if(data) this.setData(data);      
+        this.graph = graph;   
     }
 
     @action setData(nodeData) {
@@ -143,7 +53,6 @@ export default class NodeStore {
             this masks an issue where the failure
             to load a shader causes a crash
         */
-        // console.log(this.data)
         this.name = this.data.name;
         this.data.node = this;
 
@@ -175,7 +84,7 @@ export default class NodeStore {
             return;
         }
         
-        this.parents = this.data.sampler_labels.map((e,i) => {
+        this.parents = this.data.inputs.map((e,i) => {
             if(this.parents.length && this.parents[i]) {
                 return this.parents[i];
             } else {   
@@ -183,26 +92,18 @@ export default class NodeStore {
                 return this.addParent(parent, i);
             }                    
         });
-    }   
-
-    @action connectParent(parent, index) {
-        parent.firstChild = this;
-        this.parents[index] = parent;     
-    }
-
-    @action connectChild(child, index) {
-        child.parents[index] = this;
-        this.firstChild = child;
     }
 
     @action addParent(node = new NodeStore('input',this.graph), index = 0) {
-        this.connectParent(node, index);
+        node.firstChild = this;
+        this.parents[index] = node;
         this.graph.addNode(node);
         return node;
     }
 
     @action addChild(node = new NodeStore('ROOT',this.graph), index = 0) {
-        this.connectChild(node, index);
+        node.parents[index] = this;
+        this.firstChild = node;
         this.graph.addNode(node);
         return node;
     }

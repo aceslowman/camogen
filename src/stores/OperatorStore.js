@@ -4,9 +4,9 @@ import {
     serializable,
     primitive,
 } from "serializr"
-import NodeStore from './NodeStore';
+import NodeDataStore from './NodeDataStore';
 
-export default class OperatorStore extends NodeStore {
+export default class OperatorStore extends NodeDataStore {
     @observable value    = null;
 
     @serializable(primitive())
@@ -27,6 +27,6 @@ OperatorStore.schema = {
             parent_node            
         );
     },
-    extends: getDefaultModelSchema(NodeStore),// maybe try creating custom type for NodeData
+    extends: getDefaultModelSchema(NodeDataStore),// maybe try creating custom type for NodeData
     props: getDefaultModelSchema(OperatorStore).props
 }
