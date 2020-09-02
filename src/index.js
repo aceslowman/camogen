@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import MainStore from './MainStore';
+import 'mobx-react-lite/batchingForReactDom'
 
 ReactDOM.render(<App store={MainStore}/>, document.getElementById('root'));
 

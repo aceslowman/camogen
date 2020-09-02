@@ -9,7 +9,15 @@ import {
     primitive,
     identifier,
     serializable,
+    custom,
+    serialize,
+    deserialize,
+    reference,
+    list
 } from "serializr";
+
+import ParameterStore from './ParameterStore';
+import ShaderStore from './ShaderStore';
 
 export default class NodeStore {
     @serializable(identifier())
@@ -41,6 +49,81 @@ export default class NodeStore {
         graph, 
         data = null
     ) { 
+        /*
+            NOTE: the below code is meant to provide polymorphism to the
+            NodeDataStore, serializing it as either a ParameterStore
+            or a ShaderStore. 
+            this does honestly still feel clunky, so it's worth keeping
+            an eye out for a new solution
+        */
+        getDefaultModelSchema(NodeStore).props["data"] = custom(
+            (v) => {
+                if (v) {
+                    switch (v.constructor.name) {
+                        case "ParameterStore":
+                            console.log("sezrializing ParameterStore")
+                            return serialize(ParameterStore, v);
+                        case "ShaderStore":
+                            console.log("serializing ShaderStore")
+                            return serialize(ShaderStore, v);
+                        default:
+                            return null;
+                    }
+                } else {
+                    return null;
+                }
+            },
+            // deserialize
+            (v, c) => {
+                if (v) {
+                    let node_data;
+
+                    // if(c.target.graph === c.target)
+
+                    switch (c.parentContext.target.constructor.name) {
+                        case "ParameterGraphStore":
+                            node_data = deserialize(
+                                ParameterStore.schema,
+                                v,
+                                (err) => {
+                                    if (err) console.error(err)
+                                }, {
+                                    node: this,
+                                    graph: c.target.graph
+                                }
+                            );
+                            // console.log(node_data)
+                            c.target.setData(node_data);
+                            // node_data.init()
+                            // node_data.generateControls();
+                            return node_data;
+                        case "ShaderGraphStore":
+                            console.log(c)
+                            node_data = deserialize(
+                                ShaderStore.schema,
+                                v,
+                                (err) => {
+                                    if (err) console.error(err)
+                                }, {
+                                    node: c.target,
+                                    graph: c.target.graph
+                                }
+                            );
+                            console.log(`deserializing ${node_data.name}`, node_data)
+                            c.target.setData(node_data);
+                            return node_data;
+                        default:
+                            return null;
+                    }
+                } else {
+                    return null;
+                }
+            }
+        )
+
+        getDefaultModelSchema(NodeStore).props["children"] = list(reference(NodeStore.schema));
+        getDefaultModelSchema(NodeStore).props["parents"] = list(reference(NodeStore.schema));
+
         this.data  = data;
         this.name  = data ? data.name : name;
         this.graph = graph;   
@@ -156,6 +239,8 @@ export default class NodeStore {
 NodeStore.schema = {
     factory: c => {
         let parent_graph = c.parentContext.target;
+        console.log('parent_graph', parent_graph)
+        console.log('c.json.data', c.json)
         return new NodeStore(
             null,
             parent_graph, 

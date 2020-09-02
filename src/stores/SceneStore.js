@@ -3,7 +3,6 @@ import {
     // createModelSchema,
     // primitive,
     // reference,
-    list,
     object,
     identifier,
     serialize,
@@ -45,11 +44,27 @@ export default class SceneStore {
 
         setTimeout(() => {
             g.addNodeByName("Glyph");
-        }, 1000)
+        }, 1000);
 
         setTimeout(() => {
             g.addNodeByName("Invert");
-        }, 2000)
+        }, 2000);
+
+        setTimeout(() => {
+            this.clear(false);
+        }, 3000);
+
+        // setTimeout(() => {
+        //     g.addNodeByName("UV");
+        // }, 4000);
+
+        // setTimeout(() => {            
+        //     g.addNodeByName("Glyph");
+        // }, 5000);
+
+        // setTimeout(() => {
+        //     g.addNodeByName("Invert");
+        // }, 6000);
         
         this.shaderGraph = g;    
     }
@@ -59,11 +74,19 @@ export default class SceneStore {
         return target;
     }
 
-    @action clear() {
-        if(window.confirm('this will remove all effects, continue?')){
+    @action clear(confirm = true) {
+        if(confirm) {
+            if (window.confirm('this will remove all effects, continue?')) {
+                this.shaderGraph.clear();
+
+                for (let target of this.targets) {
+                    target.clear();
+                }
+            }
+        } else {
             this.shaderGraph.clear();
 
-            for(let target of this.targets) {
+            for (let target of this.targets) {
                 target.clear();
             }
         }
@@ -107,18 +130,15 @@ export default class SceneStore {
         dialog.showOpenDialog(options).then((f) => {
         let content = f.filePaths[0];
         fs.readFile(content, 'utf-8', (err, data) => {
-            if(err)
-            console.error("an error has occurred: " + err.message);          
+            if(err) console.error(err.message); 
+
             this.targets = [];
-            // this.shaderGraphs = 
             update(
                 SceneStore,
                 this,
                 JSON.parse(data),
                 (err, item) => {
-                    if (err) console.error(err)              
-
-                    // item.init();
+                    if (err) console.error(err)  
                 },
                 {target: this}
             )

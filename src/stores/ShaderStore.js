@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     // createModelSchema,
     primitive,
@@ -127,7 +126,7 @@ export default class ShaderStore extends NodeDataStore {
         this method is triggered within Runner.js
         and draws shaders to quads.
     */
-    @action update(p) {
+    update(p) {
         if(!this.ready) return;
 
         let shader = this.ref;

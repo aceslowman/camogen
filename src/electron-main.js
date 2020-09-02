@@ -5,6 +5,8 @@ const session = electron.session;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
+const { default: installExtension, MOBX_DEVTOOLS } = require('electron-devtools-installer');
+
 const path = require('path');
 const url = require('url');
 
@@ -80,3 +82,8 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+app.whenReady().then(() => {
+    installExtension('pfgnfdagidkfgccljigdamigbcnndkod')
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log('An error occurred: ', err));
+});

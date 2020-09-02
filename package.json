@@ -187,6 +187,9 @@
   "devDependencies": {
     "electron": "^8.3.3",
     "electron-builder": "^22.7.0",
+    "electron-devtools-installer": "^3.1.1",
+    "mobx-devtools": "^0.9.21",
+    "mobx-devtools-mst": "^0.9.22",
     "webpack": "^4.43.0"
   }
 }

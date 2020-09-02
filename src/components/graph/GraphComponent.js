@@ -38,17 +38,17 @@ const GraphComponent = observer((props) => {
 		};
 
 		// draws grids
-		let draw_grid = false;
+		let draw_grid = true;
 		if(draw_grid) {
 			for (let i = 1; i <= props.data.coord_bounds.x; i++) {
 				for (let j = 1; j <= props.data.coord_bounds.y; j++) {
-					// ctx.lineWidth = 1;
+					ctx.lineWidth = 1;
 					ctx.strokeStyle = theme.accent_color;
 					ctx.beginPath();
 					ctx.setLineDash([3, 3]);
 					ctx.moveTo(canvas_ref.current.width - (i * spacing.x), 0);
 					ctx.lineTo(canvas_ref.current.width - (i * spacing.x), canvas_ref.current.height);
-					// ctx.closePath();
+					ctx.closePath();
 					ctx.stroke();
 
 					// ctx.lineWidth = 1;
@@ -57,7 +57,7 @@ const GraphComponent = observer((props) => {
 					ctx.setLineDash([3, 3]);
 					ctx.moveTo(0, canvas_ref.current.height - (j * spacing.y));
 					ctx.lineTo(canvas_ref.current.width, canvas_ref.current.height - (j * spacing.y));
-					// ctx.closePath();
+					ctx.closePath();
 					ctx.stroke();
 				}
 			}
@@ -123,7 +123,7 @@ const GraphComponent = observer((props) => {
 			_labels.push((
 				<div
 					key={i}
-					className={`${styles.label} ${props.data.selected === node ? styles.selected : ''}`}
+					className={`${styles.label} ${props.data.selectedNode === node ? styles.selected : ''}`}
 					onClick={() => handleLabelClick(node)}
 					style={{						
 						left: x + (spacing.x/2) - 15,
@@ -145,11 +145,13 @@ const GraphComponent = observer((props) => {
 		setLabels(_labels)
 	}
 	
-	const resize = useResizeObserver(drawGraph, wrapper_ref);
+	useResizeObserver(drawGraph, wrapper_ref);
 
 	const handleLabelClick = (node) => {
 		node.select();
 		node.edit();
+		console.log('node', node);
+		console.log('graph', node.graph)
 	}
 	
 	useLayoutEffect(() => {

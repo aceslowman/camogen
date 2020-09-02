@@ -78,10 +78,10 @@ class MainStore {
       this.scene = new SceneStore(this);
       this.ready = true;
 
-      this.addPanel('Help');
+      // this.addPanel('Help');
       this.addPanel('Shader Graph');
-      this.addPanel('Shader Editor');
-      // this.addPanel('Shader Controls');
+      // this.addPanel('Shader Editor');
+      this.addPanel('Shader Controls');
     });
   }
 

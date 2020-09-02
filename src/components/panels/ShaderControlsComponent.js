@@ -79,6 +79,21 @@ const ShaderControls = observer((props) => {
 
 		return controls;
 	}
+	
+	const panels = [];
+
+	props.data.nodes.forEach((n,i)=>(
+		n.data && panels.push((
+		<PanelComponent 
+			key={i}
+			title={n.data.name}
+			collapsible
+			vertical
+			gutters
+		>
+			{ generateInterface(n.data) }
+		</PanelComponent>))
+	))
 
 	return(
 		<PanelComponent 
@@ -87,18 +102,7 @@ const ShaderControls = observer((props) => {
 			className={styles.shader_graph}	
 			vertical
 		>	
-			{props.data.nodes.values().map((n,j)=>(
-				n.data && (
-				<PanelComponent 
-					key={j}
-					title={n.data.name}
-					collapsible
-					vertical
-					gutters
-				>
-					{ generateInterface(n.data) }
-				</PanelComponent>)
-			))}         
+			{props.data.nodes && panels}         
 		</PanelComponent>
 	);
 });

@@ -149,7 +149,7 @@ const App = observer((props) => {
           },
           {
             label: "CLEAR",
-            onClick: () => props.store.scenes[0].clear()
+            onClick: () => props.store.scene.clear()
           },						
           {
             label: "SNAPSHOT",

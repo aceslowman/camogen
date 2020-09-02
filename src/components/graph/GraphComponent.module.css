@@ -34,8 +34,9 @@
     border: 1px solid black;
     /* white-space: break-spaces; */
     font-size: 0.8em;
+    cursor: pointer;
 }
 
 .selected label {
-    /* border-style: dashed; */
+    border-style: dashed;
 }

@@ -33,10 +33,7 @@ export default class GraphStore {
     constructor(parent) {
         this.parent = parent;
     
-        // triggering too often!
-        //set initial root node
-        this.addNode().select();   
-        // console.log('initializing '+this.uuid,this)        
+        this.addNode().select();        
     }    
 
     @action clear() {
