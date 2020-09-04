@@ -19,8 +19,10 @@ import {
 import UniformStore from './UniformStore';
 import Parameter from './ParameterStore';
 import Uniform from './UniformStore';
-import NodeDataStore from './NodeDataStore';
-
+import NodeDataStore, { NodeData } from './NodeDataStore';
+import { types } from "mobx-state-tree";
+import * as DefaultShader from './shaders/DefaultShader';
+import { Target } from "./TargetStore";
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
@@ -419,3 +421,31 @@ ShaderStore.schema = {
     extends: getDefaultModelSchema(NodeDataStore),
     props: getDefaultModelSchema(ShaderStore).props
 }
+
+let shader = types
+    .model("Shader", {
+        // uniforms: [],
+        precision: types.optional(types.string, DefaultShader.precision),
+        vert: types.optional(types.string, DefaultShader.vert),
+        frag: types.optional(types.string, DefaultShader.frag),
+        // ref: null,
+        target: types.maybe(Target),
+        ready: false,
+    })
+    .actions(self => {
+        // let node = self.parent.value;
+
+        function afterCreate() {
+            // console.log('self',self)
+            // console.log('node', node)
+        }
+
+        return {
+            afterCreate
+        }
+    })
+
+// extends Graph!
+const Shader = types.compose(NodeData, shader);
+
+export { Shader }

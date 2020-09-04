@@ -12,9 +12,12 @@ import {
     update
 } from "serializr"
 import uuidv1 from 'uuid/v1';
-import Target from './TargetStore';
+import TargetStore, { Target } from './TargetStore';
 import path from 'path';
 import ShaderGraphStore from './ShaderGraphStore';
+
+import { types, getSnapshot } from "mobx-state-tree";
+import { ShaderGraph } from './ShaderGraphStore';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -69,7 +72,7 @@ export default class SceneStore {
         this.shaderGraph = g;    
     }
 
-    @action addTarget(target = new Target(this.parent)) {
+    @action addTarget(target = new TargetStore(this.parent)) {
         this.targets.push(target);
         return target;
     }
@@ -146,3 +149,41 @@ export default class SceneStore {
         }).catch(err => {/*alert(err)*/});
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const Scene = types
+    .model("Scene", {
+        shaderGraph: types.maybe(ShaderGraph),
+        targets: types.array(Target)
+    })
+    .actions(self => {
+        function afterCreate() {   
+            self.shaderGraph = ShaderGraph.create()
+            
+            self.shaderGraph.appendNode();
+            console.log(getSnapshot(self.shaderGraph))
+        }
+
+        return {
+            afterCreate,
+        };
+    })
+
+export { Scene }

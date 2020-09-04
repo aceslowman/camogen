@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx';
 import uuidv1 from 'uuid/v1';
+import { types } from "mobx-state-tree";
 
 export default class TargetStore {
     @observable uuid   = uuidv1();
@@ -43,3 +44,22 @@ export default class TargetStore {
         // if (this.shaders.length === 0) this.parent.removeTarget(this);
     }
 }
+
+
+
+
+const Target = types
+    .model("Target", {
+        
+    })
+    .actions(self => {
+        function afterCreate() {
+            
+        }
+
+        return {
+            afterCreate,
+        };
+    })
+
+export { Target }

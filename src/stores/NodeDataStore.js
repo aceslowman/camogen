@@ -11,6 +11,7 @@ import {
     // reference,
     // deserialize
 } from 'serializr';
+import { types } from 'mobx-state-tree';
 // import NodeStore from './NodeStore';
 
 export default class NodeDataStore {
@@ -46,3 +47,15 @@ export default class NodeDataStore {
         this.node = node;
     }
 }
+
+const NodeData = types
+    .model("NodeData", {
+        name: types.string,
+        inputs: types.optional(types.array(types.string),[]),
+        outputs: types.optional(types.array(types.string),["out"]),
+        // component_ref: null,
+        // node: null,
+        // controls: [],
+    })
+
+export { NodeData }

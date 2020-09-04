@@ -2,8 +2,12 @@ import {
     deserialize, getDefaultModelSchema
 } from "serializr";
 import { action, computed } from 'mobx';
-import GraphStore from './GraphStore';
-import ShaderStore from './ShaderStore';
+import GraphStore, {Graph} from './GraphStore';
+import ShaderStore, { Shader } from './ShaderStore';
+import { types } from "mobx-state-tree";
+import { uuidv1 } from 'uuid';
+import { GraphNode } from "./NodeStore";
+import { NodeData } from "./NodeDataStore";
 
 export default class ShaderGraphStore extends GraphStore {
 
@@ -162,3 +166,23 @@ ShaderGraphStore.schema = {
     extends: getDefaultModelSchema(GraphStore), 
     props: getDefaultModelSchema(ShaderGraphStore).props
 }
+
+let shaderGraph = types
+    .model("ShaderGraph", {
+        /* 
+            https://stackoverflow.com/questions/54566567/extending-a-model-in-mobx-state-tree/54956326#54956326
+        */ 
+    })
+    .actions(self => {
+
+        
+        
+        return {
+            
+        }
+    })
+
+// extends Graph!
+const ShaderGraph = types.compose(Graph, shaderGraph);
+
+export { ShaderGraph }

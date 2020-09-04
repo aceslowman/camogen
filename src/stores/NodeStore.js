@@ -17,7 +17,10 @@ import {
 } from "serializr";
 
 import ParameterStore from './ParameterStore';
-import ShaderStore from './ShaderStore';
+import ShaderStore, { Shader } from './ShaderStore';
+import { types, getParent } from 'mobx-state-tree';
+import NodeDataStore, { NodeData } from './NodeDataStore';
+// import GraphStore from './GraphStore';
 
 export default class NodeStore {
     @serializable(identifier())
@@ -111,6 +114,7 @@ export default class NodeStore {
                             );
                             console.log(`deserializing ${node_data.name}`, node_data)
                             c.target.setData(node_data);
+                            // c.target.data.graph =
                             return node_data;
                         default:
                             return null;
@@ -249,3 +253,85 @@ NodeStore.schema = {
     },    
     props: getDefaultModelSchema(NodeStore).props
 }
+
+const Coordinate = types
+    .model("Coordinate", {
+        x: types.optional(types.number,0),
+        y: types.optional(types.number,0)
+    })
+    
+const GraphNode = types
+    .model("GraphNode", {
+        uuid: types.identifier,
+        name: "empty node",
+        // allows for polymorphism
+        data: types.maybe(types.union(NodeData, types.late(() => Shader))),
+        // graph: null,
+        branch_index: types.maybe(types.number),
+        // late is used here to avoid circular dependency issue
+        children: types.array(types.reference(types.late(()=>GraphNode))),
+        parents: types.array(types.reference(types.late(()=>GraphNode))),
+        selected: false,
+        // node: null,
+        // controls: [],
+        coordinates: types.optional(Coordinate, {x: 0, y: 0}),
+    })
+    .actions(self => {
+        let parent_graph;
+
+        function afterAttach() {
+            parent_graph = getParent(self, 2);
+        }
+
+        function setParent(node, index = 0) {
+            self.parents[index] = node;
+            // if (!node.children.includes(node.uuid)) {
+                // node.setChild(self)                
+            // }  
+            // parent_graph.addNode(node);
+            return node;
+        }
+
+        function setParents(nodes) {
+            
+        }
+
+        function setChild(node, index = 0) {       
+            self.children[index] = node.uuid;
+
+            if (!node.parents.includes(self.uuid)) {
+                node.setParent(self)
+            }
+            
+            return node;                 
+        }
+
+        function edit() {
+            parent_graph.setEditing(self)
+            self.editing = true;
+            return self;
+        }
+
+        function select() {
+            parent_graph.setSelected(self)
+            self.selected = true;
+            return self;
+        }
+
+        function deselect() {
+            parent_graph.setSelected(null)
+            self.selected = false;
+            return self;
+        }
+
+        return {
+            afterAttach,
+            setParent,
+            setChild,
+            edit,
+            select,
+            deselect
+        }
+    })
+
+export { GraphNode }

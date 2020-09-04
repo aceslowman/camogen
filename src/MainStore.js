@@ -1,9 +1,12 @@
 import { observable, action } from 'mobx';
 import Runner from './Runner';
 import p5 from 'p5';
-import {
-  serialize,
-} from "serializr";
+
+// remove
+import { serialize } from "serializr";
+
+import { types } from "mobx-state-tree";
+
 import ShaderStore from './stores/ShaderStore';
 import SceneStore from './stores/SceneStore';
 
@@ -263,6 +266,5 @@ class MainStore {
   seems to be related to a circular dependency 
   issue I had
 */
-const mainStore = new MainStore();
-export default mainStore;
-
+// const mainStore = new MainStore();
+export default MainStore;
