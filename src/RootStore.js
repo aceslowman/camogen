@@ -1,33 +1,6 @@
-import { observable, action } from 'mobx';
-import Runner from './Runner';
-import p5 from 'p5';
-
-// remove
-import { serialize } from "serializr";
-
 import { types } from "mobx-state-tree";
-
-import ShaderStore from './stores/ShaderStore';
 import { Scene } from './stores/SceneStore';
-
-// operators
-import Add from './stores/ops/Add';
-import Counter from './stores/inputs/Counter'; // should be in ops?
-import MIDI from './stores/inputs/MIDI';
-
-// inputs
-import ImageInput from './stores/inputs/ImageInput';
-import WebcamInput from './stores/inputs/WebcamInput';
-import ParameterStore from './stores/ParameterStore';
-import { ShaderGraph } from './stores/ShaderGraphStore';
-
-const path = require('path');
-
-// for electron
-const remote = window.require('electron').remote;
-const dialog = remote.dialog;
-const app = remote.app;
-const fs = window.require('fs');
+import { UndoManager } from "mst-middlewares";
 
 /*
   [RootStore]
@@ -54,10 +27,11 @@ const RootStore = types
     ready: false
   })
   .actions(self => {
+    setUndoManager(self)
+
     function afterCreate() {
       self.scene = Scene.create({});
-      // self.openPanels.push('Shader Graph')
-      console.log('created')
+      self.openPanels.push('Shader Graph')
       self.ready = true;
     }
 
@@ -65,5 +39,10 @@ const RootStore = types
       afterCreate,
     };
   })
+
+export let undoManager = {}
+export const setUndoManager = (targetStore) => {
+  undoManager = UndoManager.create({}, { targetStore })
+}
 
 export default RootStore;

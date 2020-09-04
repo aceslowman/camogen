@@ -76,7 +76,7 @@ const GraphComponent = observer((props) => {
 			// inverts on y-axis
 			y = wrapper_ref.current.offsetHeight - y;
 			
-			for(let parent of node.parents) {			
+			for(let parent of node.parents) {
 				let cx = parent.coordinates.x;
 				let cy = parent.coordinates.y;
 
@@ -88,7 +88,7 @@ const GraphComponent = observer((props) => {
 
 				// left/right cable
 				ctx.lineWidth = 2;
-				ctx.strokeStyle = branch_colors[parent.branch_index];
+				ctx.strokeStyle = parent.branch_index ? branch_colors[parent.branch_index] : '#FAA';
 				ctx.beginPath();
 				ctx.moveTo(x, y-30);
 				ctx.lineTo(cx, y-30);
@@ -103,7 +103,7 @@ const GraphComponent = observer((props) => {
 				ctx.stroke();
 
 				// fill cable (fixes gap)
-				ctx.strokeStyle = branch_colors[node.branch_index];
+				ctx.strokeStyle = parent.branch_index ? branch_colors[node.branch_index] : '#FAA';
 				ctx.beginPath();
 				ctx.moveTo(x, y + 15);
 				ctx.lineTo(x, cy + 15);
@@ -111,7 +111,7 @@ const GraphComponent = observer((props) => {
 				ctx.stroke();
 
 				// direction triangle
-				ctx.fillStyle = branch_colors[parent.branch_index];
+				ctx.fillStyle = parent.branch_index ? branch_colors[parent.branch_index] : '#FAA';
 				ctx.beginPath();
 				ctx.moveTo(cx - 6, cy + (spacing.y*0.4));
 				ctx.lineTo(cx + 6, cy + (spacing.y*0.4));
@@ -168,7 +168,7 @@ const GraphComponent = observer((props) => {
 		let unsubscribe = tinykeys(window, {
 			"ArrowDown": () => {
 				if (props.data.selectedNode.children[0])
-					props.data.selectedNode = props.data.selectedNode.children[0]
+					props.data.selectedNode.children[0].select()
 			},
 			"ArrowLeft": () => {
 				if (props.data.selectedNode.children[0]) {
@@ -191,7 +191,7 @@ const GraphComponent = observer((props) => {
 			},
 			"ArrowUp": () => {
 				if(props.data.selectedNode.parents[0])
-					props.data.selectedNode = props.data.selectedNode.parents[0]
+					props.data.selectedNode.parents[0].select()
 			},
 			"Delete": () => {
 				console.log('delete')

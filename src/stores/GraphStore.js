@@ -1,262 +1,8 @@
-import { observable, action, computed } from 'mobx';
-import NodeStore, {GraphNode} from './NodeStore';
+import { GraphNode } from './NodeStore';
 import uuidv1 from 'uuid/v1';
-import {
-    // createModelSchema,
-    map,
-    // getDefaultModelSchema,
-    identifier,
-    object,
-    // custom,
-    serializable,
-    // serialize,
-    // reference
-} from "serializr"
 
-import { types } from "mobx-state-tree";
-
-export default class GraphStore {
-    @serializable(identifier())
-    @observable uuid = uuidv1();
-
-    @serializable(map(object(NodeStore.schema)))
-    @observable nodes = new Map();
-
-    @observable parent = null;
-
-    @observable selectedNode = null;
-
-    @observable currentlyEditing = null;
-
-    // NOTE: toggle to force a re-render in React
-    @observable updateFlag = false;
-
-    @observable coord_bounds = null;
-
-    constructor(parent) {
-        this.parent = parent;
-    
-        this.addNode().select();        
-    }    
-
-    @action clear() {
-        // re-initialize the nodes map
-        this.nodes.clear();
-        // assure that no nodes are in editing
-        this.currentlyEditing = null;
-        // create root node, select it
-        this.addNode().select();
-        // recalculate 
-        this.update(); 
-    }
-
-    /* 
-        update()
-
-        this method will calculate the branches of the
-        graph structure and then call afterUpdate()
-    */
-    @action update() {
-        let update_queue = this.calculateBranches();        
-        this.afterUpdate(update_queue);   
-        
-        // to force a react re-render
-        this.updateFlag = !this.updateFlag;
-    }
-
-    /*
-        addNode(node = new NodeStore('NEW NODE', this))
-
-        this method adds new nodes to the graph. 
-        this does not assume that the node has any 
-        associated data.
-    */
-    @action addNode(node = new NodeStore('NEW NODE', this)) {
-        node.graph = this;
-
-        this.nodes.set(node.uuid, node);
-        return this.nodes.get(node.uuid)
-    }
-
-    /*
-        removeSelected()
-    */
-    @action removeSelected() {
-        this.removeNode(this.selectedNode);
-    }
-
-    /*
-        removeNode(node)
-    */
-    @action removeNode(node) {
-        if (node === this.root) return;
-
-        /*
-            if node being removed has a parent, make
-            sure to reconnect those parent nodes to the
-            next child node.
-        */
-        if (node.parents.length) {
-            node.parents.forEach((parent,i) => {
-                parent.children[0] = node.children[0];
-                node.children[0].parents[0] = node.parents[0];
-            });
-        } else {
-            let idx = node.children[0].parents.indexOf(node);
-            console.log(idx)
-            node.children[0].parents.splice(idx, 1);
-        }
-
-        this.selectedNode = node.children[0]
-
-        node.data.onRemove();
-        this.nodes.delete(node);
-        
-        if (this.nodes.size < 2) {
-            this.clear();
-        } else {
-            this.update();
-        }  
-    }
-
-    /*
-        traverse(f = null, depthFirst = false)
-
-        this method will crawl through the graph structure
-        either depth first or breadth first.
-
-        it's first argument is function that will be called
-        during each step of the traversal.
-    */
-    @action traverse(f = null, depthFirst = false) {
-        let result = [];
-        let container = [this.root];
-        let next_node;
-        let distance_from_root = 0;
-
-        while(container.length) {             
-            next_node = container.shift();
-            
-            if(next_node) {
-                result.push(next_node);
-                distance_from_root = this.distanceBetween(next_node, this.root);
-
-                if (f) f(next_node, distance_from_root);
-
-                if(next_node.parents) {
-                    container = depthFirst 
-                        ? container.concat(next_node.parents) // depth first search
-                        : next_node.parents.concat(container) // breadth first search
-                } 
-            }
-        }
-
-        return result;
-    }
-
-    @action distanceBetween(a, b) {
-        let node = a;
-        let count = 0;
-
-        while (node !== b && node.children[0]) {
-            node = node.children[0];
-            count++;
-        }
-
-        return count;
-    }
-
-    @action calculateBranches() {
-        let current_branch = 0;
-        let queue = [];
-
-        this.traverse(next_node => {
-            next_node.branch_index = null;
-            if (next_node.data) {
-
-                // if we hit the topmost node
-                if (!next_node.hasConnectedParents) {  
-                    let t_node = next_node;
-                    t_node.branch_index = current_branch;
-                    queue.push(t_node);
-
-                    // propogate the new branch down the chain
-                    // until it hits a node already with a branch_index
-                    while (t_node.firstChild && t_node.firstChild.branch_index === null) {
-                        t_node.firstChild.branch_index = current_branch;
-                        t_node = t_node.firstChild;
-                        queue.push(t_node);
-                    }
-
-                    current_branch++;
-                }
-            }
-        });
-
-        return queue;
-    }
-
-    @computed get root() {
-        let node = this.nodes.values().next().value;
-
-        while (node && node.children[0]) {
-        // while (node && node.children.length) {
-            node = node.children[0];
-        }
-
-        return node;
-    }
-
-    /*
-        calculateCoordinates()
-
-        for visualization
-    */
-    @action calculateCoordinates() {
-        let used_coords = [];
-        let x = 0;
-        let y = 0;
-
-        return this.traverse((node, dist) => {
-            y = dist;
-            node.coordinates.x = x;
-            node.coordinates.y = y;
-
-            if(!node.parents.length) {
-                x++;
-            }
-
-            if(used_coords.find((coord) => coord.x === x && coord.y === y)) {
-				console.log('node space occupied! shift now!')
-			}
-
-            used_coords.push(node.coordinates);            
-        });
-    }
-
-    /*
-        calculateCoordinateBounds()
-
-        returns an object representing the size of the graph,
-        for centering, scaling, and positioning visualization
-    */
-    @action calculateCoordinateBounds() {
-        let max_x = 0;
-        let max_y = 0;
-
-        this.nodes.forEach((v) => {
-            max_x = v.coordinates.x > max_x ? v.coordinates.x : max_x;
-            max_y = v.coordinates.y > max_y ? v.coordinates.y : max_y;
-        });
-
-        this.coord_bounds = {
-            x: max_x,
-            y: max_y
-        };
-
-        return this.coord_bounds;
-    }
-}
+import { types, getRoot } from "mobx-state-tree";
+import { undoManager } from '../RootStore';
 
 const Coordinate = types
     .model("Coordinate", {
@@ -266,13 +12,12 @@ const Coordinate = types
 
 const Graph = types
     .model("Graph", {
-        uuid: types.optional(types.identifier, uuidv1()),
+        uuid: types.identifier,
         nodes: types.map(GraphNode),
-        // parent: null,
         selectedNode: types.maybe(types.reference(GraphNode)),
         currentlyEditing: types.maybe(types.reference(GraphNode)),
-        // updateFlag: false,
         coord_bounds: types.optional(Coordinate, {x: 0, y: 0}),
+        updateFlag: false,
     })
     .views(self => ({
         get root() {
@@ -298,10 +43,16 @@ const Graph = types
         }
     }))
     .actions(self => {
-        function afterCreate() {
+        /*
+            afterCreate()
+        */
+        function afterAttach() {            
             addNode().select();
         }
 
+        /*
+            clear()
+        */
         function clear() {
             // re-initialize the nodes map
             self.nodes.clear();
@@ -321,7 +72,7 @@ const Graph = types
         */
         function update() {
             let update_queue = self.calculateBranches();
-            self.afterUpdate(update_queue);
+            // self.afterUpdate(update_queue);
 
             // to force a react re-render
             self.updateFlag = !self.updateFlag;
@@ -334,7 +85,7 @@ const Graph = types
             self does not assume that the node has any 
             associated data.
         */
-        function addNode(node = GraphNode.create({uuid: 'add_'+uuidv1()})) {
+        function addNode(node = GraphNode.create({uuid: 'add_'+uuidv1()})) {            
             self.nodes.set(node.uuid, node);
             return self.nodes.get(node.uuid)
         }
@@ -355,10 +106,16 @@ const Graph = types
             current_root.setChild(new_node);
         }
 
+        /*
+            setSelected(node)
+        */
         function setSelected(node) {
             self.selectedNode = node;
         }
 
+        /*
+            setEditing(node)
+        */
         function setEditing(node) {
             self.currentlyEditing = node;
         }
@@ -374,7 +131,9 @@ const Graph = types
             removeNode(node)
         */
         function removeNode(node) {
-            if (node === self.root) return;
+            if (node === self.root) {
+                return;
+            }
 
             /*
                 if node being removed has a parent, make
@@ -394,7 +153,7 @@ const Graph = types
 
             self.selectedNode = node.children[0]
 
-            node.data.onRemove();
+            if(node.data) node.data.onRemove();
             self.nodes.delete(node);
 
             if (self.nodes.size < 2) {
@@ -440,31 +199,32 @@ const Graph = types
             return result;
         }
 
+        /* 
+            calculateBranches()
+        */
         function calculateBranches() {
             let current_branch = 0;
             let queue = [];
 
             self.traverse(next_node => {
                 next_node.branch_index = undefined;
-                if (next_node.data) {
 
-                    // if we hit the topmost node
-                    if (!next_node.hasConnectedParents) {
-                        let t_node = next_node;
-                        t_node.branch_index = current_branch;
+                // if we hit the topmost node
+                if (!next_node.parents.length) {
+                    let t_node = next_node;
+                    t_node.setBranchIndex(current_branch);
+                    queue.push(t_node);
+
+                    // propogate the new branch down the chain
+                    // until it hits a node already with a branch_index
+                    while (t_node.children[0] && t_node.children[0].branch_index === undefined) {
+                        t_node.children[0].setBranchIndex(current_branch);
+                        t_node = t_node.children[0];
                         queue.push(t_node);
-
-                        // propogate the new branch down the chain
-                        // until it hits a node already with a branch_index
-                        while (t_node.firstChild && t_node.firstChild.branch_index === undefined) {
-                            t_node.firstChild.branch_index = current_branch;
-                            t_node = t_node.firstChild;
-                            queue.push(t_node);
-                        }
-
-                        current_branch++;
                     }
-                }
+
+                    current_branch++;
+                }    
             });
 
             return queue;
@@ -474,6 +234,7 @@ const Graph = types
             calculateCoordinates()
 
             for visualization
+            TODO: collapse into traverse()
         */
         function calculateCoordinates() {
             let used_coords = [];
@@ -521,7 +282,7 @@ const Graph = types
         }
 
         return {
-            afterCreate,
+            afterAttach,
             clear,
             update,
             appendNode,
@@ -531,9 +292,9 @@ const Graph = types
             removeSelected,
             removeNode,
             traverse,            
-            calculateBranches,
-            calculateCoordinates,
-            calculateCoordinateBounds,
+            calculateBranches: () => undoManager.withoutUndo(calculateBranches),
+            calculateCoordinates: () => undoManager.withoutUndo(calculateCoordinates),
+            calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
         }
     })
 

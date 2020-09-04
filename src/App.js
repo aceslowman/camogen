@@ -9,6 +9,8 @@ import HelpComponent from './components/panels/HelpComponent';
 import ShaderEditorComponent from './components/panels/ShaderEditorComponent';
 import ParameterEditorComponent from './components/panels/ParameterEditorComponent';
 
+// import { u/ndo } from 'mobx-state-tree';
+import tinykeys from 'tinykeys';
 import {
   PanelComponent,
   ThemeContext,
@@ -18,6 +20,7 @@ import {
 } from 'maco-ui';
 
 import 'maco-ui/dist/index.css';
+import { getSnapshot } from 'mobx-state-tree';
 
 const App = observer((props) => {
 
@@ -25,6 +28,29 @@ const App = observer((props) => {
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
+
+    let unsubscribe = tinykeys(window, {
+      "$mod+KeyZ": () => {
+        console.log('undo')
+        if(props.history.canUndo) {
+          console.log('HISTORY', getSnapshot(props.history))
+          props.history.undo();
+        } else {
+          console.log('all out of undo')
+        }
+      },
+      "$mod+Shift+KeyZ": () => {
+        console.log('redo')
+        if(props.history.canRedo) {
+          console.log('HISTORY', getSnapshot(props.history))
+          props.history.redo();
+        } else {
+          console.log('all out of redo')
+        }
+      }
+    });
+
+    return unsubscribe;
   }, []);
 
   const handleResize = () => {
