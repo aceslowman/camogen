@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import Runner from './Runner';
+import Runner from '../../Runner';
 import p5 from 'p5';
 
 // remove
@@ -7,17 +7,17 @@ import { serialize } from "serializr";
 
 import { types } from "mobx-state-tree";
 
-import ShaderStore from './stores/ShaderStore';
-import SceneStore from './stores/SceneStore';
+import ShaderStore from '../ShaderStore';
+import SceneStore from '../SceneStore';
 
 // operators
-import Add from './stores/ops/Add';
-import Counter from './stores/inputs/Counter'; // should be in ops?
-import MIDI from './stores/inputs/MIDI';
+import Add from '../ops/Add';
+import Counter from '../inputs/Counter'; // should be in ops?
+import MIDI from '../inputs/MIDI';
 
 // inputs
-import ImageInput from './stores/inputs/ImageInput';
-import WebcamInput from './stores/inputs/WebcamInput';
+import ImageInput from '../inputs/ImageInput';
+import WebcamInput from '../inputs/WebcamInput';
 
 const path = require('path');
 

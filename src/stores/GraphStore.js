@@ -57,7 +57,7 @@ const Graph = types
             // re-initialize the nodes map
             self.nodes.clear();
             // assure that no nodes are in editing
-            self.currentlyEditing = null;
+            self.currentlyEditing = undefined;
             // create root node, select it
             self.addNode().select();
             // recalculate 
@@ -105,6 +105,9 @@ const Graph = types
             let new_node = self.addNode(node);
             current_root.setChild(new_node);
         }
+
+        // prependNode
+        // function prepend
 
         /*
             setSelected(node)

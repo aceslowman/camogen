@@ -73,10 +73,10 @@ const GraphNode = types
             afterAttach,
             setParent,
             setChild,
+            setBranchIndex,
             edit,
             select: () => undoManager.withoutUndo(select),
-            deselect: () => undoManager.withoutUndo(deselect),
-            setBranchIndex,
+            deselect: () => undoManager.withoutUndo(deselect),            
         }
     })
 

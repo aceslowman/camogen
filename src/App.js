@@ -47,7 +47,13 @@ const App = observer((props) => {
         } else {
           console.log('all out of redo')
         }
-      }
+      },
+      "$mod+KeyS": () => {
+        props.store.save();
+      },
+      "$mod+KeyO": () => {
+        props.store.load();
+      },
     });
 
     return unsubscribe;
@@ -120,10 +126,10 @@ const App = observer((props) => {
             dropDown: [
               {
                 label: "Save Scene",
-                onClick: ()=>props.store.scene.save()
+                onClick: ()=>props.store.save()
               }, {
                 label: "Load Scene",
-                onClick: ()=>props.store.scene.load()
+                onClick: ()=>props.store.load()
               },
             ]
           },	

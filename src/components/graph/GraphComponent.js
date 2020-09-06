@@ -51,7 +51,7 @@ const GraphComponent = observer((props) => {
 					ctx.closePath();
 					ctx.stroke();
 
-					// ctx.lineWidth = 1;
+					ctx.lineWidth = 1;
 					ctx.strokeStyle = theme.accent_color;
 					ctx.beginPath();
 					ctx.setLineDash([3, 3]);
@@ -150,8 +150,6 @@ const GraphComponent = observer((props) => {
 	const handleLabelClick = (node) => {
 		node.select();
 		node.edit();
-		console.log('node', node);
-		console.log('graph', node.graph)
 	}
 	
 	useLayoutEffect(() => {
