@@ -5,6 +5,7 @@ import { getSnapshot } from 'mobx-state-tree';
 import dirTree from "directory-tree";
 import path from 'path';
 import Collection from './stores/utils/Collection';
+import defaultSnapshot from './snapshots/default.json';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -45,9 +46,14 @@ const RootStore = types
         .then(() => self.shader_collection.preloadAll())
         .then(() => {
           self.setScene(Scene.create({}));
+
+          // apply default
+          applySnapshot(self.scene, defaultSnapshot.scene);
+
           self.addPanel('Debug');
           self.addPanel('Shader Graph');
-          self.addPanel('Shader Controls');          
+          self.addPanel('Shader Controls');
+
           self.setReady(true);
         });
     }
