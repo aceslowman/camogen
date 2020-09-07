@@ -38,7 +38,7 @@ const GraphComponent = observer((props) => {
 		};
 
 		// draws grids
-		let draw_grid = true;
+		let draw_grid = false;
 		if(draw_grid) {
 			for (let i = 1; i <= props.data.coord_bounds.x; i++) {
 				for (let j = 1; j <= props.data.coord_bounds.y; j++) {
@@ -88,7 +88,7 @@ const GraphComponent = observer((props) => {
 
 				// left/right cable
 				ctx.lineWidth = 2;
-				ctx.strokeStyle = parent.branch_index ? branch_colors[parent.branch_index] : '#FAA';
+				ctx.strokeStyle = branch_colors[parent.branch_index];
 				ctx.beginPath();
 				ctx.moveTo(x, y-30);
 				ctx.lineTo(cx, y-30);
@@ -103,7 +103,7 @@ const GraphComponent = observer((props) => {
 				ctx.stroke();
 
 				// fill cable (fixes gap)
-				ctx.strokeStyle = parent.branch_index ? branch_colors[node.branch_index] : '#FAA';
+				ctx.strokeStyle = branch_colors[node.branch_index];
 				ctx.beginPath();
 				ctx.moveTo(x, y + 15);
 				ctx.lineTo(x, cy + 15);
@@ -111,7 +111,7 @@ const GraphComponent = observer((props) => {
 				ctx.stroke();
 
 				// direction triangle
-				ctx.fillStyle = parent.branch_index ? branch_colors[parent.branch_index] : '#FAA';
+				ctx.fillStyle = branch_colors[parent.branch_index];
 				ctx.beginPath();
 				ctx.moveTo(cx - 6, cy + (spacing.y*0.4));
 				ctx.lineTo(cx + 6, cy + (spacing.y*0.4));

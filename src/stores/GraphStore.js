@@ -137,6 +137,9 @@ const Graph = types
                 if node being removed has a parent, make
                 sure to reconnect those parent nodes to the
                 next child node.
+
+                TODO: fix issue where multiinput shader parent removal
+                breaks
             */
             if (node.parents.length) {
                 node.parents.forEach((parent, i) => {
@@ -215,7 +218,7 @@ const Graph = types
 
                     // propogate the new branch down the chain
                     // until it hits a node already with a branch_index
-                    while (t_node.children[0] && t_node.children[0].branch_index === undefined) {
+                    while (t_node.children.length && t_node.children[0].branch_index === undefined) {
                         t_node.children[0].setBranchIndex(current_branch);
                         t_node = t_node.children[0];
                         queue.push(t_node);
