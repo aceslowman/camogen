@@ -120,6 +120,16 @@ const GraphComponent = observer((props) => {
 				ctx.fill();
 			}	
 
+			let label_border_color = theme.text_color;
+			let label_border_style = node.data ? 'solid' : 'dashed';
+			let label_text_color = theme.text_color;
+			let label_background_color = node.data ? theme.secondary_color : theme.primary_color;
+			
+			if (props.data.selectedNode === node) {
+				label_text_color = theme.primary_color;
+				label_background_color = theme.accent_color;
+			}
+
 			_labels.push((
 				<div
 					key={i}
@@ -133,9 +143,10 @@ const GraphComponent = observer((props) => {
 					<label
 						title={node.name}
 						style={{	
-							backgroundColor: props.data.selectedNode === node ? theme.accent_color : theme.primary_color,
-							borderColor: theme.text_color,
-							color: props.data.selectedNode === node ? theme.primary_color : theme.text_color,
+							backgroundColor: label_background_color,
+							borderColor: label_border_color,
+							borderStyle: label_border_style,
+							color: label_text_color,
 						}}
 					>{node.name}</label>
 				</div>
@@ -157,6 +168,7 @@ const GraphComponent = observer((props) => {
 	},[
 		props.data, 
 		props.data.selectedNode,
+		props.data.selectedNode.data, // i hate this
 		props.data.updateFlag,
 		props.data.root, // helped with clear() rerender
 		// drawGraph,
@@ -174,7 +186,7 @@ const GraphComponent = observer((props) => {
 					idx--;
 
 					if (idx >= 0) {
-						props.data.selectedNode = props.data.selectedNode.children[0].parents[idx];
+						props.data.selectedNode.children[0].parents[idx].select();
 					}
 				}
 			},
@@ -184,7 +196,7 @@ const GraphComponent = observer((props) => {
 					idx++;
 
 					if(idx <= props.data.selectedNode.children[0].parents.length - 1)
-						props.data.selectedNode = props.data.selectedNode.children[0].parents[idx];		
+						props.data.selectedNode.children[0].parents[idx].select();		
 				}
 			},
 			"ArrowUp": () => {

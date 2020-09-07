@@ -3,10 +3,8 @@ import { Scene } from './stores/SceneStore';
 import { UndoManager } from "mst-middlewares";
 import { getSnapshot } from 'mobx-state-tree';
 import dirTree from "directory-tree";
-
 import path from 'path';
-import { Shader } from "./stores/ShaderStore";
-// import { enumeration, maybe } from "mobx-state-tree/dist/internal";
+import Collection from './stores/utils/Collection';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -43,16 +41,19 @@ const RootStore = types
     setUndoManager(self)
 
     function afterCreate() {
-      self.scene = Scene.create({});
-      self.openPanels.push('Shader Graph');
-
       fetchShaderFiles()
         .then(() => self.shader_collection.preloadAll())
         .then(() => {
+          self.setScene(Scene.create({}));
+          self.addPanel('Debug');
+          self.addPanel('Shader Graph');
+          self.addPanel('Shader Controls');          
           self.setReady(true);
-          console.log('SHADER Collection',getSnapshot(self.shader_collection))
-          console.log('getShader',self.scene.shaderGraph.getShader('UV'));
         });
+    }
+
+    function setScene(scene) {
+      self.scene = scene;
     }
 
     function setReady(value) {
@@ -98,10 +99,20 @@ const RootStore = types
         let content = f.filePaths[0];
         fs.readFile(content, 'utf-8', (err, data) => {
           if(err) console.error(err.message);
-          applySnapshot(self, JSON.parse(data));
-          undoManager.clear();
+          // console.log(JSON.parse(data))
+          // applySnapshot(self, JSON.parse(data));
+          
+
+          // only deserialize scene.
+          applySnapshot(self.scene, JSON.parse(data).scene);
+
+          // undoManager.clear();
         })
       }).catch(err => {/*alert(err)*/});
+    }
+
+    function addPanel(panel) {
+      self.openPanels.push(panel);
     }
 
     /*
@@ -138,13 +149,24 @@ const RootStore = types
       }
     });
 
+    function removePanel(name) {
+      let index = self.openPanels.indexOf(name);
+      if (index > -1) {
+        self.openPanels.splice(index, 1)
+      }
+    }
+
     return {
       afterCreate,
       setReady,
+      // setScene: () => undoManager.withoutUndo(setScene),
+      setScene,
+      addPanel,
+      removePanel,
       // setReady: () => undoManager.withoutUndo(setReady),
       save: () => undoManager.withoutUndo(save),
       load: () => undoManager.withoutUndo(load),
-      fetchShaderFiles: () => undoManager.withoutUndo(fetchShaderFiles),
+      fetchShaderFiles: () => undoManager.withoutUndoFlow(fetchShaderFiles),
     };
   })
 
@@ -155,54 +177,3 @@ export const setUndoManager = (targetStore) => {
 
 export default RootStore;
 
-const Collection = types
-  .model("Collection", {
-    path: types.maybe(types.string),
-    name: types.maybe(types.string),
-    size: types.maybe(types.number),
-    type: types.maybe(types.enumeration("Type",["directory","file"])),
-    children: types.maybe(types.array(types.late(()=>Collection))),
-    extension: types.maybe(types.string),
-    data: types.maybe(Shader),
-  })
-  .views(self => ({
-    getByName: (name) => {
-      let result = [];
-      let container = [self];
-      let next_node;
-
-      while (container.length) {
-        next_node = container.shift();
-
-        if (next_node) {
-          if(next_node.name === name) result.push(next_node);          
-
-          if (next_node.children) {
-            container = container.concat(next_node.children) // depth first search              
-          }
-        }
-      }
-
-      return (result.length === 1) ? result[0] : result;
-    }
-  }))
-  .actions(self => {
-    const preloadAll = flow(function* preloadAll() {
-      // console.log('preloading', self)
-
-      if(self.children) {
-        yield Promise.all(self.children.map(flow(function*(e,i){
-          yield e.preloadAll();
-        })))
-      } else if(self.type === "file"){
-        // let shader = Shader.create();
-        // applySnapshot(shader,JSON.parse(yield fs.promises.readFile(self.path)));
-        let result = yield fs.promises.readFile(self.path);
-        self.data = JSON.parse(result);
-      }
-    });
-
-    return {
-      preloadAll
-    }
-  })

@@ -84,38 +84,39 @@ const App = observer((props) => {
     props.store.breakout();
   };
 
+  /*
+    currently limited to two levels, just haven't figured out the best
+    way to traverse and remap the directory tree
+  */
   const handleLib = () => {
-		let keys = Object.keys(props.store.shader_list);
+    let collection = props.store.shader_collection;
 
-		keys.sort((a,b)=>{
-			return a._isDirectory ? 1 : -1
-		})
+    let items = [];
 
-		return keys.map((name)=>{
-			let item = props.store.shader_list[name];
+    collection.children.forEach((e,i) => {
+      if (e.type === 'file') {
+        items.push({
+          label: e.name,
+          onClick: () => props.store.scene.shaderGraph.setSelectedByName(e.name)
+        })
+      } else if (e.type === 'directory') {
+        let subitems = e.children.map((c)=>{
+          let next = {
+            label: c.name,
+            onClick: () => props.store.scene.shaderGraph.setSelectedByName(c.name)
+          };
 
-			if (item._isDirectory) {
-				let subItems = [];
+          return next;
+        })
 
-				for (let name in item) {
-					if (name == '_isDirectory') continue;
-					subItems.push({
-						label: name,
-						onClick: () => props.store.scene.shaderGraph.setSelectedByName(name)
-					});
-				}
+        items.push({
+          label: e.name,
+          dropDown: subitems
+        })
+      }
+    })
 
-				return {
-					label: name,					
-					dropDown: subItems
-				};
-			} else {
-				return {
-					label: item.name,
-					onClick: () => props.store.scene.shaderGraph.setSelectedByName(item.name)
-				};
-			}
-		});
+    return items;
   }
 
   const main_panel_toolbar = (
@@ -164,7 +165,7 @@ const App = observer((props) => {
           },
           {
             label: "LIBRARY",
-            // dropDown: handleLib()
+            dropDown: () => handleLib()
           },
           {
             label: "INPUTS",

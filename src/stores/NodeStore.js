@@ -1,19 +1,16 @@
 import { Shader } from './ShaderStore';
-import { types, getParent } from 'mobx-state-tree';
+import { types, getParent, getSnapshot } from 'mobx-state-tree';
 import { NodeData } from './NodeDataStore';
 import { undoManager } from '../RootStore';
-
-const Coordinate = types
-    .model("Coordinate", {
-        x: types.optional(types.number,0),
-        y: types.optional(types.number,0)
-    })
+import Coordinate from './utils/Coordinate';
+import uuidv1 from 'uuid/v1';
     
 const GraphNode = types
     .model("GraphNode", {
         uuid: types.identifier,
         name: "empty node",        
-        data: types.maybe(types.union(NodeData, types.late(() => Shader))),
+        // order when using Union matters!
+        data: types.maybe(types.union(Shader, NodeData)),
         branch_index: types.maybe(types.number),        
         children: types.array(types.reference(types.late(()=>GraphNode))),
         parents: types.array(types.reference(types.late(()=>GraphNode))),
@@ -25,22 +22,55 @@ const GraphNode = types
 
         function afterAttach() {
             parent_graph = getParent(self, 2);
+            mapInputsToParents();
         }
 
-        function setParent(node, index = 0) {
-            self.parents[index] = node;
+        function setData(data) {
+            self.data = data;
+            self.name = data.name;
 
-            if (!node.children.includes(self.uuid)) {
-                // node.setChild(self)                
+            // extract uniforms, map inputs/outputs
+            self.data.extractUniforms();
+            mapInputsToParents();
+            
+        }
+
+        function mapInputsToParents() {
+            if (!self.data) return;
+
+            self.data.inputs.forEach((e,i) => {
+                if (i >= self.parents.length) {
+                    let parent = GraphNode.create({
+                        uuid: uuidv1(),
+                        name: e
+                    });
+                    
+                    parent_graph.addNode(parent);
+                    self.setParent(parent, i, true);
+                }
+            })
+
+            if(!self.children.length) {
+                let child = GraphNode.create({ uuid: uuidv1(), name: 'next' });
+                parent_graph.addNode(child);
+                return self.setChild(child).uuid;
+            }
+        }
+
+        function setParent(node, index = 0, fix = false) {
+            self.parents[index] = node.uuid;
+
+            if (!node.children.includes(self)) {
+                if(fix) node.setChild(self)                
             }  
             
             return node;
         }
 
-        function setChild(node, index = 0) {       
+        function setChild(node, index = 0, fix = false) {       
             self.children[index] = node.uuid;
 
-            if (!node.parents.includes(self.uuid)) {
+            if (!node.parents.includes(self)) {
                 node.setParent(self)
             }
             
@@ -71,6 +101,8 @@ const GraphNode = types
 
         return {
             afterAttach,
+            setData,
+            mapInputsToParents,
             setParent,
             setChild,
             setBranchIndex,

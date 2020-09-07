@@ -3,12 +3,7 @@ import uuidv1 from 'uuid/v1';
 
 import { types, getRoot } from "mobx-state-tree";
 import { undoManager } from '../RootStore';
-
-const Coordinate = types
-    .model("Coordinate", {
-        x: types.optional(types.number, 0),
-        y: types.optional(types.number, 0)
-    })
+import Coordinate from './utils/Coordinate';
 
 const Graph = types
     .model("Graph", {
@@ -246,8 +241,8 @@ const Graph = types
 
             return self.traverse((node, dist) => {
                 y = dist;
-                node.coordinates.x = x;
-                node.coordinates.y = y;
+
+                node.coordinates.set(x,y);
 
                 if (!node.parents.length) {
                     x++;

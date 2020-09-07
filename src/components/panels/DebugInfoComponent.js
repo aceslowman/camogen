@@ -4,11 +4,25 @@ import {
 	PanelComponent,
 	TextComponent
 } from 'maco-ui';
+import { observer } from 'mobx-react';
+import { getSnapshot } from 'mobx-state-tree';
+import styles from './DebugInfoComponent.module.css';
+import { ThemeContext } from 'maco-ui';
 
-const DebugInfo = (props) => {
+const DebugInfo = observer((props) => {
+	const theme = useContext(ThemeContext);
 	const store = useContext(MainContext).store;
 
 	const handleRemove = () => store.removePanel('Debug');
+
+	const selected = store.scene.shaderGraph.selectedNode;
+	// console.log(selected)
+
+	const pre_style = {
+		backgroundColor: theme.secondary_color,
+		color: theme.text_color,
+		overflowX: 'auto'
+	}
 
 	return(
 		<PanelComponent
@@ -16,54 +30,16 @@ const DebugInfo = (props) => {
 			onRemove={handleRemove}				
 		>
 			<TextComponent>
-				<h3>currentlyEditing: {store.currentlyEditing ? store.currentlyEditing.name : 'nothing'} </h3>
-				<h3>targets ({store.scenes[0].targets.length})</h3>
-				<ol start="0">
-					{
-						store.scenes[0].targets.map((e,i)=>(
-							<div key={i}>
-								<li key={e.uuid}>{e.uuid}</li>
-
-								<ol key={e.uuid+1} start="0">
-									{e.shaders.map((shader)=>{											
-										return (
-											<li key={shader.uuid}>{shader.name}</li>
-										)
-									})}
-								</ol>
-							</div>							
-						))
-					}
-				</ol>
-				<h3>shaderGraph ({store.scene.shaderGraph.uuid})</h3>
-				<ul>
-					{
-						store.scene.shaderGraph.map((e, i) => (
-						<div key={i}>
-							<li key={i}>{e.uuid}</li>
-							<ul key={i+1}>
-								<li key={i}>node count: {e.nodes.size}</li>
-								<li key={i+1}>root: {e.root.name}</li>
-								<li key={i+2}>nodes: </li>
-
-								<ul key={i+3}>
-									{e.traverse().map((uuid)=>(
-										<li key={uuid}>{e.nodes.get(uuid) ? e.nodes.get(uuid).name : "can't find?"}</li>
-									))}
-								</ul>
-							</ul>							
-						</div>
-						))
-					}
-				</ul>
-
-				{store.activeGraph && (
-					<h3>active node: {store.scene.shaderGraph.selectedNode.name}</h3>													
-				)}
+				
+				<div><strong>name:</strong> {selected.name}</div>
+				<div><strong>branch:</strong> {selected.branch_index}</div>
+				<div><strong>data:</strong> {!selected.data ? 'none' : (<pre style={pre_style}>{JSON.stringify(selected.data,null,2)}</pre>)}</div>
+				<div><strong>parents:</strong> {!selected.parents.length ? 'none' : (<pre style={pre_style}>{JSON.stringify(selected.parents,null,2)}</pre>)}</div>
+				<div><strong>children:</strong> {!selected.children.length ? 'none' : (<pre style={pre_style}>{JSON.stringify(selected.children,null,2)}</pre>)}</div>
 				
 			</TextComponent>
 		</PanelComponent>		
 	)
-}
+});
 
 export default DebugInfo;

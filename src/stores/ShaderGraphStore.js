@@ -1,9 +1,11 @@
 import { Graph } from './GraphStore';
-import { types, getRoot, getSnapshot } from "mobx-state-tree";
+import { types, getRoot, getSnapshot, applySnapshot } from "mobx-state-tree";
+import { Shader } from './ShaderStore';
+import { undoManager } from '../RootStore';
+// import { Shader } from './ShaderStore';
 
 let shaderGraph = types
     .model("ShaderGraph", {
-        
     })
     .actions(self => {
         let state_root;
@@ -13,57 +15,28 @@ let shaderGraph = types
         }
 
         function getShader(name) {
-            console.log('getting ', getSnapshot(state_root))
-
-            let shader = state_root.shader_collection.getByName(name);
-                    
+            let data, shader;
             
-            return shader
-            // first, check built-in inputs
-            // for (let key in this.mainStore.input_list) {
-            //     let item = this.mainStore.input_list[key];
+            try {
+                data = state_root.shader_collection.getByName(name).data;                
+                shader = Shader.create({});
+                applySnapshot(shader, getSnapshot(data));
+                return shader;
+            } catch(err) {
+                console.error('shaders have not been loaded',err)
+            }
+        }
 
-            //     if (key === name) {
-            //         result = item;
-            //         break;
-            //     }
-            // }
-
-            // if (result) return new result();
-
-            // // and check custom-shaders. matches will override built-in inputs
-            // for (let key in this.mainStore.shader_list) {
-            //     let item = this.mainStore.shader_list[key];
-
-            //     if (item._isDirectory) {
-            //         for (let subkey of Object.keys(item)) {
-            //             if (subkey === '_isDirectory') continue;
-            //             let subItem = item[subkey]
-
-            //             if (subItem.name === name) {
-            //                 result = subItem.name === name ? subItem : null;
-            //                 break;
-            //             }
-            //         }
-            //     } else {
-            //         if (key === name) {
-            //             result = item;
-            //             break;
-            //         }
-            //     }
-            // }
-
-            // if (result) {
-            //     return deserialize(ShaderStore.schema, result);
-            // } else {
-            //     console.error(`couldn't find shader named '${name}'`);
-            //     return null;
-            // }
+        function setSelectedByName(name) {
+            self.selectedNode.setData(getShader(name))
         }
             
         return {
+            // afterAttach: () => undoManager.withoutUndo(afterAttach),
+            // getShader: () => undoManager.withoutUndo(getShader),
             afterAttach,
-            getShader
+            getShader,
+            setSelectedByName
         }
     })
 

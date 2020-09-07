@@ -20,7 +20,7 @@ const ShaderControls = observer((props) => {
 	const generateInterface = (shader) => {
 		let controls = shader.uniforms.map((uniform)=>{ 
 			return (
-				<ControlGroupComponent key={uniform.uuid} name={uniform.name}>
+				<ControlGroupComponent key={uniform.name} name={uniform.name}>
 					{uniform.elements.map((param,i)=>{
 						
 						let input = null;

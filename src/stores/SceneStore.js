@@ -12,16 +12,15 @@ const Scene = types
     })
     .actions(self => {
         function afterAttach() {   
+            console.log(getSnapshot(self))
             self.shaderGraph = ShaderGraph.create({uuid:uuidv1()})
             
-            // self.shaderGraph.appendNode();
+            // let uv = self.shaderGraph.getShader('UV');
+            // self.shaderGraph.root.setData(uv);
 
-            setTimeout(() => self.shaderGraph.appendNode(GraphNode.create({uuid: 'append_'+uuidv1(), name: 'node A'})), 1000)
-            setTimeout(() => self.shaderGraph.appendNode(GraphNode.create({uuid: 'append_'+uuidv1(), name: 'node B'})), 2000)
-            setTimeout(() => self.shaderGraph.appendNode(GraphNode.create({uuid: 'append_'+uuidv1(), name: 'node C'})), 3000)
-            
-            // console.log(self.shaderGraph.getShader('UV'))
-            // console.log(getSnapshot(self.shaderGraph))
+            // setTimeout(() => self.shaderGraph.appendNode(GraphNode.create({uuid: 'append_'+uuidv1(), name: 'node A'})), 1000)
+            // setTimeout(() => self.shaderGraph.appendNode(GraphNode.create({uuid: 'append_'+uuidv1(), name: 'node B'})), 2000)
+            // setTimeout(() => self.shaderGraph.appendNode(GraphNode.create({uuid: 'append_'+uuidv1(), name: 'node C'})), 3000)            
         }
 
         function clear() {
