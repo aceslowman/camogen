@@ -17,6 +17,10 @@ const ShaderControls = observer((props) => {
 		store.removePanel('Shader Controls')
 	}
 
+	const handleValueChange = (param,e) => {
+		param.setValue(e)
+	}
+
 	const generateInterface = (shader) => {
 		let controls = shader.uniforms.map((uniform)=>{ 
 			return (
@@ -32,9 +36,7 @@ const ShaderControls = observer((props) => {
 									key={i}
 									step={0.1}
 									value={value}
-									onChange={e => {
-										param.value = e;
-									}}
+									onChange={(e) => handleValueChange(param,e)}
 									onDoubleClick={(e) => {
 										// selectedParameter = e;
 										// node.graph.parent.parent.selectedParameter = e;
@@ -46,9 +48,7 @@ const ShaderControls = observer((props) => {
 									key={i}
 									step={0.1}
 									value={value}
-									onChange={e => {
-										param.value = e;
-									}}
+									onChange={(e) => handleValueChange(param,e)}
 									onDoubleClick={(e) => {
 										// selectedParameter = e;
 										// node.graph.parent.parent.selectedParameter = e;
@@ -60,9 +60,7 @@ const ShaderControls = observer((props) => {
 									key={i}
 									step={0.1}
 									value={value}
-									onChange={e => {
-										param.value = e;
-									}}
+									onChange={(e) => handleValueChange(param,e)}
 									onDoubleClick={(e) => {
 										// selectedParameter = e;
 										// node.graph.parent.parent.selectedParameter = e;
