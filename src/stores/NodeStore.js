@@ -1,5 +1,5 @@
 import { Shader } from './ShaderStore';
-import { types, getParent, getSnapshot } from 'mobx-state-tree';
+import { types, getParent } from 'mobx-state-tree';
 import { NodeData } from './NodeDataStore';
 import { undoManager } from '../RootStore';
 import Coordinate from './utils/Coordinate';

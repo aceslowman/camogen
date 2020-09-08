@@ -5,8 +5,8 @@ import {
 	TextComponent
 } from 'maco-ui';
 import { observer } from 'mobx-react';
-import { getSnapshot } from 'mobx-state-tree';
-import styles from './DebugInfoComponent.module.css';
+// import { getSnapshot } from 'mobx-state-tree';
+// import styles from './DebugInfoComponent.module.css';
 import { ThemeContext } from 'maco-ui';
 
 const DebugInfo = observer((props) => {

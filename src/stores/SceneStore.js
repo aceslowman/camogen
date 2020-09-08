@@ -3,7 +3,6 @@ import uuidv1 from 'uuid/v1';
 import { types, getSnapshot } from "mobx-state-tree";
 import { ShaderGraph } from './ShaderGraphStore';
 import { Target } from './TargetStore';
-import { GraphNode } from './NodeStore';
 
 const Scene = types
     .model("Scene", {
@@ -12,15 +11,12 @@ const Scene = types
     })
     .actions(self => {
         function afterAttach() {   
-            console.log(getSnapshot(self))
-            self.shaderGraph = ShaderGraph.create({uuid:uuidv1()})
-            
-            // let uv = self.shaderGraph.getShader('UV');
-            // self.shaderGraph.root.setData(uv);
+            self.shaderGraph = ShaderGraph.create({uuid: uuidv1()})
+        }
 
-            // setTimeout(() => self.shaderGraph.appendNode(GraphNode.create({uuid: 'append_'+uuidv1(), name: 'node A'})), 1000)
-            // setTimeout(() => self.shaderGraph.appendNode(GraphNode.create({uuid: 'append_'+uuidv1(), name: 'node B'})), 2000)
-            // setTimeout(() => self.shaderGraph.appendNode(GraphNode.create({uuid: 'append_'+uuidv1(), name: 'node C'})), 3000)            
+        function addTarget(target = Target.create({uuid: 'target_'+uuidv1()})) {
+            self.targets.push(target);
+            return target;
         }
 
         function clear() {
@@ -29,6 +25,7 @@ const Scene = types
 
         return {
             afterAttach,
+            addTarget,
             clear,
         };
     })

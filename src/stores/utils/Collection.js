@@ -1,4 +1,4 @@
-import { types, flow, applySnapshot } from "mobx-state-tree";
+import { types, flow } from "mobx-state-tree";
 import { Shader } from "../ShaderStore";
 
 const fs = window.require('fs');

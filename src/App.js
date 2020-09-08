@@ -73,11 +73,11 @@ const App = observer((props) => {
     for (let target_data of props.store.scene.targets) {
       target_data.ref.resizeCanvas(
         bounds.width,
-          bounds.height
+        bounds.height
       );
     }
 
-    props.store.p5_instance.draw();
+    // props.store.p5_instance.draw();
   }
 
   const handleBreakout = () => {

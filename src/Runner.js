@@ -10,22 +10,24 @@ const Runner = (p, store) => {
         
         container.append(c.canvas);
         
-        p.background(120, 80, 50);
+        // debug red
+        p.background(250, 25, 25);
     }
 
     p.draw = () => {
         try {
             if (
                 store.scene.shaderGraph
-                && store.scene.shaderGraph.ready
+                && store.ready
             ) {
                 for (let target_data of store.scene.targets) {
-                    for (let shader_data of target_data.shaders) {
-                        shader_data.update(p);                                       
+                    for (let shader_node of target_data.shader_nodes) {
+                        shader_node.data.update(p);                                       
                     }
                 }
-
+                // console.log(store.scene.targets)
                 p.image(store.scene.targets[0].ref, 0, 0, p.width, p.height);
+                // p.background(100); // gray
             } else {
                 p.background(0);
             }

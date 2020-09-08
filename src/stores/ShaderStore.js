@@ -1,26 +1,74 @@
 import { NodeData } from './NodeDataStore';
-import { types, getSnapshot } from "mobx-state-tree";
+import { types, getSnapshot, getParent } from "mobx-state-tree";
 import * as DefaultShader from './shaders/DefaultShader';
 import { Target } from "./TargetStore";
+
+const Parameter = types
+    .model("Parameter", {
+        name: types.maybe(types.string),
+        value: types.maybe(types.union(types.number, types.string, types.boolean)),
+        // graph: types.maybe(ParameterGraph)
+    })
+    .actions(self => ({
+        setValue: (v) => {
+            self.value = v;
+        }
+    }))
+
+const Uniform = types
+    .model("Uniform", {
+        name: types.maybe(types.string),
+        elements: types.array(Parameter),
+    })
+    .actions(self => ({
+        addElement: (el) => {
+            self.elements.push(el)
+        }
+    }))
 
 let shader = types
     .model("Shader", {
         uniforms: types.array(types.late(()=>Uniform)),
-        // // uniforms: types.array(types.frozen()), // accepts anything for older shader files
         name: types.maybe(types.string), 
         precision: types.optional(types.string, DefaultShader.precision),
         vert: types.optional(types.string, DefaultShader.vert),
         frag: types.optional(types.string, DefaultShader.frag),
-        // ref: null,
-        target: types.maybe(Target),
+        ready: false,
+        target: types.maybe(types.reference(Target)),
     })
+    .views(self => ({
+        get vertex() {
+            return self.precision + self.vert;
+        },
+
+        get fragment() {
+            return self.precision + self.frag;
+        },
+    }))
     .actions(self => {
+        let parent_node;
+
         function afterAttach() {
-            // extractUniforms()
+            parent_node = getParent(self);
         }
 
-        function afterCreate() {
-            // extractUniforms()
+        function init() {
+            // create shader for given target
+            self.ref = self.target.ref.createShader(
+                self.vertex,
+                self.fragment
+            )
+
+            // extract and assign uniforms to shader
+            extractUniforms();
+
+            for (let uniform of self.uniforms) {
+                self.ref.setUniform(uniform.name, uniform.elements);
+            }
+
+            // flag as ready to render
+            self.ready = true;
+            return self;
         }
 
         /*
@@ -177,37 +225,82 @@ let shader = types
             })
         }
 
+        function setTarget(target) {
+            self.target = target;
+        }
+
+        /*
+            update(p5_instance)
+
+            this method is triggered within Runner.js
+            and draws shaders to quads.
+        */
+        function update(p) {
+            if (!self.ready) return;
+
+            let shader = self.ref;
+            let target = self.target.ref;
+
+            /* 
+                Loop through all active parameter graphs to recompute 
+                values in sync with the frame rate
+            */
+            // for (let op of self.operatorUpdateGroup) {
+            //     op.update();
+            //     op.node.graph.recalculate();
+            // }
+
+            for (let uniform_data of self.uniforms) {
+                if (uniform_data.elements.length > 1) {                    
+                    let elements = uniform_data.elements.map((e) => e.value);
+                    shader.setUniform(uniform_data.name, elements);
+                } else {
+                    shader.setUniform(uniform_data.name, uniform_data.elements[0].value);
+                }
+            }
+
+            // setup samplers
+            for (let i = 0; i < self.inputs.length; i++) {
+                let input_shader = parent_node.parents[i].data;
+
+                if (input_shader) {
+                    let input_target = input_shader.target.ref;
+                    shader.setUniform(self.inputs[i], input_target);
+                }
+            }
+
+            shader.setUniform('resolution', [target.width, target.height]);
+
+            target.shader(shader);
+
+            try {
+                target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
+            } catch (error) {
+                console.error(error);
+                p.noLoop();
+            }
+        }
+
+        /*
+            onRemove()
+
+            removes the shader node (parent) from
+            the associated target
+        */
+        function onRemove() {
+            self.target.removeShaderNode(parent_node);
+        }
+
         return {
             afterAttach,
-            afterCreate,
-            extractUniforms
+            init,
+            extractUniforms,
+            setTarget,            
+            update,            
+            onRemove,
         }
     })
 
 const Shader = types.compose(NodeData, shader);
 
 export { Shader }
-
-const Parameter = types
-    .model("Parameter",{
-        name: types.maybe(types.string),
-        // value: types.maybe(types.union(types.number,types.boolean)),
-        value: types.maybe(types.union(types.number, types.string, types.boolean)),
-        // graph: types.maybe(ParameterGraph)
-    })
-    .actions(self => ({
-        setValue: (v) => {
-            self.value = v;
-        }
-    }))
-
-const Uniform = types
-    .model("Uniform", {
-        name: types.maybe(types.string),
-        elements: types.array(Parameter),
-    })
-    .actions(self => ({
-        addElement: (el) => {
-            self.elements.push(el)
-        }
-    }))

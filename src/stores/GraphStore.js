@@ -1,7 +1,7 @@
 import { GraphNode } from './NodeStore';
 import uuidv1 from 'uuid/v1';
 
-import { types, getRoot } from "mobx-state-tree";
+import { types } from "mobx-state-tree";
 import { undoManager } from '../RootStore';
 import Coordinate from './utils/Coordinate';
 
@@ -18,7 +18,7 @@ const Graph = types
         get root() {
             let node = self.nodes.values().next().value;
 
-            while (node && node.children[0]) {
+            while (node && node.children.length) {
                 node = node.children[0];
             }
 
@@ -42,7 +42,8 @@ const Graph = types
             afterCreate()
         */
         function afterAttach() {            
-            addNode().select();
+            // addNode().select();
+            // self.update();
         }
 
         /*
@@ -66,8 +67,11 @@ const Graph = types
             graph structure and then call afterUpdate()
         */
         function update() {
-            let update_queue = self.calculateBranches();
-            // self.afterUpdate(update_queue);
+            let update_queue = calculateBranches();
+            // calculateBranches()
+            self.calculateCoordinates()
+            self.calculateCoordinateBounds()
+            self.afterUpdate(update_queue);
 
             // to force a react re-render
             self.updateFlag = !self.updateFlag;
@@ -82,6 +86,7 @@ const Graph = types
         */
         function addNode(node = GraphNode.create({uuid: 'add_'+uuidv1()})) {            
             self.nodes.set(node.uuid, node);
+            self.update(); // TEMP
             return self.nodes.get(node.uuid)
         }
 
@@ -142,26 +147,30 @@ const Graph = types
                 breaks
             */
             if (node.parents.length) {
+                // connect parents to children
                 node.parents.forEach((parent, i) => {
                     parent.children[0] = node.children[0];
-                    node.children[0].parents[0] = node.parents[0];
+                    node.children[0].parents[0] = node.parents[i];
                 });
-            } else {
+
+                // if(self.children[0].parents)
+            } else {        
                 let idx = node.children[0].parents.indexOf(node);
                 console.log(idx)
-                node.children[0].parents.splice(idx, 1);
+                node.children[0].parents.splice(idx, 1);   
             }
+            node.children[0].mapInputsToParents();
 
             self.selectedNode = node.children[0]
 
             if(node.data) node.data.onRemove();
             self.nodes.delete(node);
 
-            if (self.nodes.size < 2) {
-                self.clear();
-            } else {
+            // if (self.nodes.size < 2) {
+            //     self.clear();
+            // } else {
                 self.update();
-            }
+            // }
         }
 
         /*
@@ -266,6 +275,7 @@ const Graph = types
             for centering, scaling, and positioning visualization
         */
         function calculateCoordinateBounds() {
+            // console.log('calculating pounds', getSnapshot(self))
             let max_x = 0;
             let max_y = 0;
 
@@ -284,6 +294,7 @@ const Graph = types
 
         return {
             afterAttach,
+            // afterUpdate,
             clear,
             update,
             appendNode,

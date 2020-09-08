@@ -6,6 +6,8 @@ import dirTree from "directory-tree";
 import path from 'path';
 import Collection from './stores/utils/Collection';
 import defaultSnapshot from './snapshots/default.json';
+import Runner from './Runner';
+import p5 from 'p5';
 
 // for electron
 const remote = window.require('electron').remote;
@@ -33,6 +35,22 @@ const fs = window.require('fs');
 
 const RootStore = types
   .model("RootStore", {    
+    p5_instance: types.custom({
+      name: 'p5 instance',
+      fromSnapshot(value) {
+        return undefined
+      },
+      toSnapshot(value) {
+        return undefined
+      },
+      isTargetType(value) {
+        return true;
+      },
+      // getValidationMessage(value: string): string {
+      //   if (/^-?\d+\.\d+$/.test(value)) return "" // OK
+      //   return `'${value}' doesn't look like a valid decimal number`
+      // }
+    }),
     scene: types.maybe(Scene),
     openPanels: types.array(types.string),
     shader_collection: types.maybe(types.late(() => Collection)),
@@ -45,6 +63,7 @@ const RootStore = types
       fetchShaderFiles()
         .then(() => self.shader_collection.preloadAll())
         .then(() => {
+          self.setupP5();
           self.setScene(Scene.create({}));
 
           // apply default
@@ -55,7 +74,13 @@ const RootStore = types
           self.addPanel('Shader Controls');
 
           self.setReady(true);
+
+          console.log('SELF',self)
         });
+    }
+
+    function setupP5() {
+      self.p5_instance = new p5(p => Runner(p, self));
     }
 
     function setScene(scene) {
@@ -105,10 +130,6 @@ const RootStore = types
         let content = f.filePaths[0];
         fs.readFile(content, 'utf-8', (err, data) => {
           if(err) console.error(err.message);
-          // console.log(JSON.parse(data))
-          // applySnapshot(self, JSON.parse(data));
-          
-
           // only deserialize scene.
           applySnapshot(self.scene, JSON.parse(data).scene);
 
@@ -138,9 +159,9 @@ const RootStore = types
     const fetchShaderFiles = flow(function* fetchShaderFiles() {
       self.shader_collection = Collection.create();
       
-      let default_shaders_path = app.isPackaged ?
-        path.join(app.getAppPath(), '../shaders') :
-        path.join(app.getAppPath(), 'shaders');
+      // let default_shaders_path = app.isPackaged ?
+      //   path.join(app.getAppPath(), '../shaders') :
+      //   path.join(app.getAppPath(), 'shaders');
       let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
 
       try {
@@ -167,6 +188,7 @@ const RootStore = types
       setReady,
       // setScene: () => undoManager.withoutUndo(setScene),
       setScene,
+      setupP5,
       addPanel,
       removePanel,
       // setReady: () => undoManager.withoutUndo(setReady),

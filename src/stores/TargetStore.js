@@ -1,64 +1,63 @@
-import { observable, action } from 'mobx';
-import uuidv1 from 'uuid/v1';
-import { types } from "mobx-state-tree";
-
-export default class TargetStore {
-    @observable uuid   = uuidv1();
-
-    @observable ref    = null;
-
-    @observable parent = null;
-
-    @observable shaders = [];
-
-    @observable active = true;
-
-    constructor(parent) {
-        this.parent = parent;
-
-        let p = this.parent.p5_instance;
-        this.ref = p.createGraphics(
-            window.innerWidth,
-            window.innerHeight,
-            p.WEBGL
-        );
-    }
-
-    @action clear() {
-        this.shaders = [];
-    }
-
-    @action assignShader(shader) {
-        if(this.shaders.includes(shader)) {
-            // console.log(shader.name + ' can be recycled')
-
-        } else {
-            // console.log(shader.name + ' CANT be recycled')
-            this.shaders.push(shader);
-        }
-    }
-
-    @action removeShader(shader) {
-        this.shaders = this.shaders.filter((item) => item.uuid !== shader.uuid);                
-
-        // if (this.shaders.length === 0) this.parent.removeTarget(this);
-    }
-}
-
-
-
+import { types, getRoot } from "mobx-state-tree";
+import { GraphNode } from './NodeStore';
 
 const Target = types
     .model("Target", {
-        
+        uuid: types.identifier,
+        ref: types.custom({
+            name: 'p5 target reference',
+            fromSnapshot: () => undefined,
+            toSnapshot: () => undefined,
+            isTargetType: () => true,
+        }),
+        shader_nodes: types.array(types.reference(types.late(()=>GraphNode)))
     })
     .actions(self => {
-        function afterCreate() {
+        let root_store; 
+
+        function afterAttach() {
+            root_store = getRoot(self);
+
+            setupRef();
+        }
+
+        function setupRef() {
+            let p = root_store.p5_instance;
             
+            self.ref = p.createGraphics(
+                p.width,
+                p.height,
+                p.WEBGL
+            );
+        }
+
+        function clear() {
+            self.shader_nodes = [];
+        }
+
+        function assignShaderNode(shader) {
+            if (self.shader_nodes.includes(shader)) {
+                // console.log(shader.name + ' can be recycled')
+
+            } else {
+                // console.log(shader.name + ' CANT be recycled')
+                self.shader_nodes.push(shader);
+            }
+        }
+
+        function removeShaderNode(shader) {
+            console.log(shader)
+            self.shader_nodes = self.shader_nodes.filter((item) => item.uuid !== shader.uuid);
+
+            // if (this.shader_nodes.length === 0) this.parent.removeTarget(this);
         }
 
         return {
-            afterCreate,
+            setupRef,
+            afterAttach,
+            clear,
+            assignShaderNode,
+            removeShaderNode,
         };
     })
 

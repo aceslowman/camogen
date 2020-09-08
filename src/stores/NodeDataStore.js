@@ -5,24 +5,25 @@ const NodeData = types
         name: types.string,
         inputs: types.optional(types.array(types.string),[]),
         outputs: types.optional(types.array(types.string),["out"]),
+        ready: false,
         // component_ref: null,
         // node: null,
         // controls: [],
     })
     .actions(self => {
-        let node;
+        // let node;
 
         function afterAttach() {
             // node = self.parent.value;
         }
 
-        function onRemove() {
+        // function onRemove() {
 
-        }
+        // }
 
         return {
             afterAttach,
-            onRemove
+            // onRemove
         }
     })
 

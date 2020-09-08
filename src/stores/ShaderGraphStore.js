@@ -1,17 +1,47 @@
 import { Graph } from './GraphStore';
-import { types, getRoot, getSnapshot, applySnapshot } from "mobx-state-tree";
+import { types, getRoot, getSnapshot, applySnapshot, getParent } from "mobx-state-tree";
 import { Shader } from './ShaderStore';
-import { undoManager } from '../RootStore';
+// import { undoManager } from '../RootStore';
 // import { Shader } from './ShaderStore';
 
 let shaderGraph = types
-    .model("ShaderGraph", {
-    })
+    .model("ShaderGraph", {})
     .actions(self => {
         let state_root;
+        let parent_scene;
 
         function afterAttach() {
             state_root = getRoot(self);
+            parent_scene = getParent(self);
+            self.update();
+        }
+
+        /*
+            afterUpdate(queue)
+
+            after graph updates, the shader graph updates targets
+            and syncs the shaders with the targets
+
+            accepts an array of nodes, ordered using either depth or
+            breadth first search
+        */
+        function afterUpdate(queue) {
+            queue.forEach(node => {
+                if (node.data) {
+                    if (parent_scene.targets.length && parent_scene.targets[node.branch_index]) {
+                        node.data.setTarget(parent_scene.targets[node.branch_index]);
+                    } else {
+                        node.data.setTarget(parent_scene.addTarget());
+                    }
+
+                    node.data.target.assignShaderNode(node);
+
+                    // move away from afterUpdate?
+                    if (!node.data.ready) {                        
+                        node.data.init();
+                    }
+                }
+            });
         }
 
         function getShader(name) {
@@ -29,12 +59,15 @@ let shaderGraph = types
 
         function setSelectedByName(name) {
             self.selectedNode.setData(getShader(name))
+            self.update(); // fixed issue where bounds weren't updating
         }
             
         return {
             // afterAttach: () => undoManager.withoutUndo(afterAttach),
             // getShader: () => undoManager.withoutUndo(getShader),
+
             afterAttach,
+            afterUpdate,
             getShader,
             setSelectedByName
         }

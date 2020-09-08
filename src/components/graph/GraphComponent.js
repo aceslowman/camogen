@@ -29,8 +29,6 @@ const GraphComponent = observer((props) => {
 		canvas_ref.current.height = wrapper_ref.current.offsetHeight;
 		
 		let queue = props.data.calculateCoordinates();
-		props.data.calculateCoordinateBounds();
-		props.data.calculateBranches();
 
 		let spacing = {
 			x: ((wrapper_bounds.width) / (props.data.coord_bounds.x+1)),
@@ -167,6 +165,7 @@ const GraphComponent = observer((props) => {
 		drawGraph();	
 	},[
 		props.data, 
+		props.data.coord_bounds,
 		props.data.selectedNode,
 		props.data.selectedNode.data, // i hate this
 		props.data.updateFlag,
@@ -177,11 +176,11 @@ const GraphComponent = observer((props) => {
 	useEffect(() => {
 		let unsubscribe = tinykeys(window, {
 			"ArrowDown": () => {
-				if (props.data.selectedNode.children[0])
+				if (props.data.selectedNode.children.length)
 					props.data.selectedNode.children[0].select()
 			},
 			"ArrowLeft": () => {
-				if (props.data.selectedNode.children[0]) {
+				if (props.data.selectedNode.children.length) {
 					let idx = props.data.selectedNode.children[0].parents.indexOf(props.data.selectedNode);
 					idx--;
 
@@ -191,7 +190,7 @@ const GraphComponent = observer((props) => {
 				}
 			},
 			"ArrowRight": () => {
-				if (props.data.selectedNode.children[0]) {
+				if (props.data.selectedNode.children.length) {
 					let idx = props.data.selectedNode.children[0].parents.indexOf(props.data.selectedNode);
 					idx++;
 
@@ -200,7 +199,7 @@ const GraphComponent = observer((props) => {
 				}
 			},
 			"ArrowUp": () => {
-				if(props.data.selectedNode.parents[0])
+				if(props.data.selectedNode.parents.length)
 					props.data.selectedNode.parents[0].select()
 			},
 			"Delete": () => {
