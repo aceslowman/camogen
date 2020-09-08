@@ -174,7 +174,6 @@ const App = observer((props) => {
               {
                 label: "*Open Directory*",
                 onClick: () => {
-                  // props.store.addPanel("Debug")
                   let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
                   shell.openItem(user_shaders_path)
                 }
@@ -236,6 +235,7 @@ const App = observer((props) => {
                         return (<ShaderEditorComponent 
                             key={i}
                             data={props.store.scene.shaderGraph.currentlyEditing}
+                            graph={props.store.scene.shaderGraph}
                           />
                         );
                       case 'Shader Controls':                            

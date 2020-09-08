@@ -38,19 +38,9 @@ const RootStore = types
   .model("RootStore", {    
     p5_instance: types.custom({
       name: 'p5 instance',
-      fromSnapshot(value) {
-        return undefined
-      },
-      toSnapshot(value) {
-        return undefined
-      },
-      isTargetType(value) {
-        return true;
-      },
-      // getValidationMessage(value: string): string {
-      //   if (/^-?\d+\.\d+$/.test(value)) return "" // OK
-      //   return `'${value}' doesn't look like a valid decimal number`
-      // }
+      fromSnapshot: () => undefined,
+      toSnapshot: () => undefined,
+      isTargetType: () => true,
     }),
     scene: types.maybe(Scene),
     openPanels: types.array(types.string),
@@ -70,7 +60,8 @@ const RootStore = types
           // apply default
           applySnapshot(self.scene, defaultSnapshot.scene);
 
-          self.addPanel('Debug');
+          // self.addPanel('Debug');
+          self.addPanel('Shader Editor');
           self.addPanel('Shader Graph');
           self.addPanel('Shader Controls');
 

@@ -17,9 +17,7 @@ const ShaderEditor = (props) => {
     const [editType, setEditType] = useState('vert');
 
     const handleRefresh = () => {
-        // restore the draw loop, if stopped
         store.p5_instance.loop();
-        // re-initialize the data
         props.data.init()
     }
 
@@ -28,17 +26,13 @@ const ShaderEditor = (props) => {
     }
 
     const handleFragEdit = () => {
-        if (props.data) {
-            setEditType('frag');
-        }
+        if (props.data) setEditType('frag');
     }
 
     const handleVertexEdit = () => {
-        if (props.data) {
-            setEditType('vert');
-        }
+        if (props.data) setEditType('vert');
     }
-
+    
     return(
         <PanelComponent 
             collapsible
@@ -70,11 +64,11 @@ const ShaderEditor = (props) => {
         >		
                 
             {
-                props.data && (<AceEditor
+                props.data.data && (<AceEditor
                     mode="glsl"
                     theme="monokai"
                     onChange={handleEditorChange}
-                    value={props.data[editType]}
+                    value={editType === 'frag' ? props.data.data.vert : props.data.data.frag}
                     height=""
                     width=""
                     minHeight="500px"
@@ -89,8 +83,6 @@ const ShaderEditor = (props) => {
                     </p>
                 )
             }
-
-            { props.data && props.data.node.graph.updateFlag ? '' : '' }
         </PanelComponent>
     )
 }
