@@ -3,17 +3,18 @@ import { Scene } from './stores/SceneStore';
 import { UndoManager } from "mst-middlewares";
 import { getSnapshot } from 'mobx-state-tree';
 import dirTree from "directory-tree";
-import path from 'path';
 import Collection from './stores/utils/Collection';
 import defaultSnapshot from './snapshots/default.json';
 import Runner from './Runner';
 import p5 from 'p5';
 
+import path from 'path';
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
 const app = remote.app;
 const fs = window.require('fs');
+
 
 /*
   [RootStore]

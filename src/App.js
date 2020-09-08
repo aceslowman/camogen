@@ -9,7 +9,6 @@ import HelpComponent from './components/panels/HelpComponent';
 import ShaderEditorComponent from './components/panels/ShaderEditorComponent';
 import ParameterEditorComponent from './components/panels/ParameterEditorComponent';
 
-// import { u/ndo } from 'mobx-state-tree';
 import tinykeys from 'tinykeys';
 import {
   PanelComponent,
@@ -21,6 +20,11 @@ import {
 
 import 'maco-ui/dist/index.css';
 import { getSnapshot } from 'mobx-state-tree';
+
+import path from 'path';
+const shell = window.require('electron').shell;
+const remote = window.require('electron').remote;
+const app = remote.app;
 
 const App = observer((props) => {
 
@@ -165,7 +169,17 @@ const App = observer((props) => {
           },
           {
             label: "LIBRARY",
-            dropDown: () => handleLib()
+            dropDown: () => [
+              ...handleLib(),
+              {
+                label: "*Open Directory*",
+                onClick: () => {
+                  // props.store.addPanel("Debug")
+                  let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
+                  shell.openItem(user_shaders_path)
+                }
+              },
+            ]
           },
           {
             label: "INPUTS",
