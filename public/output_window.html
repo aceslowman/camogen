@@ -13,19 +13,30 @@
             top: 0px;
             left: 0px;
             font-family: 'IBM Plex Mono', monospace;
+            background-color: black;
         }
         #container {
             display: flex;
             justify-content: center;
-            align-items: center;
-            background-color: black;
+            align-items: center;            
         }
-        p {
+        #info {
             position: absolute;
             top: 0px;
             left: 0px;
+            padding: 15px;
+        }
+        p {
             color: greenyellow;
-            padding: 15px; 
+        }
+        #dimension_selector {
+            
+        }
+        .close {
+            /* position: relative;
+            top: 0px;
+            right: 0px; */
+            color:white;
         }
     </style>  
     <link
@@ -35,21 +46,29 @@
 <body>
     <div id="container">
         <canvas id="output_canvas"></canvas>
-        <p><strong>dimensions: </strong><span id="dimensions"></span></p>
+
+        <div id="info">
+            <div class="close" onclick="toggleInfo()">x (press 'i' to toggle)</div>
+            <p><strong>dimensions: </strong><span id="dimensions"></span></p>
+            <select id="dimension_selector" onchange="onDimensionSelect(this)">
+                <option value="1920x1080">1920x1080</option>
+                <option value="1280x720">1280x720</option>
+            </select>
+        </div>
+        
+
     </div>
     
     <script>
         window.addEventListener('resize', onWindowResize);
+        window.addEventListener('keypress', onKeyPress);
+
+        showInfo = true;
         var canvas = document.getElementById('output_canvas');
         var ctx = canvas.getContext('2d');        
 
-        // canvas.width = parent.gl.canvas.width;
-        // canvas.height = parent.gl.canvas.height;
-        // canvas.width = parent.dimensions[0];
-        // canvas.height = parent.dimensions[1];
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
 
         function animate() {
             ctx.drawImage(parent.gl.canvas, 0, 0);
@@ -57,13 +76,31 @@
         }
 
         function onWindowResize(e) {
-            console.log('output window dimensions', [window.innerWidth, window.innerHeight]);
             document.getElementById('dimensions').innerHTML = `[${window.innerWidth}, ${window.innerHeight}]`;
 
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
 
             parent.updateDimensions(window.innerWidth, window.innerHeight);
+        }
+
+        function onKeyPress(e) {
+            if(e.keyCode === 105) toggleInfo()
+            console.log(showInfo)
+        }
+
+        function onDimensionSelect(e) {
+            var dim = e.value.split('x');
+            
+            canvas.width = dim[0];
+            canvas.height = dim[1];
+            parent.updateDimensions(dim[0],dim[1]);
+            window.resizeTo(dim[0],dim[1])
+        }
+
+        function toggleInfo() {
+            showInfo = !showInfo;
+            document.getElementById('info').style.visibility = showInfo ? 'visible' : 'hidden'
         }
         
         animate();

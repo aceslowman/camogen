@@ -30,8 +30,8 @@ const Collection = types
           }
         }
       }
-      if(result.length > 1) console.log('multiple results found for '+name)
-      return (result.length === 1) ? result[0] : result;
+      if(result.length > 1) console.log('multiple results found for '+name, result)
+      return result[0];
     },
   }))
   .actions(self => {

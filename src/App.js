@@ -65,6 +65,7 @@ const App = observer((props) => {
 
   const handleResize = () => {
     if(props.store.breakoutControlled) return;
+    if(!props.store.p5_instance) return;
     
     let bounds = mainRef.current.getBoundingClientRect();
 
@@ -127,7 +128,7 @@ const App = observer((props) => {
     <ToolbarComponent 
         items={[
           {
-            label: "FILE",
+            label: "File",
             dropDown: [
               {
                 label: "Save Scene",
@@ -139,37 +140,69 @@ const App = observer((props) => {
             ]
           },	
           {
-            label: "PANELS",
+            label: "Workspace",
             dropDown: [
               {
-                label: "Shader Graph",
-                onClick: () => props.store.addPanel("Shader Graph")
+                label: "Welcome",
+                onClick: () => props.store.workspace.setWorkspace("Welcome")
               },
               {
-                label: "Shader Editor",
-                onClick: () => props.store.addPanel("Shader Editor")
+                label: "Shader Edit",
+                onClick: () => props.store.workspace.setWorkspace("Shader Edit")
               },
               {
-                label: "Shader Controls",
-                onClick: () => props.store.addPanel("Shader Controls")
-              },  
-              {
-                label: "Parameter Editor",
-                onClick: () => props.store.addPanel("Parameter Editor")
-              },
-              {
-                label: "Help",
-                onClick: () => props.store.addPanel("Help")
+                label: "Shader Control",
+                onClick: () => props.store.workspace.setWorkspace("Shader Control")
               },
               {
                 label: "Debug",
-                onClick: () => props.store.addPanel("Debug")
+                onClick: () => props.store.workspace.setWorkspace("Debug")
               },
+              {
+                label: "Add Panel",
+                dropDown: [{
+                    label: "Shader Graph",
+                    onClick: () => props.store.workspace.addPanel("Shader Graph")
+                  },
+                  {
+                    label: "Shader Editor",
+                    onClick: () => props.store.workspace.addPanel("Shader Editor")
+                  },
+                  {
+                    label: "Shader Controls",
+                    onClick: () => props.store.workspace.addPanel("Shader Controls")
+                  },
+                  {
+                    label: "Parameter Editor",
+                    onClick: () => props.store.workspace.addPanel("Parameter Editor")
+                  },
+                  {
+                    label: "Help",
+                    onClick: () => props.store.workspace.addPanel("Help")
+                  },
+                  {
+                    label: "Debug",
+                    onClick: () => props.store.workspace.addPanel("Debug")
+                  },
+                ]
+              },              
             ]
           },
           {
-            label: "LIBRARY",
+            label: "Library",
             dropDown: () => [
+              {
+                label: "Inputs",
+                dropDown: [{
+                    label: "Webcam",
+                    onClick: () => props.store.scene.shaderGraph.setSelectedByName("WebcamInput")
+                  },
+                  {
+                    label: "Image",
+                    onClick: () => props.store.scene.shaderGraph.setSelectedByName("ImageInput")
+                  },
+                ]
+              },
               ...handleLib(),
               {
                 label: "*Open Directory*",
@@ -180,29 +213,17 @@ const App = observer((props) => {
               },
             ]
           },
+          
           {
-            label: "INPUTS",
-            dropDown: [
-              {
-                label: "WEBCAM",
-                onClick: () => props.store.scene.shaderGraph.setSelectedByName("WebcamInput")
-              },
-              {
-                label: "IMAGE",
-                onClick: () => props.store.scene.shaderGraph.setSelectedByName("ImageInput")
-              },
-            ]
-          },
-          {
-            label: "CLEAR",
+            label: "Clear",
             onClick: () => props.store.scene.clear()
           },						
           {
-            label: "SNAPSHOT",
-            onClick: props.store.snapshot
+            label: "Snapshot",
+            onClick: () => props.store.snapshot()
           },
           {
-            label: "BREAKOUT",
+            label: "Breakout",
             onClick: handleBreakout
           },
         ]}
@@ -218,12 +239,12 @@ const App = observer((props) => {
               <PanelComponent
                 title={(<h1>camogen</h1>)}
                 horizontal 
-                fullscreen
+                // fullscreen={props.store.breakoutControlled}
                 floating
                 toolbar={main_panel_toolbar}
               >
                 <SplitContainer horizontal>
-                  {props.store.openPanels.map((name,i)=>{
+                  {props.store.workspace.panels.map((name,i)=>{
                     switch (name) {
                       case 'Shader Graph':                            
                         return (<ShaderGraphComponent 
@@ -234,7 +255,7 @@ const App = observer((props) => {
                       case 'Shader Editor':                            
                         return (<ShaderEditorComponent 
                             key={i}
-                            data={props.store.scene.shaderGraph.currentlyEditing}
+                            data={props.store.scene.shaderGraph.selectedNode}
                             graph={props.store.scene.shaderGraph}
                           />
                         );

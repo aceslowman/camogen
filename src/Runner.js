@@ -19,20 +19,20 @@ const Runner = (p, store) => {
             if (
                 store.scene.shaderGraph
                 && store.ready
+                && store.scene.targets.length
             ) {
                 for (let target_data of store.scene.targets) {
                     for (let shader_node of target_data.shader_nodes) {
                         shader_node.data.update(p);                                       
                     }
                 }
-                // console.log(store.scene.targets)
+
                 p.image(store.scene.targets[0].ref, 0, 0, p.width, p.height);
-                // p.background(100); // gray
             } else {
                 p.background(0);
             }
         } catch (error) {
-            console.error(error);
+            console.error('error in runner, stopping draw loop',error);
             p.noLoop();
         }        
     }

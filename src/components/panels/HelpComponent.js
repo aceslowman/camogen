@@ -8,7 +8,7 @@ import {
 const Help = (props) => {
     const store = useContext(MainContext).store;
 
-    const handleRemove = () => store.removePanel('Help')
+    const handleRemove = () => store.workspace.removePanel('Help')
 
     return(
         <PanelComponent

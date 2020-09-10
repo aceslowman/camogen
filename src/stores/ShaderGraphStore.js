@@ -1,8 +1,6 @@
 import { Graph } from './GraphStore';
 import { types, getRoot, getSnapshot, applySnapshot, getParent } from "mobx-state-tree";
 import { Shader } from './ShaderStore';
-// import { undoManager } from '../RootStore';
-// import { Shader } from './ShaderStore';
 
 let shaderGraph = types
     .model("ShaderGraph", {})
@@ -18,6 +16,7 @@ let shaderGraph = types
 
         /*
             afterUpdate(queue)
+            TODO: maybe rename as assignTarget()?
 
             after graph updates, the shader graph updates targets
             and syncs the shaders with the targets
@@ -48,8 +47,9 @@ let shaderGraph = types
             let data, shader;
             
             try {
-                data = state_root.shader_collection.getByName(name).data;                
-                shader = Shader.create({});
+                data = state_root.shader_collection.getByName(name).data;           
+                console.log(data)     
+                shader = Shader.create();
                 applySnapshot(shader, getSnapshot(data));
                 return shader;
             } catch(err) {
@@ -58,14 +58,13 @@ let shaderGraph = types
         }
 
         function setSelectedByName(name) {
+            if(!self.selectedNode) self.selectedNode = self.root;
+            console.log(self.selectedNode)
             self.selectedNode.setData(getShader(name))
             self.update(); // fixed issue where bounds weren't updating
         }
             
         return {
-            // afterAttach: () => undoManager.withoutUndo(afterAttach),
-            // getShader: () => undoManager.withoutUndo(getShader),
-
             afterAttach,
             afterUpdate,
             getShader,

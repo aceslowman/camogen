@@ -1,7 +1,7 @@
 import { Shader } from './ShaderStore';
 import { types, getParent } from 'mobx-state-tree';
 import { NodeData } from './NodeDataStore';
-import { undoManager } from '../RootStore';
+import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
 import uuidv1 from 'uuid/v1';
     
@@ -9,11 +9,11 @@ const GraphNode = types
     .model("GraphNode", {
         uuid: types.identifier,
         name: "empty node",        
-        // order when using Union matters!
+        // NOTE: order when using Union matters!
         data: types.maybe(types.union(Shader, NodeData)),
         branch_index: types.maybe(types.number),        
-        children: types.array(types.reference(types.late(()=>GraphNode))),
-        parents: types.array(types.reference(types.late(()=>GraphNode))),
+        children: types.array(types.safeReference(types.late(()=>GraphNode))),
+        parents: types.array(types.safeReference(types.late(()=>GraphNode))),
         selected: false,
         coordinates: types.optional(Coordinate, {x: 0, y: 0}),
     })
@@ -30,15 +30,22 @@ const GraphNode = types
             self.name = data.name;
 
             // extract uniforms, map inputs/outputs
+            parent_graph.update();
             self.data.extractUniforms();
-            mapInputsToParents();
-            
+            mapInputsToParents();            
         }
 
         function mapInputsToParents() {
             if (!self.data) return;
 
+            /*
+                add new parent
+            */
             self.data.inputs.forEach((e,i) => {
+
+                /*
+                    add parent if necessary
+                */
                 if (i >= self.parents.length) {
                     let parent = GraphNode.create({
                         uuid: uuidv1(),
@@ -47,9 +54,12 @@ const GraphNode = types
                     
                     parent_graph.addNode(parent);
                     self.setParent(parent, i, true);
-                }
+                } 
             })
 
+            /* 
+                add new node if no children are present
+            */
             if(!self.children.length) {
                 let child = GraphNode.create({ uuid: uuidv1(), name: 'next' });
                 parent_graph.addNode(child);
@@ -81,12 +91,6 @@ const GraphNode = types
             self.branch_index = id;
         }
 
-        function edit() {
-            parent_graph.setEditing(self)
-            self.editing = true;
-            return self;
-        }
-
         function select() {
             parent_graph.setSelected(self)
             self.selected = true;
@@ -106,7 +110,6 @@ const GraphNode = types
             setParent,
             setChild,
             setBranchIndex,
-            edit,
             select: () => undoManager.withoutUndo(select),
             deselect: () => undoManager.withoutUndo(deselect),            
         }

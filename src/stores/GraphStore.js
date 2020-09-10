@@ -1,16 +1,15 @@
 import { GraphNode } from './NodeStore';
 import uuidv1 from 'uuid/v1';
 
-import { types } from "mobx-state-tree";
-import { undoManager } from '../RootStore';
+import { types, getSnapshot } from "mobx-state-tree";
+import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
 
 const Graph = types
     .model("Graph", {
         uuid: types.identifier,
         nodes: types.map(GraphNode),
-        selectedNode: types.maybe(types.reference(GraphNode)),
-        currentlyEditing: types.maybe(types.reference(GraphNode)),
+        selectedNode: types.maybe(types.safeReference(GraphNode)),
         coord_bounds: types.optional(Coordinate, {x: 0, y: 0}),
         updateFlag: false,
     })
@@ -52,8 +51,6 @@ const Graph = types
         function clear() {
             // re-initialize the nodes map
             self.nodes.clear();
-            // assure that no nodes are in editing
-            self.currentlyEditing = undefined;
             // create root node, select it
             self.addNode().select();
             // recalculate 
@@ -68,7 +65,7 @@ const Graph = types
         */
         function update() {
             let update_queue = calculateBranches();
-            // calculateBranches()
+
             self.calculateCoordinates()
             self.calculateCoordinateBounds()
             self.afterUpdate(update_queue);
@@ -117,13 +114,6 @@ const Graph = types
         }
 
         /*
-            setEditing(node)
-        */
-        function setEditing(node) {
-            self.currentlyEditing = node;
-        }
-
-        /*
             removeSelected()
         */
         function removeSelected() {
@@ -159,18 +149,15 @@ const Graph = types
                 console.log(idx)
                 node.children[0].parents.splice(idx, 1);   
             }
+
             node.children[0].mapInputsToParents();
 
             self.selectedNode = node.children[0]
 
             if(node.data) node.data.onRemove();
-            self.nodes.delete(node);
+            self.nodes.delete(node.uuid);
 
-            // if (self.nodes.size < 2) {
-            //     self.clear();
-            // } else {
-                self.update();
-            // }
+            self.update();
         }
 
         /*
@@ -299,7 +286,6 @@ const Graph = types
             update,
             appendNode,
             addNode,
-            setEditing,
             setSelected,
             removeSelected,
             removeNode,

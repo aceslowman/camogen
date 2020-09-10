@@ -1,14 +1,15 @@
 import { types, flow, applySnapshot } from "mobx-state-tree";
-import { Scene } from './stores/SceneStore';
+import { Scene } from './SceneStore';
 import { UndoManager } from "mst-middlewares";
 import { getSnapshot } from 'mobx-state-tree';
 import dirTree from "directory-tree";
-import Collection from './stores/utils/Collection';
-import defaultSnapshot from './snapshots/default.json';
-import Runner from './Runner';
+import Collection from './utils/Collection';
+import defaultSnapshot from '../snapshots/default.json';
+import Runner from '../Runner';
 import p5 from 'p5';
 
 import path from 'path';
+import Workspace, {DefaultShaderEdit} from "./utils/Workspace";
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
@@ -36,21 +37,24 @@ const fs = window.require('fs');
 
 const RootStore = types
   .model("RootStore", {    
-    p5_instance: types.custom({
-      name: 'p5 instance',
-      fromSnapshot: () => undefined,
-      toSnapshot: () => undefined,
-      isTargetType: () => true,
-    }),
+    // p5_instance: types.custom({
+    //   name: 'p5 instance',
+    //   fromSnapshot: () => undefined,
+    //   toSnapshot: () => undefined,
+    //   isTargetType: () => true,
+    // }),
     scene: types.maybe(Scene),
-    openPanels: types.array(types.string),
+    workspace: types.optional(Workspace, DefaultShaderEdit),
     shader_collection: types.maybe(types.late(() => Collection)),
-    ready: false
+    ready: false,
+    breakoutControlled: false
   })
   .actions(self => {
     setUndoManager(self)
 
     function afterCreate() {
+      console.log(window)
+
       fetchShaderFiles()
         .then(() => self.shader_collection.preloadAll())
         .then(() => {
@@ -60,15 +64,10 @@ const RootStore = types
           // apply default
           applySnapshot(self.scene, defaultSnapshot.scene);
 
-          // self.addPanel('Debug');
-          self.addPanel('Shader Editor');
-          self.addPanel('Shader Graph');
-          self.addPanel('Shader Controls');
-
           self.setReady(true);
-
-          console.log('SELF',self)
         });
+
+
     }
 
     function setupP5() {
@@ -130,8 +129,26 @@ const RootStore = types
       }).catch(err => {/*alert(err)*/});
     }
 
-    function addPanel(panel) {
-      self.openPanels.push(panel);
+    /*
+      breakout()
+    */
+    function breakout() {
+      let new_window = window.open('/output_window.html');
+      new_window.updateDimensions = (w,h) => self.onBreakoutResize(w,h);
+      new_window.gl = self.p5_instance.canvas.getContext('2d');
+      
+      self.breakoutControlled = true;
+    }
+
+    function onBreakoutResize(w,h) {
+      self.p5_instance.resizeCanvas(w,h);
+
+      // update target dimensions
+      for (let target_data of self.scenes[0].targets) {
+        target_data.ref.resizeCanvas(w,h);
+      }
+
+      self.p5_instance.draw();
     }
 
     /*
@@ -166,14 +183,40 @@ const RootStore = types
       } catch(err) {
         console.error("failed to fetch shaders", err);
       }
-    });
+    }); 
+    
+    /*
+      snapshot()
 
-    function removePanel(name) {
-      let index = self.openPanels.indexOf(name);
-      if (index > -1) {
-        self.openPanels.splice(index, 1)
+      saves a png of the current scene
+    */
+    const snapshot = flow(function* snapshot() {
+      console.log('i')
+      var dataURL = self.p5_instance.canvas.toDataURL("image/png");
+
+      var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
+      var content = new Buffer(data, 'base64');
+      
+      let path = `${app.getPath("userData")}/snapshots`;
+
+      let options = {
+        title: self.name + '.shader',
+        defaultPath: path,
+        buttonLabel: "Save Shader File",
       }
-    }
+
+      dialog.showSaveDialog(options).then((f) => {      
+        fs.writeFile(f.filePath, content, "base64", (err) => {
+          if (err) {
+            console.log("an error has occurred: " + err.message);
+          } else {
+            console.log("snapshot saved",f.filePath);            
+          }
+        });
+      }).catch(err => {
+        console.error(err)
+      });  
+    });
 
     return {
       afterCreate,
@@ -181,12 +224,14 @@ const RootStore = types
       // setScene: () => undoManager.withoutUndo(setScene),
       setScene,
       setupP5,
-      addPanel,
-      removePanel,
       // setReady: () => undoManager.withoutUndo(setReady),
+      breakout,
+      onBreakoutResize,
       save: () => undoManager.withoutUndo(save),
       load: () => undoManager.withoutUndo(load),
       fetchShaderFiles: () => undoManager.withoutUndoFlow(fetchShaderFiles),
+      snapshot: () => undoManager.withoutUndo(snapshot),
+      snapshot
     };
   })
 

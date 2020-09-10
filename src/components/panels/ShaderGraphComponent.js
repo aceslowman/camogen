@@ -16,7 +16,7 @@ const ShaderGraph = observer((props) => {
 		<PanelComponent 
 			collapsed={props.collapsed}
 			title="Shader Graph"				
-			onRemove={()=>store.removePanel('Shader Graph')}
+			onRemove={()=>store.workspace.removePanel('Shader Graph')}
 		>				
 			<GraphComponent data={props.data}/>
 

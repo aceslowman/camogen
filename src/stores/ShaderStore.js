@@ -1,7 +1,15 @@
 import { NodeData } from './NodeDataStore';
-import { types, getSnapshot, getParent } from "mobx-state-tree";
+import { types, getSnapshot, applySnapshot, getParent } from "mobx-state-tree";
 import * as DefaultShader from './shaders/DefaultShader';
 import { Target } from "./TargetStore";
+import path from 'path';
+
+
+// for electron
+const remote = window.require('electron').remote;
+const dialog = remote.dialog;
+const app = remote.app;
+const fs = window.require('fs');
 
 const Parameter = types
     .model("Parameter", {
@@ -34,7 +42,7 @@ let shader = types
         vert: types.optional(types.string, DefaultShader.vert),
         frag: types.optional(types.string, DefaultShader.frag),
         ready: false,
-        target: types.maybe(types.reference(Target)),
+        // target: types.maybe(types.reference(Target)), // removed because it doesn't need serializing
     })
     .views(self => ({
         get vertex() {
@@ -52,7 +60,12 @@ let shader = types
             parent_node = getParent(self);
         }
 
+        function afterCreate() {
+            self.ready = false; // initializing?
+        }
+
         function init() {
+            console.log(self)
             // create shader for given target
             self.ref = self.target.ref.createShader(
                 self.vertex,
@@ -270,7 +283,7 @@ let shader = types
             }
 
             shader.setUniform('resolution', [target.width, target.height]);
-
+            // console.log(shader)
             target.shader(shader);
 
             try {
@@ -279,6 +292,14 @@ let shader = types
                 console.error(error);
                 p.noLoop();
             }
+        }
+
+        function setVert(v) {
+            self.vert = v;
+        }
+
+        function setFrag(v) {
+            self.frag = v;
         }
 
         /*
@@ -291,13 +312,84 @@ let shader = types
             self.target.removeShaderNode(parent_node);
         }
 
+        function save() {
+            let path = `${app.getPath("userData")}/shaders`;
+            
+            let options = {
+                title: 'Save Shader File',
+                defaultPath: path,
+                buttonLabel: "Save",
+                filters: [{
+                    name: 'Shader File',
+                    // extensions: ['scene.camo']
+                }, ]
+            }
+
+            dialog.showSaveDialog(options).then((f) => {
+                if (!f.filePath) return;
+                let snap = getSnapshot(self);
+                let content = JSON.stringify(getSnapshot(self), (key,value)=>{
+                    if (
+                        key === 'uniforms' ||
+                        key === 'inputs' ||
+                        key === 'outputs' ||
+                        key === 'ready'
+                    ) return undefined;
+
+                    return value;
+                }, 5);   
+                
+                console.log(content)
+
+                fs.writeFile(f.filePath, content, (err) => {
+                    if (err) {
+                        console.error("an error has occurred: " + err.message);
+                    } else {
+                        console.log('scene has been saved at file:/' + f.filePath)
+                    }
+                });
+
+            }).catch(err => console.error(err));
+        }
+
+        function load() {
+            let path = `${app.getPath("userData")}/shaders`;
+
+            let options = {
+                title: 'Load Shader File',
+                defaultPath: path,
+                buttonLabel: "Load",
+                filters: [{
+                    name: 'Shader File',
+                    // extensions: ['scene.camo']
+                }, ]
+            }
+
+            dialog.showOpenDialog(options).then((f) => {
+                let content = f.filePaths[0];
+                fs.readFile(content, 'utf-8', (err, data) => {
+                    if (err) console.error(err.message);
+                    // only deserialize scene.
+                    applySnapshot(self.scene, JSON.parse(data).scene);
+
+                    // undoManager.clear();
+                })
+            }).catch(err => {
+                /*alert(err)*/ });
+        }
+
         return {
+            afterCreate,
             afterAttach,
             init,
             extractUniforms,
+            setVert,
+            setFrag,
             setTarget,            
             update,            
             onRemove,
+            save,
+            load,
         }
     })
 

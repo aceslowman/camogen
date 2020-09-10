@@ -156,10 +156,7 @@ const GraphComponent = observer((props) => {
 	
 	useResizeObserver(drawGraph, wrapper_ref);
 
-	const handleLabelClick = (node) => {
-		node.select();
-		node.edit();
-	}
+	const handleLabelClick = (node) => node.select();
 	
 	useLayoutEffect(() => {
 		drawGraph();	
@@ -208,9 +205,7 @@ const GraphComponent = observer((props) => {
 			}
 		})
 
-		return () => {
-			unsubscribe();
-		}
+		return () => unsubscribe();
 	}, [props.data]);
 
     return (

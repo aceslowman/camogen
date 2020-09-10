@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import MainContext from '../../MainContext';
 import { 
 	PanelComponent,
@@ -14,7 +14,7 @@ const ShaderControls = observer((props) => {
 	const store = useContext(MainContext).store;
 
 	const handleRemove = () => {
-		store.removePanel('Shader Controls')
+		store.workspace.removePanel('Shader Controls')
 	}
 
 	const handleValueChange = (param,e) => {
@@ -100,7 +100,7 @@ const ShaderControls = observer((props) => {
 			className={styles.shader_graph}	
 			vertical
 		>	
-			{props.data.nodes && panels}         
+			{props.data.nodes && panels}    
 		</PanelComponent>
 	);
 });

@@ -11,6 +11,7 @@ import {
     PanelComponent,
     ToolbarComponent,
 } from 'maco-ui';
+// import { Shader } from '../../stores/ShaderStore';
 
 const ShaderEditor = (props) => {
     const store = useContext(MainContext).store;
@@ -22,64 +23,81 @@ const ShaderEditor = (props) => {
     }
 
     const handleEditorChange = e => {
-        props.data[editType] = e;
+        switch (editType) {
+            case 'vert':
+                props.data.data.setVert(e);
+                break;
+            case 'frag':
+                props.data.data.setFrag(e);
+                break;
+        
+            default:
+                break;
+        }
     }
 
-    const handleFragEdit = () => {
-        if (props.data) setEditType('frag');
-    }
-
-    const handleVertexEdit = () => {
-        if (props.data) setEditType('vert');
-    }
+    const showEditor = props.data !== undefined && props.data.data;
     
     return(
-        <PanelComponent 
-            collapsible
-            onRemove={()=>store.removePanel('Shader Editor')}
+        <PanelComponent
+            onRemove={()=>store.workspace.removePanel('Shader Editor')}
             title="Shader Editor"	
             style={{minWidth:400,flexGrow:2,flexShrink:0}}
             toolbar={(
                 <ToolbarComponent  
-                    items={[
+                    items={ showEditor ? [
                         {
                             label: 'Save Shader',
-                            onClick: () => props.data.save()
+                            onClick: () => props.data.data.save()
+                        },
+                        {
+                            label: 'Edit Vertex',
+                            onClick: () => setEditType('vert')
                         },
                         {
                             label: 'Edit Fragment',
-                            onClick: () => handleFragEdit()
+                            onClick: () => setEditType('frag')
                         }, 
-                        {
-                            label: 'Edit Vertex',
-                            onClick: () => handleVertexEdit()
-                        },
                         {
                             label: 'Refresh',
                             onClick: () => handleRefresh()
                         },
+                    ] : [
+                        {
+                            label: 'New Shader',
+                            onClick: () => props.graph.setSelectedByName('Default')
+                        },
+                        {
+                            label: 'Load Shader',
+                            onClick: () => {
+                                props.graph.setSelectedByName('Default')
+                                // props.data.data.load()
+                            }
+                        }, 
                     ]}
                 /> 
             )}
         >		
                 
             {
-                props.data.data && (<AceEditor
+                showEditor && (<AceEditor
                     mode="glsl"
                     theme="monokai"
                     onChange={handleEditorChange}
-                    value={editType === 'frag' ? props.data.data.vert : props.data.data.frag}
+                    value={editType === 'frag' ? props.data.data.frag : props.data.data.vert}
                     height=""
                     width=""
                     minHeight="500px"
-                    className={styles.ace_editor}		 												
+                    className={styles.ace_editor}
+                    // showGutter={false}		 												
                 />)
             }
 
             {
-                !props.data && (
+                !showEditor && (
                     <p className={styles.no_node_selected}>
-                        <em> no shader node selected</em>
+                        <em> no shader node selected</em><br/><br/>
+                        {/* <button onClick={()=>props.data.setData()}>new shader</button> */}
                     </p>
                 )
             }

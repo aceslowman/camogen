@@ -19,13 +19,19 @@ const Scene = types
             return target;
         }
 
+        function removeTarget(target) {
+            self.targets = self.targets.filter((item) => item !== target);
+        }
+
         function clear() {
             self.shaderGraph.clear();
+            self.targets = [];
         }
 
         return {
             afterAttach,
             addTarget,
+            removeTarget,
             clear,
         };
     })

@@ -11,7 +11,7 @@ import {
 const ParameterEditor = (props) => {
     const store = useContext(MainContext).store;
 
-    const handleRemove = () => store.removePanel('Parameter Editor')
+    const handleRemove = () => store.workspace.removePanel('Parameter Editor')
 
     return(
         <PanelComponent 
