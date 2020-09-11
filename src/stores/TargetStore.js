@@ -4,7 +4,7 @@ import { GraphNode } from './NodeStore';
 const Target = types
     .model("Target", {
         uuid: types.identifier,
-        shader_nodes: types.array(types.safeReference(types.late(()=>GraphNode)))
+        render_queue: types.array(types.safeReference(types.late(()=>GraphNode)))
     })
     .volatile(self => ({
         ref: null
@@ -30,38 +30,24 @@ const Target = types
         }
 
         function clear() {
-            self.shader_nodes = [];
+            self.render_queue = [];
         }
 
-        // // this method is responsible for order
-        // function assignShaderNode(node,idx,largest_idx) {
-        //     self.shader_nodes = self.shader_nodes.slice(0,largest_idx);
-
-        //     if(idx < self.shader_nodes.length-1) {
-        //         self.shader_nodes[idx] = node;
-        //     } else if(!self.shader_nodes.includes(node)){
-        //         self.shader_nodes.push(node);
-        //     }                   
-        // }
-
-        function assignRenderQueue(queue) {
-            console.log(queue.filter(e => e.uuid))
-            self.shader_nodes = queue.filter(e=>e.uuid);
-            console.log(self.shader_nodes)
+        function setRenderQueue(queue) {
+            self.render_queue = queue.filter(e=>e.uuid);
         }
 
         function removeShaderNode(shader) {
-            self.shader_nodes = self.shader_nodes.filter((item) => item.uuid !== shader.uuid);
+            self.render_queue = self.render_queue.filter((item) => item.uuid !== shader.uuid);
 
-            if (self.shader_nodes.length === 0) parent_scene.removeTarget(self);
+            if (self.render_queue.length === 0) parent_scene.removeTarget(self);
         }
 
         return {
             setupRef,
             afterAttach,
             clear,
-            assignRenderQueue,
-            // assignShaderNode,
+            setRenderQueue,
             removeShaderNode,
         };
     })

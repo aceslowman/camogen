@@ -58,7 +58,7 @@ const DebugInfo = observer((props) => {
 							<React.Fragment key={i}>
 								<h3>target #{i}</h3>
 								<ol>
-									{target.shader_nodes.map((shader,j)=>(
+									{target.render_queue.map((shader,j)=>(
 										<li key={j}>{shader.name}</li>
 									))}
 								</ol>

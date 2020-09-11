@@ -22,7 +22,7 @@ const Runner = (p, store) => {
                 && store.scene.targets.length
             ) {
                 for (let target_data of store.scene.targets) {
-                    for (let shader_node of target_data.shader_nodes) {
+                    for (let shader_node of target_data.render_queue) {
                         shader_node.data.update(p);                                       
                     }
                 }

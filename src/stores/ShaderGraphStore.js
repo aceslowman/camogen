@@ -20,16 +20,17 @@ let shaderGraph = types
             after graph updates, the shader graph updates targets
             and syncs the shaders with the targets
 
-            accepts an array of nodes, ordered using either depth or
-            breadth first search
+            accepts an array of arrays, representing each target and it's 
+            render queue.
         */
         function afterUpdate(queue) {
-            console.log(parent_scene)
-
             queue.forEach((subqueue,branch_id) => {
 
                 /*
-                    TODO: I bet I could refactor this forEach out of here
+                    assign targets to shaders
+
+                    note: seems like there is room for refactoring and making
+                    the logic of this clearer.
                 */
                 subqueue.forEach((node, i) => {
                     if (node.data) {
@@ -40,7 +41,6 @@ let shaderGraph = types
                             node.data.setTarget(parent_scene.addTarget());
                         }
 
-                        // move away from afterUpdate?
                         if (!node.data.ready) {
                             node.data.init();
                         }
@@ -49,7 +49,7 @@ let shaderGraph = types
                 
                 // if target exists, assign full queue
                 if(parent_scene.targets[branch_id])
-                    parent_scene.targets[branch_id].assignRenderQueue(subqueue);
+                    parent_scene.targets[branch_id].setRenderQueue(subqueue);
             });
         }
 
