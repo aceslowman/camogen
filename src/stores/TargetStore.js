@@ -4,14 +4,11 @@ import { GraphNode } from './NodeStore';
 const Target = types
     .model("Target", {
         uuid: types.identifier,
-        // ref: types.custom({
-        //     name: 'p5 target',
-        //     fromSnapshot: () => undefined,
-        //     toSnapshot: () => undefined,
-        //     isTargetType: () => true,
-        // }),
         shader_nodes: types.array(types.safeReference(types.late(()=>GraphNode)))
     })
+    .volatile(self => ({
+        ref: null
+    }))
     .actions(self => {
         let root_store; 
         let parent_scene;
@@ -36,16 +33,21 @@ const Target = types
             self.shader_nodes = [];
         }
 
-        // this method is responsible for order
-        function assignShaderNode(shader) {
-            // console.log(shader)
-            if (self.shader_nodes.includes(shader)) {
-                // console.log(shader.name + ' can be recycled')
+        // // this method is responsible for order
+        // function assignShaderNode(node,idx,largest_idx) {
+        //     self.shader_nodes = self.shader_nodes.slice(0,largest_idx);
 
-            } else {
-                // console.log(shader.name + ' CANT be recycled')
-                self.shader_nodes.push(shader);
-            }
+        //     if(idx < self.shader_nodes.length-1) {
+        //         self.shader_nodes[idx] = node;
+        //     } else if(!self.shader_nodes.includes(node)){
+        //         self.shader_nodes.push(node);
+        //     }                   
+        // }
+
+        function assignRenderQueue(queue) {
+            console.log(queue.filter(e => e.uuid))
+            self.shader_nodes = queue.filter(e=>e.uuid);
+            console.log(self.shader_nodes)
         }
 
         function removeShaderNode(shader) {
@@ -58,7 +60,8 @@ const Target = types
             setupRef,
             afterAttach,
             clear,
-            assignShaderNode,
+            assignRenderQueue,
+            // assignShaderNode,
             removeShaderNode,
         };
     })

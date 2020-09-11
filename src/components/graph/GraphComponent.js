@@ -165,6 +165,7 @@ const GraphComponent = observer((props) => {
 		props.data.coord_bounds,
 		props.data.selectedNode,
 		props.data.selectedNode.data, // i hate this
+		props.data.selectedNode.name, // i hate this
 		props.data.updateFlag,
 		props.data.root, // helped with clear() rerender
 		// drawGraph,

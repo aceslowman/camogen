@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import MainContext from '../../MainContext';
 import styles from './ShaderEditorComponent.module.css';
 
@@ -25,10 +25,10 @@ const ShaderEditor = (props) => {
     const handleEditorChange = e => {
         switch (editType) {
             case 'vert':
-                props.data.data.setVert(e);
+                props.data.setVert(e);
                 break;
             case 'frag':
-                props.data.data.setFrag(e);
+                props.data.setFrag(e);
                 break;
         
             default:
@@ -36,7 +36,7 @@ const ShaderEditor = (props) => {
         }
     }
 
-    const showEditor = props.data !== undefined && props.data.data;
+    const showEditor = props.node !== undefined && props.data;
     
     return(
         <PanelComponent
@@ -48,7 +48,7 @@ const ShaderEditor = (props) => {
                     items={ showEditor ? [
                         {
                             label: 'Save Shader',
-                            onClick: () => props.data.data.save()
+                            onClick: () => props.data.save()
                         },
                         {
                             label: 'Edit Vertex',
@@ -70,8 +70,7 @@ const ShaderEditor = (props) => {
                         {
                             label: 'Load Shader',
                             onClick: () => {
-                                props.graph.setSelectedByName('Default')
-                                // props.data.data.load()
+                                props.data.load()
                             }
                         }, 
                     ]}
@@ -84,7 +83,7 @@ const ShaderEditor = (props) => {
                     mode="glsl"
                     theme="monokai"
                     onChange={handleEditorChange}
-                    value={editType === 'frag' ? props.data.data.frag : props.data.data.vert}
+                    value={editType === 'frag' ? props.data.frag : props.data.vert}
                     height=""
                     width=""
                     minHeight="500px"
@@ -97,7 +96,6 @@ const ShaderEditor = (props) => {
                 !showEditor && (
                     <p className={styles.no_node_selected}>
                         <em> no shader node selected</em><br/><br/>
-                        {/* <button onClick={()=>props.data.setData()}>new shader</button> */}
                     </p>
                 )
             }

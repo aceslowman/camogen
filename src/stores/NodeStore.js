@@ -91,6 +91,10 @@ const GraphNode = types
             self.branch_index = id;
         }
 
+        function setName(n) {
+            self.name = n;
+        }
+
         function select() {
             parent_graph.setSelected(self)
             self.selected = true;
@@ -110,6 +114,7 @@ const GraphNode = types
             setParent,
             setChild,
             setBranchIndex,
+            setName,
             select: () => undoManager.withoutUndo(select),
             deselect: () => undoManager.withoutUndo(deselect),            
         }

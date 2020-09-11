@@ -16,7 +16,6 @@ let shaderGraph = types
 
         /*
             afterUpdate(queue)
-            TODO: maybe rename as assignTarget()?
 
             after graph updates, the shader graph updates targets
             and syncs the shaders with the targets
@@ -25,21 +24,32 @@ let shaderGraph = types
             breadth first search
         */
         function afterUpdate(queue) {
-            queue.forEach(node => {
-                if (node.data) {
-                    if (parent_scene.targets.length && parent_scene.targets[node.branch_index]) {
-                        node.data.setTarget(parent_scene.targets[node.branch_index]);
-                    } else {
-                        node.data.setTarget(parent_scene.addTarget());
-                    }
+            console.log(parent_scene)
 
-                    node.data.target.assignShaderNode(node);
+            queue.forEach((subqueue,branch_id) => {
 
-                    // move away from afterUpdate?
-                    if (!node.data.ready) {                        
-                        node.data.init();
+                /*
+                    TODO: I bet I could refactor this forEach out of here
+                */
+                subqueue.forEach((node, i) => {
+                    if (node.data) {
+                        // if there are targets and the necessary one is available
+                        if (parent_scene.targets.length && parent_scene.targets[node.branch_index]) {
+                            node.data.setTarget(parent_scene.targets[node.branch_index]);
+                        } else { // otherwise, add target
+                            node.data.setTarget(parent_scene.addTarget());
+                        }
+
+                        // move away from afterUpdate?
+                        if (!node.data.ready) {
+                            node.data.init();
+                        }
                     }
-                }
+                });  
+                
+                // if target exists, assign full queue
+                if(parent_scene.targets[branch_id])
+                    parent_scene.targets[branch_id].assignRenderQueue(subqueue);
             });
         }
 
@@ -48,7 +58,6 @@ let shaderGraph = types
             
             try {
                 data = state_root.shader_collection.getByName(name).data;           
-                console.log(data)     
                 shader = Shader.create();
                 applySnapshot(shader, getSnapshot(data));
                 return shader;

@@ -1,5 +1,5 @@
 import { NodeData } from './NodeDataStore';
-import { types, getSnapshot, applySnapshot, getParent } from "mobx-state-tree";
+import { types, getSnapshot, applySnapshot, getParent, getRoot } from "mobx-state-tree";
 import * as DefaultShader from './shaders/DefaultShader';
 import { Target } from "./TargetStore";
 import path from 'path';
@@ -41,9 +41,11 @@ let shader = types
         precision: types.optional(types.string, DefaultShader.precision),
         vert: types.optional(types.string, DefaultShader.vert),
         frag: types.optional(types.string, DefaultShader.frag),
-        ready: false,
-        // target: types.maybe(types.reference(Target)), // removed because it doesn't need serializing
+        ready: false,        
     })
+    .volatile(self => ({
+        target: null,
+    }))
     .views(self => ({
         get vertex() {
             return self.precision + self.vert;
@@ -65,7 +67,6 @@ let shader = types
         }
 
         function init() {
-            console.log(self)
             // create shader for given target
             self.ref = self.target.ref.createShader(
                 self.vertex,
@@ -302,6 +303,10 @@ let shader = types
             self.frag = v;
         }
 
+        function setName(n) {
+            self.name = n;
+        }
+
         /*
             onRemove()
 
@@ -327,7 +332,9 @@ let shader = types
 
             dialog.showSaveDialog(options).then((f) => {
                 if (!f.filePath) return;
+                let name = f.filePath.split('/').pop().split('.')[0];
                 let snap = getSnapshot(self);
+
                 let content = JSON.stringify(getSnapshot(self), (key,value)=>{
                     if (
                         key === 'uniforms' ||
@@ -336,16 +343,22 @@ let shader = types
                         key === 'ready'
                     ) return undefined;
 
+                    if(key === 'name') return name; 
+
                     return value;
-                }, 5);   
-                
-                console.log(content)
+                }, 5); 
 
                 fs.writeFile(f.filePath, content, (err) => {
                     if (err) {
                         console.error("an error has occurred: " + err.message);
                     } else {
                         console.log('scene has been saved at file:/' + f.filePath)
+                        console.log(name)
+                        self.setName(name);
+                        parent_node.setName(name);
+                        // reload or add to collection
+                        const root_store = getRoot(self);
+                        root_store.fetchShaderFiles()
                     }
                 });
 
@@ -385,7 +398,8 @@ let shader = types
             extractUniforms,
             setVert,
             setFrag,
-            setTarget,            
+            setTarget, 
+            setName,           
             update,            
             onRemove,
             save,

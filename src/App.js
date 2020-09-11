@@ -255,7 +255,8 @@ const App = observer((props) => {
                       case 'Shader Editor':                            
                         return (<ShaderEditorComponent 
                             key={i}
-                            data={props.store.scene.shaderGraph.selectedNode}
+                            node={props.store.scene.shaderGraph.selectedNode}
+                            data={props.store.scene.shaderGraph.selectedNode.data}
                             graph={props.store.scene.shaderGraph}
                           />
                         );

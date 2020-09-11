@@ -64,11 +64,11 @@ const Graph = types
             graph structure and then call afterUpdate()
         */
         function update() {
-            let update_queue = calculateBranches();
+            let render_queues = calculateBranches();
 
-            self.calculateCoordinates()
-            self.calculateCoordinateBounds()
-            self.afterUpdate(update_queue);
+            self.calculateCoordinates();
+            self.calculateCoordinateBounds();
+            self.afterUpdate(render_queues);
 
             // to force a react re-render
             self.updateFlag = !self.updateFlag;
@@ -198,10 +198,12 @@ const Graph = types
 
         /* 
             calculateBranches()
+
+            returns an array of queues, by branch_id
         */
         function calculateBranches() {
             let current_branch = 0;
-            let queue = [];
+            let render_queues = [];
 
             self.traverse(next_node => {
                 next_node.branch_index = undefined;
@@ -210,21 +212,32 @@ const Graph = types
                 if (!next_node.parents.length) {
                     let t_node = next_node;
                     t_node.setBranchIndex(current_branch);
-                    queue.push(t_node);
+
+                    if (current_branch >= render_queues.length) {
+                        render_queues.push([]);
+                    }
+
+                    // only add to render queue if there is data to process
+                    if(t_node.data) render_queues[current_branch].push(t_node);
 
                     // propogate the new branch down the chain
                     // until it hits a node already with a branch_index
                     while (t_node.children.length && t_node.children[0].branch_index === undefined) {
                         t_node.children[0].setBranchIndex(current_branch);
                         t_node = t_node.children[0];
-                        queue.push(t_node);
+
+                        if (current_branch >= render_queues.length) {
+                            render_queues.push([]);
+                        }
+
+                        if (t_node.data) render_queues[current_branch].push(t_node);
                     }
 
                     current_branch++;
                 }    
             });
 
-            return queue;
+            return render_queues;
         }
 
         /*

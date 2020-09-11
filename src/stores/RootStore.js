@@ -9,7 +9,7 @@ import Runner from '../Runner';
 import p5 from 'p5';
 
 import path from 'path';
-import Workspace, {DefaultShaderEdit} from "./utils/Workspace";
+import Workspace, {DefaultShaderEdit, DefaultDebug} from "./utils/Workspace";
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
@@ -37,18 +37,15 @@ const fs = window.require('fs');
 
 const RootStore = types
   .model("RootStore", {    
-    // p5_instance: types.custom({
-    //   name: 'p5 instance',
-    //   fromSnapshot: () => undefined,
-    //   toSnapshot: () => undefined,
-    //   isTargetType: () => true,
-    // }),
     scene: types.maybe(Scene),
-    workspace: types.optional(Workspace, DefaultShaderEdit),
+    workspace: types.optional(Workspace, DefaultDebug),
     shader_collection: types.maybe(types.late(() => Collection)),
     ready: false,
     breakoutControlled: false
   })
+  .volatile(self => ({
+    p5_instance: null
+  }))
   .actions(self => {
     setUndoManager(self)
 
@@ -178,6 +175,7 @@ const RootStore = types
         yield fs.promises.access(user_shaders_path);
 
         let tree = dirTree(user_shaders_path);
+        // console.log(tree)
 
         applySnapshot(self.shader_collection,tree);
       } catch(err) {
@@ -191,7 +189,6 @@ const RootStore = types
       saves a png of the current scene
     */
     const snapshot = flow(function* snapshot() {
-      console.log('i')
       var dataURL = self.p5_instance.canvas.toDataURL("image/png");
 
       var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
@@ -229,7 +226,7 @@ const RootStore = types
       onBreakoutResize,
       save: () => undoManager.withoutUndo(save),
       load: () => undoManager.withoutUndo(load),
-      fetchShaderFiles: () => undoManager.withoutUndoFlow(fetchShaderFiles),
+      fetchShaderFiles: () => undoManager.withoutUndo(fetchShaderFiles),
       snapshot: () => undoManager.withoutUndo(snapshot),
       snapshot
     };
