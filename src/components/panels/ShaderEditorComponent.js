@@ -52,11 +52,13 @@ const ShaderEditor = (props) => {
                         },
                         {
                             label: 'Edit Vertex',
-                            onClick: () => setEditType('vert')
+                            onClick: () => setEditType('vert'),
+                            highlight: editType === 'vert',
                         },
                         {
                             label: 'Edit Fragment',
-                            onClick: () => setEditType('frag')
+                            onClick: () => setEditType('frag'),
+                            highlight: editType === 'frag',
                         }, 
                         {
                             label: 'Refresh',

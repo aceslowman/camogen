@@ -10,6 +10,7 @@ import p5 from 'p5';
 
 import path from 'path';
 import Workspace, {DefaultShaderEdit, DefaultDebug} from "./utils/Workspace";
+import Messages from "./utils/Messages";
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
@@ -41,7 +42,8 @@ const RootStore = types
     workspace: types.optional(Workspace, DefaultDebug),
     shader_collection: types.maybe(types.late(() => Collection)),
     ready: false,
-    breakoutControlled: false
+    breakoutControlled: false,
+    messages: types.maybe(Messages)
   })
   .volatile(self => ({
     p5_instance: null
@@ -50,7 +52,7 @@ const RootStore = types
     setUndoManager(self)
 
     function afterCreate() {
-      console.log(window)
+      self.messages = Messages.create();
 
       fetchShaderFiles()
         .then(() => self.shader_collection.preloadAll())
@@ -63,8 +65,6 @@ const RootStore = types
 
           self.setReady(true);
         });
-
-
     }
 
     function setupP5() {
@@ -120,8 +120,8 @@ const RootStore = types
           if(err) console.error(err.message);
           // only deserialize scene.
           applySnapshot(self.scene, JSON.parse(data).scene);
-
-          // undoManager.clear();
+          self.scene.shaderGraph.update();
+          undoManager.clear();
         })
       }).catch(err => {/*alert(err)*/});
     }

@@ -66,8 +66,11 @@ const Graph = types
         function update() {
             let render_queues = calculateBranches();
 
+            // calculate info for visualization
             self.calculateCoordinates();
             self.calculateCoordinateBounds();
+
+            // send each individual branch on to afterUpdate
             self.afterUpdate(render_queues);
 
             // to force a react re-render
@@ -103,9 +106,6 @@ const Graph = types
             current_root.setChild(new_node);
         }
 
-        // prependNode
-        // function prepend
-
         /*
             setSelected(node)
         */
@@ -124,29 +124,36 @@ const Graph = types
             removeNode(node)
         */
         function removeNode(node) {
-            if (node === self.root) {
-                return;
-            }
+            if (node === self.root) return;
 
             /*
                 if node being removed has a parent, make
                 sure to reconnect those parent nodes to the
                 next child node.
-
-                TODO: fix issue where multiinput shader parent removal
-                breaks
             */
             if (node.parents.length) {
-                // connect parents to children
-                node.parents.forEach((parent, i) => {
-                    parent.children[0] = node.children[0];
-                    node.children[0].parents[0] = node.parents[i];
-                });
 
-                // if(self.children[0].parents)
+                /* 
+                    if first child AND deleted node are multi-input
+                    is multi-input, reassign
+                */
+                if(node.children[0].parents.length > 1 && node.parents.length > 1) {
+                    node.parents.forEach((parent, i) => {
+                        node.children[0].parents[i] = node.parents[i];
+                    });
+                } else { // otherwise, collapse and map first child to first parent                    
+                    node.parents[0].children[0] = node.children[0];
+                    node.children[0].parents[0] = node.parents[0];
+
+                    // remove all pruned parents
+                    node.parents.forEach((parent,i) => {
+                        if(i == 0) return;
+                        if(parent.data) parent.data.onRemove();
+                        self.nodes.delete(parent.uuid)
+                    })
+                }
             } else {        
                 let idx = node.children[0].parents.indexOf(node);
-                console.log(idx)
                 node.children[0].parents.splice(idx, 1);   
             }
 

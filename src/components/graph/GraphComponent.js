@@ -201,7 +201,6 @@ const GraphComponent = observer((props) => {
 					props.data.selectedNode.parents[0].select()
 			},
 			"Delete": () => {
-				console.log('delete')
 				props.data.removeSelected();
 			}
 		})

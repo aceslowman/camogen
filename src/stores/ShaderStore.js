@@ -103,6 +103,8 @@ let shader = types
             2: "vec2"
             3: "offset"
             4: "{"name":"off","default":[0.0,0.0]}"
+
+            TODO: currently MUST use doublequotes.
         */
         function extractUniforms() {
             const builtins = ["resolution"];
@@ -285,6 +287,7 @@ let shader = types
 
             shader.setUniform('resolution', [target.width, target.height]);
             // console.log(shader)
+            
             target.shader(shader);
 
             try {

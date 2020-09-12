@@ -8,6 +8,7 @@ import DebugInfoComponent from './components/panels/DebugInfoComponent';
 import HelpComponent from './components/panels/HelpComponent';
 import ShaderEditorComponent from './components/panels/ShaderEditorComponent';
 import ParameterEditorComponent from './components/panels/ParameterEditorComponent';
+import MessagesComponent from './components/panels/MessagesComponent';
 
 import tinykeys from 'tinykeys';
 import {
@@ -184,6 +185,10 @@ const App = observer((props) => {
                     label: "Debug",
                     onClick: () => props.store.workspace.addPanel("Debug")
                   },
+                  {
+                    label: "Messages",
+                    onClick: () => props.store.workspace.addPanel("Messages")
+                  },
                 ]
               },              
             ]
@@ -280,6 +285,13 @@ const App = observer((props) => {
                       case 'Debug':                            
                         return (<DebugInfoComponent 
                             key={i}           
+                          />
+                        );         
+                      case 'Messages':                            
+                        return (<MessagesComponent 
+                            key={i}     
+                            data={props.store.messages}
+                            log={props.store.messages.log} 
                           />
                         );                             
                       default:

@@ -62,7 +62,7 @@ const DefaultDebug = {
     panels: [
         "Debug",
         "Shader Graph",
-        "Shader Controls"
+        "Messages"
     ]
 }
 

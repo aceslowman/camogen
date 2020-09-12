@@ -1,0 +1,13 @@
+.loglist {
+    margin: 0px;
+    padding: 0px;
+    list-style:none;
+}
+
+.loglist li {
+    padding-bottom: 10px;
+}
+
+.error {
+    color: red;
+}
