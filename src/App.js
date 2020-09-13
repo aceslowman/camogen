@@ -125,6 +125,63 @@ const App = observer((props) => {
     return items;
   }
 
+  const getPanel = (name, key, defaultSize) => {
+    switch (name) {
+      case 'Shader Graph':                            
+        return (<ShaderGraphComponent 
+            key={key}
+            data={props.store.scene.shaderGraph}
+            defaultSize={defaultSize}
+          />
+        );
+      case 'Shader Editor':                            
+        return (<ShaderEditorComponent 
+            key={key}
+            node={props.store.scene.shaderGraph.selectedNode}
+            data={props.store.scene.shaderGraph.selectedNode.data}
+            graph={props.store.scene.shaderGraph}
+            defaultSize={defaultSize}
+          />
+        );
+      case 'Shader Controls':                            
+        return (<ShaderControlsComponent 
+            key={key}
+            data={props.store.scene.shaderGraph}
+            defaultSize={defaultSize}
+          />
+        );
+      case 'Parameter Editor':  
+        return (<ParameterEditorComponent 
+            key={key}
+            data={props.store.selectedParameter}
+            defaultSize={defaultSize}
+          />
+        );
+      case 'Help':                            
+        return (<HelpComponent 
+            key={key}   
+            defaultSize={defaultSize}         
+          />
+        );
+      case 'Debug':                            
+        return (<DebugInfoComponent 
+            key={key}  
+            defaultSize={defaultSize}         
+          />
+        );         
+      case 'Messages':                            
+        return (<MessagesComponent 
+            key={key}     
+            data={props.store.messages}
+            log={props.store.messages.log} 
+            defaultSize={defaultSize}
+          />
+        );                             
+      default:
+        break;
+    }
+  }
+
   const main_panel_toolbar = (
     <ToolbarComponent 
         items={[
@@ -248,55 +305,31 @@ const App = observer((props) => {
                 floating
                 toolbar={main_panel_toolbar}
               >
-                <SplitContainer horizontal>
-                  {props.store.workspace.panels.map((name,i)=>{
-                    switch (name) {
-                      case 'Shader Graph':                            
-                        return (<ShaderGraphComponent 
-                            key={i}
-                            data={props.store.scene.shaderGraph}
-                          />
-                        );
-                      case 'Shader Editor':                            
-                        return (<ShaderEditorComponent 
-                            key={i}
-                            node={props.store.scene.shaderGraph.selectedNode}
-                            data={props.store.scene.shaderGraph.selectedNode.data}
-                            graph={props.store.scene.shaderGraph}
-                          />
-                        );
-                      case 'Shader Controls':                            
-                        return (<ShaderControlsComponent 
-                            key={i}
-                            data={props.store.scene.shaderGraph}
-                          />
-                        );
-                      case 'Parameter Editor':  
-                        return (<ParameterEditorComponent 
-                            key={i}
-                            data={props.store.selectedParameter}
-                          />
-                        );
-                      case 'Help':                            
-                        return (<HelpComponent 
-                            key={i}            
-                          />
-                        );
-                      case 'Debug':                            
-                        return (<DebugInfoComponent 
-                            key={i}           
-                          />
-                        );         
-                      case 'Messages':                            
-                        return (<MessagesComponent 
-                            key={i}     
-                            data={props.store.messages}
-                            log={props.store.messages.log} 
-                          />
-                        );                             
-                      default:
-                        break;
+                <SplitContainer 
+                  horizontal
+                  updateFlag={props.store.workspace.updateFlag}
+                >
+                  {props.store.workspace.panels.map((workspace,i)=>{
+
+                    if(workspace.split !== 'none') {
+                      return (
+                        <SplitContainer
+                          key={i}
+                          horizontal={workspace.split === 'horizontal'}
+                          vertical={workspace.split === 'vertical'}
+                          updateFlag={props.store.workspace.updateFlag}
+                          defaultSize={workspace.defaultSize}
+                        >
+                          {workspace.panels.map((subworkspace,j)=>{
+                            return getPanel(subworkspace.name,'sub'+j, workspace.defaultSize)
+                          })}
+                        </SplitContainer>
+                      )
                     }
+
+                    // if name is present, grab panel
+                    if(workspace.name) return getPanel(workspace.name,i, workspace.defaultSize);                  
+                    
                     return null;
                   })}
                 </SplitContainer>                                   

@@ -19,6 +19,7 @@ const ParameterEditor = (props) => {
             onRemove={handleRemove}
             title="Parameter Editor"			
             className={styles.editor}
+            defaultSize={props.defaultSize}
             style={{
                 minWidth:400,
                 flexGrow:2,

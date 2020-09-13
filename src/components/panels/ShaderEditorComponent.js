@@ -43,6 +43,7 @@ const ShaderEditor = (props) => {
             onRemove={()=>store.workspace.removePanel('Shader Editor')}
             title="Shader Editor"	
             style={{minWidth:400,flexGrow:2,flexShrink:0}}
+            defaultSize={props.defaultSize}
             toolbar={(
                 <ToolbarComponent  
                     items={ showEditor ? [
@@ -51,12 +52,12 @@ const ShaderEditor = (props) => {
                             onClick: () => props.data.save()
                         },
                         {
-                            label: 'Edit Vertex',
+                            label: 'Vertex',
                             onClick: () => setEditType('vert'),
                             highlight: editType === 'vert',
                         },
                         {
-                            label: 'Edit Fragment',
+                            label: 'Fragment',
                             onClick: () => setEditType('frag'),
                             highlight: editType === 'frag',
                         }, 

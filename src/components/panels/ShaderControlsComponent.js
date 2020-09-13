@@ -86,7 +86,7 @@ const ShaderControls = observer((props) => {
 			key={i}
 			title={n.data.name}
 			collapsible
-			vertical
+			// vertical
 			gutters
 		>
 			{ generateInterface(n.data) }
@@ -98,7 +98,8 @@ const ShaderControls = observer((props) => {
 			title="Shader Controls"			
 			onRemove={handleRemove}				
 			className={styles.shader_graph}	
-			vertical
+			// vertical
+			defaultSize={props.defaultSize}
 		>	
 			{props.data.nodes && panels}    
 		</PanelComponent>

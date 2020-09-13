@@ -14,6 +14,7 @@ const Help = (props) => {
         <PanelComponent
             title="Help" 
             onRemove={handleRemove}
+            defaultSize={props.defaultSize}
             vertical
         >
             <TextComponent>

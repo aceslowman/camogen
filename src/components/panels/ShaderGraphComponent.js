@@ -17,6 +17,7 @@ const ShaderGraph = observer((props) => {
 			collapsed={props.collapsed}
 			title="Shader Graph"				
 			onRemove={()=>store.workspace.removePanel('Shader Graph')}
+			defaultSize={props.defaultSize}
 		>				
 			<GraphComponent data={props.data}/>
 

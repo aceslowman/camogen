@@ -26,7 +26,8 @@ const DebugInfo = observer((props) => {
 	return(
 		<PanelComponent
 			title="Debug"
-			onRemove={handleRemove}				
+			onRemove={handleRemove}		
+			defaultSize={props.defaultSize}		
 		>
 			<PanelComponent
 				title="graph"
