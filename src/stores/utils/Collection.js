@@ -1,5 +1,6 @@
 import { types, flow } from "mobx-state-tree";
-import { Shader } from "../ShaderStore";
+import Parameter from "../ParameterStore";
+import Shader from "../ShaderStore";
 
 const fs = window.require('fs');
 
@@ -31,19 +32,22 @@ const Collection = types
         }
       }
       if(result.length > 1) console.log('multiple results found for '+name, result)
+
       return result[0];
     },
   }))
   .actions(self => {
     const preloadAll = flow(function* preloadAll() {
-
       if(self.children) {
         yield Promise.all(self.children.map(flow(function*(e,i){
           yield e.preloadAll();
         })))
       } else if(self.type === "file"){                
-        let result = yield fs.promises.readFile(self.path);
-        self.data = JSON.parse(result);
+        let result = yield fs.promises.readFile(self.path); 
+        self.data = JSON.parse(result, (key, value) => {
+          // if(key === )
+          return value;
+        });
       }
     });
 

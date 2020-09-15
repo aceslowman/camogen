@@ -1,6 +1,6 @@
-import { Graph } from './GraphStore';
+import Graph from './GraphStore';
 import { types, getRoot, getSnapshot, applySnapshot, getParent } from "mobx-state-tree";
-import { Shader } from './ShaderStore';
+import Shader from './ShaderStore';
 
 let shaderGraph = types
     .model("ShaderGraph", {})
@@ -11,7 +11,6 @@ let shaderGraph = types
         function afterAttach() {
             state_root = getRoot(self);
             parent_scene = getParent(self);
-            self.update();
         }
 
         /*
@@ -68,8 +67,7 @@ let shaderGraph = types
 
         function setSelectedByName(name) {
             if(!self.selectedNode) self.selectedNode = self.root;
-            console.log(self.selectedNode)
-            self.selectedNode.setData(getShader(name))
+            self.selectedNode.setData(getShader(name));
             self.update(); // fixed issue where bounds weren't updating
         }
             
@@ -82,6 +80,6 @@ let shaderGraph = types
     })
 
 
-const ShaderGraph = types.compose(Graph, shaderGraph);
+const ShaderGraph = types.compose('Shader Graph', Graph, shaderGraph);
 
-export { ShaderGraph }
+export default ShaderGraph;

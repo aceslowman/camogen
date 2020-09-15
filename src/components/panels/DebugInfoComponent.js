@@ -6,6 +6,7 @@ import {
 } from 'maco-ui';
 import { observer } from 'mobx-react';
 import { ThemeContext } from 'maco-ui';
+import { getSnapshot } from 'mobx-state-tree';
 
 const DebugInfo = observer((props) => {
 	const theme = useContext(ThemeContext);
@@ -16,6 +17,7 @@ const DebugInfo = observer((props) => {
 	const graph = store.scene.shaderGraph;
 	const selected = store.scene.shaderGraph.selectedNode;
 	const targets = store.scene.targets;
+	const selectedParam = store.selectedParameter;
 
 	const pre_style = {
 		backgroundColor: theme.secondary_color,
@@ -80,6 +82,21 @@ const DebugInfo = observer((props) => {
 					<div><strong>data:</strong> {!selected.data ? 'none' : (<pre style={pre_style}>{JSON.stringify(selected.data,null,2)}</pre>)}</div>
 					<div><strong>parents:</strong> {!selected.parents.length ? 'none' : (<pre style={pre_style}>{JSON.stringify(selected.parents,null,2)}</pre>)}</div>
 					<div><strong>children:</strong> {!selected.children.length ? 'none' : (<pre style={pre_style}>{JSON.stringify(selected.children,null,2)}</pre>)}</div>					
+				</TextComponent>
+			</PanelComponent>
+
+			<PanelComponent
+				title="selected param"
+				collapsible
+				gutters
+			>
+				<TextComponent>					
+					{/* <div><strong>name:</strong> {selected.name}</div>
+					<div><strong>branch:</strong> {selected.branch_index}</div>
+					<div><strong>data:</strong> {!selected.data ? 'none' : (<pre style={pre_style}>{JSON.stringify(selected.data,null,2)}</pre>)}</div>
+					<div><strong>parents:</strong> {!selected.parents.length ? 'none' : (<pre style={pre_style}>{JSON.stringify(selected.parents,null,2)}</pre>)}</div>
+					<div><strong>children:</strong> {!selected.children.length ? 'none' : (<pre style={pre_style}>{JSON.stringify(selected.children,null,2)}</pre>)}</div>					 */}
+					<pre>{selectedParam && JSON.stringify(getSnapshot(selectedParam),null, 5)}</pre>
 				</TextComponent>
 			</PanelComponent>
 

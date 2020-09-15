@@ -1,5 +1,5 @@
 import { types, flow, applySnapshot } from "mobx-state-tree";
-import { Scene } from './SceneStore';
+import Scene from './SceneStore';
 import { UndoManager } from "mst-middlewares";
 import { getSnapshot } from 'mobx-state-tree';
 import dirTree from "directory-tree";
@@ -9,8 +9,9 @@ import Runner from '../Runner';
 import p5 from 'p5';
 
 import path from 'path';
-import Workspace, {DefaultShaderEdit, DefaultDebug} from "./utils/Workspace";
+import Workspace, {DefaultShaderEdit, DefaultDebug, DefaultParameter} from "./utils/Workspace";
 import Messages from "./utils/Messages";
+import Parameter from "./ParameterStore";
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
@@ -39,11 +40,12 @@ const fs = window.require('fs');
 const RootStore = types
   .model("RootStore", {    
     scene: types.maybe(Scene),
-    workspace: types.optional(Workspace, DefaultDebug),
+    workspace: types.optional(Workspace, DefaultParameter),
     shader_collection: types.maybe(types.late(() => Collection)),
     ready: false,
     breakoutControlled: false,
-    messages: types.maybe(Messages)
+    messages: types.maybe(Messages),
+    selectedParameter: types.maybe(types.reference(Parameter))
   })
   .volatile(self => ({
     p5_instance: null
@@ -61,7 +63,8 @@ const RootStore = types
           self.setScene(Scene.create({}));
 
           // apply default
-          applySnapshot(self.scene, defaultSnapshot.scene);
+          // TEMP: removed while working on param graphs
+          // applySnapshot(self.scene, defaultSnapshot.scene);
 
           self.setReady(true);
         });
@@ -77,6 +80,10 @@ const RootStore = types
 
     function setReady(value) {
       self.ready = value;
+    }
+
+    function selectParameter(param) {
+      self.selectedParameter = param;
     }
 
     function save() {
@@ -218,10 +225,9 @@ const RootStore = types
     return {
       afterCreate,
       setReady,
-      // setScene: () => undoManager.withoutUndo(setScene),
       setScene,
       setupP5,
-      // setReady: () => undoManager.withoutUndo(setReady),
+      selectParameter,
       breakout,
       onBreakoutResize,
       save: () => undoManager.withoutUndo(save),

@@ -10,26 +10,26 @@ const ParameterGraph = (props) => {
 	return(	
 		<div className={styles.parameter_graph}>					
 			<div className={styles.inner} style={{border: data ? '1px dashed white' : '1px dashed white'}}>
-				{data && (<label className={styles.inner_label}>{data.parent.name + ' ' + data.name}</label>)}
+				{data && (<label className={styles.inner_label}>{data.name}</label>)}
 					{!data && (
 						<p><em>double click on a parameter to edit its graph</em></p>
 					)}
-					{ 
-						<React.Fragment>
-							<GraphComponent data={data.graph} />
-							{data.graph.nodes.values().map((n,j)=>{
-								return (n.data && (
-									<PanelComponent 
-										key={j}
-										title={n.data.name}
-										collapsible
-										vertical
-									>
-										{n.data.controls}
-									</PanelComponent>
-								));
-							})}                  
-						</React.Fragment>							
+					{ (data.graph && data.graph.nodes.size) && (
+						<GraphComponent data={data.graph} />
+					)}
+					{ data.graph.nodes.size && (
+						Array.from(data.graph.nodes).map((n,j)=>{
+							return (n.data && (
+								<PanelComponent 
+									key={j}
+									title={n.data.name}
+									collapsible
+									vertical
+								>
+									{n.data.controls}
+								</PanelComponent>
+							));
+						}))					
 					}																		 
 			</div>				
 

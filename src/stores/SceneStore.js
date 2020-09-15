@@ -1,8 +1,8 @@
 import uuidv1 from 'uuid/v1';
 
 import { types, getSnapshot } from "mobx-state-tree";
-import { ShaderGraph } from './ShaderGraphStore';
-import { Target } from './TargetStore';
+import ShaderGraph from './ShaderGraphStore';
+import Target from './TargetStore';
 
 const Scene = types
     .model("Scene", {
@@ -11,7 +11,20 @@ const Scene = types
     })
     .actions(self => {
         function afterAttach() {   
-            self.shaderGraph = ShaderGraph.create({uuid: uuidv1()})
+            self.shaderGraph = ShaderGraph.create({uuid: uuidv1()});
+
+            /*
+                add uv shader by default
+
+                likely to be replaced with
+                single loaded snapshot in RootScene
+            */
+            self.shaderGraph.addNode();
+            self.shaderGraph.setSelectedByName('UV');
+            self.shaderGraph.root.select();
+            self.shaderGraph.setSelectedByName('Glyph')
+            
+            self.shaderGraph.update();
         }
 
         function addTarget(target = Target.create({uuid: 'target_'+uuidv1()})) {
@@ -36,4 +49,4 @@ const Scene = types
         };
     })
 
-export { Scene }
+export default Scene;

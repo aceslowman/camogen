@@ -1,27 +1,18 @@
 import { NodeData } from './NodeDataStore';
 import { types, getSnapshot, applySnapshot, getParent, getRoot } from "mobx-state-tree";
 import * as DefaultShader from './shaders/DefaultShader';
-import { Target } from "./TargetStore";
-import path from 'path';
-
-
+import Parameter from './ParameterStore';
+import uuidv1 from 'uuid/v1';
+import { ParameterGraph } from './GraphStore';
+import Operator from './OperatorStore';
+import Counter from './inputs/Counter';
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
 const app = remote.app;
 const fs = window.require('fs');
 
-const Parameter = types
-    .model("Parameter", {
-        name: types.maybe(types.string),
-        value: types.maybe(types.union(types.number, types.string, types.boolean)),
-        // graph: types.maybe(ParameterGraph)
-    })
-    .actions(self => ({
-        setValue: (v) => {
-            self.value = v;
-        }
-    }))
+const allOps = types.union(Counter);
 
 const Uniform = types
     .model("Uniform", {
@@ -29,19 +20,24 @@ const Uniform = types
         elements: types.array(Parameter),
     })
     .actions(self => ({
-        addElement: (el) => {
-            self.elements.push(el)
+        addElement: (name, value) => {
+            self.elements.push(Parameter.create({
+                uuid: 'param'+uuidv1(),
+                name: name,
+                value: value
+            }))
         }
     }))
 
 let shader = types
     .model("Shader", {
-        uniforms: types.array(types.late(()=>Uniform)),
+        uniforms: types.array(Uniform),
         name: types.maybe(types.string), 
         precision: types.optional(types.string, DefaultShader.precision),
         vert: types.optional(types.string, DefaultShader.vert),
         frag: types.optional(types.string, DefaultShader.frag),
-        ready: false,        
+        ready: false,   
+        operatorUpdateGroup: types.array(types.safeReference(allOps))
     })
     .volatile(self => ({
         target: null,
@@ -169,74 +165,40 @@ let shader = types
                         self.inputs.push(uniform_name)
                         break;
                     case "float":
-                        // console.log(e[3], e)
                         def = opt.default ? opt.default : 1.0;
 
-                        uniform.addElement(Parameter.create({
-                            name: '', 
-                            value: def
-                        }));
+                        uniform.addElement('', def);
                         break;
                     case "vec2":
                         def = opt.default ? opt.default : [1, 1];
 
-                        uniform.addElement(Parameter.create({
-                            name: 'x:', 
-                            value: def[0]
-                        }));
-                        uniform.addElement(Parameter.create({
-                            name: 'y:', 
-                            value: def[1]
-                        }));
+                        uniform.addElement('x:', def[0]);
+                        uniform.addElement('y:', def[1]);
                         break;
                     case "vec3":
                         def = opt.default ? opt.default : [1, 1, 1];
 
-                        uniform.addElement(Parameter.create({
-                            name: 'x:', 
-                            value: def[0]
-                        }));
-                        uniform.addElement(Parameter.create({
-                            name: 'y:', 
-                            value: def[1]
-                        }));
-                        uniform.addElement(Parameter.create({
-                            name: 'z:', 
-                            value: def[2]
-                        }));
+                        uniform.addElement('x:', def[0]);
+                        uniform.addElement('y:', def[1]);
+                        uniform.addElement('z:', def[2]);
                         break;
                     case "vec4":
                         def = opt.default ? opt.default : [1, 1, 1, 1];
 
-                        uniform.addElement(Parameter.create({
-                            name: 'x:', 
-                            value: def[0]
-                        }));
-                        uniform.addElement(Parameter.create({
-                            name: 'y:', 
-                            value: def[1]
-                        }));
-                        uniform.addElement(Parameter.create({
-                            name: 'z:', 
-                            value: def[2]
-                        }));
-                        uniform.addElement(Parameter.create({
-                            name: 'w:', 
-                            value: def[3]
-                        }));
+                        uniform.addElement('x:', def[0]);
+                        uniform.addElement('y:', def[1]);
+                        uniform.addElement('z:', def[2]);
+                        uniform.addElement('w:', def[3]);
                         break;
                     case "bool":
                         def = opt.default ? opt.default : false;
-                        uniform.addElement(Parameter.create({
-                            name: '', 
-                            value: def
-                        }));
+                        uniform.addElement('', def);
                         break;
                     default:
                         // console.log('check here',e)
                         break;
                 }
-                // console.log(uniform)
+
                 if(uniform.elements.length) self.uniforms.push(uniform);
             })
         }
@@ -261,10 +223,10 @@ let shader = types
                 Loop through all active parameter graphs to recompute 
                 values in sync with the frame rate
             */
-            // for (let op of self.operatorUpdateGroup) {
-            //     op.update();
-            //     op.node.graph.recalculate();
-            // }
+            for (let op of self.operatorUpdateGroup) {
+                op.update();
+                op.recalculateParent();
+            }
 
             for (let uniform_data of self.uniforms) {
                 if (uniform_data.elements.length > 1) {                    
@@ -394,6 +356,10 @@ let shader = types
                 /*alert(err)*/ });
         }
 
+        function addToOperatorGroup(op) {
+            self.operatorUpdateGroup.push(op);
+        }
+
         return {
             afterCreate,
             afterAttach,
@@ -407,9 +373,10 @@ let shader = types
             onRemove,
             save,
             load,
+            addToOperatorGroup
         }
     })
 
-const Shader = types.compose(NodeData, shader);
+const Shader = types.compose('Shader', NodeData, shader);
 
-export { Shader }
+export default Shader;

@@ -1,5 +1,5 @@
 import { types, getRoot, getParent } from "mobx-state-tree";
-import { GraphNode } from './NodeStore';
+import GraphNode from './NodeStore';
 
 const Target = types
     .model("Target", {
@@ -52,4 +52,4 @@ const Target = types
         };
     })
 
-export { Target }
+export default Target;

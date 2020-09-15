@@ -1,9 +1,11 @@
-import { GraphNode } from './NodeStore';
+import GraphNode from './NodeStore';
 import uuidv1 from 'uuid/v1';
 
-import { types, getSnapshot } from "mobx-state-tree";
+import { types, getRoot, getSnapshot, applySnapshot, getParent } from "mobx-state-tree";
 import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
+import Operator from './OperatorStore';
+import Counter from './inputs/Counter';
 
 const Graph = types
     .model("Graph", {
@@ -85,8 +87,8 @@ const Graph = types
             associated data.
         */
         function addNode(node = GraphNode.create({uuid: 'add_'+uuidv1()})) {            
-            self.nodes.set(node.uuid, node);
-            self.update(); // TEMP
+            self.nodes.put(node);
+            // self.update(); // TEMP
             return self.nodes.get(node.uuid)
         }
 
@@ -160,7 +162,6 @@ const Graph = types
             node.children[0].mapInputsToParents();
 
             self.selectedNode = node.children[0]
-
             if(node.data) node.data.onRemove();
             self.nodes.delete(node.uuid);
 
@@ -282,7 +283,6 @@ const Graph = types
             for centering, scaling, and positioning visualization
         */
         function calculateCoordinateBounds() {
-            // console.log('calculating pounds', getSnapshot(self))
             let max_x = 0;
             let max_y = 0;
 
@@ -301,7 +301,6 @@ const Graph = types
 
         return {
             afterAttach,
-            // afterUpdate,
             clear,
             update,
             appendNode,
@@ -309,11 +308,84 @@ const Graph = types
             setSelected,
             removeSelected,
             removeNode,
-            traverse,            
+            traverse,              
             calculateBranches: () => undoManager.withoutUndo(calculateBranches),
             calculateCoordinates: () => undoManager.withoutUndo(calculateCoordinates),
             calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
         }
     })
 
-export { Graph }
+// currently here because of circular dependency issues
+const parameterGraph = types
+    .model("ParameterGraph", {})
+    .actions(self => {
+        let parent_param;
+
+        function afterAttach() {
+            parent_param = getParent(self);
+            console.log('parent_param', parent_param)
+            self.addNode();
+            self.update();
+        }
+
+        function getOperator(name) {
+            let operator;
+
+            try {
+                switch (name) {
+                    case 'Counter':
+                        operator = Counter.create({
+                            uuid: uuidv1(),
+                            name: 'Counter'
+                        });
+                        break;
+                
+                    default:
+                        break;
+                }
+                return operator;
+            } catch (err) {
+                console.error('operators have not been loaded', err)
+            }
+        }
+
+        function setSelectedByName(name) {
+            if (!self.selectedNode) self.selectedNode = self.root;
+            let op = getOperator(name);
+            console.log(op)
+            self.selectedNode.setData(op);
+            self.update();
+        }
+
+        /*
+            afterUpdate(queue)
+        */
+        function afterUpdate(queue) {
+            recalculate(queue);
+        }
+
+        function recalculate(queue) {
+            let v = 0;
+            
+            queue.forEach(subqueue => {
+                subqueue.forEach(node => {
+                    // if not root node
+                    if (node.data) v = node.data.update(v);
+
+                    parent_param.setValue(v);
+                })
+            });
+        }
+
+        return {
+            afterAttach,
+            getOperator,
+            setSelectedByName,
+            afterUpdate,
+            recalculate,
+        }
+    })
+
+
+export const ParameterGraph = types.compose("Parameter Graph", parameterGraph, Graph);
+export default Graph;

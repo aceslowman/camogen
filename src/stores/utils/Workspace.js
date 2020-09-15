@@ -21,6 +21,7 @@ const Workspace = types
             }
         },
         setWorkspace: (name) => {
+            // update flag restores default splits with workspace changes
             self.updateFlag = !self.updateFlag;
             switch (name) {
                 case "Welcome":                    
@@ -31,6 +32,9 @@ const Workspace = types
                     break;
                 case "Shader Control":
                     applySnapshot(self, DefaultShaderControl)
+                    break;
+                case "Parameter":
+                    applySnapshot(self, DefaultParameter)
                     break;
                 case "Debug":
                     applySnapshot(self, DefaultDebug)
@@ -77,17 +81,15 @@ const DefaultShaderEdit = {
             panels: []
         },
         {
-            // defaultSize: 1/3,
             split: 'vertical',
             panels: [
                 {
                     name: "Shader Graph",
-                    // defaultSize: 1/3,
                     split: 'none',
-                    panels: []
+                    panels: [],
+                    defaultSize: 2/3
                 }, {
-                    name: "Shader Controls",
-                    // defaultSize: 1/3,
+                    name: "Messages",
                     split: 'none',
                     panels: []
                 },
@@ -101,13 +103,11 @@ const DefaultShaderControl = {
     panels: [
         {
             name: "Shader Graph",
-            // defaultSize: 1/3,
             split: 'none',
             panels: []
         },
         {
             name: "Shader Controls",
-            // defaultSize: 1/3,
             split: 'none',
             panels: []
         },
@@ -124,11 +124,11 @@ const DefaultDebug = {
             panels: []
         },
         {
-            // defaultSize: 1/3,
             split: 'vertical',
             panels: [
                 {
-                    name: "Shader Graph"
+                    name: "Shader Graph",
+                    defaultSize: 2/3
                 },
                 {
                     name: "Messages"                    
@@ -138,9 +138,36 @@ const DefaultDebug = {
     ]
 }
 
+const DefaultParameter = {
+    split: 'horizontal',
+    panels: [{
+            name: "Shader Graph",
+            split: 'none',
+            defaultSize: 1/6,
+            panels: []
+        },
+        {
+            name: "Shader Controls",
+            split: 'none',
+            panels: []
+        },
+        {
+            name: "Parameter Editor",
+            split: 'none',
+            panels: []
+        },
+        {
+            name: "Debug",
+            split: 'none',
+            panels: []
+        },
+    ]
+}
+
 export {
     DefaultWelcome,
     DefaultShaderEdit,
     DefaultShaderControl,
-    DefaultDebug
+    DefaultDebug,
+    DefaultParameter
 }

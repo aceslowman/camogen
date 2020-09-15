@@ -87,15 +87,15 @@ const ParameterEditor = (props) => {
 
             <div className={styles.content}>                                      
                 {
-                    props.data && (<ParameterGraph data = {
-                        props.data
-                    }/>)
+                    props.data && (<ParameterGraph 
+                        data = {props.data}
+                    />)
                 }
 
                 {
                     !props.data && (
                         <p className={styles.no_node_selected}>
-                            <em> no node selected</em>
+                            <em> no param selected</em>
                         </p>
                     )
                 }

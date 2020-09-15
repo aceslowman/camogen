@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import MainContext from '../../MainContext';
 import { 
 	PanelComponent,
@@ -26,7 +26,6 @@ const ShaderControls = observer((props) => {
 			return (
 				<ControlGroupComponent key={uniform.name} name={uniform.name}>
 					{uniform.elements.map((param,i)=>{
-						
 						let input = null;
 						let value = param.value;
 
@@ -38,8 +37,7 @@ const ShaderControls = observer((props) => {
 									value={value}
 									onChange={(e) => handleValueChange(param,e)}
 									onDoubleClick={(e) => {
-										// selectedParameter = e;
-										// node.graph.parent.parent.selectedParameter = e;
+										store.selectParameter(param);										
 									}}
 								/>);
 							break;
@@ -50,8 +48,7 @@ const ShaderControls = observer((props) => {
 									value={value}
 									onChange={(e) => handleValueChange(param,e)}
 									onDoubleClick={(e) => {
-										// selectedParameter = e;
-										// node.graph.parent.parent.selectedParameter = e;
+										store.selectParameter(param);										
 									}}
 								/>);
 							break;
@@ -62,8 +59,7 @@ const ShaderControls = observer((props) => {
 									value={value}
 									onChange={(e) => handleValueChange(param,e)}
 									onDoubleClick={(e) => {
-										// selectedParameter = e;
-										// node.graph.parent.parent.selectedParameter = e;
+										store.selectParameter(param);										
 									}}
 								/>);
 							break;
@@ -86,7 +82,7 @@ const ShaderControls = observer((props) => {
 			key={i}
 			title={n.data.name}
 			collapsible
-			// vertical
+			expanded={n === props.data.selectedNode}
 			gutters
 		>
 			{ generateInterface(n.data) }
@@ -98,7 +94,6 @@ const ShaderControls = observer((props) => {
 			title="Shader Controls"			
 			onRemove={handleRemove}				
 			className={styles.shader_graph}	
-			// vertical
 			defaultSize={props.defaultSize}
 		>	
 			{props.data.nodes && panels}    

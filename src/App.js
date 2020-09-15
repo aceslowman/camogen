@@ -187,16 +187,42 @@ const App = observer((props) => {
         items={[
           {
             label: "File",
-            dropDown: [
+            dropDown: [{
+              label: "Save Scene",
+              onClick: () => props.store.save()
+            }, {
+              label: "Load Scene",
+              onClick: () => props.store.load()
+            }, ]
+          },
+          {
+            label: "New Scene",
+            onClick: () => props.store.scene.clear()
+          },     
+          {
+            label: "Library",
+            dropDown: () => [{
+                label: "Inputs",
+                dropDown: [{
+                    label: "Webcam",
+                    onClick: () => props.store.scene.shaderGraph.setSelectedByName("WebcamInput")
+                  },
+                  {
+                    label: "Image",
+                    onClick: () => props.store.scene.shaderGraph.setSelectedByName("ImageInput")
+                  },
+                ]
+              },
+              ...handleLib(),
               {
-                label: "Save Scene",
-                onClick: ()=>props.store.save()
-              }, {
-                label: "Load Scene",
-                onClick: ()=>props.store.load()
+                label: "*Open Directory*",
+                onClick: () => {
+                  let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
+                  shell.openItem(user_shaders_path)
+                }
               },
             ]
-          },	
+          },
           {
             label: "Workspace",
             dropDown: [
@@ -211,6 +237,10 @@ const App = observer((props) => {
               {
                 label: "Shader Control",
                 onClick: () => props.store.workspace.setWorkspace("Shader Control")
+              },
+              {
+                label: "Parameter Editor",
+                onClick: () => props.store.workspace.setWorkspace("Parameter")
               },
               {
                 label: "Debug",
@@ -249,37 +279,7 @@ const App = observer((props) => {
                 ]
               },              
             ]
-          },
-          {
-            label: "Library",
-            dropDown: () => [
-              {
-                label: "Inputs",
-                dropDown: [{
-                    label: "Webcam",
-                    onClick: () => props.store.scene.shaderGraph.setSelectedByName("WebcamInput")
-                  },
-                  {
-                    label: "Image",
-                    onClick: () => props.store.scene.shaderGraph.setSelectedByName("ImageInput")
-                  },
-                ]
-              },
-              ...handleLib(),
-              {
-                label: "*Open Directory*",
-                onClick: () => {
-                  let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
-                  shell.openItem(user_shaders_path)
-                }
-              },
-            ]
-          },
-          
-          {
-            label: "Clear",
-            onClick: () => props.store.scene.clear()
-          },						
+          },        			
           {
             label: "Snapshot",
             onClick: () => props.store.snapshot()
@@ -321,13 +321,13 @@ const App = observer((props) => {
                           defaultSize={workspace.defaultSize}
                         >
                           {workspace.panels.map((subworkspace,j)=>{
-                            return getPanel(subworkspace.name,'sub'+j, workspace.defaultSize)
+                            return getPanel(subworkspace.name,'sub'+j, subworkspace.defaultSize)
                           })}
                         </SplitContainer>
                       )
                     }
 
-                    // if name is present, grab panel
+                    // if name is present, grab panel                    
                     if(workspace.name) return getPanel(workspace.name,i, workspace.defaultSize);                  
                     
                     return null;

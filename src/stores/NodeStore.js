@@ -1,16 +1,19 @@
-import { Shader } from './ShaderStore';
+import Shader from './ShaderStore';
 import { types, getParent } from 'mobx-state-tree';
-import { NodeData } from './NodeDataStore';
 import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
 import uuidv1 from 'uuid/v1';
+import Operator from './OperatorStore';
+import Counter from './inputs/Counter';
     
+const PossibleData = types.union(Shader, Counter);
+
 const GraphNode = types
     .model("GraphNode", {
         uuid: types.identifier,
         name: "empty node",        
         // NOTE: order when using Union matters!
-        data: types.maybe(types.union(Shader, NodeData)),
+        data: types.maybe(PossibleData),
         branch_index: types.maybe(types.number),        
         children: types.array(types.safeReference(types.late(()=>GraphNode))),
         parents: types.array(types.safeReference(types.late(()=>GraphNode))),
@@ -31,7 +34,7 @@ const GraphNode = types
 
             // extract uniforms, map inputs/outputs
             parent_graph.update();
-            self.data.extractUniforms();
+            // self.data.extractUniforms();
             mapInputsToParents();            
         }
 
@@ -120,4 +123,4 @@ const GraphNode = types
         }
     })
 
-export { GraphNode }
+export default GraphNode;
