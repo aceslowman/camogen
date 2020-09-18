@@ -1,10 +1,9 @@
 import GraphNode from './NodeStore';
 import uuidv1 from 'uuid/v1';
 
-import { types, getRoot, getSnapshot, applySnapshot, getParent } from "mobx-state-tree";
+import { types, getParent } from "mobx-state-tree";
 import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
-import Operator from './OperatorStore';
 import Counter from './inputs/Counter';
 
 const Graph = types
@@ -315,7 +314,8 @@ const Graph = types
         }
     })
 
-// currently here because of circular dependency issues
+// TODO: ideally this lives in it's own file, but there are circular dependency issues
+// that are unresolved with mobx-state-tree late
 const parameterGraph = types
     .model("ParameterGraph", {})
     .actions(self => {
@@ -323,50 +323,46 @@ const parameterGraph = types
 
         function afterAttach() {
             parent_param = getParent(self);
-            console.log('parent_param', parent_param)
             self.addNode();
             self.update();
         }
 
         function getOperator(name) {
-            let operator;
+            let operator = null;
 
-            try {
-                switch (name) {
-                    case 'Counter':
-                        operator = Counter.create({
-                            uuid: uuidv1(),
-                            name: 'Counter'
-                        });
-                        break;
-                
-                    default:
-                        break;
-                }
-                return operator;
-            } catch (err) {
-                console.error('operators have not been loaded', err)
+            switch (name) {
+                case 'Counter':
+                    operator = Counter.create({
+                        uuid: uuidv1(),
+                        name: 'Counter'
+                    });
+                    break;
+
+                default:
+                    break;
             }
+
+            return operator;
         }
 
         function setSelectedByName(name) {
             if (!self.selectedNode) self.selectedNode = self.root;
             let op = getOperator(name);
-            console.log(op)
-            self.selectedNode.setData(op);
-            self.update();
+            if(op) {
+                console.log(op)
+                self.selectedNode.setData(op);
+                self.update();
+            } else {
+                console.error('operator was not found!');
+            }            
         }
 
         /*
             afterUpdate(queue)
         */
         function afterUpdate(queue) {
-            recalculate(queue);
-        }
-
-        function recalculate(queue) {
             let v = 0;
-            
+
             queue.forEach(subqueue => {
                 subqueue.forEach(node => {
                     // if not root node
@@ -382,7 +378,6 @@ const parameterGraph = types
             getOperator,
             setSelectedByName,
             afterUpdate,
-            recalculate,
         }
     })
 

@@ -1,5 +1,7 @@
 import { types, applySnapshot } from 'mobx-state-tree';
 
+
+
 const Workspace = types
     .model("Workspace", {
         name: types.maybe(types.string),
@@ -15,10 +17,17 @@ const Workspace = types
             self.panels.push(panel);
         },
         removePanel: (name) => {
-            let index = self.panels.indexOf(name);
-            if (index > -1) {
-                self.panels.splice(index, 1)
+            if(!self.panels.length) return;
+
+            let filtered = self.panels.filter((e) => e.name !== name);
+
+            self.panels = filtered;
+
+            if(self.panels.length) {
+                self.panels.forEach((e)=>e.removePanel(name));
             }
+ 
+            self.updateFlag = !self.updateFlag;
         },
         setWorkspace: (name) => {
             // update flag restores default splits with workspace changes
@@ -140,25 +149,34 @@ const DefaultDebug = {
 
 const DefaultParameter = {
     split: 'horizontal',
-    panels: [{
-            name: "Shader Graph",
-            split: 'none',
-            defaultSize: 1/6,
-            panels: []
-        },
+    panels: [
         {
-            name: "Shader Controls",
-            split: 'none',
-            panels: []
+            split: 'vertical',
+            panels: [
+                {
+                    name: "Shader Graph",
+                    split: 'none',
+                    // defaultSize: 1/3,
+                    panels: []
+                }, {
+                    name: "Shader Controls",
+                    split: 'none',
+                    // defaultSize: 1/3,
+                    panels: []
+                }
+            ]
         },
+        
         {
             name: "Parameter Editor",
             split: 'none',
+            // defaultSize: 1/3,
             panels: []
         },
         {
             name: "Debug",
             split: 'none',
+            // defaultSize: 1 / 3,
             panels: []
         },
     ]

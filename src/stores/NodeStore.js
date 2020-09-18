@@ -6,7 +6,7 @@ import uuidv1 from 'uuid/v1';
 import Operator from './OperatorStore';
 import Counter from './inputs/Counter';
     
-const PossibleData = types.union(Shader, Counter);
+const PossibleData = types.union(Shader, Counter, Operator);
 
 const GraphNode = types
     .model("GraphNode", {
@@ -31,6 +31,8 @@ const GraphNode = types
         function setData(data) {
             self.data = data;
             self.name = data.name;
+
+            console.log('self data', self.data)
 
             // extract uniforms, map inputs/outputs
             parent_graph.update();

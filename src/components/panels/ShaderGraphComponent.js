@@ -23,7 +23,7 @@ const ShaderGraph = observer((props) => {
 
 			{ props.data.updateFlag }
 		</PanelComponent>
-	)
+	)  
 });
 
 export default ShaderGraph;
