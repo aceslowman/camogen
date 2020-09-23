@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import MainContext from '../../MainContext';
 import ParameterGraph from "./ParameterGraphComponent";
 import styles from './ParameterEditorComponent.module.css';
@@ -19,8 +19,7 @@ const ParameterEditor = observer((props) => {
     const generateParameterControls = () => {
         let controls = [];
         
-        Array.from(props.data.graph.nodes.values()).map((e,i) => {	
-
+        Array.from(props.data.graph.nodes.values()).forEach((e,i) => {	
             if(e.data) {
                 let c;
 
@@ -29,7 +28,7 @@ const ParameterEditor = observer((props) => {
                         c = (			
                             <CounterComponent 
                                 modifier={e.data.modifier}
-                                props={e.data.value}
+                                value={e.data.value}
                                 handleChange={e.data.handleChange} 
                             />
                         )
@@ -43,8 +42,10 @@ const ParameterEditor = observer((props) => {
                     <PanelComponent 
                         key={e.uuid}
                         title={e.data.name}			
-                        onRemove={e.data.onRemove}		
-                    >
+                        onRemove={e.data.onRemove}
+                        collapsible
+                        gutters
+                    >		
                         {c}
                     </PanelComponent>
                 )
@@ -61,16 +62,9 @@ const ParameterEditor = observer((props) => {
 
     return(
         <PanelComponent 
-            collapsed={props.collapsed}
             onRemove={handleRemove}
-            title="Parameter Editor"			
-            // className={styles.editor}
+            title="Parameter Editor"	
             defaultSize={props.defaultSize}
-            style={{
-                minWidth:400,
-                flexGrow:2,
-                flexShrink:0
-            }}
             toolbar={props.data && (
                 <ToolbarComponent  
                     items={[
@@ -133,7 +127,7 @@ const ParameterEditor = observer((props) => {
             )}
         >		
             
-            <div className={styles.content}>                                      
+            {/* <div className={styles.content}>                                       */}
                 {
                     props.data && (
                         <SplitContainer vertical>
@@ -154,7 +148,7 @@ const ParameterEditor = observer((props) => {
                         </p>
                     )
                 }
-            </div>                
+            {/* </div>                 */}
 
         </PanelComponent>
     )

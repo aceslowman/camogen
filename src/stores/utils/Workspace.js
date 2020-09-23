@@ -1,7 +1,5 @@
 import { types, applySnapshot } from 'mobx-state-tree';
 
-
-
 const Workspace = types
     .model("Workspace", {
         name: types.maybe(types.string),
@@ -13,11 +11,16 @@ const Workspace = types
         updateFlag: false
     }))
     .actions(self => ({
-        addPanel: (panel) => {
-            self.panels.push(panel);
+        clear: () => {
+            self.panels = [];
+        },
+        addPanel: (name) => {
+            self.panels.push({
+                name: name
+            });
         },
         removePanel: (name) => {
-            if(!self.panels.length) return;
+            if(!self.panels || !self.panels.length) return;
 
             let filtered = self.panels.filter((e) => e.name !== name);
 
@@ -47,8 +50,9 @@ const Workspace = types
                     break;
                 case "Debug":
                     applySnapshot(self, DefaultDebug)
-                    break;
+                    break;                
                 default:
+                    console.error(`workspace ${name} does not exist`);
                     break;
             }
         }

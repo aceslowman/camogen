@@ -1,7 +1,24 @@
 import { types } from "mobx-state-tree";
 
+const DatePrimitive = types.custom({
+    name: "Date",
+    fromSnapshot(value) {
+        return new Date(value)
+    },
+    toSnapshot(value) {
+        return value.toJSON();
+    },
+    isTargetType(value) {
+        return value instanceof Date
+    },
+    getValidationMessage() {
+        return null;
+    }
+});
+
 const Message = types
     .model('Message', {
+        timestamp: DatePrimitive,
         type: types.string,
         message: types.string
     })
@@ -29,6 +46,7 @@ const Messages = types
 
         postMessage: (type, message) => {
             self.log.push({
+                timestamp: Date.now(),
                 type: type,
                 message: message
             })

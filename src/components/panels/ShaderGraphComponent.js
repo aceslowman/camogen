@@ -21,7 +21,7 @@ const ShaderGraph = observer((props) => {
 		>				
 			<GraphComponent data={props.data}/>
 
-			{ props.data.updateFlag }
+			{ props.data && props.data.updateFlag }
 		</PanelComponent>
 	)  
 });

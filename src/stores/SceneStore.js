@@ -1,6 +1,6 @@
 import uuidv1 from 'uuid/v1';
 
-import { types, getSnapshot } from "mobx-state-tree";
+import { applySnapshot, getSnapshot, types } from "mobx-state-tree";
 import ShaderGraph from './ShaderGraphStore';
 import Target from './TargetStore';
 
@@ -37,7 +37,9 @@ const Scene = types
         }
 
         function clear() {
+            // TODO: issue here with clearing a scene containing subgraphs
             self.shaderGraph.clear();
+            
             self.targets = [];
         }
 

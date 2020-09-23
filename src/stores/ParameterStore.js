@@ -7,11 +7,12 @@ const Parameter = types
     .model("Parameter", {
         uuid: types.identifier,
         name: types.maybe(types.string),
-        value: types.maybe(types.union(types.number, types.string, types.boolean)),
-        graph: types.maybe(types.late(()=>ParameterGraph))
+        value: types.optional(types.union(types.number, types.string, types.boolean),0),
+        graph: types.maybe(types.late(()=>ParameterGraph)),
+        controlType: types.maybe(types.string)
     })
     .actions(self => {
-        function afterAttach() {
+        function createGraph() {
             self.graph = ParameterGraph.create({uuid: uuidv1()})
         }
 
@@ -19,9 +20,15 @@ const Parameter = types
             self.value = v;
         }
 
+        function beforeDestroy() {
+            console.log('hit destroy')
+            if(self.graph) self.graph.clear();
+        }
+
         return {
-            afterAttach,
-            setValue
+            createGraph,
+            setValue,
+            beforeDestroy
         }
     })
 

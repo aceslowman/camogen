@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import MainContext from '../../MainContext';
 import styles from './ShaderEditorComponent.module.css';
 
@@ -11,7 +11,6 @@ import {
     PanelComponent,
     ToolbarComponent,
 } from 'maco-ui';
-// import { Shader } from '../../stores/ShaderStore';
 
 const ShaderEditor = (props) => {
     const store = useContext(MainContext).store;
@@ -29,8 +28,7 @@ const ShaderEditor = (props) => {
                 break;
             case 'frag':
                 props.data.setFrag(e);
-                break;
-        
+                break;    
             default:
                 break;
         }
@@ -42,6 +40,13 @@ const ShaderEditor = (props) => {
         <PanelComponent
             onRemove={()=>store.workspace.removePanel('Shader Editor')}
             title="Shader Editor"	
+            subtitle={(
+                <span style={{
+                    fontStyle: props.hasChanged ? 'italic' : 'normal'
+                }}>
+                    {props.hasChanged ? 'unsaved' : ''}
+                </span>
+            )}		
             style={{minWidth:400,flexGrow:2,flexShrink:0}}
             defaultSize={props.defaultSize}
             toolbar={(

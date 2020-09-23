@@ -31,37 +31,36 @@ const GraphComponent = observer((props) => {
 		let queue = props.data.calculateCoordinates();
 
 		let spacing = {
-			x: ((wrapper_bounds.width) / (props.data.coord_bounds.x+1)),
-			y: ((wrapper_bounds.height) / (props.data.coord_bounds.y+1))
+			x: (wrapper_bounds.width) / (props.data.coord_bounds.x+1),
+			y: (wrapper_bounds.height) / (props.data.coord_bounds.y+1)
 		};
 
-		// draws grids
-		let draw_grid = false;
-		if(draw_grid) {
-			for (let i = 1; i <= props.data.coord_bounds.x; i++) {
-				for (let j = 1; j <= props.data.coord_bounds.y; j++) {
+		let draw_grid = true;
+		if (draw_grid) {
+			for (let i = 0; i < canvas_ref.current.width / (spacing.x/2); i++) {
+				for (let j = 0; j < canvas_ref.current.height / (spacing.y/2); j++) {
 					ctx.lineWidth = 1;
-					ctx.strokeStyle = theme.accent_color;
+					ctx.strokeStyle = theme.secondary_color;
 					ctx.beginPath();
 					ctx.setLineDash([3, 3]);
-					ctx.moveTo(canvas_ref.current.width - (i * spacing.x), 0);
-					ctx.lineTo(canvas_ref.current.width - (i * spacing.x), canvas_ref.current.height);
+					ctx.moveTo((i * (spacing.x/2)), 0);
+					ctx.lineTo((i * (spacing.x/2)), canvas_ref.current.height);
 					ctx.closePath();
 					ctx.stroke();
 
 					ctx.lineWidth = 1;
-					ctx.strokeStyle = theme.accent_color;
+					ctx.strokeStyle = theme.secondary_color;
 					ctx.beginPath();
 					ctx.setLineDash([3, 3]);
-					ctx.moveTo(0, canvas_ref.current.height - (j * spacing.y));
-					ctx.lineTo(canvas_ref.current.width, canvas_ref.current.height - (j * spacing.y));
+					ctx.moveTo(0, j * (spacing.y/2));
+					ctx.lineTo(canvas_ref.current.width, j * (spacing.y/2));
 					ctx.closePath();
 					ctx.stroke();
 				}
 			}
 			ctx.setLineDash([]);
-		}		
-
+		}
+		
 		ctx.save();
 		ctx.translate(spacing.x/2,-spacing.y/2);
 		queue.forEach((node,i) => {
@@ -74,49 +73,60 @@ const GraphComponent = observer((props) => {
 			// inverts on y-axis
 			y = wrapper_ref.current.offsetHeight - y;
 			
-			for(let parent of node.parents) {
+			// for(let parent of node.parents) {
+			node.parents.forEach((parent, p_i) => {
 				let cx = parent.coordinates.x;
 				let cy = parent.coordinates.y;
 
-				if(cx) cx *= spacing.x;
-				if(cy) cy *= spacing.y;				
+				if (cx) cx *= spacing.x;
+				if (cy) cy *= spacing.y;
 
 				// inverts on y-axis
-				cy = wrapper_ref.current.offsetHeight - cy;				
+				cy = wrapper_ref.current.offsetHeight - cy;
 
 				// left/right cable
 				ctx.lineWidth = 2;
 				ctx.strokeStyle = branch_colors[parent.branch_index];
 				ctx.beginPath();
-				ctx.moveTo(x, y-30);
-				ctx.lineTo(cx, y-30);
+				ctx.moveTo(x, y - (spacing.y / 2));
+				ctx.lineTo(cx, y - (spacing.y / 2));
 				ctx.closePath();
 				ctx.stroke();
 
 				// top downward cable
 				ctx.beginPath();
-				ctx.moveTo(cx, y-30);
-				ctx.lineTo(cx, cy-30);
+				ctx.moveTo(cx, y - (spacing.y));
+				ctx.lineTo(cx, y - (spacing.y/2));
 				ctx.closePath();
 				ctx.stroke();
 
 				// fill cable (fixes gap)
-				ctx.strokeStyle = branch_colors[node.branch_index];
-				ctx.beginPath();
-				ctx.moveTo(x, y + 15);
-				ctx.lineTo(x, cy + 15);
-				ctx.closePath();
-				ctx.stroke();
+				// ctx.strokeStyle = branch_colors[node.branch_index];
+				// ctx.beginPath();
+				// ctx.moveTo(x, y);
+				// ctx.lineTo(x, cy - (spacing.y / 2));
+				// ctx.closePath();
+				// ctx.stroke();
 
+				if(node.parents.length > 0) {
+					ctx.strokeStyle = branch_colors[node.branch_index];
+					ctx.beginPath();
+					ctx.moveTo(x, y);
+					ctx.lineTo(x, cy + (spacing.y/2));
+					ctx.closePath();
+					ctx.stroke();
+				}
+				
 				// direction triangle
 				ctx.fillStyle = branch_colors[parent.branch_index];
 				ctx.beginPath();
-				ctx.moveTo(cx - 6, cy + (spacing.y*0.4));
-				ctx.lineTo(cx + 6, cy + (spacing.y*0.4));
-				ctx.lineTo(cx, cy + 6 + (spacing.y*0.4));
+				ctx.moveTo(cx - 8, cy + (spacing.y * 0.25) - 8);
+				ctx.lineTo(cx + 8, cy + (spacing.y * 0.25) - 8);
+				ctx.lineTo(cx, cy + 8 + (spacing.y * 0.25) - 8);
 				ctx.closePath();
 				ctx.fill();
-			}	
+			});
+				
 
 			let label_border_color = theme.text_color;
 			let label_border_style = node.data ? 'solid' : 'dashed';
@@ -164,21 +174,17 @@ const GraphComponent = observer((props) => {
 		props.data, 
 		props.data.coord_bounds,
 		props.data.selectedNode,
-		// props.data.selectedNode.data, // i hate this
-		// props.data.selectedNode.name, // i hate this
-		props.data.updateFlag,
 		props.data.root, // helped with clear() rerender
-		// drawGraph,
 	]);
 
 	useEffect(() => {
 		let unsubscribe = tinykeys(window, {
 			"ArrowDown": () => {
-				if (props.data.selectedNode.children.length)
+				if (props.data.selectedNode && props.data.selectedNode.children.length)
 					props.data.selectedNode.children[0].select()
 			},
 			"ArrowLeft": () => {
-				if (props.data.selectedNode.children.length) {
+				if (props.data.selectedNode && props.data.selectedNode.children.length) {
 					let idx = props.data.selectedNode.children[0].parents.indexOf(props.data.selectedNode);
 					idx--;
 
@@ -188,7 +194,7 @@ const GraphComponent = observer((props) => {
 				}
 			},
 			"ArrowRight": () => {
-				if (props.data.selectedNode.children.length) {
+				if (props.data.selectedNode && props.data.selectedNode.children.length) {
 					let idx = props.data.selectedNode.children[0].parents.indexOf(props.data.selectedNode);
 					idx++;
 
@@ -197,7 +203,7 @@ const GraphComponent = observer((props) => {
 				}
 			},
 			"ArrowUp": () => {
-				if(props.data.selectedNode.parents.length)
+				if(props.data.selectedNode && props.data.selectedNode.parents.length)
 					props.data.selectedNode.parents[0].select()
 			},
 			"Delete": () => {

@@ -3,8 +3,6 @@ import { types, getSnapshot, applySnapshot, getParent, getRoot } from "mobx-stat
 import * as DefaultShader from './shaders/DefaultShader';
 import Parameter from './ParameterStore';
 import uuidv1 from 'uuid/v1';
-import { ParameterGraph } from './GraphStore';
-import Operator from './OperatorStore';
 import Counter from './inputs/Counter';
 // for electron
 const remote = window.require('electron').remote;
@@ -20,11 +18,13 @@ const Uniform = types
         elements: types.array(Parameter),
     })
     .actions(self => ({
-        addElement: (name, value) => {
+        addElement: (name, value, type = 'number') => {
+            // TODO: if type is null, then decide type from value
             self.elements.push(Parameter.create({
-                uuid: 'param'+uuidv1(),
+                uuid: 'param_'+uuidv1(),
                 name: name,
-                value: value
+                value: value,
+                controlType: type,
             }))
         }
     }))
@@ -35,9 +35,10 @@ let shader = types
         name: types.maybe(types.string), 
         precision: types.optional(types.string, DefaultShader.precision),
         vert: types.optional(types.string, DefaultShader.vert),
-        frag: types.optional(types.string, DefaultShader.frag),
-        ready: false,   
-        operatorUpdateGroup: types.array(types.safeReference(allOps))
+        frag: types.optional(types.string, DefaultShader.frag),        
+        operatorUpdateGroup: types.array(types.safeReference(allOps)),
+        hasChanged: types.optional(types.boolean, false),
+        ready: false,
     })
     .volatile(self => ({
         target: null,
@@ -60,6 +61,7 @@ let shader = types
 
         function afterCreate() {
             self.ready = false; // initializing?
+            self.hasChanged = false;
         }
 
         function init() {
@@ -101,22 +103,18 @@ let shader = types
             4: "{"name":"off","default":[0.0,0.0]}"
 
             TODO: currently MUST use doublequotes.
+            TODO: allow for specific input types (slider, number, etc)
         */
         function extractUniforms() {
             const builtins = ["resolution"];
 
             let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
             let result = [...self.frag.matchAll(re)];
-            // console.log('extracting', getSnapshot(self))
 
-            // // retain only uniforms that show up in the result set
-            self.uniforms = self.uniforms.filter(u => {
-                let match;
-                return result.forEach((e) => {
-                    match = e.includes(u.name);
-                    return match;
-                });
-            });
+            // retain only uniforms that show up in the result set
+            // self.uniforms = self.uniforms.filter(u => {
+            //     return result.filter((e) => e.name === u.name).length > 0;
+            // });
 
             result.forEach((e) => {
                 let uniform_type = e[2];
@@ -126,76 +124,63 @@ let shader = types
                 // ignore built-ins
                 if (builtins.includes(uniform_name)) return;
 
-                // ignore if uniform already exists (preserves graphs)          
-                // for(let i = 0; i < self.uniforms.length; i++){
-                //     console.log([self.uniforms[i].name, uniform_name])
-                //     // ignore if necessary
-                //     if (self.uniforms[i].name === uniform_name) {
-                //         return;
-                //     }
-                //     // remove if necessary
-                // }
+                // ignore if uniform already exists
+                for(let i = 0; i < self.uniforms.length; i++){
+                    if (self.uniforms[i].name === uniform_name) {
+                        return;
+                    }
+                }
 
-                // ignore if input already exists (preserves graphs)          
+                // ignore if input already exists
                 for (let i = 0; i < self.inputs.length; i++) {
-                    // console.log([self.inlets[i].name, uniform_name])
                     if (self.inputs[i] === uniform_name) {
                         return;
                     }
                 }
 
                 let def;
-                let opt = (uniform_options) ? JSON.parse(uniform_options) : {};
-                // console.log('opt',opt)
+                let opt = uniform_options ? JSON.parse(uniform_options) : {};
 
                 let uniform = Uniform.create({
                     name: uniform_name
                 });
+                console.log(opt)
 
                 switch (uniform_type) {
                     case "sampler2D":
-                        /*
-                            the inputs here should correspond 
-                            with the parent and child arrays
-                            in the parent node.
-
-                            the parent node will need to re-sync
-                            with the input... need to fix
-                        */
                         self.inputs.push(uniform_name)
                         break;
                     case "float":
                         def = opt.default ? opt.default : 1.0;
 
-                        uniform.addElement('', def);
+                        uniform.addElement('', def, opt.type ? opt.type : 'number');
                         break;
                     case "vec2":
                         def = opt.default ? opt.default : [1, 1];
 
-                        uniform.addElement('x:', def[0]);
-                        uniform.addElement('y:', def[1]);
+                        uniform.addElement('x:', def[0], opt.type ? opt.type : 'number');
+                        uniform.addElement('y:', def[1], opt.type ? opt.type : 'number');
                         break;
                     case "vec3":
                         def = opt.default ? opt.default : [1, 1, 1];
 
-                        uniform.addElement('x:', def[0]);
-                        uniform.addElement('y:', def[1]);
-                        uniform.addElement('z:', def[2]);
+                        uniform.addElement('x:', def[0], opt.type ? opt.type : 'number');
+                        uniform.addElement('y:', def[1], opt.type ? opt.type : 'number');
+                        uniform.addElement('z:', def[2], opt.type ? opt.type : 'number');
                         break;
                     case "vec4":
                         def = opt.default ? opt.default : [1, 1, 1, 1];
 
-                        uniform.addElement('x:', def[0]);
-                        uniform.addElement('y:', def[1]);
-                        uniform.addElement('z:', def[2]);
-                        uniform.addElement('w:', def[3]);
+                        uniform.addElement('x:', def[0], opt.type ? opt.type : 'number');
+                        uniform.addElement('y:', def[1], opt.type ? opt.type : 'number');
+                        uniform.addElement('z:', def[2], opt.type ? opt.type : 'number');
+                        uniform.addElement('w:', def[3], opt.type ? opt.type : 'number');
                         break;
                     case "bool":
                         def = opt.default ? opt.default : false;
-                        uniform.addElement('', def);
+                        uniform.addElement('', def, opt.type ? opt.type : 'number');
                         break;
                     default:
-                        // console.log('check here',e)
                         break;
                 }
 
@@ -262,10 +247,12 @@ let shader = types
 
         function setVert(v) {
             self.vert = v;
+            self.hasChanged = true;
         }
 
         function setFrag(v) {
             self.frag = v;
+            self.hasChanged = true;
         }
 
         function setName(n) {
@@ -298,7 +285,6 @@ let shader = types
             dialog.showSaveDialog(options).then((f) => {
                 if (!f.filePath) return;
                 let name = f.filePath.split('/').pop().split('.')[0];
-                let snap = getSnapshot(self);
 
                 let content = JSON.stringify(getSnapshot(self), (key,value)=>{
                     if (
@@ -323,11 +309,16 @@ let shader = types
                         parent_node.setName(name);
                         // reload or add to collection
                         const root_store = getRoot(self);
-                        root_store.fetchShaderFiles()
+                        root_store.fetchShaderFiles();
+                        self.setHasChanged(false);
                     }
                 });
 
             }).catch(err => console.error(err));
+        }
+
+        function setHasChanged(v) {
+            self.hasChanged = v;
         }
 
         function load() {
@@ -373,6 +364,7 @@ let shader = types
             onRemove,
             save,
             load,
+            setHasChanged,
             addToOperatorGroup
         }
     })

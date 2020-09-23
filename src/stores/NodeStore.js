@@ -3,16 +3,14 @@ import { types, getParent } from 'mobx-state-tree';
 import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
 import uuidv1 from 'uuid/v1';
-import Operator from './OperatorStore';
 import Counter from './inputs/Counter';
     
-const PossibleData = types.union(Shader, Counter, Operator);
+const PossibleData = types.union(Counter, Shader);
 
 const GraphNode = types
     .model("GraphNode", {
         uuid: types.identifier,
         name: "empty node",        
-        // NOTE: order when using Union matters!
         data: types.maybe(PossibleData),
         branch_index: types.maybe(types.number),        
         children: types.array(types.safeReference(types.late(()=>GraphNode))),
@@ -31,26 +29,19 @@ const GraphNode = types
         function setData(data) {
             self.data = data;
             self.name = data.name;
-
-            console.log('self data', self.data)
-
+            
             // extract uniforms, map inputs/outputs
             parent_graph.update();
-            // self.data.extractUniforms();
             mapInputsToParents();            
         }
 
         function mapInputsToParents() {
             if (!self.data) return;
 
-            /*
-                add new parent
-            */
+            // add new parent
             self.data.inputs.forEach((e,i) => {
-
-                /*
-                    add parent if necessary
-                */
+                
+                // add parent if necessary
                 if (i >= self.parents.length) {
                     let parent = GraphNode.create({
                         uuid: uuidv1(),
@@ -62,9 +53,7 @@ const GraphNode = types
                 } 
             })
 
-            /* 
-                add new node if no children are present
-            */
+            // add new node if no children are present
             if(!self.children.length) {
                 let child = GraphNode.create({ uuid: uuidv1(), name: 'next' });
                 parent_graph.addNode(child);

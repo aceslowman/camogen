@@ -12,7 +12,6 @@ const Graph = types
         nodes: types.map(GraphNode),
         selectedNode: types.maybe(types.safeReference(GraphNode)),
         coord_bounds: types.optional(Coordinate, {x: 0, y: 0}),
-        updateFlag: false,
     })
     .views(self => ({
         get root() {
@@ -39,7 +38,7 @@ const Graph = types
     }))
     .actions(self => {
         /*
-            afterCreate()
+            afterAttach()
         */
         function afterAttach() {            
             // addNode().select();
@@ -50,6 +49,7 @@ const Graph = types
             clear()
         */
         function clear() {
+            // TODO: currently not working when subgraphs are present!
             // re-initialize the nodes map
             self.nodes.clear();
             // create root node, select it
@@ -73,9 +73,6 @@ const Graph = types
 
             // send each individual branch on to afterUpdate
             self.afterUpdate(render_queues);
-
-            // to force a react re-render
-            self.updateFlag = !self.updateFlag;
         }
 
         /*
@@ -148,7 +145,7 @@ const Graph = types
 
                     // remove all pruned parents
                     node.parents.forEach((parent,i) => {
-                        if(i == 0) return;
+                        if(i === 0) return;
                         if(parent.data) parent.data.onRemove();
                         self.nodes.delete(parent.uuid)
                     })
@@ -349,7 +346,6 @@ const parameterGraph = types
             if (!self.selectedNode) self.selectedNode = self.root;
             let op = getOperator(name);
             if(op) {
-                console.log(op)
                 self.selectedNode.setData(op);
                 self.update();
             } else {
@@ -375,12 +371,12 @@ const parameterGraph = types
 
         return {
             afterAttach,
+            afterUpdate,
             getOperator,
             setSelectedByName,
-            afterUpdate,
         }
     })
 
 
-export const ParameterGraph = types.compose("Parameter Graph", parameterGraph, Graph);
+export const ParameterGraph = types.compose("Parameter Graph", Graph, parameterGraph);
 export default Graph;

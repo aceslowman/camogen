@@ -4,14 +4,14 @@ import { UndoManager } from "mst-middlewares";
 import { getSnapshot } from 'mobx-state-tree';
 import dirTree from "directory-tree";
 import Collection from './utils/Collection';
-import defaultSnapshot from '../snapshots/default.json';
+// import defaultSnapshot from '../snapshots/default.json';
 import Runner from '../Runner';
 import p5 from 'p5';
 
 import path from 'path';
-import Workspace, {DefaultShaderEdit, DefaultDebug, DefaultParameter} from "./utils/Workspace";
+import Workspace, {DefaultParameter} from "./utils/Workspace";
 import Messages from "./utils/Messages";
-import Parameter from "./ParameterStore";
+import { Themes } from "maco-ui";
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
@@ -40,34 +40,47 @@ const fs = window.require('fs');
 const RootStore = types
   .model("RootStore", {    
     scene: types.maybe(Scene),
-    workspace: types.optional(Workspace, DefaultParameter),
-    shader_collection: types.maybe(types.late(() => Collection)),
-    ready: false,
-    breakoutControlled: false,
-    messages: types.maybe(Messages),
-    selectedParameter: types.maybe(types.reference(Parameter))
+    workspace: types.optional(Workspace, DefaultParameter),      
+    theme: types.frozen(Themes.yutani),
   })
   .volatile(self => ({
-    p5_instance: null
+    p5_instance: null,
+    shader_collection: null,
+    selectedParameter: null,
+    ready: false,
+    breakoutControlled: false,
+    messages: Messages.create(),
   }))
   .actions(self => {
     setUndoManager(self)
 
+    // only when first loaded!
     function afterCreate() {
-      self.messages = Messages.create();
-
       fetchShaderFiles()
         .then(() => self.shader_collection.preloadAll())
         .then(() => {
           self.setupP5();
-          self.setScene(Scene.create({}));
+
+          self.setScene(Scene.create());
 
           // apply default
           // TEMP: removed while working on param graphs
           // applySnapshot(self.scene, defaultSnapshot.scene);
-
           self.setReady(true);
         });
+    }
+
+    function setTheme(primary, secondary, text, accent) {
+      self.theme = {
+        primary: primary,
+        secondary: secondary,
+        text: text,
+        accent: accent,
+      }
+    }
+
+    function setTheme(theme) {
+      self.theme = theme;
     }
 
     function setupP5() {
@@ -83,16 +96,24 @@ const RootStore = types
     }
 
     function selectParameter(param) {
+      if(!param.graph) param.createGraph()
       self.selectedParameter = param;
     }
 
     function save() {
       let options = {
-          title: 'Save Scene File',
-          defaultPath: path.join(app.getPath("desktop"),`untitled.scene.camo`), 
+          title: 'Save Project File',
+          defaultPath: path.join(app.getPath("desktop"),`untitled.camo`), 
           buttonLabel: "Save",
-          filters: [
-              {name: 'Camo Scene Files', extensions: ['scene.camo']},
+          filters: [              
+              {
+                name: 'Camo Project Files',
+                extensions: ['camo']
+              },
+              {
+                name: 'Any',
+                extensions: ['*']
+              },
           ]
       }
 
@@ -103,7 +124,7 @@ const RootStore = types
               if(err) {         
                   console.error("an error has occurred: "+err.message);
               } else {
-                  console.log('scene has been saved at file:/'+f.filePath)
+                  console.log('project has been saved at: '+f.filePath)
               }                
           });
           
@@ -112,22 +133,32 @@ const RootStore = types
 
     function load() {
       let options = {
-          title: 'Load Scene File',
+          title: 'Load Project File',
           defaultPath: app.getPath("desktop"),
           buttonLabel: "Load",
           filters: [{
-              name: 'Camo Scene Files',
-              extensions: ['scene.camo']
-          }, ]
+              name: 'Camo Project Files',
+              extensions: ['camo']
+            },
+            {
+              name: 'Any',
+              extensions: ['*']
+            },
+          ]
       }
 
       dialog.showOpenDialog(options).then((f) => {
+        
         let content = f.filePaths[0];
         fs.readFile(content, 'utf-8', (err, data) => {
           if(err) console.error(err.message);
-          // only deserialize scene.
-          applySnapshot(self.scene, JSON.parse(data).scene);
+
+          self.scene.clear();
+          
+          applySnapshot(self, JSON.parse(data));
+
           self.scene.shaderGraph.update();
+          
           undoManager.clear();
         })
       }).catch(err => {/*alert(err)*/});
@@ -209,7 +240,7 @@ const RootStore = types
         buttonLabel: "Save Shader File",
       }
 
-      dialog.showSaveDialog(options).then((f) => {      
+      yield dialog.showSaveDialog(options).then((f) => {      
         fs.writeFile(f.filePath, content, "base64", (err) => {
           if (err) {
             console.log("an error has occurred: " + err.message);
@@ -227,6 +258,7 @@ const RootStore = types
       setReady,
       setScene,
       setupP5,
+      setTheme,
       selectParameter,
       breakout,
       onBreakoutResize,
@@ -234,7 +266,6 @@ const RootStore = types
       load: () => undoManager.withoutUndo(load),
       fetchShaderFiles: () => undoManager.withoutUndo(fetchShaderFiles),
       snapshot: () => undoManager.withoutUndo(snapshot),
-      snapshot
     };
   })
 

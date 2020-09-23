@@ -15,14 +15,15 @@ import {
   PanelComponent,
   ThemeContext,
   ToolbarComponent,
-  SplitContainer,
-  Themes
+  SplitContainer
 } from 'maco-ui';
 
 import 'maco-ui/dist/index.css';
 import { getSnapshot } from 'mobx-state-tree';
 
 import path from 'path';
+import PreferencesComponent from './components/panels/PreferencesComponent';
+
 const shell = window.require('electron').shell;
 const remote = window.require('electron').remote;
 const app = remote.app;
@@ -140,6 +141,7 @@ const App = observer((props) => {
             node={props.store.scene.shaderGraph.selectedNode}
             data={props.store.scene.shaderGraph.selectedNode.data}
             graph={props.store.scene.shaderGraph}
+            hasChanged={props.store.scene.shaderGraph.selectedNode.data.hasChanged}
             defaultSize={defaultSize}
           />
         );
@@ -176,6 +178,11 @@ const App = observer((props) => {
             log={props.store.messages.log} 
             defaultSize={defaultSize}
           />
+        );  
+      case 'Preferences':                            
+        return (<PreferencesComponent
+            key={key} 
+          />
         );                             
       default:
         break;
@@ -193,11 +200,21 @@ const App = observer((props) => {
             }, {
               label: "Load Scene",
               onClick: () => props.store.load()
-            }, ]
+            }, {
+              label: "Preferences",
+              onClick: () => {
+                props.store.workspace.clear();
+                props.store.workspace.addPanel("Preferences")
+              }
+            },            
+          ]
           },
           {
             label: "New Scene",
-            onClick: () => props.store.scene.clear()
+            onClick: () => {
+              console.log(getSnapshot(props.store.scene))
+              props.store.scene.clear()
+            }
           },     
           {
             label: "Library",
@@ -276,6 +293,10 @@ const App = observer((props) => {
                     label: "Messages",
                     onClick: () => props.store.workspace.addPanel("Messages")
                   },
+                  {
+                    label: "Preferences",
+                    onClick: () => props.store.workspace.addPanel("Preferences")
+                  },
                 ]
               },              
             ]
@@ -294,16 +315,17 @@ const App = observer((props) => {
 
   return (    
     <MainProvider value={{store: props.store}}>
-      <ThemeContext.Provider value={Themes.yutani}>
+      <ThemeContext.Provider value={props.store.theme}>
         <div id="APP" ref={mainRef}>          
           {props.store.ready && 
             (
               <PanelComponent
                 title={(<h1>camogen</h1>)}
                 horizontal 
-                // fullscreen={props.store.breakoutControlled}
+                fullscreen={props.store.breakoutControlled}
                 floating
                 toolbar={main_panel_toolbar}
+                collapsible
               >
                 <SplitContainer 
                   horizontal

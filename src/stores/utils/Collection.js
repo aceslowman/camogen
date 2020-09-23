@@ -1,5 +1,4 @@
 import { types, flow } from "mobx-state-tree";
-import Parameter from "../ParameterStore";
 import Shader from "../ShaderStore";
 
 const fs = window.require('fs');

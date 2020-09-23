@@ -4,7 +4,7 @@ import {
 	PanelComponent,
 	ControlGroupComponent,
 	InputBool,
-	InputFloat
+	InputFloat, InputSlider
 } from 'maco-ui';
 
 import styles from './ShaderControlsComponent.module.css'
@@ -36,6 +36,7 @@ const ShaderControls = observer((props) => {
 									step={0.1}
 									value={value}
 									onChange={(e) => handleValueChange(param,e)}
+									focused={param === store.selectedParameter}
 									onDoubleClick={(e) => {
 										store.selectParameter(param);										
 									}}
@@ -47,6 +48,7 @@ const ShaderControls = observer((props) => {
 									step={0.1}
 									value={value}
 									onChange={(e) => handleValueChange(param,e)}
+									focused={param === store.selectedParameter}
 									onDoubleClick={(e) => {
 										store.selectParameter(param);										
 									}}
@@ -58,13 +60,34 @@ const ShaderControls = observer((props) => {
 									step={0.1}
 									value={value}
 									onChange={(e) => handleValueChange(param,e)}
+									focused={param === store.selectedParameter}
 									onDoubleClick={(e) => {
 										store.selectParameter(param);										
 									}}
 								/>);
 							break;
 						}
+						// TODO: all should rely on controlType
+						// switch (param.controlType) {
+						// 	case "slider":
+						// 		input = (<InputSlider
+						// 			key={i}
+						// 			step={1}
+						// 			min={0}
+						// 			max={100}
+						// 			value={value}
+						// 			onChange={(e) => handleValueChange(param,e)}
+						// 			focused={param === store.selectedParameter}
+						// 			// onDoubleClick={(e) => {
+						// 			// 	store.selectParameter(param);										
+						// 			// }}
+						// 		/>);
+						// 		break;
 						
+						// 	default:
+						// 		break;
+						// }
+
 						return input;                                                        
 					})}
 				</ControlGroupComponent>                    
