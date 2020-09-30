@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { ThemeContext } from 'maco-ui';
 import useResizeObserver from '../hooks/ResizeHook';
 import tinykeys from 'tinykeys';
+import { getSnapshot } from 'mobx-state-tree';
 
 const branch_colors = [
 	'#0000FF', // blue
@@ -28,8 +29,6 @@ const GraphComponent = observer((props) => {
 		canvas_ref.current.width  = wrapper_ref.current.offsetWidth;
 		canvas_ref.current.height = wrapper_ref.current.offsetHeight;
 		
-		let queue = props.data.calculateCoordinates();
-
 		let spacing = {
 			x: (wrapper_bounds.width) / (props.data.coord_bounds.x+1),
 			y: (wrapper_bounds.height) / (props.data.coord_bounds.y+1)
@@ -63,7 +62,7 @@ const GraphComponent = observer((props) => {
 		
 		ctx.save();
 		ctx.translate(spacing.x/2,-spacing.y/2);
-		queue.forEach((node,i) => {
+		props.data.nodes.forEach((node,i) => {
 			let x = node.coordinates.x 
 			let y = node.coordinates.y;
 
@@ -147,7 +146,7 @@ const GraphComponent = observer((props) => {
 						left: x + (spacing.x/2) - 15,
 						top:  y - (spacing.y/2) - 15
 					}}
-				>					
+				>	
 					<label
 						title={node.name}
 						style={{	
@@ -171,9 +170,9 @@ const GraphComponent = observer((props) => {
 	useLayoutEffect(() => {
 		drawGraph();	
 	},[
-		props.data, 
 		props.data.coord_bounds,
-		props.data.selectedNode,
+		props.data.selectedNode.data,
+		props.data.nodes,
 		props.data.root, // helped with clear() rerender
 	]);
 

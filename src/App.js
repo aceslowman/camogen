@@ -131,6 +131,8 @@ const App = observer((props) => {
       case 'Shader Graph':                            
         return (<ShaderGraphComponent 
             key={key}
+            selectedNode={props.store.scene.shaderGraph.selectedNode}
+            coord_bounds={props.store.scene.shaderGraph.coord_bounds}
             data={props.store.scene.shaderGraph}
             defaultSize={defaultSize}
           />
@@ -149,6 +151,7 @@ const App = observer((props) => {
         return (<ShaderControlsComponent 
             key={key}
             data={props.store.scene.shaderGraph}
+            selectedNode={props.store.scene.shaderGraph.selectedNode}
             defaultSize={defaultSize}
           />
         );

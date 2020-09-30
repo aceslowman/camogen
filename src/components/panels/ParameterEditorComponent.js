@@ -9,7 +9,8 @@ import {
     ToolbarComponent,
 } from 'maco-ui';
 import { observer } from 'mobx-react';
-import CounterComponent from './operators/CounterComponent';
+import CounterComponent from './operators/inputs/CounterComponent';
+import MIDIComponent from './operators/inputs/MIDIComponent';
 
 const ParameterEditor = observer((props) => {
     const store = useContext(MainContext).store;
@@ -33,7 +34,17 @@ const ParameterEditor = observer((props) => {
                             />
                         )
                         break;
-                
+                    case "MIDI":
+                        c = (			
+                            <MIDIComponent 
+                                modifier={e.data.modifier}
+                                value={e.data.value}
+                                handleInputSelect={e.data.handleInputSelect} 
+                                midi_inputs={e.data.midi_inputs}
+                            />
+                        )
+                        break;
+                    
                     default:
                         break;
                 }
@@ -133,6 +144,8 @@ const ParameterEditor = observer((props) => {
                         <SplitContainer vertical>
                             <ParameterGraph 
                                 data = {props.data}
+                                selectedNode = {props.selectedNode}
+                                coord_bounds = {props.coord_bounds}
                             />
                             <PanelComponent>
                                 { generateParameterControls() }

@@ -4,13 +4,23 @@ import {
 	PanelComponent,
 	ControlGroupComponent,
 	InputBool,
-	InputFloat, InputSlider
+	InputFloat, InputSlider, ThemeContext
 } from 'maco-ui';
 
 import styles from './ShaderControlsComponent.module.css'
 import { observer } from 'mobx-react';
 
+const branch_colors = [
+	'#0000FF', // blue
+	'#FF0000', // red
+	'#FFFF00', // yellow			
+	'#00FF00', // neon green
+	'#9900FF', // purple
+	'#FF6000', // orange
+];
+
 const ShaderControls = observer((props) => {
+	const theme = useContext(ThemeContext);
 	const store = useContext(MainContext).store;
 
 	const handleRemove = () => {
@@ -99,18 +109,51 @@ const ShaderControls = observer((props) => {
 	
 	const panels = [];
 
-	props.data.nodes.forEach((n,i)=>(
-		n.data && panels.push((
-		<PanelComponent 
-			key={i}
-			title={n.data.name}
-			collapsible
-			expanded={n === props.data.selectedNode}
-			gutters
-		>
-			{ generateInterface(n.data) }
-		</PanelComponent>))
-	))
+	props.data.queue.forEach((subqueue) => {
+		subqueue.forEach((node, i) => {
+			let subpanels = [];
+			let is_selected = props.selectedNode === node;
+
+			if(node.data) {
+				subpanels.push((
+					<li
+						key={i}
+						style={{
+							borderLeft: `5px solid ${branch_colors[node.branch_index]}`
+						}}
+					>
+						<PanelComponent 
+							key={i}
+							title={(
+								<span style={{
+									color: is_selected ? theme.accent_color : theme.text_color
+								}}>
+									{node.data.name}
+								</span>
+							)}
+							collapsible
+							expanded={node === props.data.selectedNode}
+							gutters
+						>
+							{ generateInterface(node.data) }
+						</PanelComponent>
+					</li>
+				))
+			}
+
+			panels.push((
+				<ul 
+					key={node.uuid}
+					className={styles.listtree}
+					style={{
+						// marginLeft: node.trunk_distance * 5,		
+					}}
+				>
+					{subpanels}
+				</ul>
+			));
+		})		
+	})
 
 	return(
 		<PanelComponent 

@@ -22,8 +22,8 @@ let shaderGraph = types
             accepts an array of arrays, representing each target and it's 
             render queue.
         */
-        function afterUpdate(queue) {
-            queue.forEach((subqueue,branch_id) => {
+        function afterUpdate() {
+            self.queue.forEach((subqueue, branch_id) => {
 
                 /*
                     assign targets to shaders
@@ -31,7 +31,7 @@ let shaderGraph = types
                     note: seems like there is room for refactoring and making
                     the logic of this clearer.
                 */
-                subqueue.forEach((node, i) => {
+                subqueue.forEach((node) => {
                     if (node.data) {
                         // if there are targets and the necessary one is available
                         if (parent_scene.targets.length && parent_scene.targets[node.branch_index]) {

@@ -3,14 +3,17 @@ import { types, getSnapshot, applySnapshot, getParent, getRoot } from "mobx-stat
 import * as DefaultShader from './shaders/DefaultShader';
 import Parameter from './ParameterStore';
 import uuidv1 from 'uuid/v1';
-import Counter from './inputs/Counter';
+import Counter from './operators/inputs/Counter';
+import MIDI from './operators/inputs/MIDI';
+import Add from './operators/math/Add';
+import { ParameterGraph } from './GraphStore';
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
 const app = remote.app;
 const fs = window.require('fs');
 
-const allOps = types.union(Counter);
+const allOps = types.union(Counter, MIDI, Add/*, Subtract, Divide, Multiply, Modulus, Sin, Cos, Tan*/);
 
 const Uniform = types
     .model("Uniform", {
@@ -36,7 +39,7 @@ let shader = types
         precision: types.optional(types.string, DefaultShader.precision),
         vert: types.optional(types.string, DefaultShader.vert),
         frag: types.optional(types.string, DefaultShader.frag),        
-        operatorUpdateGroup: types.array(types.safeReference(allOps)),
+        parameterUpdateGroup: types.array(types.safeReference(types.late(()=>ParameterGraph))),
         hasChanged: types.optional(types.boolean, false),
         ready: false,
     })
@@ -144,7 +147,7 @@ let shader = types
                 let uniform = Uniform.create({
                     name: uniform_name
                 });
-                console.log(opt)
+                // console.log(opt)
 
                 switch (uniform_type) {
                     case "sampler2D":
@@ -208,9 +211,8 @@ let shader = types
                 Loop through all active parameter graphs to recompute 
                 values in sync with the frame rate
             */
-            for (let op of self.operatorUpdateGroup) {
-                op.update();
-                op.recalculateParent();
+            for (let param_graph of self.parameterUpdateGroup) {
+                param_graph.afterUpdate();
             }
 
             for (let uniform_data of self.uniforms) {
@@ -347,8 +349,12 @@ let shader = types
                 /*alert(err)*/ });
         }
 
-        function addToOperatorGroup(op) {
-            self.operatorUpdateGroup.push(op);
+        function addToParameterUpdateGroup(p_graph) {
+            self.parameterUpdateGroup.push(p_graph);
+        }
+
+        function beforeDestroy() {
+            console.log('about to delete shader '+self.name)
         }
 
         return {
@@ -365,7 +371,7 @@ let shader = types
             save,
             load,
             setHasChanged,
-            addToOperatorGroup
+            addToParameterUpdateGroup
         }
     })
 

@@ -19,7 +19,11 @@ const ShaderGraph = observer((props) => {
 			onRemove={()=>store.workspace.removePanel('Shader Graph')}
 			defaultSize={props.defaultSize}
 		>				
-			<GraphComponent data={props.data}/>
+			<GraphComponent 
+				data={props.data}
+				coord_bounds={props.coord_bounds}
+				selectedNode={props.selectedNode}
+			/>
 
 			{ props.data && props.data.updateFlag }
 		</PanelComponent>

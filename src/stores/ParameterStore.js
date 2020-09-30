@@ -1,6 +1,6 @@
 import uuidv1 from 'uuid/v1';
 
-import { types } from "mobx-state-tree";
+import { getParent, types } from "mobx-state-tree";
 import { ParameterGraph } from './GraphStore';
 
 const Parameter = types
@@ -14,6 +14,7 @@ const Parameter = types
     .actions(self => {
         function createGraph() {
             self.graph = ParameterGraph.create({uuid: uuidv1()})
+            self.graph.root.select();
         }
 
         function setValue(v) {
@@ -21,8 +22,8 @@ const Parameter = types
         }
 
         function beforeDestroy() {
-            console.log('hit destroy')
-            if(self.graph) self.graph.clear();
+            // console.log('hit destroy')
+            // if(self.graph) self.graph.clear();
         }
 
         return {

@@ -1,6 +1,6 @@
 import { types, flow, applySnapshot } from "mobx-state-tree";
 import Scene from './SceneStore';
-import { UndoManager } from "mst-middlewares";
+// import { UndoManager } from "mst-middlewares";
 import { getSnapshot } from 'mobx-state-tree';
 import dirTree from "directory-tree";
 import Collection from './utils/Collection';
@@ -52,7 +52,7 @@ const RootStore = types
     messages: Messages.create(),
   }))
   .actions(self => {
-    setUndoManager(self)
+    // setUndoManager(self)
 
     // only when first loaded!
     function afterCreate() {
@@ -158,8 +158,9 @@ const RootStore = types
           applySnapshot(self, JSON.parse(data));
 
           self.scene.shaderGraph.update();
+          self.scene.shaderGraph.afterUpdate();
           
-          undoManager.clear();
+          // undoManager.clear();
         })
       }).catch(err => {/*alert(err)*/});
     }
@@ -262,17 +263,18 @@ const RootStore = types
       selectParameter,
       breakout,
       onBreakoutResize,
-      save: () => undoManager.withoutUndo(save),
-      load: () => undoManager.withoutUndo(load),
-      fetchShaderFiles: () => undoManager.withoutUndo(fetchShaderFiles),
-      snapshot: () => undoManager.withoutUndo(snapshot),
+      save, load, fetchShaderFiles, snapshot
+      // save: () => undoManager.withoutUndo(save),
+      // load: () => undoManager.withoutUndo(load),
+      // fetchShaderFiles: () => undoManager.withoutUndo(fetchShaderFiles),
+      // snapshot: () => undoManager.withoutUndo(snapshot),
     };
   })
 
-export let undoManager = {}
-export const setUndoManager = (targetStore) => {
-  undoManager = UndoManager.create({}, { targetStore })
-}
+// export let undoManager = {}
+// export const setUndoManager = (targetStore) => {
+//   undoManager = UndoManager.create({}, { targetStore })
+// }
 
 export default RootStore;
 

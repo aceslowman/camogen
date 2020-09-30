@@ -2,9 +2,11 @@ import GraphNode from './NodeStore';
 import uuidv1 from 'uuid/v1';
 
 import { types, getParent } from "mobx-state-tree";
-import { undoManager } from './RootStore';
+// import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
-import Counter from './inputs/Counter';
+import Counter from './operators/inputs/Counter';
+import MIDI from './operators/inputs/MIDI';
+import Add from './operators/math/Add';
 
 const Graph = types
     .model("Graph", {
@@ -13,6 +15,9 @@ const Graph = types
         selectedNode: types.maybe(types.safeReference(GraphNode)),
         coord_bounds: types.optional(Coordinate, {x: 0, y: 0}),
     })
+    .volatile(self => ({
+        queue: []
+    }))
     .views(self => ({
         get root() {
             let node = self.nodes.values().next().value;
@@ -34,26 +39,43 @@ const Graph = types
             }
 
             return count;
+        },
+
+        distanceFromTrunk(a) {
+            let node = a;
+            let count = 0;
+
+            while (node.children[0]) {
+                
+                if(node.children[0].parents.length > 1) {
+                    if (node.children[0].parents[0] !== node) {
+                        count++;
+                    }
+                }
+                
+                node = node.children[0];
+            }
+
+            return count;
         }
+
+
     }))
     .actions(self => {
-        /*
-            afterAttach()
-        */
-        function afterAttach() {            
-            // addNode().select();
-            // self.update();
-        }
 
         /*
             clear()
         */
         function clear() {
+            console.log('clearing graph')
             // TODO: currently not working when subgraphs are present!
+            // TODO: what if I cleared the graph from the root up?
             // re-initialize the nodes map
             self.nodes.clear();
+
             // create root node, select it
-            self.addNode().select();
+            self.addNode();
+            self.root.select();
             // recalculate 
             self.update();
         }
@@ -68,11 +90,9 @@ const Graph = types
             let render_queues = calculateBranches();
 
             // calculate info for visualization
-            self.calculateCoordinates();
             self.calculateCoordinateBounds();
 
-            // send each individual branch on to afterUpdate
-            self.afterUpdate(render_queues);
+            self.queue = render_queues;
         }
 
         /*
@@ -84,7 +104,6 @@ const Graph = types
         */
         function addNode(node = GraphNode.create({uuid: 'add_'+uuidv1()})) {            
             self.nodes.put(node);
-            // self.update(); // TEMP
             return self.nodes.get(node.uuid)
         }
 
@@ -178,6 +197,7 @@ const Graph = types
             let container = [self.root];
             let next_node;
             let distance_from_root = 0;
+            let distance_from_trunk = 0;
 
             while (container.length) {
                 next_node = container.shift();
@@ -185,8 +205,9 @@ const Graph = types
                 if (next_node) {
                     result.push(next_node);
                     distance_from_root = self.distanceBetween(next_node, self.root);
+                    distance_from_trunk = self.distanceFromTrunk(next_node);
 
-                    if (f) f(next_node, distance_from_root);
+                    if (f) f(next_node, distance_from_root, distance_from_trunk);
 
                     if (next_node.parents) {
                         container = depthFirst ?
@@ -206,11 +227,15 @@ const Graph = types
             returns an array of queues, by branch_id
         */
         function calculateBranches() {
+            let x = 0;
+
             let current_branch = 0;
             let render_queues = [];
 
-            self.traverse(next_node => {
+            self.traverse((next_node, d_root, d_trunk) => {
                 next_node.branch_index = undefined;
+                next_node.trunk_distance = d_trunk;
+                next_node.coordinates.set(x, d_root)
 
                 // if we hit the topmost node
                 if (!next_node.parents.length) {
@@ -238,38 +263,11 @@ const Graph = types
                     }
 
                     current_branch++;
+                    x++;
                 }    
             });
 
             return render_queues;
-        }
-
-        /*
-            calculateCoordinates()
-
-            for visualization
-            TODO: collapse into traverse()
-        */
-        function calculateCoordinates() {
-            let used_coords = [];
-            let x = 0;
-            let y = 0;
-
-            return self.traverse((node, dist) => {
-                y = dist;
-
-                node.coordinates.set(x,y);
-
-                if (!node.parents.length) {
-                    x++;
-                }
-
-                if (used_coords.find((coord) => coord.x === x && coord.y === y)) {
-                    console.log('node space occupied! shift now!')
-                }
-
-                used_coords.push(node.coordinates);
-            });
         }
 
         /*
@@ -296,7 +294,6 @@ const Graph = types
         }
 
         return {
-            afterAttach,
             clear,
             update,
             appendNode,
@@ -304,10 +301,11 @@ const Graph = types
             setSelected,
             removeSelected,
             removeNode,
-            traverse,              
-            calculateBranches: () => undoManager.withoutUndo(calculateBranches),
-            calculateCoordinates: () => undoManager.withoutUndo(calculateCoordinates),
-            calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
+            traverse,         
+            calculateBranches,
+            calculateCoordinateBounds,
+            // calculateBranches: () => undoManager.withoutUndo(calculateBranches),
+            // calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
         }
     })
 
@@ -317,11 +315,16 @@ const parameterGraph = types
     .model("ParameterGraph", {})
     .actions(self => {
         let parent_param;
+        let parent_shader;
 
         function afterAttach() {
             parent_param = getParent(self);
+            parent_shader = getParent(self, 6).data;
             self.addNode();
             self.update();
+            
+            // TODO: should be toggleable
+            parent_shader.addToParameterUpdateGroup(self)
         }
 
         function getOperator(name) {
@@ -334,7 +337,60 @@ const parameterGraph = types
                         name: 'Counter'
                     });
                     break;
-
+                case 'MIDI':
+                    operator = MIDI.create({
+                        uuid: uuidv1(),
+                        name: 'MIDI'
+                    })
+                    break;
+                case 'Add':
+                    operator = Add.create({
+                        uuid: uuidv1(),
+                        name: '+'
+                    })
+                    break;
+                // case 'Subtract':
+                //     operator = Subtract.create({
+                //         uuid: uuidv1(),
+                //         name: '-'
+                //     })
+                //     break;
+                // case 'Divide':
+                //     operator = Divide.create({
+                //         uuid: uuidv1(),
+                //         name: '/'
+                //     })
+                //     break;
+                // case 'Multiply':
+                //     operator = Multiply.create({
+                //         uuid: uuidv1(),
+                //         name: '*'
+                //     })
+                //     break;
+                // case 'Modulus':
+                //     operator = Modulus.create({
+                //         uuid: uuidv1(),
+                //         name: '%'
+                //     })
+                //     break;
+                // case 'Sin':
+                //     operator = Sin.create({
+                //         uuid: uuidv1(),
+                //         name: 'Sin'
+                //     })
+                //     break;
+                // case 'Cos':
+                //     operator = Cos.create({
+                //         uuid: uuidv1(),
+                //         name: 'Cos'
+                //     })
+                //     break;
+                // case 'Tan':
+                //     operator = Tan.create({
+                //         uuid: uuidv1(),
+                //         name: 'Tan'
+                //     })
+                //     break;
                 default:
                     break;
             }
@@ -356,16 +412,23 @@ const parameterGraph = types
         /*
             afterUpdate(queue)
         */
-        function afterUpdate(queue) {
-            let v = 0;
+        function afterUpdate() {
+            // this allows the parameter to remain unchanged 
+            // when the graph is empty. 
+            if(self.nodes.size <= 1) return;
+            
+            let total = 0;
 
-            queue.forEach(subqueue => {
+            self.queue.forEach(subqueue => {
                 subqueue.forEach(node => {
+                    let subtotal = 0;
                     // if not root node
-                    if (node.data) v = node.data.update(v);
-
-                    parent_param.setValue(v);
+                    if (node.data) {
+                        subtotal = node.data.update();
+                    }
+                    total += subtotal;
                 })
+                parent_param.setValue(total);
             });
         }
 

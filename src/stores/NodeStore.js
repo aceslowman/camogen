@@ -1,29 +1,34 @@
 import Shader from './ShaderStore';
 import { types, getParent } from 'mobx-state-tree';
-import { undoManager } from './RootStore';
+// import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
 import uuidv1 from 'uuid/v1';
-import Counter from './inputs/Counter';
+import Counter from './operators/inputs/Counter';
+import MIDI from './operators/inputs/MIDI';
+import Add from './operators/math/Add';
     
-const PossibleData = types.union(Counter, Shader);
+const allOps = types.union(Counter, MIDI, Add /*, Subtract, Divide, Multiply, Modulus, Sin, Cos, Tan*/ );
+const PossibleData = types.union(allOps, Shader);
 
 const GraphNode = types
     .model("GraphNode", {
         uuid: types.identifier,
         name: "empty node",        
-        data: types.maybe(PossibleData),
-        branch_index: types.maybe(types.number),        
+        data: types.maybe(PossibleData),      
         children: types.array(types.safeReference(types.late(()=>GraphNode))),
         parents: types.array(types.safeReference(types.late(()=>GraphNode))),
         selected: false,
         coordinates: types.optional(Coordinate, {x: 0, y: 0}),
     })
+    .volatile(self => ({
+        branch_index: 0,
+        trunk_distance: 0,
+    }))
     .actions(self => {
         let parent_graph;
 
         function afterAttach() {
             parent_graph = getParent(self, 2);
-            mapInputsToParents();
         }
 
         function setData(data) {
@@ -32,6 +37,7 @@ const GraphNode = types
             
             // extract uniforms, map inputs/outputs
             parent_graph.update();
+            parent_graph.afterUpdate();
             mapInputsToParents();            
         }
 
@@ -101,7 +107,16 @@ const GraphNode = types
             return self;
         }
 
+        function beforeDestroy() {
+            console.log(`about to delete graphnode ${self.name}`)
+            // disconnect children?
+            self.children = [];
+            self.parents = [];
+            self.data = undefined;
+        }
+
         return {
+            beforeDestroy,
             afterAttach,
             setData,
             mapInputsToParents,
@@ -109,8 +124,10 @@ const GraphNode = types
             setChild,
             setBranchIndex,
             setName,
-            select: () => undoManager.withoutUndo(select),
-            deselect: () => undoManager.withoutUndo(deselect),            
+            select,
+            deselect
+            // select: () => undoManager.withoutUndo(select),
+            // deselect: () => undoManager.withoutUndo(deselect),            
         }
     })
 

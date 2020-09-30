@@ -139,7 +139,7 @@ export default class ShaderStore extends NodeDataStore {
             values in sync with the frame rate
         */
         for (let op of this.operatorUpdateGroup) {
-            op.update();
+            // op.update();
             op.node.graph.recalculate();
         }
 
