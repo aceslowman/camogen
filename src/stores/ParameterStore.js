@@ -1,7 +1,8 @@
 import uuidv1 from 'uuid/v1';
 
-import { getParent, types } from "mobx-state-tree";
+import { getParent, getSnapshot, types } from "mobx-state-tree";
 import { ParameterGraph } from './GraphStore';
+// import ParameterGraph from './ParameterGraphStore';
 
 const Parameter = types
     .model("Parameter", {
@@ -22,7 +23,7 @@ const Parameter = types
         }
 
         function beforeDestroy() {
-            // console.log('hit destroy')
+            console.log('hit destroy', getSnapshot(self))
             // if(self.graph) self.graph.clear();
         }
 

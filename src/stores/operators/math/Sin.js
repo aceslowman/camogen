@@ -1,22 +1,32 @@
 import {
-    observable,
-    action
-} from 'mobx';
-import OperatorStore from '../OperatorStore';
-import { createModelSchema } from "serializr"
+    types,
+    getParent
+} from "mobx-state-tree";
+import Operator from '../../OperatorStore';
 
-//----------------------------------------------------------------------
-const store = class SinStore extends OperatorStore {
-    @observable name = "Sin";
-    @observable value = 0;
+const sin = types
+    .model("Sin", {
+        value: types.optional(types.union(types.number, types.string, types.boolean), 0),
+        modifier: types.optional(types.union(types.number, types.string, types.boolean), 0),
+    })
+    .actions(self => {
+        let parent_node;
 
-    @action update = (v) => {
-        return Number(Math.sin(v));
-    }
-}
+        function afterAttach() {
+            parent_node = getParent(self);
+        }
 
-createModelSchema(store, {
-    extends: OperatorStore
-});
+        function update() {
+            let a = parent_node.parents[0].data.value;
+            return Math.sin(a);
+        }
 
-export default store;
+        return {
+            afterAttach,
+            update,
+        }
+    })
+
+const Sin = types.compose(Operator, sin).named("Sin")
+
+export default Sin;

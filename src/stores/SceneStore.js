@@ -27,7 +27,7 @@ const Scene = types
             // self.shaderGraph.update();
         }
 
-        function addTarget(target = Target.create({uuid: 'target_'+uuidv1()})) {
+        function addTarget(target = Target.create()) {
             self.targets.push(target);
             return target;
         }
@@ -39,8 +39,7 @@ const Scene = types
         function clear() {
             console.log('clearing scene!')
             // TODO: issue here with clearing a scene containing subgraphs
-            self.shaderGraph.clear();
-            
+            self.shaderGraph.clear();       
             self.targets = [];
         }
 

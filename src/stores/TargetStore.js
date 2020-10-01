@@ -3,10 +3,9 @@ import GraphNode from './NodeStore';
 
 const Target = types
     .model("Target", {
-        uuid: types.identifier,
-        render_queue: types.array(types.safeReference(types.late(()=>GraphNode)))
+        render_queue: types.array(types.safeReference(types.late(()=>GraphNode)))     
     })
-    .volatile(self => ({
+    .volatile(() => ({
         ref: null
     }))
     .actions(self => {
@@ -16,12 +15,9 @@ const Target = types
         function afterAttach() {
             root_store = getRoot(self);
             parent_scene = getParent(self,2);
-            setupRef();
-        }
-
-        function setupRef() {
-            let p = root_store.p5_instance;
             
+            let p = root_store.p5_instance;
+
             self.ref = p.createGraphics(
                 p.width,
                 p.height,
@@ -34,7 +30,7 @@ const Target = types
         }
 
         function setRenderQueue(queue) {
-            self.render_queue = queue.filter(e=>e.uuid);
+            self.render_queue = queue;
         }
 
         function removeShaderNode(shader) {
@@ -44,7 +40,6 @@ const Target = types
         }
 
         return {
-            setupRef,
             afterAttach,
             clear,
             setRenderQueue,

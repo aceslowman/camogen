@@ -1,22 +1,18 @@
-import {
-    observable,
-    action
-} from 'mobx';
-import OperatorStore from '../OperatorStore';
-import { createModelSchema } from "serializr"
+import { types } from "mobx-state-tree";
+import Operator from '../../OperatorStore';
 
-//----------------------------------------------------------------------
-const store = class TanStore extends OperatorStore {
-    @observable name = "Tan";
-    @observable value = 0;
+const tan = types
+	.model("Tan", {
+		value: types.optional(types.union(types.number, types.string, types.boolean), 0),
+		modifier: types.optional(types.union(types.number, types.string, types.boolean), 0),
+	})
+	.actions(self => ({
+		update: () => {
+			let a = self.parents[0].data.update();
+			return Math.tan(a);
+		}
+	}))
 
-    @action update = (v) => {
-        return Number(Math.tan(v));
-    }
-}
+const Tan = types.compose(Operator, tan).named("Tan")
 
-createModelSchema(store, {
-    extends: OperatorStore
-});
-
-export default store;
+export default Tan;

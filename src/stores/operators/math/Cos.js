@@ -1,22 +1,17 @@
-import {
-    observable,
-    action
-} from 'mobx';
-import OperatorStore from '../OperatorStore';
-import { createModelSchema } from "serializr"
+import { types } from "mobx-state-tree";
+import Operator from '../../OperatorStore';
 
-//----------------------------------------------------------------------
-const store = class CosStore extends OperatorStore {
-    @observable name = "Cos";
-    @observable value = 0;
+const cos = types
+	.model("Cos", {
+		modifier: types.optional(types.union(types.number, types.string, types.boolean), 0),
+	})
+	.actions(self => ({
+		update: () => {
+			let a = self.parents[0].data.update();
+			return Math.cos(a);
+		}
+	}))
 
-    @action update = (v) => {
-        return Number(Math.cos(v));
-    }
-}
+const Cos = types.compose(Operator, cos).named("Cos")
 
-createModelSchema(store, {
-    extends: OperatorStore
-});
-
-export default store;
+export default Cos;

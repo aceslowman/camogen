@@ -3,17 +3,14 @@ import { types, getSnapshot, applySnapshot, getParent, getRoot } from "mobx-stat
 import * as DefaultShader from './shaders/DefaultShader';
 import Parameter from './ParameterStore';
 import uuidv1 from 'uuid/v1';
-import Counter from './operators/inputs/Counter';
-import MIDI from './operators/inputs/MIDI';
-import Add from './operators/math/Add';
 import { ParameterGraph } from './GraphStore';
+// import ParameterGraph from './ParameterGraphStore';
+
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
 const app = remote.app;
 const fs = window.require('fs');
-
-const allOps = types.union(Counter, MIDI, Add/*, Subtract, Divide, Multiply, Modulus, Sin, Cos, Tan*/);
 
 const Uniform = types
     .model("Uniform", {
@@ -39,11 +36,11 @@ let shader = types
         precision: types.optional(types.string, DefaultShader.precision),
         vert: types.optional(types.string, DefaultShader.vert),
         frag: types.optional(types.string, DefaultShader.frag),        
-        parameterUpdateGroup: types.array(types.safeReference(types.late(()=>ParameterGraph))),
+        parameterUpdateGroup: types.map(types.safeReference(types.late(()=>ParameterGraph))),      
         hasChanged: types.optional(types.boolean, false),
         ready: false,
     })
-    .volatile(self => ({
+    .volatile(() => ({
         target: null,
     }))
     .views(self => ({
@@ -211,9 +208,8 @@ let shader = types
                 Loop through all active parameter graphs to recompute 
                 values in sync with the frame rate
             */
-            for (let param_graph of self.parameterUpdateGroup) {
-                param_graph.afterUpdate();
-            }
+            // self.parameterUpdateGroup.forEach((e) => e.afterUpdate())
+            self.parameterUpdateGroup.forEach((e) => e.afterUpdate())
 
             for (let uniform_data of self.uniforms) {
                 if (uniform_data.elements.length > 1) {                    
@@ -345,12 +341,11 @@ let shader = types
 
                     // undoManager.clear();
                 })
-            }).catch(err => {
-                /*alert(err)*/ });
+            }).catch(err => { /*alert(err)*/ });
         }
 
         function addToParameterUpdateGroup(p_graph) {
-            self.parameterUpdateGroup.push(p_graph);
+            self.parameterUpdateGroup.put(p_graph);
         }
 
         function beforeDestroy() {
@@ -358,6 +353,7 @@ let shader = types
         }
 
         return {
+            beforeDestroy,
             afterCreate,
             afterAttach,
             init,

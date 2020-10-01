@@ -1,5 +1,5 @@
 import { NodeData } from './NodeDataStore';
-import { types } from "mobx-state-tree";
+import { getParent, types } from "mobx-state-tree";
 
 let operator = types
     .model("Operator", {
@@ -7,7 +7,24 @@ let operator = types
         value: types.maybe(types.union(types.number, types.string, types.boolean)),
         modifier: types.maybe(types.union(types.number, types.string, types.boolean)),
     })
+    .volatile((self) => ({
+        parents: null
+    }))
+    .actions(self => {
+        function afterAttach() {
+            self.parents = getParent(self).parents;
+        }
 
-const Operator = types.compose("Operator", NodeData, operator);
+        function handleChange(e) {
+            self.modifier = e;
+        }
+
+        return {
+            afterAttach,
+            handleChange
+        }
+    })
+
+const Operator = types.compose(NodeData, operator).named("Operator");
 
 export default Operator;

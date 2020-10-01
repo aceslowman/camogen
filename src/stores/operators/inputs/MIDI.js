@@ -10,16 +10,11 @@ const midi = types
 		// midi_channel: types.optional(),
 	})
 	.actions(self => {
-		let parent_shader;
-
 		function afterAttach() {
-			parent_shader = getParent(self, 8);
-
 			navigator.requestMIDIAccess().then(onMIDIConnect);
 		}
 
 		function setMIDIInputs(inputs) {
-			console.log(inputs)
 			self.midi_inputs = [...inputs];
 		}
 
@@ -35,7 +30,7 @@ const midi = types
 		function handleMIDIChange(v) {
 			if(self.activeChannel === undefined) self.activeChannel = v.data[1];
 			if(self.activeChannel === v.data[1]){
-				self.value = Number(v.data[2]);
+				self.value = v.data[2];
 			}
 		}
 
@@ -51,7 +46,6 @@ const midi = types
 					return;
 				}				
 			});
-			console.log(self.midi_inputs)
 		}
 
 		return {

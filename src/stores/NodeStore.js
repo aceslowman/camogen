@@ -1,22 +1,25 @@
 import Shader from './ShaderStore';
-import { types, getParent } from 'mobx-state-tree';
+import { types, getParent, getSnapshot } from 'mobx-state-tree';
 // import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
 import uuidv1 from 'uuid/v1';
-import Counter from './operators/inputs/Counter';
-import MIDI from './operators/inputs/MIDI';
-import Add from './operators/math/Add';
+import { allOps } from './operators';
     
-const allOps = types.union(Counter, MIDI, Add /*, Subtract, Divide, Multiply, Modulus, Sin, Cos, Tan*/ );
 const PossibleData = types.union(allOps, Shader);
+
+// this doesn't seem to be where the invalidation is happening
+// const nodeRef = types.reference(types.late(() => GraphNode, {
+//     onInvalidated(ev) {console.log(ev)}
+// }));
+const nodeRef = types.safeReference(types.late(() => GraphNode));
 
 const GraphNode = types
     .model("GraphNode", {
         uuid: types.identifier,
         name: "empty node",        
         data: types.maybe(PossibleData),      
-        children: types.array(types.safeReference(types.late(()=>GraphNode))),
-        parents: types.array(types.safeReference(types.late(()=>GraphNode))),
+        children: types.array(nodeRef),
+        parents: types.array(nodeRef),
         selected: false,
         coordinates: types.optional(Coordinate, {x: 0, y: 0}),
     })
@@ -108,11 +111,7 @@ const GraphNode = types
         }
 
         function beforeDestroy() {
-            console.log(`about to delete graphnode ${self.name}`)
-            // disconnect children?
-            self.children = [];
-            self.parents = [];
-            self.data = undefined;
+            console.log(`about to delete graphnode ${self.name}`, getSnapshot(self))
         }
 
         return {
@@ -126,8 +125,6 @@ const GraphNode = types
             setName,
             select,
             deselect
-            // select: () => undoManager.withoutUndo(select),
-            // deselect: () => undoManager.withoutUndo(deselect),            
         }
     })
 

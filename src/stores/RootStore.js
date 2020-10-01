@@ -12,6 +12,7 @@ import path from 'path';
 import Workspace, {DefaultParameter} from "./utils/Workspace";
 import Messages from "./utils/Messages";
 import { Themes } from "maco-ui";
+import Parameter from "./ParameterStore";
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
@@ -42,11 +43,11 @@ const RootStore = types
     scene: types.maybe(Scene),
     workspace: types.optional(Workspace, DefaultParameter),      
     theme: types.frozen(Themes.yutani),
+    selectedParameter: types.maybe(types.safeReference(Parameter)),
   })
   .volatile(self => ({
     p5_instance: null,
     shader_collection: null,
-    selectedParameter: null,
     ready: false,
     breakoutControlled: false,
     messages: Messages.create(),
@@ -96,7 +97,7 @@ const RootStore = types
     }
 
     function selectParameter(param) {
-      if(!param.graph) param.createGraph()
+      if(param && !param.graph) param.createGraph();
       self.selectedParameter = param;
     }
 

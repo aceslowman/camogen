@@ -1,24 +1,20 @@
-import { observable, action } from 'mobx';
-import OperatorStore from '../OperatorStore';
-import {createModelSchema} from "serializr"
+import { types } from "mobx-state-tree";
+import Operator from '../../OperatorStore';
 
-//----------------------------------------------------------------------
-const store = class MultiplyStore extends OperatorStore{
-	@observable name = "Multiply";
-    @observable value = 0;
-	@observable modifier = 1;
-	
-	constructor(p, mod = 1) {
-		super(p, mod);
-	}
+const multiply = types
+	.model("Multiply", {
+		value: types.optional(types.union(types.number, types.string, types.boolean), 0),
+		modifier: types.optional(types.union(types.number, types.string, types.boolean), 1),
+		inputs: types.optional(types.array(types.string), ["input1", "input2"])
+	})
+	.actions(self => ({
+		update: () => {
+			let a = self.parents[0].data.update();
+			let b = (self.parents[1] && self.parents[1].data) ? self.parents[1].data.update() : self.modifier;
+			return a * b;
+		}
+	}))
 
-	@action update = (v) => {		
-        return Number(v) * Number(this.modifier);
-	}
-}
+const Multiply = types.compose(Operator, multiply).named("Multiply")
 
-createModelSchema(store, {
-	extends: OperatorStore
-});
-
-export default store;
+export default Multiply;

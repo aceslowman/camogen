@@ -80,6 +80,6 @@ let shaderGraph = types
     })
 
 
-const ShaderGraph = types.compose('Shader Graph', Graph, shaderGraph);
+const ShaderGraph = types.compose(Graph, shaderGraph).named("ShaderGraph");
 
 export default ShaderGraph;

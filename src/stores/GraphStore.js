@@ -1,12 +1,10 @@
 import GraphNode from './NodeStore';
 import uuidv1 from 'uuid/v1';
 
-import { types, getParent } from "mobx-state-tree";
+import { types, getParent, getSnapshot, getRoot } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
-import Counter from './operators/inputs/Counter';
-import MIDI from './operators/inputs/MIDI';
-import Add from './operators/math/Add';
+import { getOperator } from './operators';
 
 const Graph = types
     .model("Graph", {
@@ -15,7 +13,7 @@ const Graph = types
         selectedNode: types.maybe(types.safeReference(GraphNode)),
         coord_bounds: types.optional(Coordinate, {x: 0, y: 0}),
     })
-    .volatile(self => ({
+    .volatile(() => ({
         queue: []
     }))
     .views(self => ({
@@ -58,20 +56,26 @@ const Graph = types
 
             return count;
         }
-
-
     }))
     .actions(self => {
-
         /*
             clear()
         */
         function clear() {
-            console.log('clearing graph')
+            self.selectedNode = undefined;
+            console.log('clearing graph', getSnapshot(self))
             // TODO: currently not working when subgraphs are present!
             // TODO: what if I cleared the graph from the root up?
             // re-initialize the nodes map
             self.nodes.clear();
+
+
+
+            // self.nodes.forEach((e) => {
+            //     // it fails to remove a node that does exist
+            //     console.log(getSnapshot(self.nodes), e.uuid)
+            //     self.nodes.delete(e.uuid)
+            // })
 
             // create root node, select it
             self.addNode();
@@ -103,8 +107,7 @@ const Graph = types
             associated data.
         */
         function addNode(node = GraphNode.create({uuid: 'add_'+uuidv1()})) {            
-            self.nodes.put(node);
-            return self.nodes.get(node.uuid)
+            return self.nodes.put(node);
         }
 
         /*
@@ -327,77 +330,6 @@ const parameterGraph = types
             parent_shader.addToParameterUpdateGroup(self)
         }
 
-        function getOperator(name) {
-            let operator = null;
-
-            switch (name) {
-                case 'Counter':
-                    operator = Counter.create({
-                        uuid: uuidv1(),
-                        name: 'Counter'
-                    });
-                    break;
-                case 'MIDI':
-                    operator = MIDI.create({
-                        uuid: uuidv1(),
-                        name: 'MIDI'
-                    })
-                    break;
-                case 'Add':
-                    operator = Add.create({
-                        uuid: uuidv1(),
-                        name: '+'
-                    })
-                    break;
-                // case 'Subtract':
-                //     operator = Subtract.create({
-                //         uuid: uuidv1(),
-                //         name: '-'
-                //     })
-                //     break;
-                // case 'Divide':
-                //     operator = Divide.create({
-                //         uuid: uuidv1(),
-                //         name: '/'
-                //     })
-                //     break;
-                // case 'Multiply':
-                //     operator = Multiply.create({
-                //         uuid: uuidv1(),
-                //         name: '*'
-                //     })
-                //     break;
-                // case 'Modulus':
-                //     operator = Modulus.create({
-                //         uuid: uuidv1(),
-                //         name: '%'
-                //     })
-                //     break;
-                // case 'Sin':
-                //     operator = Sin.create({
-                //         uuid: uuidv1(),
-                //         name: 'Sin'
-                //     })
-                //     break;
-                // case 'Cos':
-                //     operator = Cos.create({
-                //         uuid: uuidv1(),
-                //         name: 'Cos'
-                //     })
-                //     break;
-                // case 'Tan':
-                //     operator = Tan.create({
-                //         uuid: uuidv1(),
-                //         name: 'Tan'
-                //     })
-                //     break;
-                default:
-                    break;
-            }
-
-            return operator;
-        }
-
         function setSelectedByName(name) {
             if (!self.selectedNode) self.selectedNode = self.root;
             let op = getOperator(name);
@@ -417,22 +349,18 @@ const parameterGraph = types
             // when the graph is empty. 
             if(self.nodes.size <= 1) return;
             
-            let total = 0;
+            // traverses tree from root
+            let result = self.root.parents[0].data.update();
 
-            self.queue.forEach(subqueue => {
-                subqueue.forEach(node => {
-                    let subtotal = 0;
-                    // if not root node
-                    if (node.data) {
-                        subtotal = node.data.update();
-                    }
-                    total += subtotal;
-                })
-                parent_param.setValue(total);
-            });
+            parent_param.setValue(result);
+        }
+
+        function beforeDestroy() {
+            console.log('about to delete param graph')
         }
 
         return {
+            beforeDestroy,
             afterAttach,
             afterUpdate,
             getOperator,
@@ -440,6 +368,5 @@ const parameterGraph = types
         }
     })
 
-
-export const ParameterGraph = types.compose("Parameter Graph", Graph, parameterGraph);
+export const ParameterGraph = types.compose(Graph, parameterGraph).named("ParameterGraph");
 export default Graph;
