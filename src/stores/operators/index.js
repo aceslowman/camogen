@@ -31,61 +31,61 @@ export const getOperator = (name) => {
     switch (name) {
         case 'Counter':
             operator = Counter.create({
-                uuid: uuidv1(),
+                uuid: 'Counter_'+uuidv1(),
                 name: 'Counter'
             });
             break;
         case 'MIDI':
             operator = MIDI.create({
-                uuid: uuidv1(),
+                uuid: 'MIDI_'+uuidv1(),
                 name: 'MIDI'
             })
             break;
         case 'Add':
             operator = Add.create({
-                uuid: uuidv1(),
+                uuid: 'Add_'+uuidv1(),
                 name: '+'
             })
             break;
         case 'Subtract':
             operator = Subtract.create({
-                uuid: uuidv1(),
+                uuid: 'Subtract_'+uuidv1(),
                 name: '-'
             })
             break;
         case 'Divide':
             operator = Divide.create({
-                uuid: uuidv1(),
+                uuid: 'Divide_'+uuidv1(),
                 name: '/'
             })
             break;
         case 'Multiply':
             operator = Multiply.create({
-                uuid: uuidv1(),
+                uuid: 'Multiply_'+uuidv1(),
                 name: '*'
             })
             break;
         case 'Modulus':
             operator = Modulus.create({
-                uuid: uuidv1(),
+                uuid: 'Modulus_'+uuidv1(),
                 name: '%'
             })
             break;
         case 'Sin':
             operator = Sin.create({
-                uuid: uuidv1(),
+                uuid: 'Sin_'+uuidv1(),
                 name: 'Sin'
             })
             break;
         case 'Cos':
             operator = Cos.create({
-                uuid: uuidv1(),
+                uuid: 'Cos_'+uuidv1(),
                 name: 'Cos'
             })
             break;
         case 'Tan':
             operator = Tan.create({
-                uuid: uuidv1(),
+                uuid: 'Tan_'+uuidv1(),
                 name: 'Tan'
             })
             break;

@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 import { ThemeContext } from 'maco-ui';
 import useResizeObserver from '../hooks/ResizeHook';
 import tinykeys from 'tinykeys';
-import { getSnapshot } from 'mobx-state-tree';
 
 const branch_colors = [
 	'#0000FF', // blue
@@ -173,6 +172,7 @@ const GraphComponent = observer((props) => {
 		props.data.coord_bounds,
 		props.data.selectedNode.data,
 		props.data.nodes,
+		props.data.nodes.size,
 		props.data.root, // helped with clear() rerender
 	]);
 

@@ -4,7 +4,9 @@ import {
 	PanelComponent,
 	ControlGroupComponent,
 	InputBool,
-	InputFloat, InputSlider, ThemeContext
+	InputFloat, 
+	InputSlider, 
+	ThemeContext
 } from 'maco-ui';
 
 import styles from './ShaderControlsComponent.module.css'
@@ -119,20 +121,19 @@ const ShaderControls = observer((props) => {
 					<li
 						key={i}
 						style={{
-							borderLeft: `5px solid ${branch_colors[node.branch_index]}`
+							borderLeft: `3px solid ${branch_colors[node.branch_index]}`
 						}}
 					>
 						<PanelComponent 
 							key={i}
-							title={(
-								<span style={{
-									color: is_selected ? theme.accent_color : theme.text_color
-								}}>
-									{node.data.name}
-								</span>
-							)}
+							title={node.data.name}							
 							collapsible
+							titleStyle={{
+								color: is_selected ? theme.text_color : theme.text_color,
+								backgroundColor: is_selected ? theme.accent_color : theme.primary_color,
+							}}
 							expanded={node === props.data.selectedNode}
+							onRemove={() => node.remove()}
 							gutters
 						>
 							{ generateInterface(node.data) }

@@ -13,12 +13,12 @@ import Workspace, {DefaultParameter} from "./utils/Workspace";
 import Messages from "./utils/Messages";
 import { Themes } from "maco-ui";
 import Parameter from "./ParameterStore";
+
 // for electron
 const remote = window.require('electron').remote;
 const dialog = remote.dialog;
 const app = remote.app;
 const fs = window.require('fs');
-
 
 /*
   [RootStore]

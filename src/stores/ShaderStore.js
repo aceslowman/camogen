@@ -36,7 +36,7 @@ let shader = types
         precision: types.optional(types.string, DefaultShader.precision),
         vert: types.optional(types.string, DefaultShader.vert),
         frag: types.optional(types.string, DefaultShader.frag),        
-        parameterUpdateGroup: types.map(types.safeReference(types.late(()=>ParameterGraph))),      
+        parameterUpdateGroup: types.map(types.late(()=>ParameterGraph)),      
         hasChanged: types.optional(types.boolean, false),
         ready: false,
     })
@@ -346,6 +346,7 @@ let shader = types
 
         function addToParameterUpdateGroup(p_graph) {
             self.parameterUpdateGroup.put(p_graph);
+            return p_graph;
         }
 
         function beforeDestroy() {

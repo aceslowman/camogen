@@ -8,6 +8,7 @@ const sin = types
     .model("Sin", {
         value: types.optional(types.union(types.number, types.string, types.boolean), 0),
         modifier: types.optional(types.union(types.number, types.string, types.boolean), 0),
+        inputs: types.optional(types.array(types.string), ["input1"])
     })
     .actions(self => {
         let parent_node;
@@ -17,6 +18,7 @@ const sin = types
         }
 
         function update() {
+            if(!parent_node.parents[0] || !parent_node.parents[0].data) return 0
             let a = parent_node.parents[0].data.value;
             return Math.sin(a);
         }

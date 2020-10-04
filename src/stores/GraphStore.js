@@ -5,6 +5,7 @@ import { types, getParent, getSnapshot, getRoot } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
 import { getOperator } from './operators';
+import Parameter from './ParameterStore';
 
 const Graph = types
     .model("Graph", {
@@ -67,15 +68,20 @@ const Graph = types
             // TODO: currently not working when subgraphs are present!
             // TODO: what if I cleared the graph from the root up?
             // re-initialize the nodes map
-            self.nodes.clear();
+            
+            
+            
+            // self.nodes.clear();
 
 
 
-            // self.nodes.forEach((e) => {
-            //     // it fails to remove a node that does exist
-            //     console.log(getSnapshot(self.nodes), e.uuid)
-            //     self.nodes.delete(e.uuid)
-            // })
+            self.nodes.forEach((e) => {
+                // it fails to remove a node that does exist
+                // console.log(getSnapshot(self.nodes), e.uuid)
+                console.log(e)
+                if(e.data && e.data.parameterUpdateGroup) e.data.parameterUpdateGroup.clear();
+                // self.nodes.delete(e.uuid)
+            })
 
             // create root node, select it
             self.addNode();
@@ -315,19 +321,16 @@ const Graph = types
 // TODO: ideally this lives in it's own file, but there are circular dependency issues
 // that are unresolved with mobx-state-tree late
 const parameterGraph = types
-    .model("ParameterGraph", {})
+    .model("ParameterGraph", {
+        parent_param: types.safeReference(Parameter)
+    })
     .actions(self => {
-        let parent_param;
-        let parent_shader;
 
         function afterAttach() {
-            parent_param = getParent(self);
-            parent_shader = getParent(self, 6).data;
+            // self.parent_param = getParent(self);      
+            console.log()      
             self.addNode();
             self.update();
-            
-            // TODO: should be toggleable
-            parent_shader.addToParameterUpdateGroup(self)
         }
 
         function setSelectedByName(name) {
@@ -352,7 +355,7 @@ const parameterGraph = types
             // traverses tree from root
             let result = self.root.parents[0].data.update();
 
-            parent_param.setValue(result);
+            self.parent_param.setValue(result);
         }
 
         function beforeDestroy() {

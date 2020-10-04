@@ -64,7 +64,8 @@ const GraphNode = types
 
             // add new node if no children are present
             if(!self.children.length) {
-                let child = GraphNode.create({ uuid: uuidv1(), name: 'next' });
+                let child = GraphNode.create({ uuid: 'next_'+uuidv1(), name: 'next' });
+                console.log(child)
                 parent_graph.addNode(child);
                 return self.setChild(child).uuid;
             }
@@ -110,11 +111,16 @@ const GraphNode = types
             return self;
         }
 
+        function remove() {
+            parent_graph.removeNode(self);
+        }
+
         function beforeDestroy() {
             console.log(`about to delete graphnode ${self.name}`, getSnapshot(self))
         }
 
         return {
+            remove,
             beforeDestroy,
             afterAttach,
             setData,

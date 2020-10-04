@@ -5,7 +5,7 @@ let operator = types
     .model("Operator", {
         uuid: types.identifier,
         value: types.maybe(types.union(types.number, types.string, types.boolean)),
-        modifier: types.maybe(types.union(types.number, types.string, types.boolean)),
+        modifier: types.maybe(types.union(types.number, types.string, types.boolean))
     })
     .volatile((self) => ({
         parents: null
