@@ -11,7 +11,7 @@ const Graph = types
     .model("Graph", {
         uuid: types.identifier,
         nodes: types.map(GraphNode),
-        selectedNode: types.maybe(types.safeReference(GraphNode)),
+        selectedNode: types.maybe(types.reference(GraphNode)),
         coord_bounds: types.optional(Coordinate, {x: 0, y: 0}),
     })
     .volatile(() => ({
@@ -44,7 +44,7 @@ const Graph = types
             let node = a;
             let count = 0;
 
-            while (node.children[0]) {
+            while (node.children.length) {
                 
                 if(node.children[0].parents.length > 1) {
                     if (node.children[0].parents[0] !== node) {
@@ -64,24 +64,10 @@ const Graph = types
         */
         function clear() {
             self.selectedNode = undefined;
-            console.log('clearing graph', getSnapshot(self))
             // TODO: currently not working when subgraphs are present!
             // TODO: what if I cleared the graph from the root up?
-            // re-initialize the nodes map
-            
-            
-            
-            // self.nodes.clear();
-
-
-
-            self.nodes.forEach((e) => {
-                // it fails to remove a node that does exist
-                // console.log(getSnapshot(self.nodes), e.uuid)
-                console.log(e)
-                if(e.data && e.data.parameterUpdateGroup) e.data.parameterUpdateGroup.clear();
-                // self.nodes.delete(e.uuid)
-            })
+            // re-initialize the nodes map 
+            self.nodes.clear();
 
             // create root node, select it
             self.addNode();
@@ -320,15 +306,13 @@ const Graph = types
 
 // TODO: ideally this lives in it's own file, but there are circular dependency issues
 // that are unresolved with mobx-state-tree late
-const parameterGraph = types
-    .model("ParameterGraph", {
-        parent_param: types.safeReference(Parameter)
+const operatorGraph = types
+    .model("OperatorGraph", {
+        param: types.reference(Parameter)
     })
     .actions(self => {
 
         function afterAttach() {
-            // self.parent_param = getParent(self);      
-            console.log()      
             self.addNode();
             self.update();
         }
@@ -354,16 +338,11 @@ const parameterGraph = types
             
             // traverses tree from root
             let result = self.root.parents[0].data.update();
-
-            self.parent_param.setValue(result);
-        }
-
-        function beforeDestroy() {
-            console.log('about to delete param graph')
+            
+            self.param.setValue(result);
         }
 
         return {
-            beforeDestroy,
             afterAttach,
             afterUpdate,
             getOperator,
@@ -371,5 +350,5 @@ const parameterGraph = types
         }
     })
 
-export const ParameterGraph = types.compose(Graph, parameterGraph).named("ParameterGraph");
+export const OperatorGraph = types.compose(Graph, operatorGraph).named("OperatorGraph");
 export default Graph;

@@ -6,11 +6,6 @@ import uuidv1 from 'uuid/v1';
 import { allOps } from './operators';
     
 const PossibleData = types.union(allOps, Shader);
-
-// this doesn't seem to be where the invalidation is happening
-// const nodeRef = types.reference(types.late(() => GraphNode, {
-//     onInvalidated(ev) {console.log(ev)}
-// }));
 const nodeRef = types.safeReference(types.late(() => GraphNode));
 
 const GraphNode = types
@@ -65,7 +60,6 @@ const GraphNode = types
             // add new node if no children are present
             if(!self.children.length) {
                 let child = GraphNode.create({ uuid: 'next_'+uuidv1(), name: 'next' });
-                console.log(child)
                 parent_graph.addNode(child);
                 return self.setChild(child).uuid;
             }
@@ -116,7 +110,7 @@ const GraphNode = types
         }
 
         function beforeDestroy() {
-            console.log(`about to delete graphnode ${self.name}`, getSnapshot(self))
+            // console.log(`about to delete graphnode ${self.name}`, getSnapshot(self))
         }
 
         return {

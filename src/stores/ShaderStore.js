@@ -3,7 +3,7 @@ import { types, getSnapshot, applySnapshot, getParent, getRoot } from "mobx-stat
 import * as DefaultShader from './shaders/DefaultShader';
 import Parameter from './ParameterStore';
 import uuidv1 from 'uuid/v1';
-import { ParameterGraph } from './GraphStore';
+import { OperatorGraph } from './GraphStore';
 // import ParameterGraph from './ParameterGraphStore';
 
 // for electron
@@ -36,7 +36,7 @@ let shader = types
         precision: types.optional(types.string, DefaultShader.precision),
         vert: types.optional(types.string, DefaultShader.vert),
         frag: types.optional(types.string, DefaultShader.frag),        
-        parameterUpdateGroup: types.map(types.late(()=>ParameterGraph)),      
+        updateGroup: types.map(types.safeReference(types.late(()=>OperatorGraph))),      
         hasChanged: types.optional(types.boolean, false),
         ready: false,
     })
@@ -209,7 +209,7 @@ let shader = types
                 values in sync with the frame rate
             */
             // self.parameterUpdateGroup.forEach((e) => e.afterUpdate())
-            self.parameterUpdateGroup.forEach((e) => e.afterUpdate())
+            self.updateGroup.forEach((e) => e.afterUpdate())
 
             for (let uniform_data of self.uniforms) {
                 if (uniform_data.elements.length > 1) {                    
@@ -344,8 +344,8 @@ let shader = types
             }).catch(err => { /*alert(err)*/ });
         }
 
-        function addToParameterUpdateGroup(p_graph) {
-            self.parameterUpdateGroup.put(p_graph);
+        function addToUpdateGroup(p_graph) {
+            self.updateGroup.put(p_graph);
             return p_graph;
         }
 
@@ -368,7 +368,7 @@ let shader = types
             save,
             load,
             setHasChanged,
-            addToParameterUpdateGroup
+            addToUpdateGroup
         }
     })
 
