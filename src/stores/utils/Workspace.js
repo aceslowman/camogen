@@ -177,12 +177,12 @@ const DefaultParameter = {
             // defaultSize: 1/3,
             panels: []
         },
-        {
-            name: "Debug",
-            split: 'none',
-            // defaultSize: 1 / 3,
-            panels: []
-        },
+        // {
+        //     name: "Debug",
+        //     split: 'none',
+        //     // defaultSize: 1 / 3,
+        //     panels: []
+        // },
     ]
 }
 

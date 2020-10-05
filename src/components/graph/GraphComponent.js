@@ -21,6 +21,7 @@ const GraphComponent = observer((props) => {
 	const [labels, setLabels] = useState([]);
 
 	const drawGraph = () => {
+		console.log('rerendering graph')
 		const ctx = canvas_ref.current.getContext('2d');
 		const wrapper_bounds = wrapper_ref.current.getBoundingClientRect();		
 		let _labels = [];

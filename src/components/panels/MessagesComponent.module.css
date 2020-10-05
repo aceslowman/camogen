@@ -7,6 +7,7 @@
 .loglist li {
     padding: 10px 0px;
     border-bottom: 1px dotted white;
+    user-select: text;
 }
 
 .error {
