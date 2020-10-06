@@ -44,6 +44,7 @@ const RootStore = types
     workspace: types.optional(Workspace, DefaultParameter),      
     theme: types.frozen(Themes.yutani),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
+    keyFocus: types.maybe(types.string)
   })
   .volatile(self => ({
     p5_instance: null,
@@ -78,10 +79,6 @@ const RootStore = types
         text: text,
         accent: accent,
       }
-    }
-
-    function setTheme(theme) {
-      self.theme = theme;
     }
 
     function setupP5() {

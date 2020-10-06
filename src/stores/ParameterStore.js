@@ -1,5 +1,4 @@
-import { getParent, getRoot, getSnapshot, types } from "mobx-state-tree";
-// import OperatorGraph from './OperatorGraphStore';
+import { getParent, getRoot, types } from "mobx-state-tree";
 import { OperatorGraph } from './GraphStore';
 
 const Parameter = types

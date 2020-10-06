@@ -1,75 +1,21 @@
 import React, {useContext} from 'react';
 import MainContext from '../../MainContext';
-import ParameterGraph from "./ParameterGraphComponent";
+import OperatorGraph from "./OperatorGraphComponent";
 import styles from './ParameterEditorComponent.module.css';
 
 import {
     PanelComponent,
     SplitContainer,
-    ToolbarComponent,
+    ToolbarComponent
 } from 'maco-ui';
 import { observer } from 'mobx-react';
-import CounterComponent from './operators/inputs/CounterComponent';
-import MIDIComponent from './operators/inputs/MIDIComponent';
+import OperatorControls from './OperatorControlsComponent';
 
-const ParameterEditor = observer((props) => {
+
+const OperatorEditor = observer((props) => {
     const store = useContext(MainContext).store;
 
     const handleRemove = () => store.workspace.removePanel('Parameter Editor');
-
-    const generateParameterControls = () => {
-        let controls = [];
-        
-        Array.from(props.data.graph.nodes.values()).forEach((e,i) => {	
-            if(e.data) {
-                let c;
-
-                switch (e.data.name) {
-                    case "Counter":
-                        c = (			
-                            <CounterComponent 
-                                modifier={e.data.modifier}
-                                value={e.data.value}
-                                handleChange={e.data.handleChange} 
-                            />
-                        )
-                        break;
-                    case "MIDI":
-                        c = (			
-                            <MIDIComponent 
-                                modifier={e.data.modifier}
-                                value={e.data.value}
-                                handleInputSelect={e.data.handleInputSelect} 
-                                midi_inputs={e.data.midi_inputs}
-                            />
-                        )
-                        break;
-                    
-                    default:
-                        break;
-                }
-
-                controls.push(
-                    <PanelComponent 
-                        key={e.uuid}
-                        title={e.data.name}			
-                        onRemove={e.data.onRemove}
-                        collapsible
-                        gutters
-                    >		
-                        {c}
-                    </PanelComponent>
-                )
-            }
-        });
-
-        return controls;
-    }
-
-    // useEffect(() => {
-    //     if(props.data)
-    //         // generateParameterControls();
-    // }, [props.data])
 
     return(
         <PanelComponent 
@@ -138,18 +84,18 @@ const ParameterEditor = observer((props) => {
             )}
         >		
             
-            {/* <div className={styles.content}>                                       */}
                 {
                     props.data && (
                         <SplitContainer vertical>
-                            <ParameterGraph 
+                            <OperatorGraph 
                                 data = {props.data}
-                                selectedNode = {props.selectedNode}
+                                selectedNode = {props.data.graph.selectedNode}
                                 coord_bounds = {props.coord_bounds}
                             />
-                            <PanelComponent>
-                                { generateParameterControls() }
-                            </PanelComponent>                            
+                            <OperatorControls 
+                                data = {props.data.graph}
+
+                            />                      
                         </SplitContainer>                        
                     )
                 }
@@ -161,11 +107,10 @@ const ParameterEditor = observer((props) => {
                         </p>
                     )
                 }
-            {/* </div>                 */}
 
         </PanelComponent>
     )
 	
 });
 
-export default ParameterEditor;
+export default OperatorEditor;

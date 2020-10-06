@@ -3,12 +3,17 @@ import Operator from '../../OperatorStore';
 
 const cos = types
 	.model("Cos", {
-		modifier: types.optional(types.union(types.number, types.string, types.boolean), 0),
+		value: 0,
+		modifier: 0,
+		inputs: types.optional(types.array(types.string), ["input1"])
 	})
 	.actions(self => ({
 		update: () => {
+			if (!self.parents[0] || !self.parents[0].data) return 0
+
 			let a = self.parents[0].data.update();
-			return Math.cos(a);
+			self.value = Math.cos(a)
+			return self.value;
 		}
 	}))
 

@@ -1,7 +1,4 @@
-import {
-    useEffect,
-    useRef
-} from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ResizeObserver from "resize-observer-polyfill";
 
@@ -32,7 +29,7 @@ const useObserver = (
     }, [
         current,
         // callback,
-        // element,
+        element,
         // observe
     ]);
 

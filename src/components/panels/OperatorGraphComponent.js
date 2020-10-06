@@ -6,7 +6,7 @@ import { PanelComponent } from 'maco-ui';
 import { observer } from 'mobx-react';
 import useKeymap from '../hooks/UseKeymap';
 
-const ShaderGraph = observer((props) => {
+const OperatorGraph = observer((props) => {
 	const store = useContext(MainContext).store;
 	const [useKeys, setUseKeys] = useState(false);
 
@@ -56,7 +56,7 @@ const ShaderGraph = observer((props) => {
 			onFocus={handleFocus}
 		>				
 			<GraphComponent 
-				data={props.data}
+				data={props.data.graph}
 				coord_bounds={props.coord_bounds}
 				selectedNode={props.selectedNode}
 			/>
@@ -66,4 +66,4 @@ const ShaderGraph = observer((props) => {
 	)  
 });
 
-export default ShaderGraph;
+export default OperatorGraph;

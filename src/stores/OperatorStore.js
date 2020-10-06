@@ -19,9 +19,14 @@ let operator = types
             self.modifier = e;
         }
 
+        function onRemove() {
+
+        }
+
         return {
             afterAttach,
-            handleChange
+            handleChange,
+            onRemove
         }
     })
 

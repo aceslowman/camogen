@@ -5,7 +5,7 @@ import {
 	ControlGroupComponent,
 	InputBool,
 	InputFloat, 
-	InputSlider, 
+	// InputSlider, 
 	ThemeContext
 } from 'maco-ui';
 

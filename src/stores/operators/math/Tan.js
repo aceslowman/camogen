@@ -3,13 +3,17 @@ import Operator from '../../OperatorStore';
 
 const tan = types
 	.model("Tan", {
-		value: types.optional(types.union(types.number, types.string, types.boolean), 0),
-		modifier: types.optional(types.union(types.number, types.string, types.boolean), 0),
+		value: 0,
+		modifier: 0,
+		inputs: types.optional(types.array(types.string), ["input1"])
 	})
 	.actions(self => ({
 		update: () => {
+			if (!self.parents[0] || !self.parents[0].data) return 0
+
 			let a = self.parents[0].data.update();
-			return Math.tan(a);
+			self.value = Math.tan(a)
+			return self.value;
 		}
 	}))
 

@@ -1,9 +1,8 @@
-import React, { useRef, useEffect, useLayoutEffect, useState, useContext } from 'react';
+import React, { useRef, useLayoutEffect, useState, useContext } from 'react';
 import styles from './GraphComponent.module.css';
 import { observer } from 'mobx-react';
 import { ThemeContext } from 'maco-ui';
 import useResizeObserver from '../hooks/ResizeHook';
-import tinykeys from 'tinykeys';
 
 const branch_colors = [
 	'#0000FF', // blue
@@ -21,7 +20,7 @@ const GraphComponent = observer((props) => {
 	const [labels, setLabels] = useState([]);
 
 	const drawGraph = () => {
-		console.log('rerendering graph')
+		// console.log('rerendering graph')
 		const ctx = canvas_ref.current.getContext('2d');
 		const wrapper_bounds = wrapper_ref.current.getBoundingClientRect();		
 		let _labels = [];
@@ -168,7 +167,7 @@ const GraphComponent = observer((props) => {
 	const handleLabelClick = (node) => node.select();
 		
 	useLayoutEffect(() => {
-		drawGraph();	
+		drawGraph();
 	},[
 		props.data.coord_bounds,
 		props.data.selectedNode.data,
@@ -176,43 +175,6 @@ const GraphComponent = observer((props) => {
 		props.data.nodes.size,
 		props.data.root, // helped with clear() rerender
 	]);
-
-	useEffect(() => {
-		let unsubscribe = tinykeys(window, {
-			"ArrowDown": () => {
-				if (props.data.selectedNode && props.data.selectedNode.children.length)
-					props.data.selectedNode.children[0].select()
-			},
-			"ArrowLeft": () => {
-				if (props.data.selectedNode && props.data.selectedNode.children.length) {
-					let idx = props.data.selectedNode.children[0].parents.indexOf(props.data.selectedNode);
-					idx--;
-
-					if (idx >= 0) {
-						props.data.selectedNode.children[0].parents[idx].select();
-					}
-				}
-			},
-			"ArrowRight": () => {
-				if (props.data.selectedNode && props.data.selectedNode.children.length) {
-					let idx = props.data.selectedNode.children[0].parents.indexOf(props.data.selectedNode);
-					idx++;
-
-					if(idx <= props.data.selectedNode.children[0].parents.length - 1)
-						props.data.selectedNode.children[0].parents[idx].select();		
-				}
-			},
-			"ArrowUp": () => {
-				if(props.data.selectedNode && props.data.selectedNode.parents.length)
-					props.data.selectedNode.parents[0].select()
-			},
-			"Delete": () => {
-				props.data.removeSelected();
-			}
-		})
-
-		return () => unsubscribe();
-	}, [props.data]);
 
     return (
 		<div 

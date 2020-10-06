@@ -1,4 +1,4 @@
-import { types, getParent } from "mobx-state-tree";
+import { types } from "mobx-state-tree";
 import Operator from '../../OperatorStore';
 
 const midi = types

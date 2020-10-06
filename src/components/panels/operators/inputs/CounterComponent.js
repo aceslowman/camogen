@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useContext } from 'react';
+import React from 'react';
 import { ControlGroupComponent, InputFloat } from 'maco-ui';
 
 const CounterComponent = observer((props) => {

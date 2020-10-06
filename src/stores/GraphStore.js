@@ -1,7 +1,7 @@
 import GraphNode from './NodeStore';
 import uuidv1 from 'uuid/v1';
 
-import { types, getParent, getSnapshot, getRoot } from "mobx-state-tree";
+import { types } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
 import { getOperator } from './operators';

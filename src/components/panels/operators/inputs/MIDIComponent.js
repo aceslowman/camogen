@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useContext } from 'react';
+import React from 'react';
 import { ControlGroupComponent, InputBool, InputSelect } from 'maco-ui';
 
 const MIDIComponent = observer((props) => {	

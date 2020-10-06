@@ -33,6 +33,28 @@ const App = observer((props) => {
   const mainRef = useRef(null);
 
   useEffect(() => {
+    const handleResize = () => {
+      if (props.store.breakoutControlled) return;
+      if (!props.store.p5_instance) return;
+
+      let bounds = mainRef.current.getBoundingClientRect();
+
+      props.store.p5_instance.resizeCanvas(
+        bounds.width,
+        bounds.height
+      );
+
+      // update target dimensions
+      for (let target_data of props.store.scene.targets) {
+        target_data.ref.resizeCanvas(
+          bounds.width,
+          bounds.height
+        );
+      }
+
+      // props.store.p5_instance.draw();
+    }
+
     window.addEventListener('resize', handleResize);
 
     let unsubscribe = tinykeys(window, {
@@ -63,29 +85,10 @@ const App = observer((props) => {
     });
 
     return unsubscribe;
-  }, []);
-
-  const handleResize = () => {
-    if(props.store.breakoutControlled) return;
-    if(!props.store.p5_instance) return;
-    
-    let bounds = mainRef.current.getBoundingClientRect();
-
-    props.store.p5_instance.resizeCanvas(
-      bounds.width,
-      bounds.height
-    );
-
-    // update target dimensions
-    for (let target_data of props.store.scene.targets) {
-      target_data.ref.resizeCanvas(
-        bounds.width,
-        bounds.height
-      );
-    }
-
-    // props.store.p5_instance.draw();
-  }
+  }, [
+    props.history,
+    props.store
+  ]);
 
   const handleBreakout = () => {
     props.store.breakout();
