@@ -47,6 +47,7 @@ const RootStore = types
     keyFocus: types.maybe(types.string)
   })
   .volatile(self => ({
+    name: 'untitled',
     p5_instance: null,
     shader_collection: null,
     ready: false,
@@ -72,13 +73,8 @@ const RootStore = types
         });
     }
 
-    function setTheme(primary, secondary, text, accent) {
-      self.theme = {
-        primary: primary,
-        secondary: secondary,
-        text: text,
-        accent: accent,
-      }
+    function setTheme(theme) {
+      self.theme = theme
     }
 
     function setupP5() {
@@ -93,6 +89,10 @@ const RootStore = types
       self.ready = value;
     }
 
+    function setName(name) {
+      self.name = name;
+    }
+
     function selectParameter(param) {
       if(param && !param.graph) param.createGraph();
       self.selectedParameter = param;
@@ -101,7 +101,7 @@ const RootStore = types
     function save() {
       let options = {
           title: 'Save Project File',
-          defaultPath: path.join(app.getPath("desktop"),`untitled.camo`), 
+          defaultPath: path.join(app.getPath("desktop"),`${self.name}.camo`), 
           buttonLabel: "Save",
           filters: [              
               {
@@ -116,6 +116,9 @@ const RootStore = types
       }
 
       dialog.showSaveDialog(options).then((f)=>{
+          let name = f.filePath.split('/').pop().split('.')[0];
+          self.setName(name);
+
           let content = JSON.stringify(getSnapshot(self));
 
           fs.writeFile(f.filePath, content, (err)=>{
@@ -150,6 +153,9 @@ const RootStore = types
         let content = f.filePaths[0];
         fs.readFile(content, 'utf-8', (err, data) => {
           if(err) console.error(err.message);
+
+          let name = content.split('/').pop().split('.')[0];
+          self.setName(name);
 
           self.scene.clear();
           
@@ -258,6 +264,7 @@ const RootStore = types
       setScene,
       setupP5,
       setTheme,
+      setName,
       selectParameter,
       breakout,
       onBreakoutResize,

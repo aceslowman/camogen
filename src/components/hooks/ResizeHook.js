@@ -7,38 +7,36 @@ const useObserver = (
     element
 ) => {
 
-    const current = element && element.current;
-
     const observer = useRef(null);
 
     useEffect(() => {
+        const observe = () => {
+            if (element && element.current && observer.current) {
+                observer.current.observe(element.current);
+            }
+        };
+
+        const current = element.current;
+
         // if we are already observing old element
         if (observer && observer.current && current) {
             observer.current.unobserve(current);
         }
         const resizeObserverOrPolyfill = ResizeObserver;
+
         observer.current = new resizeObserverOrPolyfill(callback);
         observe();
 
         return () => {
-            if (observer && observer.current && element &&
-                element.current) {
-                observer.current.unobserve(element.current);
+            if (observer && observer.current && current) {
+                observer.current.unobserve(current);
             }
         };
     }, [
-        current,
-        // callback,
+        callback,
         element,
-        // observe
+        observer
     ]);
-
-    const observe = () => {
-        if (element && element.current && observer.current) {
-            observer.current.observe(element.current);
-        }
-    };
-
 };
 
 useObserver.propTypes = {

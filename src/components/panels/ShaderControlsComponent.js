@@ -61,6 +61,12 @@ const ShaderControls = observer((props) => {
 									value={value}
 									onChange={(e) => handleValueChange(param,e)}
 									focused={param === store.selectedParameter}
+									inputStyle={{
+										fontWeight: param.graph ? 'bold' : 'normal',
+										color: param.graph ? theme.accent_color : theme.text_color,
+										fontStyle: param.graph ? 'italic' : 'normal',
+										// textDecoration: param.graph ? 'underline' : 'none'
+									}}
 									onDoubleClick={(e) => {
 										store.selectParameter(param);										
 									}}
@@ -73,6 +79,10 @@ const ShaderControls = observer((props) => {
 									value={value}
 									onChange={(e) => handleValueChange(param,e)}
 									focused={param === store.selectedParameter}
+									inputStyle={{
+										fontWeight: param.graph ? 'bold' : 'normal',
+										color: param.graph ? theme.accent_color : theme.text_color
+									}}
 									onDoubleClick={(e) => {
 										store.selectParameter(param);										
 									}}

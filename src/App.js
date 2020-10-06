@@ -327,6 +327,7 @@ const App = observer((props) => {
             (
               <PanelComponent
                 title={(<h1>camogen</h1>)}
+                subtitle={props.store.name}
                 horizontal 
                 fullscreen={props.store.breakoutControlled}
                 floating
