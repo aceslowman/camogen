@@ -39,7 +39,7 @@ const OperatorGraph = observer((props) => {
 				props.selectedNode.parents[0].select()
 		},
 		"Delete": () => {
-			props.data.removeSelected();
+			props.data.graph.removeSelected();
 		}
 	}, useKeys)
 
