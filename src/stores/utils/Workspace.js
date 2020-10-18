@@ -14,7 +14,7 @@ const Workspace = types
         clear: () => {
             self.panels = [];
         },
-        addPanel: (name) => {
+        addPanel: (name, detached) => {
             self.panels.push({
                 name: name
             });

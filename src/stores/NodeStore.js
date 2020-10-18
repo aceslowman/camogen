@@ -1,11 +1,13 @@
 import Shader from './ShaderStore';
+import WebcamInput from './shaders/inputs/WebcamInput';
+import ImageInput from  './shaders/inputs/ImageInput';
 import { types, getParent } from 'mobx-state-tree';
 // import { undoManager } from './RootStore';
 import Coordinate from './utils/Coordinate';
 import uuidv1 from 'uuid/v1';
 import { allOps } from './operators';
     
-const PossibleData = types.union(allOps, Shader);
+const PossibleData = types.union(allOps, ImageInput, WebcamInput, Shader);
 const nodeRef = types.safeReference(types.late(() => GraphNode));
 
 const GraphNode = types
@@ -109,13 +111,8 @@ const GraphNode = types
             parent_graph.removeNode(self);
         }
 
-        function beforeDestroy() {
-            // console.log(`about to delete graphnode ${self.name}`, getSnapshot(self))
-        }
-
         return {
             remove,
-            beforeDestroy,
             afterAttach,
             setData,
             mapInputsToParents,

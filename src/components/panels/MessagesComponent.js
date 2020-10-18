@@ -17,6 +17,8 @@ const Messages = observer((props) => {
         <PanelComponent
             title="Messages" 
             onRemove={handleRemove}
+            detachable
+			onDetach={props.onDetach ? props.onDetach : () => {}}
             vertical
             toolbar={(
                 <ToolbarComponent 
@@ -31,7 +33,7 @@ const Messages = observer((props) => {
         >
             <TextComponent>
                 <ul className={styles.loglist}>
-                    {props.log.reverse().map( (e,i) => {
+                    {props.log.slice().reverse().map( (e,i) => {
                         return (
                             <li key={i} className={styles[e.type]}>
                                 <span className={styles.timestamp}>{`${e.timestamp.toLocaleString()}: `}</span><br />

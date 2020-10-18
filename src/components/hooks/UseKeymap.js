@@ -8,7 +8,7 @@ const useKeymap = (keymap, active) => {
             let unsubscribe = tinykeys(window, keymap)
             return () => unsubscribe()
         }
-    })
+    }, [])
 }
 
 useKeymap.propTypes = {

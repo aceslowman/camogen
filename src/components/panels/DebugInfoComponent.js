@@ -14,6 +14,7 @@ const DebugInfo = observer((props) => {
 
 	const handleRemove = () => store.workspace.removePanel('Debug');
 
+	const scene = store.scene;
 	const graph = store.scene.shaderGraph;
 	const selected = store.scene.shaderGraph.selectedNode;
 	const targets = store.scene.targets;
@@ -30,6 +31,8 @@ const DebugInfo = observer((props) => {
 			title="Debug"
 			onRemove={handleRemove}		
 			defaultSize={props.defaultSize}		
+			detachable
+			onDetach={props.onDetach ? props.onDetach : () => {}}
 		>
 			<PanelComponent
 				title="graph"
@@ -49,6 +52,21 @@ const DebugInfo = observer((props) => {
 										
 				</TextComponent>
 			</PanelComponent>
+
+			<PanelComponent
+				title="graph"
+				collapsible
+				gutters
+			>
+				<TextComponent>					
+
+					<pre>
+						{JSON.stringify(getSnapshot(scene.operatorGraphs), null, 5)}
+					</pre>
+										
+				</TextComponent>
+			</PanelComponent>
+
 			<PanelComponent
 				title="target"
 				collapsible

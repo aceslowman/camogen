@@ -9,15 +9,7 @@ import MIDIComponent from './operators/inputs/MIDIComponent';
 
 import styles from './OperatorControlsComponent.module.css'
 import { observer } from 'mobx-react';
-
-const branch_colors = [
-	'#0000FF', // blue
-	'#FF0000', // red
-	'#FFFF00', // yellow			
-	'#00FF00', // neon green
-	'#9900FF', // purple
-	'#FF6000', // orange
-];
+import { branch_colors } from '../../stores/GraphStore';
 
 const OperatorControls = observer((props) => {
 	const theme = useContext(ThemeContext);
@@ -28,7 +20,7 @@ const OperatorControls = observer((props) => {
 	}
 
     const generateInterface = (e) => {
-        let controls = [];
+        let controls = null;
         	
             if(e.data) {
                 let c;
@@ -58,17 +50,7 @@ const OperatorControls = observer((props) => {
                         break;
                 }
 
-                controls.push(
-                    <PanelComponent 
-                        key={e.uuid}
-                        title={e.data.name}			
-                        onRemove={e.data.onRemove}
-                        collapsible
-                        gutters
-                    >		
-                        {c}
-                    </PanelComponent>
-                )
+                controls = c
             }
 
         return controls;
@@ -83,6 +65,7 @@ const OperatorControls = observer((props) => {
                 let is_selected = props.data.selectedNode === node;
 
                 if(node.data) {
+                    let controls = generateInterface(node);
                     subpanels.push((
                         <li
                             key={i}
@@ -93,7 +76,7 @@ const OperatorControls = observer((props) => {
                             <PanelComponent 
                                 key={i}
                                 title={node.data.name}							
-                                collapsible
+                                collapsible={controls ? true : false}
                                 titleStyle={{
                                     color: is_selected ? theme.text_color : theme.text_color,
                                     backgroundColor: is_selected ? theme.accent_color : theme.primary_color,
@@ -102,7 +85,7 @@ const OperatorControls = observer((props) => {
                                 onRemove={() => node.remove()}
                                 gutters
                             >
-                                { generateInterface(node.data) }
+                                { controls }
                             </PanelComponent>
                         </li>
                     ))
@@ -129,7 +112,9 @@ const OperatorControls = observer((props) => {
 			title="Op Controls"			
 			onRemove={handleRemove}				
 			className={styles.shader_graph}	
-			defaultSize={props.defaultSize}
+            defaultSize={props.defaultSize}
+            detachable
+			onDetach={props.onDetach ? props.onDetach : () => {}}
 		>	
 			{props.data.nodes && panels}    
 		</PanelComponent>

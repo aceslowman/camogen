@@ -49,11 +49,16 @@ const OperatorGraph = observer((props) => {
 
 	return(
 		<PanelComponent 
+			detachable
+			onDetach={props.onDetach ? props.onDetach : () => {}}
 			collapsed={props.collapsed}
-			title="Shader Graph"				
-			onRemove={()=>store.workspace.removePanel('Shader Graph')}
+			title="Operator Graph"				
+			onRemove={()=>store.workspace.removePanel('Operator Graph')}
 			defaultSize={props.defaultSize}
 			onFocus={handleFocus}
+			indicators={useKeys ? [
+				{label:'k', color: store.theme.accent_color, title: 'Keybind Focus'}
+			] : null}
 		>				
 			<GraphComponent 
 				data={props.data.graph}

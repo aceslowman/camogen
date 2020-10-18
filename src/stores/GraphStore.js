@@ -7,6 +7,15 @@ import Coordinate from './utils/Coordinate';
 import { getOperator } from './operators';
 import Parameter from './ParameterStore';
 
+export const branch_colors = [
+    '#0000FF', // blue
+    '#FF0000', // red
+    '#FFFF00', // yellow			
+    '#00FF00', // neon green
+    '#9900FF', // purple
+    '#FF6000', // orange
+];
+
 const Graph = types
     .model("Graph", {
         uuid: types.identifier,
@@ -151,7 +160,7 @@ const Graph = types
                 */
                 if(node.children[0].parents.length > 1 && node.parents.length > 1) {
                     node.parents.forEach((parent, i) => {
-                        node.children[0].parents[i] = node.parents[i];
+                        node.children[0].parents[i] = parent;
                     });
                 } else { // otherwise, collapse and map first child to first parent                    
                     node.parents[0].children[0] = node.children[0];
@@ -337,9 +346,11 @@ const operatorGraph = types
             if(self.nodes.size <= 1) return;
             
             // traverses tree from root
-            let result = self.root.parents[0].data.update();
-            
-            self.param.setValue(result);
+            if(self.root.parents.length) {
+                let result = self.root.parents[0].data.update();
+
+                self.param.setValue(result);
+            }            
         }
 
         return {

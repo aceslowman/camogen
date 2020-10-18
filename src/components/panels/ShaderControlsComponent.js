@@ -11,15 +11,9 @@ import {
 
 import styles from './ShaderControlsComponent.module.css'
 import { observer } from 'mobx-react';
-
-const branch_colors = [
-	'#0000FF', // blue
-	'#FF0000', // red
-	'#FFFF00', // yellow			
-	'#00FF00', // neon green
-	'#9900FF', // purple
-	'#FF6000', // orange
-];
+import { branch_colors } from '../../stores/GraphStore';
+import WebcamComponent from './shaders/WebcamComponent';
+import ImageInputComponent from './shaders/ImageInputComponent';
 
 const ShaderControls = observer((props) => {
 	const theme = useContext(ThemeContext);
@@ -127,6 +121,31 @@ const ShaderControls = observer((props) => {
 			let is_selected = props.selectedNode === node;
 
 			if(node.data) {
+				let controls = null;
+				
+				switch (node.data.name) {
+					case "Webcam":
+						controls = [(			
+							<WebcamComponent 
+								key={node.uuid}
+								onInputSelect={node.data.setInput}
+								onChangeDisplayMode={node.data.setDisplayMode}
+								input_options={node.data.input_options}
+                            />
+						)]
+						break;
+					case "Image":
+						controls = [(			
+							<ImageInputComponent
+								key={node.uuid}
+                            />
+						)]
+						break;
+					default: 
+						controls = generateInterface(node.data);
+				}
+
+
 				subpanels.push((
 					<li
 						key={i}
@@ -137,7 +156,7 @@ const ShaderControls = observer((props) => {
 						<PanelComponent 
 							key={i}
 							title={node.data.name}							
-							collapsible
+							collapsible={controls.length ? true : false}
 							titleStyle={{
 								color: is_selected ? theme.text_color : theme.text_color,
 								backgroundColor: is_selected ? theme.accent_color : theme.primary_color,
@@ -146,7 +165,7 @@ const ShaderControls = observer((props) => {
 							onRemove={() => node.remove()}
 							gutters
 						>
-							{ generateInterface(node.data) }
+							{ controls }
 						</PanelComponent>
 					</li>
 				))
@@ -172,6 +191,8 @@ const ShaderControls = observer((props) => {
 			onRemove={handleRemove}				
 			className={styles.shader_graph}	
 			defaultSize={props.defaultSize}
+			detachable
+			onDetach={props.onDetach ? props.onDetach : () => {}}
 		>	
 			{props.data.nodes && panels}    
 		</PanelComponent>

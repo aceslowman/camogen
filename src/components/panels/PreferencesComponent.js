@@ -20,6 +20,7 @@ const Preferences = (props) => {
             onRemove={handleRemove}
             defaultSize={props.defaultSize}
             vertical
+            onDetach={props.onDetach ? props.onDetach : () => {}}
         >
             <TextComponent>
                 Hello World

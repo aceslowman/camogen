@@ -9,10 +9,12 @@ import Runner from '../Runner';
 import p5 from 'p5';
 
 import path from 'path';
-import Workspace, {DefaultParameter} from "./utils/Workspace";
+import Workspace, {DefaultWelcome} from "./utils/Workspace";
 import Messages from "./utils/Messages";
 import { Themes } from "maco-ui";
 import Parameter from "./ParameterStore";
+import Context from "./utils/Context";
+import { shell } from "electron";
 
 // for electron
 const remote = window.require('electron').remote;
@@ -41,7 +43,7 @@ const fs = window.require('fs');
 const RootStore = types
   .model("RootStore", {    
     scene: types.maybe(Scene),
-    workspace: types.optional(Workspace, DefaultParameter),      
+    workspace: types.optional(Workspace, DefaultWelcome),      
     theme: types.frozen(Themes.yutani),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string)
@@ -53,6 +55,64 @@ const RootStore = types
     ready: false,
     breakoutControlled: false,
     messages: Messages.create(),
+    context: Context.create()
+  }))
+  .views(self => ({
+    shaderLibrary() {
+      /*
+       currently limited to two levels, just haven't figured out the best
+       way to traverse and remap the directory tree
+      */
+      let collection = self.shader_collection;
+
+      let items = [];
+
+      collection.children.forEach((e, i) => {
+        if (e.type === 'file') {
+          items.push({
+            label: e.name,
+            onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
+          })
+        } else if (e.type === 'directory') {
+          let subitems = e.children.map((c) => {
+            let next = {
+              label: c.name,
+              onClick: () => self.scene.shaderGraph.setSelectedByName(c.name)
+            };
+
+            return next;
+          })
+
+          items.push({
+            label: e.name,
+            dropDown: subitems
+          })
+        }
+      })
+
+      return [
+        {
+          label: "Inputs",
+          dropDown: [{
+              label: "Webcam",
+              onClick: () => self.scene.shaderGraph.setSelectedByName("WebcamInput")
+            },
+            {
+              label: "Image",
+              onClick: () => self.scene.shaderGraph.setSelectedByName("ImageInput")
+            },
+          ]
+        },
+        ...items,
+        {
+          label: "*Open Directory*",
+          onClick: () => {
+          	let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
+          	shell.openItem(user_shaders_path)
+          }
+        }
+      ];
+    }
   }))
   .actions(self => {
     // setUndoManager(self)
@@ -208,9 +268,6 @@ const RootStore = types
     const fetchShaderFiles = flow(function* fetchShaderFiles() {
       self.shader_collection = Collection.create();
       
-      // let default_shaders_path = app.isPackaged ?
-      //   path.join(app.getAppPath(), '../shaders') :
-      //   path.join(app.getAppPath(), 'shaders');
       let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
 
       try {
@@ -218,12 +275,13 @@ const RootStore = types
         yield fs.promises.access(user_shaders_path);
 
         let tree = dirTree(user_shaders_path);
-        // console.log(tree)
 
         applySnapshot(self.shader_collection,tree);
       } catch(err) {
         console.error("failed to fetch shaders", err);
       }
+
+      console.log(getSnapshot(self.shader_collection))
     }); 
     
     /*

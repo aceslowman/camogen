@@ -16,6 +16,8 @@ const Help = (props) => {
             onRemove={handleRemove}
             defaultSize={props.defaultSize}
             vertical
+            detachable
+			onDetach={props.onDetach ? props.onDetach : () => {}}
         >
             <TextComponent>
                 <h1>camogen</h1>

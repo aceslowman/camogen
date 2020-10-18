@@ -33,9 +33,9 @@ let shader = types
     .model("Shader", {
         uniforms: types.array(Uniform),
         name: types.maybe(types.string), 
-        precision: types.optional(types.string, DefaultShader.precision),
-        vert: types.optional(types.string, DefaultShader.vert),
-        frag: types.optional(types.string, DefaultShader.frag),        
+        precision: DefaultShader.precision,
+        vert:  DefaultShader.vert,
+        frag: DefaultShader.frag,        
         updateGroup: types.map(types.safeReference(types.late(()=>OperatorGraph))),      
         hasChanged: types.optional(types.boolean, false),
         ready: false,
@@ -45,7 +45,7 @@ let shader = types
     }))
     .views(self => ({
         get vertex() {
-            return self.precision + self.vert;
+            return self.vert;
         },
 
         get fragment() {
@@ -65,6 +65,7 @@ let shader = types
         }
 
         function init() {
+            console.log(self.vertex)
             // create shader for given target
             self.ref = self.target.ref.createShader(
                 self.vertex,
@@ -231,7 +232,6 @@ let shader = types
             }
 
             shader.setUniform('resolution', [target.width, target.height]);
-            // console.log(shader)
             
             target.shader(shader);
 
@@ -289,7 +289,9 @@ let shader = types
                         key === 'uniforms' ||
                         key === 'inputs' ||
                         key === 'outputs' ||
-                        key === 'ready'
+                        key === 'ready' || 
+                        key === 'hasChanged' || 
+                        key === 'updateGroup'
                     ) return undefined;
 
                     if(key === 'name') return name; 

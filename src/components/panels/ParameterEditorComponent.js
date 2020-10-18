@@ -19,6 +19,8 @@ const OperatorEditor = observer((props) => {
 
     return(
         <PanelComponent 
+            detachable
+            onDetach={props.onDetach ? props.onDetach : () => {}}
             onRemove={handleRemove}
             title="Parameter Editor"	
             defaultSize={props.defaultSize}

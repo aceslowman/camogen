@@ -2,6 +2,10 @@ import Graph from './GraphStore';
 import { types, getRoot, getSnapshot, applySnapshot, getParent } from "mobx-state-tree";
 import Shader from './ShaderStore';
 
+// special shaders
+import WebcamInput from './shaders/inputs/WebcamInput';
+import ImageInput from './shaders/inputs/ImageInput';
+
 let shaderGraph = types
     .model("ShaderGraph", {})
     .actions(self => {
@@ -54,14 +58,22 @@ let shaderGraph = types
 
         function getShader(name) {
             let data, shader;
-            
-            try {
-                data = state_root.shader_collection.getByName(name).data;           
-                shader = Shader.create();
-                applySnapshot(shader, getSnapshot(data));
-                return shader;
-            } catch(err) {
-                console.error('shaders have not been loaded',err)
+
+            // special case for webcam, image, and video shaders? 
+            switch(name) {
+                case 'WebcamInput': 
+                    return WebcamInput.create();
+                case 'ImageInput':
+                    return ImageInput.create();
+                default: 
+                    try {
+                        data = state_root.shader_collection.getByName(name).data;
+                        shader = Shader.create();
+                        applySnapshot(shader, getSnapshot(data));
+                        return shader;
+                    } catch (err) {
+                        console.error('shaders have not been loaded', err)
+                    }
             }
         }
 

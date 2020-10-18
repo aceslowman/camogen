@@ -3,21 +3,35 @@ import styles from './GraphComponent.module.css';
 import { observer } from 'mobx-react';
 import { ThemeContext } from 'maco-ui';
 import useResizeObserver from '../hooks/ResizeHook';
-
-const branch_colors = [
-	'#0000FF', // blue
-	'#FF0000', // red
-	'#FFFF00', // yellow			
-	'#00FF00', // neon green
-	'#9900FF', // purple
-	'#FF6000', // orange
-];
+import { branch_colors } from '../../stores/GraphStore';
+import MainContext from '../../MainContext';
 
 const GraphComponent = observer((props) => {
 	const theme 	  = useContext(ThemeContext);
+	const store 	  = useContext(MainContext).store;
 	const wrapper_ref = useRef(null);
 	const canvas_ref  = useRef(null);
 	const [labels, setLabels] = useState([]);
+
+	const handleContextMenu = (e,node) => {
+		e.stopPropagation();
+		e.preventDefault();
+
+		node.select(); // select with right click
+		store.context.setContextmenu([{
+				label: "Library",
+				dropDown: store.shaderLibrary()
+			},
+			{
+				label: "Delete",
+				onClick: () => props.data.removeNode(node)
+			},
+			{
+				label: "Edit Shader",
+				onClick: () => store.workspace.addPanel('Shader Editor', true) 
+			}
+		])
+	}
 
 	const drawGraph = () => {
 		// console.log('rerendering graph')
@@ -98,14 +112,6 @@ const GraphComponent = observer((props) => {
 				ctx.closePath();
 				ctx.stroke();
 
-				// fill cable (fixes gap)
-				// ctx.strokeStyle = branch_colors[node.branch_index];
-				// ctx.beginPath();
-				// ctx.moveTo(x, y);
-				// ctx.lineTo(x, cy - (spacing.y / 2));
-				// ctx.closePath();
-				// ctx.stroke();
-
 				if(node.parents.length > 0) {
 					ctx.strokeStyle = branch_colors[node.branch_index];
 					ctx.beginPath();
@@ -141,6 +147,11 @@ const GraphComponent = observer((props) => {
 					key={i}
 					className={`${styles.label} ${props.data.selectedNode === node ? styles.selected : ''}`}
 					onClick={() => handleLabelClick(node)}
+					onContextMenu={(e)=>handleContextMenu(e, node)}
+					// onMouseEnter={(e)=>handleMouseEnter(e, node)}
+					// onMouseLeave={(e)=>handleMouseLeave(e, node)}
+					// onMouseOver={(e)=>handleMouseEnter(e, node)}
+					// onMouseOut={(e)=>handleMouseLeave(e, node)}
 					style={{						
 						left: x + (spacing.x/2) - 15,
 						top:  y - (spacing.y/2) - 15

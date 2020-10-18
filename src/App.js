@@ -15,7 +15,8 @@ import {
   PanelComponent,
   ThemeContext,
   ToolbarComponent,
-  SplitContainer
+  SplitContainer,
+  ContextMenuComponent
 } from 'maco-ui';
 
 import 'maco-ui/dist/index.css';
@@ -94,41 +95,6 @@ const App = observer((props) => {
     props.store.breakout();
   };
 
-  /*
-    currently limited to two levels, just haven't figured out the best
-    way to traverse and remap the directory tree
-  */
-  const handleLib = () => {
-    let collection = props.store.shader_collection;
-
-    let items = [];
-
-    collection.children.forEach((e,i) => {
-      if (e.type === 'file') {
-        items.push({
-          label: e.name,
-          onClick: () => props.store.scene.shaderGraph.setSelectedByName(e.name)
-        })
-      } else if (e.type === 'directory') {
-        let subitems = e.children.map((c)=>{
-          let next = {
-            label: c.name,
-            onClick: () => props.store.scene.shaderGraph.setSelectedByName(c.name)
-          };
-
-          return next;
-        })
-
-        items.push({
-          label: e.name,
-          dropDown: subitems
-        })
-      }
-    })
-
-    return items;
-  }
-
   const getPanel = (name, key, defaultSize) => {
     switch (name) {
       case 'Shader Graph':                            
@@ -138,6 +104,7 @@ const App = observer((props) => {
             coord_bounds={props.store.scene.shaderGraph.coord_bounds}
             data={props.store.scene.shaderGraph}
             defaultSize={defaultSize}
+            detachable
           />
         );
       case 'Shader Editor':                            
@@ -146,8 +113,9 @@ const App = observer((props) => {
             node={props.store.scene.shaderGraph.selectedNode}
             data={props.store.scene.shaderGraph.selectedNode.data}
             graph={props.store.scene.shaderGraph}
-            hasChanged={props.store.scene.shaderGraph.selectedNode.data.hasChanged}
+            hasChanged={props.store.scene.shaderGraph.selectedNode.data ? props.store.scene.shaderGraph.selectedNode.data.hasChanged : null}
             defaultSize={defaultSize}
+            detachable
           />
         );
       case 'Shader Controls':                            
@@ -156,6 +124,7 @@ const App = observer((props) => {
             data={props.store.scene.shaderGraph}
             selectedNode={props.store.scene.shaderGraph.selectedNode}
             defaultSize={defaultSize}
+            detachable
           />
         );
       case 'Parameter Editor':  
@@ -163,18 +132,21 @@ const App = observer((props) => {
             key={key}
             data={props.store.selectedParameter}
             defaultSize={defaultSize}
+            detachable
           />
         );
       case 'Help':                            
         return (<HelpComponent 
             key={key}   
-            defaultSize={defaultSize}         
+            defaultSize={defaultSize}   
+            detachable      
           />
         );
       case 'Debug':                            
         return (<DebugInfoComponent 
             key={key}  
-            defaultSize={defaultSize}         
+            defaultSize={defaultSize}   
+            detachable      
           />
         );         
       case 'Messages':                            
@@ -183,11 +155,13 @@ const App = observer((props) => {
             data={props.store.messages}
             log={props.store.messages.log} 
             defaultSize={defaultSize}
+            detachable
           />
         );  
       case 'Preferences':                            
         return (<PreferencesComponent
             key={key} 
+            detachable
           />
         );                             
       default:
@@ -195,7 +169,7 @@ const App = observer((props) => {
     }
   }
 
-  const main_panel_toolbar = (
+  const main_panel_toolbar = props.store.ready && (
     <ToolbarComponent 
         items={[
           {
@@ -218,33 +192,12 @@ const App = observer((props) => {
           {
             label: "New Scene",
             onClick: () => {
-              console.log(getSnapshot(props.store.scene))
               props.store.scene.clear()
             }
           },     
           {
             label: "Library",
-            dropDown: () => [{
-                label: "Inputs",
-                dropDown: [{
-                    label: "Webcam",
-                    onClick: () => props.store.scene.shaderGraph.setSelectedByName("WebcamInput")
-                  },
-                  {
-                    label: "Image",
-                    onClick: () => props.store.scene.shaderGraph.setSelectedByName("ImageInput")
-                  },
-                ]
-              },
-              ...handleLib(),
-              {
-                label: "*Open Directory*",
-                onClick: () => {
-                  let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
-                  shell.openItem(user_shaders_path)
-                }
-              },
-            ]
+            dropDown: props.store.shaderLibrary(),
           },
           {
             label: "Workspace",
@@ -319,10 +272,16 @@ const App = observer((props) => {
       />
   );
 
+  const handleContextMenu = () => {
+    // prevents context menu anywhere that hasn't been 
+    // explicitly allowed
+    props.store.context.setContextmenu();
+  }
+
   return (    
-    <MainProvider value={{store: props.store}}>
+    <MainProvider value={{store: props.store}}>      
       <ThemeContext.Provider value={props.store.theme}>
-        <div id="APP" ref={mainRef}>          
+        <div id="APP" ref={mainRef} onContextMenu={handleContextMenu}>          
           {props.store.ready && 
             (
               <PanelComponent
@@ -333,10 +292,10 @@ const App = observer((props) => {
                 floating
                 toolbar={main_panel_toolbar}
                 collapsible
+                style={{minHeight:35, minWidth:280}}            
               >
                 <SplitContainer 
                   horizontal
-                  updateFlag={props.store.workspace.updateFlag}
                 >
                   {props.store.workspace.panels.map((workspace,i)=>{
 
@@ -346,7 +305,6 @@ const App = observer((props) => {
                           key={i}
                           horizontal={workspace.split === 'horizontal'}
                           vertical={workspace.split === 'vertical'}
-                          updateFlag={props.store.workspace.updateFlag}
                           defaultSize={workspace.defaultSize}
                         >
                           {workspace.panels.map((subworkspace,j)=>{
@@ -366,7 +324,10 @@ const App = observer((props) => {
             )
           }                                            
         </div>          
-      </ThemeContext.Provider>        
+      </ThemeContext.Provider>
+      <ContextMenuComponent
+        items={props.store.context.contextmenu}
+      />        
     </MainProvider>
   );
 });

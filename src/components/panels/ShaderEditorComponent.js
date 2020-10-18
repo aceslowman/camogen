@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import MainContext from '../../MainContext';
 import styles from './ShaderEditorComponent.module.css';
 
@@ -12,9 +12,19 @@ import {
     ToolbarComponent,
 } from 'maco-ui';
 
+import useResizeObserver from '../hooks/ResizeHook';
+
 const ShaderEditor = (props) => {
     const store = useContext(MainContext).store;
+    const mainRef = useRef(null);
     const [editType, setEditType] = useState('vert');
+    const [editorSize, setEditorSize] = useState({width: 0, height: 0});
+    
+    useResizeObserver(()=>{
+        let bounds = mainRef.current.getBoundingClientRect();
+        setEditorSize({width: bounds.width, height: bounds.height})
+        // console.log(editorSize)
+    }, mainRef);
 
     const handleRefresh = () => {
         store.p5_instance.loop();
@@ -38,6 +48,7 @@ const ShaderEditor = (props) => {
     
     return(
         <PanelComponent
+            detachable
             onRemove={()=>store.workspace.removePanel('Shader Editor')}
             title="Shader Editor"	
             subtitle={(
@@ -49,6 +60,7 @@ const ShaderEditor = (props) => {
             )}		
             style={{minWidth:400,flexGrow:2,flexShrink:0}}
             defaultSize={props.defaultSize}
+            onRef={mainRef}
             toolbar={(
                 <ToolbarComponent  
                     items={ showEditor ? [
@@ -92,9 +104,9 @@ const ShaderEditor = (props) => {
                     theme="monokai"
                     onChange={handleEditorChange}
                     value={editType === 'frag' ? props.data.frag : props.data.vert}
-                    height=""
-                    width=""
-                    minHeight="500px"
+                    // height={editorSize.height+'px'}
+                    // width={editorSize.width+'px'}
+                    minHeight="0px"
                     className={styles.ace_editor}
                     // showGutter={false}		 												
                 />)
