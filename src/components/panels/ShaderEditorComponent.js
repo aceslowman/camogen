@@ -8,23 +8,23 @@ import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/webpack-resolver";
 
 import {
-    PanelComponent,
+    GenericPanel,
     ToolbarComponent,
 } from 'maco-ui';
 
-import useResizeObserver from '../hooks/ResizeHook';
+// import useResizeObserver from '../hooks/ResizeHook';
 
 const ShaderEditor = (props) => {
     const store = useContext(MainContext).store;
     const mainRef = useRef(null);
     const [editType, setEditType] = useState('vert');
-    const [editorSize, setEditorSize] = useState({width: 0, height: 0});
+    // const [editorSize, setEditorSize] = useState({width: 0, height: 0});
     
-    useResizeObserver(()=>{
-        let bounds = mainRef.current.getBoundingClientRect();
-        setEditorSize({width: bounds.width, height: bounds.height})
-        // console.log(editorSize)
-    }, mainRef);
+    // useResizeObserver(()=>{
+    //     let bounds = mainRef.current.getBoundingClientRect();
+    //     setEditorSize({width: bounds.width, height: bounds.height})
+    //     // console.log(editorSize)
+    // }, mainRef);
 
     const handleRefresh = () => {
         store.p5_instance.loop();
@@ -45,12 +45,46 @@ const ShaderEditor = (props) => {
     }
 
     const showEditor = props.node !== undefined && props.data;
+
+    const toolbar = (
+        <ToolbarComponent  
+            items={ showEditor ? [
+                {
+                    label: 'Save Shader',
+                    onClick: () => props.data.save()
+                },
+                {
+                    label: 'Vertex',
+                    onClick: () => setEditType('vert'),
+                    highlight: editType === 'vert',
+                },
+                {
+                    label: 'Fragment',
+                    onClick: () => setEditType('frag'),
+                    highlight: editType === 'frag',
+                }, 
+                {
+                    label: 'Refresh',
+                    onClick: () => handleRefresh()
+                },
+            ] : [
+                {
+                    label: 'New Shader',
+                    onClick: () => props.graph.setSelectedByName('Default')
+                },
+                {
+                    label: 'Load Shader',
+                    onClick: () => {
+                        props.data.load()
+                    }
+                }, 
+            ]}
+        /> 
+    )
     
     return(
-        <PanelComponent
-            detachable
-            onRemove={()=>store.workspace.removePanel('Shader Editor')}
-            title="Shader Editor"	
+        <GenericPanel
+            panel={props.panel}	
             subtitle={(
                 <span style={{
                     fontStyle: props.hasChanged ? 'italic' : 'normal'
@@ -58,44 +92,9 @@ const ShaderEditor = (props) => {
                     {props.hasChanged ? 'unsaved' : ''}
                 </span>
             )}		
-            style={{minWidth:400,flexGrow:2,flexShrink:0}}
-            defaultSize={props.defaultSize}
-            onRef={mainRef}
-            toolbar={(
-                <ToolbarComponent  
-                    items={ showEditor ? [
-                        {
-                            label: 'Save Shader',
-                            onClick: () => props.data.save()
-                        },
-                        {
-                            label: 'Vertex',
-                            onClick: () => setEditType('vert'),
-                            highlight: editType === 'vert',
-                        },
-                        {
-                            label: 'Fragment',
-                            onClick: () => setEditType('frag'),
-                            highlight: editType === 'frag',
-                        }, 
-                        {
-                            label: 'Refresh',
-                            onClick: () => handleRefresh()
-                        },
-                    ] : [
-                        {
-                            label: 'New Shader',
-                            onClick: () => props.graph.setSelectedByName('Default')
-                        },
-                        {
-                            label: 'Load Shader',
-                            onClick: () => {
-                                props.data.load()
-                            }
-                        }, 
-                    ]}
-                /> 
-            )}
+            // style={{minWidth:400,flexGrow:2,flexShrink:0}}
+            // onRef={mainRefe}
+            toolbar={toolbar}
         >		
                 
             {
@@ -119,7 +118,7 @@ const ShaderEditor = (props) => {
                     </p>
                 )
             }
-        </PanelComponent>
+        </GenericPanel>
     )
 }
 

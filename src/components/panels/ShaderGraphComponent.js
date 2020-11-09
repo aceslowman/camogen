@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MainContext from '../../MainContext';
 import GraphComponent from '../graph/GraphComponent';
-import { PanelComponent } from 'maco-ui';
+import { GenericPanel } from 'maco-ui';
 import { observer } from 'mobx-react';
 
 const ShaderGraph = observer((props) => {
 	const store = useContext(MainContext).store;
-	const mainRef = useRef(null);
 	const [useKeys, setUseKeys] = useState(false);
 
 	const handleFocus = (e) => {
@@ -66,29 +65,25 @@ const ShaderGraph = observer((props) => {
 		}])
 	}
 
-	return(
-		<PanelComponent 
-			detachable
-			onDetach={props.onDetach ? props.onDetach : () => {}}
-			collapsed={props.collapsed}
-			title="Shader Graph"				
-			onRemove={()=>store.workspace.removePanel('Shader Graph')}
-			defaultSize={props.defaultSize}
-			onFocus={handleFocus}
-			onRef={mainRef}
+	return(	
+		<GenericPanel 
+			panel={props.panel}
 			onContextMenu={handleContextMenu}
+			onFocus={handleFocus}
 			indicators={useKeys ? [
 				{label:'k', color: store.theme.accent_color, title: 'Keybind Focus'}
 			] : null}
-		>				
-			<GraphComponent 
-				data={props.data}
-				coord_bounds={props.coord_bounds}
-				selectedNode={props.selectedNode}
-			/>
+		>		
+			{props.data && (
+				<GraphComponent 
+					data={props.data}
+					coord_bounds={props.coord_bounds}
+					selectedNode={props.selectedNode}
+				/>
+			)}
 
 			{ props.data && props.data.updateFlag }
-		</PanelComponent>
+		</GenericPanel>
 	)  
 });
 

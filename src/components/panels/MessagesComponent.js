@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
-import MainContext from '../../MainContext';
+import React from 'react';
 import {
-    PanelComponent,
+    GenericPanel,
     TextComponent,
     ToolbarComponent,
 } from 'maco-ui';
@@ -10,26 +9,22 @@ import styles from './MessagesComponent.module.css';
 import { observer } from 'mobx-react';
 
 const Messages = observer((props) => {
-    const store = useContext(MainContext).store;
-    const handleRemove = () => store.workspace.removePanel('Messages')
+
+    const toolbar = (
+        <ToolbarComponent 
+            items={[
+                {
+                    label: 'clear',
+                    onClick: () => props.data.clear()
+                }
+            ]}
+        />
+    )
 
     return(
-        <PanelComponent
-            title="Messages" 
-            onRemove={handleRemove}
-            detachable
-			onDetach={props.onDetach ? props.onDetach : () => {}}
-            vertical
-            toolbar={(
-                <ToolbarComponent 
-                    items={[
-                        {
-                            label: 'clear',
-                            onClick: () => props.data.clear()
-                        }
-                    ]}
-                />
-            )}
+        <GenericPanel
+            panel={props.panel}
+            toolbar={toolbar}
         >
             <TextComponent>
                 <ul className={styles.loglist}>
@@ -43,7 +38,7 @@ const Messages = observer((props) => {
                     })}
                 </ul>     
             </TextComponent>					
-        </PanelComponent>		
+        </GenericPanel>		
     )
 });
 

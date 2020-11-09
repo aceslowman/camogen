@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import MainContext from '../../MainContext';
 import {
     ControlGroupComponent,
+    GenericPanel,
     InputColor,
     InputSelect,
-    PanelComponent,
     TextComponent,
     Themes
 } from 'maco-ui';
@@ -12,21 +12,13 @@ import {
 const Preferences = (props) => {
     const store = useContext(MainContext).store;    
 
-    const handleRemove = () => store.workspace.removePanel('Preferences')
-
     return(
-        <PanelComponent
-            title="Preferences" 
-            onRemove={handleRemove}
-            defaultSize={props.defaultSize}
-            vertical
-            onDetach={props.onDetach ? props.onDetach : () => {}}
-        >
+        <GenericPanel panel={props.panel}>
             <TextComponent>
                 Hello World
             </TextComponent>
-                <ControlGroupComponent name="theme">
-                    <InputSelect
+            <ControlGroupComponent name="theme">
+                <InputSelect
                     options={[
                         {label: 'weyland', value: 'weyland'},
                         {label: 'yutani', value: 'yutani'},
@@ -36,11 +28,11 @@ const Preferences = (props) => {
                     onChange={(theme)=>{
                         store.setTheme(Themes[theme]);
                     }}
-                    />
-                </ControlGroupComponent>
+                />
+            </ControlGroupComponent>
 
-                <ControlGroupComponent name="color">
-                    <InputColor 
+            <ControlGroupComponent name="color">
+                <InputColor 
                     // showValue
                     label="primary"
                     value={store.theme.primary_color}
@@ -50,8 +42,8 @@ const Preferences = (props) => {
                             primary_color: value
                         })
                     }}
-                    />
-                    <InputColor
+                />
+                <InputColor
                     // showValue
                     label="secondary"
                     value={store.theme.secondary_color}
@@ -61,8 +53,8 @@ const Preferences = (props) => {
                             secondary_color: value
                         })
                     }}
-                    />
-                    <InputColor 
+                />
+                <InputColor 
                     // showValue
                     label="text"
                     value={store.theme.text_color}
@@ -72,8 +64,8 @@ const Preferences = (props) => {
                             primary_color: value
                         })
                     }}
-                    />
-                    <InputColor 
+                />
+                <InputColor 
                     // showValue
                     label="accent"
                     value={store.theme.accent_color}
@@ -83,9 +75,9 @@ const Preferences = (props) => {
                             accent_color: value
                         })
                     }}
-                    />
-                </ControlGroupComponent>					
-        </PanelComponent>		
+                />
+            </ControlGroupComponent>					
+        </GenericPanel>	
     )
 }
 

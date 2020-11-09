@@ -6,7 +6,7 @@ const ImageInputComponent = observer((props) => {
 	return (
         <React.Fragment>
             <ControlGroupComponent name="Image File">
-                {/* <InputSelect
+                <InputSelect
                     options={
                         props.input_options.map((e)=>({
                             label: e.label, 
@@ -14,7 +14,7 @@ const ImageInputComponent = observer((props) => {
                         }))
                     }
                     onChange={props.onInputSelect}
-                />				 */}
+                />				
             </ControlGroupComponent>	
         </React.Fragment>        
 	)

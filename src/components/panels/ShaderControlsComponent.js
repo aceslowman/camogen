@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import MainContext from '../../MainContext';
 import { 
 	PanelComponent,
+	GenericPanel,
 	ControlGroupComponent,
 	InputBool,
-	InputFloat, 
-	// InputSlider, 
+	InputFloat,  
 	ThemeContext
 } from 'maco-ui';
+import uuidv1 from 'uuid/v1';
 
 import styles from './ShaderControlsComponent.module.css'
 import { observer } from 'mobx-react';
@@ -19,12 +20,36 @@ const ShaderControls = observer((props) => {
 	const theme = useContext(ThemeContext);
 	const store = useContext(MainContext).store;
 
-	const handleRemove = () => {
-		store.workspace.removePanel('Shader Controls')
-	}
-
 	const handleValueChange = (param,e) => {
 		param.setValue(e)
+	}
+
+	const handleParameterContextMenu = (e, param) => {
+		// TODO: adding onContextMenu to inputs
+		e.stopPropagation();
+		e.preventDefault();
+
+		store.context.setContextmenu([{
+			label: "Edit Parameter",
+			onClick: () => {
+				store.selectParameter(param);
+				store.layout.addPanel( 
+					{
+						id: uuidv1(),
+						title: 'Edit Param',
+						type: 'PARAMETER_EDITOR',
+						floating: true,
+						canFloat: true,
+						canRemove: true,
+						collapsible: true,
+						defaultWidth: 250,
+						defaultHeight: 250,
+						dimensions: [300, 400],
+						position: [(window.innerWidth/2)-150, (window.innerHeight/2)-200]
+					}
+				)
+			}
+		}])
 	}
 
 	const generateInterface = (shader) => {
@@ -46,6 +71,7 @@ const ShaderControls = observer((props) => {
 									onDoubleClick={(e) => {
 										store.selectParameter(param);										
 									}}
+									onContextMenu={(e)=>handleParameterContextMenu(e, param)}
 								/>);
 							break;
 							case Number:
@@ -64,6 +90,7 @@ const ShaderControls = observer((props) => {
 									onDoubleClick={(e) => {
 										store.selectParameter(param);										
 									}}
+									onContextMenu={(e)=>handleParameterContextMenu(e, param)}
 								/>);
 							break;
 							default:
@@ -80,6 +107,7 @@ const ShaderControls = observer((props) => {
 									onDoubleClick={(e) => {
 										store.selectParameter(param);										
 									}}
+									onContextMenu={(e)=>handleParameterContextMenu(e, param)}
 								/>);
 							break;
 						}
@@ -186,16 +214,11 @@ const ShaderControls = observer((props) => {
 	})
 
 	return(
-		<PanelComponent 
-			title="Shader Controls"			
-			onRemove={handleRemove}				
-			className={styles.shader_graph}	
-			defaultSize={props.defaultSize}
-			detachable
-			onDetach={props.onDetach ? props.onDetach : () => {}}
+		<GenericPanel 
+			panel={props.panel}
 		>	
 			{props.data.nodes && panels}    
-		</PanelComponent>
+		</GenericPanel>
 	);
 });
 

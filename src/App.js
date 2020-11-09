@@ -7,27 +7,23 @@ import ShaderControlsComponent from './components/panels/ShaderControlsComponent
 import DebugInfoComponent from './components/panels/DebugInfoComponent';
 import HelpComponent from './components/panels/HelpComponent';
 import ShaderEditorComponent from './components/panels/ShaderEditorComponent';
+import PreferencesComponent from './components/panels/PreferencesComponent';
 import ParameterEditorComponent from './components/panels/ParameterEditorComponent';
 import MessagesComponent from './components/panels/MessagesComponent';
+import CaptureComponent from './components/panels/CaptureComponent';
 
 import tinykeys from 'tinykeys';
 import {
-  PanelComponent,
   ThemeContext,
   ToolbarComponent,
-  SplitContainer,
+  LayoutContainer,
+  GenericPanel,
   ContextMenuComponent
 } from 'maco-ui';
 
 import 'maco-ui/dist/index.css';
 import { getSnapshot } from 'mobx-state-tree';
-
-import path from 'path';
-import PreferencesComponent from './components/panels/PreferencesComponent';
-
-const shell = window.require('electron').shell;
-const remote = window.require('electron').remote;
-const app = remote.app;
+import CaptureOverlay from './components/overlays/CaptureOverlayComponent';
 
 const App = observer((props) => {
 
@@ -54,6 +50,7 @@ const App = observer((props) => {
       }
 
       // props.store.p5_instance.draw();
+      props.store.mainPanel.fitScreen();
     }
 
     window.addEventListener('resize', handleResize);
@@ -95,75 +92,75 @@ const App = observer((props) => {
     props.store.breakout();
   };
 
-  const getPanel = (name, key, defaultSize) => {
-    switch (name) {
-      case 'Shader Graph':                            
+  const getPanel = (panel) => {
+    switch (panel.type) {
+      case 'SHADER_GRAPH':                            
         return (<ShaderGraphComponent 
-            key={key}
+            key={panel.id}
             selectedNode={props.store.scene.shaderGraph.selectedNode}
             coord_bounds={props.store.scene.shaderGraph.coord_bounds}
             data={props.store.scene.shaderGraph}
-            defaultSize={defaultSize}
-            detachable
+            panel={panel}
           />
         );
-      case 'Shader Editor':                            
+      case 'SHADER_EDITOR':                         
         return (<ShaderEditorComponent 
-            key={key}
+            key={panel.id}
             node={props.store.scene.shaderGraph.selectedNode}
             data={props.store.scene.shaderGraph.selectedNode.data}
             graph={props.store.scene.shaderGraph}
             hasChanged={props.store.scene.shaderGraph.selectedNode.data ? props.store.scene.shaderGraph.selectedNode.data.hasChanged : null}
-            defaultSize={defaultSize}
-            detachable
+            panel={panel}
           />
         );
-      case 'Shader Controls':                            
+      case 'SHADER_CONTROLS':                            
         return (<ShaderControlsComponent 
-            key={key}
+            key={panel.id}            
             data={props.store.scene.shaderGraph}
             selectedNode={props.store.scene.shaderGraph.selectedNode}
-            defaultSize={defaultSize}
-            detachable
+            panel={panel}
           />
         );
-      case 'Parameter Editor':  
+      case 'PARAMETER_EDITOR':  
         return (<ParameterEditorComponent 
-            key={key}
+            key={panel.id}
             data={props.store.selectedParameter}
-            defaultSize={defaultSize}
-            detachable
+            panel={panel}
           />
         );
-      case 'Help':                            
-        return (<HelpComponent 
-            key={key}   
-            defaultSize={defaultSize}   
-            detachable      
-          />
+      case 'HELP':              
+        return (          
+            <HelpComponent 
+              key={panel.id}      
+              panel={panel} 
+            />
         );
-      case 'Debug':                            
+      case 'DEBUG':                            
         return (<DebugInfoComponent 
-            key={key}  
-            defaultSize={defaultSize}   
-            detachable      
+            key={panel.id}  
+            panel={panel}     
           />
         );         
-      case 'Messages':                            
+      case 'MESSAGES':                            
         return (<MessagesComponent 
-            key={key}     
+            key={panel.id}     
             data={props.store.messages}
             log={props.store.messages.log} 
-            defaultSize={defaultSize}
-            detachable
+            panel={panel}
           />
         );  
-      case 'Preferences':                            
+      case 'PREFERENCES':                            
         return (<PreferencesComponent
-            key={key} 
-            detachable
+            key={panel.id} 
+            panel={panel}
           />
-        );                             
+        );  
+      case 'CAPTURE':                            
+        return (<CaptureComponent
+            key={panel.id}
+            panel={panel}
+          />
+        );                               
       default:
         break;
     }
@@ -184,7 +181,7 @@ const App = observer((props) => {
               label: "Preferences",
               onClick: () => {
                 props.store.workspace.clear();
-                props.store.workspace.addPanel("Preferences")
+                props.store.workspace.addPanel("PREFERENCES")
               }
             },            
           ]
@@ -204,57 +201,61 @@ const App = observer((props) => {
             dropDown: [
               {
                 label: "Welcome",
-                onClick: () => props.store.workspace.setWorkspace("Welcome")
+                onClick: () => props.store.layout.setLayout("WELCOME")
               },
               {
                 label: "Shader Edit",
-                onClick: () => props.store.workspace.setWorkspace("Shader Edit")
+                onClick: () => props.store.layout.setLayout("SHADER_EDIT")
               },
               {
                 label: "Shader Control",
-                onClick: () => props.store.workspace.setWorkspace("Shader Control")
+                onClick: () => props.store.layout.setLayout("SHADER_CONTROL")
               },
               {
                 label: "Parameter Editor",
-                onClick: () => props.store.workspace.setWorkspace("Parameter")
+                onClick: () => props.store.layout.setLayout("PARAMETER")
               },
               {
                 label: "Debug",
-                onClick: () => props.store.workspace.setWorkspace("Debug")
+                onClick: () => props.store.layout.setLayout("DEBUG")
               },
               {
                 label: "Add Panel",
                 dropDown: [{
                     label: "Shader Graph",
-                    onClick: () => props.store.workspace.addPanel("Shader Graph")
+                    onClick: () => props.store.layout.addPanel("SHADER_GRAPH")
                   },
                   {
                     label: "Shader Editor",
-                    onClick: () => props.store.workspace.addPanel("Shader Editor")
+                    onClick: () => props.store.layout.addPanel("SHADER_EDITOR")
                   },
                   {
                     label: "Shader Controls",
-                    onClick: () => props.store.workspace.addPanel("Shader Controls")
+                    onClick: () => props.store.layout.addPanel("SHADER_CONTROLS")
                   },
                   {
                     label: "Parameter Editor",
-                    onClick: () => props.store.workspace.addPanel("Parameter Editor")
+                    onClick: () => props.store.layout.addPanel("PARAMETER_EDITOR")
                   },
                   {
                     label: "Help",
-                    onClick: () => props.store.workspace.addPanel("Help")
+                    onClick: () => props.store.layout.addPanel("HELP")
                   },
                   {
                     label: "Debug",
-                    onClick: () => props.store.workspace.addPanel("Debug")
+                    onClick: () => props.store.layout.addPanel("DEBUG")
                   },
                   {
                     label: "Messages",
-                    onClick: () => props.store.workspace.addPanel("Messages")
+                    onClick: () => props.store.layout.addPanel("MESSAGES")
                   },
                   {
                     label: "Preferences",
-                    onClick: () => props.store.workspace.addPanel("Preferences")
+                    onClick: () => props.store.layout.addPanel("PREFERENCES")
+                  },
+                  {
+                    label: "Capture",
+                    onClick: () => props.store.layout.addPanel("CAPTURE")
                   },
                 ]
               },              
@@ -282,47 +283,25 @@ const App = observer((props) => {
     <MainProvider value={{store: props.store}}>      
       <ThemeContext.Provider value={props.store.theme}>
         <div id="APP" ref={mainRef} onContextMenu={handleContextMenu}>          
-          {props.store.ready && 
-            (
-              <PanelComponent
-                title={(<h1>camogen</h1>)}
-                subtitle={props.store.name}
-                horizontal 
-                fullscreen={props.store.breakoutControlled}
-                floating
-                toolbar={main_panel_toolbar}
-                collapsible
-                style={{minHeight:35, minWidth:280}}            
-              >
-                <SplitContainer 
-                  horizontal
-                >
-                  {props.store.workspace.panels.map((workspace,i)=>{
+          
+          {props.store.ready && (
+            <GenericPanel
+              panel={props.store.mainPanel}
+              toolbar={main_panel_toolbar}
+              title={(<h1>camogen</h1>)}
+              subtitle={props.store.name}
+              collapsible
+            >
+              <LayoutContainer layout={props.store.layout}>        
+                {Array.from(props.store.layout.panels).map((e)=>{
+                  return getPanel(e[1])
+                })}
+              </LayoutContainer>
+            </GenericPanel>
+          )}
 
-                    if(workspace.split !== 'none') {
-                      return (
-                        <SplitContainer
-                          key={i}
-                          horizontal={workspace.split === 'horizontal'}
-                          vertical={workspace.split === 'vertical'}
-                          defaultSize={workspace.defaultSize}
-                        >
-                          {workspace.panels.map((subworkspace,j)=>{
-                            return getPanel(subworkspace.name,'sub'+j, subworkspace.defaultSize)
-                          })}
-                        </SplitContainer>
-                      )
-                    }
-
-                    // if name is present, grab panel                    
-                    if(workspace.name) return getPanel(workspace.name,i, workspace.defaultSize);                  
-                    
-                    return null;
-                  })}
-                </SplitContainer>                                   
-              </PanelComponent>                    
-            )
-          }                                            
+          {!props.store.mainPanel.fullscreen && <CaptureOverlay />}
+          
         </div>          
       </ThemeContext.Provider>
       <ContextMenuComponent

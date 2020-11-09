@@ -31,6 +31,8 @@ const Runner = (p, store) => {
             } else {
                 p.background(0);
             }
+
+            if(store.transport.playing) store.transport.incrementClock()
         } catch (error) {
             console.error('error in runner, stopping draw loop',error);
             p.noLoop();

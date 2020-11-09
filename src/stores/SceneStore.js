@@ -12,6 +12,9 @@ const Scene = types
         operatorGraphs: types.map(OperatorGraph),
         targets: types.array(Target)
     })
+    // .volatile(self => ({
+    //     clock: 0
+    // }))
     .actions(self => {
         function afterAttach() {   
             self.shaderGraph = ShaderGraph.create({uuid: uuidv1()});
@@ -22,10 +25,10 @@ const Scene = types
                 likely to be replaced with
                 single loaded snapshot in RootScene
             */
-            self.shaderGraph.addNode();
-            self.shaderGraph.setSelectedByName('WebcamInput');
-            self.shaderGraph.root.select();
-            self.shaderGraph.setSelectedByName('Glyph')
+            // self.shaderGraph.addNode();
+            // self.shaderGraph.setSelectedByName('WebcamInput');
+            // self.shaderGraph.root.select();
+            // self.shaderGraph.setSelectedByName('Glyph')
             
             // self.shaderGraph.update();
         }

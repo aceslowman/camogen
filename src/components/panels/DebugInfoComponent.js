@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import MainContext from '../../MainContext';
 import {
+	GenericPanel,
 	PanelComponent,
 	TextComponent
 } from 'maco-ui';
@@ -11,8 +12,6 @@ import { getSnapshot } from 'mobx-state-tree';
 const DebugInfo = observer((props) => {
 	const theme = useContext(ThemeContext);
 	const store = useContext(MainContext).store;
-
-	const handleRemove = () => store.workspace.removePanel('Debug');
 
 	const scene = store.scene;
 	const graph = store.scene.shaderGraph;
@@ -27,13 +26,7 @@ const DebugInfo = observer((props) => {
 	}
 
 	return(
-		<PanelComponent
-			title="Debug"
-			onRemove={handleRemove}		
-			defaultSize={props.defaultSize}		
-			detachable
-			onDetach={props.onDetach ? props.onDetach : () => {}}
-		>
+		<GenericPanel panel={props.panel}>
 			<PanelComponent
 				title="graph"
 				collapsible
@@ -119,7 +112,7 @@ const DebugInfo = observer((props) => {
 			</PanelComponent>
 
 			
-		</PanelComponent>		
+		</GenericPanel>		
 	)
 });
 

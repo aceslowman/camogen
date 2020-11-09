@@ -1,24 +1,12 @@
-import React, { useContext } from 'react';
-import MainContext from '../../MainContext';
+import React from 'react';
 import {
-    PanelComponent,
     TextComponent,
+    GenericPanel
 } from 'maco-ui';
 
 const Help = (props) => {
-    const store = useContext(MainContext).store;
-
-    const handleRemove = () => store.workspace.removePanel('Help')
-
     return(
-        <PanelComponent
-            title="Help" 
-            onRemove={handleRemove}
-            defaultSize={props.defaultSize}
-            vertical
-            detachable
-			onDetach={props.onDetach ? props.onDetach : () => {}}
-        >
+        <GenericPanel panel={props.panel}>
             <TextComponent>
                 <h1>camogen</h1>
                 <p>hello! this is the <span style={{color: 'orange'}}>first build</span>. some, 
@@ -50,8 +38,8 @@ const Help = (props) => {
                         under 'Editor', click 'Counter'
                     </li>
                 </ol>
-            </TextComponent>					
-        </PanelComponent>		
+            </TextComponent>			
+        </GenericPanel>
     )
 }
 

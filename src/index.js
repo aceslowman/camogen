@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import RootStore from './stores/RootStore'
+import RootStore from './stores/RootStore';
 import makeInspectable from 'mobx-devtools-mst';
 
 const root = RootStore.create({});

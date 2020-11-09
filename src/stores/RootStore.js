@@ -4,17 +4,19 @@ import Scene from './SceneStore';
 import { getSnapshot } from 'mobx-state-tree';
 import dirTree from "directory-tree";
 import Collection from './utils/Collection';
-// import defaultSnapshot from '../snapshots/default.json';
+import Layout, {CoreLayouts} from './ui/Layout';
+import defaultSnapshot from '../snapshots/default.json';
 import Runner from '../Runner';
 import p5 from 'p5';
 
 import path from 'path';
-import Workspace, {DefaultWelcome} from "./utils/Workspace";
+import Context from "./ui/Context";
 import Messages from "./utils/Messages";
 import { Themes } from "maco-ui";
 import Parameter from "./ParameterStore";
-import Context from "./utils/Context";
 import { shell } from "electron";
+import Panel from "./ui/Panel";
+import Transport from "./utils/Transport";
 
 // for electron
 const remote = window.require('electron').remote;
@@ -43,19 +45,34 @@ const fs = window.require('fs');
 const RootStore = types
   .model("RootStore", {    
     scene: types.maybe(Scene),
-    workspace: types.optional(Workspace, DefaultWelcome),      
+    layout: types.optional(Layout, CoreLayouts['WELCOME']),
+    mainPanel: types.optional(Panel, {
+      id: 'main',
+      title: 'camogen',
+      floating: true,
+      canFloat: false,
+      collapsible: true,
+      fullscreen: false,
+      canFullscreen: true,
+      dimensions: [700, 500],
+      position: [
+        (window.innerWidth / 2)-350, 
+        (window.innerHeight / 2)-250
+      ]
+    }),
     theme: types.frozen(Themes.yutani),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
-    keyFocus: types.maybe(types.string)
+    keyFocus: types.maybe(types.string),   
+    transport: types.optional(Transport, {}) 
   })
-  .volatile(self => ({
+  .volatile(() => ({
     name: 'untitled',
     p5_instance: null,
     shader_collection: null,
     ready: false,
     breakoutControlled: false,
     messages: Messages.create(),
-    context: Context.create()
+    context: Context.create(),
   }))
   .views(self => ({
     shaderLibrary() {
@@ -67,7 +84,7 @@ const RootStore = types
 
       let items = [];
 
-      collection.children.forEach((e, i) => {
+      collection.children.forEach((e) => {
         if (e.type === 'file') {
           items.push({
             label: e.name,
@@ -123,13 +140,15 @@ const RootStore = types
         .then(() => self.shader_collection.preloadAll())
         .then(() => {
           self.setupP5();
-
           self.setScene(Scene.create());
 
-          // apply default
-          // TEMP: removed while working on param graphs
-          // applySnapshot(self.scene, defaultSnapshot.scene);
+          applySnapshot(self, defaultSnapshot);
+          self.scene.shaderGraph.update();
+          self.scene.shaderGraph.afterUpdate();
+          
           self.setReady(true);
+
+          self.mainPanel.fitScreen()
         });
     }
 
@@ -280,27 +299,35 @@ const RootStore = types
       } catch(err) {
         console.error("failed to fetch shaders", err);
       }
-
-      console.log(getSnapshot(self.shader_collection))
     }); 
     
     /*
       snapshot()
 
-      saves a png of the current scene
+      saves an image of the current scene
     */
-    const snapshot = flow(function* snapshot() {
-      var dataURL = self.p5_instance.canvas.toDataURL("image/png");
-
+    const snapshot = flow(function* snapshot(format = "PNG") {
+      var dataURL;
+      switch(format) {
+        case "PNG":
+          dataURL = self.p5_instance.canvas.toDataURL("image/png");
+          break;
+        case "JPEG":
+          let quality = 10;
+          dataURL = self.p5_instance.canvas.toDataURL("image/jpeg", quality);
+          break;
+        default:
+          dataURL = self.p5_instance.canvas.toDataURL("image/png");
+      } 
+      
       var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
       var content = new Buffer(data, 'base64');
       
       let path = `${app.getPath("userData")}/snapshots`;
 
       let options = {
-        title: self.name + '.shader',
         defaultPath: path,
-        buttonLabel: "Save Shader File",
+        buttonLabel: "Save Image",
       }
 
       yield dialog.showSaveDialog(options).then((f) => {      

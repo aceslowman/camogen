@@ -65,7 +65,6 @@ let shader = types
         }
 
         function init() {
-            console.log(self.vertex)
             // create shader for given target
             self.ref = self.target.ref.createShader(
                 self.vertex,

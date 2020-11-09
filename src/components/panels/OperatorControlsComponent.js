@@ -16,7 +16,7 @@ const OperatorControls = observer((props) => {
 	const store = useContext(MainContext).store;
 
 	const handleRemove = () => {
-		store.workspace.removePanel('Operator Controls')
+		store.workspace.removePanel('OPERATOR_CONTROLS')
 	}
 
     const generateInterface = (e) => {

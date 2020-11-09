@@ -24,11 +24,17 @@ const GraphComponent = observer((props) => {
 			},
 			{
 				label: "Delete",
-				onClick: () => props.data.removeNode(node)
+				onClick: () => {
+					props.data.removeNode(node);
+					store.context.setContextmenu(); // removes menu
+				}
 			},
 			{
 				label: "Edit Shader",
-				onClick: () => store.workspace.addPanel('Shader Editor', true) 
+				onClick: () => {
+					store.workspace.addPanel('SHADER_EDITOR', true);
+					store.context.setContextmenu(); // removes menu
+				}
 			}
 		])
 	}
@@ -148,10 +154,6 @@ const GraphComponent = observer((props) => {
 					className={`${styles.label} ${props.data.selectedNode === node ? styles.selected : ''}`}
 					onClick={() => handleLabelClick(node)}
 					onContextMenu={(e)=>handleContextMenu(e, node)}
-					// onMouseEnter={(e)=>handleMouseEnter(e, node)}
-					// onMouseLeave={(e)=>handleMouseLeave(e, node)}
-					// onMouseOver={(e)=>handleMouseEnter(e, node)}
-					// onMouseOut={(e)=>handleMouseLeave(e, node)}
 					style={{						
 						left: x + (spacing.x/2) - 15,
 						top:  y - (spacing.y/2) - 15
