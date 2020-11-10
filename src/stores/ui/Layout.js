@@ -98,6 +98,13 @@ const Layout = types
             }
         }
 
+        function clear() {
+            if(self.panels && self.children) {
+                self.panels.clear();
+                self.children = [];
+            }
+        }
+
         // function removeLayout(layout) {
         //     if(self.children) self.children.filter(e => e !== layout);
         // }
@@ -109,6 +116,7 @@ const Layout = types
             setLayout,
             addPanel,
             removePanel,
+            clear,
             distributeChildren
         }
     })

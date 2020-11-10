@@ -60,6 +60,19 @@ const RootStore = types
         (window.innerHeight / 2)-250
       ]
     }),
+    mainCanvasPanel: types.optional(Panel, {
+      id: 'canvas',
+      title: 'canvas',
+      floating: true,
+      canFloat: false,
+      collapsible: true,
+      fullscreen: false,
+      canFullscreen: true,
+      dimensions: [window.innerWidth, window.innerHeight],
+      position: [
+        0,0
+      ]
+    }),
     theme: types.frozen(Themes.yutani),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string),   

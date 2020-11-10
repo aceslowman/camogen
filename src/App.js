@@ -11,6 +11,7 @@ import PreferencesComponent from './components/panels/PreferencesComponent';
 import ParameterEditorComponent from './components/panels/ParameterEditorComponent';
 import MessagesComponent from './components/panels/MessagesComponent';
 import CaptureComponent from './components/panels/CaptureComponent';
+import CanvasDisplay from './components/panels/CanvasDisplayComponent';
 
 import tinykeys from 'tinykeys';
 import {
@@ -180,8 +181,8 @@ const App = observer((props) => {
             }, {
               label: "Preferences",
               onClick: () => {
-                props.store.workspace.clear();
-                props.store.workspace.addPanel("PREFERENCES")
+                props.store.layout.clear();
+                props.store.layout.addPanel("PREFERENCES")
               }
             },            
           ]
@@ -282,7 +283,14 @@ const App = observer((props) => {
   return (    
     <MainProvider value={{store: props.store}}>      
       <ThemeContext.Provider value={props.store.theme}>
-        <div id="APP" ref={mainRef} onContextMenu={handleContextMenu}>          
+        <div 
+          id="APP" 
+          ref={mainRef} 
+          onContextMenu={handleContextMenu}
+          style={{
+            backgroundColor: props.store.theme.secondary_color
+          }}
+        >          
           
           {props.store.ready && (
             <GenericPanel
@@ -300,7 +308,10 @@ const App = observer((props) => {
             </GenericPanel>
           )}
 
-          {!props.store.mainPanel.fullscreen && <CaptureOverlay />}
+          <CanvasDisplay 
+            panel={props.store.mainCanvasPanel}
+          />
+          {/* {!props.store.mainPanel.fullscreen && <CaptureOverlay />} */}
           
         </div>          
       </ThemeContext.Provider>
