@@ -147,20 +147,23 @@ const RootStore = types
       console.log('hit')
       fetch('/api/data').then(d => d.json()).then(d => console.log(d))
       
-      fetchShaderFiles()
-        .then(() => self.shader_collection.preloadAll())
-        .then(() => {
-          self.setupP5();
-          self.setScene(Scene.create());
+//       fetchShaderFiles()
+//         .then(() => self.shader_collection.preloadAll())
+//         .then(() => {
+//           self.setupP5();
+//           self.setScene(Scene.create());
 
-          applySnapshot(self, defaultSnapshot);
-          self.scene.shaderGraph.update();
-          self.scene.shaderGraph.afterUpdate();
+//           applySnapshot(self, defaultSnapshot);
+//           self.scene.shaderGraph.update();
+//           self.scene.shaderGraph.afterUpdate();
           
-          self.setReady(true);
+//           self.setReady(true);
 
-          self.mainPanel.fitScreen()
-        });
+//           self.mainPanel.fitScreen()
+//         });
+      
+      fetchShaderFiles()
+        .then(() => console.log(self.shader_collection))
     }
 
     function setTheme(theme) {
@@ -296,8 +299,11 @@ const RootStore = types
           Windows: %APPDATA%
       */
     const fetchShaderFiles = flow(function* fetchShaderFiles() {
-      // yield null;
-//       self.shader_collection = Collection.create();
+      self.shader_collection = Collection.create();
+      
+      try {
+        
+      }
       
 //       let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
 
