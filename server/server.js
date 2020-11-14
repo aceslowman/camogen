@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require("fs");
+const dirTree = require('directory-tree');
 
 const app = express();
 
@@ -25,13 +26,16 @@ app.get("/api/data", (request, response) => {
 
 app.get("/api/shaders", (request, response) => {
   console.log();
-  response.json({"message": "hello world"});
 //     let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
 
 //     try {
 //       // check if path exists
   const shader_path = __dirname + '/shaders';
   console.log('CHECK',fs.promises.access(shader_path));
+  const tree = dirTree(shader_path);
+  console.log('CHECK TOO', tree)
+  
+  response.json({"message": "hello world"});
 
 //       let tree = dirTree(user_shaders_path);
 
