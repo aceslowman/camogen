@@ -52,6 +52,5 @@
   },
   "engines": {
     "node": "12.x"
-  },
-  "proxy": "http://"
+  }
 }

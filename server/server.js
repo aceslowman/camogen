@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
 
@@ -12,6 +13,18 @@ function checkHttps(request, response, next) {
     response.redirect("https://" + request.hostname + request.url);
   }
 }
+
+const apiProxy = createPr
+
+// module.exports = function(app) {
+//   app.use(
+//     '/api',
+//     createProxyMiddleware({
+//       target: 'http://localhost:3001',
+//       changeOrigin: true,
+//     })
+//   );
+// };
 
 app.all("*", checkHttps);
 

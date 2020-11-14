@@ -145,7 +145,7 @@ const RootStore = types
     function afterCreate() {
       
       console.log('hit')
-      fetch('https://maize-indecisive-dandelion.glitch.me/api/data').then(d => d.json()).then(d => console.log(d))
+      fetch('/api/data').then(d => d.json()).then(d => console.log(d))
       
       fetchShaderFiles()
         .then(() => self.shader_collection.preloadAll())
