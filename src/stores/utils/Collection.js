@@ -1,7 +1,7 @@
 import { types, flow } from "mobx-state-tree";
 import Shader from "../ShaderStore";
 
-const fs = window.require('fs');
+// const fs = window.require('fs');
 
 const Collection = types
   .model("Collection", {
@@ -37,17 +37,17 @@ const Collection = types
   }))
   .actions(self => {
     const preloadAll = flow(function* preloadAll() {
-      if(self.children) {
-        yield Promise.all(self.children.map(flow(function*(e,i){
-          yield e.preloadAll();
-        })))
-      } else if(self.type === "file"){                
-        let result = yield fs.promises.readFile(self.path); 
-        self.data = JSON.parse(result, (key, value) => {
-          // if(key === )
-          return value;
-        });
-      }
+      // if(self.children) {
+      //   yield Promise.all(self.children.map(flow(function*(e,i){
+      //     yield e.preloadAll();
+      //   })))
+      // } else if(self.type === "file"){                
+      //   let result = yield fs.promises.readFile(self.path); 
+      //   self.data = JSON.parse(result, (key, value) => {
+      //     // if(key === )
+      //     return value;
+      //   });
+      // }
     });
 
     const traverse = (f = null, depthFirst = false) => {

@@ -1,11 +1,5 @@
 import { getRoot, types, flow } from "mobx-state-tree";
 
-// for electron
-const remote = window.require('electron').remote;
-const dialog = remote.dialog;
-const app = remote.app;
-const fs = window.require('fs');
-
 const Transport = types
     .model('Transport',{
         frameclock: 0,
@@ -49,40 +43,40 @@ const Transport = types
                     var videoURL = URL.createObjectURL(blob);
 
                     fetch(videoURL).then(r => r.blob()).then(blobFile => {
-                        let path = `${app.getPath("userData")}/snapshots`;
+//                         let path = `${app.getPath("userData")}/snapshots`;
 
-                        let options = {
-                            defaultPath: path,
-                            buttonLabel: "Save Video",
-                        }
+//                         let options = {
+//                             defaultPath: path,
+//                             buttonLabel: "Save Video",
+//                         }
 
-                        function toArrayBuffer(blob, cb) {
-                            let fileReader = new FileReader();
-                            fileReader.onload = function () {
-                                let arrayBuffer = this.result;
-                                cb(arrayBuffer);
-                            };
-                            fileReader.readAsArrayBuffer(blob);
-                        }
+//                         function toArrayBuffer(blob, cb) {
+//                             let fileReader = new FileReader();
+//                             fileReader.onload = function () {
+//                                 let arrayBuffer = this.result;
+//                                 cb(arrayBuffer);
+//                             };
+//                             fileReader.readAsArrayBuffer(blob);
+//                         }
 
-                        function toBuffer(ab) {
-                            return Buffer.from(ab);
-                        }
+//                         function toBuffer(ab) {
+//                             return Buffer.from(ab);
+//                         }
 
-                        toArrayBuffer(new Blob([blobFile], {type: 'video/mp4'}), (b) => {
-                            dialog.showSaveDialog(options).then(f => {
-                                let buffer = toBuffer(b)
-                                fs.writeFile(f.filePath, buffer, "base64", (err) => {
-                                    if (err) {
-                                        console.log("an error has occurred: " + err.message);
-                                    } else {
-                                        console.log("video saved", f.filePath);
-                                    }
-                                });
-                            }).catch(err => {
-                                console.error(err)
-                            });
-                        })
+//                         toArrayBuffer(new Blob([blobFile], {type: 'video/mp4'}), (b) => {
+//                             dialog.showSaveDialog(options).then(f => {
+//                                 let buffer = toBuffer(b)
+//                                 fs.writeFile(f.filePath, buffer, "base64", (err) => {
+//                                     if (err) {
+//                                         console.log("an error has occurred: " + err.message);
+//                                     } else {
+//                                         console.log("video saved", f.filePath);
+//                                     }
+//                                 });
+//                             }).catch(err => {
+//                                 console.error(err)
+//                             });
+//                         })
                     });                 
                 }
 

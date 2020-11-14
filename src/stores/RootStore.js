@@ -292,6 +292,7 @@ const RootStore = types
           Windows: %APPDATA%
       */
     const fetchShaderFiles = flow(function* fetchShaderFiles() {
+      // yield null;
 //       self.shader_collection = Collection.create();
       
 //       let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
