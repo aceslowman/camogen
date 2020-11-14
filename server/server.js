@@ -18,8 +18,8 @@ app.all("*", checkHttps);
 
 // A test route to make sure the server is up.
 app.get("/api/data", (request, response) => {
-  console.log("❇️ Received GET request to /api/ping");
-  response.send("pong!");
+  console.log("❇️ Received GET request to /api/data");
+  response.json({"message": "hello world"});
 });
 
 // Express port-switching logic
@@ -35,6 +35,7 @@ if (process.env.NODE_ENV === "production") {
   port = 3001;
 }
 
+// proxy is setup both here and in the webpack devServer config
 app.use('/api', createProxyMiddleware(
   {
     target: 'http://localhost:3001',
