@@ -14,19 +14,15 @@ function checkHttps(request, response, next) {
   }
 }
 
-const apiProxy = createPr
-
-// module.exports = function(app) {
-//   app.use(
-//     '/api',
-//     createProxyMiddleware({
-//       target: 'http://localhost:3001',
-//       changeOrigin: true,
-//     })
-//   );
-// };
-
 app.all("*", checkHttps);
+
+app.use('/api', createProxyMiddleware(
+  {
+    target: 'http://localhost:3001',
+    changeOrigin: true,
+    ws: true
+  }
+));
 
 // A test route to make sure the server is up.
 app.get("/api/data", (request, response) => {
@@ -45,10 +41,6 @@ if (process.env.NODE_ENV === "production") {
   });
 } else {
   port = 3001;
-  console.log("⚠️ Not seeing your changes as you develop?");
-  console.log(
-    "⚠️ Do you need to set 'start': 'npm run development' in package.json?"
-  );
 }
 
 // Start the listener!
