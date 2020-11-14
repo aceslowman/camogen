@@ -41,15 +41,17 @@
     "tinykeys": "^1.1.0",
     "uuid": "^3.3.3",
     "file-loader": "^6.1.1",
-    "mobx-devtools-mst": "^0.9.26"
+    "mobx-devtools-mst": "^0.9.26",
+    "concurrently": "^5.3.0"
   },
   "scripts": {
-    "start": "bash start-all.sh",
+    "start": "NODE_ENV=development concurrently --kill-others \"npm run development\" \"npm run server\"",
     "development": "webpack serve --mode development",
     "production": "webpack --mode production",
     "server": "node server/server.js"
   },
   "engines": {
     "node": "12.x"
-  }
+  },
+  "proxy": "http://"
 }
