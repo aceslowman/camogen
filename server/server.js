@@ -15,7 +15,8 @@ const path = require("path");
 app.get("/api/data", (request, response) => {
   // express helps us take JS objects and send them as JSON
   console.log('HIT HERE')
-  response.json({"message": "hello world"});
+  // response.json({"message": "hello world"});
+  response.send("HEY CHECK HERE")
 });
 
 let port;
