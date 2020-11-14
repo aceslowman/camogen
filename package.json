@@ -26,7 +26,6 @@
     "maco-ui": "^0.2.5",
     "directory-tree": "^2.2.4",
     "jspdf": "^1.5.3",
-    "maco-ui": "^0.2.5",
     "mobx": "^5.15.0",
     "mobx-persist": "^0.4.1",
     "mobx-react": "^6.1.4",
@@ -40,16 +39,16 @@
     "resize-observer-polyfill": "^1.5.1",
     "serializr": "^2.0.3",
     "tinykeys": "^1.1.0",
-    "uuid": "^3.3.3"
+    "uuid": "^3.3.3",
+    "file-loader": "^6.1.1"
   },
   "scripts": {
-    "start": "node ./scripts/start.js",
-    "build": "react-scripts --max_old_space_size=4096 build",
-    "test": "node scripts/test.js",
-    "electron": "electron .",
-    "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "postinstall": "electron-builder install-app-deps"
+    "start": "bash start-all.sh",
+    "development": "webpack serve --mode development",
+    "production": "webpack --mode production",
+    "server": "node server/server.js"
+  },
+  "engines": {
+    "node": "12.x"
   }
 }
