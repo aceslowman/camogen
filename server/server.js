@@ -1,24 +1,27 @@
 const express = require("express");
-const app = express();
 const path = require("path");
 
-// // make all the files in 'public' available
-// // https://expressjs.com/en/starter/static-files.html1
-// app.use(express.static("public"));
+const app = express();
 
-// // https://expressjs.com/en/starter/basic-routing.html
-// app.get("/", (request, response) => {
-//   response.sendFile(__dirname + "/views/index.html");
-// });
+// PWAs want HTTPS!
+function checkHttps(request, response, next) {
+  // Check the protocol — if http, redirect to https.
+  if (request.get("X-Forwarded-Proto").indexOf("https") != -1) {
+    return next();
+  } else {
+    response.redirect("https://" + request.hostname + request.url);
+  }
+}
 
-// // send the default array of dreams to the webpage
+app.all("*", checkHttps);
+
+// A test route to make sure the server is up.
 app.get("/api/data", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  console.log('HIT HERE')
-  // response.json({"message": "hello world"});
-  response.send("HEY CHECK HERE")
+  console.log("❇️ Received GET request to /api/ping");
+  response.send("pong!");
 });
 
+// Express port-switching logic
 let port;
 console.log("❇️ NODE_ENV is", process.env.NODE_ENV);
 if (process.env.NODE_ENV === "production") {
@@ -29,8 +32,13 @@ if (process.env.NODE_ENV === "production") {
   });
 } else {
   port = 3001;
+  console.log("⚠️ Not seeing your changes as you develop?");
+  console.log(
+    "⚠️ Do you need to set 'start': 'npm run development' in package.json?"
+  );
 }
 
+// Start the listener!
 const listener = app.listen(port, () => {
   console.log("❇️ Express server is running on port", listener.address().port);
 });
