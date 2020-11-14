@@ -18,7 +18,7 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
         use: ["style-loader", "css-loader"]
       }
     ]
@@ -29,7 +29,7 @@ module.exports = {
     })
   ],
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    contentBase: path.join(__dirname, "public"),
     publicPath: "/",
     overlay: true,
     compress: true,
