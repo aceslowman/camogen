@@ -16,14 +16,6 @@ function checkHttps(request, response, next) {
 
 app.all("*", checkHttps);
 
-app.use('/api', createProxyMiddleware(
-  {
-    target: 'http://localhost:3001',
-    changeOrigin: true,
-    ws: true
-  }
-));
-
 // A test route to make sure the server is up.
 app.get("/api/data", (request, response) => {
   console.log("❇️ Received GET request to /api/ping");
@@ -42,6 +34,13 @@ if (process.env.NODE_ENV === "production") {
 } else {
   port = 3001;
 }
+
+app.use('/api', createProxyMiddleware(
+  {
+    target: 'http://localhost:3001',
+    changeOrigin: true
+  }
+));
 
 // Start the listener!
 const listener = app.listen(port, () => {
