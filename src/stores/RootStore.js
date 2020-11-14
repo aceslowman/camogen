@@ -143,6 +143,10 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
+      
+      console.log('hit')
+      fetch('http://localhost:3001/api/data').then(d => console.log())
+      
       fetchShaderFiles()
         .then(() => self.shader_collection.preloadAll())
         .then(() => {

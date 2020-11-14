@@ -1,9 +1,6 @@
 const path = require("path");
 const HTMLwebpackplugin = require("html-webpack-plugin");
 
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-
 module.exports = {
   entry: path.join(__dirname, "src", "index.js"),
   output: {
