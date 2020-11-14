@@ -302,7 +302,7 @@ const RootStore = types
       self.shader_collection = Collection.create();
       
       try {
-        
+        let result = fetch('/api/shaders').then((e)=>e.json()).then(e => console.log(e));
       } catch(err) {
         console.error("failed to fetch shaders", err);
       }

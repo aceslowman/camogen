@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const fs = require("fs");
 
 const app = express();
 
@@ -23,7 +24,21 @@ app.get("/api/data", (request, response) => {
 });
 
 app.get("/api/shaders", (request, response) => {
-  
+  console.log();
+  response.json({"message": "hello world"});
+//     let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
+
+//     try {
+//       // check if path exists
+  const shader_path = __dirname + '/shaders';
+  console.log('CHECK',fs.promises.access(shader_path));
+
+//       let tree = dirTree(user_shaders_path);
+
+//       applySnapshot(self.shader_collection,tree);
+//     } catch(err) {
+//       console.error("failed to fetch shaders", err);
+//     }
 });
 
 // Express port-switching logic
