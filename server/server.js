@@ -22,6 +22,10 @@ app.get("/api/data", (request, response) => {
   response.json({"message": "hello world"});
 });
 
+app.get("/api/shaders", (request, response) => {
+  
+});
+
 // Express port-switching logic
 let port;
 console.log("❇️ NODE_ENV is", process.env.NODE_ENV);

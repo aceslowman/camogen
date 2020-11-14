@@ -303,6 +303,8 @@ const RootStore = types
       
       try {
         
+      } catch(err) {
+        console.error("failed to fetch shaders", err);
       }
       
 //       let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
