@@ -2,27 +2,21 @@ import { types, flow, applySnapshot } from "mobx-state-tree";
 import Scene from './SceneStore';
 // import { UndoManager } from "mst-middlewares";
 import { getSnapshot } from 'mobx-state-tree';
-import dirTree from "directory-tree";
+
+// import dirTree from "directory-tree";
 import Collection from './utils/Collection';
 import Layout, {CoreLayouts} from './ui/Layout';
 import defaultSnapshot from '../snapshots/default.json';
 import Runner from '../Runner';
 import p5 from 'p5';
 
-import path from 'path';
+// import path from 'path';
 import Context from "./ui/Context";
 import Messages from "./utils/Messages";
 import { Themes } from "maco-ui";
 import Parameter from "./ParameterStore";
-import { shell } from "electron";
 import Panel from "./ui/Panel";
 import Transport from "./utils/Transport";
-
-// for electron
-const remote = window.require('electron').remote;
-const dialog = remote.dialog;
-const app = remote.app;
-const fs = window.require('fs');
 
 /*
   [RootStore]
@@ -191,74 +185,74 @@ const RootStore = types
     }
 
     function save() {
-      let options = {
-          title: 'Save Project File',
-          defaultPath: path.join(app.getPath("desktop"),`${self.name}.camo`), 
-          buttonLabel: "Save",
-          filters: [              
-              {
-                name: 'Camo Project Files',
-                extensions: ['camo']
-              },
-              {
-                name: 'Any',
-                extensions: ['*']
-              },
-          ]
-      }
+//       let options = {
+//           title: 'Save Project File',
+//           defaultPath: path.join(app.getPath("desktop"),`${self.name}.camo`), 
+//           buttonLabel: "Save",
+//           filters: [              
+//               {
+//                 name: 'Camo Project Files',
+//                 extensions: ['camo']
+//               },
+//               {
+//                 name: 'Any',
+//                 extensions: ['*']
+//               },
+//           ]
+//       }
 
-      dialog.showSaveDialog(options).then((f)=>{
-          let name = f.filePath.split('/').pop().split('.')[0];
-          self.setName(name);
+//       dialog.showSaveDialog(options).then((f)=>{
+//           let name = f.filePath.split('/').pop().split('.')[0];
+//           self.setName(name);
 
-          let content = JSON.stringify(getSnapshot(self));
+//           let content = JSON.stringify(getSnapshot(self));
 
-          fs.writeFile(f.filePath, content, (err)=>{
-              if(err) {         
-                  console.error("an error has occurred: "+err.message);
-              } else {
-                  console.log('project has been saved at: '+f.filePath)
-              }                
-          });
+//           fs.writeFile(f.filePath, content, (err)=>{
+//               if(err) {         
+//                   console.error("an error has occurred: "+err.message);
+//               } else {
+//                   console.log('project has been saved at: '+f.filePath)
+//               }                
+//           });
           
-      }).catch(err => console.error(err));
+//       }).catch(err => console.error(err));
     }
 
     function load() {
-      let options = {
-          title: 'Load Project File',
-          defaultPath: app.getPath("desktop"),
-          buttonLabel: "Load",
-          filters: [{
-              name: 'Camo Project Files',
-              extensions: ['camo']
-            },
-            {
-              name: 'Any',
-              extensions: ['*']
-            },
-          ]
-      }
+//       let options = {
+//           title: 'Load Project File',
+//           defaultPath: app.getPath("desktop"),
+//           buttonLabel: "Load",
+//           filters: [{
+//               name: 'Camo Project Files',
+//               extensions: ['camo']
+//             },
+//             {
+//               name: 'Any',
+//               extensions: ['*']
+//             },
+//           ]
+//       }
 
-      dialog.showOpenDialog(options).then((f) => {
+//       dialog.showOpenDialog(options).then((f) => {
         
-        let content = f.filePaths[0];
-        fs.readFile(content, 'utf-8', (err, data) => {
-          if(err) console.error(err.message);
+//         let content = f.filePaths[0];
+//         fs.readFile(content, 'utf-8', (err, data) => {
+//           if(err) console.error(err.message);
 
-          let name = content.split('/').pop().split('.')[0];
-          self.setName(name);
+//           let name = content.split('/').pop().split('.')[0];
+//           self.setName(name);
 
-          self.scene.clear();
+//           self.scene.clear();
           
-          applySnapshot(self, JSON.parse(data));
+//           applySnapshot(self, JSON.parse(data));
 
-          self.scene.shaderGraph.update();
-          self.scene.shaderGraph.afterUpdate();
+//           self.scene.shaderGraph.update();
+//           self.scene.shaderGraph.afterUpdate();
           
-          // undoManager.clear();
-        })
-      }).catch(err => {/*alert(err)*/});
+//           // undoManager.clear();
+//         })
+//       }).catch(err => {/*alert(err)*/});
     }
 
     /*
@@ -298,20 +292,20 @@ const RootStore = types
           Windows: %APPDATA%
       */
     const fetchShaderFiles = flow(function* fetchShaderFiles() {
-      self.shader_collection = Collection.create();
+//       self.shader_collection = Collection.create();
       
-      let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
+//       let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
 
-      try {
-        // check if path exists
-        yield fs.promises.access(user_shaders_path);
+//       try {
+//         // check if path exists
+//         yield fs.promises.access(user_shaders_path);
 
-        let tree = dirTree(user_shaders_path);
+//         let tree = dirTree(user_shaders_path);
 
-        applySnapshot(self.shader_collection,tree);
-      } catch(err) {
-        console.error("failed to fetch shaders", err);
-      }
+//         applySnapshot(self.shader_collection,tree);
+//       } catch(err) {
+//         console.error("failed to fetch shaders", err);
+//       }
     }); 
     
     /*
@@ -320,40 +314,40 @@ const RootStore = types
       saves an image of the current scene
     */
     const snapshot = flow(function* snapshot(format = "PNG") {
-      var dataURL;
-      switch(format) {
-        case "PNG":
-          dataURL = self.p5_instance.canvas.toDataURL("image/png");
-          break;
-        case "JPEG":
-          let quality = 10;
-          dataURL = self.p5_instance.canvas.toDataURL("image/jpeg", quality);
-          break;
-        default:
-          dataURL = self.p5_instance.canvas.toDataURL("image/png");
-      } 
+//       var dataURL;
+//       switch(format) {
+//         case "PNG":
+//           dataURL = self.p5_instance.canvas.toDataURL("image/png");
+//           break;
+//         case "JPEG":
+//           let quality = 10;
+//           dataURL = self.p5_instance.canvas.toDataURL("image/jpeg", quality);
+//           break;
+//         default:
+//           dataURL = self.p5_instance.canvas.toDataURL("image/png");
+//       } 
       
-      var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
-      var content = new Buffer(data, 'base64');
+//       var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
+//       var content = new Buffer(data, 'base64');
       
-      let path = `${app.getPath("userData")}/snapshots`;
+//       let path = `${app.getPath("userData")}/snapshots`;
 
-      let options = {
-        defaultPath: path,
-        buttonLabel: "Save Image",
-      }
+//       let options = {
+//         defaultPath: path,
+//         buttonLabel: "Save Image",
+//       }
 
-      yield dialog.showSaveDialog(options).then((f) => {      
-        fs.writeFile(f.filePath, content, "base64", (err) => {
-          if (err) {
-            console.log("an error has occurred: " + err.message);
-          } else {
-            console.log("snapshot saved",f.filePath);            
-          }
-        });
-      }).catch(err => {
-        console.error(err)
-      });  
+//       yield dialog.showSaveDialog(options).then((f) => {      
+//         fs.writeFile(f.filePath, content, "base64", (err) => {
+//           if (err) {
+//             console.log("an error has occurred: " + err.message);
+//           } else {
+//             console.log("snapshot saved",f.filePath);            
+//           }
+//         });
+//       }).catch(err => {
+//         console.error(err)
+//       });  
     });
 
     return {

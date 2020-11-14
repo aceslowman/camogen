@@ -12,6 +12,7 @@ dependencies:
   jspdf: 1.5.3
   maco-ui: 0.2.5
   mobx: 5.15.7
+  mobx-devtools-mst: 0.9.26
   mobx-persist: 0.4.1
   mobx-react: 6.3.1
   mobx-state-tree: 3.17.2
@@ -3774,6 +3775,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
+  /mobx-devtools-mst/0.9.26:
+    dev: false
+    peerDependencies:
+      mobx: ^2.2.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
+      mobx-state-tree: '*'
+    resolution:
+      integrity: sha512-MQj7U4xpWunUQsEmKO43brzr8goQvQYBybKQb61QE0Jv3yaIsanjMsCWMUtd/UI9W8iq8PskwhfuBv/wvnsydw==
   /mobx-persist/0.4.1:
     dependencies:
       serializr: 1.5.4
@@ -5898,6 +5906,7 @@ specifiers:
   jspdf: ^1.5.3
   maco-ui: ^0.2.5
   mobx: ^5.15.0
+  mobx-devtools-mst: ^0.9.26
   mobx-persist: ^0.4.1
   mobx-react: ^6.1.4
   mobx-state-tree: ^3.17.2

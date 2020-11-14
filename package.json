@@ -40,7 +40,8 @@
     "serializr": "^2.0.3",
     "tinykeys": "^1.1.0",
     "uuid": "^3.3.3",
-    "file-loader": "^6.1.1"
+    "file-loader": "^6.1.1",
+    "mobx-devtools-mst": "^0.9.26"
   },
   "scripts": {
     "start": "bash start-all.sh",
