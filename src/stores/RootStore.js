@@ -143,9 +143,19 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
+      window.localStorage.clear();
+      let storage = window.localStorage.getItem('CAMOGEN');
       
-      console.log('hit')
-      fetch('/api/data').then(d => d.json()).then(d => console.log(d))
+      if(!storage) {
+        // storage hasn't been created yet. user is new
+        window.localStorage.setItem('CAMOGEN', "test for local storage!");
+        storage = window.localStorage.getItem('CAMOGEN');
+      }
+      
+      console.log('APP LOCAL STORAGE', storage);
+      
+      // console.log('hit')
+      // fetch('/api/data').then(d => d.json()).then(d => console.log(d))
       
 //       fetchShaderFiles()
 //         .then(() => self.shader_collection.preloadAll())
@@ -162,8 +172,8 @@ const RootStore = types
 //           self.mainPanel.fitScreen()
 //         });
       
-      fetchShaderFiles()
-        .then(() => console.log(self.shader_collection))
+      // fetchShaderFiles()
+        // .then(() => console.log(self.shader_collection))
     }
 
     function setTheme(theme) {
