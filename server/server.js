@@ -14,6 +14,7 @@ const path = require("path");
 // // send the default array of dreams to the webpage
 app.get("/api/data", (request, response) => {
   // express helps us take JS objects and send them as JSON
+  console.log('HIT HERE')
   response.json({"message": "hello world"});
 });
 

@@ -131,8 +131,8 @@ const RootStore = types
         {
           label: "*Open Directory*",
           onClick: () => {
-          	let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
-          	shell.openItem(user_shaders_path)
+          	// let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
+          	// shell.openItem(user_shaders_path)
           }
         }
       ];
@@ -145,7 +145,7 @@ const RootStore = types
     function afterCreate() {
       
       console.log('hit')
-      fetch('http://localhost:3001/api/data').then(d => console.log())
+      fetch('http://localhost:3000/api/data').then(d => console.log())
       
       fetchShaderFiles()
         .then(() => self.shader_collection.preloadAll())
