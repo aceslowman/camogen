@@ -6,12 +6,6 @@ import uuidv1 from 'uuid/v1';
 import { OperatorGraph } from './GraphStore';
 // import ParameterGraph from './ParameterGraphStore';
 
-// for electron
-const remote = window.require('electron').remote;
-const dialog = remote.dialog;
-const app = remote.app;
-const fs = window.require('fs');
-
 const Uniform = types
     .model("Uniform", {
         name: types.maybe(types.string),
@@ -267,53 +261,53 @@ let shader = types
         }
 
         function save() {
-            let path = `${app.getPath("userData")}/shaders`;
+//             let path = `${app.getPath("userData")}/shaders`;
             
-            let options = {
-                title: 'Save Shader File',
-                defaultPath: path,
-                buttonLabel: "Save",
-                filters: [{
-                    name: 'Shader File',
-                    // extensions: ['scene.camo']
-                }, ]
-            }
+//             let options = {
+//                 title: 'Save Shader File',
+//                 defaultPath: path,
+//                 buttonLabel: "Save",
+//                 filters: [{
+//                     name: 'Shader File',
+//                     // extensions: ['scene.camo']
+//                 }, ]
+//             }
 
-            dialog.showSaveDialog(options).then((f) => {
-                if (!f.filePath) return;
-                let name = f.filePath.split('/').pop().split('.')[0];
+//             dialog.showSaveDialog(options).then((f) => {
+//                 if (!f.filePath) return;
+//                 let name = f.filePath.split('/').pop().split('.')[0];
 
-                let content = JSON.stringify(getSnapshot(self), (key,value)=>{
-                    if (
-                        key === 'uniforms' ||
-                        key === 'inputs' ||
-                        key === 'outputs' ||
-                        key === 'ready' || 
-                        key === 'hasChanged' || 
-                        key === 'updateGroup'
-                    ) return undefined;
+//                 let content = JSON.stringify(getSnapshot(self), (key,value)=>{
+//                     if (
+//                         key === 'uniforms' ||
+//                         key === 'inputs' ||
+//                         key === 'outputs' ||
+//                         key === 'ready' || 
+//                         key === 'hasChanged' || 
+//                         key === 'updateGroup'
+//                     ) return undefined;
 
-                    if(key === 'name') return name; 
+//                     if(key === 'name') return name; 
 
-                    return value;
-                }, 5); 
+//                     return value;
+//                 }, 5); 
 
-                fs.writeFile(f.filePath, content, (err) => {
-                    if (err) {
-                        console.error("an error has occurred: " + err.message);
-                    } else {
-                        console.log('scene has been saved at file:/' + f.filePath)
-                        console.log(name)
-                        self.setName(name);
-                        parent_node.setName(name);
-                        // reload or add to collection
-                        const root_store = getRoot(self);
-                        root_store.fetchShaderFiles();
-                        self.setHasChanged(false);
-                    }
-                });
+//                 fs.writeFile(f.filePath, content, (err) => {
+//                     if (err) {
+//                         console.error("an error has occurred: " + err.message);
+//                     } else {
+//                         console.log('scene has been saved at file:/' + f.filePath)
+//                         console.log(name)
+//                         self.setName(name);
+//                         parent_node.setName(name);
+//                         // reload or add to collection
+//                         const root_store = getRoot(self);
+//                         root_store.fetchShaderFiles();
+//                         self.setHasChanged(false);
+//                     }
+//                 });
 
-            }).catch(err => console.error(err));
+//             }).catch(err => console.error(err));
         }
 
         function setHasChanged(v) {
@@ -321,28 +315,28 @@ let shader = types
         }
 
         function load() {
-            let path = `${app.getPath("userData")}/shaders`;
+//             let path = `${app.getPath("userData")}/shaders`;
 
-            let options = {
-                title: 'Load Shader File',
-                defaultPath: path,
-                buttonLabel: "Load",
-                filters: [{
-                    name: 'Shader File',
-                    // extensions: ['scene.camo']
-                }, ]
-            }
+//             let options = {
+//                 title: 'Load Shader File',
+//                 defaultPath: path,
+//                 buttonLabel: "Load",
+//                 filters: [{
+//                     name: 'Shader File',
+//                     // extensions: ['scene.camo']
+//                 }, ]
+//             }
 
-            dialog.showOpenDialog(options).then((f) => {
-                let content = f.filePaths[0];
-                fs.readFile(content, 'utf-8', (err, data) => {
-                    if (err) console.error(err.message);
-                    // only deserialize scene.
-                    applySnapshot(self.scene, JSON.parse(data).scene);
+//             dialog.showOpenDialog(options).then((f) => {
+//                 let content = f.filePaths[0];
+//                 fs.readFile(content, 'utf-8', (err, data) => {
+//                     if (err) console.error(err.message);
+//                     // only deserialize scene.
+//                     applySnapshot(self.scene, JSON.parse(data).scene);
 
-                    // undoManager.clear();
-                })
-            }).catch(err => { /*alert(err)*/ });
+//                     // undoManager.clear();
+//                 })
+//             }).catch(err => { /*alert(err)*/ });
         }
 
         function addToUpdateGroup(p_graph) {
