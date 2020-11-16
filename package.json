@@ -40,7 +40,7 @@
     "uuid": "^3.3.3"
   },
   "scripts": {
-    "start": "npm bash ./start-all.sh",
+    "start": "bash ./start-all.sh",
     "development": "webpack serve --mode development",
     "production": "webpack --mode production",
     "server": "node server/server.js"

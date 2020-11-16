@@ -152,7 +152,9 @@ const RootStore = types
         storage = window.localStorage.getItem('CAMOGEN');
         
         // fetch default shaders
-        fetch('api/shaders').then(d => d.json()).then(d => console.log('default shaders',d))
+        fetch('api/shaders').then(d => d.json()).then(d => {
+          storage.setItem('shader_collection', d)
+        })
       }
       
       console.log('APP LOCAL STORAGE', storage);
