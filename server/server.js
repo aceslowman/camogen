@@ -6,10 +6,10 @@ const dirTree = require('directory-tree');
 
 let shader_collection;
 
-async function preloadDefaultShaders() {
+function preloadDefaultShaders() {
   const shader_path = path.resolve(__dirname, '../shaders');
   
-  const tree = await dirTree(shader_path, (item, PATH, stats) => {
+  shader_collection = dirTree(shader_path, (item, PATH, stats) => {
     console.log(item);
   });
   
