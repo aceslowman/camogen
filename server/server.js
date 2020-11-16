@@ -25,24 +25,25 @@ app.get("/api/data", (request, response) => {
 });
 
 app.get("/api/shaders", (request, response) => {
-  console.log();
-//     let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
-
-//     try {
-//       // check if path exists
   const shader_path = path.resolve(__dirname, '../shaders')
-  console.log('CHECK',fs.promises.access(shader_path));
   const tree = dirTree(shader_path);
-  console.log('CHECK TOO', tree)
   
-  response.json({"message": "hello world"});
-
-//       let tree = dirTree(user_shaders_path);
-
-//       applySnapshot(self.shader_collection,tree);
-//     } catch(err) {
-//       console.error("failed to fetch shaders", err);
-//     }
+  let shader_array = tree[""]
+      // if(self.children) {
+      //   yield Promise.all(self.children.map(flow(function*(e,i){
+      //     yield e.preloadAll();
+      //   })))
+      // } else if(self.type === "file"){                
+      //   let result = yield fs.promises.readFile(self.path); 
+      //   self.data = JSON.parse(result, (key, value) => {
+      //     // if(key === )
+      //     return value;
+      //   });
+      // }
+  
+  
+  
+  response.json({"shader_collection": tree});
 });
 
 // Express port-switching logic
@@ -59,12 +60,12 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // proxy is setup both here and in the webpack devServer config
-app.use('/api', createProxyMiddleware(
-  {
-    target: 'http://localhost:3001',
-    changeOrigin: true
-  }
-));
+// app.use('/api', createProxyMiddleware(
+//   {
+//     target: 'http://localhost:3001',
+//     changeOrigin: true
+//   }
+// ));
 
 // Start the listener!
 const listener = app.listen(port, () => {
