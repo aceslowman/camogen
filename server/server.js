@@ -11,25 +11,16 @@ function preloadDefaultShaders() {
   
   shader_collection = dirTree(shader_path, {}, (item, PATH, stats) => {
     if(item.type === 'file') {
-      item.data = fs.readFile(item.path);
+      fs.readFile(item.path, 'utf8', (err, data) => {        
+        if(err) {
+          console.error(err);
+        } else {
+          console.log('data', data)
+          item = {...item, data: JSON.parse(data)};
+        }
+      })
     }
-  });
-  
-  // shader_collection = tree["children"].map(async (e,i) => {
-  //   let result = await fs.promises.readFile(self.path); 
-//     // return ({ data: JSON.parse(result) })
-//     if(self.children) {
-//       yield Promise.all(self.children.map(function(e,i){
-//         yield e.preloadAll();
-//       })))
-//     } else if(self.type === "file"){                
-//       let result = yield fs.promises.readFile(self.path); 
-//       self.data = JSON.parse(result, (key, value) => {
-//         // if(key === )
-//         return value;
-//       });
-//     }
-  // })
+  }); 
     
   console.log('default shaders loaded!', shader_collection)
 }
