@@ -158,9 +158,9 @@ const RootStore = types
           self.setupP5();
           self.setScene(Scene.create());
 
-//           applySnapshot(self, defaultSnapshot);
-          // self.scene.shaderGraph.update();
-//           self.scene.shaderGraph.afterUpdate();
+          applySnapshot(self, defaultSnapshot);
+          self.scene.shaderGraph.update();
+          self.scene.shaderGraph.afterUpdate();
           
           self.setReady(true);
 
