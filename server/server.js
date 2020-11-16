@@ -9,8 +9,10 @@ let shader_collection;
 function preloadDefaultShaders() {
   const shader_path = path.resolve(__dirname, '../shaders');
   
-  shader_collection = dirTree(shader_path, (item, PATH, stats) => {
-    console.log(item);
+  shader_collection = dirTree(shader_path, {}, (item, PATH, stats) => {
+    if(item.type === 'file') {
+      item.data = fs.readFile(item.path);
+    }
   });
   
   // shader_collection = tree["children"].map(async (e,i) => {
@@ -29,7 +31,7 @@ function preloadDefaultShaders() {
 //     }
   // })
     
-  console.log('default shaders loaded!')
+  console.log('default shaders loaded!', shader_collection)
 }
 
 preloadDefaultShaders();
