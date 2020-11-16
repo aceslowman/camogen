@@ -143,9 +143,8 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
-      // window.localStorage.clear();
+      window.localStorage.clear();
       
-
       // fetch default shaders
       fetchShaderFiles().then(d => {
         window.localStorage.setItem('shader_collection', JSON.stringify(d))
@@ -161,7 +160,7 @@ const RootStore = types
 
         self.mainPanel.fitScreen()
 
-        // console.log('APP LOCAL STORAGE', window.localStorage);
+        console.log('APP LOCAL STORAGE', window.localStorage);
       })
       
     }
@@ -302,11 +301,14 @@ const RootStore = types
       self.shader_collection = Collection.create();
       
       try {
-        if(window.localStorage.getItem("shader_collection") !== undefined) {
+        
+        if(window.localStorage.getItem("shader_collection")) {
+          console.log('cached shaders found, loading...',data)
+          console.log('localStorage', window.localStorage)
+          
           let data = window.localStorage.getItem("shader_collection");
-          console.log('cached shaders found, loading...')
-          applySnapshot(self.shader_collection, JSON.parse(data))
-          console.log('loading shaders from local storage', self.shader_collection)
+          
+          yield new Promise(applySnapshot(self.shader_collection, data)).resolve();
         } else {
           console.log('no cached shaders found, fetching from server...')
 
