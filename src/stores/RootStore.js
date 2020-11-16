@@ -149,15 +149,15 @@ const RootStore = types
       if(!storage) {
         // storage hasn't been created yet. user is new
         window.localStorage.setItem('CAMOGEN', "test for local storage!");
-        storage = window.localStorage.getItem('CAMOGEN');
         
         // fetch default shaders
         fetch('api/shaders').then(d => d.json()).then(d => {
-          storage.setItem('shader_collection', d)
+          window.localStorage.setItem('shader_collection', d)
+          
+          console.log('APP LOCAL STORAGE', window.localStorage);
         })
       }
       
-      console.log('APP LOCAL STORAGE', storage);
       
       // console.log('hit')
       // fetch('/api/data').then(d => d.json()).then(d => console.log(d))
