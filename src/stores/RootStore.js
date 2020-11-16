@@ -151,34 +151,23 @@ const RootStore = types
         window.localStorage.setItem('CAMOGEN', "test for local storage!");
         
         // fetch default shaders
-        fetch('api/shaders').then(d => d.json()).then(d => {
-          window.localStorage.setItem('shader_collection', d)
+        fetchShaderFiles().then(d => {
+          window.localStorage.setItem('shader_collection', JSON.stringify(d))
+          
+          self.setupP5();
+          self.setScene(Scene.create());
+
+//           applySnapshot(self, defaultSnapshot);
+          // self.scene.shaderGraph.update();
+//           self.scene.shaderGraph.afterUpdate();
+          
+          self.setReady(true);
+
+//           self.mainPanel.fitScreen()
           
           console.log('APP LOCAL STORAGE', window.localStorage);
         })
       }
-      
-      
-      // console.log('hit')
-      // fetch('/api/data').then(d => d.json()).then(d => console.log(d))
-      
-//       fetchShaderFiles()
-//         .then(() => self.shader_collection.preloadAll())
-//         .then(() => {
-//           self.setupP5();
-//           self.setScene(Scene.create());
-
-//           applySnapshot(self, defaultSnapshot);
-//           self.scene.shaderGraph.update();
-//           self.scene.shaderGraph.afterUpdate();
-          
-//           self.setReady(true);
-
-//           self.mainPanel.fitScreen()
-//         });
-      
-      // fetchShaderFiles()
-        // .then(() => console.log(self.shader_collection))
     }
 
     function setTheme(theme) {
@@ -317,23 +306,10 @@ const RootStore = types
       self.shader_collection = Collection.create();
       
       try {
-        let result = fetch('/api/shaders').then((e)=>e.json()).then(e => console.log(e));
+        yield fetch('api/shaders').then(d => d.json())
       } catch(err) {
         console.error("failed to fetch shaders", err);
       }
-      
-//       let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
-
-//       try {
-//         // check if path exists
-//         yield fs.promises.access(user_shaders_path);
-
-//         let tree = dirTree(user_shaders_path);
-
-//         applySnapshot(self.shader_collection,tree);
-//       } catch(err) {
-//         console.error("failed to fetch shaders", err);
-//       }
     }); 
     
     /*
