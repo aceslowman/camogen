@@ -88,6 +88,7 @@ const RootStore = types
        way to traverse and remap the directory tree
       */
       let collection = self.shader_collection;
+      console.log(collection)
 
       let items = [];
 
@@ -306,7 +307,12 @@ const RootStore = types
       self.shader_collection = Collection.create();
       
       try {
-        yield fetch('api/shaders').then(d => d.json())
+        yield fetch('api/shaders').then(d => d.json()).then((d) => { 
+          // self.shader_collection = Collection.create(d);
+          console.log(self.shader_collection)
+          applySnapshot(self.shader_collection, d)
+        });
+        
       } catch(err) {
         console.error("failed to fetch shaders", err);
       }
