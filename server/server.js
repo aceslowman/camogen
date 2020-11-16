@@ -15,8 +15,9 @@ function preloadDefaultShaders() {
         if(err) {
           console.error(err);
         } else {
-          console.log('data', data)
-          item = {...item, data: JSON.parse(data)};
+          // console.log('data', data)
+          // item = {...item, data: JSON.parse(data)};
+          item.data = JSON.parse(data);
         }
       })
     }
