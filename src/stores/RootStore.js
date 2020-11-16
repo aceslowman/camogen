@@ -312,7 +312,7 @@ const RootStore = types
 
           yield fetch('api/shaders').then(d => d.json()).then((d) => { 
             applySnapshot(self.shader_collection, d)
-            window.localStorage.setItem('shader_collection', d)
+            window.localStorage.setItem('shader_collection', JSON.stringify(getSnapshot(self.shader_collection)))
           });
         }
         
