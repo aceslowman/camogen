@@ -30,7 +30,7 @@ app.get("/api/shaders", (request, response) => {
 
 //     try {
 //       // check if path exists
-  const shader_path = __dirname + '/shaders';
+  const shader_path = path.resolve(__dirname, '../shaders')
   console.log('CHECK',fs.promises.access(shader_path));
   const tree = dirTree(shader_path);
   console.log('CHECK TOO', tree)
