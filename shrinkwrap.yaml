@@ -1,5 +1,6 @@
 dependencies:
   '@babel/core': 7.12.3
+  '@babel/polyfill': 7.12.1
   '@babel/preset-env': 7.12.1
   '@babel/preset-react': 7.12.5
   babel-loader: 8.2.1
@@ -849,6 +850,13 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-SqH4ClNngh/zGwHZOOQMTD+e8FGWexILV+ePMyiDJttAWRh5dhDL8rcl5lSgU3Huiq6Zn6pWTMvdPAb21Dwdyg==
+  /@babel/polyfill/7.12.1:
+    dependencies:
+      core-js: 2.6.11
+      regenerator-runtime: 0.13.7
+    dev: false
+    resolution:
+      integrity: sha512-X0pi0V6gxLi6lFZpGmeNa4zxtwEmCs42isWLNjZZDE0Y8yVfgu0T2OAHlzBbdYlqbW/YXVvoBHpATEM+goCj8g==
   /@babel/preset-env/7.12.1:
     dependencies:
       '@babel/compat-data': 7.12.5
@@ -1892,6 +1900,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-V8yBI3+ZLDVomoWICO6kq/CD28Y4r1M7CWeO4AGpMdMfseu8bkSubBmUPySMGKRTS+su4XQ07zUkAsiu9FCWTg==
+  /core-js/2.6.11:
+    deprecated: 'core-js@<3 is no longer maintained and not recommended for usage due to the number of issues. Please, upgrade your dependencies to the actual version of core-js@3.'
+    dev: false
+    requiresBuild: true
+    resolution:
+      integrity: sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
   /core-js/3.7.0:
     dev: false
     requiresBuild: true
@@ -6012,6 +6026,7 @@ shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   '@babel/core': ^7.12.3
+  '@babel/polyfill': ^7.12.1
   '@babel/preset-env': ^7.12.0
   '@babel/preset-react': ^7.12.5
   babel-loader: ^8.2.1

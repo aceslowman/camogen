@@ -6,12 +6,15 @@ const dirTree = require('directory-tree');
 
 let shader_collection;
 
-const preloadDefaultShaders = () => {
-//   const shader_path = path.resolve(__dirname, '../shaders')
-//   const tree = dirTree(shader_path);
+async function preloadDefaultShaders() {
+  const shader_path = path.resolve(__dirname, '../shaders');
   
-//   shader_collection = tree["children"].map((e,i) => {
-//     // let result = yield fs.promises.readFile(self.path); 
+  const tree = await dirTree(shader_path, (item, PATH, stats) => {
+    console.log(item);
+  });
+  
+  // shader_collection = tree["children"].map(async (e,i) => {
+  //   let result = await fs.promises.readFile(self.path); 
 //     // return ({ data: JSON.parse(result) })
 //     if(self.children) {
 //       yield Promise.all(self.children.map(function(e,i){
@@ -24,7 +27,7 @@ const preloadDefaultShaders = () => {
 //         return value;
 //       });
 //     }
-//   })
+  // })
     
   console.log('default shaders loaded!')
 }
