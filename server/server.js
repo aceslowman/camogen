@@ -49,7 +49,7 @@ app.get("/api/data", (request, response) => {
 });
 
 app.get("/api/shaders", (request, response) => {
-  response.json({"shader_collection": shader_collection});
+  response.json(shader_collection);
 });
 
 // Express port-switching logic

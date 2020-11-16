@@ -88,7 +88,7 @@ const RootStore = types
        way to traverse and remap the directory tree
       */
       let collection = self.shader_collection;
-      console.log(collection)
+      console.log('collection in shaderLibrary', collection)
 
       let items = [];
 
@@ -164,7 +164,7 @@ const RootStore = types
           
           self.setReady(true);
 
-//           self.mainPanel.fitScreen()
+          self.mainPanel.fitScreen()
           
           console.log('APP LOCAL STORAGE', window.localStorage);
         })
@@ -309,8 +309,9 @@ const RootStore = types
       try {
         yield fetch('api/shaders').then(d => d.json()).then((d) => { 
           // self.shader_collection = Collection.create(d);
-          console.log(self.shader_collection)
+          console.log('d',d)
           applySnapshot(self.shader_collection, d)
+          console.log('in fetchShaderFiles',self.shader_collection)
         });
         
       } catch(err) {
