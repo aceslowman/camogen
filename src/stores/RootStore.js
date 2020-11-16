@@ -88,7 +88,6 @@ const RootStore = types
        way to traverse and remap the directory tree
       */
       let collection = self.shader_collection;
-      console.log('collection in shaderLibrary', collection)
 
       let items = [];
 
@@ -144,31 +143,27 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
-      window.localStorage.clear();
-      let storage = window.localStorage.getItem('CAMOGEN');
+      // window.localStorage.clear();
       
-      if(!storage) {
-        // storage hasn't been created yet. user is new
-        window.localStorage.setItem('CAMOGEN', "test for local storage!");
-        
-        // fetch default shaders
-        fetchShaderFiles().then(d => {
-          window.localStorage.setItem('shader_collection', JSON.stringify(d))
-          
-          self.setupP5();
-          self.setScene(Scene.create());
 
-          applySnapshot(self, defaultSnapshot);
-          self.scene.shaderGraph.update();
-          self.scene.shaderGraph.afterUpdate();
-          
-          self.setReady(true);
+      // fetch default shaders
+      fetchShaderFiles().then(d => {
+        window.localStorage.setItem('shader_collection', JSON.stringify(d))
 
-          self.mainPanel.fitScreen()
-          
-          console.log('APP LOCAL STORAGE', window.localStorage);
-        })
-      }
+        self.setupP5();
+        self.setScene(Scene.create());
+
+        applySnapshot(self, defaultSnapshot);
+        self.scene.shaderGraph.update();
+        self.scene.shaderGraph.afterUpdate();
+
+        self.setReady(true);
+
+        self.mainPanel.fitScreen()
+
+        // console.log('APP LOCAL STORAGE', window.localStorage);
+      })
+      
     }
 
     function setTheme(theme) {
@@ -307,12 +302,18 @@ const RootStore = types
       self.shader_collection = Collection.create();
       
       try {
-        yield fetch('api/shaders').then(d => d.json()).then((d) => { 
-          // self.shader_collection = Collection.create(d);
-          console.log('d',d)
-          applySnapshot(self.shader_collection, d)
-          console.log('in fetchShaderFiles',self.shader_collection)
-        });
+        if(window.localStorage.getItem("shader_collection") !== undefined) {
+          let data = window.localStorage.getItem("shader_collection");
+          console.log('cached shaders found, loading...')
+          applySnapshot(self.shader_collection, JSON.parse(data))
+          console.log('loading shaders from local storage', self.shader_collection)
+        } else {
+          console.log('no cached shaders found, fetching from server...')
+
+          yield fetch('api/shaders').then(d => d.json()).then((d) => { 
+            applySnapshot(self.shader_collection, d)
+          });
+        }
         
       } catch(err) {
         console.error("failed to fetch shaders", err);
