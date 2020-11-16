@@ -4,6 +4,33 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require("fs");
 const dirTree = require('directory-tree');
 
+let shader_collection;
+
+const preloadDefaultShaders = () => {
+//   const shader_path = path.resolve(__dirname, '../shaders')
+//   const tree = dirTree(shader_path);
+  
+//   shader_collection = tree["children"].map((e,i) => {
+//     // let result = yield fs.promises.readFile(self.path); 
+//     // return ({ data: JSON.parse(result) })
+//     if(self.children) {
+//       yield Promise.all(self.children.map(function(e,i){
+//         yield e.preloadAll();
+//       })))
+//     } else if(self.type === "file"){                
+//       let result = yield fs.promises.readFile(self.path); 
+//       self.data = JSON.parse(result, (key, value) => {
+//         // if(key === )
+//         return value;
+//       });
+//     }
+//   })
+    
+  console.log('default shaders loaded!')
+}
+
+preloadDefaultShaders();
+
 const app = express();
 
 // PWAs want HTTPS!
@@ -25,25 +52,7 @@ app.get("/api/data", (request, response) => {
 });
 
 app.get("/api/shaders", (request, response) => {
-  const shader_path = path.resolve(__dirname, '../shaders')
-  const tree = dirTree(shader_path);
-  
-  let shader_array = tree[""]
-      // if(self.children) {
-      //   yield Promise.all(self.children.map(flow(function*(e,i){
-      //     yield e.preloadAll();
-      //   })))
-      // } else if(self.type === "file"){                
-      //   let result = yield fs.promises.readFile(self.path); 
-      //   self.data = JSON.parse(result, (key, value) => {
-      //     // if(key === )
-      //     return value;
-      //   });
-      // }
-  
-  
-  
-  response.json({"shader_collection": tree});
+  response.json({"shader_collection": shader_collection});
 });
 
 // Express port-switching logic
