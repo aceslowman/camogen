@@ -1,0 +1,6 @@
+{
+    "name": "UV",
+    "precision": "\n\t\t#ifdef GL_ES\n\t\tprecision highp float;\n\t\t#endif \n    ",
+    "vert": "attribute vec3 aPosition;\nattribute vec2 aTexCoord;\nvarying vec2 vTexCoord;\nvoid main() {\n    vTexCoord = aTexCoord;\n    vec4 positionVec4 = vec4(aPosition,1.0);\n    positionVec4.xy = positionVec4.xy * vec2(1.,-1.);\n    gl_Position = positionVec4;\n}\n    ",
+    "frag": "varying vec2 vTexCoord; uniform vec2 resolution;\nuniform bool bSquare;\nvoid main() {\n    vec3 color = vec3(0.0);\n    float aspect = resolution.y/resolution.x;\n    vec2 uv = vTexCoord;\n    if(bSquare) {\n        uv.y *= aspect;\t    \n    }\n    gl_FragColor = vec4(uv.x,uv.y,1.0,1.0);\n}\n\t"
+}

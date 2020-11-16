@@ -1,6 +1,6 @@
 {
-     "name": "Default",
+     "name": "Radial",
      "precision": "\n\t\t#ifdef GL_ES\n\t\tprecision highp float;\n\t\t#endif \n\t",
      "vert": "attribute vec3 aPosition;\nattribute vec2 aTexCoord;\n\nvarying vec2 vTexCoord;\n\nvoid main() {\n    vTexCoord = aTexCoord;\n\n    vec4 positionVec4 = vec4(aPosition,1.0);\n    positionVec4.xy = positionVec4.xy * vec2(1.,-1.);\n\n    gl_Position = positionVec4;\n}\n",
-     "frag": "varying vec2 vTexCoord;  \nuniform vec2 resolution; \n\nvoid main() {        \n    gl_FragColor = vec4(0.0, 1.0, 1.0, 1.0);    \n}"
+     "frag": "varying vec2 vTexCoord;  \nuniform vec2 resolution; \nuniform vec2 position; // {\"default\": [0.5,0.5]}\n\n#define PI 3.1415926535897932384626433832795\n\nvoid main() {    \n    vec4 color = vec4(0.0);\n    vec2 uv = vTexCoord.xy;\n    float value = distance(uv, position);\n    gl_FragColor = vec4(vec3(value), 1.0);    \n}"
 }

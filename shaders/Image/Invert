@@ -1,0 +1,6 @@
+{
+    "name": "Invert",
+    "precision": "\n#ifdef GL_ES\nprecision highp float;\n#endif \n",
+    "vert": "attribute vec3 aPosition;\nattribute vec2 aTexCoord;\nvarying vec2 vTexCoord;\n\nvoid main() {\n    vTexCoord = aTexCoord;\n    vec4 positionVec4 = vec4(aPosition, 1.0);\n    positionVec4.xy = positionVec4.xy * vec2(1., -1.);\n    gl_Position = positionVec4;\n}\n",
+    "frag": "varying vec2 vTexCoord;\nuniform sampler2D tex0;\nuniform vec2 resolution;\nuniform float amount;\n\nvoid main() {\n    vec4 src = texture2D(tex0, vTexCoord);        \n\n    vec3 color = amount - src.rgb;\n\n    gl_FragColor = vec4(color,src.a);\n}\n"
+}
