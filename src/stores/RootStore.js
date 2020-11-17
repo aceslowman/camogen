@@ -143,7 +143,7 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
-      window.localStorage.clear();
+      // window.localStorage.clear();
       
       // fetch default shaders
       fetchShaderFiles().then(d => {        
@@ -304,7 +304,7 @@ const RootStore = types
           console.log('cached shaders found, loading...',data)
           console.log('localStorage', window.localStorage)
           
-          let data = window.localStorage.getItem("shader_collection");
+          let data = JSON.parse(window.localStorage.getItem("shader_collection"));
           
           yield new Promise(applySnapshot(self.shader_collection, data)).resolve();
         } else {
