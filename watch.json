@@ -8,7 +8,9 @@
   "restart": {
     "exclude": [
       "^public/",
-      "^src/"
+      "^src/",
+      "^dist/",
+      "^build/"
     ],
     "include": [
       "^server/",

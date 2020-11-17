@@ -12,6 +12,7 @@ import ParameterEditorComponent from './components/panels/ParameterEditorCompone
 import MessagesComponent from './components/panels/MessagesComponent';
 import CaptureComponent from './components/panels/CaptureComponent';
 import CanvasDisplay from './components/panels/CanvasDisplayComponent';
+import CaptureOverlay from './components/overlays/CaptureOverlayComponent';
 
 import tinykeys from 'tinykeys';
 import {
@@ -24,7 +25,6 @@ import {
 
 import 'maco-ui/dist/index.css';
 import { getSnapshot } from 'mobx-state-tree';
-import CaptureOverlay from './components/overlays/CaptureOverlayComponent';
 
 const App = observer((props) => {
 
