@@ -11,7 +11,7 @@ const Help = (props) => {
                 <h1>camogen</h1>
                 <p>hello! this is <span style={{color: 'orange'}}>camogen</span>, 
                   an application that allows you to code, compose, tweak, and record visual effects. 
-                  It is in beta and not all features will be present.
+                  It is in beta and not all planned features will be present.
                 </p>
                 <h2>try this</h2>
                 <ol>
@@ -27,6 +27,9 @@ const Help = (props) => {
                         under 'Editor', click 'Counter'
                     </li>
                 </ol>
+              
+                <h2>Roadmap</h2>
+                <p></p>
             </TextComponent>			
         </GenericPanel>
     )
