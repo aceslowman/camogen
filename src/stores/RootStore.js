@@ -273,32 +273,25 @@ const RootStore = types
     /*
         fetchShaderFiles()
 
-        loads all custom shaders from the users directory
-
-        if no factory shaders are found, they will be automatically
-        loaded from `default_shaders_path`. 
-
-        the user shaders are located at:
-        
-          macOS: ~/Library/Application Support
-          Linux: ~/.config
-          Windows: %APPDATA%
-      */
+        loads all shaders. defaults to the users localStorage,
+        but if that fails, it will phone home for a default 
+        shader collection
+    */
     const fetchShaderFiles = flow(function* fetchShaderFiles() {
       self.shader_collection = Collection.create();
 
       try {
         if (window.localStorage.getItem("shader_collection")) {
-          console.log("cached shaders found, loading...", data);
-          console.log("localStorage", window.localStorage);
+          console.log("cached shaders found, loading...", window.localStorage);
 
           let data = JSON.parse(
             window.localStorage.getItem("shader_collection")
           );
+          
+          applySnapshot(self.shader_collection, data)
 
           // should be changed to match the flow / yield syntax
-          return new ProapplySnapshot(self.shader_collection, data)
-          return true;
+          return new Promise((res,rej) => {res()});
         } else {
           console.log("no cached shaders found, fetching from server...");
 

@@ -294,7 +294,7 @@ const App = observer(props => {
           )}
 
           <CanvasDisplay panel={props.store.mainCanvasPanel} />
-          {!props.store.mainPanel.fullscreen && <CaptureOverlay />}
+          {/*{!props.store.mainPanel.fullscreen && <CaptureOverlay />}*/}
         </div>
       </ThemeContext.Provider>
       <ContextMenuComponent items={props.store.context.contextmenu} />
