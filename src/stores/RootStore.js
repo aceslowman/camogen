@@ -297,7 +297,7 @@ const RootStore = types
           );
 
           // should be changed to match the flow / yield syntax
-          applySnapshot(self.shader_collection, data)
+          return new ProapplySnapshot(self.shader_collection, data)
           return true;
         } else {
           console.log("no cached shaders found, fetching from server...");

@@ -32,13 +32,11 @@ module.exports = {
     publicPath: "/",
     overlay: true,
     compress: true,
-    // noInfo: true,
-    // https: true,
     hot: true,
+    liveReload: false,
     disableHostCheck: true,
     port: process.env.PORT,
-    // public: "0.0.0.0:" + process.env.PORT,
-    public: "",
+    public: "camogen.glitch.me",
     proxy: {
       '/api': 'http://localhost:3001'
     }
