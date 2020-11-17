@@ -141,7 +141,7 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
-      window.localStorage.clear();
+      // window.localStorage.clear();
 
       // fetch default shaders
       fetchShaderFiles().then(d => {
@@ -157,6 +157,9 @@ const RootStore = types
         self.mainPanel.fitScreen();
 
         console.log("APP LOCAL STORAGE", window.localStorage);
+        
+        // remove loading overlay
+        document.querySelector('.loading').style.display = 'none';
       });
     }
 
@@ -293,9 +296,7 @@ const RootStore = types
             window.localStorage.getItem("shader_collection")
           );
 
-          yield new Promise(
-            applySnapshot(self.shader_collection, data)
-          ).resolve();
+          return applySnapshot(self.shader_collection, data)
         } else {
           console.log("no cached shaders found, fetching from server...");
 
