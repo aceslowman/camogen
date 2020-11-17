@@ -296,7 +296,8 @@ const RootStore = types
             window.localStorage.getItem("shader_collection")
           );
 
-          return applySnapshot(self.shader_collection, data)
+          applySnapshot(self.shader_collection, data)
+          return true;
         } else {
           console.log("no cached shaders found, fetching from server...");
 

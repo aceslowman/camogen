@@ -5,62 +5,33 @@
     <link rel="icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="a webgl visuals synthesizer"
-    />
+    <meta name="description" content="a webgl visuals synthesizer" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="manifest" href="manifest.json" />
 
     <title>camogen</title>
     <link
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap"
-      rel="stylesheet">
-    <style>        
-        html {
-          font-size: 100%;
-        }
+      rel="stylesheet"
+    />
+    <style>
+      html {
+        font-size: 100%;
+      }
 
-        html,
-        body,
-        #root,
-        #APP {
-          width: 100%;
-          height: 100%;
-          margin: 0;
-          padding: 0;
-          font-family: 'IBM Plex Mono', monospace;
-          overflow: hidden;
-          user-select: none;
-        }
+      html,
+      body,
+      #root,
+      #APP {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: "IBM Plex Mono", monospace;
+        overflow: hidden;
+        user-select: none;
+      }
 
-        #defaultCanvas0 {
-          /* position: absolute; */
-          /* z-index:-1; */
-        }
-
-        /* ::-webkit-scrollbar {
-            width: 17px;
-            height: 17px;
-        } */
-
-        /* Track */
-        /* ::-webkit-scrollbar-track {
-            background-color: var(--scroll-bar-track-bg-color);
-            opacity: 0.1;
-        } */
-
-        /* Handle */
-        /* ::-webkit-scrollbar-thumb {
-            background: var(--scroll-bar-handle-bg-color);
-            box-shadow: inset 0 0 6px var(--scroll-bar-handle-bg-color);
-            -webkit-box-shadow: inset 0 0 6px var(--scroll-bar-handle-bg-color);
-        } */
-
-        /* ::-webkit-scrollbar-thumb:window-inactive {
-            background: var(--scroll-bar-track-bg-color);
-        } */
-      
       @keyframes spinner {
         0% {
           transform: translate3d(-50%, -50%, 0) rotate(0deg);
@@ -69,7 +40,7 @@
           transform: translate3d(-50%, -50%, 0) rotate(360deg);
         }
       }
-      
+
       .loading {
         width: 100%;
         height: 100%;
@@ -80,15 +51,22 @@
         position: absolute;
         display: flex;
         justify-content: center;
-/*         z-index: -4; */
       }
-      
+
       .loading h1 {
-        color:white;
-        align-self: center;
-        font-size:1.5em;
+        color: white;
+        /* align-self: flex-end; */
+        position: absolute;
+        font-size: 1.5em;
+        bottom: 0px;
+        right: 22px;
       }
       
+      .loading em {
+        color: white;
+        align-self:center;
+      }
+
       .spin::before {
         animation: 1.5s linear infinite spinner;
         animation-play-state: inherit;
@@ -105,17 +83,14 @@
         will-change: transform;
       }
     </style>
-    
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <div class="loading">
       <h1>camogen</h1>
-<!--       <sub>loading...</sub> -->
-      <div class="spin">
-        
-      </div>
+      <em><small>loading...</small></em>
+      <div class="spin"></div>
     </div>
   </body>
 </html>
