@@ -138,11 +138,11 @@ export const CoreLayouts = {
                 panel: "shader_graph",
                 size: 1 / 3,
             },
-            {
-                id: "shader_controls",
-                panel: "shader_controls",
-                size: 1 / 3,
-            }
+            // {
+            //     id: "shader_controls",
+            //     panel: "shader_controls",
+            //     size: 1 / 3,
+            // }
         ],
         panels: {
             "help": {
@@ -169,18 +169,18 @@ export const CoreLayouts = {
                 dimensions: [100, 250],
                 position: [200, 200]
             },
-            "shader_controls": {
-                id: 'shader_controls',
-                type: 'SHADER_CONTROLS',
-                title: 'Shader Controls',
-                floating: false,
-                canFloat: true,
-                canRemove: true,
-                defaultWidth: 100,
-                defaultHeight: 200,
-                dimensions: [250, 400],
-                position: [300, 150]
-            },
+            // "shader_controls": {
+            //     id: 'shader_controls',
+            //     type: 'SHADER_CONTROLS',
+            //     title: 'Shader Controls',
+            //     floating: false,
+            //     canFloat: true,
+            //     canRemove: true,
+            //     defaultWidth: 100,
+            //     defaultHeight: 200,
+            //     dimensions: [250, 400],
+            //     position: [300, 150]
+            // },
         }
     },
     "SHADER_EDIT": {
