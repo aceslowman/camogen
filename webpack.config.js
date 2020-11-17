@@ -33,10 +33,12 @@ module.exports = {
     overlay: true,
     compress: true,
     // noInfo: true,
+    // https: true,
     hot: true,
     disableHostCheck: true,
     port: process.env.PORT,
-    public: "0.0.0.0:" + process.env.PORT,
+    // public: "0.0.0.0:" + process.env.PORT,
+    public: "",
     proxy: {
       '/api': 'http://localhost:3001'
     }
