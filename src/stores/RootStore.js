@@ -296,6 +296,7 @@ const RootStore = types
             window.localStorage.getItem("shader_collection")
           );
 
+          // should be changed to match the flow / yield syntax
           applySnapshot(self.shader_collection, data)
           return true;
         } else {
