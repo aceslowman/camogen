@@ -143,7 +143,7 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
-      // window.localStorage.clear();
+      window.localStorage.clear();
       
       // fetch default shaders
       fetchShaderFiles().then(d => {        
