@@ -72,8 +72,18 @@
       
       .loading {
         width: 100%;
-        height:100%;
-        
+        height: 100%;
+        background-color: black;
+        color: white;
+        top: 0;
+        left: 0;
+        position: absolute;
+        display: flex;
+/*         z-index: -4; */
+      }
+      
+      .loading h1 {
+        color:white;
       }
       
       .spin::before {
@@ -83,12 +93,12 @@
         border-bottom-color: #1c87c9;
         border-radius: 50%;
         content: "";
-        height: 40px;
-        width: 40px;
+        height: 80px;
+        width: 80px;
         position: absolute;
-        top: 10%;
-        left: 10%;
-        transform: translate3d(-50%, -50%, 0);
+        top: 50%;
+        left: 50%;
+        transform: translate3d(50%, 50%, 0);
         will-change: transform;
       }
     </style>
@@ -98,7 +108,11 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <div class="loading">
-      
+      <h1>camogen</h1>
+<!--       <sub>loading...</sub> -->
+      <div class="spin">
+        
+      </div>
     </div>
   </body>
 </html>
