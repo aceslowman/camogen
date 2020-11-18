@@ -27,7 +27,7 @@
     "css-loader": "^5.0.0",
     "file-loader": "^6.1.1",
     "http-proxy-middleware": "^1.0.5",
-    "maco-ui": "^0.2.10",
+    "maco-ui": "^0.2.11",
     "directory-tree": "^2.2.4",
     "mobx": "^5.15.0",
     "mobx-react": "^6.1.4",
