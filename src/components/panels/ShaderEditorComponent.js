@@ -88,7 +88,8 @@ const ShaderEditor = props => {
       keymap: "sublime",
       mode: "clike",
       theme: "monokai",
-      autofocus: true
+      // autofocus: true
+      inputStyle: "contenteditable"
     });
     
     editor.onchange = handleEditorChange;
@@ -128,13 +129,22 @@ const ShaderEditor = props => {
             mode: "clike",
             theme: "monokai"
           }}
-        />
+        />{
       )*/}
 
       {showEditor && (
         <div 
           className={styles.editor} 
           ref={editorRef}
+          onFocus={(e)=>{
+            e.preventDefault();
+            editor.focus();
+            console.log('focusing!')
+          }}
+          onBlur={(e) => {
+            
+            console.log('blur!', e.relatedTarget)
+          }}
         ></div>
       )}
 
