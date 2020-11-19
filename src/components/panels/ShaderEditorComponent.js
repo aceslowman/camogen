@@ -3,8 +3,6 @@ import MainContext from "../../MainContext";
 import styles from "./ShaderEditorComponent.module.css";
 
 import CodeMirror from "@uiw/react-codemirror";
-import "codemirror/mode/clike/clike";
-import "codemirror/lib/codemirror.css";
 import "codemirror/theme/monokai.css";
 import "codemirror/keymap/sublime";
 
@@ -100,19 +98,20 @@ const ShaderEditor = props => {
       // onRef={mainRefe}
       toolbar={toolbar}
     >
-
-      {/*showEditor && (
+      {showEditor && (
         <CodeMirror
           className={styles.editor}
           value={editType === "frag" ? props.data.frag : props.data.vert}
           onChange={handleEditorChange}
           options={{
             lineNumbers: true,
+            foldGutter: true,
+            keymap: "sublime",
             mode: "clike",
             theme: "monokai"
           }}
         />
-      )*/}
+      )}
 
       {!showEditor && (
         <p className={styles.no_node_selected}>
