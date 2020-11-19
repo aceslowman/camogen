@@ -9,6 +9,8 @@ import "codemirror/keymap/sublime";
 
 import { GenericPanel, ToolbarComponent } from "maco-ui";
 
+let editor;
+
 const ShaderEditor = props => {
   const store = useContext(MainContext).store;
   const mainRef = useRef(null);
@@ -74,8 +76,7 @@ const ShaderEditor = props => {
       }
     />
   );
-
-  let editor
+ 
   useEffect(() => {
     console.log("mounting editor");
     editor = CodeMirror(editorRef.current, {
@@ -93,7 +94,11 @@ const ShaderEditor = props => {
   }, []);
   
   useEffect(() => {
-    editor.swapDoc(editType === "frag" ? props.data.frag : props.data.vert)
+    let doc = CodeMirror.Doc(
+      editType === "frag" ? props.data.frag : props.data.vert,
+      "clike"
+    );
+    editor.swapDoc(doc)
   }, [editType])
 
   return (
@@ -125,7 +130,7 @@ const ShaderEditor = props => {
         />
       )*/}
 
-      {showEditor && <div ref={editorRef}></div>}
+      {showEditor && <div className={styles.editor} ref={editorRef}></div>}
 
       {!showEditor && (
         <p className={styles.no_node_selected}>
