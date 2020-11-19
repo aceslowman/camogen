@@ -42,7 +42,7 @@ const RootStore = types
     layout: types.optional(Layout, CoreLayouts["WELCOME"]),
     mainPanel: types.optional(Panel, {
       id: "main",
-      title: "camogen",
+      // title: "camogen",
       floating: true,
       canFloat: false,
       collapsible: true,
@@ -57,7 +57,7 @@ const RootStore = types
       floating: true,
       canFloat: false,
       collapsible: true,
-      fullscreen: false,
+      fullscreen: true,
       canFullscreen: true,
       dimensions: [window.innerWidth, window.innerHeight],
       position: [0, 0]

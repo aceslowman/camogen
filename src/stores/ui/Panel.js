@@ -5,7 +5,7 @@ import Layout from "./Layout";
 const Panel = types
     .model("Panel", {
         id:            types.identifier,
-        title:         'Panel Title',
+        title:         types.maybe(types.string),
         type:          '',
         subtitle:      types.maybe(types.string),
         floating:      false,

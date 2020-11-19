@@ -153,6 +153,11 @@ const App = observer(props => {
     <ToolbarComponent
       items={[
         {
+            label: (
+              <h1>camogen</h1>
+            )
+        },
+        {
           label: "File",
           dropDown: [
             {
@@ -277,11 +282,10 @@ const App = observer(props => {
             backgroundColor: props.store.theme.secondary_color
           }}
         >
+          {main_panel_toolbar}
           {props.store.ready && (
             <GenericPanel
-              panel={props.store.mainPanel}
-              toolbar={main_panel_toolbar}
-              title={<h1>camogen</h1>}
+              panel={props.store.mainPanel}              
               subtitle={props.store.name}
               collapsible
             >
