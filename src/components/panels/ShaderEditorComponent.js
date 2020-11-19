@@ -87,7 +87,8 @@ const ShaderEditor = props => {
       foldGutter: true,
       keymap: "sublime",
       mode: "clike",
-      theme: "monokai"
+      theme: "monokai",
+      autofocus: true
     });
     
     editor.onchange = handleEditorChange;
@@ -134,7 +135,6 @@ const ShaderEditor = props => {
         <div 
           className={styles.editor} 
           ref={editorRef}
-          onFocus={() => editor.focus()}
         ></div>
       )}
 
