@@ -3,12 +3,11 @@ import MainContext from "../../MainContext";
 import styles from "./ShaderEditorComponent.module.css";
 
 import CodeMirror from "codemirror";
+import "codemirror/lib/codemirror.css";
 import "codemirror/theme/monokai.css";
 import "codemirror/keymap/sublime";
 
 import { GenericPanel, ToolbarComponent } from "maco-ui";
-
-// import useResizeObserver from '../hooks/ResizeHook';
 
 const ShaderEditor = props => {
   const store = useContext(MainContext).store;
@@ -76,9 +75,10 @@ const ShaderEditor = props => {
     />
   );
 
+  let editor
   useEffect(() => {
     console.log("mounting editor");
-    var myCodeMirror = CodeMirror(editorRef.current, {
+    editor = CodeMirror(editorRef.current, {
       value: editType === "frag" ? props.data.frag : props.data.vert,
       mode: "clike",
       theme: "monokai",
@@ -88,7 +88,13 @@ const ShaderEditor = props => {
       mode: "clike",
       theme: "monokai"
     });
+    
+    editor.onchange = handleEditorChange;
   }, []);
+  
+  useEffect(() => {
+    editor.swapDoc(editType === "frag" ? props.data.frag : props.data.vert)
+  }, [editType])
 
   return (
     <GenericPanel
@@ -102,8 +108,6 @@ const ShaderEditor = props => {
           {props.hasChanged ? "unsaved" : ""}
         </span>
       }
-      // style={{minWidth:400,flexGrow:2,flexShrink:0}}
-      // onRef={mainRefe}
       toolbar={toolbar}
     >
       {/*showEditor && (
