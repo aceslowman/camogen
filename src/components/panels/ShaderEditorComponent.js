@@ -130,7 +130,13 @@ const ShaderEditor = props => {
         />
       )*/}
 
-      {showEditor && <div className={styles.editor} ref={editorRef}></div>}
+      {showEditor && (
+        <div 
+          className={styles.editor} 
+          ref={editorRef}
+          onFocus={() => editor.focus()}
+        ></div>
+      )}
 
       {!showEditor && (
         <p className={styles.no_node_selected}>
