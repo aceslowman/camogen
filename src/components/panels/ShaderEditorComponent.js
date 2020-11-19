@@ -1,8 +1,8 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import MainContext from "../../MainContext";
 import styles from "./ShaderEditorComponent.module.css";
 
-import CodeMirror from "@uiw/react-codemirror";
+import CodeMirror from "codemirror";
 import "codemirror/theme/monokai.css";
 import "codemirror/keymap/sublime";
 
@@ -13,14 +13,8 @@ import { GenericPanel, ToolbarComponent } from "maco-ui";
 const ShaderEditor = props => {
   const store = useContext(MainContext).store;
   const mainRef = useRef(null);
+  const editorRef = useRef(null);
   const [editType, setEditType] = useState("vert");
-  // const [editorSize, setEditorSize] = useState({width: 0, height: 0});
-
-  // useResizeObserver(()=>{
-  //     let bounds = mainRef.current.getBoundingClientRect();
-  //     setEditorSize({width: bounds.width, height: bounds.height})
-  //     // console.log(editorSize)
-  // }, mainRef);
 
   const handleRefresh = () => {
     store.p5_instance.loop();
@@ -82,6 +76,20 @@ const ShaderEditor = props => {
     />
   );
 
+  useEffect(() => {
+    console.log("mounting editor");
+    var myCodeMirror = CodeMirror(editorRef.current, {
+      value: editType === "frag" ? props.data.frag : props.data.vert,
+      mode: "clike",
+      theme: "monokai",
+      lineNumbers: true,
+      foldGutter: true,
+      keymap: "sublime",
+      mode: "clike",
+      theme: "monokai"
+    });
+  }, []);
+
   return (
     <GenericPanel
       panel={props.panel}
@@ -98,7 +106,7 @@ const ShaderEditor = props => {
       // onRef={mainRefe}
       toolbar={toolbar}
     >
-      {showEditor && (
+      {/*showEditor && (
         <CodeMirror
           className={styles.editor}
           value={editType === "frag" ? props.data.frag : props.data.vert}
@@ -111,7 +119,9 @@ const ShaderEditor = props => {
             theme: "monokai"
           }}
         />
-      )}
+      )*/}
+
+      {showEditor && <div ref={editorRef}></div>}
 
       {!showEditor && (
         <p className={styles.no_node_selected}>
