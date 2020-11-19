@@ -101,7 +101,7 @@ const CanvasDisplay = observer(props => {
           : null
       }
       style={{
-        zIndex: 0
+        zIndex: -1
       }}
       showTitle={false}
     >

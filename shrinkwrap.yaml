@@ -3,6 +3,7 @@ dependencies:
   '@babel/preset-env': 7.12.1
   '@babel/preset-react': 7.12.5
   babel-loader: 8.2.1
+  codemirror: 5.58.3
   css-loader: 5.0.1
   directory-tree: 2.2.5
   express: 4.17.1
@@ -17,7 +18,6 @@ dependencies:
   mst-middlewares: 3.17.2
   p5: 0.10.2
   react: 17.0.1
-  react-ace: 8.1.0
   react-app-polyfill: 1.0.6
   react-dom: 17.0.1
   react-p5-wrapper: 2.3.0
@@ -1221,10 +1221,6 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-Il80Qs2WjYlJIBNzNkK6KYqlVMTbZLXgHx2oT0pU/fjRHyEp+PEfEPY0R3WCwAGVOtauxh1hOxNgIf5bv7dQpA==
-  /ace-builds/1.4.12:
-    dev: false
-    resolution:
-      integrity: sha512-G+chJctFPiiLGvs3+/Mly3apXTcfgE45dT5yp12BcWZ1kUs+gm0qd3/fv4gsz6fVag4mM0moHVpjHDIgph6Psg==
   /acorn/8.0.4:
     dev: false
     engines:
@@ -1659,6 +1655,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-PYeGSEmmHM6zvoef2w8TPzlrnNpXIjTipYK780YswmIP9vjxmd6Y2a3CB2Ks6/AU8NHjZugXvo8w3oWM2qnwXA==
+  /codemirror/5.58.3:
+    dev: false
+    resolution:
+      integrity: sha512-KBhB+juiyOOgn0AqtRmWyAT3yoElkuvWTI6hsHa9E6GQrl6bk/fdAYcvuqW1/upO9T9rtEtapWdw4XYcNiVDEA==
   /collection-visit/1.0.0:
     dependencies:
       map-visit: 1.0.0
@@ -1983,10 +1983,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
-  /diff-match-patch/1.0.5:
-    dev: false
-    resolution:
-      integrity: sha512-IayShXAgj/QMXgB0IWmKx+rOPuGMhqm5w6jvFxmVenXKIzRqTAAsbBPT3kWQeGANj3jGgvcvv4yK6SxqYmikgw==
   /directory-tree/2.2.5:
     dev: false
     engines:
@@ -3290,14 +3286,6 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==
-  /lodash.get/4.4.2:
-    dev: false
-    resolution:
-      integrity: sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
-  /lodash.isequal/4.5.0:
-    dev: false
-    resolution:
-      integrity: sha1-QVxEePK8wwEgwizhDtMib30+GOA=
   /lodash/4.17.20:
     dev: false
     resolution:
@@ -4158,19 +4146,6 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha512-4Oz8DUIwdvoa5qMJelxipzi/iJIi40O5cGV1wNYp5hvZP8ZN0T+jiNkL0QepXs+EsQ9XJ8ipEDoiH70ySUJP3Q==
-  /react-ace/8.1.0:
-    dependencies:
-      ace-builds: 1.4.12
-      diff-match-patch: 1.0.5
-      lodash.get: 4.4.2
-      lodash.isequal: 4.5.0
-      prop-types: 15.7.2
-    dev: false
-    peerDependencies:
-      react: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0
-      react-dom: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0
-    resolution:
-      integrity: sha512-n3rm9gRNZjLGlXJQ587RASOQCPn6WlcV2gjRYwvG3gyVpBf4pY6lh/uI9tDkx2zYdEKJUfnGbTmzEGL5yyDWuw==
   /react-app-polyfill/1.0.6:
     dependencies:
       core-js: 3.7.0
@@ -5393,6 +5368,7 @@ specifiers:
   '@babel/preset-env': ^7.12.0
   '@babel/preset-react': ^7.12.5
   babel-loader: ^8.2.1
+  codemirror: ^5.58.3
   css-loader: ^5.0.0
   directory-tree: ^2.2.4
   express: ^4.17.1
@@ -5407,7 +5383,6 @@ specifiers:
   mst-middlewares: ^3.17.2
   p5: ^0.10.2
   react: ^17.0.1
-  react-ace: ^8.1.0
   react-app-polyfill: ^1.0.4
   react-dom: ^17.0.1
   react-p5-wrapper: ^2.0.0

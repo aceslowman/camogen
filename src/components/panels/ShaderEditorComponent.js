@@ -2,10 +2,7 @@ import React, { useState, useContext, useRef } from 'react';
 import MainContext from '../../MainContext';
 import styles from './ShaderEditorComponent.module.css';
 
-import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/mode-glsl";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/webpack-resolver";
+import CodeMirror from 'react-codemirror';
 
 import {
     GenericPanel,

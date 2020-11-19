@@ -279,10 +279,13 @@ const App = observer(props => {
           ref={mainRef}
           onContextMenu={handleContextMenu}
           style={{
-            backgroundColor: props.store.theme.secondary_color
+            backgroundColor: props.store.mainPanel.fullscreen ? props.store.theme.secondary_color : 'transparent'
           }}
         >
           {main_panel_toolbar}
+
+          <CanvasDisplay panel={props.store.mainCanvasPanel} />
+          
           {props.store.ready && (
             <GenericPanel
               panel={props.store.mainPanel}              
@@ -297,7 +300,6 @@ const App = observer(props => {
             </GenericPanel>
           )}
 
-          <CanvasDisplay panel={props.store.mainCanvasPanel} />
           {/*{!props.store.mainPanel.fullscreen && <CaptureOverlay />}*/}
         </div>
       </ThemeContext.Provider>
