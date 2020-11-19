@@ -2,8 +2,8 @@ dependencies:
   '@babel/core': 7.12.3
   '@babel/preset-env': 7.12.1
   '@babel/preset-react': 7.12.5
+  '@uiw/react-codemirror': 3.0.1
   babel-loader: 8.2.1
-  codemirror: 5.58.3
   css-loader: 5.0.1
   directory-tree: 2.2.5
   express: 4.17.1
@@ -943,6 +943,12 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-jcs++VPrgyFehkMezHtezS2BpnUlR7tQFAyesJn1vGTO9aTFZrgIQrA5YydlTwxbcjMwkFY6i04flCigRRr3GA==
+  /@babel/runtime/7.11.2:
+    dependencies:
+      regenerator-runtime: 0.13.7
+    dev: false
+    resolution:
+      integrity: sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
   /@babel/runtime/7.12.5:
     dependencies:
       regenerator-runtime: 0.13.7
@@ -1063,6 +1069,16 @@ packages:
     dev: false
     resolution:
       integrity: sha512-cr6kZ+4m9lp86ytQc1jPOJXgINQyz3kLLunZ57jznW+WIAL0JqZbGubQk4GlD42MuQL5JGOABrxdpqqWeovlVQ==
+  /@uiw/react-codemirror/3.0.1:
+    dependencies:
+      '@babel/runtime': 7.11.2
+      codemirror: 5.57.0
+    dev: false
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    resolution:
+      integrity: sha512-k4sc57i2jw15pwyT9io3boFDsr8I9jjC3cQg+pZFog7u8ZRrAsS+GzAz/1uzU1p9S2cfESwj/H0f2oqfIwqj6w==
   /@webassemblyjs/ast/1.9.0:
     dependencies:
       '@webassemblyjs/helper-module-context': 1.9.0
@@ -1655,10 +1671,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-PYeGSEmmHM6zvoef2w8TPzlrnNpXIjTipYK780YswmIP9vjxmd6Y2a3CB2Ks6/AU8NHjZugXvo8w3oWM2qnwXA==
-  /codemirror/5.58.3:
+  /codemirror/5.57.0:
     dev: false
     resolution:
-      integrity: sha512-KBhB+juiyOOgn0AqtRmWyAT3yoElkuvWTI6hsHa9E6GQrl6bk/fdAYcvuqW1/upO9T9rtEtapWdw4XYcNiVDEA==
+      integrity: sha512-WGc6UL7Hqt+8a6ZAsj/f1ApQl3NPvHY/UQSzG6fB6l4BjExgVdhFaxd7mRTw1UCiYe/6q86zHP+kfvBQcZGvUg==
   /collection-visit/1.0.0:
     dependencies:
       map-visit: 1.0.0
@@ -5367,8 +5383,8 @@ specifiers:
   '@babel/core': ^7.12.3
   '@babel/preset-env': ^7.12.0
   '@babel/preset-react': ^7.12.5
+  '@uiw/react-codemirror': ^3.0.1
   babel-loader: ^8.2.1
-  codemirror: ^5.58.3
   css-loader: ^5.0.0
   directory-tree: ^2.2.4
   express: ^4.17.1

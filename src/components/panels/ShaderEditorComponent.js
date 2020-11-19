@@ -2,10 +2,11 @@ import React, { useState, useContext, useRef } from "react";
 import MainContext from "../../MainContext";
 import styles from "./ShaderEditorComponent.module.css";
 
-import CodeMirror from "react-codemirror";
+import CodeMirror from "@uiw/react-codemirror";
 import "codemirror/mode/clike/clike";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/monokai.css";
+import "codemirror/keymap/sublime";
 
 import { GenericPanel, ToolbarComponent } from "maco-ui";
 
