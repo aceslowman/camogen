@@ -116,6 +116,7 @@ const ShaderEditor = props => {
         </span>
       }
       toolbar={toolbar}
+      onFocus={(e) => editor.focus()}
     >
       {/*showEditor && (
         <CodeMirror
@@ -136,15 +137,6 @@ const ShaderEditor = props => {
         <div 
           className={styles.editor} 
           ref={editorRef}
-          onFocus={(e)=>{
-            e.preventDefault();
-            editor.focus();
-            console.log('focusing!')
-          }}
-          onBlur={(e) => {
-            
-            console.log('blur!', e.relatedTarget)
-          }}
         ></div>
       )}
 
