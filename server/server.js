@@ -23,7 +23,7 @@ function preloadDefaultShaders() {
     }
   }); 
     
-  console.log('default shaders loaded!', shader_collection)
+  // console.log('default shaders loaded!', shader_collection)
 }
 
 preloadDefaultShaders();
