@@ -27,7 +27,7 @@
     margin: 15px;
 }
 
-.ace_editor {
+.editor {
     font-family: 'IBM Plex Mono', monospace;
     background-color: #000;
     border: 2px solid black;  

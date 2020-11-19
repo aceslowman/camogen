@@ -3,6 +3,7 @@ dependencies:
   '@babel/preset-env': 7.12.1
   '@babel/preset-react': 7.12.5
   babel-loader: 8.2.1
+  codemirror: 5.58.3
   css-loader: 5.0.1
   directory-tree: 2.2.5
   express: 4.17.1
@@ -18,7 +19,6 @@ dependencies:
   p5: 0.10.2
   react: 17.0.1
   react-app-polyfill: 1.0.6
-  react-codemirror: 1.0.0
   react-dom: 17.0.1
   react-p5-wrapper: 2.3.0
   resize-observer-polyfill: 1.5.1
@@ -1801,13 +1801,6 @@ packages:
     dev: false
     resolution:
       integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
-  /create-react-class/15.7.0:
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-    dev: false
-    resolution:
-      integrity: sha512-QZv4sFWG9S5RUvkTYWbflxeZX+JG7Cz0Tn33rQBJ+WFQTqTfUTjMjiv9tnfXazjsO5r0KhPs+AqCjyrQX6h2ng==
   /cross-spawn/6.0.5:
     dependencies:
       nice-try: 1.0.5
@@ -3293,14 +3286,6 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==
-  /lodash.debounce/4.0.8:
-    dev: false
-    resolution:
-      integrity: sha1-gteb/zCmfEAF/9XiUVMArZyk168=
-  /lodash.isequal/4.5.0:
-    dev: false
-    resolution:
-      integrity: sha1-QVxEePK8wwEgwizhDtMib30+GOA=
   /lodash/4.17.20:
     dev: false
     resolution:
@@ -4174,20 +4159,6 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-OfBnObtnGgLGfweORmdZbyEz+3dgVePQBb3zipiaDsMHV1NpWm0rDFYIVXFV/AK+x4VIIfWHhrdMIeoTLyRr2g==
-  /react-codemirror/1.0.0:
-    dependencies:
-      classnames: 2.2.6
-      codemirror: 5.58.3
-      create-react-class: 15.7.0
-      lodash.debounce: 4.0.8
-      lodash.isequal: 4.5.0
-      prop-types: 15.7.2
-    dev: false
-    peerDependencies:
-      react: '>=15.5 <16'
-      react-dom: '>=15.5 <16'
-    resolution:
-      integrity: sha1-kUZ7U7H12A2Rai/QtMetuFqQAbo=
   /react-dom/17.0.1:
     dependencies:
       loose-envify: 1.4.0
@@ -5397,6 +5368,7 @@ specifiers:
   '@babel/preset-env': ^7.12.0
   '@babel/preset-react': ^7.12.5
   babel-loader: ^8.2.1
+  codemirror: ^5.58.3
   css-loader: ^5.0.0
   directory-tree: ^2.2.4
   express: ^4.17.1
@@ -5412,7 +5384,6 @@ specifiers:
   p5: ^0.10.2
   react: ^17.0.1
   react-app-polyfill: ^1.0.4
-  react-codemirror: ^1.0.0
   react-dom: ^17.0.1
   react-p5-wrapper: ^2.0.0
   resize-observer-polyfill: ^1.5.1

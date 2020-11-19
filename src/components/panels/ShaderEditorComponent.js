@@ -3,8 +3,9 @@ import MainContext from "../../MainContext";
 import styles from "./ShaderEditorComponent.module.css";
 
 import CodeMirror from "react-codemirror";
-import "codemirror/mode/glsl/glsl";
+import "codemirror/mode/clike/clike";
 import "codemirror/lib/codemirror.css";
+import "codemirror/theme/monokai.css";
 
 import { GenericPanel, ToolbarComponent } from "maco-ui";
 
@@ -99,17 +100,18 @@ const ShaderEditor = props => {
       toolbar={toolbar}
     >
 
-      {showEditor && (
+      {/*showEditor && (
         <CodeMirror
+          className={styles.editor}
           value={editType === "frag" ? props.data.frag : props.data.vert}
           onChange={handleEditorChange}
           options={{
             lineNumbers: true,
-            mode: "glsl",
+            mode: "clike",
             theme: "monokai"
           }}
         />
-      )}
+      )*/}
 
       {!showEditor && (
         <p className={styles.no_node_selected}>
