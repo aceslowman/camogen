@@ -188,7 +188,7 @@ const RootStore = types
       let blob = new Blob([src], { type: "text/plain" });
 
       let link = document.createElement("a");
-      link.download = "project.camo";
+      link.download = `${self.name}.camo`;
 
       if (window.webkitURL != null) {
         // Chrome allows the link to be clicked without actually adding it to the DOM.
@@ -202,34 +202,6 @@ const RootStore = types
       }
 
       link.click();
-      
-      //       let options = {
-      //           title: 'Save Project File',
-      //           defaultPath: path.join(app.getPath("desktop"),`${self.name}.camo`),
-      //           buttonLabel: "Save",
-      //           filters: [
-      //               {
-      //                 name: 'Camo Project Files',
-      //                 extensions: ['camo']
-      //               },
-      //               {
-      //                 name: 'Any',
-      //                 extensions: ['*']
-      //               },
-      //           ]
-      //       }
-      //       dialog.showSaveDialog(options).then((f)=>{
-      //           let name = f.filePath.split('/').pop().split('.')[0];
-      //           self.setName(name);
-      //           let content = JSON.stringify(getSnapshot(self));
-      //           fs.writeFile(f.filePath, content, (err)=>{
-      //               if(err) {
-      //                   console.error("an error has occurred: "+err.message);
-      //               } else {
-      //                   console.log('project has been saved at: '+f.filePath)
-      //               }
-      //           });
-      //       }).catch(err => console.error(err));
     }
 
     function load() {

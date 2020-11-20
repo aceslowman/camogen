@@ -167,7 +167,10 @@ const App = observer(props => {
           dropDown: [
             {
               label: "Save Scene",
-              onClick: () => props.store.save()
+              onClick: () => {
+                // can I swap this out for a text dialog?
+                props.store.save()
+              }
             },
             {
               label: "Load Scene",
