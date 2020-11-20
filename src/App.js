@@ -311,7 +311,11 @@ const App = observer(props => {
       </ThemeContext.Provider>
       <ContextMenuComponent items={props.store.context.contextmenu} />
       {showAbout && (
-        <AboutOverlay />
+        <AboutOverlay 
+          onRemove={() => {
+            setShowAbout(!showAbout)
+          }}
+        />
       )}
     </MainProvider>
   );
