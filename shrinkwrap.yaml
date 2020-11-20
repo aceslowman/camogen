@@ -10,7 +10,7 @@ dependencies:
   file-loader: 6.2.0
   html-webpack-plugin: 4.5.0
   http-proxy-middleware: 1.0.6
-  maco-ui: 0.2.16
+  maco-ui: 0.2.17
   mobx: 5.15.7
   mobx-devtools-mst: 0.9.26
   mobx-react: 6.3.1
@@ -3313,7 +3313,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-LiWgfDLLb1dwbFQZsSglpRj+1ctGnayXz3Uv0/WO8n558JycT5fg6zkNcnW0G68Nn0aEldTFeEfmjCfmqry/rQ==
-  /maco-ui/0.2.16:
+  /maco-ui/0.2.17:
     dependencies:
       classnames: 2.2.6
       mobx: 5.15.7
@@ -3325,7 +3325,7 @@ packages:
     peerDependencies:
       react: ^16.0.0
     resolution:
-      integrity: sha512-Ctlu1Fhlf/BWTuRW/oQv8v3VcDisK+StYycTUFHf1BhiQhdTIfRCMYAyWbvu1k9zaJNA1JGQGJ0npt2FUcf/5A==
+      integrity: sha512-q1rr80xONm1/0y7vnl9/BX+T2Y1JB6q0Z5b+H5s5Cx+hZ5pOiOaFdb8xmkcvNp3Paeifolu/3qhIfHS7kSqtpQ==
   /make-dir/2.1.0:
     dependencies:
       pify: 4.0.1
@@ -5379,7 +5379,7 @@ specifiers:
   file-loader: ^6.1.1
   html-webpack-plugin: ^4.5.0
   http-proxy-middleware: ^1.0.5
-  maco-ui: ^0.2.16
+  maco-ui: ^0.2.17
   mobx: ^5.15.0
   mobx-devtools-mst: ^0.9.26
   mobx-react: ^6.1.4

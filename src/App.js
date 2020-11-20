@@ -168,21 +168,29 @@ const App = observer(props => {
             {
               // label: "Save Scene",
               label: (
-                <Fragmen
-                <input
+                <div
                   style={{
-                    backgroundColor: "inherit",
-                    color: "inherit",
-                    border: "none",
-                    width: "100%",
-                    fontFamily: "inherit"
+                    display: "flex",
+                    flexFlow: "row"
                   }}
-                  type="text"
-                  placeholder={props.store.name}
-                  onChange={(e) => {
-                    props.store.setName(e.target.value)
-                  }}
-                />
+                >
+                  <label>name:</label>
+                  <input
+                    style={{
+                      backgroundColor: "inherit",
+                      color: "inherit",
+                      border: "none",
+                      width: "100%",
+                      marginLeft: 4,
+                      fontFamily: "inherit"
+                    }}
+                    type="text"
+                    placeholder={props.store.name}
+                    onChange={e => {
+                      props.store.setName(e.target.value);
+                    }}
+                  />
+                </div>
               )
             },
             {
