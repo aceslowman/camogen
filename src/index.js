@@ -5,9 +5,6 @@ import * as serviceWorker from './serviceWorker';
 import RootStore from './stores/RootStore';
 import makeInspectable from 'mobx-devtools-mst';
 
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-
 const root = RootStore.create({});
 
 makeInspectable(root);
