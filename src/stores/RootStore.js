@@ -125,14 +125,7 @@ const RootStore = types
             }
           ]
         },
-        ...items,
-        {
-          label: "*Open Directory*",
-          onClick: () => {
-            // let user_shaders_path = path.join(app.getPath("userData"), 'shaders');
-            // shell.openItem(user_shaders_path)
-          }
-        }
+        ...items
       ];
     }
   }))
@@ -157,9 +150,9 @@ const RootStore = types
         self.mainPanel.fitScreen();
 
         console.log("APP LOCAL STORAGE", window.localStorage);
-        
+
         // remove loading overlay
-        document.querySelector('.loading').style.display = 'none';
+        document.querySelector(".loading").style.display = "none";
       });
     }
 
@@ -189,6 +182,27 @@ const RootStore = types
     }
 
     function save() {
+      console.log("saving project");
+
+      let src = JSON.stringify(getSnapshot(self));
+      let blob = new Blob([src], { type: "text/plain" });
+
+      let link = document.createElement("a");
+      link.download = "project.camo";
+
+      if (window.webkitURL != null) {
+        // Chrome allows the link to be clicked without actually adding it to the DOM.
+        link.href = window.webkitURL.createObjectURL(blob);
+      } else {
+        // Firefox requires the link to be added to the DOM before it can be clicked.
+        link.href = window.URL.createObjectURL(blob);
+        link.onclick = e => { document.body.removeChild(e.target) };
+        link.style.display = "none";
+        document.body.appendChild(link);
+      }
+
+      link.click();
+      
       //       let options = {
       //           title: 'Save Project File',
       //           defaultPath: path.join(app.getPath("desktop"),`${self.name}.camo`),
@@ -287,11 +301,13 @@ const RootStore = types
           let data = JSON.parse(
             window.localStorage.getItem("shader_collection")
           );
-          
-          applySnapshot(self.shader_collection, data)
+
+          applySnapshot(self.shader_collection, data);
 
           // should be changed to match the flow / yield syntax
-          return new Promise((res,rej) => {res()});
+          return new Promise((res, rej) => {
+            res();
+          });
         } else {
           console.log("no cached shaders found, fetching from server...");
 
