@@ -14,7 +14,7 @@ const AboutOverlay = observer((props) => {
   const store = useContext(MainContext).store;
 
   const [position, setPosition] = useState([50, 50]);
-  const [dimensions, setDimensions] = useState([200, 200]);
+  const [dimensions, setDimensions] = useState([225, 225]);
 
   const handlePosition = e => {
     setPosition(e);
