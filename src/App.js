@@ -156,12 +156,11 @@ const App = observer(props => {
     <ToolbarComponent
       items={[
         {
-            label: (
-              <h1>camogen</h1>
-            ),
-            onClick: () => {
-              setShowAbout(!showAbout)
-            }
+          label: <h1>camogen</h1>,
+          onClick: () => {
+            setShowAbout(!showAbout);
+          },
+          highlight: showAbout
         },
         {
           label: "File",
@@ -285,16 +284,18 @@ const App = observer(props => {
           ref={mainRef}
           onContextMenu={handleContextMenu}
           style={{
-            backgroundColor: props.store.mainPanel.fullscreen ? props.store.theme.secondary_color : 'transparent'
+            backgroundColor: props.store.mainPanel.fullscreen
+              ? props.store.theme.secondary_color
+              : "transparent"
           }}
         >
           {main_panel_toolbar}
 
           <CanvasDisplay panel={props.store.mainCanvasPanel} />
-          
+
           {props.store.ready && (
             <GenericPanel
-              panel={props.store.mainPanel}              
+              panel={props.store.mainPanel}
               subtitle={props.store.name}
               collapsible
             >
@@ -311,9 +312,9 @@ const App = observer(props => {
       </ThemeContext.Provider>
       <ContextMenuComponent items={props.store.context.contextmenu} />
       {showAbout && (
-        <AboutOverlay 
+        <AboutOverlay
           onRemove={() => {
-            setShowAbout(!showAbout)
+            setShowAbout(!showAbout);
           }}
         />
       )}
