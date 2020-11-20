@@ -339,15 +339,15 @@ const App = observer(props => {
 
           {/*{!props.store.mainPanel.fullscreen && <CaptureOverlay />}*/}
         </div>
+        <ContextMenuComponent items={props.store.context.contextmenu} />
+        {showAbout && (
+          <AboutOverlay
+            onRemove={() => {
+              setShowAbout(!showAbout);
+            }}
+          />
+        )}
       </ThemeContext.Provider>
-      <ContextMenuComponent items={props.store.context.contextmenu} />
-      {showAbout && (
-        <AboutOverlay
-          onRemove={() => {
-            setShowAbout(!showAbout);
-          }}
-        />
-      )}
     </MainProvider>
   );
 });
