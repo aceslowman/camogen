@@ -31,6 +31,7 @@ import { getSnapshot } from "mobx-state-tree";
 const App = observer(props => {
   const mainRef = useRef(null);
   const [showAbout, setShowAbout] = useState(false);
+  const [saveNameDialog, setSaveNameDialog] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -166,10 +167,31 @@ const App = observer(props => {
           label: "File",
           dropDown: [
             {
-              label: "Save Scene",
+              // label: "Save Scene",
+              label: saveNameDialog ? "Save Scene" : (
+                <input
+                  style={{
+                    backgroundColor: "inherit",
+                    color: "inherit",
+                    border: "none",
+                    width: "100%",
+                    fontFamily: "inherit"
+                  }}
+                  type="text"
+                  placeholder="name"
+                  onSubmit={() => {
+                    console.log('submit')
+                  }}
+                />
+              ),
               onClick: () => {
                 // can I swap this out for a text dialog?
-                props.store.save()
+                
+                // props.store.save();
+                if(!saveNameDialog) {
+                  setSaveNameDialog(!saveNameDialog)
+                  console.log("save");
+                }
               }
             },
             {
