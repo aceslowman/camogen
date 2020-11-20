@@ -6,6 +6,7 @@ import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/monokai.css";
 import "codemirror/keymap/sublime";
+import "codemirror/mode/clike/clike";
 
 import { GenericPanel, ToolbarComponent } from "maco-ui";
 
@@ -81,13 +82,11 @@ const ShaderEditor = props => {
     console.log("mounting editor");
     editor = CodeMirror(editorRef.current, {
       value: editType === "frag" ? props.data.frag : props.data.vert,
-      mode: "clike",
+      mode: "x-shader/x-fragment",
       theme: "monokai",
       lineNumbers: true,
       foldGutter: true,
       keymap: "sublime",
-      mode: "clike",
-      theme: "monokai"
     });
     
     editor.onchange = handleEditorChange;
@@ -96,7 +95,7 @@ const ShaderEditor = props => {
   useEffect(() => {
     let doc = CodeMirror.Doc(
       editType === "frag" ? props.data.frag : props.data.vert,
-      "clike"
+      "x-shader/x-fragment"
     );
     editor.swapDoc(doc)
   }, [editType])
