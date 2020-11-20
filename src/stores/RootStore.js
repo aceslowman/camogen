@@ -196,7 +196,9 @@ const RootStore = types
       } else {
         // Firefox requires the link to be added to the DOM before it can be clicked.
         link.href = window.URL.createObjectURL(blob);
-        link.onclick = e => { document.body.removeChild(e.target) };
+        link.onclick = e => {
+          document.body.removeChild(e.target);
+        };
         link.style.display = "none";
         document.body.appendChild(link);
       }
@@ -206,63 +208,39 @@ const RootStore = types
 
     function load() {
       let link = document.createElement("input");
-      link.type = 'file';
-      
-      link.onchange = e => { 
-         var file = e.target.files[0]; 
-        
+      link.type = "file";
+
+      link.onchange = e => {
+        var file = e.target.files[0];
+
         let reader = new FileReader();
-        reader.readAsText(file, 'UTF-8');
-        
+        reader.readAsText(file, "UTF-8");
+
         reader.onload = e => {
           let content = e.target.result;
-          console.log('content',content)
-          
+
           self.setName(name);
           self.scene.clear();
           applySnapshot(self, JSON.parse(content));
           self.scene.shaderGraph.update();
           self.scene.shaderGraph.afterUpdate();
           // undoManager.clear();
-        }
-      }
+        };
+      };
 
-      
       link.click();
-      //       let options = {
-      //           title: 'Load Project File',
-      //           defaultPath: app.getPath("desktop"),
-      //           buttonLabel: "Load",
-      //           filters: [{
-      //               name: 'Camo Project Files',
-      //               extensions: ['camo']
-      //             },
-      //             {
-      //               name: 'Any',
-      //               extensions: ['*']
-      //             },
-      //           ]
-      //       }
-      //       dialog.showOpenDialog(options).then((f) => {
-      //         let content = f.filePaths[0];
-      //         fs.readFile(content, 'utf-8', (err, data) => {
-      //           if(err) console.error(err.message);
-      //           let name = content.split('/').pop().split('.')[0];
-      //           self.setName(name);
-      //           self.scene.clear();
-      //           applySnapshot(self, JSON.parse(data));
-      //           self.scene.shaderGraph.update();
-      //           self.scene.shaderGraph.afterUpdate();
-      //           // undoManager.clear();
-      //         })
-      //       }).catch(err => {/*alert(err)*/});
     }
 
     /*
       breakout()
     */
     function breakout() {
-      let new_window = window.open("/output_window.html");
+      let new_window = window.open(
+        "/output_window.html",
+        "window",
+        "toolbar=no, menubar=no, resizable=yes"
+      );
+
       new_window.updateDimensions = (w, h) => self.onBreakoutResize(w, h);
       new_window.gl = self.p5_instance.canvas.getContext("2d");
 
@@ -328,36 +306,38 @@ const RootStore = types
       saves an image of the current scene
     */
     const snapshot = flow(function* snapshot(format = "PNG") {
-      //       var dataURL;
-      //       switch(format) {
-      //         case "PNG":
-      //           dataURL = self.p5_instance.canvas.toDataURL("image/png");
-      //           break;
-      //         case "JPEG":
-      //           let quality = 10;
-      //           dataURL = self.p5_instance.canvas.toDataURL("image/jpeg", quality);
-      //           break;
-      //         default:
-      //           dataURL = self.p5_instance.canvas.toDataURL("image/png");
-      //       }
-      //       var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
-      //       var content = new Buffer(data, 'base64');
-      //       let path = `${app.getPath("userData")}/snapshots`;
-      //       let options = {
-      //         defaultPath: path,
-      //         buttonLabel: "Save Image",
-      //       }
-      //       yield dialog.showSaveDialog(options).then((f) => {
-      //         fs.writeFile(f.filePath, content, "base64", (err) => {
-      //           if (err) {
-      //             console.log("an error has occurred: " + err.message);
-      //           } else {
-      //             console.log("snapshot saved",f.filePath);
-      //           }
-      //         });
-      //       }).catch(err => {
-      //         console.error(err)
-      //       });
+      console.log("saving snapshot");
+      let uri;
+
+      switch (format) {
+        case "PNG":
+          uri = self.p5_instance.canvas.toDataURL("image/png");
+          break;
+        case "JPEG":
+          let quality = 10;
+          uri = self.p5_instance.canvas.toDataURL("image/jpeg", quality);
+          break;
+        default:
+          uri = self.p5_instance.canvas.toDataURL("image/png");
+      }
+
+      let link = document.createElement("a");
+      link.download = `${self.name}`;
+
+      if (window.webkitURL != null) {
+        // Chrome allows the link to be clicked without actually adding it to the DOM.
+        link.href = uri;
+      } else {
+        // Firefox requires the link to be added to the DOM before it can be clicked.
+        link.href = uri;
+        link.onclick = e => {
+          document.body.removeChild(e.target);
+        };
+        link.style.display = "none";
+        document.body.appendChild(link);
+      }
+
+      link.click();
     });
 
     return {
