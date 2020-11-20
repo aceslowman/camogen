@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MainProvider } from "./MainContext";
 import { observer } from "mobx-react";
 
@@ -12,7 +12,9 @@ import ParameterEditorComponent from "./components/panels/ParameterEditorCompone
 import MessagesComponent from "./components/panels/MessagesComponent";
 import CaptureComponent from "./components/panels/CaptureComponent";
 import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
+
 import CaptureOverlay from "./components/overlays/CaptureOverlayComponent";
+import AboutOverlay from "./components/overlays/AboutOverlayComponent";
 
 import tinykeys from "tinykeys";
 import {
@@ -28,6 +30,7 @@ import { getSnapshot } from "mobx-state-tree";
 
 const App = observer(props => {
   const mainRef = useRef(null);
+  const [showAbout, setShowAbout] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -155,7 +158,8 @@ const App = observer(props => {
         {
             label: (
               <h1>camogen</h1>
-            )
+            ),
+            onClick: () => setShowAbout()
         },
         {
           label: "File",
@@ -304,6 +308,9 @@ const App = observer(props => {
         </div>
       </ThemeContext.Provider>
       <ContextMenuComponent items={props.store.context.contextmenu} />
+      {showAbout && (
+        <AboutOverlay />
+      )}
     </MainProvider>
   );
 });
