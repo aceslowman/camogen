@@ -159,7 +159,9 @@ const App = observer(props => {
             label: (
               <h1>camogen</h1>
             ),
-            onClick: () => setShowAbout()
+            onClick: () => {
+              setShowAbout(!showAbout)
+            }
         },
         {
           label: "File",
@@ -173,6 +175,12 @@ const App = observer(props => {
               onClick: () => props.store.load()
             },
             {
+              label: "New Scene",
+              onClick: () => {
+                props.store.scene.clear();
+              }
+            },
+            {
               label: "Preferences",
               onClick: () => {
                 props.store.layout.clear();
@@ -180,12 +188,6 @@ const App = observer(props => {
               }
             }
           ]
-        },
-        {
-          label: "New Scene",
-          onClick: () => {
-            props.store.scene.clear();
-          }
         },
         {
           label: "Library",
