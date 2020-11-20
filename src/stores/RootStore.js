@@ -205,6 +205,30 @@ const RootStore = types
     }
 
     function load() {
+      let link = document.createElement("input");
+      link.type = 'file';
+      
+      link.onchange = e => { 
+         var file = e.target.files[0]; 
+        
+        let reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+        
+        reader.onload = e => {
+          let content = e.target.result;
+          console.log('content',content)
+          
+          self.setName(name);
+          self.scene.clear();
+          applySnapshot(self, JSON.parse(content));
+          self.scene.shaderGraph.update();
+          self.scene.shaderGraph.afterUpdate();
+          // undoManager.clear();
+        }
+      }
+
+      
+      link.click();
       //       let options = {
       //           title: 'Load Project File',
       //           defaultPath: app.getPath("desktop"),
