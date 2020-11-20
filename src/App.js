@@ -31,7 +31,6 @@ import { getSnapshot } from "mobx-state-tree";
 const App = observer(props => {
   const mainRef = useRef(null);
   const [showAbout, setShowAbout] = useState(false);
-  const [saveNameDialog, setSaveNameDialog] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -168,7 +167,8 @@ const App = observer(props => {
           dropDown: [
             {
               // label: "Save Scene",
-              label: saveNameDialog ? "Save Scene" : (
+              label: (
+                <Fragmen
                 <input
                   style={{
                     backgroundColor: "inherit",
@@ -178,20 +178,17 @@ const App = observer(props => {
                     fontFamily: "inherit"
                   }}
                   type="text"
-                  placeholder="name"
-                  onSubmit={() => {
-                    console.log('submit')
+                  placeholder={props.store.name}
+                  onChange={(e) => {
+                    props.store.setName(e.target.value)
                   }}
                 />
-              ),
+              )
+            },
+            {
+              label: "Save Scene",
               onClick: () => {
-                // can I swap this out for a text dialog?
-                
-                // props.store.save();
-                if(!saveNameDialog) {
-                  setSaveNameDialog(!saveNameDialog)
-                  console.log("save");
-                }
+                props.store.save();
               }
             },
             {
