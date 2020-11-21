@@ -57,28 +57,20 @@ const ShaderGraph = observer(props => {
   }, [props.selectedNode, props.data, store.context, useKeys]);
 
   const handleContextMenu = e => {
-    console.log("shader graph context", e.currentTarget);
-    console.log(e.target)
-    console.log(e)
-    console.log("mainref", mainRef.current);
-    // e.preventDefault();
-    // e.stopPropagation();
-    
-    console.log('bubbles',e.bubbles)
+    e.stopPropagation();
 
-    // if (e.target === mainRef.current)
-      store.context.setContextmenu([
-        {
-          label: "Clear",
-          onClick: () => store.scene.clear()
-        }
-      ]);
+    store.context.setContextmenu([
+      {
+        label: "Clear",
+        onClick: () => store.scene.clear()
+      }
+    ]);
   };
 
   return (
-    <GenericPanel      
+    <GenericPanel
       panel={props.panel}
-      onContextMenuCapture={handleContextMenu}
+      onContextMenu={handleContextMenu}
       onFocus={handleFocus}
       indicators={
         useKeys

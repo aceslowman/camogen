@@ -14,7 +14,6 @@ const GraphComponent = observer(props => {
   const [labels, setLabels] = useState([]);
 
   const handleContextMenu = (e, node) => {
-    console.log('hit graph')
     e.stopPropagation()                       
     e.preventDefault();
 
