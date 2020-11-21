@@ -7,7 +7,8 @@ import Coordinate from './utils/Coordinate';
 import uuidv1 from 'uuid/v1';
 import { allOps } from './operators';
     
-const PossibleData = types.union(allOps, ImageInput, WebcamInput, Shader);
+// NOTE: rearranged ImageInput and Shader, keep an eye on this for issues
+const PossibleData = types.union(allOps, Shader, ImageInput, WebcamInput);
 const nodeRef = types.safeReference(types.late(() => GraphNode));
 
 const GraphNode = types
