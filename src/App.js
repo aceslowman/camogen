@@ -303,7 +303,8 @@ const App = observer(props => {
   const handleContextMenu = () => {
     // prevents context menu anywhere that hasn't been
     // explicitly allowed
-    // props.store.context.setContextmenu();
+    console.log('check')
+    props.store.context.setContextmenu();
   };
 
   return (
