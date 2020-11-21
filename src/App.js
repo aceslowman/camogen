@@ -303,12 +303,13 @@ const App = observer(props => {
   const handleContextMenu = () => {
     // prevents context menu anywhere that hasn't been
     // explicitly allowed
-    props.store.context.setContextmenu();
+    // props.store.context.setContextmenu();
   };
 
   return (
     <MainProvider value={{ store: props.store }}>
       <ThemeContext.Provider value={props.store.theme}>
+        
         <div
           id="APP"
           ref={mainRef}
@@ -319,6 +320,9 @@ const App = observer(props => {
               : "transparent"
           }}
         >
+          
+          <ContextMenuComponent items={props.store.context.contextmenu} />
+          
           {main_panel_toolbar}
 
           <CanvasDisplay panel={props.store.mainCanvasPanel} />
@@ -339,7 +343,6 @@ const App = observer(props => {
 
           {/*{!props.store.mainPanel.fullscreen && <CaptureOverlay />}*/}
         </div>
-        <ContextMenuComponent items={props.store.context.contextmenu} />
         {showAbout && (
           <AboutOverlay
             onRemove={() => {
