@@ -10,17 +10,12 @@ import { allOps } from "./operators";
 // NOTE: rearranged ImageInput and Shader, keep an eye on this for issues
 const PossibleData = types.union(
   {
-    dispatcher: (snap) => {
-      // switch(snap.type) {
-      //     case "Shader"
-      // }
-      console.log(snap) 
-      if(snap) {
-        // return snap.type;
-        if(snap.type === "WebcamInput")
-          return WebcamInput;
-        if(snap.type === "WebcamInput")
-          return WebcamInput;
+    dispatcher: snap => {
+      if (snap) {
+        if (snap.type === "Shader") return Shader;
+        if (snap.type === "WebcamInput") return WebcamInput;
+        if (snap.type === "Image") return Image;
+        return allOps;
       } else {
         return Shader;
       }

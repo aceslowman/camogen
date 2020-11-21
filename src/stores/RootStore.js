@@ -134,22 +134,22 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
-      window.localStorage.clear();
+      // window.localStorage.clear();
 
       // fetch default shaders
       fetchShaderFiles().then(d => {
         self.setupP5();
         self.setScene(Scene.create());
 
-        // applySnapshot(self, defaultSnapshot);
-        // self.scene.shaderGraph.update();
-        // self.scene.shaderGraph.afterUpdate();
+        applySnapshot(self, defaultSnapshot);
+        self.scene.shaderGraph.update();
+        self.scene.shaderGraph.afterUpdate();
 
         self.setReady(true);
 
         self.mainPanel.fitScreen();
 
-        console.log("APP LOCAL STORAGE", window.localStorage);
+        // console.log("APP LOCAL STORAGE", window.localStorage);
 
         // remove loading overlay
         document.querySelector(".loading").style.display = "none";

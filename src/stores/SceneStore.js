@@ -25,12 +25,12 @@ const Scene = types
                 likely to be replaced with
                 single loaded snapshot in RootScene
             */
-            self.shaderGraph.addNode();
-            self.shaderGraph.setSelectedByName('UV');
-            self.shaderGraph.root.select();
-            self.shaderGraph.setSelectedByName('Glyph')
+//             self.shaderGraph.addNode();
+//             self.shaderGraph.setSelectedByName('UV');
+//             self.shaderGraph.root.select();
+//             self.shaderGraph.setSelectedByName('Glyph')
             
-            self.shaderGraph.update();
+//             self.shaderGraph.update();
         }
 
         function addTarget(target = Target.create()) {
