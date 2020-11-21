@@ -14,8 +14,9 @@ const GraphComponent = observer(props => {
   const [labels, setLabels] = useState([]);
 
   const handleContextMenu = (e, node) => {
-    e.stopPropagation();                        
-    e.preventDefault();
+    console.log('hit graph')
+    // e.stopPropagation();                        
+    // e.preventDefault();
 
     node.select(); // select with right click
     store.context.setContextmenu([
