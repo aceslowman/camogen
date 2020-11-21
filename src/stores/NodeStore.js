@@ -9,12 +9,12 @@ import { allOps } from "./operators";
 
 // NOTE: rearranged ImageInput and Shader, keep an eye on this for issues
 const PossibleData = types.union(
-  {
-    dispatcher: (snap) => {
+//   {
+//     dispatcher: (snap) => {
       
-      console.log(snap) 
-    }
-  },
+//       console.log(snap) 
+//     }
+//   },
   Shader,
   allOps,
   ImageInput,

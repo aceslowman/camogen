@@ -1,4 +1,5 @@
 {
+    "type": "Shader",
     "name": "Sharpen",
     "precision": "\n#ifdef GL_ES\nprecision highp float;\n#endif \n",
     "vert": "attribute vec3 aPosition;\nattribute vec2 aTexCoord;\n\nuniform vec2 resolution;\nuniform float width;\nvarying vec2 texcoord11;\nvarying vec2 texcoord00;\nvarying vec2 texcoord02;\nvarying vec2 texcoord20;\nvarying vec2 texcoord22;\nvoid main() {\n    gl_Position = vec4(((aPosition.xy / resolution) * 2.0 - 1.0) * vec2(1.0, -1.0), 0.0, 1.0);\n    texcoord11 = aTexCoord;\n    texcoord00 = aTexCoord + vec2(-width, -width);\n    texcoord02 = aTexCoord + vec2(width, -width);\n    texcoord20 = aTexCoord + vec2(width, width);\n    texcoord22 = aTexCoord + vec2(-width, width);\n}",

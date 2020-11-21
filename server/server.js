@@ -4,7 +4,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require("fs");
 const dirTree = require('directory-tree');
 
-let shader_collection;
+let shader_collection; 
 
 function preloadDefaultShaders() {
   const shader_path = path.resolve(__dirname, '../shaders');

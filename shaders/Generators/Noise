@@ -1,4 +1,5 @@
 {
+    "type": "Shader",
     "name": "Noise",
     "precision": "\n\t\t#ifdef GL_ES\n\t\tprecision highp float;\n\t\t#endif \n\t",
     "vert": "\n\t\tattribute vec3 aPosition;\n\t\tattribute vec2 aTexCoord;\n\n\t\tvarying vec2 vTexCoord;\n\n\t\tvoid main() {\n\t\t    vTexCoord = aTexCoord;\n\n\t\t    vec4 positionVec4 = vec4(aPosition,1.0);\n\t\t    positionVec4.xy = positionVec4.xy * vec2(1.,-1.);\n\n\t\t    gl_Position = positionVec4;\n\t\t}\n\t",

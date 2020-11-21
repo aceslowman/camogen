@@ -9,6 +9,7 @@ import * as DefaultShader from '../DefaultShader';
 
 const webcam = types
     .model("Webcam", {
+        type: 'WebcamInput',
         name: 'Webcam',
         input_options: types.array(types.frozen()),
         display_mode: types.optional(types.enumeration('Display Mode', [

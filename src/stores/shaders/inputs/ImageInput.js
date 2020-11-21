@@ -4,6 +4,7 @@ import * as DefaultShader from '../DefaultShader';
 
 const webcam = types
     .model("Image", {
+        type: 'Image',
         name: 'Image',
         precision: DefaultShader.precision,
         vert: DefaultShader.vert,
