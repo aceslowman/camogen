@@ -25,6 +25,7 @@ const Uniform = types
 
 let shader = types
     .model("Shader", {
+        type
         uniforms: types.array(Uniform),
         name: types.maybe(types.string), 
         precision: DefaultShader.precision,
