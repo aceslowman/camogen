@@ -58,8 +58,8 @@ const ShaderGraph = observer((props) => {
 	
 	const handleContextMenu = (e) => {
     console.log('shader graph context')
-		e.preventDefault();
-		e.stopPropagation();
+		// e.preventDefault();
+		// e.stopPropagation();
 		store.context.setContextmenu([{
 			label: "Clear",
 			onClick: () => store.scene.clear()
