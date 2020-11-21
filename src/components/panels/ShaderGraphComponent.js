@@ -66,7 +66,7 @@ const ShaderGraph = observer(props => {
     
     console.log('bubbles',e.bubbles)
 
-    if (e.target === mainRef.current)
+    // if (e.target === mainRef.current)
       store.context.setContextmenu([
         {
           label: "Clear",
@@ -76,8 +76,7 @@ const ShaderGraph = observer(props => {
   };
 
   return (
-    <GenericPanel
-      onRef={mainRef}
+    <GenericPanel      
       panel={props.panel}
       onContextMenuCapture={handleContextMenu}
       onFocus={handleFocus}
@@ -95,6 +94,7 @@ const ShaderGraph = observer(props => {
     >
       {props.data && (
         <GraphComponent
+          onRef={mainRef}
           data={props.data}
           coord_bounds={props.coord_bounds}
           selectedNode={props.selectedNode}
