@@ -15,7 +15,8 @@ const GraphComponent = observer(props => {
 
   const handleContextMenu = (e, node) => {
     console.log('hit graph')
-    // e.stopPropagation();                        
+    // e.stopPropagation()
+    // e.stopImmediatePropagation();                        
     // e.preventDefault();
 
     node.select(); // select with right click

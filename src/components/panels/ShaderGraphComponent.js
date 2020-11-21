@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import MainContext from '../../MainContext';
 import GraphComponent from '../graph/GraphComponent';
 import { GenericPanel } from 'maco-ui';
@@ -7,6 +7,7 @@ import { observer } from 'mobx-react';
 const ShaderGraph = observer((props) => {
 	const store = useContext(MainContext).store;
 	const [useKeys, setUseKeys] = useState(false);
+  const mainRef = useRef();
 
 	const handleFocus = (e) => {
 		setUseKeys(e ? true : false);
@@ -57,17 +58,21 @@ const ShaderGraph = observer((props) => {
 	])
 	
 	const handleContextMenu = (e) => {
-    console.log('shader graph context')
+    console.log('shader graph context', e.target)
+    console.log('mainref',mainRef.current)
 		// e.preventDefault();
 		// e.stopPropagation();
-		store.context.setContextmenu([{
-			label: "Clear",
-			onClick: () => store.scene.clear()
-		}])
+    
+    if(e.target === mainRef.current)
+      store.context.setContextmenu([{
+        label: "Clear",
+        onClick: () => store.scene.clear()
+      }])
 	}
 
 	return(	
 		<GenericPanel 
+      onRef={mainRef}
 			panel={props.panel}
 			onContextMenu={handleContextMenu}
 			onFocus={handleFocus}
