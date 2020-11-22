@@ -140,12 +140,14 @@ const App = observer(props => {
       }}
       items={[
         {
+          title: "make fullscreen",
           label: "✳",
           onClick: () => {
             props.store.mainCanvasPanel.toggleFullscreen();
             props.store.mainCanvasPanel.toggleFloating();
             props.store.mainCanvasPanel.fitScreen();
-          }
+          },
+          highlight: props.store.mainCanvasPanel.fullscreen
         },
         {
           label: <h1>camogen</h1>,
