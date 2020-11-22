@@ -15,9 +15,6 @@ const CanvasDisplay = observer(props => {
     if (!store.p5_instance) return;
 
     let bounds = wrapper_ref.current.getBoundingClientRect();
-    console.log("wrapper_ref", wrapper_ref.current);
-    // console.log('wrapper_ref',wrapper_ref.current);
-    console.log("bounds", bounds);
 
     store.p5_instance.resizeCanvas(bounds.width, bounds.height);
 
@@ -33,6 +30,7 @@ const CanvasDisplay = observer(props => {
     <GenericPanel
       panel={props.panel}
       showTitle={true}
+      // showTitle={false}
       floating={false}
       footbar={
         <ToolbarComponent
@@ -41,12 +39,57 @@ const CanvasDisplay = observer(props => {
           }}
           items={[
             {
-              label: "play",
+              label: "▶",
               onClick: () => {
-                // setShowAbout(!showAbout);
+                // handlePlay
               }
-              // highlight: showAbout
-            }
+              highlight: store.transport.playing
+            },
+            {
+              label: "■",
+              onClick: () => {
+                // handlePlay
+              }
+              highlight: store.transport.playing
+            },
+            {
+              label: "⭰",
+              onClick: () => {
+                // handlePlay
+              }
+              highlight: store.transport.playing
+            },
+            {
+              label: "▶",
+              onClick: () => {
+                // handlePlay
+              }
+              highlight: store.transport.playing
+            },
+            
+                <button 
+                    title="stop" 
+                    onClick={handleStop}
+                    style={{
+                        color: !store.transport.playing ? theme.accent_color : theme.text_color
+                    }}
+                > ■ </button>
+                <button 
+                    title="to start" 
+                    onClick={handleSkipToStart}
+                > ⭰ </button>
+                {/* <button onClick={handleSkipToStart}> ⭲ </button> */}
+                <button 
+                    title="record" 
+                    onClick={handleRecord}
+                    style={{
+                        color: store.transport.recording ? 'red' : theme.text_color
+                    }}
+                > ● </button>
+                <button 
+                    title="snapshot" 
+                    onClick={handleSnap}
+                > snap </button>
           ]}
         />
       }

@@ -55,13 +55,13 @@ const RootStore = types
       id: "canvas",
       // title: "canvas",
       floating: false,
-      canFloat: true,
+      canFloat: false,
       collapsible: true,
       fullscreen: true,
       canFullscreen: true,
       showTitle: false,
-      dimensions: [window.innerWidth, window.innerHeight],
-      position: [0, 0]
+      dimensions: [window.innerWidth - 100, window.innerHeight - 100],
+      position: [window.innerWidth / 2 - (window.innerWidth - 100)/2, window.innerHeight / 2 - (window.innerHeight - 100)/2]
     }),
     theme: types.frozen(Themes.yutani),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
