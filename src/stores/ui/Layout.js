@@ -53,7 +53,8 @@ const Layout = types
 
     function distributeChildren() {
       self.children.forEach((e, i) => {
-        e.setSize(i / self.children.length);
+        console.log(i,(i + 1) / self.children.length)
+        e.setSize((1) / self.children.length);
       });
     }
 
@@ -76,15 +77,20 @@ const Layout = types
         panel = CorePanels[panel];
       }
 
-      self.panels.put(panel);
-      self.children.push({
+      let layout = Layout.create({
         id: panel.id,
-        panel: panel.id
+        panel: panel.id,
+        size: 1 / self.children.length
       });
 
-      console.log('self',self)
+      self.panels.put(panel);
+      self.children.push(layout);
+
+
+      console.log("self", self);
+
+      self.distributeChildren();
       
-      // self.distributeChildren();
     }
 
     function removePanel(panel) {
