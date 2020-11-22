@@ -53,12 +53,13 @@ const RootStore = types
     }),
     mainCanvasPanel: types.optional(Panel, {
       id: "canvas",
-      title: "canvas",
-      floating: true,
+      // title: "canvas",
+      floating: false,
       canFloat: false,
       collapsible: true,
       fullscreen: true,
       canFullscreen: true,
+      showTitle: false,
       dimensions: [window.innerWidth, window.innerHeight],
       position: [0, 0]
     }),

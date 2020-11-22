@@ -6,6 +6,7 @@ const Panel = types
   .model("Panel", {
     id: types.identifier,
     title: types.maybe(types.string),
+    showTitle: true,
     type: "",
     subtitle: types.maybe(types.string),
     floating: false,
