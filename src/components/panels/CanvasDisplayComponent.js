@@ -90,7 +90,7 @@ const CanvasDisplay = observer(props => {
             {
               label: (
                 <InputSelect
-                  label="format"
+                  //label="format"
                   options={[
                     { label: ".png", value: "PNG" },
                     { label: ".jpeg", value: "JPEG" }
