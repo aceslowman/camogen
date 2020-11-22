@@ -16,14 +16,14 @@ const CanvasDisplay = observer(props => {
 
     let bounds = wrapper_ref.current.getBoundingClientRect();
     console.log('wrapper_ref',wrapper_ref.current);
-    console.log('wrapper_ref',wrapper_ref.current);
+    // console.log('wrapper_ref',wrapper_ref.current);
     console.log('bounds', bounds)
 
-    store.p5_instance.resizeCanvas(bounds.width, bounds.height-22);
+    store.p5_instance.resizeCanvas(bounds.width, bounds.height);
 
     // update target dimensions
     for (let target_data of store.scene.targets) {
-      target_data.ref.resizeCanvas(bounds.width, bounds.height-22);
+      target_data.ref.resizeCanvas(bounds.width, bounds.height);
     }
   }, wrapper_ref);
 
