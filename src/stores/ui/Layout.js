@@ -86,11 +86,9 @@ const Layout = types
       self.panels.put(panel);
       self.children.push(layout);
 
-
       console.log("self", self);
 
-      self.distributeChildren();
-      
+      self.distributeChildren();      
     }
 
     function removePanel(panel) {
