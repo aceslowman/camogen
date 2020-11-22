@@ -34,6 +34,9 @@ const ShaderControls = observer(props => {
         label: "Edit Parameter",
         onClick: () => {
           store.selectParameter(param);
+          // TODO: should float instead of change workspace
+          // but that can wait until ui store is moved to
+          // separate library
           // store.layout.addPanel({
           //   id: uuidv1(),
           //   title: "Edit Param",
@@ -50,8 +53,8 @@ const ShaderControls = observer(props => {
           //     window.innerHeight / 2 - 200
           //   ]
           // });
-          console.log(store)
-          store.layout.setLayout("PARAMETER")
+          console.log(store);
+          store.layout.setLayout("PARAMETER");
           store.context.setContextmenu();
         }
       }

@@ -8,6 +8,7 @@ import { OperatorGraph } from './GraphStore';
 
 const Uniform = types
     .model("Uniform", {
+        uuid: types.identifier,
         name: types.maybe(types.string),
         elements: types.array(Parameter),
     })
@@ -19,6 +20,7 @@ const Uniform = types
                 name: name,
                 value: value,
                 controlType: type,
+                uniform: self
             }))
         }
     }))
@@ -370,4 +372,5 @@ let shader = types
 
 const Shader = types.compose('Shader', NodeData, shader);
 
+export {Uniform}
 export default Shader;

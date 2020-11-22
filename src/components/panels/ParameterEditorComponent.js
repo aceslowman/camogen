@@ -68,11 +68,14 @@ const OperatorEditor = observer(props => {
       ]}
     />
   );
+  
+  console.log(props.data)
 
   return (
     <GenericPanel 
       panel={props.panel} 
       toolbar={props.data && toolbar}
+      subtitle={props.data.name}
     >
       {props.data && (
         <SplitContainer vertical>
