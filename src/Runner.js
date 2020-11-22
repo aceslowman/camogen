@@ -4,15 +4,17 @@ const Runner = (p, store) => {
         // let container = document.getElementById('APP')
         let container = document.getElementById('canvastest');
       
-        let bounds = container.getBoundingClientRect();
         
         let c = p.createCanvas(
-            bounds.width+15,
-            bounds.height
+            50,
+            50
         );
         
         container.append(c.canvas);
+      
+        let bounds = container.getBoundingClientRect();
         
+        c.resize(bounds.width,bounds.height)
         // debug red
         p.background(250, 25, 25);
     }
