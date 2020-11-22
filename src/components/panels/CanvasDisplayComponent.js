@@ -29,6 +29,9 @@ const CanvasDisplay = observer(props => {
   
   const transportTools = (
     <ToolbarComponent
+      styles={{
+        
+      }}
       items={[
         {
           label: "play",
