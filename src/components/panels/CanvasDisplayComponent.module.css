@@ -3,6 +3,7 @@
   height:100%;
 /*     background-color:green; */
     /* overflow: auto; */
+  box-sizing:border-box;
 }
 
 .wrapper {
@@ -12,10 +13,12 @@
   box-sizing:border-box;
   display:flex;
   flex-flow: column;
+  box-sizing:border-box;
   justify-items:flex-end;
 }
 
 .canvaswrapper {
   background-color: purple;
   height:100%;
+  box-sizing:border-box;
 }

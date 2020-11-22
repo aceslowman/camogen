@@ -2,11 +2,11 @@ const Runner = (p, store) => {
 
     p.setup = () => {
         // let container = document.getElementById('APP')
-        let container = document.getElementById('canvastest')
+        let container = document.getElementById('canvastest');
         
         let c = p.createCanvas(
-            container.offsetWidth+15,
-            container.offsetHeight
+            container.offsetWidth,
+            container.offsetHeight-15
         );
         
         container.append(c.canvas);

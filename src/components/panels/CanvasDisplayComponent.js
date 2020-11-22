@@ -11,27 +11,24 @@ const CanvasDisplay = observer(props => {
   const wrapper_ref = useRef(null);
 
   useResizeObserver(() => {
-    // const ctx = canvas_ref.current.getContext('2d');
-    // const wrapper_bounds = wrapper_ref.current.getBoundingClientRect();
-    // let _labels = [];
     if (store.breakoutControlled) return;
     if (!store.p5_instance) return;
 
     let bounds = wrapper_ref.current.getBoundingClientRect();
     console.log(wrapper_ref.current)
 
-    store.p5_instance.resizeCanvas(bounds.width, bounds.height);
+    store.p5_instance.resizeCanvas(bounds.width, bounds.height-4);
 
     // update target dimensions
     for (let target_data of store.scene.targets) {
-      target_data.ref.resizeCanvas(bounds.width, bounds.height);
+      target_data.ref.resizeCanvas(bounds.width, bounds.height-4);
     }
   }, wrapper_ref);
   
   const transportTools = (
     <ToolbarComponent
-      styles={{
-        
+      style={{
+        zIndex: 0
       }}
       items={[
         {
@@ -58,8 +55,8 @@ const CanvasDisplay = observer(props => {
       }}
     >
       <div className={style.wrapper}>
-        <div ref={wrapper_ref} className={style.canvaswrapper}>
-          <div id="canvastest"  className={style.canvastest}></div>
+        <div className={style.canvaswrapper}>
+          <div id="canvastest" ref={wrapper_ref} className={style.canvastest}></div>
         </div>
 
         
