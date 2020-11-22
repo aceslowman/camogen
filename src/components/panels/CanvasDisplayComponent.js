@@ -41,26 +41,20 @@ const CanvasDisplay = observer(props => {
     />
   )
 
-
+  /*toolbar={transportTools}*/
+  console.log(props.panel)
   return (
     <GenericPanel
       panel={props.panel}
-      toolbar={transportTools}
+      showTitle={false}
+      floating={false}
       style={{
-        zIndex: -1
+        // zIndex: -1
       }}
     >
-      {/* {props.data && (
-				<GraphComponent 
-					data={props.data}
-					coord_bounds={props.coord_bounds}
-					selectedNode={props.selectedNode}
-				/>
-			)}
-
-			{ props.data && props.data.updateFlag } */}
-      {/* { store.p5_instance && store.p5_instance.canvas } */}
-      <div id="canvastest" ref={wrapper_ref} className={style.canvastest}></div>
+      <div id="" ref={wrapper_ref} className={style.canvastest}></div>
+      
+      {transportTools}
     </GenericPanel>
   );
 });

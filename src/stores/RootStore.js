@@ -55,7 +55,7 @@ const RootStore = types
       id: "canvas",
       // title: "canvas",
       floating: false,
-      canFloat: false,
+      canFloat: true,
       collapsible: true,
       fullscreen: true,
       canFullscreen: true,
@@ -142,9 +142,9 @@ const RootStore = types
         self.setupP5();
         self.setScene(Scene.create());
 
-        applySnapshot(self, defaultSnapshot);
-        self.scene.shaderGraph.update();
-        self.scene.shaderGraph.afterUpdate();
+        // applySnapshot(self, defaultSnapshot);
+        // self.scene.shaderGraph.update();
+        // self.scene.shaderGraph.afterUpdate();
 
         self.setReady(true);
 
