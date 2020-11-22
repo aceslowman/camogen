@@ -15,9 +15,9 @@ const CanvasDisplay = observer(props => {
     if (!store.p5_instance) return;
 
     let bounds = wrapper_ref.current.getBoundingClientRect();
-    console.log('wrapper_ref',wrapper_ref.current);
+    console.log("wrapper_ref", wrapper_ref.current);
     // console.log('wrapper_ref',wrapper_ref.current);
-    console.log('bounds', bounds)
+    console.log("bounds", bounds);
 
     store.p5_instance.resizeCanvas(bounds.width, bounds.height);
 
@@ -32,21 +32,33 @@ const CanvasDisplay = observer(props => {
   return (
     <GenericPanel
       panel={props.panel}
-      showTitle={false}
+      showTitle={true}
       floating={false}
+      footbar={
+        <ToolbarComponent
+          style={{
+            zIndex: 0
+          }}
+          items={[
+            {
+              label: "play",
+              onClick: () => {
+                // setShowAbout(!showAbout);
+              }
+              // highlight: showAbout
+            }
+          ]}
+        />
+      }
       style={{
-        zIndex: -1
+        zIndex: 0
       }}
     >
-      <div className={style.wrapper}>
         <div
           ref={wrapper_ref}
           id="canvastest"
           className={style.canvastest}
         ></div>
-
-        
-      </div>
     </GenericPanel>
   );
 });
