@@ -15,35 +15,20 @@ const CanvasDisplay = observer(props => {
     if (!store.p5_instance) return;
 
     let bounds = wrapper_ref.current.getBoundingClientRect();
-    console.log(wrapper_ref.current)
+    console.log('wrapper_ref',wrapper_ref.current);
+    console.log('wrapper_ref',wrapper_ref.current);
+    console.log('bounds', bounds)
 
-    store.p5_instance.resizeCanvas(bounds.width, bounds.height-4);
+    store.p5_instance.resizeCanvas(bounds.width, bounds.height-22);
 
     // update target dimensions
     for (let target_data of store.scene.targets) {
-      target_data.ref.resizeCanvas(bounds.width, bounds.height-4);
+      target_data.ref.resizeCanvas(bounds.width, bounds.height-22);
     }
   }, wrapper_ref);
-  
-  const transportTools = (
-    <ToolbarComponent
-      style={{
-        zIndex: 0
-      }}
-      items={[
-        {
-          label: "play",
-          onClick: () => {
-            // setShowAbout(!showAbout);
-          },
-          // highlight: showAbout
-        }
-      ]}
-    />
-  )
 
   /*toolbar={transportTools}*/
-  console.log(props.panel)
+  console.log(props.panel);
   return (
     <GenericPanel
       panel={props.panel}
@@ -51,18 +36,31 @@ const CanvasDisplay = observer(props => {
       floating={false}
       style={{
         // zIndex: -1
-        boxSizing: 'border-box'
+        boxSizing: "border-box"
       }}
     >
       <div className={style.wrapper}>
-        <div className={style.canvaswrapper}>
-          <div id="canvastest" ref={wrapper_ref} className={style.canvastest}></div>
-        </div>
+        <div
+          ref={wrapper_ref}
+          id="canvastest"
+          className={style.canvastest}
+        ></div>
 
-        
-        {transportTools}
+        <ToolbarComponent
+          style={{
+            zIndex: 0
+          }}
+          items={[
+            {
+              label: "play",
+              onClick: () => {
+                // setShowAbout(!showAbout);
+              }
+              // highlight: showAbout
+            }
+          ]}
+        />
       </div>
-      
     </GenericPanel>
   );
 });

@@ -6,7 +6,7 @@ const Runner = (p, store) => {
         
         let c = p.createCanvas(
             container.offsetWidth,
-            container.offsetHeight-15
+            container.offsetHeight
         );
         
         container.append(c.canvas);

@@ -33,24 +33,24 @@ const App = observer(props => {
   const [showAbout, setShowAbout] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (props.store.breakoutControlled) return;
-      if (!props.store.p5_instance) return;
+//     const handleResize = () => {
+//       if (props.store.breakoutControlled) return;
+//       if (!props.store.p5_instance) return;
 
-      let bounds = mainRef.current.getBoundingClientRect();
+//       let bounds = mainRef.current.getBoundingClientRect();
 
-      props.store.p5_instance.resizeCanvas(bounds.width, bounds.height);
+//       props.store.p5_instance.resizeCanvas(bounds.width, bounds.height);
 
-      // update target dimensions
-      for (let target_data of props.store.scene.targets) {
-        target_data.ref.resizeCanvas(bounds.width, bounds.height);
-      }
+//       // update target dimensions
+//       for (let target_data of props.store.scene.targets) {
+//         target_data.ref.resizeCanvas(bounds.width, bounds.height);
+//       }
 
-      // props.store.p5_instance.draw();
-      props.store.mainPanel.fitScreen();
-    };
+//       // props.store.p5_instance.draw();
+//       props.store.mainPanel.fitScreen();
+//     };
 
-    window.addEventListener("resize", handleResize);
+    // window.addEventListener("resize", handleResize);
 
     let unsubscribe = tinykeys(window, {
       "$mod+KeyZ": () => {
