@@ -148,6 +148,7 @@ const RootStore = types
         self.setReady(true);
 
         self.mainPanel.fitScreen();
+        self.mainPanel.center();
 
         // console.log("APP LOCAL STORAGE", window.localStorage);
 

@@ -342,7 +342,7 @@ const App = observer(props => {
             </GenericPanel>
           )}
 
-          {/*{!props.store.mainPanel.fullscreen && <CaptureOverlay />}*/}
+          {!props.store.mainPanel.fullscreen && <CaptureOverlay />}
         </div>
         {showAbout && (
           <AboutOverlay
