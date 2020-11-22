@@ -45,20 +45,7 @@ const CanvasDisplay = observer(props => {
           className={style.canvastest}
         ></div>
 
-        <ToolbarComponent
-          style={{
-            zIndex: 0
-          }}
-          items={[
-            {
-              label: "play",
-              onClick: () => {
-                // setShowAbout(!showAbout);
-              }
-              // highlight: showAbout
-            }
-          ]}
-        />
+        
       </div>
     </GenericPanel>
   );
