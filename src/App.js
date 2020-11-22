@@ -300,9 +300,7 @@ const App = observer(props => {
           ref={mainRef}
           onContextMenu={handleContextMenu}
           style={{
-            backgroundColor: props.store.mainPanel.fullscreen
-              ? props.store.theme.secondary_color
-              : "transparent"
+            backgroundColor: props.store.theme.secondary_color
           }}
         >
           

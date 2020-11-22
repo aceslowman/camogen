@@ -5,10 +5,10 @@ import Layout from "./Layout";
 const Panel = types
   .model("Panel", {
     id: types.identifier,
-    title: types.maybe(types.string),
-    showTitle: true,
     type: "",
+    title: types.maybe(types.string),
     subtitle: types.maybe(types.string),
+    showTitle: true,
     floating: false,
     fullscreen: false,
     canFloat: false,
@@ -26,10 +26,12 @@ const Panel = types
     }
 
     function setPosition(p) {
+      // TEMP: hack to keep away from title, use safe areas instead
+      if(p[1] < 24) p[1] = 24;
       self.position = p;
     }
 
-    function setDimensions(d) {
+    function setDimensions(d) {      
       self.dimensions = d;
     }
 
