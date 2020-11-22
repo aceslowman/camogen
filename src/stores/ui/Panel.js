@@ -2,6 +2,8 @@ import { getParent, getSnapshot, types } from "mobx-state-tree";
 import { v1 as uuidv1 } from "uuid";
 import Layout from "./Layout";
 
+const toolbarHeight = 24;
+
 const Panel = types
   .model("Panel", {
     id: types.identifier,
@@ -24,6 +26,10 @@ const Panel = types
     function setFloating(f) {
       self.floating = f;
     }
+    
+    function toggleFloating() {
+      self.floating = !self.floating;
+    }
 
     function setPosition(p) {
       // TEMP: hack to keep away from title, use safe areas instead
@@ -37,6 +43,10 @@ const Panel = types
 
     function setFullscreen(f) {
       self.fullscreen = f;
+    }
+    
+    function toggleFullscreen() {
+      self.fullscreen = !self.fullscreen;
     }
 
     function onRemove() {
@@ -63,9 +73,11 @@ const Panel = types
 
     return {
       setFloating,
+      toggleFloating,
       setPosition,
       setDimensions,
       setFullscreen,
+      toggleFullscreen,
       center,
       fitScreen,
       onRemove

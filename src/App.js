@@ -140,6 +140,14 @@ const App = observer(props => {
       }}
       items={[
         {
+          label: "✳",
+          onClick: () => {
+            props.store.mainCanvasPanel.toggleFullscreen();
+            props.store.mainCanvasPanel.toggleFloating();
+            props.store.mainCanvasPanel.fitScreen();
+          }
+        },
+        {
           label: <h1>camogen</h1>,
           onClick: () => {
             setShowAbout(!showAbout);

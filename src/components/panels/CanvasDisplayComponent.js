@@ -24,13 +24,10 @@ const CanvasDisplay = observer(props => {
     }
   }, wrapper_ref);
 
-  /*toolbar={transportTools}*/
-  console.log(props.panel);
   return (
     <GenericPanel
       panel={props.panel}
-      showTitle={true}
-      // showTitle={false}
+      showTitle={!props.panel.fullscreen}
       floating={false}
       footbar={
         <ToolbarComponent
