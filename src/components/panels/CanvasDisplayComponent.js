@@ -32,11 +32,10 @@ const CanvasDisplay = observer(props => {
   return (
     <GenericPanel
       panel={props.panel}
-      // showTitle={false}
+      showTitle={false}
       floating={false}
       style={{
-        // zIndex: -1
-        boxSizing: "border-box"
+        zIndex: -1
       }}
     >
       <div className={style.wrapper}>

@@ -135,6 +135,9 @@ const App = observer(props => {
 
   const main_panel_toolbar = props.store.ready && (
     <ToolbarComponent
+      style={{
+        position:'static'
+      }}
       items={[
         {
           label: <h1>camogen</h1>,
@@ -305,7 +308,7 @@ const App = observer(props => {
           
           <ContextMenuComponent items={props.store.context.contextmenu} />
           
-          {/*main_panel_toolbar*/}
+          {main_panel_toolbar}
 
           <CanvasDisplay panel={props.store.mainCanvasPanel} />
 
