@@ -7,7 +7,7 @@ import style from "./CanvasDisplayComponent.module.css";
 
 const CanvasDisplay = observer(props => {
   const store = useContext(MainContext).store;
-  const [format, setFormat] = useState('PNG');
+  const [format, setFormat] = useState("PNG");
   const [useKeys, setUseKeys] = useState(false);
   const wrapper_ref = useRef(null);
 
@@ -66,26 +66,33 @@ const CanvasDisplay = observer(props => {
           }}
           items={[
             {
+              title: "play",
               label: "▶",
               onClick: handlePlay,
               highlight: store.transport.playing
             },
             {
+              title: "stop",
               label: "■",
               onClick: handleStop,
               highlight: !store.transport.playing
             },
             {
+              title: "record / snap",
               label: "●",
-              onClick: handleSnap
+              onClick: handleSnap,
+              style: {
+                color: 'red305'
+              }
             },
             {
-              label: "to start",
+              label: "rewind",
               onClick: handleSkipToStart,
               highlight: store.transport.playing
             },
             {
-              label: `frames: ${store.transport.frameclock}`
+              label: `frames: ${store.transport.frameclock}`,
+              style: {}
             },
             {
               label: (
@@ -95,10 +102,16 @@ const CanvasDisplay = observer(props => {
                     { label: ".png", value: "PNG" },
                     { label: ".jpeg", value: "JPEG" }
                   ]}
+                  style={{
+                    height: '100%'
+                  }}
                   onChange={() => {}}
                 />
               ),
-              highlight: false
+              highlight: false,
+              style: {
+                padding: 0
+              }
             }
           ]}
         />
