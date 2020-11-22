@@ -38,6 +38,9 @@ const AboutOverlay = observer(props => {
       }}
       canRemove={true}
       onRemove={props.onRemove}
+      style={{
+        zIndex: 100
+      }}
     >
       <TextComponent>
         <h1>

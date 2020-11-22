@@ -136,18 +136,20 @@ const App = observer(props => {
   const main_panel_toolbar = props.store.ready && (
     <ToolbarComponent
       style={{
-        position:'static'
+        position: "static"
       }}
       items={[
         {
-          title: "make fullscreen",
+          title: props.store.mainCanvasPanel.fullscreen
+            ? "float canvas"
+            : "fullscreen canvas",
           label: "✳",
           onClick: () => {
             props.store.mainCanvasPanel.toggleFullscreen();
             props.store.mainCanvasPanel.toggleFloating();
             props.store.mainCanvasPanel.fitScreen();
           },
-          highlight: props.store.mainCanvasPanel.fullscreen
+          highlight: !props.store.mainCanvasPanel.fullscreen
         },
         {
           label: <h1>camogen</h1>,
@@ -294,17 +296,15 @@ const App = observer(props => {
     />
   );
 
-  const handleContextMenu = (e) => {
+  const handleContextMenu = e => {
     // prevents context menu anywhere that hasn't been
     // explicitly allowed
-    console.log('hit')
     props.store.context.setContextmenu();
   };
 
   return (
     <MainProvider value={{ store: props.store }}>
       <ThemeContext.Provider value={props.store.theme}>
-        
         <div
           id="APP"
           ref={mainRef}
@@ -313,9 +313,8 @@ const App = observer(props => {
             backgroundColor: props.store.theme.secondary_color
           }}
         >
-          
           <ContextMenuComponent items={props.store.context.contextmenu} />
-          
+
           {main_panel_toolbar}
 
           <CanvasDisplay panel={props.store.mainCanvasPanel} />
@@ -333,8 +332,6 @@ const App = observer(props => {
               </LayoutContainer>
             </GenericPanel>
           )}
-
-          {/*!props.store.mainPanel.fullscreen && <CaptureOverlay />*/}
         </div>
         {showAbout && (
           <AboutOverlay
