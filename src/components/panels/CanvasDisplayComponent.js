@@ -9,6 +9,8 @@ const CanvasDisplay = observer(props => {
   const store = useContext(MainContext).store;
   const [format, setFormat] = useState("PNG");
   const [useKeys, setUseKeys] = useState(false);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
   const wrapper_ref = useRef(null);
 
   useResizeObserver(() => {
@@ -18,6 +20,9 @@ const CanvasDisplay = observer(props => {
     let bounds = wrapper_ref.current.getBoundingClientRect();
 
     store.p5_instance.resizeCanvas(bounds.width, bounds.height);
+    
+    setWidth(bounds.width);
+    setHeight(bounds.height);
 
     // update target dimensions
     for (let target_data of store.scene.targets) {
@@ -26,17 +31,14 @@ const CanvasDisplay = observer(props => {
   }, wrapper_ref);
 
   const handlePlay = e => {
-    console.log("Play");
     store.transport.play();
   };
 
   const handleStop = e => {
-    console.log("Stop");
     store.transport.stop();
   };
 
   const handleRecord = e => {
-    console.log("Record");
     store.transport.record();
   };
 
@@ -45,12 +47,10 @@ const CanvasDisplay = observer(props => {
   };
 
   const handleSnap = e => {
-    console.log("Snap");
     store.snapshot(format);
   };
 
   const handleFormatSelect = e => {
-    console.log("FormatSelect", e);
     setFormat(e);
   };
 
@@ -111,6 +111,12 @@ const CanvasDisplay = observer(props => {
               highlight: false,
               style: {
                 padding: 0
+              }
+            },
+            {
+              label: `[${width}x${height}]`,
+              style: {
+                alignSelf: 'flex-end'
               }
             }
           ]}
