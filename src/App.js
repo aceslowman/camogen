@@ -324,7 +324,7 @@ const App = observer(props => {
           
           <ContextMenuComponent items={props.store.context.contextmenu} />
           
-          {main_panel_toolbar}
+          {/*main_panel_toolbar*/}
 
           <CanvasDisplay panel={props.store.mainCanvasPanel} />
 

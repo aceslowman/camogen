@@ -1,12 +1,16 @@
 .canvastest {
-
-    
+  width:100%;
+  height:100%;
+/*     background-color:green; */
     /* overflow: auto; */
 }
 
 .wrapper {
-  background-color: orange;
+/*   background-color: orange; */
   width: 100%;
   height: 100%;
   box-sizing:border-box;
+  display:flex;
+  flex-flow: column;
+  justify-items:flex-end;
 }

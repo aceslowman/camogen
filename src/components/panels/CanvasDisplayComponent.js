@@ -57,10 +57,11 @@ const CanvasDisplay = observer(props => {
       }}
     >
       <div className={style.wrapper}>
-        {/*<div id="canvastest" ref={wrapper_ref} className={style.canvastest}></div>*/}
+        <div id="canvastest" ref={wrapper_ref} className={style.canvastest}></div>
+        
+        {transportTools}
       </div>
       
-      {transportTools}
     </GenericPanel>
   );
 });
