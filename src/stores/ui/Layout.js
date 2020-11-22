@@ -100,7 +100,7 @@ const Layout = types
           e.removePanel(panel);
         });
 
-        console.log("SELF", getSnapshot(self));
+        // console.log("SELF", getSnapshot(self));
 
         // TODO: if all panels are gone, remove this layout
         // if(!self.children.length) {

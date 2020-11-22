@@ -20,7 +20,7 @@ const CanvasDisplay = observer(props => {
     let bounds = wrapper_ref.current.getBoundingClientRect();
 
     store.p5_instance.resizeCanvas(bounds.width, bounds.height);
-    
+
     setWidth(bounds.width);
     setHeight(bounds.height);
 
@@ -82,7 +82,7 @@ const CanvasDisplay = observer(props => {
               label: "●",
               onClick: handleSnap,
               style: {
-                color: 'red305'
+                color: "red305"
               }
             },
             {
@@ -103,7 +103,7 @@ const CanvasDisplay = observer(props => {
                     { label: ".jpeg", value: "JPEG" }
                   ]}
                   style={{
-                    height: '100%'
+                    height: "100%"
                   }}
                   onChange={() => {}}
                 />
@@ -116,7 +116,7 @@ const CanvasDisplay = observer(props => {
             {
               label: `[${width}x${height}]`,
               style: {
-                alignSelf: 'flex-end'
+                alignSelf: "flex-end"
               }
             }
           ]}

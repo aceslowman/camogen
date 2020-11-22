@@ -34,22 +34,25 @@ const ShaderControls = observer(props => {
         label: "Edit Parameter",
         onClick: () => {
           store.selectParameter(param);
-          store.layout.addPanel({
-            id: uuidv1(),
-            title: "Edit Param",
-            type: "PARAMETER_EDITOR",
-            floating: true,
-            canFloat: true,
-            canRemove: true,
-            collapsible: true,
-            defaultWidth: 250,
-            defaultHeight: 250,
-            dimensions: [300, 400],
-            position: [
-              window.innerWidth / 2 - 150,
-              window.innerHeight / 2 - 200
-            ]
-          });
+          // store.layout.addPanel({
+          //   id: uuidv1(),
+          //   title: "Edit Param",
+          //   type: "PARAMETER_EDITOR",
+          //   floating: true,
+          //   canFloat: false,
+          //   canRemove: true,
+          //   collapsible: true,
+          //   defaultWidth: 250,
+          //   defaultHeight: 250,
+          //   dimensions: [300, 400],
+          //   position: [
+          //     window.innerWidth / 2 - 150,
+          //     window.innerHeight / 2 - 200
+          //   ]
+          // });
+          console.log(store)
+          store.layout.setLayout("PARAMETER")
+          store.context.setContextmenu();
         }
       }
     ]);
@@ -164,7 +167,7 @@ const ShaderControls = observer(props => {
 
         switch (node.data.name) {
           case "Webcam":
-            console.log('node data',node.data)
+            console.log("node data", node.data);
             controls = [
               <WebcamComponent
                 key={node.uuid}
