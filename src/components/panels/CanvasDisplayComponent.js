@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import MainContext from "../../MainContext";
 import useResizeObserver from "../hooks/ResizeHook";
-import { GenericPanel, ToolbarComponent } from "maco-ui";
+import { GenericPanel, ToolbarComponent, InputSelect } from "maco-ui";
 import { observer } from "mobx-react";
 import style from "./CanvasDisplayComponent.module.css";
 
 const CanvasDisplay = observer(props => {
   const store = useContext(MainContext).store;
+  const [format, setFormat] = useState('PNG');
   const [useKeys, setUseKeys] = useState(false);
   const wrapper_ref = useRef(null);
 
@@ -24,6 +25,35 @@ const CanvasDisplay = observer(props => {
     }
   }, wrapper_ref);
 
+  const handlePlay = e => {
+    console.log("Play");
+    store.transport.play();
+  };
+
+  const handleStop = e => {
+    console.log("Stop");
+    store.transport.stop();
+  };
+
+  const handleRecord = e => {
+    console.log("Record");
+    store.transport.record();
+  };
+
+  const handleSkipToStart = () => {
+    store.transport.skipToStart();
+  };
+
+  const handleSnap = e => {
+    console.log("Snap");
+    store.snapshot(format);
+  };
+
+  const handleFormatSelect = e => {
+    console.log("FormatSelect", e);
+    setFormat(e);
+  };
+
   return (
     <GenericPanel
       panel={props.panel}
@@ -37,31 +67,39 @@ const CanvasDisplay = observer(props => {
           items={[
             {
               label: "▶",
-              onClick: () => {
-                // handlePlay
-              },
+              onClick: handlePlay,
               highlight: store.transport.playing
             },
             {
               label: "■",
-              onClick: () => {
-                // handleStop
-              },
+              onClick: handleStop,
               highlight: !store.transport.playing
             },
             {
-              label: "⭰",
-              onClick: () => {
-                // handleSkipToStart
-              },
+              label: "●",
+              onClick: handleSnap
+            },
+            {
+              label: "to start",
+              onClick: handleSkipToStart,
               highlight: store.transport.playing
             },
             {
-              label: "●",
-              onClick: () => {
-                // handleSnap
-              }
+              label: `frames: ${store.transport.frameclock}`
             },
+            {
+              label: (
+                <InputSelect
+                  label="format"
+                  options={[
+                    { label: ".png", value: "PNG" },
+                    { label: ".jpeg", value: "JPEG" }
+                  ]}
+                  onChange={() => {}}
+                />
+              ),
+              highlight: false
+            }
           ]}
         />
       }
@@ -69,11 +107,7 @@ const CanvasDisplay = observer(props => {
         zIndex: 0
       }}
     >
-        <div
-          ref={wrapper_ref}
-          id="canvastest"
-          className={style.canvastest}
-        ></div>
+      <div ref={wrapper_ref} id="canvastest" className={style.canvastest}></div>
     </GenericPanel>
   );
 });
