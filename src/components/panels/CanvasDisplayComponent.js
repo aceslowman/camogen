@@ -42,54 +42,29 @@ const CanvasDisplay = observer(props => {
               label: "▶",
               onClick: () => {
                 // handlePlay
-              }
+              },
               highlight: store.transport.playing
             },
             {
               label: "■",
               onClick: () => {
-                // handlePlay
-              }
-              highlight: store.transport.playing
+                // handleStop
+              },
+              highlight: !store.transport.playing
             },
             {
               label: "⭰",
               onClick: () => {
-                // handlePlay
-              }
+                // handleSkipToStart
+              },
               highlight: store.transport.playing
             },
             {
-              label: "▶",
+              label: "●",
               onClick: () => {
-                // handlePlay
+                // handleSnap
               }
-              highlight: store.transport.playing
             },
-            
-                <button 
-                    title="stop" 
-                    onClick={handleStop}
-                    style={{
-                        color: !store.transport.playing ? theme.accent_color : theme.text_color
-                    }}
-                > ■ </button>
-                <button 
-                    title="to start" 
-                    onClick={handleSkipToStart}
-                > ⭰ </button>
-                {/* <button onClick={handleSkipToStart}> ⭲ </button> */}
-                <button 
-                    title="record" 
-                    onClick={handleRecord}
-                    style={{
-                        color: store.transport.recording ? 'red' : theme.text_color
-                    }}
-                > ● </button>
-                <button 
-                    title="snapshot" 
-                    onClick={handleSnap}
-                > snap </button>
           ]}
         />
       }
