@@ -3,10 +3,12 @@ const Runner = (p, store) => {
     p.setup = () => {
         // let container = document.getElementById('APP')
         let container = document.getElementById('canvastest');
+      
+        let bounds = container.getBoundingClientRect();
         
         let c = p.createCanvas(
-            container.offsetWidth,
-            container.offsetHeight
+            bounds.width+15,
+            bounds.height
         );
         
         container.append(c.canvas);

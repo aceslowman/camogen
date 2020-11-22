@@ -2,7 +2,7 @@
   width:100%;
   height:100%;
   background-color:green;
-    /* overflow: auto; */
+  overflow: hidden;
   box-sizing:border-box;
 }
 
