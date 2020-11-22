@@ -14,3 +14,8 @@
   flex-flow: column;
   justify-items:flex-end;
 }
+
+.canvaswrapper {
+  background-color: purple;
+  height:100%;
+}
