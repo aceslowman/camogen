@@ -37,8 +37,9 @@ module.exports = {
     disableHostCheck: true,
     port: process.env.PORT,
     public: "camogen.glitch.me",
+    https: true,
     proxy: {
-      '/api': 'http://localhost:3001'
+      '/api': 'https://localhost:3001'
     }
   }
 };
