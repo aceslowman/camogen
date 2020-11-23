@@ -19,14 +19,17 @@ const CanvasDisplay = observer(props => {
 
     let bounds = wrapper_ref.current.getBoundingClientRect();
 
-    store.p5_instance.resizeCanvas(bounds.width, bounds.height);
+    let w = Math.floor(bounds.width);
+    let h = Math.floor(bounds.height);
 
-    setWidth(bounds.width);
-    setHeight(bounds.height);
+    store.p5_instance.resizeCanvas(w, h);
+
+    setWidth(w);
+    setHeight(h);
 
     // update target dimensions
     for (let target_data of store.scene.targets) {
-      target_data.ref.resizeCanvas(bounds.width, bounds.height);
+      target_data.ref.resizeCanvas(w, h);
     }
   }, wrapper_ref);
 

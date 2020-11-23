@@ -10,23 +10,21 @@ import * as DefaultShader from "./shaders/DefaultShader";
 import Parameter from "./ParameterStore";
 import uuidv1 from "uuid/v1";
 import { OperatorGraph } from "./GraphStore";
-// import ParameterGraph from './ParameterGraphStore';
 
 const Uniform = types
   .model("Uniform", {
     uuid: types.identifier,
     name: types.maybe(types.string),
-    elements: types.array(Parameter),
+    elements: types.array(Parameter)
   })
   .volatile(self => ({
     shader: null
   }))
   .actions(self => ({
     afterAttach: () => {
-      self.shader = getParent(self,2);
-      console.log('shader', shader)
+      self.shader = getParent(self, 2);
     },
-    
+
     addElement: (name, value, type = "number") => {
       // TODO: if type is null, then decide type from value
       self.elements.push(
