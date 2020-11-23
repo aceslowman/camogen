@@ -7,7 +7,7 @@ import style from "./CanvasDisplayComponent.module.css";
 
 const CanvasDisplay = observer(props => {
   const store = useContext(MainContext).store;
-  const [format, setFormat] = useState("PNG");
+  const [format, setFormat] = useState('PNG');
   const [useKeys, setUseKeys] = useState(false);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -56,6 +56,8 @@ const CanvasDisplay = observer(props => {
   const handleFormatSelect = e => {
     setFormat(e);
   };
+  
+  console.log(format)
 
   return (
     <GenericPanel
@@ -85,7 +87,7 @@ const CanvasDisplay = observer(props => {
               label: "●",
               onClick: handleSnap,
               style: {
-                color: "red305"
+                color: "red"
               }
             },
             {
@@ -98,30 +100,22 @@ const CanvasDisplay = observer(props => {
               style: {}
             },
             {
-              label: (
-                /*<InputSelect
-                  //label="format"
-                  options={[
-                    { label: ".png", value: "PNG" },
-                    { label: ".jpeg", value: "JPEG" }
-                  ]}
-                  style={{
-                    height: "100%"
-                  }}
-                  onChange={() => {}}
-                />*/
-                "format"
-              ),
+              label: "format",
               dropDown: [
-                {label: 'png'}
+                {
+                  label: 'png',
+                  onClick: () => handleFormatSelect('PNG'),
+                  highlight: format == 'PNG'
+                },
+                {
+                  label: 'jpeg',
+                  onClick: () => handleFormatSelect('JPEG'),
+                  highlight: format == 'JPEG'
+                }
               ]
-              // highlight: false,
-              // style: {
-              //   padding: 0
-              // }
             },
             {
-              label: `[${width}x${height}]`,
+              label: `[${width} x ${height}]`,
               style: {
                 alignSelf: "flex-end"
               }
