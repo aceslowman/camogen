@@ -100,17 +100,17 @@ const CanvasDisplay = observer(props => {
               style: {}
             },
             {
-              label: "format",
+              label: "format "+format,
               dropDown: [
                 {
                   label: 'png',
                   onClick: () => handleFormatSelect('PNG'),
-                  highlight: format == 'PNG'
+                  highlight: format === 'PNG'
                 },
                 {
                   label: 'jpeg',
                   onClick: () => handleFormatSelect('JPEG'),
-                  highlight: format == 'JPEG'
+                  highlight: format === 'JPEG'
                 }
               ]
             },
