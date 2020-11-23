@@ -22,8 +22,8 @@ const Uniform = types
     shader: null
   }))
   .actions(self => ({
-    afterCreate: () => {
-      shader = getParent(self);
+    afterAttach: () => {
+      self.shader = getParent(self,2);
       console.log('shader', shader)
     },
     

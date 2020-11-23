@@ -53,8 +53,8 @@ const Layout = types
 
     function distributeChildren() {
       self.children.forEach((e, i) => {
-        console.log(i,(i + 1) / self.children.length)
-        e.setSize((1) / self.children.length);
+        console.log(i, (i + 1) / self.children.length);
+        e.setSize(1 / self.children.length);
       });
     }
 
@@ -86,9 +86,9 @@ const Layout = types
       self.panels.put(panel);
       self.children.push(layout);
 
-//       console.log("self", self);
+      //       console.log("self", self);
 
-//       self.distributeChildren();      
+      //       self.distributeChildren();
     }
 
     function removePanel(panel) {
@@ -372,25 +372,35 @@ export const CoreLayouts = {
     size: 1,
     children: [
       {
-        id: "inner",
-        direction: "VERTICAL",
-        children: [
-          {
-            id: "shader_graph",
-            panel: "shader_graph",
-            size: 2 / 3
-          },
-          {
-            id: "shader_controls",
-            panel: "shader_controls"
-          }
-        ],
+        id: "shader_graph",
+        panel: "shader_graph",
         size: 1 / 3
       },
       {
+        id: "shader_controls",
+        panel: "shader_controls",
+        size: 1 / 3
+      },
+      // {
+      //   id: "inner",
+      //   direction: "VERTICAL",
+      //   children: [
+      //     {
+      //       id: "shader_graph",
+      //       panel: "shader_graph",
+      //       size: 2 / 3
+      //     },
+      //     {
+      //       id: "shader_controls",
+      //       panel: "shader_controls"
+      //     }
+      //   ],
+      //   size: 1 / 3
+      // },
+      {
         id: "parameter_editor",
         panel: "parameter_editor",
-        size: 2 / 3
+        size: 1 / 3
       }
     ],
     panels: {
