@@ -52,10 +52,12 @@ const App = observer(props => {
           console.log("all out of redo");
         }
       },
-      "$mod+KeyS": () => {
+      "$mod+KeyS": (e) => {
+        e.preventDefault();
         props.store.save();
       },
-      "$mod+KeyO": () => {
+      "$mod+KeyO": (e) => {
+        e.preventDefault();
         props.store.load();
       }
     });
