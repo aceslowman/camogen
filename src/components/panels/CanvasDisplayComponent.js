@@ -99,7 +99,7 @@ const CanvasDisplay = observer(props => {
             },
             {
               label: (
-                <InputSelect
+                /*<InputSelect
                   //label="format"
                   options={[
                     { label: ".png", value: "PNG" },
@@ -109,12 +109,16 @@ const CanvasDisplay = observer(props => {
                     height: "100%"
                   }}
                   onChange={() => {}}
-                />
+                />*/
+                "format"
               ),
-              highlight: false,
-              style: {
-                padding: 0
-              }
+              dropDown: [
+                {label: 'png'}
+              ]
+              // highlight: false,
+              // style: {
+              //   padding: 0
+              // }
             },
             {
               label: `[${width}x${height}]`,
