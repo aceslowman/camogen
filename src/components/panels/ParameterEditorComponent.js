@@ -75,7 +75,8 @@ const OperatorEditor = observer(props => {
     <GenericPanel 
       panel={props.panel} 
       toolbar={props.data && toolbar}
-      title={`${props.data.uniform.shader.name} > ${props.data.uniform.name} > ${props.data.name}`}
+      title=" "
+      subtitle={`${props.data.uniform.shader.name} > ${props.data.uniform.name} > ${props.data.name}`}
     >
       {props.data && (
         <SplitContainer vertical>

@@ -3,6 +3,7 @@ const path = require("path");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require("fs");
 const dirTree = require('directory-tree');
+const app = express();
 
 let shader_collection; 
 
@@ -15,28 +16,22 @@ function preloadDefaultShaders() {
         if(err) {
           console.error(err);
         } else {
-          // console.log('data', data)
-          // item = {...item, data: JSON.parse(data)};
           item.data = JSON.parse(data);
         }
       })
     }
   }); 
-    
-  // console.log('default shaders loaded!', shader_collection)
 }
 
 preloadDefaultShaders();
 
-const app = express();
-
-// PWAs want HTTPS!
-function checkHttps(request, response, next) {
-  // Check the protocol — if http, redirect to https.
-  if (request.get("X-Forwarded-Proto").indexOf("https") != -1) {
-    return next();
+function checkHttps(req, res, next){
+  // protocol check, if http, redirect to https
+  
+  if(req.get('X-Forwarded-Proto').indexOf("https")!=-1){
+    return next()
   } else {
-    response.redirect("https://" + request.hostname + request.url);
+    res.redirect('https://' + req.hostname + req.url);
   }
 }
 

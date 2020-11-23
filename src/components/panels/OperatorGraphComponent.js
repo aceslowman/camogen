@@ -52,7 +52,7 @@ const OperatorGraph = observer((props) => {
 			detachable
 			onDetach={props.onDetach ? props.onDetach : () => {}}
 			collapsed={props.collapsed}
-			title="Operator Graph"				
+			//title="Operator Graph"				
 			onRemove={()=>store.workspace.removePanel('Operator Graph')}
 			defaultSize={props.defaultSize}
 			onFocus={handleFocus}
