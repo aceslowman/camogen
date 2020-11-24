@@ -44,19 +44,19 @@ const CanvasDisplay = observer(props => {
   const handleSnap = e => store.snapshot(format);
 
   const handleFormatSelect = e => setFormat(e);
-  
-  const handlePresetSelect = (w,h) => {
+
+  const handleDimensionChange = (w, h) => {
     // TODO: FIX: +2 and +49 hack
-    let _w = Math.floor(w+2);
-    let _h = Math.floor(h+49);
-    
+    let _w = Math.floor(w + 2);
+    let _h = Math.floor(h + 49);
+
     setWidth(_w);
     setHeight(_h);
-    
+
     props.panel.setFloating(true);
     props.panel.setFullscreen(false);
-    props.panel.setDimensions([_w,_h]);
-  }
+    props.panel.setDimensions([_w, _h]);
+  };
 
   return (
     <GenericPanel
@@ -121,15 +121,15 @@ const CanvasDisplay = observer(props => {
                   dropDown: [
                     {
                       label: "256x256",
-                      onClick: () => handlePresetSelect(256,256)
+                      onClick: () => handleDimensionChange(256, 256)
                     },
                     {
                       label: "512x512",
-                      onClick: () => handlePresetSelect(512,512)
+                      onClick: () => handleDimensionChange(512, 512)
                     },
                     {
                       label: "1024x1024",
-                      onClick: () => handlePresetSelect(1024,1024)
+                      onClick: () => handleDimensionChange(1024, 1024)
                     }
                   ]
                 },
@@ -138,15 +138,15 @@ const CanvasDisplay = observer(props => {
                   dropDown: [
                     {
                       label: "landscape 1080x608",
-                      onClick: () => handlePresetSelect(1080,608)
+                      onClick: () => handleDimensionChange(1080, 608)
                     },
                     {
                       label: "square 1080x1080",
-                      onClick: () => handlePresetSelect(1080,1080)
+                      onClick: () => handleDimensionChange(1080, 1080)
                     },
                     {
                       label: "portrait 1080x1350",
-                      onClick: () => handlePresetSelect(1080,1350)
+                      onClick: () => handleDimensionChange(1080, 1350)
                     }
                   ]
                 },
@@ -160,42 +160,20 @@ const CanvasDisplay = observer(props => {
                     >
                       <label>w:</label>
                       <input
-                        style={{
-                          pointerEvents: "all",
-                          backgroundColor: "inherit",
-                          color: "inherit",
-                          border: "none",
-                          width: "100%",
-                          marginLeft: 4,
-                          fontFamily: "inherit"
-                        }}
+                        className={style.dimensions_input}
                         type="number"
                         placeholder={width}
                         onBlur={e => {
-                          let _w = Math.floor(e.target.value);
-                          let _h = Math.floor(height);                          
-                          setWidth(_w);
-                          props.panel.setDimensions([_w+2,_h])// +2 hack
+                          handleDimensionChange(e.target.value, height);
                         }}
                       />
                       <label>h:</label>
                       <input
-                        style={{
-                          pointerEvents: "all",
-                          backgroundColor: "inherit",
-                          color: "inherit",
-                          border: "none",
-                          width: "100%",
-                          marginLeft: 4,
-                          fontFamily: "inherit"
-                        }}
+                        className={style.dimensions_input}
                         type="number"
                         placeholder={height}
-                        onBlur={e => {                          
-                          let _w = Math.floor(width);
-                          let _h = Math.floor(e.target.value);
-                          setHeight(_h);
-                          props.panel.setDimensions([_w+2,_h]) // +2 hack
+                        onBlur={e => {
+                          handleDimensionChange(width, e.target.value);
                         }}
                       />
                     </div>
