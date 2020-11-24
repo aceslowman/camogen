@@ -44,6 +44,10 @@ const CanvasDisplay = observer(props => {
   const handleSnap = e => store.snapshot(format);
 
   const handleFormatSelect = e => setFormat(e);
+  
+  const handlePresetSelect = (w,h) => {
+    
+  }
 
   return (
     <GenericPanel
@@ -103,6 +107,15 @@ const CanvasDisplay = observer(props => {
             {
               label: `[${width} x ${height}]`,
               dropDown: [
+                {
+                  label: "instagram",
+                  dropDown: [
+                    {
+                      label: "landscape 1080x608",
+                      onClick: handlePresetSelect
+                    }
+                  ]
+                },
                 {
                   label: (
                     <div
