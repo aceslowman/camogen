@@ -14,16 +14,18 @@ const Help = props => {
         <h2>add effects</h2>
         <ol>
           <li>
-            under <em>graph</em>, right click on the 'next' node. select Library -> Color -> 2HSV 
+            under <em>graph</em>, right click on the 'next' node. select Library
+            -> Color -> 2HSV
           </li>
         </ol>
         <h2>change parameters</h2>
         <ol>
           <li>
-            under 'controls', click and drag on any of the parameters to change them.
+            under 'controls', click and drag on any of the parameters to change
+            them.
           </li>
         </ol>
-        
+
         <h2>add motion</h2>
         <ol>
           <li>

@@ -116,6 +116,15 @@ const CanvasDisplay = observer(props => {
             },
             {
               label: `[${width} x ${height}]`,
+              dropDown: [
+                {
+                  label: (
+                    <div
+                    <input type="number" /> 
+                    <span>x</span>
+                    <input type="number" />)
+                }
+              ],
               style: {
                 alignSelf: "flex-end"
               }
