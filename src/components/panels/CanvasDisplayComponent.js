@@ -47,11 +47,15 @@ const CanvasDisplay = observer(props => {
   
   const handlePresetSelect = (w,h) => {
     // TODO: FIX: +2 and +49 hack
-    setWidth(w+2);
-    setHeight(h+49);
+    let _w = Math.floor(w+2);
+    let _h = Math.floor(h+49);
+    
+    setWidth(_w);
+    setHeight(_h);
+    
     props.panel.setFloating(true);
     props.panel.setFullscreen(false);
-    props.panel.setDimensions([w+2, h+49]);
+    props.panel.setDimensions([_w,_h]);
   }
 
   return (
