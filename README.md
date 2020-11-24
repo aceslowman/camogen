@@ -1,3 +1,3 @@
 # CAMOGEN
 
-a visuals synthesizer built on webgl
+camogen is a webgl visuals environment
