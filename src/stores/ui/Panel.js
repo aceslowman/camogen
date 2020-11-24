@@ -65,11 +65,11 @@ const Panel = types
 
       if (self.position[1] <= 0) self.position[1] = 0;
 
-      if (self.dimensions[0] + self.position[0] >= window.innerWidth)
-        self.dimensions[0] = window.innerWidth - self.position[0];
+      // if (self.dimensions[0] + self.position[0] >= window.innerWidth)
+        // self.dimensions[0] = window.innerWidth - self.position[0];
 
-      if (self.dimensions[1] + self.position[1] >= window.innerHeight)
-        self.dimensions[1] = window.innerHeight - self.position[1];
+      // if (self.dimensions[1] + self.position[1] >= window.innerHeight)
+        // self.dimensions[1] = window.innerHeight - self.position[1];
     }
 
     return {
