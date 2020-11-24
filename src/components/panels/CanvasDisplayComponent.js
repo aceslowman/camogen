@@ -46,7 +46,12 @@ const CanvasDisplay = observer(props => {
   const handleFormatSelect = e => setFormat(e);
   
   const handlePresetSelect = (w,h) => {
-    
+    // TODO: FIX: +2 and +49 hack
+    setWidth(w+2);
+    setHeight(h+49);
+    props.panel.setFloating(true);
+    props.panel.setFullscreen(false);
+    props.panel.setDimensions([w+2, h+49]);
   }
 
   return (
@@ -112,7 +117,15 @@ const CanvasDisplay = observer(props => {
                   dropDown: [
                     {
                       label: "landscape 1080x608",
-                      onClick: handlePresetSelect
+                      onClick: () => handlePresetSelect(1080,608)
+                    },
+                    {
+                      label: "square 1080x1080",
+                      onClick: () => handlePresetSelect(1080,1080)
+                    },
+                    {
+                      label: "portrait 1080x1350",
+                      onClick: () => handlePresetSelect(1080,1350)
                     }
                   ]
                 },
