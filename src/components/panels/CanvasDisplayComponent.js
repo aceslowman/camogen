@@ -7,7 +7,7 @@ import style from "./CanvasDisplayComponent.module.css";
 
 const CanvasDisplay = observer(props => {
   const store = useContext(MainContext).store;
-  const [format, setFormat] = useState('PNG');
+  const [format, setFormat] = useState("PNG");
   const [useKeys, setUseKeys] = useState(false);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -56,8 +56,8 @@ const CanvasDisplay = observer(props => {
   const handleFormatSelect = e => {
     setFormat(e);
   };
-  
-  console.log(format)
+
+  console.log(format);
 
   return (
     <GenericPanel
@@ -100,17 +100,17 @@ const CanvasDisplay = observer(props => {
               style: {}
             },
             {
-              label: "format "+format,
+              label: "format " + format,
               dropDown: [
                 {
-                  label: 'png',
-                  onClick: () => handleFormatSelect('PNG'),
-                  highlight: format === 'PNG'
+                  label: "png",
+                  onClick: () => handleFormatSelect("PNG"),
+                  highlight: format === "PNG"
                 },
                 {
-                  label: 'jpeg',
-                  onClick: () => handleFormatSelect('JPEG'),
-                  highlight: format === 'JPEG'
+                  label: "jpeg",
+                  onClick: () => handleFormatSelect("JPEG"),
+                  highlight: format === "JPEG"
                 }
               ]
             },
@@ -120,9 +120,47 @@ const CanvasDisplay = observer(props => {
                 {
                   label: (
                     <div
-                    <input type="number" /> 
-                    <span>x</span>
-                    <input type="number" />)
+                      style={{
+                        display: "flex",
+                        flexFlow: "row"
+                      }}
+                    >
+                      <label>w:</label>
+                      <input
+                        style={{                        
+                          pointerEvents: "all",
+                          backgroundColor: "inherit",
+                          color: "inherit",
+                          border: "none",
+                          width: "100%",
+                          marginLeft: 4,
+                          fontFamily: "inherit"
+                        }}
+                        type="number"
+                        placeholder={width}
+                        onChange={e => {
+                          setWidth(e.target.value);
+                        }}
+                      />
+                      <label>h:</label>
+                      <input
+                        style={{
+                          pointerEvents: "all",
+                          backgroundColor: "inherit",
+                          color: "inherit",
+                          border: "none",
+                          width: "100%",
+                          marginLeft: 4,
+                          fontFamily: "inherit"
+                        }}
+                        type="number"
+                        placeholder={height}
+                        onChange={e => {
+                          setHeight(e.target.value);
+                        }}
+                      />
+                    </div>
+                  )
                 }
               ],
               style: {
