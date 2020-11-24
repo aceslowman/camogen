@@ -116,15 +116,15 @@ const CanvasDisplay = observer(props => {
                   label: "instagram",
                   dropDown: [
                     {
-                      label: "landscape 1080x608",
+                      label: (<span></span>"landscape 1080x608"),
                       onClick: () => handlePresetSelect(1080,608)
                     },
                     {
-                      label: "square 1080x1080",
+                      label: (<span></span>"square 1080x1080"),
                       onClick: () => handlePresetSelect(1080,1080)
                     },
                     {
-                      label: "portrait 1080x1350",
+                      label: (<span></span>"portrait 1080x1350"),
                       onClick: () => handlePresetSelect(1080,1350)
                     }
                   ]
