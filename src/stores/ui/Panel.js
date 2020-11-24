@@ -37,7 +37,8 @@ const Panel = types
       self.position = p;
     }
 
-    function setDimensions(d) {      
+    function setDimensions(d) {   
+      console.log('setting dimensions', d)
       self.dimensions = d;
     }
 

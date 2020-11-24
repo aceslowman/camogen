@@ -33,31 +33,17 @@ const CanvasDisplay = observer(props => {
     }
   }, wrapper_ref);
 
-  const handlePlay = e => {
-    store.transport.play();
-  };
+  const handlePlay = e => store.transport.play();
 
-  const handleStop = e => {
-    store.transport.stop();
-  };
+  const handleStop = e => store.transport.stop();
 
-  const handleRecord = e => {
-    store.transport.record();
-  };
+  const handleRecord = e => store.transport.record();
 
-  const handleSkipToStart = () => {
-    store.transport.skipToStart();
-  };
+  const handleSkipToStart = () => store.transport.skipToStart();
 
-  const handleSnap = e => {
-    store.snapshot(format);
-  };
+  const handleSnap = e => store.snapshot(format);
 
-  const handleFormatSelect = e => {
-    setFormat(e);
-  };
-
-  console.log(format);
+  const handleFormatSelect = e => setFormat(e);
 
   return (
     <GenericPanel
@@ -127,7 +113,7 @@ const CanvasDisplay = observer(props => {
                     >
                       <label>w:</label>
                       <input
-                        style={{                        
+                        style={{
                           pointerEvents: "all",
                           backgroundColor: "inherit",
                           color: "inherit",
@@ -138,8 +124,11 @@ const CanvasDisplay = observer(props => {
                         }}
                         type="number"
                         placeholder={width}
-                        onChange={e => {
-                          setWidth(e.target.value);
+                        onBlur={e => {
+                          let _w = Math.floor(e.target.value);
+                          let _h = Math.floor(height);                          
+                          setWidth(_w);
+                          props.panel.setDimensions([_w+2,_h])// +2 hack
                         }}
                       />
                       <label>h:</label>
@@ -155,8 +144,11 @@ const CanvasDisplay = observer(props => {
                         }}
                         type="number"
                         placeholder={height}
-                        onChange={e => {
-                          setHeight(e.target.value);
+                        onBlur={e => {                          
+                          let _w = Math.floor(width);
+                          let _h = Math.floor(e.target.value);
+                          setHeight(_h);
+                          props.panel.setDimensions([_w+2,_h]) // +2 hack
                         }}
                       />
                     </div>
