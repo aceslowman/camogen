@@ -181,7 +181,12 @@ const ShaderControls = observer(props => {
             ];
             break;
           case "Image":
-            controls = [<ImageInputComponent key={node.uuid} />];
+            console.log('CHECK HERE', node)
+            controls = [
+                <ImageInputComponent 
+                  key={node.uuid} 
+                  data={node}
+                />];
             break;
           default:
             controls = generateInterface(node.data);

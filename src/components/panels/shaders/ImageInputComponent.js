@@ -3,20 +3,16 @@ import React from 'react';
 import { ControlGroupComponent, InputSelect } from 'maco-ui';
 
 const ImageInputComponent = observer((props) => {
+  console.log('HIT',props) 
+  
+  const handleFileSubmit = (e) => {
+    console.log(e)
+  }
+  
 	return (
-        <React.Fragment>
-            <ControlGroupComponent name="Image File">
-                <InputSelect
-                    options={
-                        props.input_options.map((e)=>({
-                            label: e.label, 
-                            value: e.deviceId
-                        }))
-                    }
-                    onChange={props.onInputSelect}
-                />				
-            </ControlGroupComponent>	
-        </React.Fragment>        
+    <ControlGroupComponent name="Image File">
+        <input type="file" onChange={handleFileSubmit} />
+    </ControlGroupComponent>	
 	)
 });
 
