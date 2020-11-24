@@ -64,6 +64,7 @@ let shaderGraph = types
                 case 'WebcamInput': 
                     return WebcamInput.create();
                 case 'ImageInput':
+                console.log('HIT')
                     return ImageInput.create();
                 default: 
                     try {

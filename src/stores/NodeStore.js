@@ -14,7 +14,7 @@ const PossibleData = types.union(
       if (snap) {
         if (snap.type === "Shader") return Shader;
         if (snap.type === "WebcamInput") return WebcamInput;
-        if (snap.type === "Image") return Image;
+        if (snap.type === "ImageInput") return ImageInput;
         return allOps;
       } else {
         return Shader;
