@@ -310,8 +310,8 @@ const App = observer(props => {
     props.store.context.setContextmenu();
   };
   
-  const mainPanel = ui.panels.get('main');
-  const mainLayout = ui.layouts.get('main');
+  const mainPanel = ui.getPanel('main');
+  const mainLayout = ui.getLayout('main');
   
   return (
     <MainProvider value={{ store: props.store }}>
