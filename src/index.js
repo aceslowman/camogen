@@ -33,3 +33,19 @@ ReactDOM.render(<App store={root} />, document.getElementById("root"));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+
+
+/*
+{
+  id: "main",
+  // title: "camogen",
+  floating: true,
+  canFloat: false,
+  collapsible: true,
+  fullscreen: false,
+  canFullscreen: true,
+  dimensions: [700, 500],
+  position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250]
+}
+*/

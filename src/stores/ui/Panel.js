@@ -88,6 +88,17 @@ const Panel = types
 export default Panel;
 
 export const CorePanels = {
+  MAIN: {
+    id: uuidv1(),
+    // title: "camogen",
+    floating: true,
+    canFloat: false,
+    collapsible: true,
+    fullscreen: false,
+    canFullscreen: true,
+    dimensions: [700, 500],
+    position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250]
+  },
   SHADER_GRAPH: {
     id: uuidv1(),
     title: "Shader Graph",

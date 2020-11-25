@@ -9,9 +9,7 @@ const Runner = (p, store) => {
     let bounds = container.getBoundingClientRect();
 
     c.resize(bounds.width, bounds.height);
-    // debug red
-    // p.background(250, 25, 25);
-    p.background(store.theme.secondary_color);
+    p.background(store.ui.theme.secondary_color);
   };
 
   p.draw = () => {

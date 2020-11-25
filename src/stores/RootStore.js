@@ -148,9 +148,9 @@ const RootStore = types
         // self.scene.shaderGraph.afterUpdate();
 
         self.setReady(true);
-
-        self.mainPanel.fitScreen();
-        self.mainPanel.center();
+        console.log('layouts',getSnapshot(self.ui.layouts.get('main')))
+        // self.ui.layouts.get('main').fitScreen();
+        // self.ui.layouts.get('main').center();
 
         // console.log("APP LOCAL STORAGE", window.localStorage);
 
