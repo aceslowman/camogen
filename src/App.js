@@ -31,19 +31,18 @@ import { getSnapshot } from "mobx-state-tree";
 const App = observer(props => {
   const { store } = props;
   const { ui } = store;
-  
+
   const mainRef = useRef(null);
   const [showAbout, setShowAbout] = useState(false);
-  
-  
-  const mainPanel = ui.getPanel('MAIN');
-  const mainLayout = ui.getLayout('MAIN');
-  
-  const canvasPanel = ui.getPanel('CANVAS');
-  
-  console.log('mainPanel',mainPanel)
-  console.log('mainLayout',mainLayout)
-  console.log('canvasPanel',canvasPanel)
+
+  const mainPanel = ui.getPanel("MAIN");
+  const mainLayout = ui.getLayout("MAIN");
+
+  const canvasPanel = ui.getPanel("CANVAS");
+
+  console.log("mainPanel", mainPanel);
+  console.log("mainLayout", mainLayout);
+  console.log("canvasPanel", canvasPanel);
 
   useEffect(() => {
     let unsubscribe = tinykeys(window, {
@@ -65,11 +64,11 @@ const App = observer(props => {
           console.log("all out of redo");
         }
       },
-      "$mod+KeyS": (e) => {
+      "$mod+KeyS": e => {
         e.preventDefault();
         props.store.save();
       },
-      "$mod+KeyO": (e) => {
+      "$mod+KeyO": e => {
         e.preventDefault();
         props.store.load();
       }
@@ -83,7 +82,7 @@ const App = observer(props => {
   };
 
   const getPanel = panel => {
-  console.log(panel)
+    console.log(panel);
     switch (panel.type) {
       case "SHADER_GRAPH":
         return (
@@ -148,12 +147,15 @@ const App = observer(props => {
         break;
     }
   };
-  
-  console.log('HIT',ui.layouts.get('main'))
-  
+
+  console.log("HIT", ui.layouts.get("main"));
+
   const handleSetLayout = name => {
-    
-  }
+    let new_layout = ui.getLayout(name);
+    mainLayout.applySnapshot(new_layout);
+  };
+
+  const handleAddPanel = name => {};
 
   const main_panel_toolbar = props.store.ready && (
     <ToolbarComponent
@@ -162,9 +164,7 @@ const App = observer(props => {
       }}
       items={[
         {
-          title: canvasPanel.fullscreen
-            ? "float canvas"
-            : "fullscreen canvas",
+          title: canvasPanel.fullscreen ? "float canvas" : "fullscreen canvas",
           label: "✳",
           onClick: () => {
             canvasPanel.toggleFullscreen();
@@ -245,62 +245,62 @@ const App = observer(props => {
           dropDown: [
             {
               label: "Welcome",
-              onClick: () => mainLayout.setLayout("WELCOME")
+              onClick: () => handleSetLayout("WELCOME")
             },
             {
               label: "Shader Edit",
-              onClick: () => mainLayout.setLayout("SHADER_EDIT")
+              onClick: () => handleSetLayout("SHADER_EDIT")
             },
             {
               label: "Shader Control",
-              onClick: () => mainLayout.setLayout("SHADER_CONTROL")
+              onClick: () => handleSetLayout("SHADER_CONTROL")
             },
             {
               label: "Parameter Editor",
-              onClick: () => mainLayout.setLayout("PARAMETER")
+              onClick: () => handleSetLayout("PARAMETER")
             },
             {
               label: "Debug",
-              onClick: () => mainLayout.setLayout("DEBUG")
+              onClick: () => handleSetLayout("DEBUG")
             },
             {
               label: "Add Panel",
               dropDown: [
                 {
                   label: "Shader Graph",
-                  onClick: () => mainLayout.addPanel("SHADER_GRAPH")
+                  onClick: () => handleAddPanel("SHADER_GRAPH")
                 },
                 {
                   label: "Shader Editor",
-                  onClick: () => mainLayout.addPanel("SHADER_EDITOR")
+                  onClick: () => handleAddPanel("SHADER_EDITOR")
                 },
                 {
                   label: "Shader Controls",
-                  onClick: () => mainLayout.addPanel("SHADER_CONTROLS")
+                  onClick: () => handleAddPanel("SHADER_CONTROLS")
                 },
                 {
                   label: "Parameter Editor",
-                  onClick: () => mainLayout.addPanel("PARAMETER_EDITOR")
+                  onClick: () => handleAddPanel("PARAMETER_EDITOR")
                 },
                 {
                   label: "Help",
-                  onClick: () => mainLayout.addPanel("HELP")
+                  onClick: () => handleAddPanel("HELP")
                 },
                 {
                   label: "Debug",
-                  onClick: () => mainLayout.addPanel("DEBUG")
+                  onClick: () => handleAddPanel("DEBUG")
                 },
                 {
                   label: "Messages",
-                  onClick: () => mainLayout.addPanel("MESSAGES")
+                  onClick: () => handleAddPanel("MESSAGES")
                 },
                 {
                   label: "Preferences",
-                  onClick: () => mainLayout.addPanel("PREFERENCES")
+                  onClick: () => handleAddPanel("PREFERENCES")
                 },
                 {
                   label: "Capture",
-                  onClick: () => mainLayout.addPanel("CAPTURE")
+                  onClick: () => handleAddPanel("CAPTURE")
                 }
               ]
             }
@@ -323,7 +323,7 @@ const App = observer(props => {
     // explicitly allowed
     props.store.context.setContextmenu();
   };
-  
+
   return (
     <MainProvider value={{ store: props.store }}>
       <ThemeContext.Provider value={ui.theme}>
@@ -342,11 +342,7 @@ const App = observer(props => {
           <CanvasDisplay panel={canvasPanel} />
 
           {store.ready && (
-            <GenericPanel
-              panel={mainPanel}
-              subtitle={store.name}
-              collapsible
-            >
+            <GenericPanel panel={mainPanel} subtitle={store.name} collapsible>
               <LayoutContainer layout={mainLayout}>
                 {Array.from(mainLayout.panels).map(e => {
                   return getPanel(e[1]);
