@@ -150,6 +150,10 @@ const App = observer(props => {
   };
   
   console.log('HIT',ui.layouts.get('main'))
+  
+  const handleSetLayout = name => {
+    
+  }
 
   const main_panel_toolbar = props.store.ready && (
     <ToolbarComponent
