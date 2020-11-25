@@ -43,6 +43,7 @@ const App = observer(props => {
   
   console.log('mainPanel',mainPanel)
   console.log('mainLayout',mainLayout)
+  console.log('canvasPanel',canvasPanel)
 
   useEffect(() => {
     let unsubscribe = tinykeys(window, {
@@ -225,8 +226,8 @@ const App = observer(props => {
             {
               label: "Preferences",
               onClick: () => {
-                props.store.layout.clear();
-                props.store.layout.addPanel("PREFERENCES");
+                mainLayout.clear();
+                mainLayout.addPanel("PREFERENCES");
               }
             }
           ]
@@ -240,62 +241,62 @@ const App = observer(props => {
           dropDown: [
             {
               label: "Welcome",
-              onClick: () => ui.layouts.get('main').setLayout("WELCOME")
+              onClick: () => mainLayout.setLayout("WELCOME")
             },
             {
               label: "Shader Edit",
-              onClick: () => ui.layouts.get('main').setLayout("SHADER_EDIT")
+              onClick: () => mainLayout.setLayout("SHADER_EDIT")
             },
             {
               label: "Shader Control",
-              onClick: () => ui.layouts.get('main').setLayout("SHADER_CONTROL")
+              onClick: () => mainLayout.setLayout("SHADER_CONTROL")
             },
             {
               label: "Parameter Editor",
-              onClick: () => ui.layouts.get('main').setLayout("PARAMETER")
+              onClick: () => mainLayout.setLayout("PARAMETER")
             },
             {
               label: "Debug",
-              onClick: () => ui.layouts.get('main').setLayout("DEBUG")
+              onClick: () => mainLayout.setLayout("DEBUG")
             },
             {
               label: "Add Panel",
               dropDown: [
                 {
                   label: "Shader Graph",
-                  onClick: () => ui.layouts.get('main').addPanel("SHADER_GRAPH")
+                  onClick: () => mainLayout.addPanel("SHADER_GRAPH")
                 },
                 {
                   label: "Shader Editor",
-                  onClick: () => ui.layouts.get('main').addPanel("SHADER_EDITOR")
+                  onClick: () => mainLayout.addPanel("SHADER_EDITOR")
                 },
                 {
                   label: "Shader Controls",
-                  onClick: () => ui.layouts.get('main').addPanel("SHADER_CONTROLS")
+                  onClick: () => mainLayout.addPanel("SHADER_CONTROLS")
                 },
                 {
                   label: "Parameter Editor",
-                  onClick: () => ui.layouts.get('main').addPanel("PARAMETER_EDITOR")
+                  onClick: () => mainLayout.addPanel("PARAMETER_EDITOR")
                 },
                 {
                   label: "Help",
-                  onClick: () => ui.layouts.get('main').addPanel("HELP")
+                  onClick: () => mainLayout.addPanel("HELP")
                 },
                 {
                   label: "Debug",
-                  onClick: () => ui.layouts.get('main').addPanel("DEBUG")
+                  onClick: () => mainLayout.addPanel("DEBUG")
                 },
                 {
                   label: "Messages",
-                  onClick: () => ui.layouts.get('main').addPanel("MESSAGES")
+                  onClick: () => mainLayout.addPanel("MESSAGES")
                 },
                 {
                   label: "Preferences",
-                  onClick: () => ui.layouts.get('main').addPanel("PREFERENCES")
+                  onClick: () => mainLayout.addPanel("PREFERENCES")
                 },
                 {
                   label: "Capture",
-                  onClick: () => ui.layouts.get('main').addPanel("CAPTURE")
+                  onClick: () => mainLayout.addPanel("CAPTURE")
                 }
               ]
             }
