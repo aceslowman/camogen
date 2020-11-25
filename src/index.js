@@ -15,13 +15,15 @@ const panels = null;
 
 const root = RootStore.create({
   ui: UIStore.create({
-    layouts: {
-      main: CoreLayouts['WELCOME'],
-      // "canvas": CoreLayouts
-    },
-    panels: {
-      main: CorePanels['MAIN']
-    },
+    // layouts: {
+    //   main: CoreLayouts['WELCOME'],
+    //   // "canvas": CoreLayouts
+    // },
+    // panels: {
+    //   main: CorePanels['MAIN']
+    // },
+    layouts: CoreLayouts,
+    panels: CorePanels,
     theme: Themes.yutani
   })
 });

@@ -13,9 +13,8 @@ import p5 from "p5";
 // import path from 'path';
 import Context from "./ui/Context";
 import Messages from "./utils/Messages";
-import { Themes, UIStore } from "maco-ui";
+import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import Parameter from "./ParameterStore";
-import Panel from "./ui/Panel";
 import Transport from "./utils/Transport";
 
 /*
