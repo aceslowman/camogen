@@ -15,13 +15,6 @@ const panels = null;
 
 const root = RootStore.create({
   ui: UIStore.create({
-    // layouts: {
-    //   main: CoreLayouts['WELCOME'],
-    //   // "canvas": CoreLayouts
-    // },
-    // panels: {
-    //   main: CorePanels['MAIN']
-    // },
     layouts: {
       MAIN: CoreLayouts['WELCOME'],
       ...CoreLayouts
@@ -39,7 +32,17 @@ const root = RootStore.create({
         dimensions: [window.innerWidth - 100, window.innerHeight - 100],
         position: [window.innerWidth / 2 - (window.innerWidth - 100)/2, window.innerHeight / 2 - (window.innerHeight - 100)/2]
       },
-      ...CorePanels
+      MAIN: {
+        id: "MAIN",
+        // title: "camogen",
+        floating: true,
+        canFloat: false,
+        collapsible: true,
+        fullscreen: false,
+        canFullscreen: true,
+        dimensions: [700, 500],
+        position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250]
+      }
     },
     theme: Themes.yutani
   })
