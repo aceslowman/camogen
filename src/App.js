@@ -313,6 +313,9 @@ const App = observer(props => {
   const mainPanel = ui.getPanel('main');
   const mainLayout = ui.getLayout('main');
   
+  console.log('mainPanel',mainPanel)
+  console.log('mainLayout',mainLayout)
+  
   return (
     <MainProvider value={{ store: props.store }}>
       <ThemeContext.Provider value={ui.theme}>
