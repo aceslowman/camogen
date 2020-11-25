@@ -20,7 +20,7 @@ const root = RootStore.create({
       // "canvas": CoreLayouts
     },
     panels: CorePanels,
-    theme: Themes.weyland
+    theme: Themes.yutani
   })
 });
 

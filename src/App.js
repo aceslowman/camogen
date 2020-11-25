@@ -70,6 +70,7 @@ const App = observer(props => {
   };
 
   const getPanel = panel => {
+  console.log(panel)
     switch (panel.type) {
       case "SHADER_GRAPH":
         return (
@@ -303,7 +304,9 @@ const App = observer(props => {
     // explicitly allowed
     props.store.context.setContextmenu();
   };
-console.log(props.store)
+  
+  const mainPanel = props.store.ui.layouts.get('main');
+  
   return (
     <MainProvider value={{ store: props.store }}>
       <ThemeContext.Provider value={props.store.ui.theme}>
@@ -323,12 +326,12 @@ console.log(props.store)
 
           {props.store.ready && (
             <GenericPanel
-              panel={props.store.mainPanel}
+              panel={mainPanel}
               subtitle={props.store.name}
               collapsible
             >
-              <LayoutContainer layout={props.store.ui.layouts.main}>
-                {Array.from(props.store.ui.layouts.main.panels).map(e => {
+              <LayoutContainer layout={mainPanel}>
+                {Array.from(mainPanel.panels).map(e => {
                   return getPanel(e[1]);
                 })}
               </LayoutContainer>
