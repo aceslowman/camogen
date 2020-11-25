@@ -1,16 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import RootStore from './stores/RootStore';
-import makeInspectable from 'mobx-devtools-mst';
-import 'regenerator-runtime/runtime'
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+import RootStore from "./stores/RootStore";
+import makeInspectable from "mobx-devtools-mst";
+import "regenerator-runtime/runtime";
+import { UIStore, Themes } from "maco-ui";
 
-const root = RootStore.create({});
+import { CorePanels } from "./stores/ui/Panel";
+import { CoreLayouts } from "./stores/ui/Layout";
+
+const layouts = null;
+const panels = null;
+
+const root = RootStore.create({
+  ui: UIStore.create({
+    layouts: layouts,
+    panels: panels,
+    theme: Themes.weyland
+  })
+});
 
 makeInspectable(root);
 
-ReactDOM.render(<App store={root} />, document.getElementById('root'));
+ReactDOM.render(<App store={root} />, document.getElementById("root"));
 // ReactDOM.render(<App store={root} history={undoManager}/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
