@@ -26,7 +26,7 @@ import {
 } from "maco-ui";
 
 import "maco-ui/dist/index.css";
-import { getSnapshot } from "mobx-state-tree";
+import { getSnapshot, applySnapshot } from "mobx-state-tree";
 
 const App = observer(props => {
   const { store } = props;
@@ -151,8 +151,9 @@ const App = observer(props => {
   console.log("HIT", ui.layouts.get("main"));
 
   const handleSetLayout = name => {
+    console.log(name)
     let new_layout = ui.getLayout(name);
-    mainLayout.applySnapshot(new_layout);
+    applySnapshot(mainLayout, new_layout);
   };
 
   const handleAddPanel = name => {};
