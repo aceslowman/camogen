@@ -28,7 +28,7 @@ const root = RootStore.create({
     },
     panels: {
       CANVAS: {
-        id: "canvas",
+        id: "CANVAS",
         title: "canvas",
         floating: false,
         canFloat: false,

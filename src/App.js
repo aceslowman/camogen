@@ -34,6 +34,15 @@ const App = observer(props => {
   
   const mainRef = useRef(null);
   const [showAbout, setShowAbout] = useState(false);
+  
+  
+  const mainPanel = ui.getPanel('MAIN');
+  const mainLayout = ui.getLayout('MAIN');
+  
+  const canvasPanel = ui.getPanel('CANVAS');
+  
+  console.log('mainPanel',mainPanel)
+  console.log('mainLayout',mainLayout)
 
   useEffect(() => {
     let unsubscribe = tinykeys(window, {
@@ -148,16 +157,16 @@ const App = observer(props => {
       }}
       items={[
         {
-          title: props.store.mainCanvasPanel.fullscreen
+          title: canvasPanel.fullscreen
             ? "float canvas"
             : "fullscreen canvas",
           label: "✳",
           onClick: () => {
-            props.store.mainCanvasPanel.toggleFullscreen();
-            props.store.mainCanvasPanel.toggleFloating();
-            props.store.mainCanvasPanel.fitScreen();
+            canvasPanel.toggleFullscreen();
+            canvasPanel.toggleFloating();
+            canvasPanel.fitScreen();
           },
-          highlight: !props.store.mainCanvasPanel.fullscreen
+          highlight: !canvasPanel.fullscreen
         },
         {
           label: <h1>camogen</h1>,
@@ -310,12 +319,6 @@ const App = observer(props => {
     props.store.context.setContextmenu();
   };
   
-  const mainPanel = ui.getPanel('MAIN');
-  const mainLayout = ui.getLayout('MAIN');
-  
-  console.log('mainPanel',mainPanel)
-  console.log('mainLayout',mainLayout)
-  
   return (
     <MainProvider value={{ store: props.store }}>
       <ThemeContext.Provider value={ui.theme}>
@@ -331,7 +334,7 @@ const App = observer(props => {
 
           {main_panel_toolbar}
 
-          <CanvasDisplay panel={store.mainCanvasPanel} />
+          <CanvasDisplay panel={canvasPanel} />
 
           {store.ready && (
             <GenericPanel
