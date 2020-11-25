@@ -310,8 +310,8 @@ const App = observer(props => {
     props.store.context.setContextmenu();
   };
   
-  const mainPanel = ui.getPanel('main');
-  const mainLayout = ui.getLayout('main');
+  const mainPanel = ui.getPanel('MAIN');
+  const mainLayout = ui.getLayout('MAIN');
   
   console.log('mainPanel',mainPanel)
   console.log('mainLayout',mainLayout)

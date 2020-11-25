@@ -39,31 +39,6 @@ const RootStore = types
   .model("RootStore", {
     scene: types.maybe(Scene),
     ui: UIStore,
-    // layout: types.optional(Layout, CoreLayouts["WELCOME"]),
-    // mainPanel: types.optional(Panel, {
-    //   id: "main",
-    //   // title: "camogen",
-    //   floating: true,
-    //   canFloat: false,
-    //   collapsible: true,
-    //   fullscreen: false,
-    //   canFullscreen: true,
-    //   dimensions: [700, 500],
-    //   position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250]
-    // }),
-    mainCanvasPanel: types.optional(Panel, {
-      id: "canvas",
-      title: "canvas",
-      floating: false,
-      canFloat: false,
-      collapsible: true,
-      fullscreen: true,
-      canFullscreen: true,
-      showTitle: false,
-      dimensions: [window.innerWidth - 100, window.innerHeight - 100],
-      position: [window.innerWidth / 2 - (window.innerWidth - 100)/2, window.innerHeight / 2 - (window.innerHeight - 100)/2]
-    }),
-    // theme: types.frozen(Themes.yutani),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string),
     transport: types.optional(Transport, {})
@@ -147,7 +122,7 @@ const RootStore = types
         // self.scene.shaderGraph.afterUpdate();
 
         self.setReady(true);
-        console.log('layouts',getSnapshot(self.ui.layouts.get('main')))
+        console.log('layouts',getSnapshot(self.ui.layouts.get('MAIN')))
         // self.ui.layouts.get('main').fitScreen();
         // self.ui.layouts.get('main').center();
 

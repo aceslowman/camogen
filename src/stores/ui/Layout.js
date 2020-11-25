@@ -3,7 +3,7 @@ import Panel, { CorePanels } from "./Panel";
 
 export const CoreLayouts = {
   WELCOME: {
-    id: "main",
+    id: "WELCOME",
     direction: "HORIZONTAL",
     size: 1,
     children: [
