@@ -303,19 +303,19 @@ const App = observer(props => {
     // explicitly allowed
     props.store.context.setContextmenu();
   };
-
+console.log(props.store)
   return (
     <MainProvider value={{ store: props.store }}>
-      <ThemeContext.Provider value={props.store.theme}>
+      <ThemeContext.Provider value={props.store.ui.theme}>
         <div
           id="APP"
           ref={mainRef}
           onContextMenu={handleContextMenu}
           style={{
-            backgroundColor: props.store.theme.secondary_color
+            backgroundColor: props.store.ui.theme.secondary_color
           }}
         >
-          <ContextMenuComponent items={props.store.context.contextmenu} />
+          <ContextMenuComponent items={props.store.ui.context} />
 
           {main_panel_toolbar}
 
@@ -327,8 +327,8 @@ const App = observer(props => {
               subtitle={props.store.name}
               collapsible
             >
-              <LayoutContainer layout={props.store.layout}>
-                {Array.from(props.store.layout.panels).map(e => {
+              <LayoutContainer layout={props.store.ui.layouts.main}>
+                {Array.from(props.store.ui.layouts.main.panels).map(e => {
                   return getPanel(e[1]);
                 })}
               </LayoutContainer>

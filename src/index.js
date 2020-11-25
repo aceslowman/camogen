@@ -15,8 +15,11 @@ const panels = null;
 
 const root = RootStore.create({
   ui: UIStore.create({
-    layouts: layouts,
-    panels: panels,
+    layouts: {
+      main: CoreLayouts['WELCOME'],
+      // "canvas": CoreLayouts
+    },
+    panels: CorePanels,
     theme: Themes.weyland
   })
 });

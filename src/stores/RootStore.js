@@ -52,18 +52,18 @@ const RootStore = types
     //   dimensions: [700, 500],
     //   position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250]
     // }),
-    // mainCanvasPanel: types.optional(Panel, {
-    //   id: "canvas",
-    //   title: "canvas",
-    //   floating: false,
-    //   canFloat: false,
-    //   collapsible: true,
-    //   fullscreen: true,
-    //   canFullscreen: true,
-    //   showTitle: false,
-    //   dimensions: [window.innerWidth - 100, window.innerHeight - 100],
-    //   position: [window.innerWidth / 2 - (window.innerWidth - 100)/2, window.innerHeight / 2 - (window.innerHeight - 100)/2]
-    // }),
+    mainCanvasPanel: types.optional(Panel, {
+      id: "canvas",
+      title: "canvas",
+      floating: false,
+      canFloat: false,
+      collapsible: true,
+      fullscreen: true,
+      canFullscreen: true,
+      showTitle: false,
+      dimensions: [window.innerWidth - 100, window.innerHeight - 100],
+      position: [window.innerWidth / 2 - (window.innerWidth - 100)/2, window.innerHeight / 2 - (window.innerHeight - 100)/2]
+    }),
     // theme: types.frozen(Themes.yutani),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string),
