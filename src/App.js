@@ -29,6 +29,9 @@ import "maco-ui/dist/index.css";
 import { getSnapshot } from "mobx-state-tree";
 
 const App = observer(props => {
+  const { store } = props;
+  const { ui } = store;
+  
   const mainRef = useRef(null);
   const [showAbout, setShowAbout] = useState(false);
 
@@ -135,6 +138,8 @@ const App = observer(props => {
         break;
     }
   };
+  
+  console.log('HIT',ui.layouts.get('main'))
 
   const main_panel_toolbar = props.store.ready && (
     <ToolbarComponent
@@ -226,62 +231,62 @@ const App = observer(props => {
           dropDown: [
             {
               label: "Welcome",
-              onClick: () => props.store.layout.setLayout("WELCOME")
+              onClick: () => ui.layouts.get('main').setLayout("WELCOME")
             },
             {
               label: "Shader Edit",
-              onClick: () => props.store.layout.setLayout("SHADER_EDIT")
+              onClick: () => ui.layouts.get('main').setLayout("SHADER_EDIT")
             },
             {
               label: "Shader Control",
-              onClick: () => props.store.layout.setLayout("SHADER_CONTROL")
+              onClick: () => ui.layouts.get('main').setLayout("SHADER_CONTROL")
             },
             {
               label: "Parameter Editor",
-              onClick: () => props.store.layout.setLayout("PARAMETER")
+              onClick: () => ui.layouts.get('main').setLayout("PARAMETER")
             },
             {
               label: "Debug",
-              onClick: () => props.store.layout.setLayout("DEBUG")
+              onClick: () => ui.layouts.get('main').setLayout("DEBUG")
             },
             {
               label: "Add Panel",
               dropDown: [
                 {
                   label: "Shader Graph",
-                  onClick: () => props.store.layout.addPanel("SHADER_GRAPH")
+                  onClick: () => ui.layouts.get('main').addPanel("SHADER_GRAPH")
                 },
                 {
                   label: "Shader Editor",
-                  onClick: () => props.store.layout.addPanel("SHADER_EDITOR")
+                  onClick: () => ui.layouts.get('main').addPanel("SHADER_EDITOR")
                 },
                 {
                   label: "Shader Controls",
-                  onClick: () => props.store.layout.addPanel("SHADER_CONTROLS")
+                  onClick: () => ui.layouts.get('main').addPanel("SHADER_CONTROLS")
                 },
                 {
                   label: "Parameter Editor",
-                  onClick: () => props.store.layout.addPanel("PARAMETER_EDITOR")
+                  onClick: () => ui.layouts.get('main').addPanel("PARAMETER_EDITOR")
                 },
                 {
                   label: "Help",
-                  onClick: () => props.store.layout.addPanel("HELP")
+                  onClick: () => ui.layouts.get('main').addPanel("HELP")
                 },
                 {
                   label: "Debug",
-                  onClick: () => props.store.layout.addPanel("DEBUG")
+                  onClick: () => ui.layouts.get('main').addPanel("DEBUG")
                 },
                 {
                   label: "Messages",
-                  onClick: () => props.store.layout.addPanel("MESSAGES")
+                  onClick: () => ui.layouts.get('main').addPanel("MESSAGES")
                 },
                 {
                   label: "Preferences",
-                  onClick: () => props.store.layout.addPanel("PREFERENCES")
+                  onClick: () => ui.layouts.get('main').addPanel("PREFERENCES")
                 },
                 {
                   label: "Capture",
-                  onClick: () => props.store.layout.addPanel("CAPTURE")
+                  onClick: () => ui.layouts.get('main').addPanel("CAPTURE")
                 }
               ]
             }
@@ -305,33 +310,34 @@ const App = observer(props => {
     props.store.context.setContextmenu();
   };
   
-  const mainPanel = props.store.ui.layouts.get('main');
+  const mainPanel = ui.panels.get('main');
+  const mainLayout = ui.layouts.get('main');
   
   return (
     <MainProvider value={{ store: props.store }}>
-      <ThemeContext.Provider value={props.store.ui.theme}>
+      <ThemeContext.Provider value={ui.theme}>
         <div
           id="APP"
           ref={mainRef}
           onContextMenu={handleContextMenu}
           style={{
-            backgroundColor: props.store.ui.theme.secondary_color
+            backgroundColor: ui.theme.secondary_color
           }}
         >
-          <ContextMenuComponent items={props.store.ui.context} />
+          <ContextMenuComponent items={ui.context} />
 
           {main_panel_toolbar}
 
-          <CanvasDisplay panel={props.store.mainCanvasPanel} />
+          <CanvasDisplay panel={store.mainCanvasPanel} />
 
-          {props.store.ready && (
+          {store.ready && (
             <GenericPanel
               panel={mainPanel}
-              subtitle={props.store.name}
+              subtitle={store.name}
               collapsible
             >
-              <LayoutContainer layout={mainPanel}>
-                {Array.from(mainPanel.panels).map(e => {
+              <LayoutContainer layout={mainLayout}>
+                {Array.from(mainLayout.panels).map(e => {
                   return getPanel(e[1]);
                 })}
               </LayoutContainer>

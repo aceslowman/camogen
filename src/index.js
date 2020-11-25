@@ -19,7 +19,9 @@ const root = RootStore.create({
       main: CoreLayouts['WELCOME'],
       // "canvas": CoreLayouts
     },
-    panels: CorePanels,
+    panels: {
+      main: CorePanels['MAIN']
+    },
     theme: Themes.yutani
   })
 });
