@@ -25,19 +25,48 @@ export const CoreLayouts = {
     ],
     panels: {
       help: {
+        ...CorePanels['HELP'],
         id: "main_help",
-        type: "HELP",
-        title: "Welcome",
-        floating: false,
-        canFloat: true,
-        canRemove: true,
-        defaultWidth: 100,
-        defaultHeight: 200,
-        dimensions: [250, 300],
-        position: [50, 150]
       },
       shader_graph: {
-        id: "main_shader_graph",
+        ...CorePanels['SHADER_GRAPH'],
+        id: "main_shader_graph",        
+      },
+      shader_controls: {
+        ...CorePanels['SHADER_CONTROLS'],
+        id: "main_shader_controls",        
+      }
+    }
+  },
+  SHADER_EDIT: {
+    id: "main",
+    direction: "HORIZONTAL",
+    size: 1,
+    children: [
+      {
+        id: "shader_editor",
+        panel: "shader_editor",
+        size: 2 / 3
+      },
+      {
+        id: "inner",
+        direction: "VERTICAL",
+        children: [
+          {
+            id: "shader_graph",
+            panel: "shader_graph",
+            size: 2 / 3
+          },
+          {
+            id: "messages",
+            panel: "messages"
+          }
+        ]
+      }
+    ],
+    panels: {
+      shader_graph: {
+        id: "shader_graph",
         type: "SHADER_GRAPH",
         title: "Shader Graph",
         floating: false,
@@ -45,88 +74,35 @@ export const CoreLayouts = {
         canRemove: true,
         defaultWidth: 100,
         defaultHeight: 200,
-        dimensions: [100, 250],
-        position: [200, 200]
+        dimensions: [100, 100],
+        position: [100, 150]
       },
-      shader_controls: {
-        id: "main_shader_controls",
-        type: "SHADER_CONTROLS",
-        title: "Shader Controls",
+      messages: {
+        id: "messages",
+        type: "MESSAGES",
+        title: "Messages",
         floating: false,
         canFloat: true,
         canRemove: true,
         defaultWidth: 100,
         defaultHeight: 200,
-        dimensions: [250, 400],
-        position: [300, 150]
+        dimensions: [100, 100],
+        position: [100, 150]
+      },
+      shader_editor: {
+        id: "shader_editor",
+        type: "SHADER_EDITOR",
+        title: "Shader Editor",
+        floating: false,
+        canFloat: true,
+        canRemove: true,
+        defaultWidth: 100,
+        defaultHeight: 200,
+        dimensions: [100, 100],
+        position: [100, 150]
       }
     }
-  }
-  // SHADER_EDIT: {
-  //   id: "main",
-  //   direction: "HORIZONTAL",
-  //   size: 1,
-  //   children: [
-  //     {
-  //       id: "shader_editor",
-  //       panel: "shader_editor",
-  //       size: 2 / 3
-  //     },
-  //     {
-  //       id: "inner",
-  //       direction: "VERTICAL",
-  //       children: [
-  //         {
-  //           id: "shader_graph",
-  //           panel: "shader_graph",
-  //           size: 2 / 3
-  //         },
-  //         {
-  //           id: "messages",
-  //           panel: "messages"
-  //         }
-  //       ]
-  //     }
-  //   ],
-  //   panels: {
-  //     shader_graph: {
-  //       id: "shader_graph",
-  //       type: "SHADER_GRAPH",
-  //       title: "Shader Graph",
-  //       floating: false,
-  //       canFloat: true,
-  //       canRemove: true,
-  //       defaultWidth: 100,
-  //       defaultHeight: 200,
-  //       dimensions: [100, 100],
-  //       position: [100, 150]
-  //     },
-  //     messages: {
-  //       id: "messages",
-  //       type: "MESSAGES",
-  //       title: "Messages",
-  //       floating: false,
-  //       canFloat: true,
-  //       canRemove: true,
-  //       defaultWidth: 100,
-  //       defaultHeight: 200,
-  //       dimensions: [100, 100],
-  //       position: [100, 150]
-  //     },
-  //     shader_editor: {
-  //       id: "shader_editor",
-  //       type: "SHADER_EDITOR",
-  //       title: "Shader Editor",
-  //       floating: false,
-  //       canFloat: true,
-  //       canRemove: true,
-  //       defaultWidth: 100,
-  //       defaultHeight: 200,
-  //       dimensions: [100, 100],
-  //       position: [100, 150]
-  //     }
-  //   }
-  // },
+  },
   // SHADER_CONTROL: {
   //   id: "main",
   //   direction: "HORIZONTAL",

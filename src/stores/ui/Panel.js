@@ -4,7 +4,7 @@ import Layout from "./Layout";
 
 export const CorePanels = {
   MAIN: {
-    id: "MAIN",
+    // id: "MAIN",
     // title: "camogen",
     floating: true,
     canFloat: false,
@@ -15,7 +15,7 @@ export const CorePanels = {
     position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250]
   },
   SHADER_GRAPH: {
-    id: "SHADER_GRAPH",
+    // id: "SHADER_GRAPH",
     title: "Shader Graph",
     type: "SHADER_GRAPH",
     subtitle: "",
@@ -28,7 +28,7 @@ export const CorePanels = {
     position: [10, 10]
   },
   SHADER_EDITOR: {
-    id: "SHADER_EDITOR",
+    // id: "SHADER_EDITOR",
     title: "Shader Editor",
     type: "SHADER_EDITOR",
     subtitle: "",
@@ -41,7 +41,7 @@ export const CorePanels = {
     position: [10, 10]
   },
   SHADER_CONTROLS: {
-    id: "SHADER_CONTROLS",
+    // id: "SHADER_CONTROLS",
     title: "Shader Controls",
     type: "SHADER_CONTROLS",
     subtitle: "",
@@ -54,7 +54,7 @@ export const CorePanels = {
     position: [10, 10]
   },
   PARAMETER_EDITOR: {
-    id: "PARAMETER_EDITOR",
+    // id: "PARAMETER_EDITOR",
     title: "Parameter Editor",
     type: "PARAMETER_EDITOR",
     subtitle: "",
@@ -67,7 +67,7 @@ export const CorePanels = {
     position: [10, 10]
   },
   HELP: {
-    id: "HELP",
+    // id: "HELP",
     title: "Help",
     type: "HELP",
     subtitle: "",
@@ -80,7 +80,7 @@ export const CorePanels = {
     position: [10, 10]
   },
   DEBUG: {
-    id: "DEBUG",
+    // id: "DEBUG",
     title: "Debug",
     type: "DEBUG",
     subtitle: "",
@@ -93,7 +93,7 @@ export const CorePanels = {
     position: [10, 10]
   },
   MESSAGES: {
-    id: "MESSAGES",
+    // id: "MESSAGES",
     title: "Messages",
     type: "MESSAGES",
     subtitle: "",
@@ -106,7 +106,7 @@ export const CorePanels = {
     position: [10, 10]
   },
   PREFERENCES: {
-    id: "PREFERENCES",
+    // id: "PREFERENCES",
     title: "Preferences",
     type: "PREFERENCES",
     subtitle: "",
@@ -119,7 +119,7 @@ export const CorePanels = {
     position: [10, 10]
   },
   CAPTURE: {
-    id: "CAPTURE",
+    // id: "CAPTURE",
     title: "Capture",
     type: "CAPTURE",
     subtitle: "",
