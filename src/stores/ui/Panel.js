@@ -196,15 +196,15 @@ export const CoreLayouts = {
       }
     ],
     panels: {
-      shader_graph: {
+      SHADER_EDIT_shader_graph: {
         id: "SHADER_EDIT_shader_graph",
         ...CorePanels["SHADER_GRAPH"]        
       },
-      messages: {
+      SHADER_EDIT_messages: {
         id: "SHADER_EDIT_messages",
         ...CorePanels["MESSAGES"]        
       },
-      shader_editor: {
+      SHADER_EDIT_shader_editor: {
         id: "SHADER_EDIT_shader_editor",
         ...CorePanels["SHADER_EDITOR"]        
       }

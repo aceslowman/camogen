@@ -155,7 +155,7 @@ const App = observer(props => {
   const handleSetLayout = name => {
     console.log(CoreLayouts);
     let new_layout = CoreLayouts[name];
-    applySnapshot(mainLayout, {id: mainLayout.id, ...new_layout});
+    // applySnapshot(mainLayout, { ...new_layout, id: mainLayout.id });
   };
 
   const handleAddPanel = name => {};
