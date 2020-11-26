@@ -7,8 +7,7 @@ import makeInspectable from "mobx-devtools-mst";
 import "regenerator-runtime/runtime";
 import { UIStore, Themes } from "maco-ui";
 
-import { CorePanels } from "./stores/ui/Panel";
-import { CoreLayouts } from "./stores/ui/Layout";
+import { CorePanels, CoreLayouts } from "./stores/ui/Panel";
 
 const layouts = null;
 const panels = null;

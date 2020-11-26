@@ -2,8 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { MainProvider } from "./MainContext";
 import { observer } from "mobx-react";
 
-import { CorePanels } from './stores/ui/Panel';
-import { CoreLayout } from './stores/ui/Layout';
+import { CorePanels, CoreLayouts } from "./stores/ui/Panel";
 
 import ShaderGraphComponent from "./components/panels/ShaderGraphComponent";
 import ShaderControlsComponent from "./components/panels/ShaderControlsComponent";
@@ -154,9 +153,9 @@ const App = observer(props => {
   console.log("HIT", ui.layouts.get("main"));
 
   const handleSetLayout = name => {
-    console.log(name)
-    let new_layout = ui.getLayout(name);
-    applySnapshot(mainLayout, new_layout);
+    console.log(CoreLayouts);
+    let new_layout = CoreLayouts[name];
+    applySnapshot(mainLayout, {id: mainLayout.id, ...new_layout});
   };
 
   const handleAddPanel = name => {};

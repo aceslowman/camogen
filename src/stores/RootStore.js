@@ -5,7 +5,7 @@ import { getSnapshot } from "mobx-state-tree";
 
 // import dirTree from "directory-tree";
 import Collection from "./utils/Collection";
-import Layout, { CoreLayouts } from "./ui/Layout";
+import { CorePanels, CoreLayout } from "./ui/Panel";
 import defaultSnapshot from "../snapshots/default.json";
 import Runner from "../Runner";
 import p5 from "p5";
