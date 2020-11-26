@@ -1,5 +1,7 @@
 import { types, getParent, applySnapshot, getSnapshot } from "mobx-state-tree";
-import Panel, { CorePanels } from "./Panel";
+import { CorePanels } from "./Panel";
+
+console.log(CorePanels)
 
 export const CoreLayouts = {
   WELCOME: {

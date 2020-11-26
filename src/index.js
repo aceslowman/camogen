@@ -17,7 +17,6 @@ const root = RootStore.create({
   ui: UIStore.create({
     layouts: {
       MAIN: CoreLayouts['WELCOME'],
-      ...CoreLayouts
     },
     panels: {
       CANVAS: {

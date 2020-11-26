@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { MainProvider } from "./MainContext";
 import { observer } from "mobx-react";
 
+import { CorePanels } from './stores/ui/Panel';
+import { CoreLayout } from './stores/ui/Layout';
+
 import ShaderGraphComponent from "./components/panels/ShaderGraphComponent";
 import ShaderControlsComponent from "./components/panels/ShaderControlsComponent";
 import DebugInfoComponent from "./components/panels/DebugInfoComponent";
