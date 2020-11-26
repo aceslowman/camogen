@@ -226,11 +226,11 @@ export const CoreLayouts = {
       }
     ],
     panels: {
-      shader_graph: {
+      SHADER_CONTROL_shader_graph_panel: {
         id: "SHADER_CONTROL_shader_graph_panel",        
         ...CorePanels["SHADER_GRAPH"] 
       },
-      shader_controls: {
+      SHADER_CONTROL_shader_controls_panel: {
         id: "SHADER_CONTROL_shader_controls_panel",        
         ...CorePanels["SHADER_CONTROLS"] 
       }

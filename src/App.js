@@ -154,7 +154,8 @@ const App = observer(props => {
     // mainLayout
     console.log('new_layout',new_layout);
     console.log('mainLayout',mainLayout)
-    applySnapshot(mainLayout, { ...new_layout, id: mainLayout.id });
+    
+    store.setMainLayout(new_layout);
   };
 
   const handleAddPanel = name => {};

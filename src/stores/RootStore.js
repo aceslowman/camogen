@@ -316,6 +316,10 @@ const RootStore = types
 
       link.click();
     });
+    
+    const setMainLayout = (layout) => {
+      applySnapshot(self.ui.getLayout('MAIN'), { ...layout, id: self.ui.getLayout('MAIN').id });
+    } 
 
     return {
       afterCreate,
@@ -330,7 +334,8 @@ const RootStore = types
       save,
       load,
       fetchShaderFiles,
-      snapshot
+      snapshot,
+      setMainLayout
       // save: () => undoManager.withoutUndo(save),
       // load: () => undoManager.withoutUndo(load),
       // fetchShaderFiles: () => undoManager.withoutUndo(fetchShaderFiles),
