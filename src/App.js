@@ -41,9 +41,9 @@ const App = observer(props => {
   const mainLayout = ui.getLayout("MAIN");
   const canvasPanel = ui.getPanel("CANVAS");
 
-  console.log("mainPanel", mainPanel);
-  console.log("mainLayout", mainLayout);
-  console.log("canvasPanel", canvasPanel);
+  // console.log("mainPanel", mainPanel);
+  // console.log("mainLayout", mainLayout);
+  // console.log("canvasPanel", canvasPanel);
 
   useEffect(() => {
     let unsubscribe = tinykeys(window, {
@@ -83,7 +83,6 @@ const App = observer(props => {
   };
 
   const getPanel = panel => {
-    console.log(panel);
     switch (panel.type) {
       case "SHADER_GRAPH":
         return (
@@ -149,12 +148,12 @@ const App = observer(props => {
     }
   };
 
-  console.log("HIT", ui.layouts.get("main"));
-
   const handleSetLayout = name => {
-    // console.log(CoreLayouts);
+    
     let new_layout = CoreLayouts[name];
     // mainLayout
+    console.log('new_layout',new_layout);
+    console.log('mainLayout',mainLayout)
     applySnapshot(mainLayout, { ...new_layout, id: mainLayout.id });
   };
 
