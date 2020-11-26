@@ -3,7 +3,6 @@ import { v1 as uuidv1 } from "uuid";
 
 export const CorePanels = {
   MAIN: {
-    // id: "MAIN",
     // title: "camogen",
     floating: true,
     canFloat: false,
@@ -14,7 +13,6 @@ export const CorePanels = {
     position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250]
   },
   SHADER_GRAPH: {
-    // id: "SHADER_GRAPH",
     title: "Shader Graph",
     type: "SHADER_GRAPH",
     subtitle: "",
@@ -27,7 +25,6 @@ export const CorePanels = {
     position: [10, 10]
   },
   SHADER_EDITOR: {
-    // id: "SHADER_EDITOR",
     title: "Shader Editor",
     type: "SHADER_EDITOR",
     subtitle: "",
@@ -40,7 +37,6 @@ export const CorePanels = {
     position: [10, 10]
   },
   SHADER_CONTROLS: {
-    // id: "SHADER_CONTROLS",
     title: "Shader Controls",
     type: "SHADER_CONTROLS",
     subtitle: "",
@@ -53,7 +49,6 @@ export const CorePanels = {
     position: [10, 10]
   },
   PARAMETER_EDITOR: {
-    // id: "PARAMETER_EDITOR",
     title: "Parameter Editor",
     type: "PARAMETER_EDITOR",
     subtitle: "",
@@ -66,7 +61,6 @@ export const CorePanels = {
     position: [10, 10]
   },
   HELP: {
-    // id: "HELP",
     title: "Help",
     type: "HELP",
     subtitle: "",
@@ -79,7 +73,6 @@ export const CorePanels = {
     position: [10, 10]
   },
   DEBUG: {
-    // id: "DEBUG",
     title: "Debug",
     type: "DEBUG",
     subtitle: "",
@@ -92,7 +85,6 @@ export const CorePanels = {
     position: [10, 10]
   },
   MESSAGES: {
-    // id: "MESSAGES",
     title: "Messages",
     type: "MESSAGES",
     subtitle: "",
@@ -105,7 +97,6 @@ export const CorePanels = {
     position: [10, 10]
   },
   PREFERENCES: {
-    // id: "PREFERENCES",
     title: "Preferences",
     type: "PREFERENCES",
     subtitle: "",
@@ -118,7 +109,6 @@ export const CorePanels = {
     position: [10, 10]
   },
   CAPTURE: {
-    // id: "CAPTURE",
     title: "Capture",
     type: "CAPTURE",
     subtitle: "",
@@ -140,30 +130,30 @@ export const CoreLayouts = {
     children: [
       {
         id: "main_help",
-        panel: "help",
+        panel: "main_help",
         size: 1 / 3
       },
       {
         id: "main_shader_graph",
-        panel: "shader_graph",
+        panel: "main_shader_graph",
         size: 1 / 3
       },
       {
         id: "main_shader_controls",
-        panel: "shader_controls",
+        panel: "main_shader_controls",
         size: 1 / 3
       }
     ],
     panels: {
-      help: {
+      main_help: {
         id: "main_help",
         ...CorePanels["HELP"]
       },
-      shader_graph: {
+      main_shader_graph: {
         id: "main_shader_graph",
         ...CorePanels["SHADER_GRAPH"]
       },
-      shader_controls: {
+      main_shader_controls: {
         id: "main_shader_controls",
         ...CorePanels["SHADER_CONTROLS"]
       }
@@ -198,15 +188,15 @@ export const CoreLayouts = {
     panels: {
       SHADER_EDIT_shader_graph: {
         id: "SHADER_EDIT_shader_graph",
-        ...CorePanels["SHADER_GRAPH"]        
+        ...CorePanels["SHADER_GRAPH"]
       },
       SHADER_EDIT_messages: {
         id: "SHADER_EDIT_messages",
-        ...CorePanels["MESSAGES"]        
+        ...CorePanels["MESSAGES"]
       },
       SHADER_EDIT_shader_editor: {
         id: "SHADER_EDIT_shader_editor",
-        ...CorePanels["SHADER_EDITOR"]        
+        ...CorePanels["SHADER_EDITOR"]
       }
     }
   },
@@ -227,12 +217,12 @@ export const CoreLayouts = {
     ],
     panels: {
       SHADER_CONTROL_shader_graph_panel: {
-        id: "SHADER_CONTROL_shader_graph_panel",        
-        ...CorePanels["SHADER_GRAPH"] 
+        id: "SHADER_CONTROL_shader_graph_panel",
+        ...CorePanels["SHADER_GRAPH"]
       },
       SHADER_CONTROL_shader_controls_panel: {
-        id: "SHADER_CONTROL_shader_controls_panel",        
-        ...CorePanels["SHADER_CONTROLS"] 
+        id: "SHADER_CONTROL_shader_controls_panel",
+        ...CorePanels["SHADER_CONTROLS"]
       }
     }
   },
@@ -265,18 +255,18 @@ export const CoreLayouts = {
     panels: {
       shader_graph: {
         id: "DEBUG_shader_graph_panel",
-        ...CorePanels["SHADER_GRAPH"] 
+        ...CorePanels["SHADER_GRAPH"]
       },
       messages: {
         id: "DEBUG_messages_panel",
-        ...CorePanels["MESSAGES"] 
+        ...CorePanels["MESSAGES"]
       },
       debug: {
         id: "DEBUG_debug_panel",
-        ...CorePanels["DEBUG"] 
+        ...CorePanels["DEBUG"]
       }
     }
-  },
+  }
   // PARAMETER: {
   //   id: "main",
   //   direction: "HORIZONTAL",

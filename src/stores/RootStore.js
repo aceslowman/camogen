@@ -5,7 +5,7 @@ import { getSnapshot } from "mobx-state-tree";
 
 // import dirTree from "directory-tree";
 import Collection from "./utils/Collection";
-import { CorePanels, CoreLayout } from "./ui/Panel";
+import { CorePanels, CoreLayouts } from "./ui/Panel";
 import defaultSnapshot from "../snapshots/default.json";
 import Runner from "../Runner";
 import p5 from "p5";
@@ -317,7 +317,10 @@ const RootStore = types
       link.click();
     });
     
-    const setMainLayout = (layout) => {
+    const setMainLayout = (name) => {
+      
+      let layout = CoreLayouts[name];
+      console.log(self.ui.layouts.get('MAIN'))
       self.ui.layouts.set('MAIN', { ...layout, id: 'MAIN' })
       // applySnapshot(self.ui.getLayout('MAIN'), { ...layout, id: self.ui.getLayout('MAIN').id });
       // applySnapshot(self.ui.layouts.get('MAIN'), { ...layout, id: self.ui.getLayout('MAIN').id });

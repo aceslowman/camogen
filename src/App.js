@@ -150,12 +150,11 @@ const App = observer(props => {
 
   const handleSetLayout = name => {
     
-    let new_layout = CoreLayouts[name];
     // mainLayout
-    console.log('new_layout',new_layout);
-    console.log('mainLayout',mainLayout)
+    // console.log('new_layout',new_layout);
+    // console.log('mainLayout',mainLayout)
     
-    store.setMainLayout(new_layout);
+    store.setMainLayout(name);
   };
 
   const handleAddPanel = name => {};
