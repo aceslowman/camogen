@@ -39,7 +39,6 @@ const App = observer(props => {
 
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = ui.getLayout("MAIN");
-
   const canvasPanel = ui.getPanel("CANVAS");
 
   console.log("mainPanel", mainPanel);
