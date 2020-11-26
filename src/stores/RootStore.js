@@ -37,8 +37,8 @@ import Transport from "./utils/Transport";
 
 const RootStore = types
   .model("RootStore", {
-    scene: types.maybe(Scene),
     ui: UIStore,
+    scene: types.maybe(Scene),    
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string),
     transport: types.optional(Transport, {})
@@ -318,7 +318,9 @@ const RootStore = types
     });
     
     const setMainLayout = (layout) => {
-      applySnapshot(self.ui.getLayout('MAIN'), { ...layout, id: self.ui.getLayout('MAIN').id });
+      self.ui.layouts.set('MAIN', { ...layout, id: 'MAIN' })
+      // applySnapshot(self.ui.getLayout('MAIN'), { ...layout, id: self.ui.getLayout('MAIN').id });
+      // applySnapshot(self.ui.layouts.get('MAIN'), { ...layout, id: self.ui.getLayout('MAIN').id });
     } 
 
     return {
