@@ -34,7 +34,7 @@ const GraphComponent = observer(props => {
         label: "Edit Shader",
         onClick: () => {
           store.workspace.addPanel("SHADER_EDITOR", true);
-          store.context.setContextmenu(); // removes menu
+          store.ui.context.setContextmenu(); // removes menu
         }
       }
     ]);

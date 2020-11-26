@@ -77,7 +77,7 @@ const ShaderGraph = observer(props => {
           ? [
               {
                 label: "k",
-                color: store.theme.accent_color,
+                color: store.ui.theme.accent_color,
                 title: "Keybind Focus"
               }
             ]

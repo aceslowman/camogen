@@ -153,7 +153,7 @@ const App = observer(props => {
   console.log("HIT", ui.layouts.get("main"));
 
   const handleSetLayout = name => {
-    console.log(CoreLayouts);
+    // console.log(CoreLayouts);
     let new_layout = CoreLayouts[name];
     // mainLayout
     applySnapshot(mainLayout, { ...new_layout, id: mainLayout.id });
