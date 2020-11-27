@@ -159,18 +159,11 @@ const ShaderControls = observer(props => {
   };
 
   let refs = [];
-
-  // TODO: this isn't sufficient, fails with branching or new elements
-  // they get overwritten
-  // props.data.nodes.forEach((e, i) => {
-  //   refs.push(React.createRef());
-  // });
-
   const panels = [];
-  
-  const addPanelRef = (panel) => {
-    refs = [...refs, panel];
-  }
+
+  const addPanelRef = (panel, id) => {
+    refs = [...refs, { [id]: panel }];
+  };
 
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
@@ -204,7 +197,7 @@ const ShaderControls = observer(props => {
         subpanels.push(
           <li
             key={i}
-            ref={addPanelRef}
+            ref={r => addPanelRef(r, node.uuid)}
             style={{
               borderLeft: `3px solid ${branch_colors[node.branch_index]}`
             }}
@@ -256,7 +249,27 @@ const ShaderControls = observer(props => {
     //     }
     //   });
     // });
-    console.log(refs)
+    // props.data.nodes.forEach(node => {
+    //   if (node.uuid === props.selectedNode.uuid) {
+    //     refs[node.uuid].current.scrollIntoView({
+    //       behavior: "smooth",
+    //       block: "start"
+    //     });
+    //   }
+    // });
+    
+    refs.forEach((e,i) => {
+      if (Object.keys(e)[0] === props.selectedNode.uuid) {
+        console.log(e)
+        e.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    })
+//     if(refs[props.selectedNode.uuid])
+      
+    console.log(refs);
   }, [props.data.selectedNode]);
 
   return (
