@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { MainProvider } from "./MainContext";
 import { observer } from "mobx-react";
 
-import { CorePanels, CoreLayouts } from "./stores/ui/Panel";
+import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 
 import ShaderGraphComponent from "./components/panels/ShaderGraphComponent";
 import ShaderControlsComponent from "./components/panels/ShaderControlsComponent";
@@ -37,13 +37,13 @@ const App = observer(props => {
   const mainRef = useRef(null);
   const [showAbout, setShowAbout] = useState(false);
 
-  const mainPanel = ui.getPanel("MAIN");
-  const mainLayout = ui.getLayout("MAIN");
-  const canvasPanel = ui.getPanel("CANVAS");
+  const canvasPanel = ui.getPanel("CANVAS");  
+  const mainPanel = ui.getPanel('MAIN');
+  const mainLayout = mainPanel.layout;
 
-  // console.log("mainPanel", mainPanel);
-  // console.log("mainLayout", mainLayout);
-  // console.log("canvasPanel", canvasPanel);
+  console.log("mainPanel", mainPanel);
+  console.log("mainLayout", mainLayout);
+  console.log("canvasPanel", canvasPanel);
 
   useEffect(() => {
     let unsubscribe = tinykeys(window, {
@@ -83,7 +83,7 @@ const App = observer(props => {
   };
 
   const getPanel = panel => {
-    switch (panel.type) {
+    switch (panel.component_type) {
       case "SHADER_GRAPH":
         return (
           <ShaderGraphComponent

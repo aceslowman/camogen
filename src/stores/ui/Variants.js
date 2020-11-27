@@ -1,7 +1,7 @@
 import { getParent, getSnapshot, types } from "mobx-state-tree";
 import { v1 as uuidv1 } from "uuid";
 
-export const CorePanels = {
+export const PanelVariants = {
   MAIN: {
     // title: "camogen",
     floating: true,
@@ -122,7 +122,7 @@ export const CorePanels = {
   }
 };
 
-export const CoreLayouts = {
+export const LayoutVariants = {
   WELCOME: {
     id: "WELCOME",
     direction: "HORIZONTAL",
@@ -147,15 +147,15 @@ export const CoreLayouts = {
     panels: {
       main_help: {
         id: "main_help",
-        ...CorePanels["HELP"]
+        ...PanelVariants["HELP"]
       },
       main_shader_graph: {
         id: "main_shader_graph",
-        ...CorePanels["SHADER_GRAPH"]
+        ...PanelVariants["SHADER_GRAPH"]
       },
       main_shader_controls: {
         id: "main_shader_controls",
-        ...CorePanels["SHADER_CONTROLS"]
+        ...PanelVariants["SHADER_CONTROLS"]
       }
     }
   },
@@ -188,15 +188,15 @@ export const CoreLayouts = {
     panels: {
       SHADER_EDIT_shader_graph: {
         id: "SHADER_EDIT_shader_graph",
-        ...CorePanels["SHADER_GRAPH"]
+        ...PanelVariants["SHADER_GRAPH"]
       },
       SHADER_EDIT_messages: {
         id: "SHADER_EDIT_messages",
-        ...CorePanels["MESSAGES"]
+        ...PanelVariants["MESSAGES"]
       },
       SHADER_EDIT_shader_editor: {
         id: "SHADER_EDIT_shader_editor",
-        ...CorePanels["SHADER_EDITOR"]
+        ...PanelVariants["SHADER_EDITOR"]
       }
     }
   },
@@ -218,11 +218,11 @@ export const CoreLayouts = {
     panels: {
       SHADER_CONTROL_shader_graph_panel: {
         id: "SHADER_CONTROL_shader_graph_panel",
-        ...CorePanels["SHADER_GRAPH"]
+        ...PanelVariants["SHADER_GRAPH"]
       },
       SHADER_CONTROL_shader_controls_panel: {
         id: "SHADER_CONTROL_shader_controls_panel",
-        ...CorePanels["SHADER_CONTROLS"]
+        ...PanelVariants["SHADER_CONTROLS"]
       }
     }
   },
@@ -255,15 +255,15 @@ export const CoreLayouts = {
     panels: {
       shader_graph: {
         id: "DEBUG_shader_graph_panel",
-        ...CorePanels["SHADER_GRAPH"]
+        ...PanelVariants["SHADER_GRAPH"]
       },
       messages: {
         id: "DEBUG_messages_panel",
-        ...CorePanels["MESSAGES"]
+        ...PanelVariants["MESSAGES"]
       },
       debug: {
         id: "DEBUG_debug_panel",
-        ...CorePanels["DEBUG"]
+        ...PanelVariants["DEBUG"]
       }
     }
   }

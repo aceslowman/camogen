@@ -7,16 +7,11 @@ import makeInspectable from "mobx-devtools-mst";
 import "regenerator-runtime/runtime";
 import { UIStore, Themes } from "maco-ui";
 
-import { CorePanels, CoreLayouts } from "./stores/ui/Panel";
-
-const layouts = null;
-const panels = null;
+import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 
 const root = RootStore.create({
   ui: UIStore.create({
-    layouts: {
-      MAIN: {...CoreLayouts['WELCOME'], id: 'MAIN'},
-    },
+    theme: Themes.powershell,
     panels: {
       CANVAS: {
         id: "CANVAS",
@@ -41,10 +36,12 @@ const root = RootStore.create({
         dimensions: [700, 500],
         position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250]
       }
-    },
-    theme: Themes.powershell
+    }
   })
 });
+
+root.ui.setPanelVariants(PanelVariants);
+root.ui.setLayoutVariants(LayoutVariants);
 
 makeInspectable(root);
 
