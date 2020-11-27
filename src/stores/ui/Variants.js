@@ -14,7 +14,7 @@ export const PanelVariants = {
   },
   SHADER_GRAPH: {
     title: "Shader Graph",
-    type: "SHADER_GRAPH",
+    component_type: "SHADER_GRAPH",
     subtitle: "",
     floating: false,
     fullscreen: false,
@@ -26,7 +26,7 @@ export const PanelVariants = {
   },
   SHADER_EDITOR: {
     title: "Shader Editor",
-    type: "SHADER_EDITOR",
+    component_type: "SHADER_EDITOR",
     subtitle: "",
     floating: false,
     fullscreen: false,
@@ -38,7 +38,7 @@ export const PanelVariants = {
   },
   SHADER_CONTROLS: {
     title: "Shader Controls",
-    type: "SHADER_CONTROLS",
+    component_type: "SHADER_CONTROLS",
     subtitle: "",
     floating: false,
     fullscreen: false,
@@ -50,7 +50,7 @@ export const PanelVariants = {
   },
   PARAMETER_EDITOR: {
     title: "Parameter Editor",
-    type: "PARAMETER_EDITOR",
+    component_type: "PARAMETER_EDITOR",
     subtitle: "",
     floating: false,
     fullscreen: false,
@@ -62,7 +62,7 @@ export const PanelVariants = {
   },
   HELP: {
     title: "Help",
-    type: "HELP",
+    component_type: "HELP",
     subtitle: "",
     floating: false,
     fullscreen: false,
@@ -74,7 +74,7 @@ export const PanelVariants = {
   },
   DEBUG: {
     title: "Debug",
-    type: "DEBUG",
+    component_type: "DEBUG",
     subtitle: "",
     floating: false,
     fullscreen: false,
@@ -86,7 +86,7 @@ export const PanelVariants = {
   },
   MESSAGES: {
     title: "Messages",
-    type: "MESSAGES",
+    component_type: "MESSAGES",
     subtitle: "",
     floating: false,
     fullscreen: false,
@@ -98,7 +98,7 @@ export const PanelVariants = {
   },
   PREFERENCES: {
     title: "Preferences",
-    type: "PREFERENCES",
+    component_type: "PREFERENCES",
     subtitle: "",
     floating: false,
     fullscreen: false,
@@ -110,7 +110,7 @@ export const PanelVariants = {
   },
   CAPTURE: {
     title: "Capture",
-    type: "CAPTURE",
+    component_type: "CAPTURE",
     subtitle: "",
     floating: false,
     fullscreen: false,

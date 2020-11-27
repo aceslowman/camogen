@@ -3,14 +3,12 @@ import Scene from "./SceneStore";
 // import { UndoManager } from "mst-middlewares";
 import { getSnapshot } from "mobx-state-tree";
 
-// import dirTree from "directory-tree";
 import Collection from "./utils/Collection";
-import { CorePanels, CoreLayouts } from "./ui/Panel";
+import { PanelVariants, LayoutVariants } from "./ui/Variants";
 import defaultSnapshot from "../snapshots/default.json";
 import Runner from "../Runner";
 import p5 from "p5";
 
-// import path from 'path';
 import Context from "./ui/Context";
 import Messages from "./utils/Messages";
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
@@ -38,7 +36,7 @@ import Transport from "./utils/Transport";
 const RootStore = types
   .model("RootStore", {
     ui: UIStore,
-    scene: types.maybe(Scene),    
+    scene: types.maybe(Scene),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string),
     transport: types.optional(Transport, {})
@@ -122,7 +120,7 @@ const RootStore = types
         // self.scene.shaderGraph.afterUpdate();
 
         self.setReady(true);
-        console.log('layouts',getSnapshot(self.ui.layouts.get('MAIN')))
+        // console.log("layouts", getSnapshot(self.ui.layouts.get("MAIN")));
         // self.ui.layouts.get('main').fitScreen();
         // self.ui.layouts.get('main').center();
 
@@ -316,15 +314,14 @@ const RootStore = types
 
       link.click();
     });
-    
-    const setMainLayout = (name) => {
-      
+
+    const setMainLayout = name => {
       let layout = CoreLayouts[name];
-      console.log(self.ui.layouts.get('MAIN'))
-      self.ui.layouts.set('MAIN', { ...layout, id: 'MAIN' })
+      console.log(self.ui.layouts.get("MAIN"));
+      self.ui.layouts.set("MAIN", { ...layout, id: "MAIN" });
       // applySnapshot(self.ui.getLayout('MAIN'), { ...layout, id: self.ui.getLayout('MAIN').id });
       // applySnapshot(self.ui.layouts.get('MAIN'), { ...layout, id: self.ui.getLayout('MAIN').id });
-    } 
+    };
 
     return {
       afterCreate,

@@ -37,8 +37,8 @@ const App = observer(props => {
   const mainRef = useRef(null);
   const [showAbout, setShowAbout] = useState(false);
 
-  const canvasPanel = ui.getPanel("CANVAS");  
-  const mainPanel = ui.getPanel('MAIN');
+  const canvasPanel = ui.getPanel("CANVAS");
+  const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
 
   console.log("mainPanel", mainPanel);
@@ -83,6 +83,7 @@ const App = observer(props => {
   };
 
   const getPanel = panel => {
+    console.log('HIT', panel)
     switch (panel.component_type) {
       case "SHADER_GRAPH":
         return (
@@ -148,13 +149,9 @@ const App = observer(props => {
     }
   };
 
-  const handleSetLayout = name => {
-    
-    // mainLayout
-    // console.log('new_layout',new_layout);
-    // console.log('mainLayout',mainLayout)
-    
-    store.setMainLayout(name);
+  const handleLayoutSelect = name => {
+    let variant = store.ui.getLayoutVariant(name);
+    mainPanel.setLayout(variant);
   };
 
   const handleAddPanel = name => {};
@@ -243,27 +240,27 @@ const App = observer(props => {
           dropDown: props.store.shaderLibrary()
         },
         {
-          label: "Workspace",
+          label: "Layout",
           dropDown: [
             {
               label: "Welcome",
-              onClick: () => handleSetLayout("WELCOME")
+              onClick: () => handleLayoutSelect("WELCOME")
             },
             {
               label: "Shader Edit",
-              onClick: () => handleSetLayout("SHADER_EDIT")
+              onClick: () => handleLayoutSelect("SHADER_EDIT")
             },
             {
               label: "Shader Control",
-              onClick: () => handleSetLayout("SHADER_CONTROL")
+              onClick: () => handleLayoutSelect("SHADER_CONTROL")
             },
             {
               label: "Parameter Editor",
-              onClick: () => handleSetLayout("PARAMETER")
+              onClick: () => handleLayoutSelect("PARAMETER")
             },
             {
               label: "Debug",
-              onClick: () => handleSetLayout("DEBUG")
+              onClick: () => handleLayoutSelect("DEBUG")
             },
             {
               label: "Add Panel",
@@ -347,6 +344,7 @@ const App = observer(props => {
             <GenericPanel panel={mainPanel} subtitle={store.name} collapsible>
               <LayoutContainer layout={mainLayout}>
                 {Array.from(mainLayout.panels).map(e => {
+                  console.log(e)
                   return getPanel(e[1]);
                 })}
               </LayoutContainer>
