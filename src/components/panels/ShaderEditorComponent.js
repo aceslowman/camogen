@@ -23,10 +23,10 @@ const ShaderEditor = props => {
     props.data.init();
   };
 
-  const handleEditorChange = (instance, changes) => {
+  const handleEditorChange = (doc, changes) => {
     console.log('editor changed!',changes)
     console.log('editType', editType)
-    let value = instance.options.value;
+    let value = doc.getValue();
     switch (editType) {
       case "vert":
         props.data.setVert(value);
@@ -83,15 +83,15 @@ const ShaderEditor = props => {
 
   useLayoutEffect(() => {
     editor = CodeMirror(editorRef.current, {
-      value: editType === "frag" ? props.data.frag : props.data.vert,
+      // value: editType === "frag" ? props.data.frag : props.data.vert,
       mode: "x-shader/x-fragment",
       theme: "monokai",
       lineNumbers: true,
       foldGutter: true,
       keymap: "sublime"
     });
-
-    editor.on("change", handleEditorChange);
+    
+    editor.getDoc().on("change", handleEditorChange);
   }, []);
 
   useLayoutEffect(() => {
@@ -110,7 +110,7 @@ const ShaderEditor = props => {
     
     // do I need to remove listener?
     // editor.on("change", handleEditorChange);
-    doc.on("change", (d,changes) => console.log('D',d))
+    doc.on("change", handleEditorChange);
   }, [editType, props.data]);
 
   return (
