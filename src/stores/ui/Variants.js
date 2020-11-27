@@ -155,8 +155,8 @@ export const LayoutVariants = {
     size: 1,
     children: [
       {
-        id: "SHADER_EDIT",
-        panel: "SHADER_EDIT",
+        id: "SHADER_EDITOR",
+        panel: "SHADER_EDITOR",
         size: 2 / 3
       },
       {

@@ -96,20 +96,20 @@ const App = observer(props => {
           />
         );
       case "SHADER_EDITOR":
-        // return (
-        //   <ShaderEditorComponent
-        //     key={panel.id}
-        //     node={store.scene.shaderGraph.selectedNode}
-        //     data={store.scene.shaderGraph.selectedNode.data}
-        //     graph={store.scene.shaderGraph}
-        //     hasChanged={
-        //       store.scene.shaderGraph.selectedNode.data
-        //         ? store.scene.shaderGraph.selectedNode.data.hasChanged
-        //         : null
-        //     }
-        //     panel={panel}
-        //   />
-        // );
+        return (
+          <ShaderEditorComponent
+            key={panel.id}
+            node={store.scene.shaderGraph.selectedNode}
+            data={store.scene.shaderGraph.selectedNode.data}
+            graph={store.scene.shaderGraph}
+            hasChanged={
+              store.scene.shaderGraph.selectedNode.data
+                ? store.scene.shaderGraph.selectedNode.data.hasChanged
+                : null
+            }
+            panel={panel}
+          />
+        );
       case "SHADER_CONTROLS":
         return (
           <ShaderControlsComponent
@@ -343,7 +343,6 @@ const App = observer(props => {
             <GenericPanel panel={mainPanel} subtitle={store.name} collapsible>
               <LayoutContainer layout={mainLayout}>
                 {Array.from(mainLayout.panels).map(e => {
-                  console.log(e)
                   return getPanel(e[1]);
                 })}
               </LayoutContainer>

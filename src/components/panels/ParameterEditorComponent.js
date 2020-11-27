@@ -7,6 +7,9 @@ import { observer } from "mobx-react";
 import OperatorControls from "./OperatorControlsComponent";
 
 const OperatorEditor = observer(props => {
+  const { data } = props;
+  const { graph } = data;
+
   const toolbar = (
     <ToolbarComponent
       items={[
@@ -15,11 +18,11 @@ const OperatorEditor = observer(props => {
           dropDown: [
             {
               label: "MIDI",
-              onClick: () => props.data.graph.setSelectedByName("MIDI")
+              onClick: () => graph.setSelectedByName("MIDI")
             },
             {
               label: "Counter",
-              onClick: () => props.data.graph.setSelectedByName("Counter")
+              onClick: () => graph.setSelectedByName("Counter")
             }
           ]
         },
@@ -28,23 +31,23 @@ const OperatorEditor = observer(props => {
           dropDown: [
             {
               label: "Add",
-              onClick: () => props.data.graph.setSelectedByName("Add")
+              onClick: () => graph.setSelectedByName("Add")
             },
             {
               label: "Subtract",
-              onClick: () => props.data.graph.setSelectedByName("Subtract")
+              onClick: () => graph.setSelectedByName("Subtract")
             },
             {
               label: "Divide",
-              onClick: () => props.data.graph.setSelectedByName("Divide")
+              onClick: () => graph.setSelectedByName("Divide")
             },
             {
               label: "Multiply",
-              onClick: () => props.data.graph.setSelectedByName("Multiply")
+              onClick: () => graph.setSelectedByName("Multiply")
             },
             {
               label: "Modulus",
-              onClick: () => props.data.graph.setSelectedByName("Modulus")
+              onClick: () => graph.setSelectedByName("Modulus")
             }
           ]
         },
@@ -53,39 +56,37 @@ const OperatorEditor = observer(props => {
           dropDown: [
             {
               label: "Sine",
-              onClick: () => props.data.graph.setSelectedByName("Sin")
+              onClick: () => graph.setSelectedByName("Sin")
             },
             {
               label: "Cosine",
-              onClick: () => props.data.graph.setSelectedByName("Cos")
+              onClick: () => graph.setSelectedByName("Cos")
             },
             {
               label: "Tangent",
-              onClick: () => props.data.graph.setSelectedByName("Tan")
+              onClick: () => graph.setSelectedByName("Tan")
             }
           ]
         }
       ]}
     />
   );
-  
-  console.log(props.data)
 
   return (
-    <GenericPanel 
-      panel={props.panel} 
-      toolbar={props.data && toolbar}
+    <GenericPanel
+      panel={props.panel}
+      toolbar={data && toolbar}
       title=" "
-      subtitle={`${props.data.uniform.shader.name} > ${props.data.uniform.name} > ${props.data.name}`}
+      subtitle={`${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`}
     >
-      {props.data && (
+      {data && (
         <SplitContainer vertical>
           <OperatorGraph
-            data={props.data}
-            selectedNode={props.data.graph.selectedNode}
+            data={data}
+            selectedNode={data.graph.selectedNode}
             coord_bounds={props.coord_bounds}
           />
-          <OperatorControls data={props.data.graph} />
+          <OperatorControls data={graph} />
         </SplitContainer>
       )}
 
