@@ -94,27 +94,27 @@ let shader = types
     }
 
     /*
-            extractUniforms()
+        extractUniforms()
 
-            extracts all uniform variables from
-            shader code. these then populate the
-            interfaces. controls and input elements
-            are created here
+        extracts all uniform variables from
+        shader code. these then populate the
+        interfaces. controls and input elements
+        are created here
 
-            special options can be passed to a uniform
-            to provide default values, and eventually
-            annotations and UI knob/slider/dial type.
+        special options can be passed to a uniform
+        to provide default values, and eventually
+        annotations and UI knob/slider/dial type.
 
-            camogen extracts: 
-            0: "uniform vec2 offset; // {"name":"off","default":[0.0,0.0]}"
-            1: "uniform"
-            2: "vec2"
-            3: "offset"
-            4: "{"name":"off","default":[0.0,0.0]}"
+        camogen extracts: 
+        0: "uniform vec2 offset; // {"name":"off","default":[0.0,0.0]}"
+        1: "uniform"
+        2: "vec2"
+        3: "offset"
+        4: "{"name":"off","default":[0.0,0.0]}"
 
-            TODO: currently MUST use doublequotes.
-            TODO: allow for specific input types (slider, number, etc)
-        */
+        TODO: currently MUST use doublequotes.
+        TODO: allow for specific input types (slider, number, etc)
+    */
     function extractUniforms() {
       const builtins = ["resolution"];
 
@@ -279,6 +279,28 @@ let shader = types
     }
 
     function save() {
+      console.log("saving project");
+
+      let src = JSON.stringify(getSnapshot(self));
+      let blob = new Blob([src], { type: "text/plain" });
+
+      let link = document.createElement("a");
+      link.download = `${self.name}.shader.camo`;
+
+      if (window.webkitURL != null) {
+        // Chrome allows the link to be clicked without actually adding it to the DOM.
+        link.href = window.webkitURL.createObjectURL(blob);
+      } else {
+        // Firefox requires the link to be added to the DOM before it can be clicked.
+        link.href = window.URL.createObjectURL(blob);
+        link.onclick = e => {
+          document.body.removeChild(e.target);
+        };
+        link.style.display = "none";
+        document.body.appendChild(link);
+      }
+
+      link.click();
       //             let path = `${app.getPath("userData")}/shaders`;
       //             let options = {
       //                 title: 'Save Shader File',
