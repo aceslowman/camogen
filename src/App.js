@@ -96,26 +96,26 @@ const App = observer(props => {
           />
         );
       case "SHADER_EDITOR":
-        return (
-          <ShaderEditorComponent
-            key={panel.id}
-            node={props.store.scene.shaderGraph.selectedNode}
-            data={props.store.scene.shaderGraph.selectedNode.data}
-            graph={props.store.scene.shaderGraph}
-            hasChanged={
-              props.store.scene.shaderGraph.selectedNode.data
-                ? props.store.scene.shaderGraph.selectedNode.data.hasChanged
-                : null
-            }
-            panel={panel}
-          />
-        );
+        // return (
+        //   <ShaderEditorComponent
+        //     key={panel.id}
+        //     node={store.scene.shaderGraph.selectedNode}
+        //     data={store.scene.shaderGraph.selectedNode.data}
+        //     graph={store.scene.shaderGraph}
+        //     hasChanged={
+        //       store.scene.shaderGraph.selectedNode.data
+        //         ? store.scene.shaderGraph.selectedNode.data.hasChanged
+        //         : null
+        //     }
+        //     panel={panel}
+        //   />
+        // );
       case "SHADER_CONTROLS":
         return (
           <ShaderControlsComponent
             key={panel.id}
-            data={props.store.scene.shaderGraph}
-            selectedNode={props.store.scene.shaderGraph.selectedNode}
+            data={store.scene.shaderGraph}
+            selectedNode={store.scene.shaderGraph.selectedNode}
             panel={panel}
           />
         );
@@ -123,7 +123,7 @@ const App = observer(props => {
         return (
           <ParameterEditorComponent
             key={panel.id}
-            data={props.store.selectedParameter}
+            data={store.selectedParameter}
             panel={panel}
           />
         );

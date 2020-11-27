@@ -128,34 +128,25 @@ export const LayoutVariants = {
     size: 1,
     children: [
       {
-        id: "main_help",
-        panel: "main_help",
+        id: "HELP",
+        panel: "HELP",
         size: 1 / 3
       },
       {
-        id: "main_shader_graph",
-        panel: "main_shader_graph",
+        id: "SHADER_GRAPH",
+        panel: "SHADER_GRAPH",
         size: 1 / 3
       },
       {
-        id: "main_shader_controls",
-        panel: "main_shader_controls",
+        id: "SHADER_CONTROLS",
+        panel: "SHADER_CONTROLS",
         size: 1 / 3
       }
     ],
     panels: {
-      main_help: {
-        id: "main_help",
-        ...PanelVariants["HELP"]
-      },
-      main_shader_graph: {
-        id: "main_shader_graph",
-        ...PanelVariants["SHADER_GRAPH"]
-      },
-      main_shader_controls: {
-        id: "main_shader_controls",
-        ...PanelVariants["SHADER_CONTROLS"]
-      }
+      HELP: PanelVariants["HELP"],
+      SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
+      SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"],
     }
   },
   SHADER_EDIT: {
@@ -164,8 +155,8 @@ export const LayoutVariants = {
     size: 1,
     children: [
       {
-        id: "SHADER_EDIT_shader_editor",
-        panel: "shader_editor",
+        id: "SHADER_EDIT",
+        panel: "SHADER_EDIT",
         size: 2 / 3
       },
       {
@@ -173,30 +164,21 @@ export const LayoutVariants = {
         direction: "VERTICAL",
         children: [
           {
-            id: "SHADER_EDIT_shader_graph",
-            panel: "shader_graph",
+            id: "SHADER_GRAPH",
+            panel: "SHADER_GRAPH",
             size: 2 / 3
           },
           {
-            id: "SHADER_EDIT_messages",
-            panel: "messages"
+            id: "MESSAGES",
+            panel: "MESSAGES"
           }
         ]
       }
     ],
     panels: {
-      SHADER_EDIT_shader_graph: {
-        id: "SHADER_EDIT_shader_graph",
-        ...PanelVariants["SHADER_GRAPH"]
-      },
-      SHADER_EDIT_messages: {
-        id: "SHADER_EDIT_messages",
-        ...PanelVariants["MESSAGES"]
-      },
-      SHADER_EDIT_shader_editor: {
-        id: "SHADER_EDIT_shader_editor",
-        ...PanelVariants["SHADER_EDITOR"]
-      }
+      SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
+      MESSAGES: PanelVariants["MESSAGES"],
+      SHADER_EDITOR: PanelVariants["SHADER_EDITOR"]
     }
   },
   SHADER_CONTROL: {
@@ -205,24 +187,18 @@ export const LayoutVariants = {
     size: 1,
     children: [
       {
-        id: "shader_graph_panel",
-        panel: "SHADER_CONTROL_shader_graph_panel",
+        id: "SHADER_GRAPH",
+        panel: "SHADER_GRAPH",
         size: 1 / 3
       },
       {
-        id: "shader_controls_panel",
-        panel: "SHADER_CONTROL_shader_controls"
+        id: "SHADER_CONTROLS",
+        panel: "SHADER_CONTROLS"
       }
     ],
     panels: {
-      SHADER_CONTROL_shader_graph_panel: {
-        id: "SHADER_CONTROL_shader_graph_panel",
-        ...PanelVariants["SHADER_GRAPH"]
-      },
-      SHADER_CONTROL_shader_controls_panel: {
-        id: "SHADER_CONTROL_shader_controls_panel",
-        ...PanelVariants["SHADER_CONTROLS"]
-      }
+      SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
+      SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"]
     }
   },
   DEBUG: {
@@ -231,8 +207,8 @@ export const LayoutVariants = {
     size: 1,
     children: [
       {
-        id: "debug",
-        panel: "DEBUG_debug",
+        id: "DEBUG",
+        panel: "DEBUG",
         size: 2 / 3
       },
       {
@@ -240,106 +216,48 @@ export const LayoutVariants = {
         direction: "VERTICAL",
         children: [
           {
-            id: "shader_graph",
-            panel: "DEBUG_shader_graph",
+            id: "SHADER_GRAPH",
+            panel: "SHADER_GRAPH",
             size: 2 / 3
           },
           {
-            id: "messages",
-            panel: "DEBUG_messages"
+            id: "MESSAGES",
+            panel: "MESSAGES"
           }
         ]
       }
     ],
     panels: {
-      shader_graph: {
-        id: "DEBUG_shader_graph_panel",
-        ...PanelVariants["SHADER_GRAPH"]
+      SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
+      MESSAGES: PanelVariants["MESSAGES"],
+      DEBUG: PanelVariants["DEBUG"]
+    }
+  },
+  PARAMETER: {
+    id: "PARAMETER",
+    direction: "HORIZONTAL",
+    size: 1,
+    children: [
+      {
+        id: "SHADER_GRAPH",
+        panel: "SHADER_GRAPH",
+        size: 1 / 3
       },
-      messages: {
-        id: "DEBUG_messages_panel",
-        ...PanelVariants["MESSAGES"]
+      {
+        id: "SHADER_CONTROLS",
+        panel: "SHADER_CONTROLS",
+        size: 1 / 3
       },
-      debug: {
-        id: "DEBUG_debug_panel",
-        ...PanelVariants["DEBUG"]
+      {
+        id: "PARAMETER_EDITOR",
+        panel: "PARAMETER_EDITOR",
+        size: 1 / 3
       }
+    ],
+    panels: {
+      SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
+      SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"],
+      PARAMETER_EDITOR: PanelVariants["PARAMETER_EDITOR"]
     }
   }
-  // PARAMETER: {
-  //   id: "main",
-  //   direction: "HORIZONTAL",
-  //   size: 1,
-  //   children: [
-  //     {
-  //       id: "shader_graph",
-  //       panel: "shader_graph",
-  //       size: 1 / 3
-  //     },
-  //     {
-  //       id: "shader_controls",
-  //       panel: "shader_controls",
-  //       size: 1 / 3
-  //     },
-  //     // {
-  //     //   id: "inner",
-  //     //   direction: "VERTICAL",
-  //     //   children: [
-  //     //     {
-  //     //       id: "shader_graph",
-  //     //       panel: "shader_graph",
-  //     //       size: 2 / 3
-  //     //     },
-  //     //     {
-  //     //       id: "shader_controls",
-  //     //       panel: "shader_controls"
-  //     //     }
-  //     //   ],
-  //     //   size: 1 / 3
-  //     // },
-  //     {
-  //       id: "parameter_editor",
-  //       panel: "parameter_editor",
-  //       size: 1 / 3
-  //     }
-  //   ],
-  //   panels: {
-  //     shader_graph: {
-  //       id: "shader_graph",
-  //       type: "SHADER_GRAPH",
-  //       title: "Shader Graph",
-  //       floating: false,
-  //       canFloat: true,
-  //       canRemove: true,
-  //       defaultWidth: 100,
-  //       defaultHeight: 200,
-  //       dimensions: [100, 100],
-  //       position: [100, 150]
-  //     },
-  //     shader_controls: {
-  //       id: "shader_controls",
-  //       type: "SHADER_CONTROLS",
-  //       title: "Shader Controls",
-  //       floating: false,
-  //       canFloat: true,
-  //       canRemove: true,
-  //       defaultWidth: 100,
-  //       defaultHeight: 200,
-  //       dimensions: [100, 100],
-  //       position: [100, 150]
-  //     },
-  //     parameter_editor: {
-  //       id: "parameter_editor",
-  //       type: "PARAMETER_EDITOR",
-  //       title: "Parameter Editor",
-  //       floating: false,
-  //       canFloat: true,
-  //       canRemove: true,
-  //       defaultWidth: 100,
-  //       defaultHeight: 200,
-  //       dimensions: [100, 100],
-  //       position: [100, 150]
-  //     }
-  //   }
-  // }
 };
