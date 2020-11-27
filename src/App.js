@@ -333,7 +333,7 @@ const App = observer(props => {
             backgroundColor: ui.theme.secondary_color
           }}
         >
-          <ContextMenuComponent items={ui.context} />
+          <ContextMenuComponent items={store.context.contextmenu} />
 
           {main_panel_toolbar}
 

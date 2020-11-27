@@ -11,7 +11,7 @@ import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 
 const root = RootStore.create({
   ui: UIStore.create({
-    theme: Themes.powershell,
+    theme: Themes.weyland,
     panels: {
       CANVAS: {
         id: "CANVAS",
