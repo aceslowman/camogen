@@ -242,10 +242,10 @@ const ShaderControls = observer(props => {
     console.log('hit')
     refs.forEach((e, i) => {
       if (Object.keys(e)[0] === props.selectedNode.uuid) {
-        console.log(e);
+        console.log('scrolling into view',e);
         e[props.selectedNode.uuid].scrollIntoView({
-          behavior: "smooth",
-          block: "start"
+          block: 'center',
+          behavior: 'smooth'
         });
       }
     });
