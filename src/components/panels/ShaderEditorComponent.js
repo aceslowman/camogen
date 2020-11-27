@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useContext, useRef } from "react";
 import MainContext from "../../MainContext";
 import styles from "./ShaderEditorComponent.module.css";
 
@@ -23,10 +23,10 @@ const ShaderEditor = props => {
     props.data.init();
   };
 
-  const handleEditorChange = e => {
-    console.log('editor changed!',e.options.value)
-    console.log('editType')
-    let value = e.options.value;
+  const handleEditorChange = (instance, changes) => {
+    console.log('editor changed!',changes)
+    console.log('editType', editType)
+    let value = instance.options.value;
     switch (editType) {
       case "vert":
         props.data.setVert(value);
@@ -81,7 +81,7 @@ const ShaderEditor = props => {
     />
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     editor = CodeMirror(editorRef.current, {
       value: editType === "frag" ? props.data.frag : props.data.vert,
       mode: "x-shader/x-fragment",
@@ -94,20 +94,23 @@ const ShaderEditor = props => {
     editor.on("change", handleEditorChange);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    let doc;
+    
     if (props.data) {
-      let doc = CodeMirror.Doc(
+      doc = CodeMirror.Doc(
         editType === "frag" ? props.data.frag : props.data.vert,
         "x-shader/x-fragment"
       );
       editor.swapDoc(doc);
     } else {
-      let doc = CodeMirror.Doc("no shader selected!");
+      doc = CodeMirror.Doc("no shader selected!");
       editor.swapDoc(doc);
     }
     
-    // do I need to remove listener?p
-    editor.on("change", handleEditorChange);
+    // do I need to remove listener?
+    // editor.on("change", handleEditorChange);
+    doc.on("change", (d,changes) => console.log('D',d))
   }, [editType, props.data]);
 
   return (

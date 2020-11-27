@@ -255,11 +255,13 @@ let shader = types
     }
 
     function setVert(v) {
+      console.log('changing vert', v)
       self.vert = v;
       self.hasChanged = true;
     }
 
     function setFrag(v) {
+      console.log('changing frag', v)
       self.frag = v;
       self.hasChanged = true;
     }
