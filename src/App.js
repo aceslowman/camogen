@@ -41,9 +41,9 @@ const App = observer(props => {
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
 
-  console.log("mainPanel", mainPanel);
-  console.log("mainLayout", mainLayout);
-  console.log("canvasPanel", canvasPanel);
+  // console.log("mainPanel", mainPanel);
+  // console.log("mainLayout", mainLayout);
+  // console.log("canvasPanel", canvasPanel);
 
   useEffect(() => {
     let unsubscribe = tinykeys(window, {
@@ -83,7 +83,6 @@ const App = observer(props => {
   };
 
   const getPanel = panel => {
-    console.log('HIT', panel)
     switch (panel.component_type) {
       case "SHADER_GRAPH":
         return (
