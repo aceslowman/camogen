@@ -167,6 +167,10 @@ const ShaderControls = observer(props => {
   });
 
   const panels = [];
+  
+  const addPanelRef = (panel) => {
+    refs = [...refs, panel];
+  }
 
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
@@ -200,7 +204,7 @@ const ShaderControls = observer(props => {
         subpanels.push(
           <li
             key={i}
-            ref={refs[i]}
+            ref={addPanelRef}
             style={{
               borderLeft: `3px solid ${branch_colors[node.branch_index]}`
             }}
