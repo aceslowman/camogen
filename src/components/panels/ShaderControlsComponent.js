@@ -158,11 +158,11 @@ const ShaderControls = observer(props => {
     return controls;
   };
 
-  // let refs = props.data.queue.map((e,i) => {
-  //   return React.createRef();
-  // });
-
   let refs = [];
+
+  props.data.nodes.forEach((e, i) => {
+    refs.push(React.createRef());
+  });
 
   const panels = [];
 
@@ -170,14 +170,12 @@ const ShaderControls = observer(props => {
     subqueue.forEach((node, i) => {
       let subpanels = [];
       let is_selected = props.selectedNode === node;
-      refs.push(React.createRef());
 
       if (node.data) {
         let controls = null;
 
         switch (node.data.name) {
           case "Webcam":
-            console.log("node data", node.data);
             controls = [
               <WebcamComponent
                 key={node.uuid}
@@ -200,7 +198,7 @@ const ShaderControls = observer(props => {
         subpanels.push(
           <li
             key={i}
-            ref={refs[refs.length]}
+            ref={refs[i]}
             style={{
               borderLeft: `3px solid ${branch_colors[node.branch_index]}`
             }}
@@ -242,16 +240,15 @@ const ShaderControls = observer(props => {
   });
 
   useLayoutEffect(() => {
-    // refs = props.data.queue.map((acc, value) => {
-    //   return React.createRef();
-    // });
+    if (props.data.nodes.length !== refs.length) {
+      props.data.nodes.forEach((e, i) => {
+        refs.push(React.createRef());
+      });
+    }
 
-    console.log("hit", props.data.queue);
-    // let selected_node_id = props.data.nodes.get(selectedNode)
     props.data.queue.forEach(subqueue => {
       subqueue.forEach((node, i) => {
         if (props.selectedNode.uuid === node.uuid) {
-          console.log('I',i)
           refs[i].current.scrollIntoView({
             behavior: "smooth",
             block: "start"
@@ -259,8 +256,6 @@ const ShaderControls = observer(props => {
         }
       });
     });
-    // console.log(refs)
-    // console.log(id)
   }, [props.data.selectedNode]);
 
   return (
