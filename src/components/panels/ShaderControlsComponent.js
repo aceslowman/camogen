@@ -239,37 +239,16 @@ const ShaderControls = observer(props => {
   });
 
   useLayoutEffect(() => {
-    // props.data.queue.forEach(subqueue => {
-    //   subqueue.forEach((node, i) => {
-    //     if (props.selectedNode.uuid === node.uuid) {
-    //       refs[i].current.scrollIntoView({
-    //         behavior: "smooth",
-    //         block: "start"
-    //       });
-    //     }
-    //   });
-    // });
-    // props.data.nodes.forEach(node => {
-    //   if (node.uuid === props.selectedNode.uuid) {
-    //     refs[node.uuid].current.scrollIntoView({
-    //       behavior: "smooth",
-    //       block: "start"
-    //     });
-    //   }
-    // });
-    
-    refs.forEach((e,i) => {
+    console.log('hit')
+    refs.forEach((e, i) => {
       if (Object.keys(e)[0] === props.selectedNode.uuid) {
-        console.log(e)
-        e.scrollIntoView({
+        console.log(e);
+        e[props.selectedNode.uuid].scrollIntoView({
           behavior: "smooth",
           block: "start"
         });
       }
-    })
-//     if(refs[props.selectedNode.uuid])
-      
-    console.log(refs);
+    });
   }, [props.data.selectedNode]);
 
   return (
