@@ -23,51 +23,56 @@ const ShaderControls = observer(props => {
   const [useKeys, setUseKeys] = useState(false);
 
   const handleFocus = e => {
-    setUseKeys(e ? true : false);
+    // setUseKeys(true);
   };
 
-  useEffect(() => {
-    if (useKeys) {
-      store.context.setKeymap({
-        ArrowUp: () => {
-          if (props.selectedNode && props.selectedNode.parents.length)
-            props.selectedNode.parents[0].select();
-        },
-        ArrowDown: () => {
-          if (props.selectedNode && props.selectedNode.children.length)
-            props.selectedNode.children[0].select();
-        },
-        ArrowLeft: () => {
-          if (props.selectedNode && props.selectedNode.children.length) {
-            let idx = props.selectedNode.children[0].parents.indexOf(
-              props.selectedNode
-            );
-            idx--;
+  const handleBlur = e => {
+    // setUseKeys(false);
+  };
 
-            if (idx >= 0) {
-              props.selectedNode.children[0].parents[idx].select();
-            }
-          }
-        },
-        ArrowRight: () => {
-          if (props.selectedNode && props.selectedNode.children.length) {
-            let idx = props.selectedNode.children[0].parents.indexOf(
-              props.selectedNode
-            );
-            idx++;
+// TODO: this is currently breaking the keymap in shadergraph
+//   useEffect(() => {
+//     if (useKeys) {
+//       store.context.setKeymap({
+//         ArrowUp: () => {
+//           if (props.selectedNode && props.selectedNode.parents.length)
+//             props.selectedNode.parents[0].select();
+//         },
+//         ArrowDown: () => {
+//           if (props.selectedNode && props.selectedNode.children.length)
+//             props.selectedNode.children[0].select();
+//         },
+//         ArrowLeft: () => {
+//           if (props.selectedNode && props.selectedNode.children.length) {
+//             let idx = props.selectedNode.children[0].parents.indexOf(
+//               props.selectedNode
+//             );
+//             idx--;
 
-            if (idx <= props.selectedNode.children[0].parents.length - 1)
-              props.selectedNode.children[0].parents[idx].select();
-          }
-        },
-        Delete: () => {
-          props.data.removeSelected();
-        }
-      });
-    } else {
-      store.context.removeKeymap();
-    }
-  }, [props.selectedNode, props.data, store.context, useKeys]);
+//             if (idx >= 0) {
+//               props.selectedNode.children[0].parents[idx].select();
+//             }
+//           }
+//         },
+//         ArrowRight: () => {
+//           if (props.selectedNode && props.selectedNode.children.length) {
+//             let idx = props.selectedNode.children[0].parents.indexOf(
+//               props.selectedNode
+//             );
+//             idx++;
+
+//             if (idx <= props.selectedNode.children[0].parents.length - 1)
+//               props.selectedNode.children[0].parents[idx].select();
+//           }
+//         },
+//         Delete: () => {
+//           props.data.removeSelected();
+//         }
+//       });
+//     } else {
+//       store.context.removeKeymap();
+//     }
+//   }, [props.selectedNode, props.data, store.context, useKeys]);
 
   const handleValueChange = (param, e) => {
     param.setValue(e);
@@ -299,7 +304,11 @@ const ShaderControls = observer(props => {
   }, [props.data.selectedNode]);
 
   return (
-    <GenericPanel panel={props.panel} onFocus={handleFocus}>
+    <GenericPanel 
+      panel={props.panel} 
+      onFocus={handleFocus} 
+      onBlur={handleBlur}
+    >
       {props.data.nodes && panels}
     </GenericPanel>
   );

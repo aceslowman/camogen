@@ -10,8 +10,12 @@ const ShaderGraph = observer(props => {
   const mainRef = useRef();
 
   const handleFocus = e => {
-    setUseKeys(e ? true : false);
+    setUseKeys(true);
   };
+  
+  const handleBlur = e => {
+    setUseKeys(false);
+  }
 
   useEffect(() => {
     if (useKeys) {
@@ -72,6 +76,7 @@ const ShaderGraph = observer(props => {
       panel={props.panel}
       onContextMenu={handleContextMenu}
       onFocus={handleFocus}
+      onBlur={handleBlur}
       indicators={
         useKeys
           ? [

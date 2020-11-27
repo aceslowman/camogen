@@ -24,6 +24,7 @@ const ShaderEditor = props => {
   };
 
   const handleEditorChange = e => {
+    console.log('editor changed!',e)
     switch (editType) {
       case "vert":
         props.data.setVert(e);
