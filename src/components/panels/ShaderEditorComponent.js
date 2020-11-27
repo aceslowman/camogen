@@ -24,13 +24,15 @@ const ShaderEditor = props => {
   };
 
   const handleEditorChange = e => {
-    console.log('editor changed!',e)
+    console.log('editor changed!',e.options.value)
+    console.log('editType')
+    let value = e.options.value;
     switch (editType) {
       case "vert":
-        props.data.setVert(e);
+        props.data.setVert(value);
         break;
       case "frag":
-        props.data.setFrag(e);
+        props.data.setFrag(value);
         break;
       default:
         break;
@@ -89,7 +91,7 @@ const ShaderEditor = props => {
       keymap: "sublime"
     });
 
-    editor.onchange = handleEditorChange;
+    editor.on("change", handleEditorChange);
   }, []);
 
   useEffect(() => {
@@ -103,6 +105,9 @@ const ShaderEditor = props => {
       let doc = CodeMirror.Doc("no shader selected!");
       editor.swapDoc(doc);
     }
+    
+    // do I need to remove listener?p
+    editor.on("change", handleEditorChange);
   }, [editType, props.data]);
 
   return (
