@@ -162,9 +162,9 @@ const ShaderControls = observer(props => {
 
   // TODO: this isn't sufficient, fails with branching or new elements
   // they get overwritten
-  props.data.nodes.forEach((e, i) => {
-    refs.push(React.createRef());
-  });
+  // props.data.nodes.forEach((e, i) => {
+  //   refs.push(React.createRef());
+  // });
 
   const panels = [];
   
@@ -246,23 +246,17 @@ const ShaderControls = observer(props => {
   });
 
   useLayoutEffect(() => {
-    if (props.data.nodes.length > refs.length) {
-      refs.push(React.createRef())
-    } else if (props.data.nodes.length < refs.length) {
-      // refs.pop();
-      refs.length 
-    }
-
-    props.data.queue.forEach(subqueue => {
-      subqueue.forEach((node, i) => {
-        if (props.selectedNode.uuid === node.uuid) {
-          refs[i].current.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }
-      });
-    });
+    // props.data.queue.forEach(subqueue => {
+    //   subqueue.forEach((node, i) => {
+    //     if (props.selectedNode.uuid === node.uuid) {
+    //       refs[i].current.scrollIntoView({
+    //         behavior: "smooth",
+    //         block: "start"
+    //       });
+    //     }
+    //   });
+    // });
+    console.log(refs)
   }, [props.data.selectedNode]);
 
   return (
