@@ -1,18 +1,9 @@
 import { getParent, getSnapshot, types } from "mobx-state-tree";
 import { v1 as uuidv1 } from "uuid";
 
-export const PanelVariants = {
-  MAIN: {
-    // title: "camogen",
-    floating: true,
-    canFloat: false,
-    collapsible: true,
-    fullscreen: false,
-    canFullscreen: true,
-    dimensions: [700, 500],
-    position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250]
-  },
+export const PanelVariants = {  
   SHADER_GRAPH: {
+    id: "SHADER_GRAPH",
     title: "Shader Graph",
     component_type: "SHADER_GRAPH",
     subtitle: "",
@@ -25,6 +16,7 @@ export const PanelVariants = {
     position: [10, 10]
   },
   SHADER_EDITOR: {
+    id: "SHADER_EDITOR",
     title: "Shader Editor",
     component_type: "SHADER_EDITOR",
     subtitle: "",
@@ -37,6 +29,7 @@ export const PanelVariants = {
     position: [10, 10]
   },
   SHADER_CONTROLS: {
+    id: "SHADER_CONTROLS",
     title: "Shader Controls",
     component_type: "SHADER_CONTROLS",
     subtitle: "",
@@ -49,6 +42,7 @@ export const PanelVariants = {
     position: [10, 10]
   },
   PARAMETER_EDITOR: {
+    id: "PARAMETER_EDITOR",
     title: "Parameter Editor",
     component_type: "PARAMETER_EDITOR",
     subtitle: "",
@@ -61,6 +55,7 @@ export const PanelVariants = {
     position: [10, 10]
   },
   HELP: {
+    id: "HELP",
     title: "Help",
     component_type: "HELP",
     subtitle: "",
@@ -73,6 +68,7 @@ export const PanelVariants = {
     position: [10, 10]
   },
   DEBUG: {
+    id: "DEBUG",
     title: "Debug",
     component_type: "DEBUG",
     subtitle: "",
@@ -85,6 +81,7 @@ export const PanelVariants = {
     position: [10, 10]
   },
   MESSAGES: {
+    id: "MESSAGES",
     title: "Messages",
     component_type: "MESSAGES",
     subtitle: "",
@@ -97,6 +94,7 @@ export const PanelVariants = {
     position: [10, 10]
   },
   PREFERENCES: {
+    id: "PREFERENCES",
     title: "Preferences",
     component_type: "PREFERENCES",
     subtitle: "",
@@ -109,6 +107,7 @@ export const PanelVariants = {
     position: [10, 10]
   },
   CAPTURE: {
+    id: "CAPTURE",
     title: "Capture",
     component_type: "CAPTURE",
     subtitle: "",

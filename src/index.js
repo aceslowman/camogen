@@ -27,7 +27,6 @@ const root = RootStore.create({
       },
       MAIN: {
         id: "MAIN",
-        // title: "camogen",
         floating: true,
         canFloat: false,
         collapsible: true,

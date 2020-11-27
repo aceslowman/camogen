@@ -150,7 +150,7 @@ const App = observer(props => {
   };
 
   const handleLayoutSelect = name => {
-    let variant = store.ui.getLayoutVariant(name);
+    let variant = ui.getLayoutVariant(name);
     mainPanel.setLayout(variant);
   };
 
@@ -183,7 +183,6 @@ const App = observer(props => {
           label: "File",
           dropDown: [
             {
-              // label: "Save Scene",
               label: (
                 <div
                   style={{
