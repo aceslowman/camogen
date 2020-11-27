@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useLayoutEffect } from "react";
 import MainContext from "../../MainContext";
 import {
   PanelComponent,
@@ -157,10 +157,12 @@ const ShaderControls = observer(props => {
 
     return controls;
   };
-  
-  let refs = props.data.queue.map((acc, value) => {
-    return React.createRef();
-  });
+
+  // let refs = props.data.queue.map((e,i) => {
+  //   return React.createRef();
+  // });
+
+  let refs = [];
 
   const panels = [];
 
@@ -168,6 +170,7 @@ const ShaderControls = observer(props => {
     subqueue.forEach((node, i) => {
       let subpanels = [];
       let is_selected = props.selectedNode === node;
+      refs.push(React.createRef());
 
       if (node.data) {
         let controls = null;
@@ -186,9 +189,9 @@ const ShaderControls = observer(props => {
             ];
             break;
           case "Image":
-            console.log("CHECK HERE", node);
-            controls = [<ImageInputComponent key={node.uuid}
-                          ref={refs[i]} data={node} />];
+            controls = [
+              <ImageInputComponent key={node.uuid} ref={refs[i]} data={node} />
+            ];
             break;
           default:
             controls = generateInterface(node.data);
@@ -197,7 +200,7 @@ const ShaderControls = observer(props => {
         subpanels.push(
           <li
             key={i}
-            ref={refs[i]}
+            ref={refs[refs.length]}
             style={{
               borderLeft: `3px solid ${branch_colors[node.branch_index]}`
             }}
@@ -238,18 +241,26 @@ const ShaderControls = observer(props => {
     });
   });
 
-  useEffect(() => {
-    refs = props.data.queue.map((acc, value) => {
-      return React.createRef();
-    });
+  useLayoutEffect(() => {
+    // refs = props.data.queue.map((acc, value) => {
+    //   return React.createRef();
+    // });
 
     console.log("hit", props.data.queue);
     // let selected_node_id = props.data.nodes.get(selectedNode)
-    let id = props.data.queue.findIndex((e) => e.uuid === props.data.selectedNode.uuid)
-    refs[id].current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
+    props.data.queue.forEach(subqueue => {
+      subqueue.forEach((node, i) => {
+        if (props.selectedNode.uuid === node.uuid) {
+          console.log('I',i)
+          refs[i].current.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }
+      });
     });
+    // console.log(refs)
+    // console.log(id)
   }, [props.data.selectedNode]);
 
   return (
