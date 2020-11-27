@@ -160,6 +160,8 @@ const ShaderControls = observer(props => {
 
   let refs = [];
 
+  // TODO: this isn't sufficient, fails with branching or new elements
+  // they get overwritten
   props.data.nodes.forEach((e, i) => {
     refs.push(React.createRef());
   });
@@ -240,10 +242,11 @@ const ShaderControls = observer(props => {
   });
 
   useLayoutEffect(() => {
-    if (props.data.nodes.length !== refs.length) {
-      props.data.nodes.forEach((e, i) => {
-        refs.push(React.createRef());
-      });
+    if (props.data.nodes.length > refs.length) {
+      refs.push(React.createRef())
+    } else if (props.data.nodes.length < refs.length) {
+      // refs.pop();
+      refs.length 
     }
 
     props.data.queue.forEach(subqueue => {
