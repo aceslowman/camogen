@@ -157,6 +157,10 @@ const ShaderControls = observer(props => {
 
     return controls;
   };
+  
+  let refs = props.data.queue.map((acc, value) => {
+    return React.createRef();
+  });
 
   const panels = [];
 
@@ -174,6 +178,7 @@ const ShaderControls = observer(props => {
             controls = [
               <WebcamComponent
                 key={node.uuid}
+                ref={refs[i]}
                 onInputSelect={node.data.setInput}
                 onChangeDisplayMode={node.data.setDisplayMode}
                 input_options={node.data.input_options}
@@ -182,7 +187,8 @@ const ShaderControls = observer(props => {
             break;
           case "Image":
             console.log("CHECK HERE", node);
-            controls = [<ImageInputComponent key={node.uuid} data={node} />];
+            controls = [<ImageInputComponent key={node.uuid}
+                          ref={refs[i]} data={node} />];
             break;
           default:
             controls = generateInterface(node.data);
@@ -191,6 +197,7 @@ const ShaderControls = observer(props => {
         subpanels.push(
           <li
             key={i}
+            ref={refs[i]}
             style={{
               borderLeft: `3px solid ${branch_colors[node.branch_index]}`
             }}
@@ -231,20 +238,14 @@ const ShaderControls = observer(props => {
     });
   });
 
-  let refs = panels.reduce((acc, value) => {
-    acc[value.id] = React.createRef();
-    return acc;
-  }, {});
-
   useEffect(() => {
-    refs = panels.reduce((acc, value) => {
-      acc[value.id] = React.createRef();
-      return acc;
-    }, {});
+    refs = props.data.queue.map((acc, value) => {
+      return React.createRef();
+    });
 
-    console.log("hit", props.data.selectedNode);
+    console.log("hit", props.data.queue);
     // let selected_node_id = props.data.nodes.get(selectedNode)
-    let id = props.data.queue.findIndex()
+    let id = props.data.queue.findIndex((e) => e.uuid === props.data.selectedNode.uuid)
     refs[id].current.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
