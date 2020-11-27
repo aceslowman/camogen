@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import MainContext from "../../MainContext";
 import {
   PanelComponent,
@@ -181,12 +181,8 @@ const ShaderControls = observer(props => {
             ];
             break;
           case "Image":
-            console.log('CHECK HERE', node)
-            controls = [
-                <ImageInputComponent 
-                  key={node.uuid} 
-                  data={node}
-                />];
+            console.log("CHECK HERE", node);
+            controls = [<ImageInputComponent key={node.uuid} data={node} />];
             break;
           default:
             controls = generateInterface(node.data);
@@ -234,6 +230,26 @@ const ShaderControls = observer(props => {
       );
     });
   });
+
+  let refs = panels.reduce((acc, value) => {
+    acc[value.id] = React.createRef();
+    return acc;
+  }, {});
+
+  useEffect(() => {
+    refs = panels.reduce((acc, value) => {
+      acc[value.id] = React.createRef();
+      return acc;
+    }, {});
+
+    console.log("hit", props.data.selectedNode);
+    // let selected_node_id = props.data.nodes.get(selectedNode)
+    let id = props.data.queue.findIndex()
+    refs[id].current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }, [props.data.selectedNode]);
 
   return (
     <GenericPanel panel={props.panel}>
