@@ -77,28 +77,32 @@ const ShaderEditor = props => {
       }
     />
   );
- 
+
   useEffect(() => {
-    console.log("mounting editor");
     editor = CodeMirror(editorRef.current, {
       value: editType === "frag" ? props.data.frag : props.data.vert,
       mode: "x-shader/x-fragment",
       theme: "monokai",
       lineNumbers: true,
       foldGutter: true,
-      keymap: "sublime",
+      keymap: "sublime"
     });
-    
+
     editor.onchange = handleEditorChange;
   }, []);
-  
+
   useEffect(() => {
-    let doc = CodeMirror.Doc(
-      editType === "frag" ? props.data.frag : props.data.vert,
-      "x-shader/x-fragment"
-    );
-    editor.swapDoc(doc)
-  }, [editType])
+    if (props.data) {
+      let doc = CodeMirror.Doc(
+        editType === "frag" ? props.data.frag : props.data.vert,
+        "x-shader/x-fragment"
+      );
+      editor.swapDoc(doc);
+    } else {
+      let doc = CodeMirror.Doc("no shader selected!");
+      editor.swapDoc(doc);
+    }
+  }, [editType, props.data]);
 
   return (
     <GenericPanel
@@ -113,40 +117,12 @@ const ShaderEditor = props => {
         </span>
       }
       toolbar={toolbar}
-      onFocus={(e) => {
-        console.log('focusing')
-        editor.focus()
+      onFocus={e => {
+        console.log("focusing");
+        editor.focus();
       }}
     >
-      {/*showEditor && (
-        <CodeMirror
-          className={styles.editor}
-          value={editType === "frag" ? props.data.frag : props.data.vert}
-          onChange={handleEditorChange}
-          options={{
-            lineNumbers: true,
-            foldGutter: true,
-            keymap: "sublime",
-            mode: "clike",
-            theme: "monokai"
-          }}
-        />{
-      )*/}
-
-      {showEditor && (
-        <div 
-          className={styles.editor} 
-          ref={editorRef}
-        ></div>
-      )}
-
-      {!showEditor && (
-        <p className={styles.no_node_selected}>
-          <em> no shader node selected</em>
-          <br />
-          <br />
-        </p>
-      )}
+      <div className={styles.editor} ref={editorRef}></div>
     </GenericPanel>
   );
 };
