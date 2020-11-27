@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect } from "react";
+import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
 import MainContext from "../../MainContext";
 import {
   PanelComponent,
@@ -19,6 +19,55 @@ import ImageInputComponent from "./shaders/ImageInputComponent";
 const ShaderControls = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
+
+  const [useKeys, setUseKeys] = useState(false);
+
+  const handleFocus = e => {
+    setUseKeys(e ? true : false);
+  };
+
+  useEffect(() => {
+    if (useKeys) {
+      store.context.setKeymap({
+        ArrowUp: () => {
+          if (props.selectedNode && props.selectedNode.parents.length)
+            props.selectedNode.parents[0].select();
+        },
+        ArrowDown: () => {
+          if (props.selectedNode && props.selectedNode.children.length)
+            props.selectedNode.children[0].select();
+        },
+        ArrowLeft: () => {
+          if (props.selectedNode && props.selectedNode.children.length) {
+            let idx = props.selectedNode.children[0].parents.indexOf(
+              props.selectedNode
+            );
+            idx--;
+
+            if (idx >= 0) {
+              props.selectedNode.children[0].parents[idx].select();
+            }
+          }
+        },
+        ArrowRight: () => {
+          if (props.selectedNode && props.selectedNode.children.length) {
+            let idx = props.selectedNode.children[0].parents.indexOf(
+              props.selectedNode
+            );
+            idx++;
+
+            if (idx <= props.selectedNode.children[0].parents.length - 1)
+              props.selectedNode.children[0].parents[idx].select();
+          }
+        },
+        Delete: () => {
+          props.data.removeSelected();
+        }
+      });
+    } else {
+      store.context.removeKeymap();
+    }
+  }, [props.selectedNode, props.data, store.context, useKeys]);
 
   const handleValueChange = (param, e) => {
     param.setValue(e);
@@ -239,13 +288,15 @@ const ShaderControls = observer(props => {
   });
 
   useLayoutEffect(() => {
-    console.log('hit')
+    console.log("hit");
     refs.forEach((e, i) => {
       if (Object.keys(e)[0] === props.selectedNode.uuid) {
-        console.log('scrolling into view',e);
+        console.log("scrolling into view", e);
         e[props.selectedNode.uuid].scrollIntoView({
-          block: 'center',
-          behavior: 'smooth'
+          block: "center"
+          // bug in chrome for 'smooth'
+          //
+          // behavior: 'smooth'
         });
       }
     });
