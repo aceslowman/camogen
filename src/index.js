@@ -42,7 +42,7 @@ const root = RootStore.create({
         position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250]
       }
     },
-    theme: Themes.yutani
+    theme: Themes.powershell
   })
 });
 
