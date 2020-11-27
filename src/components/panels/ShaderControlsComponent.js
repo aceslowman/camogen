@@ -102,7 +102,6 @@ const ShaderControls = observer(props => {
           //     window.innerHeight / 2 - 200
           //   ]
           // });
-          console.log(store);
           store.layout.setLayout("PARAMETER");
           store.context.setContextmenu();
         }
@@ -288,14 +287,11 @@ const ShaderControls = observer(props => {
   });
 
   useLayoutEffect(() => {
-    console.log("hit");
     refs.forEach((e, i) => {
       if (Object.keys(e)[0] === props.selectedNode.uuid) {
-        console.log("scrolling into view", e);
         e[props.selectedNode.uuid].scrollIntoView({
           block: "center"
           // bug in chrome for 'smooth'
-          //
           // behavior: 'smooth'
         });
       }
@@ -303,7 +299,7 @@ const ShaderControls = observer(props => {
   }, [props.data.selectedNode]);
 
   return (
-    <GenericPanel panel={props.panel}>
+    <GenericPanel panel={props.panel} onFocus={handleFocus}>
       {props.data.nodes && panels}
     </GenericPanel>
   );
