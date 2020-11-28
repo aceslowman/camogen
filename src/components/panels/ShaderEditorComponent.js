@@ -80,7 +80,8 @@ const ShaderEditor = props => {
                           }}
                         />
                       </div>
-                    )
+                    ),
+                    disableHover: true
                   },
                   {
                     label: "Save Shader",
@@ -89,12 +90,14 @@ const ShaderEditor = props => {
                   {
                     label: "Load Shader",
                     // onClick: () => props.store.load()
+                    disableHover: true
                   },
                   {
                     label: "New Shader",
                     onClick: () => {
                       // props.store.scene.clear();
-                    }
+                    },
+                    disableHover: true
                   }
                 ]
               },
