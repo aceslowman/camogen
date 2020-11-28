@@ -78,10 +78,13 @@ const ShaderEditor = props => {
                           onChange={e => {
                             props.node.data.setName(e.target.value);
                           }}
+                          onFocus={e => {
+                            // disable editor focus
+                            editor.blur();
+                          }}
                         />
                       </div>
-                    ),
-                    disableHover: true
+                    )
                   },
                   {
                     label: "Save Shader",
@@ -179,7 +182,7 @@ const ShaderEditor = props => {
       toolbar={toolbar}
       onFocus={e => {
         console.log("focusing");
-        editor.focus();
+        // editor.focus();
       }}
     >
       <div className={styles.editor} ref={editorRef}></div>
