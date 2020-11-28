@@ -232,12 +232,19 @@ let shader = types
 
       // setup samplers
       for (let i = 0; i < self.inputs.length; i++) {
-        let input_shader = parent_node.parents[i].data;
-
-        if (input_shader) {
-          let input_target = input_shader.target.ref;
-          shader.setUniform(self.inputs[i], input_target);
+        //error 
+        if(parent_node.parents[i]) {
+          let input_shader = parent_node.parents[i].data;
+  
+          if (input_shader) {
+            let input_target = input_shader.target.ref;
+            shader.setUniform(self.inputs[i], input_target);
+          }
+        } else {
+          console.log('not enough parents!', i)
         }
+        
+        
       }
 
       shader.setUniform("resolution", [target.width, target.height]);
