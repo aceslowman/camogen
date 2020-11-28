@@ -76,7 +76,7 @@ const ShaderEditor = props => {
                           type="text"
                           placeholder={props.data.name}
                           onChange={e => {
-                            // props.store.setName(e.target.value);
+                            props.node.data.setName(e.target.value);
                           }}
                         />
                       </div>
