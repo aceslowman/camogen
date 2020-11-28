@@ -5,8 +5,10 @@ const NodeData = types
         type: types.string,
         name: types.string,
         inputs: types.optional(types.array(types.string),[]),
-        outputs: types.optional(types.array(types.string),["out"]),
-        ready: false,
-    });
+        outputs: types.optional(types.array(types.string),["out"])
+    })
+    .volatile(self => ({
+      ready: false
+    }));
 
 export { NodeData }

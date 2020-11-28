@@ -49,12 +49,12 @@ let shader = types
     frag: DefaultShader.frag,
     updateGroup: types.map(
       types.safeReference(types.late(() => OperatorGraph))
-    ),
-    hasChanged: types.optional(types.boolean, false),
-    ready: false
+    ),   
   })
   .volatile(() => ({
-    target: null
+    target: null,
+    ready: false,
+    hasChanged: false
   }))
   .views(self => ({
     get vertex() {
