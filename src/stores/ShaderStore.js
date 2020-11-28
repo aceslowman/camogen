@@ -362,8 +362,8 @@ let shader = types
           
           console.log('CONTENT',content)
 
-          self.setName(name);
-          self.scene.clear();
+          // self.setName(name);
+          // self.scene.clear();
           applySnapshot(self, JSON.parse(content));
           // self.scene.shaderGraph.update();
           // self.scene.shaderGraph.afterUpdate();
