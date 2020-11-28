@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useLayoutEffect, useContext, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useContext,
+  useRef
+} from "react";
 import MainContext from "../../MainContext";
 import styles from "./ShaderEditorComponent.module.css";
 
@@ -24,8 +30,8 @@ const ShaderEditor = props => {
   };
 
   const handleEditorChange = (doc, changes) => {
-    console.log('editor changed!',changes)
-    console.log('editType', editType)
+    console.log("editor changed!", changes);
+    console.log("editType", editType);
     let value = doc.getValue();
     switch (editType) {
       case "vert":
@@ -47,9 +53,52 @@ const ShaderEditor = props => {
         showEditor
           ? [
               {
-                label: "Save Shader",
-                onClick: () => props.data.save()
+                label: "File",
+                dropDown: [
+                  {
+                    label: (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexFlow: "row"
+                        }}
+                      >
+                        <label>name:</label>
+                        <input
+                          style={{
+                            backgroundColor: "inherit",
+                            color: "inherit",
+                            border: "none",
+                            width: "100%",
+                            marginLeft: 4,
+                            fontFamily: "inherit"
+                          }}
+                          type="text"
+                          placeholder={props.data.name}
+                          onChange={e => {
+                            // props.store.setName(e.target.value);
+                          }}
+                        />
+                      </div>
+                    )
+                  },
+                  {
+                    label: "Save Shader",
+                    onClick: () => props.data.save()
+                  },
+                  {
+                    label: "Load Shader",
+                    // onClick: () => props.store.load()
+                  },
+                  {
+                    label: "New Shader",
+                    onClick: () => {
+                      // props.store.scene.clear();
+                    }
+                  }
+                ]
               },
+
               {
                 label: "Vertex",
                 onClick: () => setEditType("vert"),
@@ -90,13 +139,13 @@ const ShaderEditor = props => {
       foldGutter: true,
       keymap: "sublime"
     });
-    
+
     editor.getDoc().on("change", handleEditorChange);
   }, []);
 
   useLayoutEffect(() => {
     let doc;
-    
+
     if (props.data) {
       doc = CodeMirror.Doc(
         editType === "frag" ? props.data.frag : props.data.vert,
@@ -107,9 +156,8 @@ const ShaderEditor = props => {
       doc = CodeMirror.Doc("no shader selected!");
       editor.swapDoc(doc);
     }
-    
+
     // do I need to remove listener?
-    // editor.on("change", handleEditorChange);
     doc.on("change", handleEditorChange);
   }, [editType, props.data]);
 
