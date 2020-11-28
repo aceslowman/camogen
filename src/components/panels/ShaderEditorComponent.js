@@ -88,8 +88,7 @@ const ShaderEditor = props => {
                   },
                   {
                     label: "Load Shader",
-                    // onClick: () => props.store.load()
-                    disableHover: true
+                    onClick: () => props.data.load()
                   },
                   {
                     label: "New Shader",
@@ -177,7 +176,9 @@ const ShaderEditor = props => {
       }
       toolbar={toolbar}
       onFocus={e => {
-        console.log("focusing");
+        
+        // e.stopPropagation();
+        console.log("focusing",e);
         editor.focus();
       }}
     >

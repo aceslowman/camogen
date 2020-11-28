@@ -47,9 +47,7 @@ let shader = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: DefaultShader.frag,
-    updateGroup: types.map(
-      types.safeReference(types.late(() => OperatorGraph))
-    ),   
+    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
   })
   .volatile(() => ({
     target: null,
@@ -255,13 +253,13 @@ let shader = types
     }
 
     function setVert(v) {
-      console.log('changing vert', v)
+      console.log("changing vert", v);
       self.vert = v;
       self.hasChanged = true;
     }
 
     function setFrag(v) {
-      console.log('changing frag', v)
+      console.log("changing frag", v);
       self.frag = v;
       self.hasChanged = true;
     }
@@ -350,6 +348,30 @@ let shader = types
     }
 
     function load() {
+      let link = document.createElement("input");
+      link.type = "file";
+
+      link.onchange = e => {
+        var file = e.target.files[0];
+
+        let reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+
+        reader.onload = e => {
+          let content = e.target.result;
+          
+          console.log('CONTENT',content)
+
+          self.setName(name);
+          self.scene.clear();
+          applySnapshot(self, JSON.parse(content));
+          // self.scene.shaderGraph.update();
+          // self.scene.shaderGraph.afterUpdate();
+          // undoManager.clear();
+        };
+      };
+
+      link.click();
       //             let path = `${app.getPath("userData")}/shaders`;
       //             let options = {
       //                 title: 'Load Shader File',
