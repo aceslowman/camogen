@@ -78,6 +78,9 @@ const ShaderEditor = props => {
                           onChange={e => {
                             props.node.data.setName(e.target.value);
                           }}
+                          onFocusCapture={e => {
+                            console.log('focusing on input element...')
+                          }}
                         />
                       </div>
                     )
