@@ -80,7 +80,8 @@ const ShaderEditor = props => {
                           }}
                           onClick={e => e.target.focus()}
                           onFocus={e => {
-                            e.preventDefault();
+                            if (e.defaultPrevented) return  // Exits here if event has been handled
+                            e.preventDefault()
                             e.stopPropagation();
                             e.nativeEvent.stopImmediatePropagation();
                             console.log('focusing on input element...')
