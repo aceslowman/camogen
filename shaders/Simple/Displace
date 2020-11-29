@@ -1,6 +1,6 @@
 {
   "type": "Shader",
-  "name": "Default",
+  "name": "Displace",
   "inputs": ["tex0", "tex1"],
   "outputs": ["out"],
   "uniforms": [

@@ -3,7 +3,7 @@ const path = require("path");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require("fs");
 const dirTree = require('directory-tree');
-const app = express();
+const app = express(); 
 
 let shader_collection; 
 
@@ -14,14 +14,14 @@ function preloadDefaultShaders() {
     if(item.type === 'file') {
       fs.readFile(item.path, 'utf8', (err, data) => {        
         if(err) {
-          console.error(err);
+          console.error(err); 
         } else {
           item.data = JSON.parse(data);
         }
       })
     }
   }); 
-}
+} 
 
 preloadDefaultShaders();
 
