@@ -159,6 +159,8 @@ let shader = types
         switch (uniform_type) {
           case "sampler2D":
             self.inputs.push(uniform_name);
+            console.log('shader snapshot',getSnapshot(self))
+            parent_node.mapInputsToParents();
             break;
           case "float":
             def = opt.default ? opt.default : 1.0;
