@@ -41,7 +41,7 @@
   },
   "scripts": {
     "start": "bash ./start-all.sh",
-    "development": "webpack serve --mode development --no-inline",
+    "development": "webpack serve --mode development",
     "production": "webpack --mode production",
     "server": "node server/server.js"
   },
