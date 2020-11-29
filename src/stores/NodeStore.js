@@ -1,7 +1,7 @@
 import Shader from "./ShaderStore";
 import WebcamInput from "./shaders/inputs/WebcamInput";
 import ImageInput from "./shaders/inputs/ImageInput";
-import { types, getParent } from "mobx-state-tree";
+import { types, getParent, getSnapshot } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
 import uuidv1 from "uuid/v1";
@@ -74,6 +74,8 @@ const GraphNode = types
 
           parent_graph.addNode(parent);
           self.setParent(parent, i, true);
+          
+          console.log('node snapshot', getSnapshot(self))
         }
       });
 

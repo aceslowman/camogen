@@ -1,0 +1,32 @@
+{
+  "type": "Shader",
+  "name": "Default",
+  "inputs": ["tex0", "tex1"],
+  "outputs": ["out"],
+  "uniforms": [
+    {
+      "uuid": "395821f0-31de-11eb-8561-f563f2749c83",
+      "name": "amount",
+      "elements": [
+        {
+          "uuid": "param_39595a70-31de-11eb-8561-f563f2749c83",
+          "uniform": "395821f0-31de-11eb-8561-f563f2749c83",
+          "name": "x:",
+          "value": 1.005,
+          "controlType": "number"
+        },
+        {
+          "uuid": "param_3959a890-31de-11eb-8561-f563f2749c83",
+          "uniform": "395821f0-31de-11eb-8561-f563f2749c83",
+          "name": "y:",
+          "value": 1,
+          "controlType": "number"
+        }
+      ]
+    }
+  ],
+  "precision": "\n\t\t#ifdef GL_ES\n\t\tprecision highp float;\n\t\t#endif \n\t",
+  "vert": "attribute vec3 aPosition;\nattribute vec2 aTexCoord;\n\nvarying vec2 vTexCoord;\n\nvoid main() {\n    vTexCoord = aTexCoord;\n\n    vec4 positionVec4 = vec4(aPosition,1.0);\n    positionVec4.xy = positionVec4.xy * vec2(1.,-1.);\n\n    gl_Position = positionVec4;\n}\n",
+  "frag": "varying vec2 vTexCoord;  \nuniform vec2 resolution; \n\nuniform sampler2D tex0;\nuniform sampler2D tex1;\n\nuniform vec2 amount;\n\nvoid main() {  \n  vec2 uv = vTexCoord;\n  \n  vec4 dist = texture2D(tex1, uv);\n  \n  uv.x += dist.r * amount.x;\n  uv.y += dist.g * amount.y;\n  \n  vec4 src = texture2D(tex0, uv);\n  gl_FragColor = vec4(src.rgb, 1.0);    \n}",
+  "updateGroup": {}
+}
