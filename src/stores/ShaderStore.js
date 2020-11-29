@@ -401,6 +401,11 @@ let shader = types
       //                 })
       //             }).catch(err => { /*alert(err)*/ });
     }
+    
+    function clear() {
+      console.log(`clearing shader ${self.name}`)
+      applySnapshot(self, DefaultShader);
+    }
 
     function addToUpdateGroup(p_graph) {
       self.updateGroup.put(p_graph);
@@ -426,6 +431,7 @@ let shader = types
       save,
       load,
       setHasChanged,
+      clear,
       addToUpdateGroup
     };
   });

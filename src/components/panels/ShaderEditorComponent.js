@@ -79,6 +79,7 @@ const ShaderEditor = props => {
                             props.node.data.setName(e.target.value);
                           }}
                           onFocusCapture={e => {
+                            e.stopPropagation();
                             console.log('focusing on input element...')
                           }}
                         />
@@ -95,10 +96,7 @@ const ShaderEditor = props => {
                   },
                   {
                     label: "New Shader",
-                    onClick: () => {
-                      // props.store.scene.clear();
-                    },
-                    disableHover: true
+                    onClick: () => props.data.clear()
                   }
                 ]
               },
@@ -178,7 +176,7 @@ const ShaderEditor = props => {
         </span>
       }
       toolbar={toolbar}
-      onFocus={e => {
+      onFocusCapture={e => {
         
         // e.stopPropagation();
         console.log("focusing",e);
