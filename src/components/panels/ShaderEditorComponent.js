@@ -123,12 +123,12 @@ const ShaderEditor = props => {
                 label: "New Shader",
                 onClick: () => props.graph.setSelectedByName("Default")
               },
-              {
-                label: "Load Shader",
-                onClick: () => {
-                  props.data.load();
-                }
-              }
+              // {
+              //   label: "Load Shader",
+              //   onClick: () => {
+              //     // props.data.load();
+              //   }
+              // }
             ]
       }
     />

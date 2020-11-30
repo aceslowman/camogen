@@ -33,7 +33,10 @@ const GraphComponent = observer(props => {
       {
         label: "Edit Shader",
         onClick: () => {
-          store.workspace.addPanel("SHADER_EDITOR", true);
+          const handleLayoutSelect = name => {
+          let variant = store.ui.getLayoutVariant(name);
+            store.ui.panels['MAIN'].setLayout(variant);
+          };
           store.ui.context.setContextmenu(); // removes menu
         }
       }

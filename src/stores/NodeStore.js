@@ -49,6 +49,10 @@ const GraphNode = types
     function afterAttach() {
       parent_graph = getParent(self, 2);
     }
+    
+    function setName(n) {
+      self.name = n;
+    }
 
     function setData(data) {
       self.data = data;

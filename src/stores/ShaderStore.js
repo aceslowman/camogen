@@ -205,11 +205,11 @@ let shader = types
     }
 
     /*
-            update(p5_instance)
+        update(p5_instance)
 
-            this method is triggered within Runner.js
-            and draws shaders to quads.
-        */
+        this method is triggered within Runner.js
+        and draws shaders to quads.
+    */
     function update(p) {
       if (!self.ready) return;
 
@@ -217,9 +217,9 @@ let shader = types
       let target = self.target.ref;
 
       /* 
-                Loop through all active parameter graphs to recompute 
-                values in sync with the frame rate
-            */
+          Loop through all active parameter graphs to recompute 
+          values in sync with the frame rate
+      */
       // self.parameterUpdateGroup.forEach((e) => e.afterUpdate())
       self.updateGroup.forEach(e => e.afterUpdate());
 
@@ -275,6 +275,9 @@ let shader = types
 
     function setName(n) {
       self.name = n;
+      
+      // set name for parent node
+      parent_node.setName(n);
     }
 
     /*
@@ -367,13 +370,14 @@ let shader = types
         reader.readAsText(file, "UTF-8");
 
         reader.onload = e => {
-          let content = e.target.result;
+          let content = JSON.parse(e.target.result);
           
           console.log('CONTENT',content)
 
           // self.setName(name);
           // self.scene.clear();
-          applySnapshot(self, JSON.parse(content));
+          applySnapshot(self, content);
+          parent_node.setName(content.name)
           // self.scene.shaderGraph.update();
           // self.scene.shaderGraph.afterUpdate();
           // undoManager.clear();
