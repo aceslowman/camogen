@@ -30,8 +30,6 @@ const ShaderEditor = props => {
   };
 
   const handleEditorChange = (doc, changes) => {
-    console.log("editor changed!", changes);
-    console.log("editType", editType);
     let value = doc.getValue();
     switch (editType) {
       case "vert":
