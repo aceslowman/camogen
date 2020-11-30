@@ -8,9 +8,11 @@ import OperatorControls from "./OperatorControlsComponent";
 
 const OperatorEditor = observer(props => {
   const { data } = props;
-  const { graph } = data;
+  const graph = data ? data.graph : null;
+  
+  console.log()
 
-  const toolbar = (
+  const toolbar = props.data && (
     <ToolbarComponent
       items={[
         {
@@ -77,7 +79,7 @@ const OperatorEditor = observer(props => {
       panel={props.panel}
       toolbar={data && toolbar}
       title=" "
-      subtitle={`${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`}
+      subtitle={data ?`${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`}
     >
       {data && (
         <SplitContainer vertical>
