@@ -36,6 +36,30 @@ const Uniform = types
           uniform: self
         })
       );
+    },
+    
+    addInt: () => {
+      
+    },
+    
+    addFloat: () => {
+      
+    },
+    
+    addVec2: () => {
+      
+    },
+    
+    addVec3: () => {
+      
+    },
+    
+    addVec4: () => {
+      
+    },
+    
+    addBool: () => {
+      
     }
   }));
 
@@ -161,6 +185,12 @@ let shader = types
             self.inputs.push(uniform_name);
             console.log('shader snapshot',getSnapshot(self))
             parent_node.mapInputsToParents();
+            break;
+          case "int": 
+            def = opt.default ? opt.default : 1.0;
+
+            uniform.addInt(def, );
+            uniform.addElement("", def, opt.type ? opt.type : "integer");
             break;
           case "float":
             def = opt.default ? opt.default : 1.0;
