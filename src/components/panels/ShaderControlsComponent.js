@@ -88,8 +88,8 @@ const ShaderControls = observer(props => {
         label: "Edit Parameter",
         onClick: () => {
           store.selectParameter(param);
-          let variant = store.ui.getLayoutVariant('PARAMETER');
-          store.ui.getPanel('MAIN').setLayout(variant);
+          let variant = store.ui.getLayoutVariant("PARAMETER");
+          store.ui.getPanel("MAIN").setLayout(variant);
           store.context.setContextmenu(); // removes menu
         }
       }
@@ -106,7 +106,7 @@ const ShaderControls = observer(props => {
 
             console.log(param);
 
-            switch (param.controlType) {
+            switch (param.uniform.type) {
               case "BOOL":
                 input = (
                   <InputBool
@@ -169,24 +169,24 @@ const ShaderControls = observer(props => {
                 );
                 break;
               case "SLIDER":
-                // TODO
-                // input = (
-                //   <InputSlider
-                //     key={i}
-                //     step={1}
-                //     min={0}
-                //     max={100}
-                //     value={value}
-                //     onChange={e => handleValueChange(param, e)}
-                //     focused={param === store.selectedParameter}
-                //     // onDoubleClick={(e) => {
-                //     // 	store.selectParameter(param);
-                //     // }}
-                //   />
-                // );
-                // break;
+              // TODO
+              // input = (
+              //   <InputSlider
+              //     key={i}
+              //     step={1}
+              //     min={0}
+              //     max={100}
+              //     value={value}
+              //     onChange={e => handleValueChange(param, e)}
+              //     focused={param === store.selectedParameter}
+              //     // onDoubleClick={(e) => {
+              //     // 	store.selectParameter(param);
+              //     // }}
+              //   />
+              // );
+              // break;
               case "COLOR":
-                // TODO
+              // TODO
               default:
                 input = (
                   <InputFloat
@@ -298,6 +298,7 @@ const ShaderControls = observer(props => {
   });
 
   useLayoutEffect(() => {
+    // scroll panels into view when they are selected.
     refs.forEach((e, i) => {
       if (Object.keys(e)[0] === props.selectedNode.uuid) {
         e[props.selectedNode.uuid].scrollIntoView({
