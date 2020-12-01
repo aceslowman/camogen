@@ -173,6 +173,9 @@ export const LayoutVariants = {
             panel: "MESSAGES"
           }
         ]
+      },
+      {
+        id: "SHADER_CONTROLS"
       }
     ],
     panels: {
