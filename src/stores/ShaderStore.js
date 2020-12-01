@@ -26,7 +26,6 @@ const Uniform = types
     },
 
     addElement: (name, value, type = "number") => {
-      // TODO: if type is null, then decide type from value
       self.elements.push(
         Parameter.create({
           uuid: "param_" + uuidv1(),
@@ -38,30 +37,35 @@ const Uniform = types
       );
     },
 
-    addInt: (value, options) => {
-      self.addElement("", value, options.type ? options.type : "integer");
+    addInt: (value, options) => {      
+      let type = options.type ? options.type : "integer";
+      self.addElement("", value, type);
     },
 
     addFloat: (value, options) => {
-      self.addElement("", value, options.type ? options.type : "number");
+      let type = options.type ? options.type : "number";
+      self.addElement("", value, type);
     },
 
     addVec2: (value, options) => {
-      self.addElement("x:", value[0], options.type ? options.type : "number");
-      self.addElement("y:", value[1], options.type ? options.type : "number");
+      let type = options.type ? options.type : "number";
+      self.addElement("x:", value[0], type);
+      self.addElement("y:", value[1], type);
     },
 
     addVec3: (value, options) => {
-      self.addElement("x:", value[0], options.type ? options.type : "number");
-      self.addElement("y:", value[1], options.type ? options.type : "number");
-      self.addElement("z:", value[2], options.type ? options.type : "number");
+      let type = options.type ? options.type : "number";
+      self.addElement("x:", value[0], type);
+      self.addElement("y:", value[1], type);
+      self.addElement("z:", value[2], type);
     },
 
     addVec4: (value, options) => {
-      self.addElement("x:", value[0], options.type ? options.type : "number");
-      self.addElement("y:", value[1], options.type ? options.type : "number");
-      self.addElement("z:", value[2], options.type ? options.type : "number");
-      self.addElement("w:", value[3], options.type ? options.type : "number");
+      let type = options.type ? options.type : "number";
+      self.addElement("x:", value[0], type);
+      self.addElement("y:", value[1], type);
+      self.addElement("z:", value[2], type);
+      self.addElement("w:", value[3], type);
     },
 
     addBool: (value, options) => {
@@ -141,7 +145,6 @@ let shader = types
         4: "{"name":"off","default":[0.0,0.0]}"
 
         TODO: currently MUST use doublequotes.
-        TODO: allow for specific input types (slider, number, etc)
     */
     function extractUniforms() {
       const builtins = ["resolution"];
@@ -150,9 +153,9 @@ let shader = types
       let result = [...self.frag.matchAll(regex)];
 
       // retain only uniforms that show up in the result set
-      // self.uniforms = self.uniforms.filter(u => {
-      //     return result.filter((e) => e.name === u.name).length > 0;
-      // });
+      self.uniforms = self.uniforms.filter(u => {
+          return result.filter((e) => e.name === u.name).length > 0;
+      });
 
       result.forEach(e => {
         let uniform_type = e[2];
@@ -243,7 +246,6 @@ let shader = types
           Loop through all active parameter graphs to recompute 
           values in sync with the frame rate
       */
-      // self.parameterUpdateGroup.forEach((e) => e.afterUpdate())
       self.updateGroup.forEach(e => e.afterUpdate());
 
       for (let uniform_data of self.uniforms) {
@@ -297,14 +299,12 @@ let shader = types
       parent_node.setName(n);
     }
 
-    /*
-        onRemove()
-
-        removes the shader node (parent) from
-        the associated target
-    */
     function onRemove() {
       self.target.removeShaderNode(parent_node);
+    }
+    
+    function setHasChanged(v) {
+      self.hasChanged = v;
     }
 
     function save() {
@@ -330,10 +330,6 @@ let shader = types
       }
 
       link.click();
-    }
-
-    function setHasChanged(v) {
-      self.hasChanged = v;
     }
 
     function load() {
