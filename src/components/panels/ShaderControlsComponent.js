@@ -121,11 +121,11 @@ const ShaderControls = observer(props => {
           {uniform.elements.map((param, i) => {
             let input = null;
             let value = param.value;
-            
-            console.log(param)
+
+            console.log(param);
 
             switch (param.controlType) {
-              case Boolean:
+              case "bool":
                 input = (
                   <InputBool
                     key={i}
@@ -140,7 +140,7 @@ const ShaderControls = observer(props => {
                   />
                 );
                 break;
-              case Number:
+              case "number":
                 input = (
                   <InputFloat
                     key={i}
@@ -163,13 +163,13 @@ const ShaderControls = observer(props => {
                   />
                 );
                 break;
-              case Number:
+              case "int":
                 input = (
                   <InputFloat
                     key={i}
-                    step={0.1}
+                    step={1}
                     value={value}
-                    onChange={e => handleValueChange(param, e)}
+                    onChange={e => handleValueChange(param, Math.floor(e))}
                     focused={param === store.selectedParameter}
                     inputStyle={{
                       fontWeight: param.graph ? "bold" : "normal",
@@ -186,6 +186,22 @@ const ShaderControls = observer(props => {
                   />
                 );
                 break;
+              case "slider":
+                // input = (
+                //   <InputSlider
+                //     key={i}
+                //     step={1}
+                //     min={0}
+                //     max={100}
+                //     value={value}
+                //     onChange={e => handleValueChange(param, e)}
+                //     focused={param === store.selectedParameter}
+                //     // onDoubleClick={(e) => {
+                //     // 	store.selectParameter(param);
+                //     // }}
+                //   />
+                // );
+                // break;
               default:
                 input = (
                   <InputFloat
@@ -206,26 +222,6 @@ const ShaderControls = observer(props => {
                 );
                 break;
             }
-            // TODO: all should rely on controlType
-            // switch (param.controlType) {
-            // 	case "slider":
-            // 		input = (<InputSlider
-            // 			key={i}
-            // 			step={1}
-            // 			min={0}
-            // 			max={100}
-            // 			value={value}
-            // 			onChange={(e) => handleValueChange(param,e)}
-            // 			focused={param === store.selectedParameter}
-            // 			// onDoubleClick={(e) => {
-            // 			// 	store.selectParameter(param);
-            // 			// }}
-            // 		/>);
-            // 		break;
-
-            // 	default:
-            // 		break;
-            // }
 
             return input;
           })}
