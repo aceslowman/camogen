@@ -125,7 +125,7 @@ const ShaderControls = observer(props => {
             console.log(param);
 
             switch (param.controlType) {
-              case "bool":
+              case "BOOL":
                 input = (
                   <InputBool
                     key={i}
@@ -140,7 +140,7 @@ const ShaderControls = observer(props => {
                   />
                 );
                 break;
-              case "number":
+              case "FLOAT":
                 input = (
                   <InputFloat
                     key={i}
@@ -163,7 +163,7 @@ const ShaderControls = observer(props => {
                   />
                 );
                 break;
-              case "int":
+              case "INT":
                 input = (
                   <InputFloat
                     key={i}
@@ -186,7 +186,7 @@ const ShaderControls = observer(props => {
                   />
                 );
                 break;
-              case "slider":
+              case "SLIDERlet ":
                 // input = (
                 //   <InputSlider
                 //     key={i}

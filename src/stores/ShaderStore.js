@@ -15,7 +15,15 @@ const Uniform = types
   .model("Uniform", {
     uuid: types.identifier,
     name: types.maybe(types.string),
-    elements: types.array(Parameter)
+    elements: types.array(Parameter),
+    type: types.enumeration("Type", [
+      "FLOAT",
+      "INT",
+      "VEC2",
+      "VEC3",
+      "VEC4",
+      "BOOL"
+    ])
   })
   .volatile(self => ({
     shader: null
@@ -25,7 +33,7 @@ const Uniform = types
       self.shader = getParent(self, 2);
     },
 
-    addElement: (name, value, type = "number") => {
+    addElement: (name, value, type = "FLOAT") => {
       self.elements.push(
         Parameter.create({
           uuid: "param_" + uuidv1(),
@@ -37,39 +45,40 @@ const Uniform = types
       );
     },
 
-    addInt: (value, options) => {      
-      let type = options.type ? options.type : "integer";
+    addInt: (value, options) => {
+      self.type = options.type ? options.type : "INT";
       self.addElement("", value, type);
     },
 
     addFloat: (value, options) => {
-      let type = options.type ? options.type : "number";
+      self.type = options.type ? options.type : "FLOAT";
       self.addElement("", value, type);
     },
 
     addVec2: (value, options) => {
-      let type = options.type ? options.type : "number";
-      self.addElement("x:", value[0], type);
-      self.addElement("y:", value[1], type);
+      self.type = options.type ? options.type : "FLOAT";
+      self.addElement("x:", value[0]);
+      self.addElement("y:", value[1]);
     },
 
     addVec3: (value, options) => {
-      let type = options.type ? options.type : "number";
-      self.addElement("x:", value[0], type);
-      self.addElement("y:", value[1], type);
-      self.addElement("z:", value[2], type);
+      self.type = options.type ? options.type : "FLOAT";
+      self.addElement("x:", value[0]);
+      self.addElement("y:", value[1]);
+      self.addElement("z:", value[2]);
     },
 
     addVec4: (value, options) => {
-      let type = options.type ? options.type : "number";
-      self.addElement("x:", value[0], type);
-      self.addElement("y:", value[1], type);
-      self.addElement("z:", value[2], type);
-      self.addElement("w:", value[3], type);
+      self.type = options.type ? options.type : "FLOAT";
+      self.addElement("x:", value[0]);
+      self.addElement("y:", value[1]);
+      self.addElement("z:", value[2]);
+      self.addElement("w:", value[3]);
     },
 
     addBool: (value, options) => {
-      self.addElement("", value, options.type ? options.type : "number");
+      self.type = options.type ? options.type : "BOOL";
+      self.addElement("", value);
     }
   }));
 
@@ -154,7 +163,7 @@ let shader = types
 
       // retain only uniforms that show up in the result set
       self.uniforms = self.uniforms.filter(u => {
-          return result.filter((e) => e.name === u.name).length > 0;
+        return result.filter(e => e.name === u.name).length > 0;
       });
 
       result.forEach(e => {
@@ -181,12 +190,12 @@ let shader = types
 
         let value;
         let opt = {};
-        
+
         // replace all single quotes in options with double quotes
-        if(uniform_options) {
-          opt = JSON.parse(uniform_options.replace(/'/g,'"'));
-        } 
-        
+        if (uniform_options) {
+          opt = JSON.parse(uniform_options.replace(/'/g, '"'));
+        }
+
         let uniform = Uniform.create({
           uuid: uuidv1(),
           name: uniform_name,
@@ -307,7 +316,7 @@ let shader = types
     function onRemove() {
       self.target.removeShaderNode(parent_node);
     }
-    
+
     function setHasChanged(v) {
       self.hasChanged = v;
     }

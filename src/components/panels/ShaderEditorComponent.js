@@ -76,13 +76,8 @@ const ShaderEditor = props => {
                           onChange={e => {
                             props.node.data.setName(e.target.value);
                           }}
-                          onClick={e => e.target.focus()}
                           onFocus={e => {
-                            if (e.defaultPrevented) return  // Exits here if event has been handled
-                            e.preventDefault()
                             e.stopPropagation();
-                            e.nativeEvent.stopImmediatePropagation();
-                            console.log('focusing on input element...')
                           }}
                         />
                       </div>
@@ -122,13 +117,7 @@ const ShaderEditor = props => {
               {
                 label: "New Shader",
                 onClick: () => props.graph.setSelectedByName("Default")
-              },
-              // {
-              //   label: "Load Shader",
-              //   onClick: () => {
-              //     // props.data.load();
-              //   }
-              // }
+              }
             ]
       }
     />
@@ -136,7 +125,6 @@ const ShaderEditor = props => {
 
   useLayoutEffect(() => {
     editor = CodeMirror(editorRef.current, {
-      // value: editType === "frag" ? props.data.frag : props.data.vert,
       mode: "x-shader/x-fragment",
       theme: "monokai",
       lineNumbers: true,
@@ -178,13 +166,7 @@ const ShaderEditor = props => {
         </span>
       }
       toolbar={toolbar}
-      onFocus={e => {
-        e.nativeEvent.stopImmediatePropagation();
-        e.stopPropagation();
-        e.preventDefault();
-        console.log("focusing",e);
-        editor.focus();
-      }}
+      onFocus={e => editor.focus()}
     >
       <div className={styles.editor} ref={editorRef}></div>
     </GenericPanel>
