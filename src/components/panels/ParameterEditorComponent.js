@@ -79,7 +79,7 @@ const OperatorEditor = observer(props => {
       panel={props.panel}
       toolbar={data && toolbar}
       title=" "
-      subtitle={data ?`${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`}
+      subtitle={data && `${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`}
     >
       {data && (
         <SplitContainer vertical>
@@ -92,7 +92,7 @@ const OperatorEditor = observer(props => {
         </SplitContainer>
       )}
 
-      {!props.data && (
+      {!data && (
         <p className={styles.no_node_selected}>
           <em> no param selected</em>
         </p>
