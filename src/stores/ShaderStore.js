@@ -24,7 +24,7 @@ const Uniform = types
     afterAttach: () => {
       self.shader = getParent(self, 2);
     },
-    
+
     addElement: (name, value, type = "number") => {
       // TODO: if type is null, then decide type from value
       self.elements.push(
@@ -154,6 +154,7 @@ let shader = types
           name: uniform_name,
           shader: self
         });
+        // console.log(opt)
 
         switch (uniform_type) {
           case "sampler2D":
@@ -244,8 +245,6 @@ let shader = types
         } else {
           console.log('not enough parents!', i)
         }
-        
-        
       }
 
       shader.setUniform("resolution", [target.width, target.height]);
@@ -261,249 +260,26 @@ let shader = types
     }
 
     function setVert(v) {
-      console.log("changing vert", v);
       self.vert = v;
       self.hasChanged = true;
     }
 
     function setFrag(v) {
-      console.log("changing frag", v);
       self.frag = v;
       self.hasChanged = true;
     }
 
     function setName(n) {
       self.name = n;
-      
-      // set name for parent node
       parent_node.setName(n);
     }
 
     /*
-        import { NodeData } from "./NodeDataStore";
-import {
-  types,
-  getSnapshot,
-  applySnapshot,
-  getParent,
-  getRoot
-} from "mobx-state-tree";
-import * as DefaultShader from "./shaders/DefaultShader";
-import Parameter from "./ParameterStore";
-import uuidv1 from "uuid/v1";
-import { OperatorGraph } from "./GraphStore";
+        onRemove()
 
-const Uniform = types
-  .model("Uniform", {
-    uuid: types.identifier,
-    name: types.maybe(types.string),
-    elements: types.array(Parameter)
-  })
-  .volatile(self => ({
-    shader: null
-  }))
-  .actions(self => ({
-    afterAttach: () => {
-      self.shader = getParent(self, 2);
-    },
-
-    addElement: (name, value, type = "number") => {
-      // TODO: if type is null, then decide type from value
-      self.elements.push(
-        Parameter.create({
-          uuid: "param_" + uuidv1(),
-          name: name,
-          value: value,
-          controlType: type,
-          uniform: self
-        })
-      );
-    }
-  }));
-
-let shader = types
-  .model("Shader", {
-    type: "Shader",
-    uniforms: types.array(Uniform),
-    name: types.maybe(types.string),
-    precision: DefaultShader.precision,
-    vert: DefaultShader.vert,
-    frag: DefaultShader.frag,
-    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
-  })
-  .volatile(() => ({
-    target: null,
-    ready: false,
-    hasChanged: false
-  }))
-  .views(self => ({
-    get vertex() {
-      return self.vert;
-    },
-
-    get fragment() {
-      return self.precision + self.frag;
-    }
-  }))
-  .actions(self => {
-                     let parent_node;
-
-                     function afterAttach() {
-                       parent_node = getParent(self);
-                     }
-
-                     function afterCreate() {
-                       self.ready = false; // initializing?
-                       self.hasChanged = false;
-                     }
-
-                     function init() {
-                       // create shader for given target
-                       self.ref = self.target.ref.createShader(
-                         self.vertex,
-                         self.fragment
-                       );
-
-                       // extract and assign uniforms to shader
-                       extractUniforms();
-
-                       for (let uniform of self.uniforms) {
-                         self.ref.setUniform(uniform.name, uniform.elements);
-                       }
-
-                       // flag as ready to render
-                       self.ready = true;
-                       return self;
-                     }
-
-                     /*
-        extractUniforms()
-
-        extracts all uniform variables from
-        shader code. these then populate the
-        interfaces. controls and input elements
-        are created here
-
-        special options can be passed to a uniform
-        to provide default values, and eventually
-        annotations and UI knob/slider/dial type.
-
-        camogen extracts: 
-        0: "uniform vec2 offset; // {"name":"off","default":[0.0,0.0]}"
-        1: "uniform"
-        2: "vec2"
-        3: "offset"
-        4: "{"name":"off","default":[0.0,0.0]}"
-
-        TODO: currently MUST use doublequotes.
-        TODO: allow for specific input types (slider, number, etc)
+        removes the shader node (parent) from
+        the associated target
     */
-                     function extractUniforms() {
-                       const builtins = ["resolution"];
-
-                       let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
-                       let result = [...self.frag.matchAll(re)];
-
-                       // retain only uniforms that show up in the result set
-                       // self.uniforms = self.uniforms.filter(u => {
-                       //     return result.filter((e) => e.name === u.name).length > 0;
-                       // });
-
-                       result.forEach(e => {
-                         let uniform_type = e[2];
-                         let uniform_name = e[3];
-                         let uniform_options = e[4];
-
-                         // ignore built-ins
-                         if (builtins.includes(uniform_name)) return;
-
-                         // ignore if uniform already exists
-                         for (let i = 0; i < self.uniforms.length; i++) {
-                           if (self.uniforms[i].name === uniform_name) {
-                             return;
-                           }
-                         }
-
-                         // ignore if input already exists
-                         for (let i = 0; i < self.inputs.length; i++) {
-                           if (self.inputs[i] === uniform_name) {
-                             return;
-                           }
-                         }
-
-                         let def;
-                         let opt = uniform_options
-                           ? JSON.parse(uniform_options)
-                           : {};
-
-                         let uniform = Uniform.create({
-                           uuid: uuidv1(),
-                           name: uniform_name,
-                           shader: self
-                         });
-                         // console.log(opt)
-
-                         switch (uniform_type) {
-                           case "sampler2D":
-                             self.inputs.push(uniform_name);
-                             console.log("shader snapshot", getSnapshot(self));
-                             parent_node.mapInputsToParents();
-                             break;
-                           case "float":
-                             def = opt.default ? opt.default : 1.0;
-
-                             uniform.addElement(
-                               "",
-                               def,
-                               opt.type ? opt.type : "number"
-                             );
-                             break;
-                           case "vec2":
-                             def = opt.default ? opt.default : [1, 1];
-
-                             uniform.addElement(
-                               "x:",
-                               def[0],
-                               opt.type ? opt.type : "number"
-                             );
-                             uniform.addElement(
-                               "y:",
-                               def[1],
-                               opt.type ? opt.type : "number"
-                             );
-                             break;
-                           case "vec3":
-                             def = opt.default ? opt.default : [1, 1, 1];
-
-                             uniform.addElement(
-                               "x:",
-                               def[0],
-                               opt.type ? opt.type : "number"
-                             );
-                             uniform.addElement(
-                               "y:",
-                               def[1],
-                               opt.type ? opt.type : "number"
-                             );
-                             uniform.addElement(
-                               "z:",
-                               def[2],
-                               opt.type ? opt.type : "number"
-                             );
-                             break;
-                           case "vec4":
-                             def = opt.default ? opt.default : [1, 1, 1, 1];
-
-                             uniform.addElement(
-                               "x:",
-                               def[0],
-                               opt.type ? opt.type : "number"
-                             );
-                             uniform.addElement(
-                               "y:",
-                               def[1],
-                               opt.type ? opt.type : "number"
-                     
     function onRemove() {
       self.target.removeShaderNode(parent_node);
     }
