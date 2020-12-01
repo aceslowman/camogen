@@ -88,27 +88,9 @@ const ShaderControls = observer(props => {
         label: "Edit Parameter",
         onClick: () => {
           store.selectParameter(param);
-          // TODO: should float instead of change workspace
-          // but that can wait until ui store is moved to
-          // separate library
-          // store.layout.addPanel({
-          //   id: uuidv1(),
-          //   title: "Edit Param",
-          //   type: "PARAMETER_EDITOR",
-          //   floating: true,
-          //   canFloat: false,
-          //   canRemove: true,
-          //   collapsible: true,
-          //   defaultWidth: 250,
-          //   defaultHeight: 250,
-          //   dimensions: [300, 400],
-          //   position: [
-          //     window.innerWidth / 2 - 150,
-          //     window.innerHeight / 2 - 200
-          //   ]
-          // });
-          store.layout.setLayout("PARAMETER");
-          store.context.setContextmenu();
+          let variant = store.ui.getLayoutVariant('PARAMETER');
+          store.ui.getPanel('MAIN').setLayout(variant);
+          store.context.setContextmenu(); // removes menu
         }
       }
     ]);
