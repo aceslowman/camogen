@@ -1,7 +1,7 @@
 import { getParent, getSnapshot, types } from "mobx-state-tree";
 import { v1 as uuidv1 } from "uuid";
 
-export const PanelVariants = {  
+export const PanelVariants = {
   SHADER_GRAPH: {
     id: "SHADER_GRAPH",
     title: "Shader Graph",
@@ -146,7 +146,7 @@ export const LayoutVariants = {
     panels: {
       HELP: PanelVariants["HELP"],
       SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
-      SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"],
+      SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"]
     }
   },
   SHADER_EDIT: {
@@ -154,34 +154,41 @@ export const LayoutVariants = {
     direction: "HORIZONTAL",
     size: 1,
     children: [
+      
       {
         id: "SHADER_EDITOR",
         panel: "SHADER_EDITOR",
-        size: 2 / 3
+        size: 2 / 4
       },
+
+      {
+        id: "SHADER_GRAPH",
+        panel: "SHADER_GRAPH",
+        size: 1 / 4
+      },
+      
       {
         id: "inner",
         direction: "VERTICAL",
+        size: 1 / 4,
         children: [
           {
-            id: "SHADER_GRAPH",
-            panel: "SHADER_GRAPH",
-            size: 2 / 3
+            id: "SHADER_CONTROLS",
+            panel: "SHADER_CONTROLS",
+            size: 3 / 4
           },
           {
             id: "MESSAGES",
             panel: "MESSAGES"
           }
         ]
-      },
-      {
-        id: "SHADER_CONTROLS"
       }
     ],
     panels: {
       SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
       MESSAGES: PanelVariants["MESSAGES"],
-      SHADER_EDITOR: PanelVariants["SHADER_EDITOR"]
+      SHADER_EDITOR: PanelVariants["SHADER_EDITOR"],
+      SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"]
     }
   },
   SHADER_CONTROL: {
