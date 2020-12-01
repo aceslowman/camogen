@@ -189,23 +189,26 @@ let shader = types
           case "int": 
             def = opt.default ? opt.default : 1.0;
 
-            uniform.addInt(def, );
+            uniform.addInt(def, opt);
             uniform.addElement("", def, opt.type ? opt.type : "integer");
             break;
           case "float":
             def = opt.default ? opt.default : 1.0;
 
+            uniform.addFloat(def, opt);
             uniform.addElement("", def, opt.type ? opt.type : "number");
             break;
           case "vec2":
             def = opt.default ? opt.default : [1, 1];
 
+            uniform.addVec2(def, opt);
             uniform.addElement("x:", def[0], opt.type ? opt.type : "number");
             uniform.addElement("y:", def[1], opt.type ? opt.type : "number");
             break;
           case "vec3":
             def = opt.default ? opt.default : [1, 1, 1];
 
+            uniform.addVec3(def, opt);
             uniform.addElement("x:", def[0], opt.type ? opt.type : "number");
             uniform.addElement("y:", def[1], opt.type ? opt.type : "number");
             uniform.addElement("z:", def[2], opt.type ? opt.type : "number");
@@ -213,6 +216,7 @@ let shader = types
           case "vec4":
             def = opt.default ? opt.default : [1, 1, 1, 1];
 
+            uniform.addVec4(def, opt);
             uniform.addElement("x:", def[0], opt.type ? opt.type : "number");
             uniform.addElement("y:", def[1], opt.type ? opt.type : "number");
             uniform.addElement("z:", def[2], opt.type ? opt.type : "number");
@@ -220,6 +224,8 @@ let shader = types
             break;
           case "bool":
             def = opt.default ? opt.default : false;
+            
+            uniform.addBool(def, opt);
             uniform.addElement("", def, opt.type ? opt.type : "number");
             break;
           default:
