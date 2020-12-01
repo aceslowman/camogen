@@ -180,8 +180,13 @@ let shader = types
         }
 
         let value;
-        let opt = uniform_options ? JSON.parse(uniform_options) : {};
-
+        let opt = {};
+        
+        // replace all single quotes in options with double quotes
+        if(uniform_options) {
+          opt = JSON.parse(uniform_options.replace(/'/g,'"'));
+        } 
+        
         let uniform = Uniform.create({
           uuid: uuidv1(),
           name: uniform_name,
