@@ -168,7 +168,8 @@ const ShaderControls = observer(props => {
                   />
                 );
                 break;
-              case "SLIDERlet ":
+              case "SLIDER":
+                // TODO
                 // input = (
                 //   <InputSlider
                 //     key={i}
@@ -184,6 +185,8 @@ const ShaderControls = observer(props => {
                 //   />
                 // );
                 // break;
+              case "COLOR":
+                // TODO
               default:
                 input = (
                   <InputFloat
