@@ -30,49 +30,49 @@ const ShaderControls = observer(props => {
     // setUseKeys(false);
   };
 
-// TODO: this is currently breaking the keymap in shadergraph
-//   useEffect(() => {
-//     if (useKeys) {
-//       store.context.setKeymap({
-//         ArrowUp: () => {
-//           if (props.selectedNode && props.selectedNode.parents.length)
-//             props.selectedNode.parents[0].select();
-//         },
-//         ArrowDown: () => {
-//           if (props.selectedNode && props.selectedNode.children.length)
-//             props.selectedNode.children[0].select();
-//         },
-//         ArrowLeft: () => {
-//           if (props.selectedNode && props.selectedNode.children.length) {
-//             let idx = props.selectedNode.children[0].parents.indexOf(
-//               props.selectedNode
-//             );
-//             idx--;
+  // TODO: this is currently breaking the keymap in shadergraph
+  //   useEffect(() => {
+  //     if (useKeys) {
+  //       store.context.setKeymap({
+  //         ArrowUp: () => {
+  //           if (props.selectedNode && props.selectedNode.parents.length)
+  //             props.selectedNode.parents[0].select();
+  //         },
+  //         ArrowDown: () => {
+  //           if (props.selectedNode && props.selectedNode.children.length)
+  //             props.selectedNode.children[0].select();
+  //         },
+  //         ArrowLeft: () => {
+  //           if (props.selectedNode && props.selectedNode.children.length) {
+  //             let idx = props.selectedNode.children[0].parents.indexOf(
+  //               props.selectedNode
+  //             );
+  //             idx--;
 
-//             if (idx >= 0) {
-//               props.selectedNode.children[0].parents[idx].select();
-//             }
-//           }
-//         },
-//         ArrowRight: () => {
-//           if (props.selectedNode && props.selectedNode.children.length) {
-//             let idx = props.selectedNode.children[0].parents.indexOf(
-//               props.selectedNode
-//             );
-//             idx++;
+  //             if (idx >= 0) {
+  //               props.selectedNode.children[0].parents[idx].select();
+  //             }
+  //           }
+  //         },
+  //         ArrowRight: () => {
+  //           if (props.selectedNode && props.selectedNode.children.length) {
+  //             let idx = props.selectedNode.children[0].parents.indexOf(
+  //               props.selectedNode
+  //             );
+  //             idx++;
 
-//             if (idx <= props.selectedNode.children[0].parents.length - 1)
-//               props.selectedNode.children[0].parents[idx].select();
-//           }
-//         },
-//         Delete: () => {
-//           props.data.removeSelected();
-//         }
-//       });
-//     } else {
-//       store.context.removeKeymap();
-//     }
-//   }, [props.selectedNode, props.data, store.context, useKeys]);
+  //             if (idx <= props.selectedNode.children[0].parents.length - 1)
+  //               props.selectedNode.children[0].parents[idx].select();
+  //           }
+  //         },
+  //         Delete: () => {
+  //           props.data.removeSelected();
+  //         }
+  //       });
+  //     } else {
+  //       store.context.removeKeymap();
+  //     }
+  //   }, [props.selectedNode, props.data, store.context, useKeys]);
 
   const handleValueChange = (param, e) => {
     param.setValue(e);
@@ -121,8 +121,10 @@ const ShaderControls = observer(props => {
           {uniform.elements.map((param, i) => {
             let input = null;
             let value = param.value;
+            
+            console.log(param)
 
-            switch (value.constructor) {
+            switch (param.controlType) {
               case Boolean:
                 input = (
                   <InputBool
@@ -131,6 +133,29 @@ const ShaderControls = observer(props => {
                     value={value}
                     onChange={e => handleValueChange(param, e)}
                     focused={param === store.selectedParameter}
+                    onDoubleClick={e => {
+                      store.selectParameter(param);
+                    }}
+                    onContextMenu={e => handleParameterContextMenu(e, param)}
+                  />
+                );
+                break;
+              case Number:
+                input = (
+                  <InputFloat
+                    key={i}
+                    step={0.1}
+                    value={value}
+                    onChange={e => handleValueChange(param, e)}
+                    focused={param === store.selectedParameter}
+                    inputStyle={{
+                      fontWeight: param.graph ? "bold" : "normal",
+                      color: param.graph
+                        ? theme.accent_color
+                        : theme.text_color,
+                      fontStyle: param.graph ? "italic" : "normal"
+                      // textDecoration: param.graph ? 'underline' : 'none'
+                    }}
                     onDoubleClick={e => {
                       store.selectParameter(param);
                     }}
@@ -304,11 +329,7 @@ const ShaderControls = observer(props => {
   }, [props.data.selectedNode]);
 
   return (
-    <GenericPanel 
-      panel={props.panel} 
-      onFocus={handleFocus} 
-      onBlur={handleBlur}
-    >
+    <GenericPanel panel={props.panel} onFocus={handleFocus} onBlur={handleBlur}>
       {props.data.nodes && panels}
     </GenericPanel>
   );

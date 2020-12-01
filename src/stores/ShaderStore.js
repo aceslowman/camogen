@@ -39,33 +39,33 @@ const Uniform = types
     },
 
     addInt: (value, options) => {
-      uniform.addElement("", def, opt.type ? opt.type : "integer");
+      self.addElement("", value, options.type ? options.type : "integer");
     },
 
     addFloat: (value, options) => {
-      uniform.addElement("", def, opt.type ? opt.type : "number");
+      self.addElement("", value, options.type ? options.type : "number");
     },
 
     addVec2: (value, options) => {
-      uniform.addElement("x:", def[0], opt.type ? opt.type : "number");
-      uniform.addElement("y:", def[1], opt.type ? opt.type : "number");
+      self.addElement("x:", value[0], options.type ? options.type : "number");
+      self.addElement("y:", value[1], options.type ? options.type : "number");
     },
 
     addVec3: (value, options) => {
-      uniform.addElement("x:", def[0], opt.type ? opt.type : "number");
-      uniform.addElement("y:", def[1], opt.type ? opt.type : "number");
-      uniform.addElement("z:", def[2], opt.type ? opt.type : "number");
+      self.addElement("x:", value[0], options.type ? options.type : "number");
+      self.addElement("y:", value[1], options.type ? options.type : "number");
+      self.addElement("z:", value[2], options.type ? options.type : "number");
     },
 
     addVec4: (value, options) => {
-      uniform.addElement("x:", value[0], opt.type ? opt.type : "number");
-      uniform.addElement("y:", value[1], opt.type ? opt.type : "number");
-      uniform.addElement("z:", value[2], opt.type ? opt.type : "number");
-      uniform.addElement("w:", value[3], opt.type ? opt.type : "number");
+      self.addElement("x:", value[0], options.type ? options.type : "number");
+      self.addElement("y:", value[1], options.type ? options.type : "number");
+      self.addElement("z:", value[2], options.type ? options.type : "number");
+      self.addElement("w:", value[3], options.type ? options.type : "number");
     },
 
-    addBool: () => {
-      uniform.addElement("", def, opt.type ? opt.type : "number");
+    addBool: (value, options) => {
+      self.addElement("", value, options.type ? options.type : "number");
     }
   }));
 
@@ -146,8 +146,8 @@ let shader = types
     function extractUniforms() {
       const builtins = ["resolution"];
 
-      let re = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
-      let result = [...self.frag.matchAll(re)];
+      let regex = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
+      let result = [...self.frag.matchAll(regex)];
 
       // retain only uniforms that show up in the result set
       // self.uniforms = self.uniforms.filter(u => {
@@ -176,7 +176,7 @@ let shader = types
           }
         }
 
-        let def;
+        let value;
         let opt = uniform_options ? JSON.parse(uniform_options) : {};
 
         let uniform = Uniform.create({
@@ -184,7 +184,6 @@ let shader = types
           name: uniform_name,
           shader: self
         });
-        // console.log(opt)
 
         switch (uniform_type) {
           case "sampler2D":
@@ -193,34 +192,28 @@ let shader = types
             parent_node.mapInputsToParents();
             break;
           case "int":
-            def = opt.default ? opt.default : 1.0;
-
-            uniform.addInt(def, opt);
+            value = opt.default ? opt.default : 1;
+            uniform.addInt(value, opt);
             break;
           case "float":
-            def = opt.default ? opt.default : 1.0;
-
-            uniform.addFloat(def, opt);
+            value = opt.default ? opt.default : 1.0;
+            uniform.addFloat(value, opt);
             break;
           case "vec2":
-            def = opt.default ? opt.default : [1, 1];
-
-            uniform.addVec2(def, opt);
+            value = opt.default ? opt.default : [1, 1];
+            uniform.addVec2(value, opt);
             break;
           case "vec3":
-            def = opt.default ? opt.default : [1, 1, 1];
-
-            uniform.addVec3(def, opt);
+            value = opt.default ? opt.default : [1, 1, 1];
+            uniform.addVec3(value, opt);
             break;
           case "vec4":
-            def = opt.default ? opt.default : [1, 1, 1, 1];
-
-            uniform.addVec4(def, opt);
+            value = opt.default ? opt.default : [1, 1, 1, 1];
+            uniform.addVec4(value, opt);
             break;
           case "bool":
-            def = opt.default ? opt.default : false;
-
-            uniform.addBool(def, opt);
+            value = opt.default ? opt.default : false;
+            uniform.addBool(value, opt);
             break;
           default:
             break;
