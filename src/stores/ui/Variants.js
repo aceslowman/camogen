@@ -154,32 +154,30 @@ export const LayoutVariants = {
     direction: "HORIZONTAL",
     size: 1,
     children: [
-      
+      {
+        id: "SHADER_CONTROLS",
+        panel: "SHADER_CONTROLS",
+        size: 1 / 4
+      },
       {
         id: "SHADER_EDITOR",
         panel: "SHADER_EDITOR",
         size: 2 / 4
       },
-
-      {
-        id: "SHADER_GRAPH",
-        panel: "SHADER_GRAPH",
-        size: 1 / 4
-      },
-      
       {
         id: "inner",
         direction: "VERTICAL",
         size: 1 / 4,
         children: [
           {
-            id: "SHADER_CONTROLS",
-            panel: "SHADER_CONTROLS",
+            id: "SHADER_GRAPH",
+            panel: "SHADER_GRAPH",
             size: 3 / 4
           },
           {
             id: "MESSAGES",
-            panel: "MESSAGES"
+            panel: "MESSAGES",
+            size: 1 / 4
           }
         ]
       }
