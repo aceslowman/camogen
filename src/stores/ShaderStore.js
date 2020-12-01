@@ -16,14 +16,19 @@ const Uniform = types
     uuid: types.identifier,
     name: types.maybe(types.string),
     elements: types.array(Parameter),
-    type: types.enumeration("Type", [
-      "FLOAT",
-      "INT",
-      "VEC2",
-      "VEC3",
-      "VEC4",
-      "BOOL"
-    ])
+    type: types.maybe(
+      types.enumeration("Type", [
+        "FLOAT",
+        "INT",
+        "VEC2",
+        "VEC3",
+        "VEC4",
+        "BOOL"
+      ])
+    ),
+    controlType: types.maybe(
+      types.enumeration("ControlType", ["NORMAL", "SLIDER"])
+    )
   })
   .volatile(self => ({
     shader: null
@@ -33,52 +38,53 @@ const Uniform = types
       self.shader = getParent(self, 2);
     },
 
-    addElement: (name, value, type = "FLOAT") => {
+    addElement: (name, value, options) => {
+      self.controlType = options.type ? options.type.toUpperCase() : "NORMAL";
+
       self.elements.push(
         Parameter.create({
           uuid: "param_" + uuidv1(),
           name: name,
           value: value,
-          controlType: type,
           uniform: self
         })
       );
     },
 
     addInt: (value, options) => {
-      self.type = options.type ? options.type : "INT";
-      self.addElement("", value, type);
+      self.type = "INT";
+      self.addElement("", value, options);
     },
 
     addFloat: (value, options) => {
-      self.type = options.type ? options.type : "FLOAT";
-      self.addElement("", value, type);
+      self.type = "FLOAT";
+      self.addElement("", value, options);
     },
 
     addVec2: (value, options) => {
-      self.type = options.type ? options.type : "FLOAT";
-      self.addElement("x:", value[0]);
-      self.addElement("y:", value[1]);
+      self.type = "FLOAT";
+      self.addElement("x:", value[0], options);
+      self.addElement("y:", value[1], options);
     },
 
     addVec3: (value, options) => {
-      self.type = options.type ? options.type : "FLOAT";
-      self.addElement("x:", value[0]);
-      self.addElement("y:", value[1]);
-      self.addElement("z:", value[2]);
+      self.type = "FLOAT";
+      self.addElement("x:", value[0], options);
+      self.addElement("y:", value[1], options);
+      self.addElement("z:", value[2], options);
     },
 
     addVec4: (value, options) => {
-      self.type = options.type ? options.type : "FLOAT";
-      self.addElement("x:", value[0]);
-      self.addElement("y:", value[1]);
-      self.addElement("z:", value[2]);
-      self.addElement("w:", value[3]);
+      self.type = "FLOAT";
+      self.addElement("x:", value[0], options);
+      self.addElement("y:", value[1], options);
+      self.addElement("z:", value[2], options);
+      self.addElement("w:", value[3], options);
     },
 
     addBool: (value, options) => {
-      self.type = options.type ? options.type : "BOOL";
-      self.addElement("", value);
+      self.type = "BOOL";
+      self.addElement("", value, options);
     }
   }));
 
