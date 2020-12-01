@@ -37,29 +37,35 @@ const Uniform = types
         })
       );
     },
-    
-    addInt: () => {
-      
+
+    addInt: (value, options) => {
+      uniform.addElement("", def, opt.type ? opt.type : "integer");
     },
-    
-    addFloat: () => {
-      
+
+    addFloat: (value, options) => {
+      uniform.addElement("", def, opt.type ? opt.type : "number");
     },
-    
-    addVec2: () => {
-      
+
+    addVec2: (value, options) => {
+      uniform.addElement("x:", def[0], opt.type ? opt.type : "number");
+      uniform.addElement("y:", def[1], opt.type ? opt.type : "number");
     },
-    
-    addVec3: () => {
-      
+
+    addVec3: (value, options) => {
+      uniform.addElement("x:", def[0], opt.type ? opt.type : "number");
+      uniform.addElement("y:", def[1], opt.type ? opt.type : "number");
+      uniform.addElement("z:", def[2], opt.type ? opt.type : "number");
     },
-    
-    addVec4: () => {
-      
+
+    addVec4: (value, options) => {
+      uniform.addElement("x:", value[0], opt.type ? opt.type : "number");
+      uniform.addElement("y:", value[1], opt.type ? opt.type : "number");
+      uniform.addElement("z:", value[2], opt.type ? opt.type : "number");
+      uniform.addElement("w:", value[3], opt.type ? opt.type : "number");
     },
-    
+
     addBool: () => {
-      
+      uniform.addElement("", def, opt.type ? opt.type : "number");
     }
   }));
 
@@ -183,50 +189,38 @@ let shader = types
         switch (uniform_type) {
           case "sampler2D":
             self.inputs.push(uniform_name);
-            console.log('shader snapshot',getSnapshot(self))
+            console.log("shader snapshot", getSnapshot(self));
             parent_node.mapInputsToParents();
             break;
-          case "int": 
+          case "int":
             def = opt.default ? opt.default : 1.0;
 
             uniform.addInt(def, opt);
-            uniform.addElement("", def, opt.type ? opt.type : "integer");
             break;
           case "float":
             def = opt.default ? opt.default : 1.0;
 
             uniform.addFloat(def, opt);
-            uniform.addElement("", def, opt.type ? opt.type : "number");
             break;
           case "vec2":
             def = opt.default ? opt.default : [1, 1];
 
             uniform.addVec2(def, opt);
-            uniform.addElement("x:", def[0], opt.type ? opt.type : "number");
-            uniform.addElement("y:", def[1], opt.type ? opt.type : "number");
             break;
           case "vec3":
             def = opt.default ? opt.default : [1, 1, 1];
 
             uniform.addVec3(def, opt);
-            uniform.addElement("x:", def[0], opt.type ? opt.type : "number");
-            uniform.addElement("y:", def[1], opt.type ? opt.type : "number");
-            uniform.addElement("z:", def[2], opt.type ? opt.type : "number");
             break;
           case "vec4":
             def = opt.default ? opt.default : [1, 1, 1, 1];
 
             uniform.addVec4(def, opt);
-            uniform.addElement("x:", def[0], opt.type ? opt.type : "number");
-            uniform.addElement("y:", def[1], opt.type ? opt.type : "number");
-            uniform.addElement("z:", def[2], opt.type ? opt.type : "number");
-            uniform.addElement("w:", def[3], opt.type ? opt.type : "number");
             break;
           case "bool":
             def = opt.default ? opt.default : false;
-            
+
             uniform.addBool(def, opt);
-            uniform.addElement("", def, opt.type ? opt.type : "number");
             break;
           default:
             break;
@@ -270,16 +264,16 @@ let shader = types
 
       // setup samplers
       for (let i = 0; i < self.inputs.length; i++) {
-        //error 
-        if(parent_node.parents[i]) {
+        //error
+        if (parent_node.parents[i]) {
           let input_shader = parent_node.parents[i].data;
-  
+
           if (input_shader) {
             let input_target = input_shader.target.ref;
             shader.setUniform(self.inputs[i], input_target);
           }
         } else {
-          console.log('not enough parents!', i)
+          console.log("not enough parents!", i);
         }
       }
 
@@ -360,7 +354,7 @@ let shader = types
         reader.readAsText(file, "UTF-8");
 
         reader.onload = e => {
-          let content = JSON.parse(e.target.result);          
+          let content = JSON.parse(e.target.result);
           applySnapshot(self, content);
           parent_node.setName(content.name);
           // undoManager.clear();
@@ -370,9 +364,9 @@ let shader = types
 
       link.click();
     }
-    
+
     function clear() {
-      console.log(`clearing shader ${self.name}`)
+      console.log(`clearing shader ${self.name}`);
       applySnapshot(self, DefaultShader);
     }
 
