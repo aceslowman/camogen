@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import React from 'react';
 import { ControlGroupComponent, InputSelect } from 'maco-ui';
 
-const WebcamComponent = observer((props) => {
+const WebcamInputComponent = observer((props) => {
   console.log(props)
 	return (
         <React.Fragment>
@@ -30,4 +30,4 @@ const WebcamComponent = observer((props) => {
 	)
 });
 
-export default WebcamComponent;
+export default WebcamInputComponent;
