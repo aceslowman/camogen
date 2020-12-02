@@ -7,16 +7,6 @@ const text = types
     type: "TextInput",
     name: "Text", //TODO get rid of this, only need type
     content: "Hell World",
-    // input_options: types.array(types.frozen()),
-    // display_mode: types.optional(types.enumeration('Display Mode', [
-    //     "preserve_aspect",
-    //     "stretch"
-    // ]) , "preserve_aspect"),
-    // attachment: types.optional(types.enumeration('Attachment', [
-    //     "TOP_LEFT",    "TOP_CENTER",    "TOP_RIGHT",
-    //     "CENTER_LEFT", "CENTER_CENTER", "CENTER_RIGHT",
-    //     "BOTTOM_LEFT", "BOTTOM_CENTER", "BOTTOM_RIGHT"
-    // ]), "CENTER_CENTER"),!
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: `varying vec2 vTexCoord;
@@ -36,18 +26,6 @@ const text = types
     ctx: null,
     texture: null
   }))
-  .views(self => ({
-    //         get displayModeId() {
-    //             return ["preserve_aspect", "stretch"].indexOf(self.display_mode);
-    //         },
-    //         get attachmentId() {
-    //             let params = self.attachment.split('_').reverse();
-    //             // swapped to read as x,y
-    //             params[0] = ["LEFT", "CENTER", "RIGHT"].indexOf(params[0]);
-    //             params[1] = ["TOP", "CENTER", "BOTTOM"].indexOf(params[1]);
-    //             return params;
-    //         }
-  }))
   .actions(self => {
     let root_store;
 
@@ -56,6 +34,9 @@ const text = types
     }
 
     function init() {
+      
+      let p = root_store.p5_instance;
+      
       self.canvas = document.createElement("canvas");
 
       self.canvas.id = "TextLayer";
@@ -74,8 +55,10 @@ const text = types
       self.ctx.font = "48px serif";
       self.ctx.fillText("Hello world", 10, 50);
       
-      self.texture = self.ctx.texImage2D(self.ctx.TEXTURE_2D, 0, self.ctx.RGBA, self.ctx.RGBA, self.ctx.UNSIGNED_BYTE, self.canvas);
-
+      // self.texture = self.ctx.texImage2D(self.ctx.TEXTURE_2D, 0, self.ctx.RGBA, self.ctx.RGBA, self.ctx.UNSIGNED_BYTE, self.canvas);
+      // self.texture = self.ctx.createRenderBuffer();
+      self.texture = self.ctx.getImageData(0,0,500,500);
+        
       self.ref = self.target.ref.createShader(self.vertex, self.fragment);
 
       self.extractUniforms();
@@ -88,49 +71,8 @@ const text = types
         }
       }
 
-      let p = root_store.p5_instance;
-
-      //             let constraints = {
-      //                 video: {
-      //                     mandatory: {
-      //                         minWidth: 1920,
-      //                         minHeight: 1080
-      //                     },
-      //                     // optional: [{
-      //                         // maxFrameRate: 10
-      //                     // }]
-      //                 },
-      //                 deviceId: 0,
-      //                 audio: false,
-      //             };
-
-      //             self.grabber = p.createCapture(constraints, ()=>{
-      //                 console.log('grabber activated')
-      //             });
-
-      //             if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-      //                 console.log("enumerateDevices() not supported.");
-      //                 return;
-      //             }
-
-      //             // List cameras
-      //             navigator.mediaDevices.enumerateDevices()
-      //                 .then((devices) => {
-      //                     let videoinputs = devices.filter((e) => e.kind === 'videoinput');
-      //                     self.setInputOptions(videoinputs);
-      //                     videoinputs.forEach(function (device) {
-      //                         console.log(device.kind + ": " + device.label +
-      //                             " id = " + device.deviceId);
-      //                     });
-      //                 })
-      //                 .catch((err) => {
-      //                     console.log(err.name + ": " + err.message);
-      //                 });
-
-      //             // allows user to capture screen, may be useful elsewhere!
-      //             // navigator.mediaDevices.getDisplayMedia()
-
-      //             // prevents init() from being called twice
+      
+      // prevents init() from being called twice
       self.ready = true;
 
       // removes 'tex0' from inputs, since it's provided
@@ -151,7 +93,7 @@ const text = types
         }
       }
 
-      shader.setUniform("tex0", self.ctx);
+      shader.setUniform("tex0", self.texture);
       shader.setUniform("resolution", [target.width, target.height]);
 
       target.shader(shader);
