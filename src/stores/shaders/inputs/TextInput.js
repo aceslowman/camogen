@@ -9,7 +9,7 @@ const text = types
     content: "Hell World",
     fontFamily: "Arial",
     fontSize: 20,
-    fontColor: "black",
+    fillColor: "#000000",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: `varying vec2 vTexCoord;
@@ -44,7 +44,6 @@ const text = types
       self.canvas.id = "TextLayer";
       self.canvas.width = p.width || 50;
       self.canvas.height = p.height || 50;
-      self.canvas.style.color = self.fontColor;
       self.canvas.style.position = "absolute";
       self.canvas.style.top = 0;
       self.canvas.style.left = 0;
@@ -54,8 +53,11 @@ const text = types
 
       self.ctx = self.canvas.getContext("2d");
       // self.ctx.font = "48px serif";
+      self.ctx.fillStyle = self.fillColor;
       self.ctx.fontFamily = self.fontFamily;
       self.ctx.fontSize = self.fontSize;
+      
+      self.ctx.font = `${self.fontSize}px ${self.five}`
       self.ctx.fillText(self.content, 10, 50);
 
       self.texture = self.ctx.getImageData(
@@ -128,25 +130,24 @@ const text = types
     
     function setContent(text) {
       self.content = text;
-
       self.redraw();
     }
     
     function setFontFamily(v) {
       self.fontFamily = v;
-      
+      self.ctx.fontFamily = v;            
       self.redraw();
     }
     
     function setFontSize(v) {
       self.fontSize = v;
-      
+      self.ctx.fontSize = v;      
       self.redraw();
     }
     
-    function setFontColor(v) {
-      self.fontColor = v;
-      
+    function setFillColor(v) {
+      self.fillColor = v;
+      self.ctx.fillStyle = v;
       self.redraw();
     }
 
@@ -155,9 +156,10 @@ const text = types
       setContent,
       init,
       update,
+      redraw,
       setFontFamily,
       setFontSize,
-      setFontColor
+      setFillColor
     };
   });
 
