@@ -32,8 +32,8 @@ const text = types
             }`,
     })
     .volatile(self => ({
-        // grabber: null
-      canvas: null
+      canvas: null,
+      ctx: null,
     }))
     .views(self => ({
 //         get displayModeId() {
@@ -58,34 +58,40 @@ const text = types
 
         function init() {
           self.canvas = document.createElement('canvas');
-          self.ctx = self.canvas.getContext('2d');
-          self.ctx.font = '48px serif';
-          self.ctx.fillText('Hello world', 10, 50);
           
           self.canvas.id = "TextLayer";
           self.canvas.width = 512;
           self.canvas.height = 512;
-          
-          self.canvas.
+          self.canvas.style.color = "black";
+          self.canvas.style.position = "absolute";
+          self.canvas.style.top = 0;
+          self.canvas.style.left = 0;
           
           document.body.appendChild(self.canvas);
-//             self.ref = self.target.ref.createShader(
-//                 self.vertex,
-//                 self.fragment
-//             );
+          
+          self.ctx = self.canvas.getContext('2d');
+          self.ctx.font = '48px serif';
+          self.ctx.fillText('Hello world', 10, 50);
+          
+          
+          
+            self.ref = self.target.ref.createShader(
+                self.vertex,
+                self.fragment
+            );
 
-//             self.extractUniforms();
+            self.extractUniforms();
 
-//             for (let uniform of self.uniforms) {
-//                 self.ref.setUniform(uniform.name, uniform.elements);
+            for (let uniform of self.uniforms) {
+                self.ref.setUniform(uniform.name, uniform.elements);
 
-//                 for (let param of uniform.elements) {
-//                     if (param.graph)
-//                         self.parameter_graphs.push(param.graph)
-//                 }
-//             }
+                for (let param of uniform.elements) {
+                    if (param.graph)
+                        self.parameter_graphs.push(param.graph)
+                }
+            }
 
-//             let p = root_store.p5_instance;
+            let p = root_store.p5_instance;
 
 //             let constraints = {
 //                 video: {
@@ -128,11 +134,11 @@ const text = types
 //             // navigator.mediaDevices.getDisplayMedia()
 
 //             // prevents init() from being called twice
-//             self.ready = true;
+            self.ready = true;
 
 //             // removes 'tex0' from inputs, since it's provided
 //             // by the webcam stream.            
-//             self.inputs = [];
+            self.inputs = [];
         }
       
         function update(p) {
