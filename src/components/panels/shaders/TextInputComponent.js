@@ -8,25 +8,12 @@ import {
 } from "maco-ui";
 
 const TextInputComponent = observer(props => {
-  console.log("HIT", props);
   const { data } = props.data;
 
-  const handleTextChange = e => {
-    data.setContent(e.target.value);
-  };
-  
-  const handleFontColorChange = e => {
-    console.log('e',e)
-    data.setFontColor(e);
-  }
-  
-  const handleFontSizeChange = e => {
-    data.setFontSize(e);
-  }
-  
-  const handleFontFamilyChange = e => {
-    data.setFontFamily(e);
-  }
+  const handleTextChange = e => data.setContent(e.target.value);  
+  const handleFontFamilyChange = e => data.setFontFamily(e);  
+  const handleFontColorChange = e => data.setFontColor(e);  
+  const handleFontSizeChange = e => data.setFontSize(e);
 
   return (
     <React.Fragment>
@@ -36,13 +23,13 @@ const TextInputComponent = observer(props => {
           placeholder={data.content}
         ></textarea>
       </ControlGroupComponent>
-      <ControlGroupComponent name="Text Color">
+      <ControlGroupComponent name="Options">
         <InputSelect
+          onChange={handleFontFamilyChange}
           options={[
             { label: "preserve aspect", value: "preserve_aspect" },
             { label: "stretch", value: "stretch" }
           ]}
-          onChange={handleFontFamilyChange}
         />
         <InputFloat 
           value={data.fontSize} 

@@ -36,20 +36,6 @@ const text = types
       root_store = getRoot(self);
     }
 
-    function setContent(text) {
-      self.content = text;
-
-      self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
-      self.ctx.fillText(self.content, 10, 50);
-
-      self.texture = self.ctx.getImageData(
-        0,
-        0,
-        self.canvas.width,
-        self.canvas.height
-      );
-    }
-
     function init() {
       let p = root_store.p5_instance;
 
@@ -128,19 +114,40 @@ const text = types
       }
     }
     
+    function redraw() {      
+      self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+      self.ctx.fillText(self.content, 10, 50);
+      
+      self.texture = self.ctx.getImageData(
+        0,
+        0,
+        self.canvas.width,
+        self.canvas.height
+      );
+    }
+    
+    function setContent(text) {
+      self.content = text;
+
+      self.redraw();
+    }
+    
     function setFontFamily(v) {
-      console.log('setFontFamily')
       self.fontFamily = v;
+      
+      self.redraw();
     }
     
     function setFontSize(v) {
-      console.log('setFontSize')
       self.fontSize = v;
+      
+      self.redraw();
     }
     
     function setFontColor(v) {
-      console.log('setFontColor')
       self.fontColor = v;
+      
+      self.redraw();
     }
 
     return {
