@@ -1,0 +1,9 @@
+{
+  "type": "Shader",
+  "name": "ZoomPan",
+  "inputs": ["tex0"],
+  "outputs": ["out"],
+  "precision": "\n\t\t#ifdef GL_ES\n\t\tprecision highp float;\n\t\t#endif \n\t",
+  "vert": "attribute vec3 aPosition;\nattribute vec2 aTexCoord;\n\nvarying vec2 vTexCoord;\n\nvoid main() {\n    vTexCoord = aTexCoord;\n\n    vec4 positionVec4 = vec4(aPosition,1.0);\n    positionVec4.xy = positionVec4.xy * vec2(1.,-1.);\n\n    gl_Position = positionVec4;\n}\n",
+  "frag": "varying vec2 vTexCoord;  \nuniform vec2 resolution; \n\nuniform sampler2D tex0;\nuniform vec2 zoom; //{'zoom':[1,1]}\nuniform vec2 pan; //{'default':[0,0]}\n\nvoid main() {  \n  vec2 uv = vTexCoord;\n  uv *= zoom;\n  uv += pan;\n  vec4 src = texture2D(tex0, uv);\n  gl_FragColor = src;    \n}"
+}
