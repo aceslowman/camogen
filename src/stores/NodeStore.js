@@ -1,11 +1,19 @@
 import Shader from "./ShaderStore";
-import WebcamInput from "./shaders/inputs/WebcamInput";
-import ImageInput from "./shaders/inputs/ImageInput";
+
+
 import { types, getParent, getSnapshot } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
 import uuidv1 from "uuid/v1";
+
+
+
 import { allOps } from "./operators";
+// import { allInputs } from "./inputs";
+// should move inputs to similar allInputs
+import WebcamInput from "./shaders/inputs/WebcamInput";
+import ImageInput from "./shaders/inputs/ImageInput";
+import TextInput from "./shaders/inputs/TextInput";
 
 // NOTE: rearranged ImageInput and Shader, keep an eye on this for issues
 const PossibleData = types.union(
@@ -15,6 +23,7 @@ const PossibleData = types.union(
         if (snap.type === "Shader") return Shader;
         if (snap.type === "WebcamInput") return WebcamInput;
         if (snap.type === "ImageInput") return ImageInput;
+        if (snap.type === "TextInput") return TextInput;
         return allOps;
       } else {
         return Shader;
@@ -24,7 +33,8 @@ const PossibleData = types.union(
   Shader,
   allOps,
   ImageInput,
-  WebcamInput
+  WebcamInput,
+  TextInput
 );
 
 const nodeRef = types.safeReference(types.late(() => GraphNode));

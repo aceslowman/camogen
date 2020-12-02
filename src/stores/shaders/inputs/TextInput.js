@@ -6,6 +6,7 @@ const text = types
     .model("Text", {
         type: 'TextInput',
         name: 'Text', //TODO get rid of this, only need type
+        content: 'Hell World',
         // input_options: types.array(types.frozen()),
         // display_mode: types.optional(types.enumeration('Display Mode', [
         //     "preserve_aspect", 
@@ -32,6 +33,7 @@ const text = types
     })
     .volatile(self => ({
         // grabber: null
+      canvas: null
     }))
     .views(self => ({
 //         get displayModeId() {
@@ -55,6 +57,18 @@ const text = types
         }
 
         function init() {
+          self.canvas = document.createElement('canvas');
+          self.ctx = self.canvas.getContext('2d');
+          self.ctx.font = '48px serif';
+          self.ctx.fillText('Hello world', 10, 50);
+          
+          self.canvas.id = "TextLayer";
+          self.canvas.width = 512;
+          self.canvas.height = 512;
+          
+          self.canvas.
+          
+          document.body.appendChild(self.canvas);
 //             self.ref = self.target.ref.createShader(
 //                 self.vertex,
 //                 self.fragment
@@ -158,5 +172,5 @@ const text = types
         }
     })
 
-const Webcam = types.compose(Shader, webcam);
-export default Webcam;
+const Text = types.compose(Shader, text);
+export default Text;
