@@ -23,10 +23,10 @@ const text = types
                 gl_FragColor = vec4(src0);
             }`
   })
-  .volatile(self => ({
+  .volatile(self => ({    
+    texture: null,
     canvas: null,
-    ctx: null,
-    texture: null
+    ctx: null
   }))
   .actions(self => {
     let root_store;
