@@ -9,7 +9,7 @@ const text = types
     content: "Hell World",
     fontFamily: "Arial",
     fontSize: 20,
-    color: "black",
+    fontColor: "black",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: `varying vec2 vTexCoord;
@@ -58,7 +58,7 @@ const text = types
       self.canvas.id = "TextLayer";
       self.canvas.width = p.width || 50;
       self.canvas.height = p.height || 50;
-      self.canvas.style.color = self.color;
+      self.canvas.style.color = self.fontColor;
       self.canvas.style.position = "absolute";
       self.canvas.style.top = 0;
       self.canvas.style.left = 0;
@@ -68,7 +68,8 @@ const text = types
 
       self.ctx = self.canvas.getContext("2d");
       // self.ctx.font = "48px serif";
-      self.ctx.font.fontSize = self.fontSize;
+      self.ctx.fontFamily = self.fontFamily;
+      self.ctx.fontSize = self.fontSize;
       self.ctx.fillText(self.content, 10, 50);
 
       self.texture = self.ctx.getImageData(
@@ -126,12 +127,30 @@ const text = types
         p.noLoop();
       }
     }
+    
+    function setFontFamily(v) {
+      console.log('setFontFamily')
+      self.fontFamily = v;
+    }
+    
+    function setFontSize(v) {
+      console.log('setFontSize')
+      self.fontSize = v;
+    }
+    
+    function setFontColor(v) {
+      console.log('setFontColor')
+      self.fontColor = v;
+    }
 
     return {
       afterAttach,
       setContent,
       init,
-      update
+      update,
+      setFontFamily,
+      setFontSize,
+      setFontColor
     };
   });
 
