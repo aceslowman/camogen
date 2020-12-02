@@ -12,32 +12,38 @@ const TextInputComponent = observer(props => {
 
   const handleTextChange = e => data.setContent(e.target.value);  
   const handleFontFamilyChange = e => data.setFontFamily(e);  
-  const handleFontColorChange = e => data.setFontColor(e);  
   const handleFontSizeChange = e => data.setFontSize(e);
+  const handleFillColorChange = e => data.setFillColor(e);  
 
   return (
     <React.Fragment>
-      <ControlGroupComponent name="Text Content">
+      <ControlGroupComponent>
         <textarea
           onChange={handleTextChange}
           placeholder={data.content}
+          style={{
+            resize: 'vertical'
+          }}
         ></textarea>
       </ControlGroupComponent>
       <ControlGroupComponent name="Options">
         <InputSelect
+          label="family"
           onChange={handleFontFamilyChange}
           options={[
-            { label: "preserve aspect", value: "preserve_aspect" },
-            { label: "stretch", value: "stretch" }
+            { label: "arial", value: "arial" },
+            { label: "serif", value: "serif" }
           ]}
         />
         <InputFloat 
+          label='size'
           value={data.fontSize} 
           onChange={handleFontSizeChange}
         />
         <InputColor 
-          value={data.fontColor} 
-          onChange={handleFontColorChange}
+          label='fill'
+          value={data.fillColor} 
+          onChange={handleFillColorChange}
         />
       </ControlGroupComponent>
     </React.Fragment>

@@ -10,6 +10,7 @@ const text = types
     fontFamily: "Arial",
     fontSize: 20,
     fillColor: "#000000",
+    strokeColor: "#000000",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: `varying vec2 vTexCoord;
@@ -52,12 +53,9 @@ const text = types
       document.body.appendChild(self.canvas);
 
       self.ctx = self.canvas.getContext("2d");
-      // self.ctx.font = "48px serif";
+      self.ctx.font = `${self.fontSize}px ${self.fontFamily}`;
       self.ctx.fillStyle = self.fillColor;
-      self.ctx.fontFamily = self.fontFamily;
-      self.ctx.fontSize = self.fontSize;
       
-      self.ctx.font = `${self.fontSize}px ${self.five}`
       self.ctx.fillText(self.content, 10, 50);
 
       self.texture = self.ctx.getImageData(
@@ -135,19 +133,25 @@ const text = types
     
     function setFontFamily(v) {
       self.fontFamily = v;
-      self.ctx.fontFamily = v;            
+      self.ctx.font = `${self.fontSize}px ${v}`;        
       self.redraw();
     }
     
     function setFontSize(v) {
       self.fontSize = v;
-      self.ctx.fontSize = v;      
+      self.ctx.font = `${v}px ${self.fontFamily}`; 
       self.redraw();
     }
     
     function setFillColor(v) {
       self.fillColor = v;
       self.ctx.fillStyle = v;
+      self.redraw();
+    }
+    
+    function setStrokeColor(v) {
+      self.strokeColor = v;
+      self.ctx.strokeStyle = v;
       self.redraw();
     }
 
@@ -159,7 +163,8 @@ const text = types
       redraw,
       setFontFamily,
       setFontSize,
-      setFillColor
+      setFillColor,
+      setStrokeColor
     };
   });
 
