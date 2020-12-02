@@ -5380,7 +5380,7 @@ specifiers:
   file-loader: ^6.1.1
   html-webpack-plugin: ^4.5.0
   http-proxy-middleware: ^1.0.5
-  maco-ui: ^0.3.12
+  maco-ui: ^0.3.11
   mobx: ^5.15.0
   mobx-devtools-mst: ^0.9.26
   mobx-react: ^6.1.4
