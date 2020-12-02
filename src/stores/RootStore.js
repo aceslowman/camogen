@@ -96,6 +96,10 @@ const RootStore = types
               label: "Image",
               onClick: () =>
                 self.scene.shaderGraph.setSelectedByName("ImageInput")
+            },
+            {
+              label: "Text",
+              onClick: () => self.scene.shaderGraph.setSelectedByName("TextInput")
             }
           ]
         },

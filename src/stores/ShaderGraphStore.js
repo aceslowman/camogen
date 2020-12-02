@@ -5,6 +5,7 @@ import Shader from './ShaderStore';
 // special shaders
 import WebcamInput from './shaders/inputs/WebcamInput';
 import ImageInput from './shaders/inputs/ImageInput';
+import TextInput from './shaders/inputs/TextInput';
 
 let shaderGraph = types
     .model("ShaderGraph", {})
@@ -64,8 +65,9 @@ let shaderGraph = types
                 case 'WebcamInput': 
                     return WebcamInput.create();
                 case 'ImageInput':
-                console.log('HIT')
                     return ImageInput.create();
+                case 'TextInput':
+                    return TextInput.create();
                 default: 
                     try {
                         data = state_root.shader_collection.getByName(name).data;

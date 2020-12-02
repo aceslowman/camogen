@@ -13,8 +13,11 @@ import uuidv1 from "uuid/v1";
 import styles from "./ShaderControlsComponent.module.css";
 import { observer } from "mobx-react";
 import { branch_colors } from "../../stores/GraphStore";
-import WebcamComponent from "./shaders/WebcamComponent";
+
+// built in inputs
+import WebcamInputComponent from "./shaders/WebcamInputComponent";
 import ImageInputComponent from "./shaders/ImageInputComponent";
+import TextInputComponent from "./shaders/TextInputComponent";
 
 const ShaderControls = observer(props => {
   const theme = useContext(ThemeContext);
@@ -233,7 +236,7 @@ const ShaderControls = observer(props => {
         switch (node.data.name) {
           case "Webcam":
             controls = [
-              <WebcamComponent
+              <WebcamInputComponent
                 key={node.uuid}
                 ref={refs[i]}
                 onInputSelect={node.data.setInput}
@@ -244,9 +247,21 @@ const ShaderControls = observer(props => {
             break;
           case "Image":
             controls = [
-              <ImageInputComponent key={node.uuid} ref={refs[i]} data={node} />
+              <ImageInputComponent 
+                key={node.uuid} 
+                ref={refs[i]} 
+                data={node} 
+              />
             ];
             break;
+          case "Text":
+            controls = [
+              <TextInputComponent 
+                key={node.uuid} 
+                ref={refs[i]} 
+                data={node} 
+              />
+            ]
           default:
             controls = generateInterface(node.data);
         }
