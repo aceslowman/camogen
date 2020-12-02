@@ -1,4 +1,4 @@
-import { getRoot, types, getSnapshot } from "mobx-state-tree";
+import { getRoot, types, getSnapshot, getParent } from "mobx-state-tree";
 import Shader from "../../ShaderStore";
 import * as DefaultShader from "../DefaultShader";
 
@@ -32,9 +32,11 @@ const text = types
   }))
   .actions(self => {
     let root_store;
+    let parent_node;
 
     function afterAttach() {
       root_store = getRoot(self);
+      parent_node = getParent(self);
     }
 
     function init() {
@@ -83,6 +85,9 @@ const text = types
       // removes 'tex0' from inputs, since it's provided
       // by the text canvas.
       self.inputs = [];
+      console.log(parent_node)
+      parent_node.mapInputsToParents();
+      // parent_node.
 
       console.log("self", getSnapshot(self));
     }

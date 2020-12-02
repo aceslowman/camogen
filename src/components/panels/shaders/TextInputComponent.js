@@ -7,6 +7,8 @@ import {
   InputColor
 } from "maco-ui";
 
+import styles from './TextInputComponent.module.css';
+
 const TextInputComponent = observer(props => {
   const { data } = props.data;
 
@@ -21,9 +23,7 @@ const TextInputComponent = observer(props => {
         <textarea
           onChange={handleTextChange}
           placeholder={data.content}
-          style={{
-            resize: 'vertical'
-          }}
+          className={styles.textarea}
         ></textarea>
       </ControlGroupComponent>
       <ControlGroupComponent name="Options">
