@@ -11,13 +11,17 @@ const TextInputComponent = observer(props => {
   };
 
   return (
-    <ControlGroupComponent name="TextHELLO">
-      <textarea
-        onChange={handleTextChange}
-        placeholder={props.data.data.content}
-      ></textarea>
-      <InputColor />
-    </ControlGroupComponent>
+    <React.Fragment>
+      <ControlGroupComponent name="Text Content">
+        <textarea
+          onChange={handleTextChange}
+          placeholder={props.data.data.content}
+        ></textarea>
+      </ControlGroupComponent>
+      <ControlGroupComponent name="Text Color">
+        <InputColor />
+      </ControlGroupComponent>
+    </React.Fragment>
   );
 });
 

@@ -1,4 +1,4 @@
-import { getRoot, types } from "mobx-state-tree";
+import { getRoot, types, getSnapshot } from "mobx-state-tree";
 import Shader from "../../ShaderStore";
 import * as DefaultShader from "../DefaultShader";
 
@@ -8,6 +8,7 @@ const text = types
     name: "Text", //TODO get rid of this, only need type
     content: "Hell World",
     fontFamily: "Arial",
+    fontSize: 20,
     color: "black",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
@@ -23,7 +24,7 @@ const text = types
                 gl_FragColor = vec4(src0);
             }`
   })
-  .volatile(self => ({    
+  .volatile(self => ({
     texture: null,
     canvas: null,
     ctx: null
@@ -34,11 +35,11 @@ const text = types
     function afterAttach() {
       root_store = getRoot(self);
     }
-    
+
     function setContent(text) {
       self.content = text;
-      
-      self.ctx.clearRect(0,0,self.canvas.width, self.canvas.height);
+
+      self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
       self.ctx.fillText(self.content, 10, 50);
 
       self.texture = self.ctx.getImageData(
@@ -55,8 +56,8 @@ const text = types
       self.canvas = document.createElement("canvas");
 
       self.canvas.id = "TextLayer";
-      self.canvas.width = p.width;
-      self.canvas.height = p.height;
+      self.canvas.width = p.width || 50;
+      self.canvas.height = p.height || 50;
       self.canvas.style.color = self.color;
       self.canvas.style.position = "absolute";
       self.canvas.style.top = 0;
@@ -66,7 +67,8 @@ const text = types
       document.body.appendChild(self.canvas);
 
       self.ctx = self.canvas.getContext("2d");
-      self.ctx.font = "48px serif";
+      // self.ctx.font = "48px serif";
+      self.ctx.font.fontSize = self.fontSize;
       self.ctx.fillText(self.content, 10, 50);
 
       self.texture = self.ctx.getImageData(
@@ -94,6 +96,8 @@ const text = types
       // removes 'tex0' from inputs, since it's provided
       // by the text canvas.
       self.inputs = [];
+
+      console.log("self", getSnapshot(self));
     }
 
     function update(p) {
