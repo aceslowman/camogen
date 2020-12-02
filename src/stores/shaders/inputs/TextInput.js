@@ -7,6 +7,8 @@ const text = types
     type: "TextInput",
     name: "Text", //TODO get rid of this, only need type
     content: "Hell World",
+    fontFamily: "Arial",
+    color: "black",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: `varying vec2 vTexCoord;
@@ -34,31 +36,32 @@ const text = types
     }
 
     function init() {
-      
       let p = root_store.p5_instance;
-      
+
       self.canvas = document.createElement("canvas");
 
       self.canvas.id = "TextLayer";
-      self.canvas.width = 512;
-      self.canvas.height = 512;
-      self.canvas.style.color = "black";
+      self.canvas.width = p.width;
+      self.canvas.height = p.height;
+      self.canvas.style.color = self.color;
       self.canvas.style.position = "absolute";
       self.canvas.style.top = 0;
       self.canvas.style.left = 0;
-      self.canvas.style.backgroundColor = "white";
       self.canvas.style.visibility = "hidden";
 
       document.body.appendChild(self.canvas);
 
       self.ctx = self.canvas.getContext("2d");
       self.ctx.font = "48px serif";
-      self.ctx.fillText("Hello world", 10, 50);
-      
-      // self.texture = self.ctx.texImage2D(self.ctx.TEXTURE_2D, 0, self.ctx.RGBA, self.ctx.RGBA, self.ctx.UNSIGNED_BYTE, self.canvas);
-      // self.texture = self.ctx.createRenderBuffer();
-      self.texture = self.ctx.getImageData(0,0,500,500);
-        
+      self.ctx.fillText(self.content, 10, 50);
+
+      self.texture = self.ctx.getImageData(
+        0,
+        0,
+        self.canvas.width,
+        self.canvas.height
+      );
+
       self.ref = self.target.ref.createShader(self.vertex, self.fragment);
 
       self.extractUniforms();
@@ -71,12 +74,11 @@ const text = types
         }
       }
 
-      
       // prevents init() from being called twice
       self.ready = true;
 
       // removes 'tex0' from inputs, since it's provided
-      // by the webcam stream.
+      // by the text canvas.
       self.inputs = [];
     }
 

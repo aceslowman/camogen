@@ -11,7 +11,7 @@ const TextInputComponent = observer((props) => {
   
 	return (
     <ControlGroupComponent name="Text">
-        <input type="textarea" onChange={handleTextChange} />
+        <textarea onChange={handleTextChange} />
     </ControlGroupComponent>	
 	)
 });
