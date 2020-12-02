@@ -232,7 +232,6 @@ const ShaderControls = observer(props => {
 
       if (node.data) {
         let controls = null;
-
         switch (node.data.name) {
           case "Webcam":
             controls = [
@@ -262,6 +261,7 @@ const ShaderControls = observer(props => {
                 data={node} 
               />
             ]
+            break;
           default:
             controls = generateInterface(node.data);
         }
