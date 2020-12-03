@@ -9,7 +9,7 @@ let shader_collection;
 
 function preloadDefaultShaders() {
   const shader_path = path.resolve(__dirname, '../shaders');
-  
+   
   shader_collection = dirTree(shader_path, {}, (item, PATH, stats) => {
     if(item.type === 'file') {
       fs.readFile(item.path, 'utf8', (err, data) => {        
