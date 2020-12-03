@@ -40,11 +40,11 @@ const Transport = types
         self.recorder.onstop = e => {
           console.log("stopping...");
           var blob = new Blob(self.chunks, { type: "video/mp4" });
-          self.clearChunks();
+          
           var videoURL = URL.createObjectURL(blob);
           
           let link = document.createElement("a");
-          link.download = `${self.name}`;
+          link.download = `${store_root.name}`;
 
           if (window.webkitURL != null) {
             // Chrome allows the link to be clicked without actually adding it to the DOM.
@@ -60,6 +60,8 @@ const Transport = types
           }
 
           link.click();
+          
+          self.clearChunks();
         };
 
         self.recorder.ondataavailable = e => {
@@ -82,18 +84,18 @@ const Transport = types
 
       switch (format) {
         case "PNG":
-          uri = self.p5_instance.canvas.toDataURL("image/png");
+          uri = store_root.p5_instance.canvas.toDataURL("image/png");
           break;
         case "JPEG":
           let quality = 10;
-          uri = self.p5_instance.canvas.toDataURL("image/jpeg", quality);
+          uri = store_root.p5_instance.canvas.toDataURL("image/jpeg", quality);
           break;
         default:
-          uri = self.p5_instance.canvas.toDataURL("image/png");
+          uri = store_root.p5_instance.canvas.toDataURL("image/png");
       }
 
       let link = document.createElement("a");
-      link.download = `${self.name}`;
+      link.download = `${store_root.name}`;
 
       if (window.webkitURL != null) {
         // Chrome allows the link to be clicked without actually adding it to the DOM.

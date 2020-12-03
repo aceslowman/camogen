@@ -57,7 +57,7 @@ const OperatorGraph = observer((props) => {
 			defaultSize={props.defaultSize}
 			onFocus={handleFocus}
 			indicators={useKeys ? [
-				{label:'k', color: store.theme.accent_color, title: 'Keybind Focus'}
+				{label:'k', color: store.ui.theme.accent_color, title: 'Keybind Focus'}
 			] : null}
 		>				
 			<GraphComponent 

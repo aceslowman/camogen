@@ -41,7 +41,7 @@ const CanvasDisplay = observer(props => {
 
   const handleSkipToStart = () => store.transport.skipToStart();
 
-  const handleSnap = e => store.snapshot(format);
+  const handleSnap = e => store.transport.snapshot(format);
 
   const handleFormatSelect = e => setFormat(e);
 
