@@ -34,6 +34,11 @@ const Transport = types
       if (self.recording) {
         let stream = canvas.captureStream(30);
         self.recorder = new MediaRecorder(stream);
+        // self.recorder.setVideoSize(640, 480);
+        // self.recorder.setVideoFrameRate(16); //might be auto-determined due to lighting
+        self.recorder.setVideoEncodingBitRate(3000000);
+        self.recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);// MPEG_4_SP
+        self.recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         self.recorder.start();
         console.log("recorder started");
 
