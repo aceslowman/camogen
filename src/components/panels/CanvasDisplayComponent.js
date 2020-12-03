@@ -82,12 +82,17 @@ const CanvasDisplay = observer(props => {
               highlight: !store.transport.playing
             },
             {
-              title: "record / snap",
+              title: "record",
               label: "●",
-              onClick: handleSnap,
+              onClick: handleRecord,
               style: {
                 color: "red"
               }
+            },
+            {
+              title: "snap",
+              label: "snap",
+              onClick: handleSnap
             },
             {
               label: "rewind",

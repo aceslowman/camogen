@@ -279,46 +279,6 @@ const RootStore = types
       }
     });
 
-    /*
-      snapshot()
-
-      saves an image of the current scene
-    */
-    const snapshot = flow(function* snapshot(format = "PNG") {
-      console.log("saving snapshot");
-      let uri;
-
-      switch (format) {
-        case "PNG":
-          uri = self.p5_instance.canvas.toDataURL("image/png");
-          break;
-        case "JPEG":
-          let quality = 10;
-          uri = self.p5_instance.canvas.toDataURL("image/jpeg", quality);
-          break;
-        default:
-          uri = self.p5_instance.canvas.toDataURL("image/png");
-      }
-
-      let link = document.createElement("a");
-      link.download = `${self.name}`;
-
-      if (window.webkitURL != null) {
-        // Chrome allows the link to be clicked without actually adding it to the DOM.
-        link.href = uri;
-      } else {
-        // Firefox requires the link to be added to the DOM before it can be clicked.
-        link.href = uri;
-        link.onclick = e => {
-          document.body.removeChild(e.target);
-        };
-        link.style.display = "none";
-        document.body.appendChild(link);
-      }
-
-      link.click();
-    });
-
     const setMainLayout = name => {
       let layout = CoreLayouts[name];
       console.log(self.ui.layouts.get("MAIN"));
@@ -340,7 +300,6 @@ const RootStore = types
       save,
       load,
       fetchShaderFiles,
-      snapshot,
       setMainLayout
       // save: () => undoManager.withoutUndo(save),
       // load: () => undoManager.withoutUndo(load),

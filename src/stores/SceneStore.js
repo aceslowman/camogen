@@ -12,9 +12,6 @@ const Scene = types
         operatorGraphs: types.map(OperatorGraph),
         targets: types.array(Target)
     })
-    // .volatile(self => ({
-    //     clock: 0
-    // }))
     .actions(self => {
         function afterAttach() {   
             self.shaderGraph = ShaderGraph.create({uuid: uuidv1()});

@@ -1,115 +1,138 @@
 import { getRoot, types, flow } from "mobx-state-tree";
 
 const Transport = types
-    .model('Transport',{
-        frameclock: 0,
-        playing: false,
-        recording: false
-    })
-    .volatile(self => ({
-        recorder: null,
-        chunks: []
-    }))
-    .actions(self => {
-        let store_root;
+  .model("Transport", {
+    frameclock: 0,
+    playing: false,
+    recording: false
+  })
+  .volatile(self => ({
+    recorder: null,
+    chunks: []
+  }))
+  .actions(self => {
+    let store_root;
 
-        function afterAttach() {
-            store_root = getRoot(self);
-        }
+    function afterAttach() {
+      store_root = getRoot(self);
+    }
 
-        function play() {
-            self.playing = true;
-            if (self.recorder && self.recording) self.recorder.resume();
-        }
+    function play() {
+      self.playing = true;
+      if (self.recorder && self.recording) self.recorder.resume();
+    }
 
-        function stop() {
-            self.playing = false;
-            if (self.recorder && self.recording) self.recorder.pause();
-        }
+    function stop() {
+      self.playing = false;
+      if (self.recorder && self.recording) self.recorder.pause();
+    }
 
-        const record = flow(function* record() {
-            let canvas = store_root.p5_instance.canvas;
-            self.recording = !self.recording;
+    const record = flow(function* record() {
+      let canvas = store_root.p5_instance.canvas;
+      self.recording = !self.recording;
 
-            if(self.recording) {                
-                let stream = canvas.captureStream(30);
-                self.recorder = new MediaRecorder(stream);
-                self.recorder.start();
-                console.log('recorder started')
+      if (self.recording) {
+        let stream = canvas.captureStream(30);
+        self.recorder = new MediaRecorder(stream);
+        self.recorder.start();
+        console.log("recorder started");
 
-                self.recorder.onstop = (e) => {
-                    var blob = new Blob(self.chunks, { 'type' : 'video/mp4' });
-                    self.clearChunks();
-                    var videoURL = URL.createObjectURL(blob);
+        self.recorder.onstop = e => {
+          console.log("stopping...");
+          var blob = new Blob(self.chunks, { type: "video/mp4" });
+          self.clearChunks();
+          var videoURL = URL.createObjectURL(blob);
+          
+          let link = document.createElement("a");
+          link.download = `${self.name}`;
 
-                    fetch(videoURL).then(r => r.blob()).then(blobFile => {
-//                         let path = `${app.getPath("userData")}/snapshots`;
+          if (window.webkitURL != null) {
+            // Chrome allows the link to be clicked without actually adding it to the DOM.
+            link.href = videoURL;
+          } else {
+            // Firefox requires the link to be added to the DOM before it can be clicked.
+            link.href = videoURL;
+            link.onclick = e => {
+              document.body.removeChild(e.target);
+            };
+            link.style.display = "none";
+            document.body.appendChild(link);
+          }
 
-//                         let options = {
-//                             defaultPath: path,
-//                             buttonLabel: "Save Video",
-//                         }
+          link.click();
+        };
 
-//                         function toArrayBuffer(blob, cb) {
-//                             let fileReader = new FileReader();
-//                             fileReader.onload = function () {
-//                                 let arrayBuffer = this.result;
-//                                 cb(arrayBuffer);
-//                             };
-//                             fileReader.readAsArrayBuffer(blob);
-//                         }
+        self.recorder.ondataavailable = e => {
+          self.chunks.push(e.data);
+        };
+      } else {
+        self.recorder.stop();
+        console.log("recorder stopped");
+      }
+    });
+    
+        /*
+      snapshot()
 
-//                         function toBuffer(ab) {
-//                             return Buffer.from(ab);
-//                         }
+      saves an image of the current scene
+    */
+    const snapshot = flow(function* snapshot(format = "PNG") {
+      console.log("saving snapshot");
+      let uri;
 
-//                         toArrayBuffer(new Blob([blobFile], {type: 'video/mp4'}), (b) => {
-//                             dialog.showSaveDialog(options).then(f => {
-//                                 let buffer = toBuffer(b)
-//                                 fs.writeFile(f.filePath, buffer, "base64", (err) => {
-//                                     if (err) {
-//                                         console.log("an error has occurred: " + err.message);
-//                                     } else {
-//                                         console.log("video saved", f.filePath);
-//                                     }
-//                                 });
-//                             }).catch(err => {
-//                                 console.error(err)
-//                             });
-//                         })
-                    });                 
-                }
+      switch (format) {
+        case "PNG":
+          uri = self.p5_instance.canvas.toDataURL("image/png");
+          break;
+        case "JPEG":
+          let quality = 10;
+          uri = self.p5_instance.canvas.toDataURL("image/jpeg", quality);
+          break;
+        default:
+          uri = self.p5_instance.canvas.toDataURL("image/png");
+      }
 
-                self.recorder.ondataavailable = (e) => {
-                    self.chunks.push(e.data);
-                }
-            } else {
-                self.recorder.stop();
-                console.log('recorder stopped')
-            }
-        })
+      let link = document.createElement("a");
+      link.download = `${self.name}`;
 
-        function clearChunks() {
-            self.chunks = [];
-        }
-        
-        function skipToStart() {
-            self.frameclock = 0;
-        }
+      if (window.webkitURL != null) {
+        // Chrome allows the link to be clicked without actually adding it to the DOM.
+        link.href = uri;
+      } else {
+        // Firefox requires the link to be added to the DOM before it can be clicked.
+        link.href = uri;
+        link.onclick = e => {
+          document.body.removeChild(e.target);
+        };
+        link.style.display = "none";
+        document.body.appendChild(link);
+      }
 
-        function incrementClock() {
-            self.frameclock++;
-        }
+      link.click();
+    });
 
-        return {
-            afterAttach,
-            play,
-            stop,
-            record,
-            clearChunks,
-            skipToStart,
-            incrementClock
-        }
-    })
+    function clearChunks() {
+      self.chunks = [];
+    }
+
+    function skipToStart() {
+      self.frameclock = 0;
+    }
+
+    function incrementClock() {
+      self.frameclock++;
+    }
+
+    return {
+      afterAttach,
+      play,
+      stop,
+      record,
+      clearChunks,
+      skipToStart,
+      snapshot,
+      incrementClock
+    };
+  });
 
 export default Transport;
