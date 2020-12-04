@@ -34,6 +34,7 @@ const text = types
   .actions(self => {
     let root_store;
     let parent_node;
+    let resize_autorun;
 
     function afterAttach() {
       root_store = getRoot(self);
@@ -41,13 +42,18 @@ const text = types
       
       // before destroy this autorun has to be disposed of
       
-      autorun(() => {
+      resize_autorun = autorun(() => {
         console.log('width has changed?', root_store.width);
         self.canvas.width = root_store.width;
         self.canvas.height = root_store.height;
         
         self.redraw();
       })
+    }
+    
+    function beforeDestroy() {
+      // dispose of the autorun10l
+      resize_autorun();
     }
 
     function init() {
@@ -177,6 +183,7 @@ const text = types
 
     return {
       afterAttach,
+      beforeDestroy,
       setContent,
       init,
       update,
