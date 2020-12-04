@@ -34,8 +34,8 @@ const Runner = (p, store) => {
       if (store.transport.playing) 
         store.transport.incrementClock();
       
-      // if (store.transport.recording) 
-        // store.transport.stream.getVideoTracks()[0].requestFrame();
+      if (store.transport.recording) 
+        store.transport.stream.getVideoTracks()[0].requestFrame();
       
     } catch (error) {
       console.error("error in runner, stopping draw loop", error);

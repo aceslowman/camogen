@@ -34,8 +34,8 @@ const Transport = types
       console.log('recording started')
 
       if (self.recording) {
-        self.stream = canvas.captureStream(30);
-        // self.stream = canvas.captureStream(0);
+        // self.stream = canvas.captureStream(30);
+        self.stream = canvas.captureStream(0);
         
         let mimeType;
 
@@ -48,8 +48,8 @@ const Transport = types
         }
         
         self.recorder = new MediaRecorder(self.stream, {
-          audioBitsPerSecond: 128000,
-          videoBitsPerSecond: 5000000,
+          // audioBitsPerSecond: 128000,
+          // videoBitsPerSecond: 5000000,
           mimeType: mimeType
         });
 
