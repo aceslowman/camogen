@@ -39,7 +39,9 @@ const RootStore = types
     scene: types.maybe(Scene),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string),
-    transport: types.optional(Transport, {})
+    transport: types.optional(Transport, {}),
+    width: 512,
+    height: 512
   })
   .volatile(() => ({
     name: "untitled",
@@ -282,6 +284,8 @@ const RootStore = types
     
     const resizeCanvas = (w,h) => {
       self.p5_instance.resizeCanvas(w, h);
+      self.width = w;
+      self.height = h;
 
       // update target dimensions
       for (let target_data of self.scene.targets) {

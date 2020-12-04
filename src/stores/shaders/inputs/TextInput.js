@@ -1,4 +1,5 @@
 import { getRoot, types, getSnapshot, getParent } from "mobx-state-tree";
+import { autorun } from 'mobx';
 import Shader from "../../ShaderStore";
 import * as DefaultShader from "../DefaultShader";
 
@@ -9,7 +10,7 @@ const text = types
     content: "Hell World",
     fontFamily: "Arial",
     fontSize: 20,
-    fillColor: "#000000",
+    fillColor: "#ffffff",
     strokeColor: "#000000",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
@@ -37,6 +38,14 @@ const text = types
     function afterAttach() {
       root_store = getRoot(self);
       parent_node = getParent(self);
+      
+      autorun(() => {
+        console.log('width has changed?', root_store.width);
+        self.canvas.width = root_store.width;
+        self.canvas.height = root_store.height;
+        
+        self.redraw();
+      })
     }
 
     function init() {
