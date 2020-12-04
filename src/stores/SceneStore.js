@@ -23,7 +23,8 @@ const Scene = types
                 single loaded snapshot in RootScene
             */
             self.shaderGraph.addNode();
-            self.shaderGraph.setSelectedByName('TextInput');
+            // self.shaderGraph.setSelectedByName('TextInput');
+          self.shaderGraph.setSelectedByName('UV');
             self.shaderGraph.root.select();
             // self.shaderGraph.setSelectedByName('Glyph')
             
