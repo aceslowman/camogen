@@ -49,7 +49,7 @@ const Transport = types
         
         self.recorder = new MediaRecorder(self.stream, {
           // audioBitsPerSecond: 128000,
-          // videoBitsPerSecond: 5000000,
+          videoBitsPerSecond: 25000000,
           mimeType: mimeType
         });
 
