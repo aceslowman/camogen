@@ -66,6 +66,8 @@ const text = types
       self.ctx = self.canvas.getContext("2d");
       self.ctx.font = `${self.fontSize}px ${self.fontFamily}`;
       self.ctx.fillStyle = self.fillColor;
+      self.ctx.textBaseline = "top";
+
 
       self.ctx.fillText(self.content, 10, 50);
 
@@ -129,6 +131,7 @@ const text = types
     }
 
     function redraw() {
+      self.ctx.fillStyle = self.fillColor;
       self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
       self.ctx.fillText(self.content, 10, 50);
 
