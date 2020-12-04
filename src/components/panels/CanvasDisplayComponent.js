@@ -21,16 +21,11 @@ const CanvasDisplay = observer(props => {
 
     let w = Math.floor(bounds.width);
     let h = Math.floor(bounds.height);
-
-    store.p5_instance.resizeCanvas(w, h);
+    
+    store.resizeCanvas(w, h);
 
     setWidth(w);
     setHeight(h);
-
-    // update target dimensions
-    for (let target_data of store.scene.targets) {
-      target_data.ref.resizeCanvas(w, h);
-    }
   }, wrapper_ref);
 
   const handlePlay = e => store.transport.play();

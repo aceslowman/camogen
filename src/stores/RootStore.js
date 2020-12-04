@@ -99,7 +99,8 @@ const RootStore = types
             },
             {
               label: "Text",
-              onClick: () => self.scene.shaderGraph.setSelectedByName("TextInput")
+              onClick: () =>
+                self.scene.shaderGraph.setSelectedByName("TextInput")
             }
           ]
         },
@@ -278,14 +279,15 @@ const RootStore = types
         console.error("failed to fetch shaders", err);
       }
     });
+    
+    const resizeCanvas = (w,h) => {
+      self.p5_instance.resizeCanvas(w, h);
 
-    const setMainLayout = name => {
-      let layout = CoreLayouts[name];
-      console.log(self.ui.layouts.get("MAIN"));
-      self.ui.layouts.set("MAIN", { ...layout, id: "MAIN" });
-      // applySnapshot(self.ui.getLayout('MAIN'), { ...layout, id: self.ui.getLayout('MAIN').id });
-      // applySnapshot(self.ui.layouts.get('MAIN'), { ...layout, id: self.ui.getLayout('MAIN').id });
-    };
+      // update target dimensions
+      for (let target_data of self.scene.targets) {
+        target_data.ref.resizeCanvas(w, h);
+      }
+    }
 
     return {
       afterCreate,
@@ -300,11 +302,7 @@ const RootStore = types
       save,
       load,
       fetchShaderFiles,
-      setMainLayout
-      // save: () => undoManager.withoutUndo(save),
-      // load: () => undoManager.withoutUndo(load),
-      // fetchShaderFiles: () => undoManager.withoutUndo(fetchShaderFiles),
-      // snapshot: () => undoManager.withoutUndo(snapshot),
+      resizeCanvas
     };
   });
 

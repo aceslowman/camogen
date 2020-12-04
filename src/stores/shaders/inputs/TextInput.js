@@ -57,7 +57,7 @@ const text = types
       self.ctx = self.canvas.getContext("2d");
       self.ctx.font = `${self.fontSize}px ${self.fontFamily}`;
       self.ctx.fillStyle = self.fillColor;
-      
+
       self.ctx.fillText(self.content, 10, 50);
 
       self.texture = self.ctx.getImageData(
@@ -85,7 +85,7 @@ const text = types
       // removes 'tex0' from inputs, since it's provided
       // by the text canvas.
       self.inputs = [];
-      console.log(parent_node)
+      console.log(parent_node);
       parent_node.mapInputsToParents();
       // parent_node.
 
@@ -118,11 +118,11 @@ const text = types
         p.noLoop();
       }
     }
-    
-    function redraw() {      
+
+    function redraw() {
       self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
       self.ctx.fillText(self.content, 10, 50);
-      
+
       self.texture = self.ctx.getImageData(
         0,
         0,
@@ -130,30 +130,30 @@ const text = types
         self.canvas.height
       );
     }
-    
+
     function setContent(text) {
       self.content = text;
       self.redraw();
     }
-    
+
     function setFontFamily(v) {
       self.fontFamily = v;
-      self.ctx.font = `${self.fontSize}px ${v}`;        
+      self.ctx.font = `${self.fontSize}px ${v}`;
       self.redraw();
     }
-    
+
     function setFontSize(v) {
       self.fontSize = v;
-      self.ctx.font = `${v}px ${self.fontFamily}`; 
+      self.ctx.font = `${v}px ${self.fontFamily}`;
       self.redraw();
     }
-    
+
     function setFillColor(v) {
       self.fillColor = v;
       self.ctx.fillStyle = v;
       self.redraw();
     }
-    
+
     function setStrokeColor(v) {
       self.strokeColor = v;
       self.ctx.strokeStyle = v;
