@@ -34,8 +34,8 @@ const Transport = types
       console.log('recording started')
 
       if (self.recording) {
-        // self.stream = canvas.captureStream(30);
-        self.stream = canvas.captureStream(0);
+        self.stream = canvas.captureStream(30);
+        // self.stream = canvas.captureStream(0);
         
         let mimeType;
 
