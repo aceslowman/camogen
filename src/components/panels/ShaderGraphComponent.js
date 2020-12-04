@@ -10,10 +10,12 @@ const ShaderGraph = observer(props => {
   const mainRef = useRef();
 
   const handleFocus = e => {
+    console.log('handleFocus',e)
     setUseKeys(true);
   };
   
   const handleBlur = e => {
+    console.log('handleBlur',e)
     setUseKeys(false);
   }
 

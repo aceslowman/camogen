@@ -36,6 +36,7 @@ const Transport = types
         self.recorder = new MediaRecorder(stream);
         // self.recorder.setVideoSize(640, 480);
         // self.recorder.setVideoFrameRate(16); //might be auto-determined due to lighting
+        console.log(self.recorder)
         self.recorder.setVideoEncodingBitRate(3000000);
         self.recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);// MPEG_4_SP
         self.recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
