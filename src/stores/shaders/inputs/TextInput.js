@@ -3,6 +3,7 @@ import { autorun } from 'mobx';
 import Shader from "../../ShaderStore";
 import * as DefaultShader from "../DefaultShader";
 
+
 const text = types
   .model("Text", {
     type: "TextInput",
@@ -77,7 +78,7 @@ const text = types
       self.ctx.textBaseline = "top";
 
 
-      self.ctx.fillText(self.content, 0, 0);
+      self.ctx.fillText(self.content, 0, 0, self.canvas.width);
 
       self.texture = self.ctx.getImageData(
         0,
@@ -140,9 +141,10 @@ const text = types
 
     function redraw() {
       self.ctx.fillStyle = self.fillColor;
-      self.ctx.textBaseline = "top";
       self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
-      self.ctx.fillText(self.content, 10, 50);
+      
+      wrapText(self.content, 0, 0, self.canvas.width);
+      // self.ctx.fillText(self.content, 10, 50, self.canvas.width);
 
       self.texture = self.ctx.getImageData(
         0,
@@ -150,6 +152,35 @@ const text = types
         self.canvas.width,
         self.canvas.height
       );
+    }
+    
+    
+    //https://riptutorial.com/html5-canvas/example/18590/wrapping-text-into-paragraphs
+    function wrapText(text, x, y, maxWidth){
+      var firstY=y;
+      var words = text.split(' ');
+      var line = '';
+      var lineHeight=self.fontSize*1.286; // a good approx for 10-18px sizes
+
+      self.ctx.font = `${self.fontSize}px ${self.fontFamily}`;
+      self.ctx.textBaseline='top';
+
+      for(var n = 0; n < words.length; n++) {
+        var testLine = line + words[n] + ' ';
+        var metrics = self.ctx.measureText(testLine);
+        var testWidth = metrics.width;
+        if(testWidth > maxWidth) {
+          self.ctx.fillText(line, x, y);
+          if(n<words.length-1){
+              line = words[n] + ' ';
+              y += lineHeight;
+          }
+        }
+        else {
+          line = testLine;
+        }
+      }
+      self.ctx.fillText(line, x, y);
     }
 
     function setContent(text) {
