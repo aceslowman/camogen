@@ -160,7 +160,7 @@ const text = types
       var firstY=y;
       var words = text.split(' ');
       var line = '';
-      var lineHeight=self.fontSize*1.286; // a good approx for 10-18px sizes
+      var lineHeight=self.fontSize *1.286; // a good approx for 10-18px sizes
 
       self.ctx.font = `${self.fontSize}px ${self.fontFamily}`;
       self.ctx.textBaseline='top';
