@@ -36,28 +36,28 @@ const Transport = types
       if (self.recording) {
         // self.stream = canvas.captureStream(30);
         self.stream = canvas.captureStream(0);
+        
+        let mimeType;
 
         if (MediaRecorder.isTypeSupported("video/webm;codecs=h264")) {
           console.log('using webm video!')
-          self.recorder = new MediaRecorder(self.stream, {
-            audioBitsPerSecond: 128000,
-            videoBitsPerSecond: 5000000,
-            mimeType: "video/webm;codecs=h264"
-          });
+          mimeType = "video/webm;codecs=h264";
         } else {
           console.log('using mp4!')
-          self.recorder = new MediaRecorder(self.stream, {
-            audioBitsPerSecond: 128000,
-            videoBitsPerSecond: 5000000,
-            mimeType: "video/mp4"
-          });
+          mimeType = "video/mp4";          
         }
+        
+        self.recorder = new MediaRecorder(self.stream, {
+          audioBitsPerSecond: 128000,
+          videoBitsPerSecond: 5000000,
+          mimeType: mimeType
+        });
 
         self.recorder.start();
 
         self.recorder.onstop = e => {
           console.log("stopping...");
-          var blob = new Blob(self.chunks, { type: "video/mp4" });
+          var blob = new Blob(self.chunks, { type: "video/webm" });
 
           var videoURL = URL.createObjectURL(blob);
 
