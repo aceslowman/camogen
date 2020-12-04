@@ -8,6 +8,7 @@ const Transport = types
   })
   .volatile(self => ({
     recorder: null,
+    stream: null,
     chunks: []
   }))
   .actions(self => {
@@ -30,23 +31,36 @@ const Transport = types
     const record = flow(function* record() {
       let canvas = store_root.p5_instance.canvas;
       self.recording = !self.recording;
+      console.log('recording started')
 
       if (self.recording) {
-        let stream = canvas.captureStream(30);
-        
-        if(MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
-          
+        // self.stream = canvas.captureStream(30);
+        self.stream = canvas.captureStream(0);
+
+        if (MediaRecorder.isTypeSupported("video/webm;codecs=h264")) {
+          console.log('using webm video!')
+          self.recorder = new MediaRecorder(self.stream, {
+            audioBitsPerSecond: 128000,
+            videoBitsPerSecond: 5000000,
+            mimeType: "video/webm;codecs=h264"
+          });
+        } else {
+          console.log('using mp4!')
+          self.recorder = new MediaRecorder(self.stream, {
+            audioBitsPerSecond: 128000,
+            videoBitsPerSecond: 5000000,
+            mimeType: "video/mp4"
+          });
         }
-        
+
         self.recorder.start();
-        console.log("recorder started");
 
         self.recorder.onstop = e => {
           console.log("stopping...");
           var blob = new Blob(self.chunks, { type: "video/mp4" });
-          
+
           var videoURL = URL.createObjectURL(blob);
-          
+
           let link = document.createElement("a");
           link.download = `${store_root.name}`;
 
@@ -64,7 +78,7 @@ const Transport = types
           }
 
           link.click();
-          
+
           self.clearChunks();
         };
 
@@ -76,8 +90,8 @@ const Transport = types
         console.log("recorder stopped");
       }
     });
-    
-        /*
+
+    /*
       snapshot()
 
       saves an image of the current scene
