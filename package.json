@@ -37,7 +37,8 @@
     "resize-observer-polyfill": "^1.5.1",
     "tinykeys": "^1.1.0",
     "uuid": "^3.3.3",
-    "codemirror": "^5.58.3"
+    "codemirror": "^5.58.3",
+    "ffmpeg.js": "^4.2.9003"
   },
   "scripts": {
     "start": "bash ./start-all.sh",
