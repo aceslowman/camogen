@@ -7,11 +7,10 @@ dependencies:
   css-loader: 5.0.1
   directory-tree: 2.2.5
   express: 4.17.1
-  ffmpeg.js: 4.2.9003
   file-loader: 6.2.0
   html-webpack-plugin: 4.5.0
   http-proxy-middleware: 1.0.6
-  maco-ui: 0.3.12
+  maco-ui: 0.3.13
   mobx: 5.15.7
   mobx-devtools-mst: 0.9.26
   mobx-react: 6.3.1
@@ -2387,10 +2386,6 @@ packages:
       node: '>=0.8.0'
     resolution:
       integrity: sha512-D2y4bovYpzziGgbHYtGCMjlJM36vAl/y+xUyn1C+FVx8szd1E+86KwVw6XvYSzOP8iMpm1X0I4xJD+QtUb36OA==
-  /ffmpeg.js/4.2.9003:
-    dev: false
-    resolution:
-      integrity: sha512-l1JBr8HwnnJEaSwg5p8K3Ifbom8O2IDHsZp7UVyr6MzQ7gc32tt/2apoOuQAr/j76c+uDOjla799VSsBnRvSTg==
   /file-loader/6.2.0:
     dependencies:
       loader-utils: 2.0.0
@@ -3318,7 +3313,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-LiWgfDLLb1dwbFQZsSglpRj+1ctGnayXz3Uv0/WO8n558JycT5fg6zkNcnW0G68Nn0aEldTFeEfmjCfmqry/rQ==
-  /maco-ui/0.3.12:
+  /maco-ui/0.3.13:
     dependencies:
       classnames: 2.2.6
       mobx: 5.15.7
@@ -3331,7 +3326,7 @@ packages:
     peerDependencies:
       react: ^16.0.0
     resolution:
-      integrity: sha512-/i3QhoatV/To1H8xsOnCPzbvJA1RGOwGuIBxOkcymZTgPaBl5ATLOm7rOvuNQfTRb9YD3LE9qZZHTId4DhrMsQ==
+      integrity: sha512-ebOaMM8s+k6e2GC5HfoOoPf5iOn8gXol21Be3jTWiEI6jt96JymEs4KmJVHduyFYfbwrS931uYUBm9fGZSLFpg==
   /make-dir/2.1.0:
     dependencies:
       pify: 4.0.1
@@ -5382,11 +5377,10 @@ specifiers:
   css-loader: ^5.0.0
   directory-tree: ^2.2.4
   express: ^4.17.1
-  ffmpeg.js: ^4.2.9003
   file-loader: ^6.1.1
   html-webpack-plugin: ^4.5.0
   http-proxy-middleware: ^1.0.5
-  maco-ui: ^0.3.11
+  maco-ui: ^0.3.13
   mobx: ^5.15.0
   mobx-devtools-mst: ^0.9.26
   mobx-react: ^6.1.4

@@ -26,7 +26,7 @@
     "css-loader": "^5.0.0",
     "file-loader": "^6.1.1",
     "http-proxy-middleware": "^1.0.5",
-    "maco-ui": "^0.3.11",
+    "maco-ui": "^0.3.13",
     "directory-tree": "^2.2.4",
     "mobx": "^5.15.0",
     "mobx-react": "^6.1.4",
@@ -37,8 +37,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "tinykeys": "^1.1.0",
     "uuid": "^3.3.3",
-    "codemirror": "^5.58.3",
-    "ffmpeg.js": "^4.2.9003"
+    "codemirror": "^5.58.3"
   },
   "scripts": {
     "start": "bash ./start-all.sh",

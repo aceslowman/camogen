@@ -9,7 +9,7 @@ const text = types
     name: "Text", //TODO get rid of this, only need type
     content: "Hell World",
     fontFamily: "Arial",
-    fontSize: 20,
+    fontSize: 40,
     fillColor: "#ffffff",
     strokeColor: "#000000",
     precision: DefaultShader.precision,
@@ -69,7 +69,7 @@ const text = types
       self.ctx.textBaseline = "top";
 
 
-      self.ctx.fillText(self.content, 10, 50);
+      self.ctx.fillText(self.content, 0, 0);
 
       self.texture = self.ctx.getImageData(
         0,
@@ -132,6 +132,7 @@ const text = types
 
     function redraw() {
       self.ctx.fillStyle = self.fillColor;
+      self.ctx.textBaseline = "top";
       self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
       self.ctx.fillText(self.content, 10, 50);
 
