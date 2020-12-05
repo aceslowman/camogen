@@ -103,11 +103,12 @@ const text = types
       // prevents init() from being called twice
       self.ready = true;
 
+      // TODO: fix this
       // removes 'tex0' from inputs, since it's provided
       // by the text canvas.
-      self.inputs = [];
-      console.log(parent_node);
-      parent_node.mapInputsToParents();
+      // self.inputs = [];
+      // console.log(parent_node);
+      // parent_node.mapInputsToParents();
       // parent_node.
 
       console.log("self", getSnapshot(self));
