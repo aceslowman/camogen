@@ -11,6 +11,7 @@ const text = types
     content: "Hell World",
     fontFamily: "Arial",
     fontSize: 40,
+    clearColor: "#000000",
     fillColor: "#ffffff",
     strokeColor: "#000000",
     precision: DefaultShader.precision,
@@ -140,8 +141,13 @@ const text = types
     }
 
     function redraw() {
+      
+      // TEMPORARY: should provide a way to allow clear/noClear
+      self.ctx.fillStyle = self.clearColor;
+      // self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+      self.ctx.fillRect(0,0,self.canvas.width, self.canvas.height);
+      
       self.ctx.fillStyle = self.fillColor;
-      self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
       
       wrapText(self.content, 0, 0, self.canvas.width);
       // self.ctx.fillText(self.content, 10, 50, self.canvas.width);
