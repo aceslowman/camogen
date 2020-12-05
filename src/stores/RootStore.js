@@ -67,15 +67,7 @@ const RootStore = types
       collection.children.forEach(e => {
         if (e.type === "file") {
           items.push({
-            label: (
-              <div style={{
-                  display:'flex', 
-                  flexFlow: 'row',
-                  alignItems: 'center'
-              }}>
-                {e.name}
-              </div>
-            ),
+            label: e.name,
             onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
           });
         } else if (e.type === "directory") {
@@ -95,11 +87,12 @@ const RootStore = types
               {
                 label: "+ New Shader",
                 onClick: () => {
+                  let new_shader = Shader.create({ name: "Test" });
                   e.addChild(
                     Collection.create({
-                      name: "Test",
+                      name: new_shader.name,
                       type: "file",
-                      data: Shader.create({ name: "Test" })
+                      data: new_shader
                     })
                   );
                 }
