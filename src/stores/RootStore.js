@@ -14,6 +14,7 @@ import Messages from "./utils/Messages";
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import Parameter from "./ParameterStore";
 import Transport from "./utils/Transport";
+import Shader from "./ShaderStore";
 
 /*
   [RootStore]
@@ -88,7 +89,8 @@ const RootStore = types
                   e.addChild(
                     Collection.create({
                       name: "Test",
-                      type: "file"
+                      type: "file",
+                      data: Shader.create({ name: "Test" })
                     })
                   );
                 }
