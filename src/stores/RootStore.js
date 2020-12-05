@@ -85,10 +85,11 @@ const RootStore = types
               {
                 label: "+ New Shader",
                 onClick: () => {
-                  e.parent().addChild(
-                    Collection.create(
-                      
-                    )
+                  e.addChild(
+                    Collection.create({
+                      name: "Test",
+                      type: "file"
+                    })
                   );
                 }
               }

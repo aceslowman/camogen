@@ -35,7 +35,6 @@ const Collection = types
       return result[0];
     },
     parent: () => {
-      console.log(getParent(self, 2))
       return getParent(self, 2)
     }
   }))
@@ -67,7 +66,8 @@ const Collection = types
     }
     
     const addChild = (e) => {
-      console.log('adding to collection', e)
+      console.log('adding to collection', self)
+      self.children.push(e)
     }
 
     return {
