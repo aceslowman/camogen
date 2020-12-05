@@ -1,3 +1,4 @@
+import React from 'react';
 import { types, flow, applySnapshot } from "mobx-state-tree";
 import Scene from "./SceneStore";
 // import { UndoManager } from "mst-middlewares";
@@ -66,8 +67,17 @@ const RootStore = types
       collection.children.forEach(e => {
         if (e.type === "file") {
           items.push({
-            label: e.name,
-            onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
+            label: (
+              <div style={{
+                  display:'flex', 
+                  flexFlow: 'row',
+                  alignItems: 'center'
+              }}>
+                <button>{e.name}</button>
+                <button>x</button>
+              </div>
+            ),
+            // onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
           });
         } else if (e.type === "directory") {
           let subitems = e.children.map(c => {

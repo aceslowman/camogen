@@ -65,14 +65,20 @@ const Collection = types
       return result;
     }
     
-    const addChild = (e) => {
+    const addChild = (child) => {
       console.log('adding to collection', self)
-      self.children.push(e)
+      self.children.push(child)
+    }
+    
+    const removeChild = (child) => {
+      console.log('removing from collection', self)
+      self.children = self.children.filter(e => e.id !== child.id)
     }
 
     return {
       traverse,
-      addChild
+      addChild,
+      removeChild
     }
   })
 
