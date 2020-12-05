@@ -73,11 +73,10 @@ const RootStore = types
                   flexFlow: 'row',
                   alignItems: 'center'
               }}>
-                <button>{e.name}</button>
-                <button>x</button>
+                {e.name}
               </div>
             ),
-            // onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
+            onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
           });
         } else if (e.type === "directory") {
           let subitems = e.children.map(c => {
@@ -131,7 +130,17 @@ const RootStore = types
             }
           ]
         },
-        ...items
+        ...items,
+        {
+          label: "Save Collection",
+          onClick: () => {
+            console.log(getSnapshot(collection))
+            window.localStorage.setItem(
+              "shader_collection",
+              JSON.stringify(getSnapshot(self.shader_collection))
+            );
+          }
+        }
       ];
     }
   }))
