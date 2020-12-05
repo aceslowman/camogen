@@ -1,4 +1,4 @@
-import { types, flow } from "mobx-state-tree";
+import { types, flow, getParent } from "mobx-state-tree";
 import Shader from "../ShaderStore";
 
 // const fs = window.require('fs');
@@ -34,21 +34,12 @@ const Collection = types
 
       return result[0];
     },
+    parent: () => {
+      console.log(getParent(self, 2))
+      return getParent(self, 2)
+    }
   }))
   .actions(self => {
-    const preloadAll = flow(function* preloadAll() {
-      // if(self.children) {
-      //   yield Promise.all(self.children.map(flow(function*(e,i){
-      //     yield e.preloadAll();
-      //   })))
-      // } else if(self.type === "file"){                
-      //   let result = yield fs.promises.readFile(self.path); 
-      //   self.data = JSON.parse(result, (key, value) => {
-      //     // if(key === )
-      //     return value;
-      //   });
-      // }
-    });
 
     const traverse = (f = null, depthFirst = false) => {
       let result = [];
@@ -74,10 +65,14 @@ const Collection = types
 
       return result;
     }
+    
+    const addChild = (e) => {
+      console.log('adding to collection', e)
+    }
 
     return {
-      preloadAll,
-      traverse
+      traverse,
+      addChild
     }
   })
 

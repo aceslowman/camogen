@@ -80,7 +80,19 @@ const RootStore = types
 
           items.push({
             label: e.name,
-            dropDown: subitems
+            dropDown: [
+              ...subitems,
+              {
+                label: "+ New Shader",
+                onClick: () => {
+                  e.parent().addChild(
+                    Collection.create(
+                      
+                    )
+                  );
+                }
+              }
+            ]
           });
         }
       });
@@ -281,8 +293,8 @@ const RootStore = types
         console.error("failed to fetch shaders", err);
       }
     });
-    
-    const resizeCanvas = (w,h) => {
+
+    const resizeCanvas = (w, h) => {
       self.p5_instance.resizeCanvas(w, h);
       self.width = w;
       self.height = h;
@@ -291,7 +303,7 @@ const RootStore = types
       for (let target_data of self.scene.targets) {
         target_data.ref.resizeCanvas(w, h);
       }
-    }
+    };
 
     return {
       afterCreate,
