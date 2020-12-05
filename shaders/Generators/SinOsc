@@ -1,0 +1,9 @@
+{
+  "type": "Shader",
+  "name": "SinOsc",
+  "inputs": [],
+  "outputs": ["out"],
+  "precision": "\n\t\t#ifdef GL_ES\n\t\tprecision highp float;\n\t\t#endif \n    ",
+  "vert": "attribute vec3 aPosition;\nattribute vec2 aTexCoord;\nvarying vec2 vTexCoord;\nvoid main() {\n    vTexCoord = aTexCoord;\n    vec4 positionVec4 = vec4(aPosition,1.0);\n    positionVec4.xy = positionVec4.xy * vec2(1.,-1.);\n    gl_Position = positionVec4;\n}\n    ",
+  "frag": "varying vec2 vTexCoord; \nuniform vec2 resolution;\n\nuniform vec2 orientation; //{'default': [1.0,0.0]}\nuniform float frequency; //{'default': 1.0} \nuniform float offset; //{'default': 0.0}\n\nuniform vec2 range; //{'default': [-1.0,1.0]}\n\n//https://github.com/msfeldstein/glsl-map/blob/master/index.glsl\nfloat map(float value, float inMin, float inMax, float outMin, float outMax) {\n  return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);\n}\n\nvoid main() {\n  const float PI = 3.1415926538;\n  vec2 uv = vTexCoord;\n  \n  float freq = frequency * (2.0 * PI);\n  \t\n  uv.x *= orientation.x;\n  uv.y *= orientation.y;\n  \n  float osc = sin(((uv.x+uv.y)*freq)+offset);\n  \n  osc = map(osc, -1.0, 1.0, range.x, range.y);\n  \n  vec3 color = vec3(osc);\n\n  gl_FragColor = vec4(color,1.0);\n}\n\t"
+}
