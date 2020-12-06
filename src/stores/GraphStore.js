@@ -99,27 +99,10 @@ const Graph = types
       self.queue = render_queues;
     }
 
-    /*
-            addNode(node = new NodeStore('NEW NODE', self))
-
-            self method adds new nodes to the graph. 
-            self does not assume that the node has any 
-            associated data.
-        */
     function addNode(node = GraphNode.create({ uuid: "add_" + uuidv1() })) {
       return self.nodes.put(node);
     }
 
-    /*
-            appendNode(node = new GraphNode('empty'))
-
-            replaced root node with provided node and
-            create new child (which will become the next
-            root node)
-
-            1. set root
-            2. create child
-        */
     function appendNode(
       node = GraphNode.create({ uuid: "append_" + uuidv1() })
     ) {
@@ -127,37 +110,35 @@ const Graph = types
       let new_node = self.addNode(node);
       current_root.setChild(new_node);
     }
-
+    
     /*
-            setSelected(node)
-        */
+      this makes it possible to move a node up or down the tree
+    */
+    function swapNodes() {
+      
+    }
+
     function setSelected(node) {
       self.selectedNode = node;
     }
 
-    /*
-            removeSelected()
-        */
     function removeSelected() {
       self.removeNode(self.selectedNode);
     }
 
-    /*
-            removeNode(node)
-        */
     function removeNode(node) {
       if (node === self.root) return;
 
       /*
-                if node being removed has a parent, make
-                sure to reconnect those parent nodes to the
-                next child node.
-            */
+          if node being removed has a parent, make
+          sure to reconnect those parent nodes to the
+          next child node.
+      */
       if (node.parents.length) {
         /* 
-                    if first child AND deleted node are multi-input
-                    is multi-input, reassign
-                */
+            if first child AND deleted node are multi-input
+            is multi-input, reassign
+        */
         if (node.children[0].parents.length > 1 && node.parents.length > 1) {
           node.parents.forEach((parent, i) => {
             node.children[0].parents[i] = parent;
@@ -189,14 +170,14 @@ const Graph = types
     }
 
     /*
-            traverse(f = null, depthFirst = false)
+        traverse(f = null, depthFirst = false)
 
-            self method will crawl through the graph structure
-            either depth first or breadth first.
+        self method will crawl through the graph structure
+        either depth first or breadth first.
 
-            it's first argument is function that will be called
-            during each step of the traversal.
-        */
+        it's first argument is function that will be called
+        during each step of the traversal.
+    */
     function traverse(f = null, depthFirst = false) {
       let result = [];
       let container = [self.root];
@@ -226,10 +207,10 @@ const Graph = types
     }
 
     /* 
-            calculateBranches()
+        calculateBranches()
 
-            returns an array of queues, by branch_id
-        */
+        returns an array of queues, by branch_id
+    */
     function calculateBranches() {
       let x = 0;
 
@@ -278,11 +259,11 @@ const Graph = types
     }
 
     /*
-            calculateCoordinateBounds()
+        calculateCoordinateBounds()
 
-            returns an object representing the size of the graph,
-            for centering, scaling, and positioning visualization
-        */
+        returns an object representing the size of the graph,
+        for centering, scaling, and positioning visualization
+    */
     function calculateCoordinateBounds() {
       let max_x = 0;
       let max_y = 0;
@@ -340,8 +321,8 @@ const operatorGraph = types
     }
 
     /*
-            afterUpdate(queue)
-        */
+        afterUpdate(queue)
+    */
     function afterUpdate() {
       // this allows the parameter to remain unchanged
       // when the graph is empty.
