@@ -51,7 +51,6 @@ const RootStore = types
     p5_instance: null,
     ready: false,
     breakoutControlled: false,
-    shaderLibrary: null,
     messages: Messages.create(),
     context: Context.create()
   }))
