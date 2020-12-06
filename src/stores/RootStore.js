@@ -41,16 +41,17 @@ const RootStore = types
     scene: types.maybe(Scene),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string),
-    transport: types.optional(Transport, {}),
+    transport: types.optional(Transport, {}),    
+    shader_collection: types.maybe(Collection),
     width: 512,
     height: 512
   })
   .volatile(() => ({
     name: "untitled",
     p5_instance: null,
-    shader_collection: null,
     ready: false,
     breakoutControlled: false,
+    shaderLibrary: null,
     messages: Messages.create(),
     context: Context.create()
   }))
