@@ -63,20 +63,23 @@ const CanvasDisplay = observer(props => {
           style={{
             zIndex: 0
           }}
-          items={[
-            {
+          items={{
+            "play": {
+              id: "play",
               title: "play",
               label: "▶",
               onClick: handlePlay,
               highlight: store.transport.playing
             },
-            {
+            "stop": {
+              id: "stop",
               title: "stop",
               label: "■",
               onClick: handleStop,
               highlight: !store.transport.playing
             },
-            {
+            "record": {
+              id: "record",
               title: "record",
               label: "●",
               onClick: handleRecord,
@@ -84,21 +87,25 @@ const CanvasDisplay = observer(props => {
                 color: "red"
               }
             },
-            {
+            "snap": {
+              id: "snap",
               title: "snap",
               label: "snap",
               onClick: handleSnap
             },
-            {
+            "rewind": {
+              id: "rewind",
               label: "rewind",
               onClick: handleSkipToStart,
               highlight: store.transport.playing
             },
-            {
+            "Frameclock": {
+              id: "Frameclock",
               label: `frames: ${store.transport.frameclock}`,
               style: {}
             },
-            {
+            "format": {
+              id: "format",
               label: "format " + format,
               dropDown: [
                 {
@@ -113,7 +120,8 @@ const CanvasDisplay = observer(props => {
                 }
               ]
             },
-            {
+            "Dimensions": {
+              id: "Dimensions",
               label: `[${width} x ${height}]`,
               dropDown: [
                 {
@@ -135,7 +143,7 @@ const CanvasDisplay = observer(props => {
                 },
                 {
                   label: "instagram",
-                  dropDown: [
+                  dropDown: {
                     {
                       label: "landscape 1080x608",
                       onClick: () => handleDimensionChange(1080, 608)
@@ -148,7 +156,7 @@ const CanvasDisplay = observer(props => {
                       label: "portrait 1080x1350",
                       onClick: () => handleDimensionChange(1080, 1350)
                     }
-                  ]
+                  }
                 },
                 {
                   label: (
@@ -179,12 +187,12 @@ const CanvasDisplay = observer(props => {
                     </div>
                   )
                 }
-              ],
+              },
               style: {
                 alignSelf: "flex-end"
               }
             }
-          ]}
+          }}
         />
       }
       style={{

@@ -160,8 +160,9 @@ const App = observer(props => {
       style={{
         position: "static"
       }}
-      items={[
-        {
+      items={{
+        "Fullscreen": {
+          id: 'Fullscreen',
           title: canvasPanel.fullscreen ? "float canvas" : "fullscreen canvas",
           label: "✳",
           onClick: () => {
@@ -171,17 +172,20 @@ const App = observer(props => {
           },
           highlight: !canvasPanel.fullscreen
         },
-        {
+        "Title": {
+          id: "Title",
           label: <h1>camogen</h1>,
           onClick: () => {
             setShowAbout(!showAbout);
           },
           highlight: showAbout
         },
-        {
+        "File": {
+          id: "File",
           label: "File",
-          dropDown: [
-            {
+          dropDown: {
+            "Edit_Name": {
+              id: "Edit_Name",
               label: (
                 <div
                   style={{
@@ -208,66 +212,70 @@ const App = observer(props => {
                 </div>
               )
             },
-            {
+            "Save_Scene": {
+              id: "Save_Scene",
               label: "Save Scene",
               onClick: () => {
                 props.store.save();
               }
             },
-            {
+            "Load_Scene": {
+              id: "Load_Scene",
               label: "Load Scene",
               onClick: () => props.store.load()
             },
-            {
+            "New_Scene": {
+              id: "New_Scene",
               label: "New Scene",
               onClick: () => {
                 props.store.scene.clear();
               }
             },
-            {
+            "Preferences": {
+              id: "Preferences",
               label: "Preferences",
               onClick: () => {
                 mainLayout.clear();
                 mainLayout.addPanel("PREFERENCES");
               }
             }
-          ]
+          }
         },
-        {
+        "Library": {
           id: 'Library',
           label: "Library",
           dropDown: props.store.shaderLibrary()
         },
-        {
+        "Layout": {
           id: "Layout",
           label: "Layout",
-          dropDown: [
-            {
+          dropDown: {
+            "Welcome": {
               id: "Welcome",
               label: "Welcome",
               onClick: () => handleLayoutSelect("WELCOME")
             },
-            {
+            "Shader_Edit": {
               id: "Shader_Edit",
               label: "Shader Edit",
               onClick: () => handleLayoutSelect("SHADER_EDIT")
             },
-            {
+            "Shader_Control": {
               id: "Shader_Control",
               label: "Shader Control",
               onClick: () => handleLayoutSelect("SHADER_CONTROL")
             },
-            {
+            "Parameter_Editor": {
               id: "Parameter_Editor",
               label: "Parameter Editor",
               onClick: () => handleLayoutSelect("PARAMETER")
             },
-            {
+            "Debug": {
               id: "Debug",
               label: "Debug",
               onClick: () => handleLayoutSelect("DEBUG")
             },
-            {
+            "Add_Panel": {
               id: "Add_Panel",
               label: "Add Panel",
               dropDown: {
@@ -316,19 +324,21 @@ const App = observer(props => {
                   label: "Capture",
                   onClick: () => handleAddPanel("CAPTURE")
                 }
-              
+              }
             }
-          ]
+          }
         },
-        {
+        "Snapshot": {
+          id: "Snapshot",
           label: "Snapshot",
           onClick: () => props.store.snapshot()
         },
-        {
+        "Breakout": {
+          id: "Breakout",
           label: "Breakout",
           onClick: handleBreakout
         }
-      ]}
+      }}
     />
   );
 
