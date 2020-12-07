@@ -78,6 +78,7 @@ const RootStore = types
           
           let subitems = {};
           
+          // get all dropdown items
           e.children.forEach(c => {
             subitems = {
               ...subitems,
@@ -87,14 +88,12 @@ const RootStore = types
                 onClick: () => self.scene.shaderGraph.setSelectedByName(c.name)
               }
             };
-          });
-          
-          console.log('hit', e.name)
+          });          
 
           items = {
             ...items,
-            subdrop: {
-              id: "subdrop",
+            [e.name]: {
+              id: e.name,
               label: e.name,
               dropDown: {
                 ...subitems,

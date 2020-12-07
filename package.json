@@ -12,8 +12,6 @@
     "express": "^4.17.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-app-polyfill": "^1.0.4",
-    "react-p5-wrapper": "^2.0.0",
     "webpack": "^5.6.0",
     "webpack-cli": "^4.1.0",
     "webpack-dev-server": "^3.11.0",
@@ -36,8 +34,8 @@
     "p5": "^0.10.2",
     "resize-observer-polyfill": "^1.5.1",
     "tinykeys": "^1.1.0",
-    "uuid": "^3.3.3",
-    "codemirror": "^5.58.3"
+    "codemirror": "^5.58.3",
+    "nanoid": "^3.1.19"
   },
   "scripts": {
     "start": "bash ./start-all.sh",
