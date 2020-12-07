@@ -108,6 +108,14 @@ const GraphNode = types
         return self.setChild(child).uuid;
       }
     }
+    
+    function setParents(parents) {
+      self.parents = parents;
+    }
+    
+    function setChildren(children) {
+      self.children = children;
+    }
 
     function setParent(node, index = 0, fix = false) {
       self.parents[index] = node.uuid;
@@ -143,14 +151,32 @@ const GraphNode = types
     function swapNodes(target) {
       console.log('swapping with',target);
       // copy children and parents from self
-      let self_parents_copy = self.parents;
-      let self_children_copy = self.children;
-      
-      target.setChildren()
+      let self_parents_copy = [...self.parents];
+      let self_children_copy = [...self.children];      
       
       // copy children and parents from target
-      let target_parents_copy = target.parents;
-      let target_children_copy = target.children;
+      let target_parents_copy = [...target.parents];
+      let target_children_copy = [...target.children];
+      
+      console.group();
+      console.log('self_parents_copy',self_parents_copy)
+      console.log('self_children_copy',self_children_copy)
+      console.log('target_parents_copy',target_parents_copy)
+      console.log('target_children_copy',target_children_copy)
+      console.groupEnd();
+            
+      target.setChildren(self_children_copy);
+      self.setChildren(target_children_copy);
+      
+      target.setParents(self_parents_copy);
+      self.setParents(target_parents_copy);
+      
+      // self.mapInputsToParents();
+      // extract uniforms, map inputs/outputs
+      parent_graph.update();
+      parent_graph.afterUpdate();
+      mapInputsToParents();
+      // target.mapInputsToParents();
     }
 
 
@@ -177,6 +203,8 @@ const GraphNode = types
       mapInputsToParents,
       setParent,
       setChild,
+      setParents,
+      setChildren,
       setBranchIndex,
       setName,
       swapNodes,
