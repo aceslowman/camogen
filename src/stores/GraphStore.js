@@ -111,16 +111,6 @@ const Graph = types
       current_root.setChild(new_node);
     }
     
-    /*
-      this makes it possible to move a node up or down the tree
-    */
-    function swapNodes(target) {
-      console.log('swapping with',target);
-      // copy children and parents from self
-      
-      // copy children and parents from target
-    }
-
     function setSelected(node) {
       self.selectedNode = node;
     }
@@ -289,7 +279,6 @@ const Graph = types
       update,
       appendNode,
       addNode,
-      swapNodes,
       setSelected,
       removeSelected,
       removeNode,

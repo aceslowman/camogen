@@ -136,6 +136,23 @@ const GraphNode = types
     function setName(n) {
       self.name = n;
     }
+    
+    /*
+      this makes it possible to move a node up or down the tree
+    */
+    function swapNodes(target) {
+      console.log('swapping with',target);
+      // copy children and parents from self
+      let self_parents_copy = self.parents;
+      let self_children_copy = self.children;
+      
+      target.setChildren()
+      
+      // copy children and parents from target
+      let target_parents_copy = target.parents;
+      let target_children_copy = target.children;
+    }
+
 
     function select() {
       parent_graph.setSelected(self);
@@ -162,6 +179,7 @@ const GraphNode = types
       setChild,
       setBranchIndex,
       setName,
+      swapNodes,
       select,
       deselect
     };

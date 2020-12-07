@@ -53,6 +53,23 @@ const ShaderGraph = observer(props => {
               props.selectedNode.children[0].parents[idx].select();
           }
         },
+        "Shift+ArrowUp": () => {
+          console.log('Shift+ArrowUp":')
+          console.log(props.selectedNode)
+          if (props.selectedNode && props.selectedNode.parents.length) {
+            props.selectedNode.swapNodes(props.selectedNode.parents[0]);
+          }
+            
+        },
+        "Shift+ArrowDown": () => {
+          console.log('Shift+ArrowDown')
+        },
+        "Shift+ArrowLeft": () => {
+          console.log('Shift+ArrowLeft')
+        },
+        "Shift+ArrowRight": () => {
+          console.log('Shift+ArrowRigh')
+        },
         Delete: () => {
           props.data.removeSelected();
         }
