@@ -164,18 +164,19 @@ const GraphNode = types
       console.log('target_parents_copy',target_parents_copy)
       console.log('target_children_copy',target_children_copy)
       console.groupEnd();
-            
-      target.setChildren(self_children_copy);
-      self.setChildren(target_children_copy);
+           // filter out circular references! 
       
-      target.setParents(self_parents_copy);
-      self.setParents(target_parents_copy);
+      target.setChildren(self_children_copy.filter((e)=>e !== target));
+      self.setChildren(target_children_copy.filter((e)=>e !== self));
+      
+      target.setParents(self_parents_copy.filter((e)=>e !== target));
+      self.setParents(target_parents_copy.filter((e)=>e !== self));
       
       // self.mapInputsToParents();
       // extract uniforms, map inputs/outputs
       parent_graph.update();
       parent_graph.afterUpdate();
-      mapInputsToParents();
+      // mapInputsToParents();
       // target.mapInputsToParents();
     }
 
