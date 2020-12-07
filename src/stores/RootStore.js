@@ -109,6 +109,12 @@ const RootStore = types
                         data: new_shader
                       })
                     );
+                    
+                    // now save collection to local storage
+                    window.localStorage.setItem(
+                      "shader_collection",
+                      JSON.stringify(getSnapshot(self.shader_collection))
+                    );
                   }
                 }
               }
