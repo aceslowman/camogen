@@ -234,72 +234,89 @@ const App = observer(props => {
           ]
         },
         {
+          id: 'Library',
           label: "Library",
           dropDown: props.store.shaderLibrary()
         },
         {
+          id: "Layout",
           label: "Layout",
           dropDown: [
             {
+              id: "Welcome",
               label: "Welcome",
               onClick: () => handleLayoutSelect("WELCOME")
             },
             {
+              id: "Shader_Edit",
               label: "Shader Edit",
               onClick: () => handleLayoutSelect("SHADER_EDIT")
             },
             {
+              id: "Shader_Control",
               label: "Shader Control",
               onClick: () => handleLayoutSelect("SHADER_CONTROL")
             },
             {
+              id: "Parameter_Editor",
               label: "Parameter Editor",
               onClick: () => handleLayoutSelect("PARAMETER")
             },
             {
+              id: "Debug",
               label: "Debug",
               onClick: () => handleLayoutSelect("DEBUG")
             },
             {
+              id: "Add_Panel",
               label: "Add Panel",
-              dropDown: [
-                {
+              dropDown: {
+                "Shader Graph": {
+                  id: "Shader Graph",
                   label: "Shader Graph",
                   onClick: () => handleAddPanel("SHADER_GRAPH")
                 },
-                {
+                "Shader Editor": {
+                  id: "Shader Editor",
                   label: "Shader Editor",
                   onClick: () => handleAddPanel("SHADER_EDITOR")
                 },
-                {
+                "Shader Controls": {
+                  id: "Shader Controls",
                   label: "Shader Controls",
                   onClick: () => handleAddPanel("SHADER_CONTROLS")
                 },
-                {
+                "Parameter Editor": {
+                  id: "Parameter Editor",
                   label: "Parameter Editor",
                   onClick: () => handleAddPanel("PARAMETER_EDITOR")
                 },
-                {
+                "Help": {
+                  id: "Help",
                   label: "Help",
                   onClick: () => handleAddPanel("HELP")
                 },
-                {
+                "Debug": {
+                  id: "Debug",
                   label: "Debug",
                   onClick: () => handleAddPanel("DEBUG")
                 },
-                {
+                "Messages": {
+                  id: "Messages",
                   label: "Messages",
                   onClick: () => handleAddPanel("MESSAGES")
                 },
-                {
+                "Preferences": {
+                  id: "Preferences",
                   label: "Preferences",
                   onClick: () => handleAddPanel("PREFERENCES")
                 },
-                {
+                "Capture": {
+                  id: "Capture",
                   label: "Capture",
                   onClick: () => handleAddPanel("CAPTURE")
                 }
-              ]
+              
             }
           ]
         },
