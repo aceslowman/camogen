@@ -62,42 +62,58 @@ const RootStore = types
       */
       let collection = self.shader_collection;
 
-      let items = [];
+      let items = {};
 
       collection.children.forEach(e => {
         if (e.type === "file") {
-          items.push({
+          // items.push({
+          //   [e.name]: {
+          //     id: e.name,
+          //     label: e.name,
+          //     onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
+          //   }
+          // });
+          items[e.name] = {
+            id: e.name,
             label: e.name,
             onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
-          });
+          }
+          
         } else if (e.type === "directory") {
           let subitems = e.children.map(c => {
             let next = {
-              label: c.name,
-              onClick: () => self.scene.shaderGraph.setSelectedByName(c.name)
+              [c.name]: {
+                id: c.name,
+                label: c.name,
+                onClick: () => self.scene.shaderGraph.setSelectedByName(c.name)
+              }
             };
 
             return next;
           });
 
-          items.push({
-            label: e.name,
-            dropDown: [
-              ...subitems,
-              {
-                label: "+ New Shader",
-                onClick: () => {
-                  let new_shader = Shader.create({ name: "Test" });
-                  e.addChild(
-                    Collection.create({
-                      name: new_shader.name,
-                      type: "file",
-                      data: new_shader
-                    })
-                  );
+          items["subdrop"]: {
+            "subdrop": {
+              id: "subdrop",
+              label: e.name,
+              dropDown: {
+                ...subitems,
+                "NewShader": {
+                  id: "NewShader",
+                  label: "+ New Shader",
+                  onClick: () => {
+                    let new_shader = Shader.create({ name: "Test" });
+                    e.addChild(
+                      Collection.create({
+                        name: new_shader.name,
+                        type: "file",
+                        data: new_shader
+                      })
+                    );
+                  }
                 }
               }
-            ]
+            }
           });
         }
       });

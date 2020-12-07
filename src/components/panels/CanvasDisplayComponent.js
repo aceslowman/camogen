@@ -107,58 +107,69 @@ const CanvasDisplay = observer(props => {
             "format": {
               id: "format",
               label: "format " + format,
-              dropDown: [
-                {
+              dropDown: {
+                "png": {
+                  id: "png",
                   label: "png",
                   onClick: () => handleFormatSelect("PNG"),
                   highlight: format === "PNG"
                 },
-                {
+                "jpeg": {
+                  id: "jpeg",
                   label: "jpeg",
                   onClick: () => handleFormatSelect("JPEG"),
                   highlight: format === "JPEG"
                 }
-              ]
+              }
             },
             "Dimensions": {
               id: "Dimensions",
               label: `[${width} x ${height}]`,
-              dropDown: [
-                {
+              dropDown: {
+                "standard": {
+                  id: "standard",
                   label: "standard",
-                  dropDown: [
-                    {
+                  dropDown: {
+                    "256x256": {
+                      id: "256x256",
                       label: "256x256",
                       onClick: () => handleDimensionChange(256, 256)
                     },
-                    {
+                    "512x512": {
+                      id: "512x512",
                       label: "512x512",
                       onClick: () => handleDimensionChange(512, 512)
                     },
-                    {
+                    "1024x1024": {
+                      id: "1024x1024",
                       label: "1024x1024",
                       onClick: () => handleDimensionChange(1024, 1024)
                     }
-                  ]
+                  }
                 },
-                {
+                "instagram": {
+                  id: "instagram",
                   label: "instagram",
                   dropDown: {
-                    {
+                    "landscape1080x608": {
+                      id: "landscape1080x608",
                       label: "landscape 1080x608",
                       onClick: () => handleDimensionChange(1080, 608)
                     },
-                    {
+                    "square1080x1080": {
+                      id: "square1080x1080",
                       label: "square 1080x1080",
                       onClick: () => handleDimensionChange(1080, 1080)
                     },
-                    {
+                    "portrait1080x1350": {
+                      id: "portrait1080x1350",
                       label: "portrait 1080x1350",
                       onClick: () => handleDimensionChange(1080, 1350)
                     }
                   }
                 },
-                {
+                "DimensionSelect": {
+                  id: "DimensionSelect",
                   label: (
                     <div
                       style={{
