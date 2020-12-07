@@ -119,6 +119,7 @@ const Graph = types
     }
 
     function removeNode(node) {
+      console.log('removing')
       if (node === self.root) return;
 
       /*
