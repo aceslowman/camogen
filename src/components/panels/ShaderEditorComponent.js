@@ -50,11 +50,11 @@ const ShaderEditor = props => {
       items={
         showEditor
           ? {
-              "File": {
+              File: {
                 id: "File",
                 label: "File",
                 dropDown: {
-                  "NameShader": {
+                  NameShader: {
                     id: "NameShader",
                     label: (
                       <div
@@ -102,31 +102,31 @@ const ShaderEditor = props => {
                   }
                 }
               },
-
-              {
-                label: "Vertex",
+              Vertex: {
+                id: "Vertex",
                 label: "Vertex",
                 onClick: () => setEditType("vert"),
                 highlight: editType === "vert"
               },
-              {
-                label: "Fragment",
+              Fragment: {
+                id: "Fragment",
                 label: "Fragment",
                 onClick: () => setEditType("frag"),
                 highlight: editType === "frag"
               },
-              {
-                label: "Refresh",
+              Refresh: {
+                id: "Refresh",
                 label: "Refresh",
                 onClick: () => handleRefresh()
               }
-            ]
-          : [
-              {
+            }
+          : {
+              NewShader: {
+                id: "NewShader",
                 label: "New Shader",
                 onClick: () => props.graph.setSelectedByName("Default")
               }
-            ]
+            }
       }
     />
   );

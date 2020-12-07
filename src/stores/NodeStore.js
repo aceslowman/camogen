@@ -197,6 +197,7 @@ const GraphNode = types
     }
 
     function remove() {
+      console.log('removing?')
       parent_graph.removeNode(self);
     }
 

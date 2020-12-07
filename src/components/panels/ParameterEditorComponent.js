@@ -9,68 +9,81 @@ import OperatorControls from "./OperatorControlsComponent";
 const OperatorEditor = observer(props => {
   const { data } = props;
   const graph = data ? data.graph : null;
-  
-  console.log()
+
+  console.log();
 
   const toolbar = props.data && (
     <ToolbarComponent
-      items={[
-        {
+      items={{
+        Inputs: {
+          id: "Inputs",
           label: "Inputs",
-          dropDown: [
-            {
+          dropDown: {
+            MIDI: {
+              id: "MIDI",
               label: "MIDI",
               onClick: () => graph.setSelectedByName("MIDI")
             },
-            {
+            Counter: {
+              id: "Counter",
               label: "Counter",
               onClick: () => graph.setSelectedByName("Counter")
             }
-          ]
+          }
         },
-        {
+        Operators: {
+          id: "Operators",
           label: "Operators",
-          dropDown: [
-            {
+          dropDown: {
+            Add: {
+              id: "Add",
               label: "Add",
               onClick: () => graph.setSelectedByName("Add")
             },
-            {
+            Subtract: {
+              id: "Subtract",
               label: "Subtract",
               onClick: () => graph.setSelectedByName("Subtract")
             },
-            {
+            Divide: {
+              id: "Divide",
               label: "Divide",
               onClick: () => graph.setSelectedByName("Divide")
             },
-            {
+            Multiply: {
+              id: "Multiply",
               label: "Multiply",
               onClick: () => graph.setSelectedByName("Multiply")
             },
-            {
+            Modulus: {
+              id: "Modulus",
               label: "Modulus",
               onClick: () => graph.setSelectedByName("Modulus")
             }
-          ]
+          }
         },
-        {
+        Trig: {
+          id: "Trig",
           label: "Trig",
-          dropDown: [
-            {
+          dropDown: {
+            Sine: {
+              id: "Sine",
               label: "Sine",
               onClick: () => graph.setSelectedByName("Sin")
             },
-            {
+            Cosine: {
+              id: "Cosine",
               label: "Cosine",
               onClick: () => graph.setSelectedByName("Cos")
             },
-            {
+            Tangent: {
+              id: "Tangent",
               label: "Tangent",
               onClick: () => graph.setSelectedByName("Tan")
             }
-          ]
+          }
         }
-      ]}
+      }}
     />
   );
 
@@ -79,7 +92,10 @@ const OperatorEditor = observer(props => {
       panel={props.panel}
       toolbar={data && toolbar}
       title=" "
-      subtitle={data && `${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`}
+      subtitle={
+        data &&
+        `${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`
+      }
     >
       {data && (
         <SplitContainer vertical>

@@ -97,12 +97,13 @@ const ShaderGraph = observer(props => {
   const handleContextMenu = e => {
     e.stopPropagation();
 
-    store.context.setContextmenu([
-      {
+    store.context.setContextmenu({
+      "Clear": {
+        id: "Clear",
         label: "Clear",
         onClick: () => store.scene.clear()
       }
-    ]);
+    });
   };
 
   return (
