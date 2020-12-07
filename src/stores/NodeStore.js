@@ -1,13 +1,8 @@
 import Shader from "./ShaderStore";
-
-
 import { types, getParent, getSnapshot } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
 import uuidv1 from "uuid/v1";
-
-
-
 import { allOps } from "./operators";
 // import { allInputs } from "./inputs";
 // should move inputs to similar allInputs
@@ -148,7 +143,7 @@ const GraphNode = types
     /*
       this makes it possible to move a node up or down the tree
     */
-    function swapNodes(target) {
+    function swapData(target) {
       console.log('swapping with',target);
 //       // copy children and parents from self
 //       let self_parents_copy = [...self.parents];
@@ -180,9 +175,11 @@ const GraphNode = types
       target.setData(selfcopy);
       self.setData(targetcopy);
       
-
       parent_graph.update();
       parent_graph.afterUpdate();
+      
+      self.data.init();
+      target.data.init();
       
       // extract uniforms, map inputs/outputs
       self.mapInputsToParents();
@@ -210,6 +207,7 @@ const GraphNode = types
       remove,
       afterAttach,
       setData,
+      swapData,
       mapInputsToParents,
       setParent,
       setChild,
@@ -217,7 +215,6 @@ const GraphNode = types
       setChildren,
       setBranchIndex,
       setName,
-      swapNodes,
       select,
       deselect
     };

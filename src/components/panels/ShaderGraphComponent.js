@@ -54,24 +54,38 @@ const ShaderGraph = observer(props => {
           }
         },
         "Shift+ArrowUp": () => {
-          console.log('Shift+ArrowUp":')
           if (props.selectedNode && props.selectedNode.parents.length) 
-            props.selectedNode.swapNodes(props.selectedNode.parents[0].select());                      
+            if (props.selectedNode.parents[0].parents.length) 
+              props.selectedNode.swapData(props.selectedNode.parents[0].select());                      
         },
-        "Shift+ArrowDown": () => {
-          console.log('Shift+ArrowDown')          
+        "Shift+ArrowDown": () => {      
           if (props.selectedNode && props.selectedNode.children.length) 
-            props.selectedNode.swapNodes(props.selectedNode.children[0].select());
+            props.selectedNode.swapData(props.selectedNode.children[0].select());
         },
         // "Shift+ArrowLeft": () => {
-        //   console.log('Shift+ArrowLeft')
-        //   if (props.selectedNode && props.selectedNode.parents.length) 
-        //     props.selectedNode.swapNodes(props.selectedNode.parents[0]);          
+        //   console.log('Shift+ArrowLeft')      
+//         if (props.selectedNode && props.selectedNode.children.length) {
+//           let idx = props.selectedNode.children[0].parents.indexOf(
+//             props.selectedNode
+//           );
+//           idx--;
+
+//           if (idx >= 0) {
+//             props.selectedNode.children[0].parents[idx].select();
+//           }
+//         }
         // },
         // "Shift+ArrowRight": () => {
-        //   console.log('Shift+ArrowRigh')
-        //   if (props.selectedNode && props.selectedNode.parents.length) 
-        //     props.selectedNode.swapNodes(props.selectedNode.parents[0]);          
+        //   console.log('Shift+ArrowRigh')   
+        // if (props.selectedNode && props.selectedNode.children.length) {
+//           let idx = props.selectedNode.children[0].parents.indexOf(
+//             props.selectedNode
+//           );
+//           idx++;
+
+//           if (idx <= props.selectedNode.children[0].parents.length - 1)
+//             props.selectedNode.children[0].parents[idx].select();
+//         }
         // },
         Delete: () => {
           props.data.removeSelected();
