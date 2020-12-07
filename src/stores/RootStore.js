@@ -153,7 +153,6 @@ const RootStore = types
           id: "SaveCollection",
           label: "Save Collection",
           onClick: () => {
-            console.log(getSnapshot(collection));
             window.localStorage.setItem(
               "shader_collection",
               JSON.stringify(getSnapshot(self.shader_collection))
