@@ -2,7 +2,7 @@ import Shader from "./ShaderStore";
 import { types, getParent, getSnapshot } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
-import uuidv1 from "uuid/v1";
+import { nanoid } from "nanoid";
 import { allOps } from "./operators";
 // import { allInputs } from "./inputs";
 // should move inputs to similar allInputs
@@ -54,7 +54,7 @@ const GraphNode = types
     function afterAttach() {
       parent_graph = getParent(self, 2);
     }
-    
+
     function setName(n) {
       self.name = n;
     }
@@ -71,9 +71,9 @@ const GraphNode = types
 
     function mapInputsToParents() {
       if (!self.data) return;
-      
+
       // if there are no inputs to map...
-      if(!self.data.inputs.length) {
+      if (!self.data.inputs.length) {
         self.parents = [];
       }
 
@@ -82,32 +82,32 @@ const GraphNode = types
         // add parent if necessary
         if (i >= self.parents.length) {
           let parent = GraphNode.create({
-            uuid: uuidv1(),
+            uuid: nanoid(),
             name: e
           });
 
           parent_graph.addNode(parent);
           self.setParent(parent, i, true);
-          
-          console.log('node snapshot', getSnapshot(self))
+
+          console.log("node snapshot", getSnapshot(self));
         }
       });
 
       // add new node if no children are present
       if (!self.children.length) {
         let child = GraphNode.create({
-          uuid: "next_" + uuidv1(),
+          uuid: "next_" + nanoid(),
           name: "next"
         });
         parent_graph.addNode(child);
         return self.setChild(child).uuid;
       }
     }
-    
+
     function setParents(parents) {
       self.parents = parents;
     }
-    
+
     function setChildren(children) {
       self.children = children;
     }
@@ -139,53 +139,50 @@ const GraphNode = types
     function setName(n) {
       self.name = n;
     }
-    
+
     /*
       this makes it possible to move a node up or down the tree
     */
     function swapData(target) {
-      console.log('swapping with',target);
-//       // copy children and parents from self
-//       let self_parents_copy = [...self.parents];
-//       let self_children_copy = [...self.children];      
-      
-//       // copy children and parents from target
-//       let target_parents_copy = [...target.parents];
-//       let target_children_copy = [...target.children];
-      
-//       console.group();
-//       console.log('self_parents_copy',self_parents_copy)
-//       console.log('self_children_copy',self_children_copy)
-//       console.log('target_parents_copy',target_parents_copy)
-//       console.log('target_children_copy',target_children_copy)
-//       console.groupEnd();
-//            // filter out circular references! 
-      
-//       target.setChildren(self_children_copy.filter((e)=>e !== target));
-//       self.setChildren(target_children_copy.filter((e)=>e !== self));
-      
-//       target.setParents(self_parents_copy.filter((e)=>e !== target));
-//       self.setParents(target_parents_copy.filter((e)=>e !== self));
-      
+      console.log("swapping with", target);
+      //       // copy children and parents from self
+      //       let self_parents_copy = [...self.parents];
+      //       let self_children_copy = [...self.children];
 
-      
+      //       // copy children and parents from target
+      //       let target_parents_copy = [...target.parents];
+      //       let target_children_copy = [...target.children];
+
+      //       console.group();
+      //       console.log('self_parents_copy',self_parents_copy)
+      //       console.log('self_children_copy',self_children_copy)
+      //       console.log('target_parents_copy',target_parents_copy)
+      //       console.log('target_children_copy',target_children_copy)
+      //       console.groupEnd();
+      //            // filter out circular references!
+
+      //       target.setChildren(self_children_copy.filter((e)=>e !== target));
+      //       self.setChildren(target_children_copy.filter((e)=>e !== self));
+
+      //       target.setParents(self_parents_copy.filter((e)=>e !== target));
+      //       self.setParents(target_parents_copy.filter((e)=>e !== self));
+
       let selfcopy = getSnapshot(self.data);
       let targetcopy = getSnapshot(target.data);
-      
+
       target.setData(selfcopy);
       self.setData(targetcopy);
-      
+
       parent_graph.update();
       parent_graph.afterUpdate();
-      
+
       self.data.init();
       target.data.init();
-      
+
       // extract uniforms, map inputs/outputs
       self.mapInputsToParents();
       target.mapInputsToParents();
     }
-
 
     function select() {
       parent_graph.setSelected(self);

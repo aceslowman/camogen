@@ -8,7 +8,6 @@ import {
   InputFloat,
   ThemeContext
 } from "maco-ui";
-import uuidv1 from "uuid/v1";
 
 import styles from "./ShaderControlsComponent.module.css";
 import { observer } from "mobx-react";
@@ -86,8 +85,9 @@ const ShaderControls = observer(props => {
     e.stopPropagation();
     e.preventDefault();
 
-    store.context.setContextmenu([
-      {
+    store.context.setContextmenu({
+      "ParamEdit": {
+        id: "ParamEdit",
         label: "Edit Parameter",
         onClick: () => {
           store.selectParameter(param);
@@ -96,7 +96,7 @@ const ShaderControls = observer(props => {
           store.context.setContextmenu(); // removes menu
         }
       }
-    ]);
+    });
   };
 
   const generateInterface = shader => {

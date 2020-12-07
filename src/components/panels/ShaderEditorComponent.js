@@ -49,11 +49,13 @@ const ShaderEditor = props => {
     <ToolbarComponent
       items={
         showEditor
-          ? [
-              {
+          ? {
+              "File": {
+                id: "File",
                 label: "File",
-                dropDown: [
-                  {
+                dropDown: {
+                  "NameShader": {
+                    id: "NameShader",
                     label: (
                       <div
                         style={{
@@ -83,32 +85,38 @@ const ShaderEditor = props => {
                       </div>
                     )
                   },
-                  {
+                  "Save Shader": {
+                    id: "Save Shader",
                     label: "Save Shader",
                     onClick: () => props.data.save()
                   },
-                  {
+                  "Load Shader": {
+                    id: "Load Shader",
                     label: "Load Shader",
                     onClick: () => props.data.load()
                   },
-                  {
+                  "New Shader": {
+                    id: "New Shader",
                     label: "New Shader",
                     onClick: () => props.data.clear()
                   }
-                ]
+                }
               },
 
               {
+                label: "Vertex",
                 label: "Vertex",
                 onClick: () => setEditType("vert"),
                 highlight: editType === "vert"
               },
               {
                 label: "Fragment",
+                label: "Fragment",
                 onClick: () => setEditType("frag"),
                 highlight: editType === "frag"
               },
               {
+                label: "Refresh",
                 label: "Refresh",
                 onClick: () => handleRefresh()
               }

@@ -1,6 +1,5 @@
 import GraphNode from "./NodeStore";
-import uuidv1 from "uuid/v1";
-
+import { nanoid } from "nanoid";
 import { types } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
@@ -99,18 +98,18 @@ const Graph = types
       self.queue = render_queues;
     }
 
-    function addNode(node = GraphNode.create({ uuid: "add_" + uuidv1() })) {
+    function addNode(node = GraphNode.create({ uuid: "add_" + nanoid() })) {
       return self.nodes.put(node);
     }
 
     function appendNode(
-      node = GraphNode.create({ uuid: "append_" + uuidv1() })
+      node = GraphNode.create({ uuid: "append_" + nanoid() })
     ) {
       let current_root = self.root;
       let new_node = self.addNode(node);
       current_root.setChild(new_node);
     }
-    
+
     function setSelected(node) {
       self.selectedNode = node;
     }

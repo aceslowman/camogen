@@ -1,5 +1,5 @@
 import { getParent, getSnapshot, types } from "mobx-state-tree";
-import { v1 as uuidv1 } from "uuid";
+import {nanoid} from 'nanoid';
 
 export const PanelVariants = {
   SHADER_GRAPH: {

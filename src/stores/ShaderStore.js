@@ -8,7 +8,7 @@ import {
 } from "mobx-state-tree";
 import * as DefaultShader from "./shaders/DefaultShader";
 import Parameter from "./ParameterStore";
-import uuidv1 from "uuid/v1";
+import { nanoid } from "nanoid";
 import { OperatorGraph } from "./GraphStore";
 
 const Uniform = types
@@ -43,7 +43,7 @@ const Uniform = types
 
       self.elements.push(
         Parameter.create({
-          uuid: "param_" + uuidv1(),
+          uuid: "param_" + nanoid(),
           name: name,
           value: value,
           uniform: self
@@ -203,7 +203,7 @@ let shader = types
         }
 
         let uniform = Uniform.create({
-          uuid: uuidv1(),
+          uuid: nanoid(),
           name: uniform_name,
           shader: self
         });

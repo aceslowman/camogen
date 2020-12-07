@@ -18,19 +18,22 @@ const GraphComponent = observer(props => {
     e.preventDefault();
 
     node.select(); // select with right click
-    store.context.setContextmenu([
-      {
+    store.context.setContextmenu({
+      "Library": {
+        id: "Library",
         label: "Library",
         dropDown: store.shaderLibrary()
       },
-      {
+      "Delete": {
+        id: "Delete",
         label: "Delete",
         onClick: () => {
           props.data.removeNode(node);
           store.context.setContextmenu(); // removes menu
         }
       },
-      {
+      "EditShader": {
+        id: "EditShader",
         label: "Edit Shader",
         onClick: () => { 
           let variant = store.ui.getLayoutVariant('SHADER_EDIT');
@@ -38,7 +41,7 @@ const GraphComponent = observer(props => {
           store.context.setContextmenu(); // removes menu
         }
       }
-    ]);
+    });
   };
 
   const drawGraph = () => {

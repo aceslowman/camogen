@@ -1,5 +1,5 @@
 import { types } from 'mobx-state-tree';
-import uuidv1 from 'uuid/v1';
+import {nanoid} from 'nanoid';
 
 import Counter from './inputs/Counter';
 import MIDI from './inputs/MIDI';
@@ -31,61 +31,61 @@ export const getOperator = (name) => {
     switch (name) {
         case 'Counter':
             operator = Counter.create({
-                uuid: 'Counter_'+uuidv1(),
+                uuid: 'Counter_'+nanoid(),
                 name: 'Counter'
             });
             break;
         case 'MIDI':
             operator = MIDI.create({
-                uuid: 'MIDI_'+uuidv1(),
+                uuid: 'MIDI_'+nanoid(),
                 name: 'MIDI'
             })
             break;
         case 'Add':
             operator = Add.create({
-                uuid: 'Add_'+uuidv1(),
+                uuid: 'Add_'+nanoid(),
                 name: '+'
             })
             break;
         case 'Subtract':
             operator = Subtract.create({
-                uuid: 'Subtract_'+uuidv1(),
+                uuid: 'Subtract_'+nanoid(),
                 name: '-'
             })
             break;
         case 'Divide':
             operator = Divide.create({
-                uuid: 'Divide_'+uuidv1(),
+                uuid: 'Divide_'+nanoid(),
                 name: '/'
             })
             break;
         case 'Multiply':
             operator = Multiply.create({
-                uuid: 'Multiply_'+uuidv1(),
+                uuid: 'Multiply_'+nanoid(),
                 name: '*'
             })
             break;
         case 'Modulus':
             operator = Modulus.create({
-                uuid: 'Modulus_'+uuidv1(),
+                uuid: 'Modulus_'+nanoid(),
                 name: '%'
             })
             break;
         case 'Sin':
             operator = Sin.create({
-                uuid: 'Sin_'+uuidv1(),
+                uuid: 'Sin_'+nanoid(),
                 name: 'Sin'
             })
             break;
         case 'Cos':
             operator = Cos.create({
-                uuid: 'Cos_'+uuidv1(),
+                uuid: 'Cos_'+nanoid(),
                 name: 'Cos'
             })
             break;
         case 'Tan':
             operator = Tan.create({
-                uuid: 'Tan_'+uuidv1(),
+                uuid: 'Tan_'+nanoid(),
                 name: 'Tan'
             })
             break;

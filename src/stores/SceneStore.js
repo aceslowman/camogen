@@ -1,62 +1,61 @@
-import uuidv1 from 'uuid/v1';
-
+import { nanoid } from "nanoid";
 import { getSnapshot, types } from "mobx-state-tree";
-import ShaderGraph from './ShaderGraphStore';
-import Target from './TargetStore';
-import { OperatorGraph } from './GraphStore';
+import ShaderGraph from "./ShaderGraphStore";
+import Target from "./TargetStore";
+import { OperatorGraph } from "./GraphStore";
 // import OperatorGraph from './OperatorGraphStore';
 
 const Scene = types
-    .model("Scene", {
-        shaderGraph: types.maybe(ShaderGraph),
-        operatorGraphs: types.map(OperatorGraph),
-        targets: types.array(Target)
-    })
-    .actions(self => {
-        function afterAttach() {   
-            self.shaderGraph = ShaderGraph.create({uuid: uuidv1()});
+  .model("Scene", {
+    shaderGraph: types.maybe(ShaderGraph),
+    operatorGraphs: types.map(OperatorGraph),
+    targets: types.array(Target)
+  })
+  .actions(self => {
+    function afterAttach() {
+      self.shaderGraph = ShaderGraph.create({ uuid: nanoid() });
 
-            /*
+      /*
                 add uv shader by default
 
                 likely to be replaced with
                 single loaded snapshot in RootScene
             */
-            self.shaderGraph.addNode();
-            // self.shaderGraph.setSelectedByName('TextInput');
-          self.shaderGraph.setSelectedByName('UV');
-            self.shaderGraph.root.select();
-            self.shaderGraph.setSelectedByName('Glyph')
-            self.shaderGraph.root.select();
-            self.shaderGraph.setSelectedByName('RGB2HSV')
-            self.shaderGraph.root.select();
-            self.shaderGraph.update();
-        }
+      self.shaderGraph.addNode();
+      // self.shaderGraph.setSelectedByName('TextInput');
+      self.shaderGraph.setSelectedByName("UV");
+      self.shaderGraph.root.select();
+      self.shaderGraph.setSelectedByName("Glyph");
+      self.shaderGraph.root.select();
+      self.shaderGraph.setSelectedByName("RGB2HSV");
+      self.shaderGraph.root.select();
+      self.shaderGraph.update();
+    }
 
-        function addTarget(target = Target.create()) {
-            self.targets.push(target);
-            return target;
-        }
+    function addTarget(target = Target.create()) {
+      self.targets.push(target);
+      return target;
+    }
 
-        function addOperatorGraph(param) {
-            return self.operatorGraphs.put(
-                OperatorGraph.create({
-                    uuid: 'opgraph_' + uuidv1(),
-                    param: param
-                })
-            );
-        }
+    function addOperatorGraph(param) {
+      return self.operatorGraphs.put(
+        OperatorGraph.create({
+          uuid: "opgraph_" + nanoid(),
+          param: param
+        })
+      );
+    }
 
-        function removeTarget(target) {
-            self.targets = self.targets.filter((item) => item !== target);
-        }
+    function removeTarget(target) {
+      self.targets = self.targets.filter(item => item !== target);
+    }
 
-        function clear() {
-            self.shaderGraph.clear();   
-               
-            self.targets = [];
+    function clear() {
+      self.shaderGraph.clear();
 
-            /* 
+      self.targets = [];
+
+      /* 
                 TODO: !!! this is returning an error! this persistently
                 does not clear properly (maybe a type issue in mst?)
 
@@ -65,24 +64,24 @@ const Scene = types
 
                 can confirm that all nodes do delete
             */
-            // try {
-                self.operatorGraphs.forEach(e => {
-                    e.clear();
-                })
-                console.log(getSnapshot(self.operatorGraphs))
-                self.operatorGraphs.clear()
-            // } catch(error) {
-            //     console.warn('camogen is still having issues with clearing scenes!',error)
-            // }
-        }
+      // try {
+      self.operatorGraphs.forEach(e => {
+        e.clear();
+      });
+      console.log(getSnapshot(self.operatorGraphs));
+      self.operatorGraphs.clear();
+      // } catch(error) {
+      //     console.warn('camogen is still having issues with clearing scenes!',error)
+      // }
+    }
 
-        return {
-            afterAttach,
-            addTarget,
-            addOperatorGraph,
-            removeTarget,
-            clear,
-        };
-    })
+    return {
+      afterAttach,
+      addTarget,
+      addOperatorGraph,
+      removeTarget,
+      clear
+    };
+  });
 
 export default Scene;
