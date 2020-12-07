@@ -10,7 +10,7 @@ dependencies:
   file-loader: 6.2.0
   html-webpack-plugin: 4.5.0
   http-proxy-middleware: 1.0.6
-  maco-ui: 0.3.14
+  maco-ui: 0.3.15
   mobx: 5.15.7
   mobx-devtools-mst: 0.9.26
   mobx-react: 6.3.1
@@ -3313,11 +3313,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-LiWgfDLLb1dwbFQZsSglpRj+1ctGnayXz3Uv0/WO8n558JycT5fg6zkNcnW0G68Nn0aEldTFeEfmjCfmqry/rQ==
-  /maco-ui/0.3.14:
+  /maco-ui/0.3.15:
     dependencies:
       classnames: 2.2.6
       mobx: 5.15.7
       mobx-react: /mobx-react/6.3.1/mobx@5.15.7
+      nanoid: 3.1.20
       prop-types: 15.7.2
       tinykeys: 1.1.1
     dev: false
@@ -3326,7 +3327,7 @@ packages:
     peerDependencies:
       react: ^16.0.0
     resolution:
-      integrity: sha512-cYNimSQpGQ4DOyVazF2A6GkyZtIcmnJcESvKUo507u6Lo3Xi3EmuGvux5VhflGvZlIjZsSqhT9WNoHVgbOr7kA==
+      integrity: sha512-BB/A+IMRMJjejQOE7JuXpc0GZySWHj4Ru4I/D4UF8qoP9sRCtVDHX3bVofhyVdm9ShsC//cZ5Bf+i0pjn5CueQ==
   /make-dir/2.1.0:
     dependencies:
       pify: 4.0.1
@@ -3572,6 +3573,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-+AK8MN0WHji40lj8AEuwLOvLSbWYApQpre/aFJZD71r43wVRLrOYS4FmJOPQYon1TqB462RzrrxlfA74XRES8w==
+  /nanoid/3.1.20:
+    dev: false
+    engines:
+      node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1
+    hasBin: true
+    resolution:
+      integrity: sha512-a1cQNyczgKbLX9jwbS/+d7W8fX/RfgYR7lVWwWOGIPNgK2m0MWvrGF6/m4kk6U3QcFMnZf3RIhL0v2Jgh/0Uxw==
   /nanomatch/1.2.13:
     dependencies:
       arr-diff: 4.0.0
@@ -5380,7 +5388,7 @@ specifiers:
   file-loader: ^6.1.1
   html-webpack-plugin: ^4.5.0
   http-proxy-middleware: ^1.0.5
-  maco-ui: ^0.3.14
+  maco-ui: ^0.3.15
   mobx: ^5.15.0
   mobx-devtools-mst: ^0.9.26
   mobx-react: ^6.1.4
