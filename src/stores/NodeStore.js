@@ -150,34 +150,43 @@ const GraphNode = types
     */
     function swapNodes(target) {
       console.log('swapping with',target);
-      // copy children and parents from self
-      let self_parents_copy = [...self.parents];
-      let self_children_copy = [...self.children];      
+//       // copy children and parents from self
+//       let self_parents_copy = [...self.parents];
+//       let self_children_copy = [...self.children];      
       
-      // copy children and parents from target
-      let target_parents_copy = [...target.parents];
-      let target_children_copy = [...target.children];
+//       // copy children and parents from target
+//       let target_parents_copy = [...target.parents];
+//       let target_children_copy = [...target.children];
       
-      console.group();
-      console.log('self_parents_copy',self_parents_copy)
-      console.log('self_children_copy',self_children_copy)
-      console.log('target_parents_copy',target_parents_copy)
-      console.log('target_children_copy',target_children_copy)
-      console.groupEnd();
-           // filter out circular references! 
+//       console.group();
+//       console.log('self_parents_copy',self_parents_copy)
+//       console.log('self_children_copy',self_children_copy)
+//       console.log('target_parents_copy',target_parents_copy)
+//       console.log('target_children_copy',target_children_copy)
+//       console.groupEnd();
+//            // filter out circular references! 
       
-      target.setChildren(self_children_copy.filter((e)=>e !== target));
-      self.setChildren(target_children_copy.filter((e)=>e !== self));
+//       target.setChildren(self_children_copy.filter((e)=>e !== target));
+//       self.setChildren(target_children_copy.filter((e)=>e !== self));
       
-      target.setParents(self_parents_copy.filter((e)=>e !== target));
-      self.setParents(target_parents_copy.filter((e)=>e !== self));
+//       target.setParents(self_parents_copy.filter((e)=>e !== target));
+//       self.setParents(target_parents_copy.filter((e)=>e !== self));
       
-      // self.mapInputsToParents();
-      // extract uniforms, map inputs/outputs
+
+      
+      let selfcopy = getSnapshot(self.data);
+      let targetcopy = getSnapshot(target.data);
+      
+      target.setData(selfcopy);
+      self.setData(targetcopy);
+      
+
       parent_graph.update();
       parent_graph.afterUpdate();
-      // mapInputsToParents();
-      // target.mapInputsToParents();
+      
+      // extract uniforms, map inputs/outputs
+      self.mapInputsToParents();
+      target.mapInputsToParents();
     }
 
 

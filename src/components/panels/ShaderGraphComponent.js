@@ -55,21 +55,24 @@ const ShaderGraph = observer(props => {
         },
         "Shift+ArrowUp": () => {
           console.log('Shift+ArrowUp":')
-          console.log(props.selectedNode)
-          if (props.selectedNode && props.selectedNode.parents.length) {
-            props.selectedNode.swapNodes(props.selectedNode.parents[0]);
-          }
-            
+          if (props.selectedNode && props.selectedNode.parents.length) 
+            props.selectedNode.swapNodes(props.selectedNode.parents[0].select());                      
         },
         "Shift+ArrowDown": () => {
-          console.log('Shift+ArrowDown')
+          console.log('Shift+ArrowDown')          
+          if (props.selectedNode && props.selectedNode.children.length) 
+            props.selectedNode.swapNodes(props.selectedNode.children[0].select());
         },
-        "Shift+ArrowLeft": () => {
-          console.log('Shift+ArrowLeft')
-        },
-        "Shift+ArrowRight": () => {
-          console.log('Shift+ArrowRigh')
-        },
+        // "Shift+ArrowLeft": () => {
+        //   console.log('Shift+ArrowLeft')
+        //   if (props.selectedNode && props.selectedNode.parents.length) 
+        //     props.selectedNode.swapNodes(props.selectedNode.parents[0]);          
+        // },
+        // "Shift+ArrowRight": () => {
+        //   console.log('Shift+ArrowRigh')
+        //   if (props.selectedNode && props.selectedNode.parents.length) 
+        //     props.selectedNode.swapNodes(props.selectedNode.parents[0]);          
+        // },
         Delete: () => {
           props.data.removeSelected();
         }
