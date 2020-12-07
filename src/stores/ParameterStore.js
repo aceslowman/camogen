@@ -19,7 +19,6 @@ const Parameter = types
 
     function afterAttach() {
       parent_uniform = getParent(self, 2);
-      console.log("uniform", parent_uniform);
     }
 
     function createGraph() {

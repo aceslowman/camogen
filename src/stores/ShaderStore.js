@@ -159,7 +159,7 @@ let shader = types
         3: "offset"
         4: "{"name":"off","default":[0.0,0.0]}"
 
-        TODO: currently MUST use doublequotes.
+        TODO: have to remove parents when they are no longer needed
     */
     function extractUniforms() {
       const builtins = ["resolution"];
@@ -211,7 +211,6 @@ let shader = types
         switch (uniform_type) {
           case "sampler2D":
             self.inputs.push(uniform_name);
-            console.log("shader snapshot", getSnapshot(self));
             parent_node.mapInputsToParents();
             break;
           case "int":
