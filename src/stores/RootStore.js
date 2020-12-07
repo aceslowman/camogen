@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { types, flow, applySnapshot } from "mobx-state-tree";
 import Scene from "./SceneStore";
 // import { UndoManager } from "mst-middlewares";
@@ -41,7 +41,7 @@ const RootStore = types
     scene: types.maybe(Scene),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string),
-    transport: types.optional(Transport, {}),    
+    transport: types.optional(Transport, {}),
     shader_collection: types.maybe(Collection),
     width: 512,
     height: 512
@@ -66,39 +66,39 @@ const RootStore = types
 
       collection.children.forEach(e => {
         if (e.type === "file") {
-          // items.push({
-          //   [e.name]: {
-          //     id: e.name,
-          //     label: e.name,
-          //     onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
-          //   }
-          // });
-          items[e.name] = {
-            id: e.name,
-            label: e.name,
-            onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
-          }
-          
+          items = {
+            ...items,
+            [e.name]: {
+              id: e.name,
+              label: e.name,
+              onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
+            }
+          };
         } else if (e.type === "directory") {
-          let subitems = e.children.map(c => {
-            let next = {
+          
+          let subitems = {};
+          
+          e.children.forEach(c => {
+            subitems = {
+              ...subitems,
               [c.name]: {
                 id: c.name,
                 label: c.name,
                 onClick: () => self.scene.shaderGraph.setSelectedByName(c.name)
               }
             };
-
-            return next;
           });
+          
+          console.log('hit', e.name)
 
-          items["subdrop"]: {
-            "subdrop": {
+          items = {
+            ...items,
+            subdrop: {
               id: "subdrop",
               label: e.name,
               dropDown: {
                 ...subitems,
-                "NewShader": {
+                NewShader: {
                   id: "NewShader",
                   label: "+ New Shader",
                   onClick: () => {
@@ -114,43 +114,48 @@ const RootStore = types
                 }
               }
             }
-          });
+          };
         }
       });
 
-      return [
-        {
+      return {
+        Inputs: {
+          id: "Inputs",
           label: "Inputs",
-          dropDown: [
-            {
+          dropDown: {
+            Webcam: {
+              id: "Webcam",
               label: "Webcam",
               onClick: () =>
                 self.scene.shaderGraph.setSelectedByName("WebcamInput")
             },
-            {
+            Image: {
+              id: "Image",
               label: "Image",
               onClick: () =>
                 self.scene.shaderGraph.setSelectedByName("ImageInput")
             },
-            {
+            Text: {
+              id: "Text",
               label: "Text",
               onClick: () =>
                 self.scene.shaderGraph.setSelectedByName("TextInput")
             }
-          ]
+          }
         },
         ...items,
-        {
+        SaveCollection: {
+          id: "SaveCollection",
           label: "Save Collection",
           onClick: () => {
-            console.log(getSnapshot(collection))
+            console.log(getSnapshot(collection));
             window.localStorage.setItem(
               "shader_collection",
               JSON.stringify(getSnapshot(self.shader_collection))
             );
           }
         }
-      ];
+      };
     }
   }))
   .actions(self => {
