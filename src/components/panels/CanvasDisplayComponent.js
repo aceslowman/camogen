@@ -20,18 +20,13 @@ const CanvasDisplay = observer(props => {
 
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
     let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();    
-    console.log('inner', wrapper_ref.current)
-    console.log('panelele', panel_ref.current.parentElement)
-  console.log('inner_bounds', inner_bounds)
-    console.log('panel', panel_bounds)
     
     let offset_x = panel_bounds.width - inner_bounds.width;
     let offset_y = panel_bounds.height - inner_bounds.height;
     
-    // let w = Math.floor(inner_bounds.width - (panel_bounds.width - inner_bounds.width));
-    // let h = Math.floor(inner_bounds.height - (panel_bounds.height - inner_bounds.height));
     let w = Math.floor(inner_bounds.width);
     let h = Math.floor(inner_bounds.height);
+    
     store.resizeCanvas(w, h);
 
     setWidth(w);
@@ -65,7 +60,7 @@ const CanvasDisplay = observer(props => {
     // setHeight(Math.floor(_h));
     console.log([_w,_h])
 
-    props.panel.setFloating(true);
+    // props.panel.setFloating(true);
     props.panel.setFullscreen(false);
     props.panel.setDimensions([_w, _h]);
   };
