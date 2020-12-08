@@ -81,9 +81,10 @@ const CanvasDisplay = observer(props => {
             record: {
               id: "record",
               title: "record",
-              label: store.transport.recording
-                ? `● ${store.transport.recordingTime}`
-                : "●",
+              label: "●",
+              // label: store.transport.recording
+                // // ? `● ${Date.now() - store.transport.recordStart}`
+                // : "●",
               onClick: handleRecord,
               highlight: store.transport.recording,
               style: {

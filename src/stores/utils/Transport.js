@@ -10,7 +10,8 @@ const Transport = types
     recorder: null,
     stream: null,
     recordingTime: 0,
-    chunks: []
+    chunks: [],
+    recordStart: null
   }))
   .views(self => ({
     
@@ -59,6 +60,7 @@ const Transport = types
           });
 
         self.recorder.start();
+        self.recordStart = new Date();
 
         self.recorder.onstop = e => {
           console.log("stopping...");
