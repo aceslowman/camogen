@@ -1,21 +1,18 @@
 import React from "react";
-import { types, flow, applySnapshot } from "mobx-state-tree";
-import Scene from "./SceneStore";
+import { getSnapshot, types, flow, applySnapshot } from "mobx-state-tree";
 // import { UndoManager } from "mst-middlewares";
-import { getSnapshot } from "mobx-state-tree";
-
-import Collection from "./utils/Collection";
+import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
 import defaultSnapshot from "../snapshots/default.json";
-import Runner from "../Runner";
-import p5 from "p5";
-
 import Context from "./ui/Context";
 import Messages from "./utils/Messages";
-import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
-import Parameter from "./ParameterStore";
 import Transport from "./utils/Transport";
+import Collection from "./utils/Collection";
+import Parameter from "./ParameterStore";
 import Shader from "./ShaderStore";
+import Scene from "./SceneStore";
+import Runner from "../Runner";
+import p5 from "p5";
 
 /*
   [RootStore]
