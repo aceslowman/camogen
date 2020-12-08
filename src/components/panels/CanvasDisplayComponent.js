@@ -53,25 +53,26 @@ const CanvasDisplay = observer(props => {
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
     let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
   
-console.log('wrapper_ref', wrapper_ref);
-console.log('wrapper_ref', wrapper_ref);
+    console.log('wrapper_ref', wrapper_ref);
+    console.log('panel_ref', panel_ref);
 
-console.log('inner_bounds',inner_bounds)        
-console.log('panel_bounds',panel_bounds)
-console.log('other bounds', panel_ref.current.getBoundingClientRect())
-    
-    
+    console.log('inner_bounds',inner_bounds)        
+    console.log('panel_bounds',panel_bounds)
+    console.log('other bounds', panel_ref.current.getBoundingClientRect())
+     
     // offset needed to take account of toolbar and footbar
     let offset_x = panel_bounds.width - inner_bounds.width;
     let offset_y = panel_bounds.height - inner_bounds.height;
 
-console.log('offset_x',offset_x)        
-console.log('offset_y',offset_y)    
+    console.log('offset_x',offset_x)        
+    console.log('offset_y',offset_y)    
     
     let _w = w + offset_x;
     let _h = h + offset_y;
     
-    // offset_y is wrong when props.panel.fullscreen is true
+    // offset_y is wrong when props.panel.fullscreen is true!
+    // not taking into account the title bar that is missing
+    // while fullscreen
     
     if(!props.panel.fullscreen) {
       props.panel.setDimensions([_w, _h]);
