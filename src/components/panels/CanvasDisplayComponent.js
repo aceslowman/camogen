@@ -21,7 +21,7 @@ const CanvasDisplay = observer(props => {
 
     let w = Math.floor(bounds.width);
     let h = Math.floor(bounds.height);
-    
+
     store.resizeCanvas(w, h);
 
     setWidth(w);
@@ -64,58 +64,62 @@ const CanvasDisplay = observer(props => {
             zIndex: 0
           }}
           items={{
-            "play": {
+            play: {
               id: "play",
               title: "play",
               label: "▶",
               onClick: handlePlay,
               highlight: store.transport.playing
             },
-            "stop": {
+            stop: {
               id: "stop",
               title: "stop",
               label: "■",
               onClick: handleStop,
               highlight: !store.transport.playing
             },
-            "record": {
+            record: {
               id: "record",
               title: "record",
-              label: "●",
+              label: store.transport.recording
+                ? `● ${store.transport.recordingTime}`
+                : "●",
               onClick: handleRecord,
               highlight: store.transport.recording,
               style: {
-                color: store.transport.recording ? "red" : "initial"
+                color: store.transport.recording
+                  ? "red"
+                  : store.ui.theme.text_color
               }
             },
-            "snap": {
+            snap: {
               id: "snap",
               title: "snap",
               label: "snap",
               onClick: handleSnap
             },
-            "rewind": {
+            rewind: {
               id: "rewind",
               label: "rewind",
               onClick: handleSkipToStart,
               highlight: store.transport.playing
             },
-            "Frameclock": {
+            Frameclock: {
               id: "Frameclock",
               label: `frames: ${store.transport.frameclock}`,
               style: {}
             },
-            "format": {
+            format: {
               id: "format",
               label: "format " + format,
               dropDown: {
-                "png": {
+                png: {
                   id: "png",
                   label: "png",
                   onClick: () => handleFormatSelect("PNG"),
                   highlight: format === "PNG"
                 },
-                "jpeg": {
+                jpeg: {
                   id: "jpeg",
                   label: "jpeg",
                   onClick: () => handleFormatSelect("JPEG"),
@@ -123,11 +127,11 @@ const CanvasDisplay = observer(props => {
                 }
               }
             },
-            "Dimensions": {
+            Dimensions: {
               id: "Dimensions",
               label: `[${width} x ${height}]`,
               dropDown: {
-                "standard": {
+                standard: {
                   id: "standard",
                   label: "standard",
                   dropDown: {
@@ -148,28 +152,28 @@ const CanvasDisplay = observer(props => {
                     }
                   }
                 },
-                "instagram": {
+                instagram: {
                   id: "instagram",
                   label: "instagram",
                   dropDown: {
-                    "landscape1080x608": {
+                    landscape1080x608: {
                       id: "landscape1080x608",
                       label: "landscape 1080x608",
                       onClick: () => handleDimensionChange(1080, 608)
                     },
-                    "square1080x1080": {
+                    square1080x1080: {
                       id: "square1080x1080",
                       label: "square 1080x1080",
                       onClick: () => handleDimensionChange(1080, 1080)
                     },
-                    "portrait1080x1350": {
+                    portrait1080x1350: {
                       id: "portrait1080x1350",
                       label: "portrait 1080x1350",
                       onClick: () => handleDimensionChange(1080, 1350)
                     }
                   }
                 },
-                "DimensionSelect": {
+                DimensionSelect: {
                   id: "DimensionSelect",
                   label: (
                     <div

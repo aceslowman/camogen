@@ -9,7 +9,11 @@ const Transport = types
   .volatile(self => ({
     recorder: null,
     stream: null,
+    recordingTime: 0,
     chunks: []
+  }))
+  .views(self => ({
+    
   }))
   .actions(self => {
     let store_root;
