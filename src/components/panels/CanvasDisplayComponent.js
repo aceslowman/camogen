@@ -49,22 +49,35 @@ const CanvasDisplay = observer(props => {
 
   const handleDimensionChange = (w, h) => {
     
+    
+    let inner_bounds = wrapper_ref.current.getBoundingClientRect();
+    let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
+  
+console.log('wrapper_ref', wrapper_ref);
+console.log('wrapper_ref', wrapper_ref);
+
+console.log('inner_bounds',inner_bounds)        
+console.log('panel_bounds',panel_bounds)
+console.log('other bounds', panel_ref.current.getBoundingClientRect())
+    
+    
+    // offset needed to take account of toolbar and footbar
+    let offset_x = panel_bounds.width - inner_bounds.width;
+    let offset_y = panel_bounds.height - inner_bounds.height;
+
+console.log('offset_x',offset_x)        
+console.log('offset_y',offset_y)    
+    
+    let _w = w + offset_x;
+    let _h = h + offset_y;
+    
+    // offset_y is wrong when props.panel.fullscreen is true
+    
     if(!props.panel.fullscreen) {
-          
-      let inner_bounds = wrapper_ref.current.getBoundingClientRect();
-      let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
-
-      // offset needed to take account of toolbar and footbar
-      let offset_x = panel_bounds.width - inner_bounds.width;
-      let offset_y = panel_bounds.height - inner_bounds.height;
-
-      let _w = w + offset_x;
-      let _h = h + offset_y;
-
-
       props.panel.setDimensions([_w, _h]);
     }else {
-      props.panel.setDimensions([w, h]);
+      // TODO: this is still broken! no hardcoded values!
+      props.panel.setDimensions([w+2, h+49]);
     }
     
     props.panel.setFloating(true);
