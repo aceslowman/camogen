@@ -139,33 +139,16 @@ const Graph = types
           node.children[0].parents[0] = node.parents[0];
 
           // remove all pruned parents
+          // IDEA: these could also be held onto in a buffer
           let node_parent = node;
 
           node.parents.forEach((parent, i) => {
             if (i === 0) return;
 
-            // traverseFrom(parent, node => {
-            //   console.log('hit', node)
-            //   // self.removeNode(node)
-            //   // node.remove();
-            //   // self.nodes.delete(node.uuid)
-            // }, true)
-            console.log(
-              traverseFrom(parent, null, true)
-                .map((e, i) => e.uuid)
-                .reverse()
-            );
-
             traverseFrom(parent, null, true)
               .map(e => e.uuid)
               .reverse()
-              .forEach(e => {
-                console.log(e)
-                // self.nodes.delete(e)
-                // self.removeNode(e)
-                console.log('does it have it?', self.nodes.has(e))
-                self.nodes.delete(e);
-              });
+              .forEach(e => self.nodes.delete(e));
           });
         }
       } else {

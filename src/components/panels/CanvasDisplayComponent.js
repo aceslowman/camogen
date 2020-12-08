@@ -83,6 +83,7 @@ const CanvasDisplay = observer(props => {
               title: "record",
               label: "●",
               onClick: handleRecord,
+              highlight: store.transport.recording,
               style: {
                 color: "red"
               }
