@@ -146,12 +146,16 @@ const Graph = types
           node.parents.forEach((parent, i) => {
             if (i === 0) return;
             
-            let node_parent = parent;
-            while(node_parent.parents[0]) {            
-              if (parent.data) parent.data.onRemove();
-              self.nodes.delete(parent.uuid);
-              node_parent = parent[i]
-            }
+            traverseFrom(parent, () => {
+              console.log('hit')
+            })
+            
+            // let node_parent = parent;
+            // while(node_parent.parents[0]) {            
+            //   if (parent.data) parent.data.onRemove();
+            //   self.nodes.delete(parent.uuid);
+            //   node_parent = parent[i]
+            // }
           });
         }
       } else {
@@ -169,7 +173,7 @@ const Graph = types
     }
 
     /*
-        traverse(f = null, depthFirst = false)
+        traverseFrom(f = null, depthFirst = false)
 
         self method will crawl through the graph structure
         either depth first or breadth first.
@@ -177,9 +181,9 @@ const Graph = types
         it's first argument is function that will be called
         during each step of the traversal.
     */
-    function traverse(f = null, depthFirst = false) {
+    function traverseFrom(node = self.root, f = null, depthFirst = false) {
       let result = [];
-      let container = [self.root];
+      let container = [node];
       let next_node;
       let distance_from_root = 0;
       let distance_from_trunk = 0;
@@ -189,7 +193,7 @@ const Graph = types
 
         if (next_node) {
           result.push(next_node);
-          distance_from_root = self.distanceBetween(next_node, self.root);
+          distance_from_root = self.distanceBetween(next_node, node);
           distance_from_trunk = self.distanceFromTrunk(next_node);
 
           if (f) f(next_node, distance_from_root, distance_from_trunk);
@@ -216,7 +220,7 @@ const Graph = types
       let current_branch = 0;
       let render_queues = [];
 
-      self.traverse((next_node, d_root, d_trunk) => {
+      self.traverseFrom(self.root, (next_node, d_root, d_trunk) => {
         next_node.branch_index = undefined;
         next_node.trunk_distance = d_trunk;
         next_node.coordinates.set(x, d_root);
@@ -288,7 +292,7 @@ const Graph = types
       setSelected,
       removeSelected,
       removeNode,
-      traverse,
+      traverseFrom,
       calculateBranches,
       calculateCoordinateBounds
       // calculateBranches: () => undoManager.withoutUndo(calculateBranches),
