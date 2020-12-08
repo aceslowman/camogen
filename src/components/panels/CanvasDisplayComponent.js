@@ -12,6 +12,7 @@ const CanvasDisplay = observer(props => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const wrapper_ref = useRef(null);
+  const panel_ref = useRef()
 
   useResizeObserver(() => {
     if (store.breakoutControlled) return;
@@ -41,9 +42,12 @@ const CanvasDisplay = observer(props => {
   const handleFormatSelect = e => setFormat(e);
 
   const handleDimensionChange = (w, h) => {
+    console.log('changing dimensions', [w,h])
     // TODO: FIX: +2 and +49 hack
-    let _w = Math.floor(w + 2);
-    let _h = Math.floor(h + 49);
+    // let _w = Math.floor(w + 2);
+    // let _h = Math.floor(h + 49);
+    let _w = Math.floor(w);
+    let _h = Math.floor(h);
 
     setWidth(_w);
     setHeight(_h);
@@ -58,6 +62,7 @@ const CanvasDisplay = observer(props => {
       panel={props.panel}
       showTitle={!props.panel.fullscreen}
       floating={false}
+      onRef={panelRef}
       footbar={
         <ToolbarComponent
           style={{
