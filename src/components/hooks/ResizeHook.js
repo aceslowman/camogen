@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ResizeObserver from "resize-observer-polyfill";
 
@@ -9,7 +9,7 @@ const useObserver = (
 
     const observer = useRef(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const observe = () => {
             if (element && element.current && observer.current) {
                 observer.current.observe(element.current);

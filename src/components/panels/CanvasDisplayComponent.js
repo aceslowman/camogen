@@ -30,8 +30,8 @@ const CanvasDisplay = observer(props => {
     
     // let w = Math.floor(inner_bounds.width - (panel_bounds.width - inner_bounds.width));
     // let h = Math.floor(inner_bounds.height - (panel_bounds.height - inner_bounds.height));
-    let w = Math.floor(inner_bounds.width+offset_x);
-    let h = Math.floor(inner_bounds.height+offset_y);
+    let w = Math.floor(inner_bounds.width);
+    let h = Math.floor(inner_bounds.height);
     store.resizeCanvas(w, h);
 
     setWidth(w);
