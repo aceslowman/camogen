@@ -152,17 +152,18 @@ const Graph = types
             // }, true)
             console.log(
               traverseFrom(parent, null, true)
-                .map((e, i) => e.name)
+                .map((e, i) => e.uuid)
                 .reverse()
             );
 
             traverseFrom(parent, null, true)
-              .map(e => e.name)
+              .map(e => e.uuid)
               .reverse()
               .forEach(e => {
                 console.log(e)
                 // self.nodes.delete(e)
                 // self.removeNode(e)
+                console.log('does it have it?', self.nodes.has(e))
                 self.nodes.delete(e);
               });
           });
