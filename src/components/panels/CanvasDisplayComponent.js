@@ -85,7 +85,7 @@ const CanvasDisplay = observer(props => {
               onClick: handleRecord,
               highlight: store.transport.recording,
               style: {
-                color: "red"
+                color: store.transport.recording ? "red" : "initial"
               }
             },
             "snap": {
