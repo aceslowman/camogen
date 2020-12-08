@@ -66,9 +66,7 @@ const Graph = types
     }
   }))
   .actions(self => {
-    /*
-            clear()
-        */
+    
     function clear() {
       self.selectedNode = undefined;
       // TODO: currently not working when subgraphs are present!
@@ -84,11 +82,11 @@ const Graph = types
     }
 
     /* 
-            update()
+        update()
 
-            self method will calculate the branches of the
-            graph structure and then call afterUpdate()
-        */
+        self method will calculate the branches of the
+        graph structure and then call afterUpdate()
+    */
     function update() {
       let render_queues = calculateBranches();
 
@@ -119,7 +117,7 @@ const Graph = types
     }
 
     function removeNode(node) {
-      console.log('removing')
+      // can't remove root (root is always empty!)
       if (node === self.root) return;
 
       /*
@@ -142,10 +140,18 @@ const Graph = types
           node.children[0].parents[0] = node.parents[0];
 
           // remove all pruned parents
+          let node_parent = node;
+          
+          
           node.parents.forEach((parent, i) => {
             if (i === 0) return;
-            if (parent.data) parent.data.onRemove();
-            self.nodes.delete(parent.uuid);
+            
+            let node_parent = parent;
+            while(node_parent.parents[0]) {            
+              if (parent.data) parent.data.onRemove();
+              self.nodes.delete(parent.uuid);
+              node_parent = parent[i]
+            }
           });
         }
       } else {
