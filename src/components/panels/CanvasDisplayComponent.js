@@ -14,6 +14,8 @@ const CanvasDisplay = observer(props => {
   const wrapper_ref = useRef(null);
   const panel_ref = useRef(null);
 
+  // TODO: this still has a problem, when the panel is first made non-fullscreen
+  // this is incorrect
   useResizeObserver(() => {
     if (store.breakoutControlled) return;
     if (!store.p5_instance) return;
@@ -25,7 +27,7 @@ const CanvasDisplay = observer(props => {
     let offset_y = panel_bounds.height - inner_bounds.height;
     
     let w = Math.floor(inner_bounds.width);
-    let h = Math.floor(inner_bounds.height);
+    let h = Math.floor(inner_bounds.height);    
     
     store.resizeCanvas(w, h);
 
@@ -46,23 +48,28 @@ const CanvasDisplay = observer(props => {
   const handleFormatSelect = e => setFormat(e);
 
   const handleDimensionChange = (w, h) => {
-    let inner_bounds = wrapper_ref.current.getBoundingClientRect();
-    let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
     
-    // offset needed to take account of toolbar and footbar
-    let offset_x = panel_bounds.width - inner_bounds.width;
-    let offset_y = panel_bounds.height - inner_bounds.height;
+    if(!props.panel.fullscreen) {
+          
+      let inner_bounds = wrapper_ref.current.getBoundingClientRect();
+      let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
 
-    let _w = w + offset_x;
-    let _h = h + offset_y;
+      // offset needed to take account of toolbar and footbar
+      let offset_x = panel_bounds.width - inner_bounds.width;
+      let offset_y = panel_bounds.height - inner_bounds.height;
 
-    // setWidth(Math.floor(_w));
-    // setHeight(Math.floor(_h));
-    console.log([_w,_h])
+      let _w = w + offset_x;
+      let _h = h + offset_y;
 
-    // props.panel.setFloating(true);
+
+      props.panel.setDimensions([_w, _h]);
+    }else {
+      props.panel.setDimensions([w, h]);
+    }
+    
+    props.panel.setFloating(true);
     props.panel.setFullscreen(false);
-    props.panel.setDimensions([_w, _h]);
+    
   };
 
   return (
