@@ -66,7 +66,6 @@ const Graph = types
     }
   }))
   .actions(self => {
-    
     function clear() {
       self.selectedNode = undefined;
       // TODO: currently not working when subgraphs are present!
@@ -141,20 +140,31 @@ const Graph = types
 
           // remove all pruned parents
           let node_parent = node;
-          
-          
+
           node.parents.forEach((parent, i) => {
             if (i === 0) return;
-            
+
             // traverseFrom(parent, node => {
             //   console.log('hit', node)
             //   // self.removeNode(node)
             //   // node.remove();
             //   // self.nodes.delete(node.uuid)
-            // }, true)       
+            // }, true)
             console.log(
-              traverseFrom(parent,null,true).map((e,i) => e.name).reverse()
-            )
+              traverseFrom(parent, null, true)
+                .map((e, i) => e.name)
+                .reverse()
+            );
+
+            traverseFrom(parent, null, true)
+              .map(e => e.name)
+              .reverse()
+              .forEach(e => {
+                console.log(e)
+                // self.nodes.delete(e)
+                // self.removeNode(e)
+                self.nodes.delete(e);
+              });
           });
         }
       } else {
