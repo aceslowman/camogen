@@ -146,16 +146,10 @@ const Graph = types
           node.parents.forEach((parent, i) => {
             if (i === 0) return;
             
-            traverseFrom(parent, () => {
-              console.log('hit')
-            })
-            
-            // let node_parent = parent;
-            // while(node_parent.parents[0]) {            
-            //   if (parent.data) parent.data.onRemove();
-            //   self.nodes.delete(parent.uuid);
-            //   node_parent = parent[i]
-            // }
+            traverseFrom(parent, node => {
+              console.log('hit', node)
+              self.removeNode(node)
+            })          
           });
         }
       } else {
