@@ -19,10 +19,10 @@ const CanvasDisplay = observer(props => {
     if (!store.p5_instance) return;
 
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
-    // let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();    
+    let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();    
 
-    let w = Math.floor(inner_bounds.width);
-    let h = Math.floor(inner_bounds.height);
+    let w = Math.floor(inner_bounds.width + (panel_bounds.width - inner_bounds.width));
+    let h = Math.floor(inner_bounds.height + (panel_bounds.height - inner_bounds.height));
 
     store.resizeCanvas(w, h);
 
@@ -43,28 +43,22 @@ const CanvasDisplay = observer(props => {
   const handleFormatSelect = e => setFormat(e);
 
   const handleDimensionChange = (w, h) => {
-    console.log('changing dimensions', [w,h])
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
     let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
     
-    // TODO: FIX: +2 and +49 hack
-    // let _w = Math.floor(w + 2);
-    // let _h = Math.floor(h + 49);
-    let _w = Math.floor(w + (panel_bounds.width - inner_bounds.width));
-    let _h = Math.floor(h + (panel_bounds.height - inner_bounds.height));
-    
-    
-    console.log('panel ref', panel_ref.current.parentElement)
-    console.log('wrapper_ref', wrapper_ref.current)
-    console.log('inner_bounds',inner_bounds)
-    console.log('panel_bounds',panel_bounds)
+    // offset needed to take account of toolbar and footbar
+    let offset_x = panel_bounds.width - inner_bounds.width;
+    let offset_y = panel_bounds.height - inner_bounds.height;
 
-    setWidth(_w);
-    setHeight(_h);
+    let _w = w + offset_x;
+    let _h = h + offset_y;
+
+    setWidth(Math.floor(_w));
+    setHeight(Math.floor(_h));
 
     props.panel.setFloating(true);
     props.panel.setFullscreen(false);
-    props.panel.setDimensions([_w, _h]);
+    props.panel.setDimensions([_w-offset_x, _h-offset_y]);
   };
 
   return (
