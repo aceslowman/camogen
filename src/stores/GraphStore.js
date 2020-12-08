@@ -148,8 +148,10 @@ const Graph = types
             
             traverseFrom(parent, node => {
               console.log('hit', node)
-              self.removeNode(node)
-            })          
+              // self.removeNode(node)
+              // node.remove();
+              self.nodes.delete(node.uuid)
+            }, true)          
           });
         }
       } else {
