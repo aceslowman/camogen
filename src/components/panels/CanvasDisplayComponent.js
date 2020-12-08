@@ -12,16 +12,17 @@ const CanvasDisplay = observer(props => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const wrapper_ref = useRef(null);
-  const panel_ref = useRef()
+  const panel_ref = useRef(null);
 
   useResizeObserver(() => {
     if (store.breakoutControlled) return;
     if (!store.p5_instance) return;
 
-    let bounds = wrapper_ref.current.getBoundingClientRect();
+    let inner_bounds = wrapper_ref.current.getBoundingClientRect();
+    // let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();    
 
-    let w = Math.floor(bounds.width);
-    let h = Math.floor(bounds.height);
+    let w = Math.floor(inner_bounds.width);
+    let h = Math.floor(inner_bounds.height);
 
     store.resizeCanvas(w, h);
 
@@ -43,11 +44,20 @@ const CanvasDisplay = observer(props => {
 
   const handleDimensionChange = (w, h) => {
     console.log('changing dimensions', [w,h])
+    let inner_bounds = wrapper_ref.current.getBoundingClientRect();
+    let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
+    
     // TODO: FIX: +2 and +49 hack
     // let _w = Math.floor(w + 2);
     // let _h = Math.floor(h + 49);
-    let _w = Math.floor(w);
-    let _h = Math.floor(h);
+    let _w = Math.floor(w + (panel_bounds.width - inner_bounds.width));
+    let _h = Math.floor(h + (panel_bounds.height - inner_bounds.height));
+    
+    
+    console.log('panel ref', panel_ref.current.parentElement)
+    console.log('wrapper_ref', wrapper_ref.current)
+    console.log('inner_bounds',inner_bounds)
+    console.log('panel_bounds',panel_bounds)
 
     setWidth(_w);
     setHeight(_h);
@@ -62,7 +72,7 @@ const CanvasDisplay = observer(props => {
       panel={props.panel}
       showTitle={!props.panel.fullscreen}
       floating={false}
-      onRef={panelRef}
+      onRef={panel_ref}
       footbar={
         <ToolbarComponent
           style={{
