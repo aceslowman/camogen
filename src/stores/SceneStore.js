@@ -27,8 +27,8 @@ const Scene = types
       self.shaderGraph.root.select();
       self.shaderGraph.setSelectedByName("Glyph");
       self.shaderGraph.root.select();
-      self.shaderGraph.setSelectedByName("RGB2HSV");
-      self.shaderGraph.root.select();
+      // self.shaderGraph.setSelectedByName("RGB2HSV");
+      // self.shaderGraph.root.select();
       self.shaderGraph.update();
     }
 

@@ -50,7 +50,7 @@ const RootStore = types
     breakoutControlled: false,
     messages: Messages.create(),
     context: Context.create(),
-    recentShaders: types.
+    // recentShaders: types.array(types.safeReference(Shader))
   }))
   .views(self => ({
     shaderLibrary() {
@@ -165,7 +165,7 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
-      // window.localStorage.clear();
+      window.localStorage.clear();
 
       // fetch default shaders
       fetchShaderFiles().then(d => {

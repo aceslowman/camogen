@@ -41,10 +41,6 @@ const App = observer(props => {
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
 
-  // console.log("mainPanel", mainPanel);
-  // console.log("mainLayout", mainLayout);
-  // console.log("canvasPanel", canvasPanel);
-
   useEffect(() => {
     let unsubscribe = tinykeys(window, {
       "$mod+KeyZ": () => {
