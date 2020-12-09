@@ -61,22 +61,20 @@ const RootStore = types
       *any derived state*.
     */
     recentShaderLibrary() {
-      let recents = self.recentShaders;
-
       let recentItems = {};
 
-      recents.forEach((e, i) => {
-        recentItems = {
-          ...recentItems,
-          ["recent_" + e.name]: {
-            id: "recent_" + e.name,
-            label: e.name,
-            onClick: () => {
-              self.scene.shaderGraph.setSelectedByName(e.name);
-            }
-          }
-        };
-      });
+//       self.recentShaders.forEach((e, i) => {
+//         recentItems = {
+//           ...recentItems,
+//           [e.id]: {
+//             id: e.id,
+//             label: e.name,
+//             onClick: () => {
+//               self.scene.shaderGraph.setSelectedByName(e.name);
+//             }
+//           }
+//         };
+//       });
 
       return recentItems;
     },
@@ -93,8 +91,8 @@ const RootStore = types
         if (e.type === "file") {
           items = {
             ...items,
-            [e.name]: {
-              id: e.name,
+            [e.id]: {
+              id: e.id,
               label: e.name,
               buttons: {
                 edit: {
@@ -227,7 +225,7 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
-      // window.localStorage.clear();
+      window.localStorage.clear();
 
       // fetch default shaders
       fetchShaderFiles().then(d => {
