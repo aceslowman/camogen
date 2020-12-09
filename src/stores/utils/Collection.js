@@ -64,12 +64,12 @@ const Collection = types
     };
 
     const addChild = child => {
-      console.log("adding to collection", self);
+      // console.log("adding to collection", self);
       self.children.push(child);
     };
 
     const removeChild = child => {
-      console.log("removing from collection", {self:self,child:child});
+      // console.log("removing from collection", {self:self,child:child});
       self.children = self.children.filter(e => e !== child);
     };
 

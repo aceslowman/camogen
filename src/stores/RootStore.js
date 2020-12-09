@@ -61,8 +61,8 @@ const RootStore = types
       *any derived state*.
     */
     recentShaderLibrary() {
-      let recents = self.recentShaders;      
-      
+      let recents = self.recentShaders;
+
       let recentItems = {};
 
       recents.forEach((e, i) => {
@@ -76,8 +76,8 @@ const RootStore = types
             }
           }
         };
-      }); 
-      
+      });
+
       return recentItems;
     },
     shaderLibrary() {
@@ -85,7 +85,7 @@ const RootStore = types
        currently limited to two levels, just haven't figured out the best
        way to traverse and remap the directory tree
       */
-      
+
       let items = {};
       let collection = self.shader_collection;
 
@@ -123,8 +123,8 @@ const RootStore = types
           e.children.forEach(c => {
             subitems = {
               ...subitems,
-              [c.name]: {
-                id: c.name,
+              [c.id]: {
+                id: c.id,
                 label: c.name,
                 buttons: {
                   remove: {
@@ -151,8 +151,8 @@ const RootStore = types
 
           items = {
             ...items,
-            [e.name]: {
-              id: e.name,
+            [e.id]: {
+              id: e.id,
               label: e.name,
               dropDown: {
                 ...subitems,
@@ -276,6 +276,10 @@ const RootStore = types
     function setName(name) {
       self.name = name;
     }
+    
+    function setShaderCollection(collection) {
+      self.shader_collection = collection;
+    };
 
     function selectParameter(param) {
       if (param && !param.graph) param.createGraph();
@@ -364,8 +368,6 @@ const RootStore = types
         shader collection
     */
     const fetchShaderFiles = flow(function* fetchShaderFiles() {
-      // self.shader_collection = Collection.create({id: 'collection'});
-
       try {
         if (window.localStorage.getItem("shader_collection")) {
           console.log("cached shaders found, loading...", window.localStorage);
@@ -374,9 +376,7 @@ const RootStore = types
             window.localStorage.getItem("shader_collection")
           );
 
-          // applySnapshot(self.shader_collection, data);
           self.setShaderCollection(data);
-          // self.shader_collection = data;
 
           // should be changed to match the flow / yield syntax
           return new Promise((res, rej) => {
@@ -388,7 +388,6 @@ const RootStore = types
           yield fetch("api/shaders")
             .then(d => d.json())
             .then(d => {
-              // applySnapshot(self.shader_collection, d);
               self.setShaderCollection(d);
               window.localStorage.setItem(
                 "shader_collection",
@@ -400,14 +399,10 @@ const RootStore = types
         console.error("failed to fetch shaders", err);
       }
     });
-    
-    const setShaderCollection = (collection) => {
-      self.shader_collection = collection;
-    }
 
     const resizeCanvas = (w, h) => {
-      if(!w) w = 1; // never resize canvas to 0
-      if(!h) h = 1; // never resize canvas to 0
+      if (!w) w = 1; // never resize canvas to 0
+      if (!h) h = 1; // never resize canvas to 0
       self.p5_instance.resizeCanvas(w, h);
       self.width = w;
       self.height = h;
@@ -420,9 +415,8 @@ const RootStore = types
 
     const addToRecentShaders = shader => {
       // limit to 5
-      if(self.recentShaders.length >= 5)
-        self.recentShaders.shift();
-      
+      if (self.recentShaders.length >= 5) self.recentShaders.shift();
+
       self.recentShaders.push(shader);
     };
 

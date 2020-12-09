@@ -8,6 +8,7 @@ import {
 } from "mobx-state-tree";
 import * as DefaultShader from "./shaders/defaults/DefaultShader";
 import Parameter from "./ParameterStore";
+import Collection from "./utils/Collection";
 import { nanoid } from "nanoid";
 import { OperatorGraph } from "./GraphStore";
 
@@ -96,7 +97,8 @@ let shader = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: DefaultShader.frag,
-    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
+    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph))),
+    collection: types.safeReference(types.late(() => Collection))
   })
   .volatile(() => ({
     target: null,

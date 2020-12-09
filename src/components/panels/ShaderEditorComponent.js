@@ -117,8 +117,8 @@ const ShaderEditor = props => {
               }
             }
           : {
-              NewShader: {
-                id: "NewShader",
+              NewShaderEmpty: {
+                id: "NewShaderEmpty",
                 label: "New Shader",
                 onClick: () => props.graph.setSelectedByName("Default")
               }

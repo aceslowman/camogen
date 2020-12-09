@@ -90,9 +90,9 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
   function setSelectedByName(name, collection = null) {
     if (!self.selectedNode) self.selectedNode = self.root;
     let shader = getShaderByName(name);
-    // shader.collection = collection;
+    shader.collection = collection;
     // collection is experimental argument
-    // console.log('collection',collection)    
+    console.log('collection',collection)    
     self.selectedNode.setData(shader);
     self.update(); // fixed issue where bounds weren't updating
   }
