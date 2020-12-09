@@ -9,7 +9,7 @@ const vert = "attribute vec3 aPosition; \n" +
 "}";
 
 const frag = "varying vec2 vTexCoord; \n" +
-// "uniform sampler2D tex0; \n" + // causing black screen error?
+"uniform sampler2D tex0; \n" + // causing black screen error?
 "uniform vec2 resolution; \n\n" +
 "void main() { \n" +
 "   gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0); \n" +

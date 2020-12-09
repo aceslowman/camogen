@@ -31,15 +31,11 @@ const ShaderEditor = props => {
 
   const handleEditorChange = (doc, changes) => {
     let value = doc.getValue();
-    switch (editType) {
-      case "vert":
-        props.data.setVert(value);
-        break;
-      case "frag":
-        props.data.setFrag(value);
-        break;
-      default:
-        break;
+    
+    if(editType === "vert") {      
+      props.data.setVert(value);
+    } else {
+      props.data.setFrag(value);
     }
   };
 
