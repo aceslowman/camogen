@@ -49,7 +49,8 @@ const RootStore = types
     ready: false,
     breakoutControlled: false,
     messages: Messages.create(),
-    context: Context.create()
+    context: Context.create(),
+    recentShaders: types.
   }))
   .views(self => ({
     shaderLibrary() {
