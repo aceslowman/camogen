@@ -20,8 +20,6 @@ const CanvasDisplay = observer(props => {
   const wrapper_ref = useRef(null);
   const panel_ref = useRef(null);
 
-  // TODO: this still has a problem, when the panel is first made non-fullscreen
-  // this is incorrect
   useResizeObserver(() => {
     if (store.breakoutControlled) return;
     if (!store.p5_instance) return;
