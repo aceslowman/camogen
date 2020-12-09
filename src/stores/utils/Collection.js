@@ -68,8 +68,8 @@ const Collection = types
     };
 
     const removeChild = child => {
-      console.log("removing from collection", self);
-      self.children = self.children.filter(e => e.id !== child.id);
+      console.log("removing from collection", {self:self,child:child});
+      self.children = self.children.filter(e => e !== child);
     };
 
     return {

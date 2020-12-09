@@ -50,7 +50,7 @@ const RootStore = types
     ready: false,
     breakoutControlled: false,
     messages: Messages.create(),
-    context: Context.create(),
+    context: Context.create()
     // recentShaders: types.array(types.safeReference(Shader))
   }))
   .views(self => ({
@@ -70,13 +70,24 @@ const RootStore = types
             [e.name]: {
               id: e.name,
               label: e.name,
+              buttons: {
+                edit: {
+                  id: "edit",
+                  label: "e",
+                  title: "edit"
+                },
+                remove: {
+                  id: "remove",
+                  label: "x",
+                  title: "remove"
+                }
+              },
               onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
             }
           };
         } else if (e.type === "directory") {
-          
           let subitems = {};
-          
+
           // get all dropdown items
           e.children.forEach(c => {
             subitems = {
@@ -84,10 +95,29 @@ const RootStore = types
               [c.name]: {
                 id: c.name,
                 label: c.name,
+                buttons: {
+                  // edit: {
+                  //   id: "edit",
+                  //   label: "e",
+                  //   title: "edit",
+                  //   onClick: () => {
+                  //     // e.removeChild(c);
+                  //   }
+                  // },
+                  remove: {
+                    id: "remove",
+                    label: "x",
+                    title: "remove",
+                    onClick: (event) => {
+                      event.preventDefault();
+                      e.removeChild(c);
+                    }
+                  }
+                },
                 onClick: () => self.scene.shaderGraph.setSelectedByName(c.name)
               }
             };
-          });          
+          });
 
           items = {
             ...items,
@@ -99,10 +129,10 @@ const RootStore = types
                 NewShader: {
                   id: "NewShader",
                   label: "+ New Shader",
-                  onClick: () => {                   
-                    // create short random string for new shader name                    
+                  onClick: () => {
+                    // create short random string for new shader name
                     let new_shader = Shader.create({ name: nanoid(5) });
-                    
+
                     e.addChild(
                       Collection.create({
                         name: new_shader.name,
@@ -110,7 +140,7 @@ const RootStore = types
                         data: new_shader
                       })
                     );
-                    
+
                     // now save collection to local storage
                     window.localStorage.setItem(
                       "shader_collection",
