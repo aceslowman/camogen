@@ -1,4 +1,4 @@
-import { types, flow, getParent, applySnapshot } from "mobx-state-tree";
+import { types, flow, getParent, getSnapshot, applySnapshot } from "mobx-state-tree";
 import Shader from "../ShaderStore";
 
 const Collection = types
@@ -73,7 +73,14 @@ const Collection = types
       self.children = self.children.filter(e => e !== child);
     };
 
-    const setData = data => applySnapshot(self.data, data);
+    const setData = data => {
+      console.log('setting collection!',getSnapshot(self))
+      console.log('with this shader', getSnapshot(data))
+      let d = getSnapshot(data);
+      
+      self.name = d.name;
+      self.data = d;
+    }
 
     return {
       traverse,

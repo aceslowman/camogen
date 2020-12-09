@@ -234,7 +234,7 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
-      window.localStorage.clear();
+      // window.localStorage.clear();
 
       // fetch default shaders
       fetchShaderFiles().then(d => {
@@ -275,6 +275,10 @@ const RootStore = types
 
     function setName(name) {
       self.name = name;
+    }
+    
+    function persistShaderLibrary() {
+      
     }
     
     function setShaderCollection(collection) {
@@ -435,7 +439,8 @@ const RootStore = types
       load,
       fetchShaderFiles,
       resizeCanvas,
-      addToRecentShaders
+      addToRecentShaders,
+      persistShaderLibrary
     };
   });
 
