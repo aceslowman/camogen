@@ -1,4 +1,4 @@
-import { types, flow, getParent } from "mobx-state-tree";
+import { types, flow, getParent, applySnapshot } from "mobx-state-tree";
 import Shader from "../ShaderStore";
 
 const Collection = types
@@ -10,7 +10,7 @@ const Collection = types
     type: types.maybe(types.enumeration("Type", ["directory", "file"])),
     children: types.maybe(types.array(types.late(() => Collection))),
     extension: types.maybe(types.string),
-    data: types.maybe(types.late(()=>Shader))
+    data: types.maybe(types.late(() => Shader))
   })
   .views(self => ({
     getByName: name => {
@@ -73,10 +73,13 @@ const Collection = types
       self.children = self.children.filter(e => e !== child);
     };
 
+    const setData = data => applySnapshot(self.data, data);
+
     return {
       traverse,
       addChild,
-      removeChild
+      removeChild,
+      setData
     };
   });
 
