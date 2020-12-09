@@ -25,7 +25,7 @@ function preloadDefaultShaders() {
     }
   });  
   
-  shader_collection.id = 'main'+nanoid();
+  shader_collection.id = 'default-collection_'+nanoid();
 }   
 
 preloadDefaultShaders();
