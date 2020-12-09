@@ -12,12 +12,13 @@ function preloadDefaultShaders() {
   const shader_path = path.resolve(__dirname, '../shaders');
    
   shader_collection = dirTree(shader_path, {}, (item, PATH, stats) => {
+    item.id = nanoid();
+    
     if(item.type === 'file') { 
       fs.readFile(item.path, 'utf8', (err, data) => {        
         if(err) {
           console.error(err); 
         } else { 
-          item.id = nanoid();
           item.data = JSON.parse(data);
         }
       })

@@ -113,7 +113,7 @@ const RootStore = types
               },
               onClick: () => {
                 self.addToRecentShaders(
-                  Collection.create({ name: e.name })
+                  Collection.create({ id: e.name, name: e.name })
                 );
                 self.scene.shaderGraph.setSelectedByName(e.name, e);
               }
@@ -144,7 +144,7 @@ const RootStore = types
                 },
                 onClick: () => {
                   self.addToRecentShaders(
-                    Collection.create({ name: c.name })
+                    Collection.create({ id: c.name, name: c.name })
                   );
                   self.scene.shaderGraph.setSelectedByName(c.name, c);
                 }
@@ -168,6 +168,7 @@ const RootStore = types
 
                     e.addChild(
                       Collection.create({
+                        id: new_shader.name,
                         name: new_shader.name,
                         type: "file",
                         data: new_shader
@@ -366,7 +367,7 @@ const RootStore = types
         shader collection
     */
     const fetchShaderFiles = flow(function* fetchShaderFiles() {
-      self.shader_collection = Collection.create();
+      self.shader_collection = Collection.create({id: 'collection'});
 
       try {
         if (window.localStorage.getItem("shader_collection")) {

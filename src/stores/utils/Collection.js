@@ -3,7 +3,7 @@ import Shader from "../ShaderStore";
 
 const Collection = types
   .model("Collection", {
-    id: types.identifier(),
+    id: types.identifier,
     path: types.maybe(types.string),
     name: types.maybe(types.string),
     size: types.maybe(types.number),
