@@ -12,6 +12,7 @@ import Parameter from "./ParameterStore";
 import Shader from "./ShaderStore";
 import Scene from "./SceneStore";
 import Runner from "../Runner";
+import { nanoid } from "nanoid";
 import p5 from "p5";
 
 /*
@@ -98,8 +99,10 @@ const RootStore = types
                 NewShader: {
                   id: "NewShader",
                   label: "+ New Shader",
-                  onClick: () => {
-                    let new_shader = Shader.create({ name: "Test" });
+                  onClick: () => {                   
+                    // create short random string for new shader name                    
+                    let new_shader = Shader.create({ name: nanoid(5) });
+                    
                     e.addChild(
                       Collection.create({
                         name: new_shader.name,
