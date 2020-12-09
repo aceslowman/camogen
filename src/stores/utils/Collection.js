@@ -10,7 +10,7 @@ const Collection = types
     type: types.maybe(types.enumeration("Type", ["directory", "file"])),
     children: types.maybe(types.array(types.late(() => Collection))),
     extension: types.maybe(types.string),
-    data: types.maybe(Shader)
+    data: types.maybe(types.late(()=>Shader))
   })
   .views(self => ({
     getByName: name => {

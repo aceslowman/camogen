@@ -327,6 +327,13 @@ let shader = types
     function setHasChanged(v) {
       self.hasChanged = v;
     }
+    
+    function saveToCollection() {
+      console.log('saving to collection', self)
+      if(self.collection) {
+        self.collection.setData(self);
+      }
+    }
 
     function save() {
       console.log("saving project");
@@ -384,6 +391,11 @@ let shader = types
       self.updateGroup.put(p_graph);
       return p_graph;
     }
+    
+    function setCollection(collection) {
+      console.log(collection)
+      self.collection = collection;
+    }
 
     return {
       afterCreate,
@@ -400,7 +412,9 @@ let shader = types
       load,
       setHasChanged,
       clear,
-      addToUpdateGroup
+      addToUpdateGroup,
+      setCollection,
+      saveToCollection
     };
   });
 

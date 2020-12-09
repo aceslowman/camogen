@@ -86,6 +86,11 @@ const ShaderEditor = props => {
                     label: "Save Shader",
                     onClick: () => props.data.save()
                   },
+                  "SaveCollection": {
+                    id: "SaveCollection",
+                    label: "Save to Collection",
+                    onClick: () => props.data.saveToCollection()
+                  },
                   "Load Shader": {
                     id: "Load Shader",
                     label: "Load Shader",
