@@ -57,7 +57,9 @@ const RootStore = types
     /*
       TODO: recents only update after closing and reopening 
       dropDown. very similar to problem I had earlier where
-      the solution was to remove
+      the solution was to remove *any derived state*.
+      
+      try moving the call to recentShaderLibrary to App.js
     */
     recentShaderLibrary() {
       let recents = self.recentShaders;      
@@ -184,11 +186,11 @@ const RootStore = types
       });
 
       return {
-        Recents: {
-          id: "Recents",
-          label: "Recent Shaders",
-          dropDown: self.recentShaderLibrary()
-        },
+        // Recents: {
+        //   id: "Recents",
+        //   label: "Recent Shaders",
+        //   dropDown: self.recentShaderLibrary()
+        // },
         Inputs: {
           id: "Inputs",
           label: "Inputs",
@@ -397,6 +399,8 @@ const RootStore = types
     });
 
     const resizeCanvas = (w, h) => {
+      if(!w) w = 1; // never resize canvas to 0
+      if(!h) h = 1; // never resize canvas to 0
       self.p5_instance.resizeCanvas(w, h);
       self.width = w;
       self.height = h;

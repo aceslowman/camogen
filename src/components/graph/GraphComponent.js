@@ -22,7 +22,14 @@ const GraphComponent = observer(props => {
       "Library": {
         id: "Library",
         label: "Library",
-        dropDown: store.shaderLibrary()
+        dropDown: {
+            Recents: {
+              id: "Recents",
+              label: "Recent Shaders",
+              dropDown: store.recentShaderLibrary()
+            },
+            ...store.shaderLibrary()
+          }
       },
       "Delete": {
         id: "Delete",
