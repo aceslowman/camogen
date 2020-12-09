@@ -1,6 +1,6 @@
 import { getRoot, types } from "mobx-state-tree";
 import Shader from '../../ShaderStore';
-import * as DefaultShader from '../DefaultShader';
+import DefaultShader from "../";
 
 /*
     TODO: inputs can't be changed, haven't had a second webcam to test with

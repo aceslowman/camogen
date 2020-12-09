@@ -6,7 +6,7 @@ import {
   getParent,
   getRoot
 } from "mobx-state-tree";
-import * as DefaultShader from "./shaders/DefaultShader";
+import DefaultShader from "./shaders";
 import Parameter from "./ParameterStore";
 import { nanoid } from "nanoid";
 import { OperatorGraph } from "./GraphStore";

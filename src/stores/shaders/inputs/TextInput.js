@@ -1,7 +1,7 @@
 import { getRoot, types, getSnapshot, getParent } from "mobx-state-tree";
 import { autorun } from 'mobx';
 import Shader from "../../ShaderStore";
-import * as DefaultShader from "../DefaultShader";
+import DefaultShader from "../";
 
 
 const text = types
