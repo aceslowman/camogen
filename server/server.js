@@ -4,6 +4,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require("fs");
 const dirTree = require('directory-tree');
 const app = express(); 
+const { nanoid } = require('nanoid');
  
 let shader_collection;   
 
@@ -16,6 +17,7 @@ function preloadDefaultShaders() {
         if(err) {
           console.error(err); 
         } else { 
+          item.id = nanoid();
           item.data = JSON.parse(data);
         }
       })

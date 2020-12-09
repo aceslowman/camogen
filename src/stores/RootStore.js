@@ -115,7 +115,7 @@ const RootStore = types
                 self.addToRecentShaders(
                   Collection.create({ name: e.name })
                 );
-                self.scene.shaderGraph.setSelectedByName(e.name);
+                self.scene.shaderGraph.setSelectedByName(e.name, e);
               }
             }
           };
@@ -146,7 +146,7 @@ const RootStore = types
                   self.addToRecentShaders(
                     Collection.create({ name: c.name })
                   );
-                  self.scene.shaderGraph.setSelectedByName(c.name);
+                  self.scene.shaderGraph.setSelectedByName(c.name, c);
                 }
               }
             };
@@ -236,7 +236,7 @@ const RootStore = types
 
     // only when first loaded!
     function afterCreate() {
-      // window.localStorage.clear();
+      window.localStorage.clear();
 
       // fetch default shaders
       fetchShaderFiles().then(d => {
