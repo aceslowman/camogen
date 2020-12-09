@@ -89,6 +89,8 @@ const RootStore = types
       
       let items = {};
       let collection = self.shader_collection;
+      
+      console.log('SHADER COLLECTION', getSnapshot(collection))
 
       collection.children.forEach(e => {
         if (e.type === "file") {
