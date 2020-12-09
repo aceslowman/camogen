@@ -56,10 +56,9 @@ const RootStore = types
   .views(self => ({
     /*
       TODO: recents only update after closing and reopening 
-      dropDown. very similar to problem I had earlier where
-      the solution was to remove *any derived state*.
-      
-      try moving the call to recentShaderLibrary to App.js
+      dropDown, specifically with the ContextMenu. very similar 
+      to problem I had earlier where the solution was to remove 
+      *any derived state*.
     */
     recentShaderLibrary() {
       let recents = self.recentShaders;      
@@ -89,8 +88,6 @@ const RootStore = types
       
       let items = {};
       let collection = self.shader_collection;
-      
-      console.log('SHADER COLLECTION', getSnapshot(collection))
 
       collection.children.forEach(e => {
         if (e.type === "file") {
@@ -367,7 +364,7 @@ const RootStore = types
         shader collection
     */
     const fetchShaderFiles = flow(function* fetchShaderFiles() {
-      self.shader_collection = Collection.create({id: 'collection'});
+      // self.shader_collection = Collection.create({id: 'collection'});
 
       try {
         if (window.localStorage.getItem("shader_collection")) {
@@ -377,7 +374,9 @@ const RootStore = types
             window.localStorage.getItem("shader_collection")
           );
 
-          applySnapshot(self.shader_collection, data);
+          // applySnapshot(self.shader_collection, data);
+          self.setShaderCollection(data);
+          // self.shader_collection = data;
 
           // should be changed to match the flow / yield syntax
           return new Promise((res, rej) => {
@@ -389,7 +388,8 @@ const RootStore = types
           yield fetch("api/shaders")
             .then(d => d.json())
             .then(d => {
-              applySnapshot(self.shader_collection, d);
+              // applySnapshot(self.shader_collection, d);
+              self.setShaderCollection(d);
               window.localStorage.setItem(
                 "shader_collection",
                 JSON.stringify(getSnapshot(self.shader_collection))
@@ -400,6 +400,10 @@ const RootStore = types
         console.error("failed to fetch shaders", err);
       }
     });
+    
+    const setShaderCollection = (collection) => {
+      self.shader_collection = collection;
+    }
 
     const resizeCanvas = (w, h) => {
       if(!w) w = 1; // never resize canvas to 0
@@ -429,6 +433,7 @@ const RootStore = types
       setupP5,
       setTheme,
       setName,
+      setShaderCollection,
       selectParameter,
       breakout,
       onBreakoutResize,
