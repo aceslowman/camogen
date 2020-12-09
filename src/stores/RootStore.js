@@ -40,7 +40,7 @@ const RootStore = types
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string),
     transport: types.optional(Transport, {}),
-    shader_collection: types.maybe(Collection),    
+    shader_collection: types.maybe(Collection),
     recentShaders: types.array(Collection),
     width: 512,
     height: 512
@@ -62,21 +62,33 @@ const RootStore = types
       let collection = self.shader_collection;
       let recents = self.recentShaders;
       let recentItems = {};
-      
+
       let items = {};
-      
-      recents.forEach((e,i) => {
-        console.log('recent', e)
-        return {
-          [e.name]: {
-            
+
+      recents.forEach((e, i) => {
+        recentItems = {
+          ...recentItems,
+          ['recent_'+e.name]: {
+            id: 'recent_'+e.name,
+            label: e.name,
+            buttons: {
+              edit: {
+                id: "edit",
+                label: "e",
+                title: "edit"
+              },
+              remove: {
+                id: "remove",
+                label: "x",
+                title: "remove"
+              }
+            },
+            onClick: () => {
+              self.scene.shaderGraph.setSelectedByName(e.name);
+            }
           }
-        }
-        // recentItems = {
-        //   ...recentItems,
-        //   [e]
-        // }
-      })
+        };
+      });
 
       collection.children.forEach(e => {
         if (e.type === "file") {
@@ -99,10 +111,12 @@ const RootStore = types
               },
               onClick: () => {
                 // self.addToRecentShaders(self.scene.shaderGraph.getShaderByName(e.name));
-                self.addToRecentShaders(Collection.create({
-                  name: e.name
-                }))
-                self.scene.shaderGraph.setSelectedByName(e.name)
+                self.addToRecentShaders(
+                  Collection.create({
+                    name: e.name
+                  })
+                );
+                self.scene.shaderGraph.setSelectedByName(e.name);
               }
             }
           };
@@ -121,7 +135,7 @@ const RootStore = types
                     id: "remove",
                     label: "x",
                     title: "remove",
-                    onClick: (event) => {
+                    onClick: event => {
                       // should I add a confirmation?
                       event.preventDefault();
                       event.stopPropagation();
@@ -133,8 +147,8 @@ const RootStore = types
                   // self.addToRecentShaders(self.scene.shaderGraph.getShaderByName(c.name));
                   self.addToRecentShaders({
                     label: c.name
-                  })
-                  self.scene.shaderGraph.setSelectedByName(c.name)
+                  });
+                  self.scene.shaderGraph.setSelectedByName(c.name);
                 }
               }
             };
@@ -177,8 +191,8 @@ const RootStore = types
 
       return {
         Recents: {
-          id: 'Recents',
-          label: 'Recent Shaders',
+          id: "Recents",
+          label: "Recent Shaders",
           dropDown: recentItems
         },
         Inputs: {
@@ -322,9 +336,6 @@ const RootStore = types
       link.click();
     }
 
-    /*
-      breakout()
-    */
     function breakout() {
       let new_window = window.open(
         "/output_window.html",
@@ -401,11 +412,14 @@ const RootStore = types
         target_data.ref.resizeCanvas(w, h);
       }
     };
-    
-    const addToRecentShaders = (shader) => {
-      console.log(self.shader_collection)
+
+    const addToRecentShaders = shader => {
+      console.log(self.shader_collection);
+      
+      // dont push duplicates
+      // limit to 10
       self.recentShaders.push(shader);
-    }
+    };
 
     return {
       afterCreate,
