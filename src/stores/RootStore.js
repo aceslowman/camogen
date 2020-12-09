@@ -40,7 +40,8 @@ const RootStore = types
     selectedParameter: types.maybe(types.safeReference(Parameter)),
     keyFocus: types.maybe(types.string),
     transport: types.optional(Transport, {}),
-    shader_collection: types.maybe(Collection),
+    shader_collection: types.maybe(Collection),    
+    recentShaders: types.array(types.safeReference(Shader)),
     width: 512,
     height: 512
   })
@@ -51,7 +52,6 @@ const RootStore = types
     breakoutControlled: false,
     messages: Messages.create(),
     context: Context.create()
-    // recentShaders: types.array(types.safeReference(Shader))
   }))
   .views(self => ({
     shaderLibrary() {
@@ -60,8 +60,18 @@ const RootStore = types
        way to traverse and remap the directory tree
       */
       let collection = self.shader_collection;
-
+      let recents = self.recentShaders;
+      let recentItems = {};
+      
       let items = {};
+      
+      recents.forEach((e,i) => {
+        console.log('recent', e)
+        // recentItems = {
+        //   ...recentItems,
+        //   [e]
+        // }
+      })
 
       collection.children.forEach(e => {
         if (e.type === "file") {
@@ -96,20 +106,14 @@ const RootStore = types
                 id: c.name,
                 label: c.name,
                 buttons: {
-                  // edit: {
-                  //   id: "edit",
-                  //   label: "e",
-                  //   title: "edit",
-                  //   onClick: () => {
-                  //     // e.removeChild(c);
-                  //   }
-                  // },
                   remove: {
                     id: "remove",
                     label: "x",
                     title: "remove",
                     onClick: (event) => {
+                      // should I add a confirmation?
                       event.preventDefault();
+                      event.stopPropagation();
                       e.removeChild(c);
                     }
                   }
@@ -155,6 +159,11 @@ const RootStore = types
       });
 
       return {
+        Recents: {
+          id: 'Recents',
+          label: 'Recent Shaders',
+          dropDown: recentItems
+        },
         Inputs: {
           id: "Inputs",
           label: "Inputs",
