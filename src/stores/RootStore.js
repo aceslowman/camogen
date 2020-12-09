@@ -41,7 +41,7 @@ const RootStore = types
     keyFocus: types.maybe(types.string),
     transport: types.optional(Transport, {}),
     shader_collection: types.maybe(Collection),    
-    recentShaders: types.array(types.safeReference(Shader)),
+    recentShaders: types.array(Collection),
     width: 512,
     height: 512
   })
@@ -67,6 +67,11 @@ const RootStore = types
       
       recents.forEach((e,i) => {
         console.log('recent', e)
+        return {
+          [e.name]: {
+            
+          }
+        }
         // recentItems = {
         //   ...recentItems,
         //   [e]
@@ -93,7 +98,10 @@ const RootStore = types
                 }
               },
               onClick: () => {
-                self.recentShaders.push(self.scene.shaderGraph.getShaderByName(e.name));
+                // self.addToRecentShaders(self.scene.shaderGraph.getShaderByName(e.name));
+                self.addToRecentShaders(Collection.create({
+                  name: e.name
+                }))
                 self.scene.shaderGraph.setSelectedByName(e.name)
               }
             }
@@ -122,7 +130,10 @@ const RootStore = types
                   }
                 },
                 onClick: () => {
-                  self.recentShaders.push(self.scene.shaderGraph.getShaderByName(e.name));
+                  // self.addToRecentShaders(self.scene.shaderGraph.getShaderByName(c.name));
+                  self.addToRecentShaders({
+                    label: c.name
+                  })
                   self.scene.shaderGraph.setSelectedByName(c.name)
                 }
               }
@@ -390,6 +401,11 @@ const RootStore = types
         target_data.ref.resizeCanvas(w, h);
       }
     };
+    
+    const addToRecentShaders = (shader) => {
+      console.log(self.shader_collection)
+      self.recentShaders.push(shader);
+    }
 
     return {
       afterCreate,
@@ -404,7 +420,8 @@ const RootStore = types
       save,
       load,
       fetchShaderFiles,
-      resizeCanvas
+      resizeCanvas,
+      addToRecentShaders
     };
   });
 
