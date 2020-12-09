@@ -11,10 +11,8 @@ let shader_collection;
 function preloadDefaultShaders() {
   const shader_path = path.resolve(__dirname, '../shaders');
    
-  shader_collection = dirTree(shader_path, {}, (item, PATH, stats) => {
-    item.id = nanoid();
-    
-    if(item.type === 'file') { 
+  shader_collection = dirTree(shader_path, {}, 
+    (item, PATH, stats) => {    // files
       fs.readFile(item.path, 'utf8', (err, data) => {        
         if(err) {
           console.error(err); 
@@ -22,8 +20,13 @@ function preloadDefaultShaders() {
           item.data = JSON.parse(data);
         }
       })
-    }
-  });  
+      
+      item.id = nanoid();
+    },
+    (item, PATH, stats) => {    // directories
+      item.id = nanoid();
+    },
+  );  
   
   shader_collection.id = 'default-collection_'+nanoid();
 }   

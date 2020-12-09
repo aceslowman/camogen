@@ -1,6 +1,6 @@
 import { getRoot, types } from "mobx-state-tree";
 import Shader from "../../ShaderStore";
-import DefaultShader from "../";
+import * as DefaultShader from "../defaults/DefaultShader";
 
 const webcam = types
   .model("Image", {
