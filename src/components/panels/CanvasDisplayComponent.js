@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from "react";
 import MainContext from "../../MainContext";
 import useResizeObserver from "../hooks/ResizeHook";
 import { GenericPanel, ToolbarComponent, InputSelect } from "maco-ui";
@@ -21,19 +27,28 @@ const CanvasDisplay = observer(props => {
     if (!store.p5_instance) return;
 
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
-    let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();    
-    
+    let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
+
     let offset_x = panel_bounds.width - inner_bounds.width;
     let offset_y = panel_bounds.height - inner_bounds.height;
-    
-    let w = Math.floor(inner_bounds.width);
-    let h = Math.floor(inner_bounds.height);    
-    
+
+    let w = Math.round(inner_bounds.width);
+    let h = Math.round(inner_bounds.height);
+
     store.resizeCanvas(w, h);
 
     setWidth(w);
     setHeight(h);
   }, wrapper_ref);
+
+  const handleDimensionChange = (w, h) => {
+    setWidth(w);
+    setHeight(h);
+
+    // make sure panel is detached so it can change size
+    props.panel.setFloating(true);
+    props.panel.setFullscreen(false);
+  };
 
   const handlePlay = e => store.transport.play();
 
@@ -47,44 +62,20 @@ const CanvasDisplay = observer(props => {
 
   const handleFormatSelect = e => setFormat(e);
 
-  const handleDimensionChange = (w, h) => {
-    
-    
+  useLayoutEffect(() => {
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
     let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
-  
-    console.log('wrapper_ref', wrapper_ref);
-    console.log('panel_ref', panel_ref);
 
-    console.log('inner_bounds',inner_bounds)        
-    console.log('panel_bounds',panel_bounds)
-    console.log('other bounds', panel_ref.current.getBoundingClientRect())
-     
     // offset needed to take account of toolbar and footbar
     let offset_x = panel_bounds.width - inner_bounds.width;
     let offset_y = panel_bounds.height - inner_bounds.height;
 
-    console.log('offset_x',offset_x)        
-    console.log('offset_y',offset_y)    
+    let _w = width + offset_x;
+    let _h = height + offset_y;
+
+    props.panel.setDimensions([_w, _h]);
     
-    let _w = w + offset_x;
-    let _h = h + offset_y;
-    
-    // offset_y is wrong when props.panel.fullscreen is true!
-    // not taking into account the title bar that is missing
-    // while fullscreen
-    
-    if(!props.panel.fullscreen) {
-      props.panel.setDimensions([_w, _h]);
-    }else {
-      // TODO: this is still broken! no hardcoded values!
-      props.panel.setDimensions([w+2, h+49]);
-    }
-    
-    props.panel.setFloating(true);
-    props.panel.setFullscreen(false);
-    
-  };
+  }, [width, height]);
 
   return (
     <GenericPanel
@@ -117,8 +108,8 @@ const CanvasDisplay = observer(props => {
               title: "record",
               label: "●",
               // label: store.transport.recording
-                // // ? `● ${Date.now() - store.transport.recordStart}`
-                // : "●",
+              // // ? `● ${Date.now() - store.transport.recordStart}`
+              // : "●",
               onClick: handleRecord,
               highlight: store.transport.recording,
               style: {
