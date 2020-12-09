@@ -57,7 +57,7 @@ let shaderGraph = types
             });
         }
 
-        function getShader(name) {
+        function getShaderByName(name) {
             let data, shader;
 
             // special case for webcam, image, and video shaders? 
@@ -82,14 +82,14 @@ let shaderGraph = types
 
         function setSelectedByName(name) {
             if(!self.selectedNode) self.selectedNode = self.root;
-            self.selectedNode.setData(getShader(name));
+            self.selectedNode.setData(getShaderByName(name));
             self.update(); // fixed issue where bounds weren't updating
         }
             
         return {
             afterAttach,
             afterUpdate,
-            getShader,
+            getShaderByName,
             setSelectedByName
         }
     })

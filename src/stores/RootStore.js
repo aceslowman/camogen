@@ -92,7 +92,10 @@ const RootStore = types
                   title: "remove"
                 }
               },
-              onClick: () => self.scene.shaderGraph.setSelectedByName(e.name)
+              onClick: () => {
+                self.recentShaders.push(self.scene.shaderGraph.getShaderByName(e.name));
+                self.scene.shaderGraph.setSelectedByName(e.name)
+              }
             }
           };
         } else if (e.type === "directory") {
@@ -118,7 +121,10 @@ const RootStore = types
                     }
                   }
                 },
-                onClick: () => self.scene.shaderGraph.setSelectedByName(c.name)
+                onClick: () => {
+                  self.recentShaders.push(self.scene.shaderGraph.getShaderByName(e.name));
+                  self.scene.shaderGraph.setSelectedByName(c.name)
+                }
               }
             };
           });
