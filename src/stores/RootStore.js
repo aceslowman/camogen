@@ -54,43 +54,39 @@ const RootStore = types
     context: Context.create()
   }))
   .views(self => ({
-    shaderLibrary() {
-      /*
-       currently limited to two levels, just haven't figured out the best
-       way to traverse and remap the directory tree
-      */
-      let collection = self.shader_collection;
-      let recents = self.recentShaders;
+    /*
+      TODO: recents only update after closing and reopening 
+      dropDown. very similar to problem I had earlier where
+      the solution was to remove
+    */
+    recentShaderLibrary() {
+      let recents = self.recentShaders;      
+      
       let recentItems = {};
 
-      let items = {};
-
-      
-      console.log(recents)
       recents.forEach((e, i) => {
         recentItems = {
           ...recentItems,
-          ['recent_'+e.name]: {
-            id: 'recent_'+e.name,
+          ["recent_" + e.name]: {
+            id: "recent_" + e.name,
             label: e.name,
-            buttons: {
-              edit: {
-                id: "edit",
-                label: "e",
-                title: "edit"
-              },
-              remove: {
-                id: "remove",
-                label: "x",
-                title: "remove"
-              }
-            },
             onClick: () => {
               self.scene.shaderGraph.setSelectedByName(e.name);
             }
           }
         };
-      });
+      }); 
+      
+      return recentItems;
+    },
+    shaderLibrary() {
+      /*
+       currently limited to two levels, just haven't figured out the best
+       way to traverse and remap the directory tree
+      */
+      
+      let items = {};
+      let collection = self.shader_collection;
 
       collection.children.forEach(e => {
         if (e.type === "file") {
@@ -112,11 +108,8 @@ const RootStore = types
                 }
               },
               onClick: () => {
-                // self.addToRecentShaders(self.scene.shaderGraph.getShaderByName(e.name));
                 self.addToRecentShaders(
-                  Collection.create({
-                    name: e.name
-                  })
+                  Collection.create({ name: e.name })
                 );
                 self.scene.shaderGraph.setSelectedByName(e.name);
               }
@@ -146,10 +139,9 @@ const RootStore = types
                   }
                 },
                 onClick: () => {
-                  // self.addToRecentShaders(self.scene.shaderGraph.getShaderByName(c.name));
-                  self.addToRecentShaders({
-                    label: c.name
-                  });
+                  self.addToRecentShaders(
+                    Collection.create({ name: c.name })
+                  );
                   self.scene.shaderGraph.setSelectedByName(c.name);
                 }
               }
@@ -195,7 +187,7 @@ const RootStore = types
         Recents: {
           id: "Recents",
           label: "Recent Shaders",
-          dropDown: recentItems
+          dropDown: self.recentShaderLibrary()
         },
         Inputs: {
           id: "Inputs",
@@ -416,10 +408,10 @@ const RootStore = types
     };
 
     const addToRecentShaders = shader => {
-      console.log(self.shader_collection);
+      // limit to 5
+      if(self.recentShaders.length >= 5)
+        self.recentShaders.shift();
       
-      // dont push duplicates
-      // limit to 10
       self.recentShaders.push(shader);
     };
 
