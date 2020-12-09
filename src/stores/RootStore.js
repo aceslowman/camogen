@@ -65,6 +65,8 @@ const RootStore = types
 
       let items = {};
 
+      
+      console.log(recents)
       recents.forEach((e, i) => {
         recentItems = {
           ...recentItems,
