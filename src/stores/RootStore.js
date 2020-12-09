@@ -172,11 +172,7 @@ const RootStore = types
                       })
                     );
 
-                    // now save collection to local storage
-                    window.localStorage.setItem(
-                      "shader_collection",
-                      JSON.stringify(getSnapshot(self.shader_collection))
-                    );
+                    self.persistShaderLibrary()
                   }
                 }
               }
@@ -220,10 +216,7 @@ const RootStore = types
           id: "SaveCollection",
           label: "Save Collection",
           onClick: () => {
-            window.localStorage.setItem(
-              "shader_collection",
-              JSON.stringify(getSnapshot(self.shader_collection))
-            );
+            self.persistShaderLibrary();
           }
         }
       };
@@ -278,7 +271,11 @@ const RootStore = types
     }
     
     function persistShaderLibrary() {
-      
+      // save collection to local storage
+      window.localStorage.setItem(
+        "shader_collection",
+        JSON.stringify(getSnapshot(self.shader_collection))
+      );
     }
     
     function setShaderCollection(collection) {

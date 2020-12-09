@@ -89,7 +89,10 @@ const ShaderEditor = props => {
                   "SaveCollection": {
                     id: "SaveCollection",
                     label: "Save to Collection",
-                    onClick: () => props.data.saveToCollection()
+                    onClick: () => {
+                      props.data.saveToCollection()
+                      store.persistShaderLibrary();
+                    }
                   },
                   "Load Shader": {
                     id: "Load Shader",
