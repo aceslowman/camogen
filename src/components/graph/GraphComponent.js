@@ -14,24 +14,24 @@ const GraphComponent = observer(props => {
   const [labels, setLabels] = useState([]);
 
   const handleContextMenu = (e, node) => {
-    e.stopPropagation()                       
+    e.stopPropagation();
     e.preventDefault();
 
     node.select(); // select with right click
     store.context.setContextmenu({
-      "Library": {
+      Library: {
         id: "Library",
         label: "Library",
         dropDown: {
-            Recents: {
-              id: "Recents",
-              label: "Recent Shaders",
-              dropDown: store.recentShaderLibrary()
-            },
-            ...store.shaderLibrary()
-          }
+          Recents: {
+            id: "Recents",
+            label: "Recent Shaders",
+            dropDown: store.recentShaderLibrary()
+          },
+          ...store.shaderLibrary()
+        }
       },
-      "Delete": {
+      Delete: {
         id: "Delete",
         label: "Delete",
         onClick: () => {
@@ -39,12 +39,12 @@ const GraphComponent = observer(props => {
           store.context.setContextmenu(); // removes menu
         }
       },
-      "EditShader": {
+      EditShader: {
         id: "EditShader",
         label: "Edit Shader",
-        onClick: () => { 
-          let variant = store.ui.getLayoutVariant('SHADER_EDIT');
-          store.ui.getPanel('MAIN').setLayout(variant);
+        onClick: () => {
+          let variant = store.ui.getLayoutVariant("SHADER_EDIT");
+          store.ui.getPanel("MAIN").setLayout(variant);
           store.context.setContextmenu(); // removes menu
         }
       }
