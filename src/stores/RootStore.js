@@ -54,16 +54,9 @@ const RootStore = types
     context: Context.create()
   }))
   .views(self => ({
-    /*
-      TODO: recents only update after closing and reopening 
-      dropDown, specifically with the ContextMenu. very similar 
-      to problem I had earlier where the solution was to remove 
-      *any derived state*.
-    */
     recentShaderLibrary() {
       let recentItems = {};
-
-// Uncaught Error: [mobx-state-tree] Failed to resolve reference 'Displace' to type 'Collection' (from node: /recentShaders/0)
+      
       self.recentShaders.forEach((e, i) => {
         recentItems = {
           ...recentItems,
@@ -215,7 +208,6 @@ const RootStore = types
   .actions(self => {
     // setUndoManager(self)
 
-    // only when first loaded!
     function afterCreate() {
       // window.localStorage.clear();
 

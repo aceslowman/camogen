@@ -350,6 +350,8 @@ const App = observer(props => {
     // explicitly allowed
     props.store.context.setContextmenu();
   };
+  //           <ContextMenuComponent items={store.context.contextmenu} /> -->
+
 
   return (
     <MainProvider value={{ store: props.store }}>
@@ -362,8 +364,42 @@ const App = observer(props => {
             backgroundColor: ui.theme.secondary_color
           }}
         >
-          <ContextMenuComponent items={store.context.contextmenu} />
 
+    <ContextMenuComponent      
+    items={{
+      "Library": {
+        id: "Library",
+        label: "Library",
+        dropDown: {
+            Recents: {
+              id: "Recents",
+              label: "Recent Shaders",
+              dropDown: store.recentShaderLibrary()
+            },
+            ...store.shaderLibrary()
+          }
+      },
+      "Delete": {
+        id: "Delete",
+        label: "Delete",
+        onClick: () => {
+          props.data.removeNode(node);
+          store.context.setContextmenu(); // removes menu
+        }
+      },
+      "EditShader": {
+        id: "EditShader",
+        label: "Edit Shader",
+        onClick: () => { 
+          let variant = store.ui.getLayoutVariant('SHADER_EDIT');
+          store.ui.getPanel('MAIN').setLayout(variant);
+          store.context.setContextmenu(); // removes menu
+        }
+      }
+    }} />
+          
+          
+          
           {main_panel_toolbar}
 
           <CanvasDisplay panel={canvasPanel} />
