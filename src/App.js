@@ -157,8 +157,8 @@ const App = observer(props => {
         position: "static"
       }}
       items={{
-        "Fullscreen": {
-          id: 'Fullscreen',
+        Fullscreen: {
+          id: "Fullscreen",
           title: canvasPanel.fullscreen ? "float canvas" : "fullscreen canvas",
           label: "✳",
           onClick: () => {
@@ -168,7 +168,7 @@ const App = observer(props => {
           },
           highlight: !canvasPanel.fullscreen
         },
-        "Title": {
+        Title: {
           id: "Title",
           label: <h1>camogen</h1>,
           onClick: () => {
@@ -176,11 +176,11 @@ const App = observer(props => {
           },
           highlight: showAbout
         },
-        "File": {
+        File: {
           id: "File",
           label: "File",
           dropDown: {
-            "Edit_Name": {
+            Edit_Name: {
               id: "Edit_Name",
               label: (
                 <div
@@ -208,26 +208,26 @@ const App = observer(props => {
                 </div>
               )
             },
-            "Save_Scene": {
+            Save_Scene: {
               id: "Save_Scene",
               label: "Save Scene",
               onClick: () => {
                 props.store.save();
               }
             },
-            "Load_Scene": {
+            Load_Scene: {
               id: "Load_Scene",
               label: "Load Scene",
               onClick: () => props.store.load()
             },
-            "New_Scene": {
+            New_Scene: {
               id: "New_Scene",
               label: "New Scene",
               onClick: () => {
                 props.store.scene.clear();
               }
             },
-            "Preferences": {
+            Preferences: {
               id: "Preferences",
               label: "Preferences",
               onClick: () => {
@@ -237,8 +237,8 @@ const App = observer(props => {
             }
           }
         },
-        "Library": {
-          id: 'Library',
+        Library: {
+          id: "Library",
           label: "Library",
           dropDown: {
             Recents: {
@@ -249,36 +249,36 @@ const App = observer(props => {
             ...props.store.shaderLibrary()
           }
         },
-        "Layout": {
+        Layout: {
           id: "Layout",
           label: "Layout",
           dropDown: {
-            "Welcome": {
+            Welcome: {
               id: "Welcome",
               label: "Welcome",
               onClick: () => handleLayoutSelect("WELCOME")
             },
-            "Shader_Edit": {
+            Shader_Edit: {
               id: "Shader_Edit",
               label: "Shader Edit",
               onClick: () => handleLayoutSelect("SHADER_EDIT")
             },
-            "Shader_Control": {
+            Shader_Control: {
               id: "Shader_Control",
               label: "Shader Control",
               onClick: () => handleLayoutSelect("SHADER_CONTROL")
             },
-            "Parameter_Editor": {
+            Parameter_Editor: {
               id: "Parameter_Editor",
               label: "Parameter Editor",
               onClick: () => handleLayoutSelect("PARAMETER")
             },
-            "Debug": {
+            Debug: {
               id: "Debug",
               label: "Debug",
               onClick: () => handleLayoutSelect("DEBUG")
             },
-            "Add_Panel": {
+            Add_Panel: {
               id: "Add_Panel",
               label: "Add Panel",
               dropDown: {
@@ -302,27 +302,27 @@ const App = observer(props => {
                   label: "Parameter Editor",
                   onClick: () => handleAddPanel("PARAMETER_EDITOR")
                 },
-                "Help": {
+                Help: {
                   id: "Help",
                   label: "Help",
                   onClick: () => handleAddPanel("HELP")
                 },
-                "Debug": {
+                Debug: {
                   id: "Debug",
                   label: "Debug",
                   onClick: () => handleAddPanel("DEBUG")
                 },
-                "Messages": {
+                Messages: {
                   id: "Messages",
                   label: "Messages",
                   onClick: () => handleAddPanel("MESSAGES")
                 },
-                "Preferences": {
+                Preferences: {
                   id: "Preferences",
                   label: "Preferences",
                   onClick: () => handleAddPanel("PREFERENCES")
                 },
-                "Capture": {
+                Capture: {
                   id: "Capture",
                   label: "Capture",
                   onClick: () => handleAddPanel("CAPTURE")
@@ -331,12 +331,12 @@ const App = observer(props => {
             }
           }
         },
-        "Snapshot": {
+        Snapshot: {
           id: "Snapshot",
           label: "Snapshot",
           onClick: () => props.store.snapshot()
         },
-        "Breakout": {
+        Breakout: {
           id: "Breakout",
           label: "Breakout",
           onClick: handleBreakout

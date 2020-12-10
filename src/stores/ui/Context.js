@@ -6,7 +6,7 @@ const Context = types
         
     })
     .volatile(self => ({
-        contextmenu: [],
+        contextmenu: {},
         keylistener: tinykeys(window, {}),
         keymap: null,
     }))
