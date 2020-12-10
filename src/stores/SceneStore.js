@@ -3,7 +3,6 @@ import { getSnapshot, types } from "mobx-state-tree";
 import ShaderGraph from "./ShaderGraphStore";
 import Target from "./TargetStore";
 import { OperatorGraph } from "./GraphStore";
-// import OperatorGraph from './OperatorGraphStore';
 
 const Scene = types
   .model("Scene", {
@@ -16,11 +15,11 @@ const Scene = types
       self.shaderGraph = ShaderGraph.create({ uuid: nanoid() });
 
       /*
-                add uv shader by default
+          add uv shader by default
 
-                likely to be replaced with
-                single loaded snapshot in RootScene
-            */
+          likely to be replaced with
+          single loaded snapshot in RootScene
+      */
       self.shaderGraph.addNode();
       // self.shaderGraph.setSelectedByName('TextInput');
       self.shaderGraph.setSelectedByName("UV");
@@ -56,14 +55,14 @@ const Scene = types
       self.targets = [];
 
       /* 
-                TODO: !!! this is returning an error! this persistently
-                does not clear properly (maybe a type issue in mst?)
+          TODO: !!! this is returning an error! this persistently
+          does not clear properly (maybe a type issue in mst?)
 
-                it seems *safe enough* to bypass this error, it doesn't
-                break the scene, but this needs to be fixed.
+          it seems *safe enough* to bypass this error, it doesn't
+          break the scene, but this needs to be fixed.
 
-                can confirm that all nodes do delete
-            */
+          can confirm that all nodes do delete
+      */
       // try {
       self.operatorGraphs.forEach(e => {
         e.clear();

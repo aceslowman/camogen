@@ -232,38 +232,10 @@ const RootStore = types
       });
     }
 
-    function setTheme(theme) {
-      self.theme = theme;
-    }
-
     function setupP5() {
       self.p5_instance = new p5(p => Runner(p, self));
     }
-
-    function setScene(scene) {
-      self.scene = scene;
-    }
-
-    function setReady(value) {
-      self.ready = value;
-    }
-
-    function setName(name) {
-      self.name = name;
-    }
     
-    function persistShaderLibrary() {
-      // save collection to local storage
-      window.localStorage.setItem(
-        "shader_collection",
-        JSON.stringify(getSnapshot(self.shader_collection))
-      );
-    }
-    
-    function setShaderCollection(collection) {
-      self.shader_collection = collection;
-    };
-
     function selectParameter(param) {
       if (param && !param.graph) param.createGraph();
       self.selectedParameter = param;
@@ -382,6 +354,14 @@ const RootStore = types
         console.error("failed to fetch shaders", err);
       }
     });
+    
+    function persistShaderLibrary() {
+      // save collection to local storage
+      window.localStorage.setItem(
+        "shader_collection",
+        JSON.stringify(getSnapshot(self.shader_collection))
+      );
+    }
 
     const resizeCanvas = (w, h) => {
       if (!w) w = 1; // never resize canvas to 0
@@ -401,6 +381,12 @@ const RootStore = types
       if (self.recentShaders.length >= 5) self.recentShaders.shift();
       self.recentShaders.push(shader.id);
     };
+    
+    const setTheme = (theme) => self.theme = theme;
+    const setScene = (scene) => self.scene = scene;
+    const setReady = (value) => self.ready = value;
+    const setName = (name) => self.name = name;
+    const setShaderCollection = c => self.shader_collection = c;
 
     return {
       afterCreate,

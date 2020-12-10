@@ -11,14 +11,14 @@ const Context = types
         keymap: null,
     }))
     .actions(self => ({
-        setKeymap: (keymap) => {
+        setKeymap: keymap => {
             if(self.keylistener) self.keylistener();
             
             self.keymap = keymap;
             self.keylistener = tinykeys(window, self.keymap);   
         },
         removeKeymap: () => self.keylistener(),
-        setContextmenu: (c) => self.contextmenu = c
+        setContextmenu: c => self.contextmenu = c
     }))
 
 export default Context;

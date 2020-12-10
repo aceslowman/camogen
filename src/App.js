@@ -32,7 +32,7 @@ import { getSnapshot, applySnapshot } from "mobx-state-tree";
 
 const App = observer(props => {
   const { store } = props;
-  const { ui } = store;
+  const { ui, scene } = store;
 
   const mainRef = useRef(null);
   const [showAbout, setShowAbout] = useState(false);
@@ -75,7 +75,7 @@ const App = observer(props => {
   }, [props.history, props.store]);
 
   const handleBreakout = () => {
-    props.store.breakout();
+    store.breakout();
   };
 
   const getPanel = panel => {
@@ -84,9 +84,9 @@ const App = observer(props => {
         return (
           <ShaderGraphComponent
             key={panel.id}
-            selectedNode={props.store.scene.shaderGraph.selectedNode}
-            coord_bounds={props.store.scene.shaderGraph.coord_bounds}
-            data={props.store.scene.shaderGraph}
+            selectedNode={scene.shaderGraph.selectedNode}
+            coord_bounds={scene.shaderGraph.coord_bounds}
+            data={scene.shaderGraph}
             panel={panel}
           />
         );
@@ -94,12 +94,12 @@ const App = observer(props => {
         return (
           <ShaderEditorComponent
             key={panel.id}
-            node={store.scene.shaderGraph.selectedNode}
-            data={store.scene.shaderGraph.selectedNode.data}
-            graph={store.scene.shaderGraph}
+            node={scene.shaderGraph.selectedNode}
+            data={scene.shaderGraph.selectedNode.data}
+            graph={scene.shaderGraph}
             hasChanged={
-              store.scene.shaderGraph.selectedNode.data
-                ? store.scene.shaderGraph.selectedNode.data.hasChanged
+              scene.shaderGraph.selectedNode.data
+                ? scene.shaderGraph.selectedNode.data.hasChanged
                 : null
             }
             panel={panel}
@@ -109,8 +109,8 @@ const App = observer(props => {
         return (
           <ShaderControlsComponent
             key={panel.id}
-            data={store.scene.shaderGraph}
-            selectedNode={store.scene.shaderGraph.selectedNode}
+            data={scene.shaderGraph}
+            selectedNode={scene.shaderGraph.selectedNode}
             panel={panel}
           />
         );
@@ -200,9 +200,9 @@ const App = observer(props => {
                       fontFamily: "inherit"
                     }}
                     type="text"
-                    placeholder={props.store.name}
+                    placeholder={store.name}
                     onChange={e => {
-                      props.store.setName(e.target.value);
+                      store.setName(e.target.value);
                     }}
                   />
                 </div>
@@ -212,19 +212,19 @@ const App = observer(props => {
               id: "Save_Scene",
               label: "Save Scene",
               onClick: () => {
-                props.store.save();
+                store.save();
               }
             },
             Load_Scene: {
               id: "Load_Scene",
               label: "Load Scene",
-              onClick: () => props.store.load()
+              onClick: () => store.load()
             },
             New_Scene: {
               id: "New_Scene",
               label: "New Scene",
               onClick: () => {
-                props.store.scene.clear();
+                store.scene.clear();
               }
             },
             Preferences: {
@@ -244,9 +244,9 @@ const App = observer(props => {
             Recents: {
               id: "Recents",
               label: "Recent Shaders",
-              dropDown: props.store.recentShaderLibrary()
+              dropDown: store.recentShaderLibrary()
             },
-            ...props.store.shaderLibrary()
+            ...store.shaderLibrary()
           }
         },
         Layout: {
@@ -334,7 +334,7 @@ const App = observer(props => {
         Snapshot: {
           id: "Snapshot",
           label: "Snapshot",
-          onClick: () => props.store.snapshot()
+          onClick: () => store.snapshot()
         },
         Breakout: {
           id: "Breakout",
@@ -348,13 +348,11 @@ const App = observer(props => {
   const handleContextMenu = e => {
     // prevents context menu anywhere that hasn't been
     // explicitly allowed
-    props.store.context.setContextmenu();
+    store.context.setContextmenu();
   };
-  //           <ContextMenuComponent items={store.context.contextmenu} /> -->
-
 
   return (
-    <MainProvider value={{ store: props.store }}>
+    <MainProvider value={{ store: store }}>
       <ThemeContext.Provider value={ui.theme}>
         <div
           id="APP"
@@ -364,42 +362,8 @@ const App = observer(props => {
             backgroundColor: ui.theme.secondary_color
           }}
         >
+          <ContextMenuComponent items={store.context.contextmenu} />
 
-    <ContextMenuComponent      
-    items={{
-      "Library": {
-        id: "Library",
-        label: "Library",
-        dropDown: {
-            Recents: {
-              id: "Recents",
-              label: "Recent Shaders",
-              dropDown: store.recentShaderLibrary()
-            },
-            ...store.shaderLibrary()
-          }
-      },
-      "Delete": {
-        id: "Delete",
-        label: "Delete",
-        onClick: () => {
-          props.data.removeNode(node);
-          store.context.setContextmenu(); // removes menu
-        }
-      },
-      "EditShader": {
-        id: "EditShader",
-        label: "Edit Shader",
-        onClick: () => { 
-          let variant = store.ui.getLayoutVariant('SHADER_EDIT');
-          store.ui.getPanel('MAIN').setLayout(variant);
-          store.context.setContextmenu(); // removes menu
-        }
-      }
-    }} />
-          
-          
-          
           {main_panel_toolbar}
 
           <CanvasDisplay panel={canvasPanel} />

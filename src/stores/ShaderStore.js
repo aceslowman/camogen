@@ -384,7 +384,6 @@ let shader = types
     }
 
     function clear() {
-      console.log(`clearing shader ${self.name}`);
       applySnapshot(self, DefaultShader);
     }
 
@@ -393,10 +392,7 @@ let shader = types
       return p_graph;
     }
     
-    function setCollection(collection) {
-      console.log(collection)
-      self.collection = collection;
-    }
+    const setCollection = c => self.collection = c;
 
     return {
       afterCreate,
