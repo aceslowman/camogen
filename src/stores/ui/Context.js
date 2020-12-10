@@ -5,7 +5,7 @@ import { observable } from 'mobx';
 const Context = types
   .model("Context", {})
   .volatile(self => ({
-    contextmenu: observable.deep({}),
+    contextmenu: {},
     keylistener: tinykeys(window, {}),
     keymap: null
   }))
@@ -17,7 +17,7 @@ const Context = types
       self.keylistener = tinykeys(window, self.keymap);
     },
     removeKeymap: () => self.keylistener(),
-    setContextmenu: c => (self.contextmenu = c)
+    setContextmenu: c => self.contextmenu = c
   }));
 
 export default Context;
