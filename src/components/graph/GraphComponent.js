@@ -12,43 +12,37 @@ const GraphComponent = observer(props => {
   const wrapper_ref = useRef(null);
   const canvas_ref = useRef(null);
   const [labels, setLabels] = useState([]);
+  const [ctxMenu, setCtxMenu] = useState({
+    Library: {
+      id: "Library",
+      label: "Library",
+      dropDown: store.shaderLibrary
+    },
+    Delete: {
+      id: "Delete",
+      label: "Delete",
+      onClick: () => {
+        props.data.removeNode(node);
+        store.context.setContextmenu(); // removes menu
+      }
+    },
+    EditShader: {
+      id: "EditShader",
+      label: "Edit Shader",
+      onClick: () => {
+        let variant = store.ui.getLayoutVariant("SHADER_EDIT");
+        store.ui.getPanel("MAIN").setLayout(variant);
+        store.context.setContextmenu(); // removes menu
+      }
+    }
+  });
 
   const handleContextMenu = (e, node) => {
     e.stopPropagation();
     e.preventDefault();
 
     node.select(); // select with right click
-    store.context.setContextmenu({
-      Library: {
-        id: "Library",
-        label: "Library",
-        dropDown: {
-          Recents: {
-            id: "Recents",
-            label: "Recent Shaders",
-            dropDown: store.recentShaderLibrary()
-          },
-          ...store.shaderLibrary()
-        }
-      },
-      Delete: {
-        id: "Delete",
-        label: "Delete",
-        onClick: () => {
-          props.data.removeNode(node);
-          store.context.setContextmenu(); // removes menu
-        }
-      },
-      EditShader: {
-        id: "EditShader",
-        label: "Edit Shader",
-        onClick: () => {
-          let variant = store.ui.getLayoutVariant("SHADER_EDIT");
-          store.ui.getPanel("MAIN").setLayout(variant);
-          store.context.setContextmenu(); // removes menu
-        }
-      }
-    });
+    store.context.setContextmenu(ctxMenu);
   };
 
   const drawGraph = () => {
@@ -215,3 +209,4 @@ const GraphComponent = observer(props => {
 });
 
 export default GraphComponent;
+0;

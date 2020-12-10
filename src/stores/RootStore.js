@@ -54,7 +54,7 @@ const RootStore = types
     context: Context.create()
   }))
   .views(self => ({
-    recentShaderLibrary() {
+    get recentShaderLibrary() {
       let recentItems = {};
       
       self.recentShaders.forEach((e, i) => {
@@ -72,7 +72,7 @@ const RootStore = types
 
       return recentItems;
     },
-    shaderLibrary() {
+    get shaderLibrary() {
       /*
        currently limited to two levels, just haven't figured out the best
        way to traverse and remap the directory tree
@@ -165,11 +165,11 @@ const RootStore = types
       });
 
       return {
-        // Recents: {
-        //   id: "Recents",
-        //   label: "Recent Shaders",
-        //   dropDown: self.recentShaderLibrary()
-        // },
+        Recents: {
+          id: "Recents",
+          label: "Recent Shaders",
+          dropDown: self.recentShaderLibrary
+        },
         Inputs: {
           id: "Inputs",
           label: "Inputs",

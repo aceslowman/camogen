@@ -240,14 +240,7 @@ const App = observer(props => {
         Library: {
           id: "Library",
           label: "Library",
-          dropDown: {
-            Recents: {
-              id: "Recents",
-              label: "Recent Shaders",
-              dropDown: store.recentShaderLibrary()
-            },
-            ...store.shaderLibrary()
-          }
+          dropDown: store.shaderLibrary
         },
         Layout: {
           id: "Layout",
