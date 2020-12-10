@@ -63,18 +63,19 @@ const RootStore = types
     recentShaderLibrary() {
       let recentItems = {};
 
-//       self.recentShaders.forEach((e, i) => {
-//         recentItems = {
-//           ...recentItems,
-//           [e.id]: {
-//             id: e.id,
-//             label: e.name,
-//             onClick: () => {
-//               self.scene.shaderGraph.setSelectedByName(e.name);
-//             }
-//           }
-//         };
-//       });
+// Uncaught Error: [mobx-state-tree] Failed to resolve reference 'Displace' to type 'Collection' (from node: /recentShaders/0)
+      self.recentShaders.forEach((e, i) => {
+        recentItems = {
+          ...recentItems,
+          ['recent_e.id]: {
+            id: 'recent_e.id,
+            label: e.name,
+            onClick: () => {
+              self.scene.shaderGraph.setSelectedByName(e.name);
+            }
+          }
+        };
+      });
 
       return recentItems;
     },
