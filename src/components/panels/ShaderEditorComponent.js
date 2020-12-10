@@ -31,8 +31,8 @@ const ShaderEditor = props => {
 
   const handleEditorChange = (doc, changes) => {
     let value = doc.getValue();
-    
-    if(editType === "vert") {      
+
+    if (editType === "vert") {
       props.data.setVert(value);
     } else {
       props.data.setFrag(value);
@@ -46,11 +46,11 @@ const ShaderEditor = props => {
       items={
         showEditor
           ? {
-              File: {
+              "File": {
                 id: "File",
                 label: "File",
                 dropDown: {
-                  NameShader: {
+                  "NameShader": {
                     id: "NameShader",
                     label: (
                       <div
@@ -81,26 +81,26 @@ const ShaderEditor = props => {
                       </div>
                     )
                   },
-                  "Save Shader": {
-                    id: "Save Shader",
+                  "SaveShader": {
+                    id: "SaveShader",
                     label: "Save Shader",
                     onClick: () => props.data.save()
                   },
-                  "SaveCollection": {
+                  SaveCollection: {
                     id: "SaveCollection",
                     label: "Save to Collection",
                     onClick: () => {
-                      props.data.saveToCollection()
+                      props.data.saveToCollection();
                       store.persistShaderLibrary();
                     }
                   },
-                  "Load Shader": {
-                    id: "Load Shader",
+                  "LoadShader": {
+                    id: "LoadShader",
                     label: "Load Shader",
                     onClick: () => props.data.load()
                   },
-                  "New Shader": {
-                    id: "New Shader",
+                  "NewShader": {
+                    id: "NewShader",
                     label: "New Shader",
                     onClick: () => props.data.clear()
                   }
