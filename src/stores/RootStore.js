@@ -67,8 +67,8 @@ const RootStore = types
       self.recentShaders.forEach((e, i) => {
         recentItems = {
           ...recentItems,
-          ['recent_e.id]: {
-            id: 'recent_e.id,
+          [e.id]: {
+            id: e.id,
             label: e.name,
             onClick: () => {
               self.scene.shaderGraph.setSelectedByName(e.name);
@@ -108,9 +108,7 @@ const RootStore = types
                 }
               },
               onClick: () => {
-                self.addToRecentShaders(
-                  Collection.create({ id: e.name, name: e.name })
-                );
+                self.addToRecentShaders(e);
                 self.scene.shaderGraph.setSelectedByName(e.name, e);
               }
             }
@@ -139,9 +137,7 @@ const RootStore = types
                   }
                 },
                 onClick: () => {
-                  self.addToRecentShaders(
-                    Collection.create({ id: c.name, name: c.name })
-                  );
+                  self.addToRecentShaders(c);
                   self.scene.shaderGraph.setSelectedByName(c.name, c);
                 }
               }
@@ -416,8 +412,7 @@ const RootStore = types
     const addToRecentShaders = shader => {
       // limit to 5
       if (self.recentShaders.length >= 5) self.recentShaders.shift();
-
-      self.recentShaders.push(shader);
+      self.recentShaders.push(shader.id);
     };
 
     return {
