@@ -23,22 +23,22 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
   }
 
   /*
-            afterUpdate(queue)
+    afterUpdate(queue)
 
-            after graph updates, the shader graph updates targets
-            and syncs the shaders with the targets
+    after graph updates, the shader graph updates targets
+    and syncs the shaders with the targets
 
-            accepts an array of arrays, representing each target and it's 
-            render queue.
-        */
+    accepts an array of arrays, representing each target and it's 
+    render queue.
+  */
   function afterUpdate() {
     self.queue.forEach((subqueue, branch_id) => {
       /*
-                    assign targets to shaders
+          assign targets to shaders
 
-                    note: seems like there is room for refactoring and making
-                    the logic of this clearer.
-                */
+          note: seems like there is room for refactoring and making
+          the logic of this clearer.
+      */
       subqueue.forEach(node => {
         if (node.data) {
           // if there are targets and the necessary one is available
@@ -90,9 +90,9 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
   function setSelectedByName(name, collection = null) {
     if (!self.selectedNode) self.selectedNode = self.root;
     let shader = getShaderByName(name);
-    if(collection) shader.setCollection(collection);
+    if (collection) shader.setCollection(collection);
     // collection is experimental argument
-    console.log('collection',collection)    
+    // console.log("collection", collection);
     self.selectedNode.setData(shader);
     self.update(); // fixed issue where bounds weren't updating
   }
