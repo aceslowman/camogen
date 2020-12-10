@@ -12,41 +12,39 @@ const GraphComponent = observer(props => {
   const wrapper_ref = useRef(null);
   const canvas_ref = useRef(null);
   const [labels, setLabels] = useState([]);
-  const [ctxMenu, setCtxMenu] = useState({
-    Library: {
-      id: "Library",
-      label: "Library",
-      dropDown: store.shaderLibrary
-    },
-    Delete: {
-      id: "Delete",
-      label: "Delete",
-      onClick: () => {
-        props.data.removeNode(node);
-        store.context.setContextmenu(); // removes menu
-      }
-    },
-    EditShader: {
-      id: "EditShader",
-      label: "Edit Shader",
-      onClick: () => {
-        let variant = store.ui.getLayoutVariant("SHADER_EDIT");
-        store.ui.getPanel("MAIN").setLayout(variant);
-        store.context.setContextmenu(); // removes menu
-      }
-    }
-  });
 
   const handleContextMenu = (e, node) => {
     e.stopPropagation();
     e.preventDefault();
 
     node.select(); // select with right click
-    store.context.setContextmenu(ctxMenu);
+    store.context.setContextmenu({
+      Library: {
+        id: "Library",
+        label: "Library",
+        dropDown: store.shaderLibrary
+      },
+      Delete: {
+        id: "Delete",
+        label: "Delete",
+        onClick: () => {
+          props.data.removeNode(node);
+          store.context.setContextmenu(); // removes menu
+        }
+      },
+      EditShader: {
+        id: "EditShader",
+        label: "Edit Shader",
+        onClick: () => {
+          let variant = store.ui.getLayoutVariant("SHADER_EDIT");
+          store.ui.getPanel("MAIN").setLayout(variant);
+          store.context.setContextmenu(); // removes menu
+        }
+      }
+    });
   };
 
   const drawGraph = () => {
-    // console.log('rerendering graph')
     const ctx = canvas_ref.current.getContext("2d");
     const wrapper_bounds = wrapper_ref.current.getBoundingClientRect();
     let _labels = [];
@@ -161,7 +159,7 @@ const GraphComponent = observer(props => {
           className={`${styles.label} ${
             props.data.selectedNode === node ? styles.selected : ""
           }`}
-          onClick={() => handleLabelClick(node)}
+          onClick={() => node.select()}
           onContextMenu={e => handleContextMenu(e, node)}
           style={{
             left: x + spacing.x / 2 - 15,
@@ -188,8 +186,6 @@ const GraphComponent = observer(props => {
 
   useResizeObserver(drawGraph, wrapper_ref);
 
-  const handleLabelClick = node => node.select();
-
   useLayoutEffect(() => {
     drawGraph();
   }, [
@@ -209,4 +205,4 @@ const GraphComponent = observer(props => {
 });
 
 export default GraphComponent;
-0;
+0
