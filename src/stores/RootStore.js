@@ -96,11 +96,6 @@ const RootStore = types
               id: e.id,
               label: e.name,
               buttons: {
-                edit: {
-                  id: "edit",
-                  label: "e",
-                  title: "edit"
-                },
                 remove: {
                   id: "remove",
                   label: "x",

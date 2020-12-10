@@ -3,6 +3,7 @@ import Operator from '../../OperatorStore';
 
 const midi = types
 	.model("MIDI", {
+    type: "MIDI",
 		value: 0,
 		modifier: 1,
 		midi_inputs: types.array(types.frozen()),
