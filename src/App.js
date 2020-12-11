@@ -324,11 +324,6 @@ const App = observer(props => {
             }
           }
         },
-        Snapshot: {
-          id: "Snapshot",
-          label: "Snapshot",
-          onClick: () => store.snapshot()
-        },
         Breakout: {
           id: "Breakout",
           label: "Breakout",
