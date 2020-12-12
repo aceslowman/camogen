@@ -6,7 +6,8 @@ import {
   ControlGroupComponent,
   InputBool,
   InputFloat,
-  ThemeContext
+  ThemeContext,
+  ToolbarComponent
 } from "maco-ui";
 
 import styles from "./ShaderControlsComponent.module.css";
@@ -23,6 +24,7 @@ const ShaderControls = observer(props => {
   const store = useContext(MainContext).store;
 
   const [useKeys, setUseKeys] = useState(false);
+  const [expandAll, setExpandAll] = useState(true);
 
   const handleFocus = e => {
     // setUseKeys(true);
@@ -284,7 +286,7 @@ const ShaderControls = observer(props => {
                   ? theme.accent_color
                   : theme.primary_color
               }}
-              expanded={node === props.data.selectedNode}
+              expanded={(node === props.data.selectedNode) || expandAll}
               onRemove={() => node.remove()}
               gutters
             >
@@ -322,9 +324,29 @@ const ShaderControls = observer(props => {
       }
     });
   }, [props.data.selectedNode]);
+  
+  const toggleExpand = () => {
+    console.log('expand all',expandAll)
+    setExpandAll(!expandAll);
+  }
 
   return (
-    <GenericPanel panel={props.panel} onFocus={handleFocus} onBlur={handleBlur}>
+    <GenericPanel 
+      panel={props.panel} 
+      onFocus={handleFocus} 
+      onBlur={handleBlur}
+      toolbar={(
+        <ToolbarComponent 
+          items={{
+            "ToggleExpand": {
+              id: "ToggleExpand",
+              label: "Expand All",
+              onClick: () => toggleExpand()
+            }
+          }}
+        />
+      )}
+    >
       {props.data.nodes && panels}
     </GenericPanel>
   );
