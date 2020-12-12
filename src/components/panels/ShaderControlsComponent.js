@@ -232,8 +232,6 @@ const ShaderControls = observer(props => {
       let subpanels = [];
       let is_selected = props.selectedNode === node;
       
-      console.log(node)
-
       if (node.data) {
         let controls = null;
         switch (node.data.name) {
@@ -325,12 +323,7 @@ const ShaderControls = observer(props => {
         });
       }
     });
-  }, [props.data.selectedNode]);
-  
-  const toggleExpand = () => {
-    console.log('expand all',expandAll)
-    setExpandAll(!expandAll);
-  }
+  }, [props.data.selectedNode]);  
 
   return (
     <GenericPanel 
@@ -342,8 +335,8 @@ const ShaderControls = observer(props => {
           items={{
             "ToggleExpand": {
               id: "ToggleExpand",
-              label: "Expand All",
-              onClick: () => toggleExpand()
+              label: expandAll ? "Collapse" : "Expand",
+              onClick: () => setExpandAll(!expandAll)
             }
           }}
         />
