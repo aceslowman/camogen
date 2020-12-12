@@ -231,6 +231,8 @@ const ShaderControls = observer(props => {
     subqueue.forEach((node, i) => {
       let subpanels = [];
       let is_selected = props.selectedNode === node;
+      
+      console.log(node)
 
       if (node.data) {
         let controls = null;
@@ -270,14 +272,13 @@ const ShaderControls = observer(props => {
 
         subpanels.push(
           <li
-            key={i}
+            key={node.uuid}
             ref={r => addPanelRef(r, node.uuid)}
             style={{
               borderLeft: `3px solid ${branch_colors[node.branch_index]}`
             }}
           >
             <PanelComponent
-              key={i}
               title={node.data.name}
               collapsible={controls.length ? true : false}
               titleStyle={{
@@ -286,7 +287,8 @@ const ShaderControls = observer(props => {
                   ? theme.accent_color
                   : theme.primary_color
               }}
-              expanded={(node === props.data.selectedNode) || expandAll}
+              //expanded={(node === props.data.selectedNode) || expandAll}
+              expanded={expandAll}
               onRemove={() => node.remove()}
               gutters
             >
