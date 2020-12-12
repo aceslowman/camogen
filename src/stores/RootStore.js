@@ -355,6 +355,11 @@ const RootStore = types
       }
     });
     
+    const reloadDefaults = () => {
+      window.localStorage.clear();
+      self.fetchShaderFiles();
+    }
+    
     function persistShaderLibrary() {
       // save collection to local storage
       window.localStorage.setItem(
@@ -404,7 +409,8 @@ const RootStore = types
       fetchShaderFiles,
       resizeCanvas,
       addToRecentShaders,
-      persistShaderLibrary
+      persistShaderLibrary,
+      reloadDefaults
     };
   });
 

@@ -240,7 +240,14 @@ const App = observer(props => {
         Library: {
           id: "Library",
           label: "Library",
-          dropDown: store.shaderLibrary
+          dropDown: {
+            ...store.shaderLibrary,
+            "Reload": {
+              id: "Reload",
+              label: "Reload Defaults",
+              onClick: () => store.reloadDefaults()
+            }
+          }
         },
         Layout: {
           id: "Layout",
