@@ -31,7 +31,7 @@ const webcam = types
     let root_store;
 
     function afterAttach() {
-      console.log('attached image input')
+      console.log("attached image input");
       root_store = getRoot(self);
     }
 
@@ -59,26 +59,44 @@ const webcam = types
       // by the webcam stream.
       self.inputs = [];
     }
-    
+
     function loadImage(e) {
-      console.log('loading image', e.target.files[0]);
+      console.log("loading image", e.target.files[0]);
       let file = e.target.files[0];
-      if (!file.type.startsWith('image/')) return
-      
-      let p = root_store.p5_instance;
-      self.img = p.loadImage(file.path);
-      
+      if (!file.type.startsWith("image/")) return;
+
+      var reader = new FileReader();
+      // it's onload event and you forgot (parameters)
+      reader.onload = e => {
+        var image = document.createElement("img");
+        console.log(e)
+        // // the result image data
+        // image.src = e.target.result;
+        // document.body.appendChild(image);
+        let p = root_store.p5_instance;
+        self.setImage(p.loadImage(e.target.result));
+      };
+      // you have to declare the file loading
+      reader.readAsDataURL(file);
+
+      //       let p = root_store.p5_instance;
+      //       self.img = p.loadImage(file.path);
+
       // let imgObj = new Image();
       // imgObj.src = file.path;
 
-//       const img = document.createElement("img");
-//       img.classList.add("obj");
-//       img.file = file;
-//       // preview.appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
+      //       const img = document.createElement("img");
+      //       img.classList.add("obj");
+      //       img.file = file;
+      //       // preview.appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
 
-//       const reader = new FileReader();
-//       reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-//       reader.readAsDataURL(file);
+      //       const reader = new FileReader();
+      //       reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+      //       reader.readAsDataURL(file);
+    }
+    
+    function setImage(img) {
+      self.img = img;
     }
 
     function update(p) {
@@ -113,7 +131,8 @@ const webcam = types
       afterAttach,
       init,
       update,
-      loadImage
+      loadImage,
+      setImage
     };
   });
 
