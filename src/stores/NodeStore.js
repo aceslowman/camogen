@@ -71,8 +71,6 @@ const GraphNode = types
 
     function mapInputsToParents() {
       if (!self.data) return;
-      console.log("does this have inputs?", self.data);
-      console.log("what kind of parents does this have?", self);
 
       // if there are no inputs to map...
       if (!self.data.inputs.length) {        
@@ -99,8 +97,6 @@ const GraphNode = types
 
           parent_graph.addNode(parent);
           self.setParent(parent, i, true);
-
-          console.log("node snapshot", getSnapshot(self));
         }
       });
 
@@ -184,10 +180,6 @@ const GraphNode = types
       return self;
     }
 
-    // function remove() {
-    //   console.log('removing?')
-    //   parent_graph.removeNode(self);
-    // }
 
     return {
       // remove,
