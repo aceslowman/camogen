@@ -71,6 +71,7 @@ const GraphNode = types
 
     function mapInputsToParents() {
       if (!self.data) return;
+      
 
       // if there are no inputs to map...
       if (!self.data.inputs.length) {
