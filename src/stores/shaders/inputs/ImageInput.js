@@ -59,6 +59,10 @@ const webcam = types
       // by the webcam stream.
       self.inputs = [];
     }
+    
+    function loadImage(img) {
+      console.log('loading image', img);
+    }
 
     function update(p) {
       let shader = self.ref;
@@ -91,7 +95,8 @@ const webcam = types
     return {
       afterAttach,
       init,
-      update
+      update,
+      loadImage
     };
   });
 

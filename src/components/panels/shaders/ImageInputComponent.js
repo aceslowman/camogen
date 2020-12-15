@@ -3,10 +3,13 @@ import React from 'react';
 import { ControlGroupComponent, InputSelect } from 'maco-ui';
 
 const ImageInputComponent = observer((props) => {
+  const { data } = props.data;
   console.log('HIT',props) 
   
   const handleFileSubmit = (e) => {
-    console.log(e)
+    console.log('handleFileSubmit', e)
+    console.log(props)
+    data.loadImage(e);
   }
   
 	return (
