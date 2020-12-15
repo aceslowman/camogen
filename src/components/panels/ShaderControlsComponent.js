@@ -240,9 +240,7 @@ const ShaderControls = observer(props => {
               <WebcamInputComponent
                 key={node.uuid}
                 ref={refs[i]}
-                onInputSelect={node.data.setInput}
-                onChangeDisplayMode={node.data.setDisplayMode}
-                input_options={node.data.input_options}
+                data={node}
               />
             ];
             break;

@@ -6,20 +6,12 @@ const ImageInputComponent = observer(props => {
   const { data } = props.data;
 
   const handleFileSubmit = e => data.loadImage(e);
+  const handleDisplayModeChange = e => data.setDisplayMode(e);
 
   return (
     <React.Fragment>
       <ControlGroupComponent name="Image File">
         <input type="file" onChange={handleFileSubmit} />
-      </ControlGroupComponent>
-      <ControlGroupComponent name="Input Device">
-        <InputSelect
-          options={props.input_options.map(e => ({
-            label: e.label,
-            value: e.deviceId
-          }))}
-          onChange={props.onInputSelect}
-        />
       </ControlGroupComponent>
       <ControlGroupComponent name="Display Mode">
         <InputSelect
@@ -27,7 +19,7 @@ const ImageInputComponent = observer(props => {
             { label: "preserve aspect", value: "preserve_aspect" },
             { label: "stretch", value: "stretch" }
           ]}
-          onChange={props.onChangeDisplayMode}
+          onChange={handleDisplayModeChange}
         />
       </ControlGroupComponent>
     </React.Fragment>

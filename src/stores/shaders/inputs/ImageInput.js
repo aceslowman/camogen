@@ -56,6 +56,11 @@ const webcam = types
   .volatile(self => ({
     img: null
   }))
+  .views(self => ({
+    get displayModeId() {
+      return ["preserve_aspect", "stretch"].indexOf(self.display_mode);
+    }
+  }))
   .actions(self => {
     let root_store;
 
@@ -94,18 +99,22 @@ const webcam = types
       if (!file.type.startsWith("image/")) return;
 
       var reader = new FileReader();
-      
+
       reader.onload = e => {
         var image = document.createElement("img");
         let p = root_store.p5_instance;
         self.setImage(p.loadImage(e.target.result));
       };
-      
+
       reader.readAsDataURL(file);
     }
 
     function setImage(img) {
       self.img = img;
+    }
+
+    function setDisplayMode(mode) {
+      self.display_mode = mode;
     }
 
     function update(p) {
@@ -124,6 +133,7 @@ const webcam = types
       shader.setUniform("tex0", self.img);
       shader.setUniform("resolution", [target.width, target.height]);
       shader.setUniform("img_dimensions", [self.img.width, self.img.height]);
+      shader.setUniform("display_mode", self.displayModeId);
 
       target.shader(shader);
 
@@ -140,6 +150,7 @@ const webcam = types
       afterAttach,
       init,
       update,
+      setDisplayMode,
       loadImage,
       setImage
     };
