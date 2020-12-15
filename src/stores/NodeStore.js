@@ -71,24 +71,21 @@ const GraphNode = types
 
     function mapInputsToParents() {
       if (!self.data) return;
-      console.log('does this have inputs?', self.data)
-      console.log('what kind of parents does this have?', self)
+      console.log("does this have inputs?", self.data);
+      console.log("what kind of parents does this have?", self);
 
       // if there are no inputs to map...
-      if (!self.data.inputs.length) {
-        // sself.parents = [];
-        // and remove all parents?
-        self.parents.forEach((e,i) => {
-          console.log('does this exist?',e)
-          console.log('in this graph?', parent_graph)
-          console.log('can i grab it?', parent_graph.nodes.get(e.uuid)) // yes! delete it
-          parent_graph.nodes.delete(e.uuid);
-          
-          // I'm only deleting an immediate parent, but
-          // it doesn't *look* like there are orphaned nodes
-          // keep an eye on this
-          // NOTE: yep, it's orphaned.
-        })
+      if (!self.data.inputs.length) {        
+        // remove all upstream parents
+        self.parents.forEach((parent, i) => {
+          parent_graph
+            .traverseFrom(parent, null, true)
+            .map(e => e.uuid)
+            .reverse()
+            .forEach(e => parent_graph.nodes.delete(e));
+        });
+        
+        self.parents = [];
       }
 
       // add new parent
@@ -117,7 +114,7 @@ const GraphNode = types
         return self.setChild(child).uuid;
       }
     }
-    
+
     function setBranchIndex(id) {
       self.branch_index = id;
     }

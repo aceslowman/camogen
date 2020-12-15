@@ -8,18 +8,47 @@ const webcam = types
     name: "Image",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
+    display_mode: types.optional(
+      types.enumeration("Display Mode", ["preserve_aspect", "stretch"]),
+      "preserve_aspect"
+    ),
+    attachment: types.optional(
+      types.enumeration("Attachment", [
+        "TOP_LEFT",
+        "TOP_CENTER",
+        "TOP_RIGHT",
+        "CENTER_LEFT",
+        "CENTER_CENTER",
+        "CENTER_RIGHT",
+        "BOTTOM_LEFT",
+        "BOTTOM_CENTER",
+        "BOTTOM_RIGHT"
+      ]),
+      "CENTER_CENTER"
+    ),
     frag: `varying vec2 vTexCoord;
             uniform vec2 resolution;
             uniform vec2 img_dimensions;
-            uniform bool bSquare;
+            uniform int display_mode;
+            uniform vec2 attachment;
             uniform sampler2D tex0;
+
             void main() {                
                 vec3 color = vec3(0.0);
-                float aspect = img_dimensions.x / img_dimensions.y;
                 vec2 uv = vTexCoord;
-                // if (bSquare) {
-                    uv.y *= aspect;
-                // }
+
+                float imgAspect = img_dimensions.x > img_dimensions.y ? 
+                    img_dimensions.x / img_dimensions.y : 
+                    img_dimensions.y / img_dimensions.x;
+                    
+                float windowAspect = resolution.y / resolution.x;
+
+                if (display_mode == 0) { // preserve aspect
+                    uv.y *= windowAspect * imgAspect;
+                    uv.y -= (windowAspect * imgAspect) / 2.0;
+                    uv.y += 0.5;
+                }
+                
                 vec4 src0 = texture2D(tex0, uv);
                 gl_FragColor = vec4(src0);
             }`
@@ -61,40 +90,20 @@ const webcam = types
     }
 
     function loadImage(e) {
-      console.log("loading image", e.target.files[0]);
       let file = e.target.files[0];
       if (!file.type.startsWith("image/")) return;
 
       var reader = new FileReader();
-      // it's onload event and you forgot (parameters)
+      
       reader.onload = e => {
         var image = document.createElement("img");
-        console.log(e)
-        // // the result image data
-        // image.src = e.target.result;
-        // document.body.appendChild(image);
         let p = root_store.p5_instance;
         self.setImage(p.loadImage(e.target.result));
       };
-      // you have to declare the file loading
+      
       reader.readAsDataURL(file);
-
-      //       let p = root_store.p5_instance;
-      //       self.img = p.loadImage(file.path);
-
-      // let imgObj = new Image();
-      // imgObj.src = file.path;
-
-      //       const img = document.createElement("img");
-      //       img.classList.add("obj");
-      //       img.file = file;
-      //       // preview.appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
-
-      //       const reader = new FileReader();
-      //       reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-      //       reader.readAsDataURL(file);
     }
-    
+
     function setImage(img) {
       self.img = img;
     }
