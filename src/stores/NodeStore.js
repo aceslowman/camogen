@@ -55,10 +55,6 @@ const GraphNode = types
       parent_graph = getParent(self, 2);
     }
 
-    function setName(n) {
-      self.name = n;
-    }
-
     function setData(data) {
       self.data = data;
       self.name = data.name;
@@ -109,22 +105,6 @@ const GraphNode = types
         parent_graph.addNode(child);
         return self.setChild(child).uuid;
       }
-    }
-
-    function setBranchIndex(id) {
-      self.branch_index = id;
-    }
-
-    function setName(n) {
-      self.name = n;
-    }
-
-    function setParents(parents) {
-      self.parents = parents;
-    }
-
-    function setChildren(children) {
-      self.children = children;
     }
 
     function setParent(node, index = 0, fix = false) {
@@ -179,10 +159,13 @@ const GraphNode = types
       self.selected = false;
       return self;
     }
-
+    
+    const setChildren = children => self.children = children;
+    const setParents = parents => self.parents = parents;
+    const setBranchIndex = idx => self.branch_index = idx;
+    const setName = name => self.name = name;
 
     return {
-      // remove,
       afterAttach,
       setData,
       swapData,
