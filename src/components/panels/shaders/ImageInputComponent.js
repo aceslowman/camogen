@@ -7,8 +7,6 @@ const ImageInputComponent = observer((props) => {
   console.log('HIT',props) 
   
   const handleFileSubmit = (e) => {
-    console.log('handleFileSubmit', e)
-    console.log(props)
     data.loadImage(e);
   }
   

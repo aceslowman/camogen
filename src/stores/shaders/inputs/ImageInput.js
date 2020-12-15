@@ -60,8 +60,19 @@ const webcam = types
       self.inputs = [];
     }
     
-    function loadImage(img) {
-      console.log('loading image', img);
+    function loadImage(e) {
+      console.log('loading image', e.target.files[0]);
+      let file = e.target.files[0];
+      if (!file.type.startsWith('image/')) return
+
+      const img = document.createElement("img");
+      img.classList.add("obj");
+      img.file = file;
+      // preview.appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
+
+      const reader = new FileReader();
+      reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+      reader.readAsDataURL(file);
     }
 
     function update(p) {
