@@ -1,4 +1,4 @@
-const Runner = (p, store) => {
+ const Runner = (p, store) => {
   p.setup = () => {
     let container = document.getElementById("canvastest");
 
