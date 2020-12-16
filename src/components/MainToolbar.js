@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
-import { MainProvider } from "../MainContext";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import { getSnapshot, applySnapshot } from "mobx-state-tree";
 import { observer } from "mobx-react";
+import MainContext from "../MainContext";
 
 import {
   ThemeContext,
@@ -16,7 +16,7 @@ import "maco-ui/dist/index.css";
 import { PanelVariants, LayoutVariants } from "../stores/ui/Variants";
 
 const MainToolbar = observer(props => {
-  const { store } = props;
+  const store = useContext(MainContext).store;
   const { ui, scene } = store;
   
   const canvasPanel = ui.getPanel("CANVAS");
@@ -54,10 +54,10 @@ const MainToolbar = observer(props => {
         Title: {
           id: "Title",
           label: <h1>camogen</h1>,
-          onClick: () => {
-            setShowAbout(!showAbout);
-          },
-          highlight: showAbout
+          // onClick: () => {
+          //   setShowAbout(!showAbout);
+          // },
+          // highlight: showAbout
         },
         File: {
           id: "File",
@@ -223,3 +223,5 @@ const MainToolbar = observer(props => {
     />
   );
 });
+
+export default MainToolbar;
