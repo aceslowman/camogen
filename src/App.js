@@ -26,6 +26,7 @@ import MessagesComponent from "./components/panels/MessagesComponent";
 import CaptureComponent from "./components/panels/CaptureComponent";
 import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
 import AboutOverlay from "./components/overlays/AboutOverlayComponent";
+import MainToolbar from './components/MainToolbar';
 
 const App = observer(props => {
   const { store } = props;
@@ -70,10 +71,6 @@ const App = observer(props => {
 
     return unsubscribe;
   }, [props.history, props.store]);
-
-  const handleBreakout = () => {
-    store.breakout();
-  };
 
   const getPanel = panel => {
     switch (panel.component_type) {
@@ -141,13 +138,6 @@ const App = observer(props => {
         break;
     }
   };
-
-  const handleLayoutSelect = name => {
-    let variant = ui.getLayoutVariant(name);
-    mainPanel.setLayout(variant);
-  };
-
-  const handleAddPanel = name => {};
 
   // const main_panel_toolbar = props.store.ready && (
   //   <ToolbarComponent
@@ -357,7 +347,7 @@ const App = observer(props => {
         >
           <ContextMenuComponent items={store.context.contextmenu} />
 
-          {main_panel_toolbar}
+          { props.store.ready && (<MainToolbar />) }
 
           <CanvasDisplay panel={canvasPanel} />
 
