@@ -139,3 +139,5 @@ const ShaderGraph = observer(props => {
 });
 
 export default ShaderGraph;
+// selectedNode={scene.shaderGraph.selectedNode}
+//             coord_bounds={scene.shaderGraph.coord_bounds}
