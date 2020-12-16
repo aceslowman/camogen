@@ -52,8 +52,6 @@ const Uniform = types
       );
     },
     
-     // float, vec2, vec3, vec4, mat2, mat3, mat4, sampler2D and samplerCube
-
     addFloat: (value, options) => {
       self.type = "FLOAT";
       self.addElement("", value, options);
@@ -89,6 +87,8 @@ const Uniform = types
       self.type = "BOOL";
       self.addElement("", value, options);
     }
+    
+    // TODO: mat2, mat3, mat4, sampler2D and samplerCube
   }));
 
 let shader = types
