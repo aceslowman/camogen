@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MainProvider } from "./MainContext";
+import { MainProvider } from "../MainContext";
 import { getSnapshot, applySnapshot } from "mobx-state-tree";
 import { observer } from "mobx-react";
 
@@ -13,7 +13,7 @@ import {
 
 import "maco-ui/dist/index.css";
 
-import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
+import { PanelVariants, LayoutVariants } from "../stores/ui/Variants";
 
 const MainToolbar = observer(props => {
   const { store } = props;

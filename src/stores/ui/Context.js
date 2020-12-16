@@ -7,7 +7,7 @@ export const ContextMenuItem = types
     id: types.identifier,
     label: types.frozen(), 
     buttons: types.frozen(), 
-    dropDown: types.map(ContextMenuItem)
+    dropDown: types.map(types.late(()=>ContextMenuItem))
   })
   .volatile(self => ({
     onClick: () => {}
