@@ -5,9 +5,9 @@ import { observable } from 'mobx';
 export const ContextMenuItem = types
   .model("ContextMenuItem", {
     id: types.identifier,
-    label: "",
+    label: types.frozen(), 
     buttons: types.frozen(), 
-    dropDown: types.array(ContextMenuItem)
+    dropDown: types.map(ContextMenuItem)
   })
   .volatile(self => ({
     onClick: () => {}
@@ -28,7 +28,10 @@ const Context = types
       self.keylistener = tinykeys(window, self.keymap);
     },
     removeKeymap: () => self.keylistener(),
-    setContextmenu: c => self.contextmenu = c
+    setContextmenu: c => {
+      console.log('set context menu',c)
+      self.contextmenu = c
+    }
   }));
 
 export default Context;

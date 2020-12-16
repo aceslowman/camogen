@@ -16,7 +16,7 @@ function preloadDefaultShaders() {
       file.id = nanoid();
       fs.readFile(file.path, 'utf8', (err, data) => {        
         if(err) {
-          console.error(err); 
+          console.error(err);  
         } else { 
           file.data = JSON.parse(data);
         }
