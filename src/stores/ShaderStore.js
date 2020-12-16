@@ -51,14 +51,16 @@ const Uniform = types
         })
       );
     },
-
-    addInt: (value, options) => {
-      self.type = "INT";
-      self.addElement("", value, options);
-    },
+    
+     // float, vec2, vec3, vec4, mat2, mat3, mat4, sampler2D and samplerCube
 
     addFloat: (value, options) => {
       self.type = "FLOAT";
+      self.addElement("", value, options);
+    },
+    
+    addInt: (value, options) => {
+      self.type = "INT";
       self.addElement("", value, options);
     },
 
