@@ -26,7 +26,7 @@ import MessagesComponent from "./components/panels/MessagesComponent";
 import CaptureComponent from "./components/panels/CaptureComponent";
 import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
 import AboutOverlay from "./components/overlays/AboutOverlayComponent";
-import MainToolbar from './components/MainToolbar';
+import MainToolbar from "./components/MainToolbar";
 
 const App = observer(props => {
   const { store } = props;
@@ -79,7 +79,7 @@ const App = observer(props => {
           <ShaderGraphComponent
             key={panel.id}
             // this helps rerendering, despite dereferencing late...
-            selectedNode={scene.shaderGraph.selectedNode} 
+            selectedNode={scene.shaderGraph.selectedNode}
             coord_bounds={scene.shaderGraph.coord_bounds}
             data={scene.shaderGraph}
             panel={panel}
@@ -139,195 +139,6 @@ const App = observer(props => {
     }
   };
 
-  // const main_panel_toolbar = props.store.ready && (
-  //   <ToolbarComponent
-  //     style={{
-  //       position: "static"
-  //     }}
-  //     items={{
-  //       Fullscreen: {
-  //         id: "Fullscreen",
-  //         title: canvasPanel.fullscreen ? "float canvas" : "fullscreen canvas",
-  //         label: "✳",
-  //         onClick: () => {
-  //           canvasPanel.toggleFullscreen();
-  //           canvasPanel.toggleFloating();
-  //           canvasPanel.fitScreen();
-  //         },
-  //         highlight: !canvasPanel.fullscreen
-  //       },
-  //       Title: {
-  //         id: "Title",
-  //         label: <h1>camogen</h1>,
-  //         onClick: () => {
-  //           setShowAbout(!showAbout);
-  //         },
-  //         highlight: showAbout
-  //       },
-  //       File: {
-  //         id: "File",
-  //         label: "File",
-  //         dropDown: {
-  //           Edit_Name: {
-  //             id: "Edit_Name",
-  //             label: (
-  //               <div
-  //                 style={{
-  //                   display: "flex",
-  //                   flexFlow: "row"
-  //                 }}
-  //               >
-  //                 <label>name:</label>
-  //                 <input
-  //                   style={{
-  //                     backgroundColor: "inherit",
-  //                     color: "inherit",
-  //                     border: "none",
-  //                     width: "100%",
-  //                     marginLeft: 4,
-  //                     fontFamily: "inherit"
-  //                   }}
-  //                   type="text"
-  //                   placeholder={store.name}
-  //                   onChange={e => {
-  //                     store.setName(e.target.value);
-  //                   }}
-  //                 />
-  //               </div>
-  //             )
-  //           },
-  //           Save_Scene: {
-  //             id: "Save_Scene",
-  //             label: "Save Scene",
-  //             onClick: () => {
-  //               store.save();
-  //             }
-  //           },
-  //           Load_Scene: {
-  //             id: "Load_Scene",
-  //             label: "Load Scene",
-  //             onClick: () => store.load()
-  //           },
-  //           New_Scene: {
-  //             id: "New_Scene",
-  //             label: "New Scene",
-  //             onClick: () => {
-  //               store.scene.clear();
-  //             }
-  //           },
-  //           Preferences: {
-  //             id: "Preferences",
-  //             label: "Preferences",
-  //             onClick: () => {
-  //               mainLayout.clear();
-  //               mainLayout.addPanel("PREFERENCES");
-  //             }
-  //           }
-  //         }
-  //       },
-  //       Library: {
-  //         id: "Library",
-  //         label: "Library",
-  //         dropDown: {
-  //           ...store.shaderLibrary,
-  //           "Reload": {
-  //             id: "Reload",
-  //             label: "Reload Defaults",
-  //             onClick: () => store.reloadDefaults()
-  //           }
-  //         }
-  //       },
-  //       Layout: {
-  //         id: "Layout",
-  //         label: "Layout",
-  //         dropDown: {
-  //           Welcome: {
-  //             id: "Welcome",
-  //             label: "Welcome",
-  //             onClick: () => handleLayoutSelect("WELCOME")
-  //           },
-  //           Shader_Edit: {
-  //             id: "Shader_Edit",
-  //             label: "Shader Edit",
-  //             onClick: () => handleLayoutSelect("SHADER_EDIT")
-  //           },
-  //           Shader_Control: {
-  //             id: "Shader_Control",
-  //             label: "Shader Control",
-  //             onClick: () => handleLayoutSelect("SHADER_CONTROL")
-  //           },
-  //           Parameter_Editor: {
-  //             id: "Parameter_Editor",
-  //             label: "Parameter Editor",
-  //             onClick: () => handleLayoutSelect("PARAMETER")
-  //           },
-  //           Debug: {
-  //             id: "Debug",
-  //             label: "Debug",
-  //             onClick: () => handleLayoutSelect("DEBUG")
-  //           },
-  //           Add_Panel: {
-  //             id: "Add_Panel",
-  //             label: "Add Panel",
-  //             dropDown: {
-  //               "Shader Graph": {
-  //                 id: "Shader Graph",
-  //                 label: "Shader Graph",
-  //                 onClick: () => handleAddPanel("SHADER_GRAPH")
-  //               },
-  //               "Shader Editor": {
-  //                 id: "Shader Editor",
-  //                 label: "Shader Editor",
-  //                 onClick: () => handleAddPanel("SHADER_EDITOR")
-  //               },
-  //               "Shader Controls": {
-  //                 id: "Shader Controls",
-  //                 label: "Shader Controls",
-  //                 onClick: () => handleAddPanel("SHADER_CONTROLS")
-  //               },
-  //               "Parameter Editor": {
-  //                 id: "Parameter Editor",
-  //                 label: "Parameter Editor",
-  //                 onClick: () => handleAddPanel("PARAMETER_EDITOR")
-  //               },
-  //               Help: {
-  //                 id: "Help",
-  //                 label: "Help",
-  //                 onClick: () => handleAddPanel("HELP")
-  //               },
-  //               Debug: {
-  //                 id: "Debug",
-  //                 label: "Debug",
-  //                 onClick: () => handleAddPanel("DEBUG")
-  //               },
-  //               Messages: {
-  //                 id: "Messages",
-  //                 label: "Messages",
-  //                 onClick: () => handleAddPanel("MESSAGES")
-  //               },
-  //               Preferences: {
-  //                 id: "Preferences",
-  //                 label: "Preferences",
-  //                 onClick: () => handleAddPanel("PREFERENCES")
-  //               },
-  //               Capture: {
-  //                 id: "Capture",
-  //                 label: "Capture",
-  //                 onClick: () => handleAddPanel("CAPTURE")
-  //               }
-  //             }
-  //           }
-  //         }
-  //       },
-  //       Breakout: {
-  //         id: "Breakout",
-  //         label: "Breakout",
-  //         onClick: handleBreakout
-  //       }
-  //     }}
-  //   />
-  // );
-
   const handleContextMenu = e => {
     // prevents context menu anywhere that hasn't been
     // explicitly allowed
@@ -347,7 +158,7 @@ const App = observer(props => {
         >
           <ContextMenuComponent items={store.context.contextmenu} />
 
-          { props.store.ready && (<MainToolbar />) }
+          {props.store.ready && <MainToolbar />}
 
           <CanvasDisplay panel={canvasPanel} />
 
@@ -362,11 +173,7 @@ const App = observer(props => {
           )}
         </div>
         {showAbout && (
-          <AboutOverlay
-            onRemove={() => {
-              setShowAbout(!showAbout);
-            }}
-          />
+          <AboutOverlay onRemove={() => setShowAbout(!showAbout)} />
         )}
       </ThemeContext.Provider>
     </MainProvider>
