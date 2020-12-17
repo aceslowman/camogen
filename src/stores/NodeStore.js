@@ -89,8 +89,19 @@ const GraphNode = types
       self.data.inputs.forEach((e, i) => {
         // if an input was removed
         if (self.data.inputs.length < self.parents.length) {
-          console.log('theres an parent that needs removed')
+          // console.log('theres an parent that needs removed')
           // remove all parents after the length of self.data.inputs
+          console.log('which were removed?', self.parents.slice(self.data.inputs.length))
+          
+          // delete upstream
+          self.parents.slice(self.data.inputs.length).forEach((parent, i) => {
+            parent_graph
+              .traverseFrom(parent, null, true)
+              .map(node => node.uuid)
+              .reverse()
+              .forEach(node => parent_graph.nodes.delete(node));
+          });
+          
           self.parents.length = self.data.inputs.length;
         }
         
