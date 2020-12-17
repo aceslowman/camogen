@@ -187,8 +187,6 @@ let shader = types
         return result.filter(e => e.name === input.name).length > 0;
       });
 
-      console.log("self inputs", getSnapshot(self.inputs));
-
       result.forEach(e => {
         // ignore built-ins
         if (builtins.includes(e.name)) return;
@@ -254,10 +252,12 @@ let shader = types
             break;
           default:
             break;
-        }
+        }        
         
         if (uniform.elements.length) self.uniforms.push(uniform);
       });
+      
+      if(!self.inputs.length) parent_node.mapInputsToParents();
     }
 
     /*
