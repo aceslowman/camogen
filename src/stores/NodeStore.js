@@ -88,7 +88,11 @@ const GraphNode = types
       // TODO: recognize a REMOVED parent
       self.data.inputs.forEach((e, i) => {
         // if an input was removed
-        if ()
+        if (self.data.inputs.length < self.parents.length) {
+          console.log('theres an parent that needs removed')
+          // remove all parents after the length of self.data.inputs
+          self.parents.length = self.data.inputs.length;
+        }
         
         // if a new input was added
         if (i >= self.parents.length) {

@@ -181,6 +181,11 @@ let shader = types
       self.uniforms = self.uniforms.filter(u => {
         return result.filter(e => e.name === u.name).length > 0;
       });
+      
+      // remove all inputs that aren't present in new result set
+      self.inputs = self.inputs.filter(input => {
+        return result.filter(e => e.name === input.name).length > 0;
+      });
 
       result.forEach(e => {
         // ignore built-ins
