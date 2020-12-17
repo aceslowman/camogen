@@ -218,6 +218,7 @@ let shader = types
         switch (e.type) {
           case "sampler2D":
             self.inputs.push(e.name);
+            console.log('adding a sampler input', getSnapshot(self))
             parent_node.mapInputsToParents();
             break;
           case "int":
@@ -365,7 +366,6 @@ let shader = types
     }
 
     function clear() {
-      console.log('clearing')
       applySnapshot(self, DefaultShader);
       self.name = "New Shader";
       parent_node.setName("New Shader");

@@ -67,6 +67,8 @@ const GraphNode = types
 
     function mapInputsToParents() {
       if (!self.data) return;
+      
+      console.log('mapping inputs to parents', getSnapshot(self))
 
       // if there are no inputs to map...
       if (!self.data.inputs.length) {        
@@ -83,6 +85,7 @@ const GraphNode = types
       }
 
       // add new parent
+      // PROBLEM HERE
       self.data.inputs.forEach((e, i) => {
         // add parent if necessary
         if (i >= self.parents.length) {
@@ -102,6 +105,7 @@ const GraphNode = types
           uuid: "next_" + nanoid(),
           name: "next"
         });
+        
         parent_graph.addNode(child);
         return self.setChild(child).uuid;
       }
