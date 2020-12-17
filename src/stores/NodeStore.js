@@ -85,9 +85,12 @@ const GraphNode = types
       }
 
       // add new parent
-      // PROBLEM HERE
+      // TODO: recognize a REMOVED parent
       self.data.inputs.forEach((e, i) => {
-        // if parent doesn't exist
+        // if an input was removed
+        if ()
+        
+        // if a new input was added
         if (i >= self.parents.length) {
           let parent = GraphNode.create({
             uuid: nanoid(),
@@ -97,8 +100,10 @@ const GraphNode = types
           parent_graph.addNode(parent);
           self.setParent(parent, i, true);
         }
+        
+        parent_graph.update();
       });
-00
+
       // add new node if no children are present
       if (!self.children.length) {
         let child = GraphNode.create({
