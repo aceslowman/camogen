@@ -98,7 +98,7 @@ const GraphNode = types
           self.setParent(parent, i, true);
         }
       });
-
+00
       // add new node if no children are present
       if (!self.children.length) {
         let child = GraphNode.create({
