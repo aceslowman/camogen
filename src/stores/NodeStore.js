@@ -87,13 +87,13 @@ const GraphNode = types
       // add new parent
       // PROBLEM HERE
       self.data.inputs.forEach((e, i) => {
-        // add parent if necessary
+        // if parent doesn't exist
         if (i >= self.parents.length) {
           let parent = GraphNode.create({
             uuid: nanoid(),
             name: e
           });
-
+          console.log('adding...', getSnapshot(parent))
           parent_graph.addNode(parent);
           self.setParent(parent, i, true);
         }
@@ -112,7 +112,13 @@ const GraphNode = types
     }
 
     function setParent(node, index = 0, fix = false) {
-      self.parents[index] = node.uuid;
+      if(index < self.parents.length) {
+        self.parents[index] = node.uuid;
+      } else {
+        self.parents.push(node.uuid);
+      }      
+      
+      console.log('what do the parents have', getSnapshot(self.parents))
 
       if (!node.children.includes(self)) {
         if (fix) node.setChild(self);
