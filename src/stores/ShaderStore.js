@@ -166,68 +166,65 @@ let shader = types
 
         TODO: have to remove parents when they are no longer needed
     */
-    function extractUniforms() {
-      
+    function extractUniforms() {      
       // TODO: change to u_resolution, u_time, etc
       const builtins = ["resolution"];
 
       let regex = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
-      let result = [...self.frag.matchAll(regex)];
+      let result = [...self.frag.matchAll(regex)].map(e => ({
+        type: e[2],
+        name: e[3],
+        options: e[4]
+      }));
       
       console.group('extracting uniforms');
       console.log('uniforms before', getSnapshot(self.uniforms))
-      console.groupEnd()
+      console.log('result from regex', result)
       
       // remove all uniforms that aren't present in result set
       self.uniforms = self.uniforms.filter(u => {
+        console.log('check',u.name)
+        // e.name doesn't exist
         return result.filter(e => e.name === u.name).length > 0;
       });
+      
+      console.log('uniforms after', getSnapshot(self.uniforms))
+      console.groupEnd()
 
       result.forEach(e => {
-        let uniform_type = e[2];
-        let uniform_name = e[3];
-        let uniform_options = e[4];
-
         // ignore built-ins
-        if (builtins.includes(uniform_name)) return;
+        if (builtins.includes(e.name)) return;
 
-        // ignore if uniform already exists
+        // bail out if this uniform already exists (persists values)
         self.uniforms.forEach(uniform => {
-          console.log('checking if uniform exists...', self.uniforms[i].name)
-          console.log('uniform_name', uniform_name)
-          if (self.uniform === uniform_name) {
+          console.log('checking if uniform exists...', uniform.name)
+          console.log('uniform_name', e.name)
+          if (uniform.name === e.name) {
             console.log('uniform already exists')
             return;
           }
         })
-        
-        // if uniforms already exist, use them, and default to their values
-        // TODO12
 
         // ignore if input already exists
-        for (let i = 0; i < self.inputs.length; i++) {
-          if (self.inputs[i] === uniform_name) {
-            return;
-          }
-        }
+        self.inputs.forEach(input => { if (input === e.name) return })
 
         let value;
         let opt = {};
 
         // replace all single quotes in options with double quotes
-        if (uniform_options) {
-          opt = JSON.parse(uniform_options.replace(/'/g, '"'));
+        if (e.options) {
+          opt = JSON.parse(e.options.replace(/'/g, '"'));
         }
 
         let uniform = Uniform.create({
           uuid: nanoid(),
-          name: uniform_name,
+          name: e.name,
           shader: self
         });
 
-        switch (uniform_type) {
+        switch (e.type) {
           case "sampler2D":
-            self.inputs.push(uniform_name);
+            self.inputs.push(e.name);
             parent_node.mapInputsToParents();
             break;
           case "int":
