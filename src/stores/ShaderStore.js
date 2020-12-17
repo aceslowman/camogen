@@ -51,12 +51,12 @@ const Uniform = types
         })
       );
     },
-    
+
     addFloat: (value, options) => {
       self.type = "FLOAT";
       self.addElement("", value, options);
     },
-    
+
     addInt: (value, options) => {
       self.type = "INT";
       self.addElement("", value, options);
@@ -87,7 +87,7 @@ const Uniform = types
       self.type = "BOOL";
       self.addElement("", value, options);
     }
-    
+
     // TODO: mat2, mat3, mat4, sampler2D and samplerCube
   }));
 
@@ -99,7 +99,7 @@ let shader = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: DefaultShader.frag,
-    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph))),
+    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
     // BIG TODO!
     // collection: types.safeReference(types.late(() => Collection))
   })
@@ -166,7 +166,7 @@ let shader = types
 
         TODO: have to remove parents when they are no longer needed
     */
-    function extractUniforms() {      
+    function extractUniforms() {
       // TODO: change to u_resolution, u_time, etc
       const builtins = ["resolution"];
 
@@ -176,16 +176,18 @@ let shader = types
         name: e[3],
         options: e[4]
       }));
-      
+
       // remove all uniforms that aren't present in new result set
       self.uniforms = self.uniforms.filter(u => {
         return result.filter(e => e.name === u.name).length > 0;
       });
-      
+
       // remove all inputs that aren't present in new result set
       self.inputs = self.inputs.filter(input => {
         return result.filter(e => e.name === input.name).length > 0;
       });
+
+      console.log("self inputs", getSnapshot(self.inputs));
 
       result.forEach(e => {
         // ignore built-ins
@@ -195,15 +197,15 @@ let shader = types
           NOTE: Array.forEach can't exit the calling function
           https://medium.com/@virtual_khan/javascript-foreach-a-return-will-not-exit-the-calling-function-cfbc6fa7b199
         */
-        
+
         // ignore if uniform already exists (persist param values)
         for (let i = 0; i < self.uniforms.length; i++) {
-          if (self.uniforms[i].name === e.name) return;          
+          if (self.uniforms[i].name === e.name) return;
         }
-        
+
         // ignore if input already exists
         for (let i = 0; i < self.inputs.length; i++) {
-          if (self.inputs[i] === e.name) return;          
+          if (self.inputs[i] === e.name) return;
         }
 
         let value;
@@ -222,9 +224,9 @@ let shader = types
 
         switch (e.type) {
           case "sampler2D":
-            self.inputs.push(e.name);
-            console.log('adding a sampler input', getSnapshot(self))
+            self.inputs.push(e.name);            
             parent_node.mapInputsToParents();
+            console.log("adding a sampler input", getSnapshot(self));
             break;
           case "int":
             value = opt.default ? opt.default : 1;
@@ -253,7 +255,7 @@ let shader = types
           default:
             break;
         }
-
+        
         if (uniform.elements.length) self.uniforms.push(uniform);
       });
     }
@@ -315,10 +317,10 @@ let shader = types
     function onRemove() {
       self.target.removeShaderNode(parent_node);
     }
-    
+
     function saveToCollection() {
-      console.log('saving to collection', self)
-      if(self.collection) {
+      console.log("saving to collection", self);
+      if (self.collection) {
         self.collection.setData(self);
       }
     }
@@ -381,7 +383,7 @@ let shader = types
       self.updateGroup.put(p_graph);
       return p_graph;
     }
-    
+
     function setVert(v) {
       self.vert = v;
       self.hasChanged = true;
@@ -396,10 +398,10 @@ let shader = types
       self.name = n;
       parent_node.setName(n);
     }
-    
-    const setCollection = c => self.collection = c;
-    const setHasChanged = v => self.hasChanged = v;
-    const setTarget = t => self.target = t;    
+
+    const setCollection = c => (self.collection = c);
+    const setHasChanged = v => (self.hasChanged = v);
+    const setTarget = t => (self.target = t);
 
     return {
       afterCreate,

@@ -74,11 +74,7 @@ const GraphNode = types
       if (!self.data.inputs.length) {        
         // remove all upstream parents
         self.parents.forEach((parent, i) => {
-          parent_graph
-            .traverseFrom(parent, null, true)
-            .map(e => e.uuid)
-            .reverse()
-            .forEach(e => parent_graph.nodes.delete(e));
+          parent_graph.removeNode(parent);
         });
         
         self.parents = [];
@@ -95,12 +91,8 @@ const GraphNode = types
           
           // delete upstream
           self.parents.slice(self.data.inputs.length).forEach((parent, i) => {
-            parent_graph
-              .traverseFrom(parent, null, true)
-              .map(node => node.uuid)
-              .reverse()
-              .forEach(node => parent_graph.nodes.delete(node));
-          });
+            parent_graph.removeNode(parent);
+          });          
           
           self.parents.length = self.data.inputs.length;
         }
