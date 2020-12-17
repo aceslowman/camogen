@@ -177,36 +177,29 @@ let shader = types
         options: e[4]
       }));
       
-      console.group('extracting uniforms');
-      console.log('uniforms before', getSnapshot(self.uniforms))
-      console.log('result from regex', result)
-      
-      // remove all uniforms that aren't present in result set
+      // remove all uniforms that aren't present in new result set
       self.uniforms = self.uniforms.filter(u => {
-        console.log('check',u.name)
-        // e.name doesn't exist
         return result.filter(e => e.name === u.name).length > 0;
       });
-      
-      console.log('uniforms after', getSnapshot(self.uniforms))
-      console.groupEnd()
 
       result.forEach(e => {
         // ignore built-ins
         if (builtins.includes(e.name)) return;
 
-        // bail out if this uniform already exists (persists values)
-        self.uniforms.forEach(uniform => {
-          console.log('checking if uniform exists...', uniform.name)
-          console.log('uniform_name', e.name)
-          if (uniform.name === e.name) {
-            console.log('uniform already exists')
-            return;
-          }
-        })
-
+        /*
+          NOTE: Array.forEach can't exit the calling function
+          https://medium.com/@virtual_khan/javascript-foreach-a-return-will-not-exit-the-calling-function-cfbc6fa7b199
+        */
+        
+        // ignore if uniform already exists (persist param values)
+        for (let i = 0; i < self.uniforms.length; i++) {
+          if (self.uniforms[i].name === e.name) return;          
+        }
+        
         // ignore if input already exists
-        self.inputs.forEach(input => { if (input === e.name) return })
+        for (let i = 0; i < self.inputs.length; i++) {
+          if (self.inputs[i] === e.name) return;          
+        }
 
         let value;
         let opt = {};
@@ -257,10 +250,6 @@ let shader = types
 
         if (uniform.elements.length) self.uniforms.push(uniform);
       });
-    }
-
-    function setTarget(target) {
-      self.target = target;
     }
 
     /*
@@ -317,27 +306,8 @@ let shader = types
       }
     }
 
-    function setVert(v) {
-      self.vert = v;
-      self.hasChanged = true;
-    }
-
-    function setFrag(v) {
-      self.frag = v;
-      self.hasChanged = true;
-    }
-
-    function setName(n) {
-      self.name = n;
-      parent_node.setName(n);
-    }
-
     function onRemove() {
       self.target.removeShaderNode(parent_node);
-    }
-
-    function setHasChanged(v) {
-      self.hasChanged = v;
     }
     
     function saveToCollection() {
@@ -403,7 +373,24 @@ let shader = types
       return p_graph;
     }
     
+    function setVert(v) {
+      self.vert = v;
+      self.hasChanged = true;
+    }
+
+    function setFrag(v) {
+      self.frag = v;
+      self.hasChanged = true;
+    }
+
+    function setName(n) {
+      self.name = n;
+      parent_node.setName(n);
+    }
+    
     const setCollection = c => self.collection = c;
+    const setHasChanged = v => self.hasChanged = v;
+    const setTarget = t => self.target = t;    
 
     return {
       afterCreate,
