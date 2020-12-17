@@ -167,6 +167,8 @@ let shader = types
         TODO: have to remove parents when they are no longer needed
     */
     function extractUniforms() {
+      
+      // TODO: change to u_resolution, u_time, etc
       const builtins = ["resolution"];
 
       let regex = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
@@ -176,10 +178,7 @@ let shader = types
       console.log('uniforms before', getSnapshot(self.uniforms))
       console.groupEnd()
       
-      // if uniforms already exist, use them, and default to their values
-      // TODO
-
-      // retain only uniforms that show up in the result set
+      // remove all uniforms that aren't present in result set
       self.uniforms = self.uniforms.filter(u => {
         return result.filter(e => e.name === u.name).length > 0;
       });
@@ -193,11 +192,17 @@ let shader = types
         if (builtins.includes(uniform_name)) return;
 
         // ignore if uniform already exists
-        for (let i = 0; i < self.uniforms.length; i++) {
-          if (self.uniforms[i].name === uniform_name) {
+        self.uniforms.forEach(uniform => {
+          console.log('checking if uniform exists...', self.uniforms[i].name)
+          console.log('uniform_name', uniform_name)
+          if (self.uniform === uniform_name) {
+            console.log('uniform already exists')
             return;
           }
-        }
+        })
+        
+        // if uniforms already exist, use them, and default to their values
+        // TODO12
 
         // ignore if input already exists
         for (let i = 0; i < self.inputs.length; i++) {
