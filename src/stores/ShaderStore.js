@@ -365,7 +365,10 @@ let shader = types
     }
 
     function clear() {
+      console.log('clearing')
       applySnapshot(self, DefaultShader);
+      self.name = "New Shader";
+      self.init();
     }
 
     function addToUpdateGroup(p_graph) {
