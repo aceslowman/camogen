@@ -171,6 +171,10 @@ let shader = types
 
       let regex = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
       let result = [...self.frag.matchAll(regex)];
+      
+      console.group('extracting uniforms');
+      console.log('uniforms before', getSnapshot(self.uniforms))
+      console.groupEnd()
 
       // retain only uniforms that show up in the result set
       self.uniforms = self.uniforms.filter(u => {
