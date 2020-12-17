@@ -209,7 +209,7 @@ const RootStore = types
     // setUndoManager(self)
 
     function afterCreate() {
-      // window.localStorage.clear();
+      window.localStorage.clear();
 
       // fetch default shaders
       fetchShaderFiles().then(d => {
