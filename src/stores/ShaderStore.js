@@ -175,6 +175,9 @@ let shader = types
       console.group('extracting uniforms');
       console.log('uniforms before', getSnapshot(self.uniforms))
       console.groupEnd()
+      
+      // if uniforms already exist, use them, and default to their values
+      // TODO
 
       // retain only uniforms that show up in the result set
       self.uniforms = self.uniforms.filter(u => {
