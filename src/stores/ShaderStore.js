@@ -368,6 +368,7 @@ let shader = types
       console.log('clearing')
       applySnapshot(self, DefaultShader);
       self.name = "New Shader";
+      parent_node.setName("New Shader");
       self.init();
     }
 
