@@ -200,15 +200,8 @@ let shader = types
           https://medium.com/@virtual_khan/javascript-foreach-a-return-will-not-exit-the-calling-function-cfbc6fa7b199
         */
 
-        // PROBLEM HERE: this doesn't catch uniforms that changed type!
         // ignore if uniform already exists (persist param values)
         for (let i = 0; i < self.uniforms.length; i++) {
-          console.log("comparing", self.uniforms[i]);
-          console.log("to", e);
-          console.log(
-            "are types equal?",
-            self.uniforms[i].type.toLowerCase() === e.type
-          );
           if (
             self.uniforms[i].name === e.name &&
             self.uniforms[i].type.toLowerCase() === e.type
@@ -239,7 +232,6 @@ let shader = types
           case "sampler2D":
             self.inputs.push(e.name);
             parent_node.mapInputsToParents();
-            console.log("adding a sampler input", getSnapshot(self));
             break;
           case "int":
             value = opt.default ? opt.default : 1;
@@ -339,8 +331,11 @@ let shader = types
         // remove uniforms before saving
         let new_data = getSnapshot(self);
         // delete new_data.uniforms;
-        new_data.uniforms = [];
-        self.collection.setData(new_data);
+        // new_data.uniforms = [];
+        self.collection.setData({
+          ...new_data,
+          uniforms: []
+        });
       }
     }
 

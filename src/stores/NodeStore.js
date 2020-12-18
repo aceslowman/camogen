@@ -67,16 +67,14 @@ const GraphNode = types
 
     function mapInputsToParents() {
       if (!self.data) return;
-      
-      console.log('mapping inputs to parents', getSnapshot(self))
 
       // if there are no inputs to map...
-      if (!self.data.inputs.length) {        
+      if (!self.data.inputs.length) {
         // remove all upstream parents
         self.parents.forEach((parent, i) => {
           parent_graph.removeNode(parent);
         });
-        
+
         self.parents = [];
       }
 
@@ -85,29 +83,27 @@ const GraphNode = types
       self.data.inputs.forEach((e, i) => {
         // if an input was removed
         if (self.data.inputs.length < self.parents.length) {
-          // console.log('theres an parent that needs removed')
           // remove all parents after the length of self.data.inputs
-          console.log('which were removed?', self.parents.slice(self.data.inputs.length))
-          
+
           // delete upstream
           self.parents.slice(self.data.inputs.length).forEach((parent, i) => {
             parent_graph.removeNode(parent);
-          });          
-          
+          });
+
           self.parents.length = self.data.inputs.length;
         }
-        
+
         // if a new input was added
         if (i >= self.parents.length) {
           let parent = GraphNode.create({
             uuid: nanoid(),
             name: e
           });
-          console.log('adding...', getSnapshot(parent))
+
           parent_graph.addNode(parent);
           self.setParent(parent, i, true);
         }
-        
+
         parent_graph.update();
       });
 
@@ -117,20 +113,18 @@ const GraphNode = types
           uuid: "next_" + nanoid(),
           name: "next"
         });
-        
+
         parent_graph.addNode(child);
         return self.setChild(child).uuid;
       }
     }
 
     function setParent(node, index = 0, fix = false) {
-      if(index < self.parents.length) {
+      if (index < self.parents.length) {
         self.parents[index] = node.uuid;
       } else {
         self.parents.push(node.uuid);
-      }      
-      
-      console.log('what do the parents have', getSnapshot(self.parents))
+      }
 
       if (!node.children.includes(self)) {
         if (fix) node.setChild(self);
@@ -181,11 +175,11 @@ const GraphNode = types
       self.selected = false;
       return self;
     }
-    
-    const setChildren = children => self.children = children;
-    const setParents = parents => self.parents = parents;
-    const setBranchIndex = idx => self.branch_index = idx;
-    const setName = name => self.name = name;
+
+    const setChildren = children => (self.children = children);
+    const setParents = parents => (self.parents = parents);
+    const setBranchIndex = idx => (self.branch_index = idx);
+    const setName = name => (self.name = name);
 
     return {
       afterAttach,

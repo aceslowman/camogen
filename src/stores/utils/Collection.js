@@ -73,13 +73,13 @@ const Collection = types
       self.children = self.children.filter(e => e !== child);
     };
 
-    const setData = data => {
-      console.log('setting collection!',getSnapshot(self))
-      console.log('with this shader', getSnapshot(data))
-      let d = getSnapshot(data);
+    const setData = datasnap => {
+      // console.log('setting collection!',getSnapshot(self))
+      // console.log('with this shader', getSnapshot(data))
+      // let d = getSnapshot(data);
       
-      self.name = d.name;
-      self.data = d;
+      self.name = datasnap.name;
+      self.data = datasnap;
     }
 
     return {
