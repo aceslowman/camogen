@@ -8,6 +8,7 @@ const webcam = types
     name: "Image",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
+    // img: types.frozen(),
     display_mode: types.optional(
       types.enumeration("Display Mode", ["preserve_aspect", "stretch"]),
       "preserve_aspect"
@@ -85,6 +86,7 @@ const webcam = types
       let p = root_store.p5_instance;
 
       self.img = p.loadImage("images/muybridge.jpg");
+      console.log(self.img)
 
       // prevents init() from being called twice
       self.ready = true;

@@ -4,8 +4,6 @@ import { types, getParent, getSnapshot } from "mobx-state-tree";
 import Coordinate from "./utils/Coordinate";
 import { nanoid } from "nanoid";
 import { allOps } from "./operators";
-// import { allInputs } from "./inputs";
-// should move inputs to similar allInputs
 import WebcamInput from "./shaders/inputs/WebcamInput";
 import ImageInput from "./shaders/inputs/ImageInput";
 import TextInput from "./shaders/inputs/TextInput";
@@ -79,14 +77,12 @@ const GraphNode = types
       }
 
       // add new parent
-      // TODO: recognize a REMOVED parent
       self.data.inputs.forEach((e, i) => {
         // if an input was removed
         if (self.data.inputs.length < self.parents.length) {
           // remove all parents after the length of self.data.inputs
-
-          // delete upstream
           self.parents.slice(self.data.inputs.length).forEach((parent, i) => {
+            // delete upstream
             parent_graph.removeNode(parent);
           });
 
@@ -176,10 +172,10 @@ const GraphNode = types
       return self;
     }
 
-    const setChildren = children => (self.children = children);
-    const setParents = parents => (self.parents = parents);
-    const setBranchIndex = idx => (self.branch_index = idx);
-    const setName = name => (self.name = name);
+    const setChildren = children => self.children = children;
+    const setParents = parents => self.parents = parents;
+    const setBranchIndex = idx => self.branch_index = idx;
+    const setName = name => self.name = name;
 
     return {
       afterAttach,
