@@ -179,7 +179,11 @@ let shader = types
 
       // remove all uniforms that aren't present in new result set
       self.uniforms = self.uniforms.filter(u => {
-        return result.filter(e => e.name === u.name).length > 0;
+        return (
+          result.filter(
+            e => e.name === u.name && e.type.toLowerCase() === u.type
+          ).length > 0
+        );
       });
 
       // remove all inputs that aren't present in new result set
@@ -196,16 +200,24 @@ let shader = types
           https://medium.com/@virtual_khan/javascript-foreach-a-return-will-not-exit-the-calling-function-cfbc6fa7b199
         */
 
+        // PROBLEM HERE: this doesn't catch uniforms that changed type!
         // ignore if uniform already exists (persist param values)
         for (let i = 0; i < self.uniforms.length; i++) {
-          if (self.uniforms[i].name === e.name) return;
+          console.log("comparing", self.uniforms[i]);
+          console.log("to", e);
+          console.log(
+            "are types equal?",
+            self.uniforms[i].type.toLowerCase() === e.type
+          );
+          if (
+            self.uniforms[i].name === e.name &&
+            self.uniforms[i].type.toLowerCase() === e.type
+          )
+            return;
         }
 
-        // PROBLEM HERE: this doesn't catch uniforms that changed type!
         // ignore if input already exists
         for (let i = 0; i < self.inputs.length; i++) {
-          console.log('comparing', self.inputs[i])
-          console.log('to', e)
           if (self.inputs[i] === e.name) return;
         }
 
@@ -225,7 +237,7 @@ let shader = types
 
         switch (e.type) {
           case "sampler2D":
-            self.inputs.push(e.name);            
+            self.inputs.push(e.name);
             parent_node.mapInputsToParents();
             console.log("adding a sampler input", getSnapshot(self));
             break;
@@ -255,12 +267,12 @@ let shader = types
             break;
           default:
             break;
-        }        
-        
+        }
+
         if (uniform.elements.length) self.uniforms.push(uniform);
       });
-      
-      if(!self.inputs.length) parent_node.mapInputsToParents();
+
+      if (!self.inputs.length) parent_node.mapInputsToParents();
     }
 
     /*
