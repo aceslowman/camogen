@@ -336,7 +336,11 @@ let shader = types
     function saveToCollection() {
       console.log("saving to collection", self);
       if (self.collection) {
-        self.collection.setData(self);
+        // remove uniforms before saving
+        let new_data = getSnapshot(self);
+        // delete new_data.uniforms;
+        new_data.uniforms = [];
+        self.collection.setData(new_data);
       }
     }
 
