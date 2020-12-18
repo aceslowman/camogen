@@ -9,6 +9,7 @@ const webcam = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     // img: types.frozen(),
+    dataURL: types.frozen(),
     display_mode: types.optional(
       types.enumeration("Display Mode", ["preserve_aspect", "stretch"]),
       "preserve_aspect"
@@ -109,6 +110,8 @@ const webcam = types
       };
 
       reader.readAsDataURL(file);
+      self.dataURL = file;
+      console.log('self.data.URL',self.data.URL);
     }
 
     function setImage(img) {
