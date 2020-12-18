@@ -63,20 +63,20 @@ const Uniform = types
     },
 
     addVec2: (value, options) => {
-      self.type = "FLOAT";
+      self.type = "VEC2";
       self.addElement("x:", value[0], options);
       self.addElement("y:", value[1], options);
     },
 
     addVec3: (value, options) => {
-      self.type = "FLOAT";
+      self.type = "VEC3";
       self.addElement("x:", value[0], options);
       self.addElement("y:", value[1], options);
       self.addElement("z:", value[2], options);
     },
 
     addVec4: (value, options) => {
-      self.type = "FLOAT";
+      self.type = "VEC4";
       self.addElement("x:", value[0], options);
       self.addElement("y:", value[1], options);
       self.addElement("z:", value[2], options);
@@ -201,8 +201,11 @@ let shader = types
           if (self.uniforms[i].name === e.name) return;
         }
 
+        // PROBLEM HERE: this doesn't catch uniforms that changed type!
         // ignore if input already exists
         for (let i = 0; i < self.inputs.length; i++) {
+          console.log('comparing', self.inputs[i])
+          console.log('to', e)
           if (self.inputs[i] === e.name) return;
         }
 
