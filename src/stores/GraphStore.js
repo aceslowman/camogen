@@ -145,10 +145,11 @@ const Graph = types
           // remove all pruned parents
           // IDEA: these could also be held onto in a buffer
           let node_parent = node;
-
+          
           node.parents.forEach((parent, i) => {
             if (i === 0) return;
 
+            // !!! why isn't this firing up the tree?
             traverseFrom(parent, null, true)
               .map(e => e.uuid)
               .reverse()
