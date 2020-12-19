@@ -1,6 +1,6 @@
 import GraphNode from "./NodeStore";
 import { nanoid } from "nanoid";
-import { types } from "mobx-state-tree";
+import { types, getSnapshot } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
@@ -134,11 +134,29 @@ const Graph = types
             node.children[0].parents[i] = parent;
           });
         } else if(node.children[0].parents.length > 1) {
-          console.log('child is a MIN')
+          console.log('child is a MIN', getSnapshot(node.children[0].parents))
+          
           /* 
             otherwise, if the child is a multi-input shader
-            delete node, all parents, 
+            delete node, all parents, and regenerate an empty node in it's place            
           */
+          let idx = node.children[0].parents.indexOf(node);
+          
+          // remove all pruned parents
+          // IDEA: these could also be held onto in a buffer
+          let node_parent = node;
+
+          node.parents.forEach((parent, i) => {
+            if (i === 0) return;
+
+            traverseFrom(parent, null, true)
+              .map(e => e.uuid)
+              .reverse()
+              .forEach(e => self.nodes.delete(e));
+          });
+          
+          node.children[0].mapInputsToParents();
+          
         } else {
           // otherwise, collapse and map first child to first parent
           node.parents[0].children[0] = node.children[0];
