@@ -124,7 +124,7 @@ const Graph = types
           sure to reconnect those parent nodes to the
           next child node.
       */
-      if (node.parents.length) {
+      if (node.parents.length) {        
         /* 
             if first child AND deleted node are multi-input
             is multi-input, reassign
@@ -133,6 +133,12 @@ const Graph = types
           node.parents.forEach((parent, i) => {
             node.children[0].parents[i] = parent;
           });
+        } else if(node.children[0].parents.length > 1) {
+          console.log('child is a MIN')
+          /* 
+            otherwise, if the child is a multi-input shader
+            delete node, all parents, 
+          */
         } else {
           // otherwise, collapse and map first child to first parent
           node.parents[0].children[0] = node.children[0];

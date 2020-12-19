@@ -114,9 +114,9 @@ const GraphNode = types
         return self.setChild(child).uuid;
       }
       
-      // if there is a mismatch between inputs and parents
-      // create a new parent for the 'empty' spot
-      console.log('check', getSnapshot(self))
+//       // if there is a mismatch between inputs and parents
+//       // create a new parent for the 'empty' spot
+//       console.log('check', getSnapshot(self))
     }
 
     function setParent(node, index = 0, fix = false) {
