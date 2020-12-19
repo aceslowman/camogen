@@ -114,8 +114,13 @@ const GraphNode = types
         return self.setChild(child).uuid;
       }
       
+      
+      
       // if there is a mismatch between inputs and parents
       // create a new parent for the 'empty' spot
+      if (self.parents.length < self.data.inputs.length) {
+        console.log('mismatching lengths between inputs and parents')
+      }
       console.log('check', getSnapshot(self))
     }
 
