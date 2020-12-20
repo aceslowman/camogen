@@ -296,8 +296,7 @@ let shader = types
 
       // setup samplers
       for (let i = 0; i < self.inputs.length; i++) {
-        //error
-        console.log(parent_node.parents.length)
+        // if parent exists
         if (i < parent_node.parents.length) {
           let input_shader = parent_node.parents[i].data;
 
@@ -306,7 +305,9 @@ let shader = types
             shader.setUniform(self.inputs[i], input_target);
           }
         } else {
+          // if parent doesn't exist, warn me, it's a buge
           console.log("not enough parents!", i);
+          p.noLoop();
         }
       }
 

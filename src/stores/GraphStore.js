@@ -142,11 +142,6 @@ const Graph = types
           */
           let idx = node.children[0].parents.indexOf(node);
 
-          // remove all pruned parents
-          // IDEA: these could also be held onto in a buffer
-          // let node_parent = node;
-
-          console.log("hitting");
           // first, deselect?
           self.selectedNode = node.children[0];
           // !!! why isn't this firing up the tree?
@@ -155,7 +150,7 @@ const Graph = types
             .reverse()
             .forEach(e => self.nodes.delete(e));
 
-          node.children[0].mapInputsToParents();
+          // node.children[0].mapInputsToParents();
         } else {
           // otherwise, collapse and map first child to first parent
           node.parents[0].children[0] = node.children[0];
@@ -178,10 +173,11 @@ const Graph = types
         let idx = node.children[0].parents.indexOf(node);
         node.children[0].parents.splice(idx, 1);
       }
+        
+//       node.children[0].mapInputsToParents();
 
-      node.children[0].mapInputsToParents();
-
-      self.selectedNode = node.children[0];
+//       self.selectedNode = node.children[0];
+      console.log('CHECK NODE BEFORE FAIL',node)
       if (node.data) node.data.onRemove();
       self.nodes.delete(node.uuid);
 

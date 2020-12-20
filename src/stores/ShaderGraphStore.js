@@ -35,20 +35,16 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
     self.queue.forEach((subqueue, branch_id) => {
       /*
           assign targets to shaders
-
-          note: seems like there is room for refactoring and making
-          the logic of this clearer.
       */
       subqueue.forEach(node => {
         if (node.data) {
           // if there are targets and the necessary one is available
           if (
             parent_scene.targets.length &&
-            parent_scene.targets[node.branch_index]
+            (node.branch_index < parent_scene.targets.length)
           ) {
             node.data.setTarget(parent_scene.targets[node.branch_index]);
-          } else {
-            // otherwise, add target
+          } else { // otherwise, add target
             node.data.setTarget(parent_scene.addTarget());
           }
 
