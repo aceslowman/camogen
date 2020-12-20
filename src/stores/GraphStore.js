@@ -134,7 +134,7 @@ const Graph = types
             node.children[0].parents[i] = parent;
           });
         } else if(node.children[0].parents.length > 1) {
-          console.log('child is a MIN', getSnapshot(node.children[0].parents))
+          console.log('child is a MIN', getSnapshot(node))
           
           /* 
             otherwise, if the child is a multi-input shader
@@ -147,8 +147,9 @@ const Graph = types
           let node_parent = node;
           
           node.parents.forEach((parent, i) => {
-            if (i === 0) return;
+            // if (i === 0) return;
 
+            console.log('hitting')
             // !!! why isn't this firing up the tree?
             traverseFrom(parent, null, true)
               .map(e => e.uuid)
