@@ -140,9 +140,8 @@ const Graph = types
           delete node, all parents, and regenerate an empty node in it's place            
         */        
         if (node.children[0].parents.length > 1) {
-          // first, deselect?
-          // self.selectedNode = node.children[0];
           
+          // delete all uptree nodes
           node.parents.forEach((parent, i) => {
             traverseFrom(parent, null, true)
               .map(e => e.uuid)
@@ -150,16 +149,14 @@ const Graph = types
               .forEach(e => self.nodes.delete(e));
           });
 
-          node.children[0].mapInputsToParents();
+          // parents still exist here, we haven't deleted the node
+          
         } else {
           // otherwise, collapse and map first child to first parent
           node.parents[0].children[0] = node.children[0];
           node.children[0].parents[0] = node.parents[0];
 
           // remove all pruned parents
-          // IDEA: these could also be held onto in a buffer
-          let node_parent = node;
-
           node.parents.forEach((parent, i) => {
             if (i === 0) return;
             traverseFrom(parent, null, true)
@@ -168,18 +165,22 @@ const Graph = types
               .forEach(e => self.nodes.delete(e));
           });
         }
+        
+        let child = node.children[0];
+        self.selectedNode = child;
+        if (node.data) node.data.onRemove();
+        self.nodes.delete(node.uuid);
+        
+        // should re-add missing parents
+        child.mapInputsToParents();
       } else {
         let idx = node.children[0].parents.indexOf(node);
         node.children[0].parents.splice(idx, 1);
-      }
         
-      // node.children[0].mapInputsToParents();
-
-      self.selectedNode = node.children[0];
-      if (node.data) node.data.onRemove();
-      self.nodes.delete(node.uuid);
-      
-      // node.children[0].mapInputsToParents();
+        self.selectedNode = node.children[0];
+        if (node.data) node.data.onRemove();
+        self.nodes.delete(node.uuid);
+      }
 
       self.update();
     }
