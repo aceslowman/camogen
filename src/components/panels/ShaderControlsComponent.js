@@ -262,11 +262,11 @@ const ShaderControls = observer(props => {
           default:
             controls = generateInterface(node.data);
         }
-
+        console.log('uuid', node.uuid)
         subpanels.push(
           <li
             key={node.uuid}
-            ref={r => addPanelRef(r, node.uuid)}
+            // ref={r => addPanelRef(r, node.uuid)}
             style={{
               borderLeft: `3px solid ${branch_colors[node.branch_index]}`
             }}
@@ -307,7 +307,7 @@ const ShaderControls = observer(props => {
     });
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // scroll panels into view when they are selected.
     refs.forEach((e, i) => {
       if (Object.keys(e)[0] === props.selectedNode.uuid) {
