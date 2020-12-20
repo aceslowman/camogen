@@ -127,30 +127,30 @@ const Graph = types
       if (node.parents.length) {
         /* 
             if first child AND deleted node are multi-input
-            is multi-input, reassign
+            is multi-input, reassign subtree
         */
         if (node.children[0].parents.length > 1 && node.parents.length > 1) {
           node.parents.forEach((parent, i) => {
             node.children[0].parents[i] = parent;
           });
-        } else if (node.children[0].parents.length > 1) {
-          console.log("child is a MIN", getSnapshot(node));
-
-          /* 
-            otherwise, if the child is a multi-input shader
-            delete node, all parents, and regenerate an empty node in it's place            
-          */
-          let idx = node.children[0].parents.indexOf(node);
-
+        } 
+        
+        /* 
+          otherwise, if the child is a multi-input shader
+          delete node, all parents, and regenerate an empty node in it's place            
+        */        
+        if (node.children[0].parents.length > 1) {
           // first, deselect?
-          self.selectedNode = node.children[0];
-          // !!! why isn't this firing up the tree?
-          traverseFrom(node, null, true)
-            .map(e => e.uuid)
-            .reverse()
-            .forEach(e => self.nodes.delete(e));
+          // self.selectedNode = node.children[0];
+          
+          node.parents.forEach((parent, i) => {
+            traverseFrom(parent, null, true)
+              .map(e => e.uuid)
+              .reverse()
+              .forEach(e => self.nodes.delete(e));
+          });
 
-          // node.children[0].mapInputsToParents();
+          node.children[0].mapInputsToParents();
         } else {
           // otherwise, collapse and map first child to first parent
           node.parents[0].children[0] = node.children[0];
@@ -174,10 +174,9 @@ const Graph = types
         node.children[0].parents.splice(idx, 1);
       }
         
-//       node.children[0].mapInputsToParents();
+      node.children[0].mapInputsToParents();
 
-//       self.selectedNode = node.children[0];
-      console.log('CHECK NODE BEFORE FAIL',node)
+      self.selectedNode = node.children[0];
       if (node.data) node.data.onRemove();
       self.nodes.delete(node.uuid);
 
