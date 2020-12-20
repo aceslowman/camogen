@@ -1,4 +1,9 @@
-import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useLayoutEffect
+} from "react";
 import MainContext from "../../MainContext";
 import {
   PanelComponent,
@@ -12,6 +17,7 @@ import {
 
 import styles from "./ShaderControlsComponent.module.css";
 import { observer } from "mobx-react";
+import { getSnapshot } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 
 // built in inputs
@@ -88,7 +94,7 @@ const ShaderControls = observer(props => {
     e.preventDefault();
 
     store.context.setContextmenu({
-      "ParamEdit": {
+      ParamEdit: {
         id: "ParamEdit",
         label: "Edit Parameter",
         onClick: () => {
@@ -102,14 +108,15 @@ const ShaderControls = observer(props => {
   };
 
   const generateInterface = shader => {
-    console.log('GENERATING INTERFACE FOR ' + shader.name, shader)
+    // console.log("GENERATING INTERFACE FOR " + shader.name, shader);
+    // console.log("FOR THIS GRAPH: ", props.data);
     let controls = shader.uniforms.map(uniform => {
       return (
         <ControlGroupComponent key={uniform.name} name={uniform.name}>
           {uniform.elements.map((param, i) => {
             let input = null;
             let value = param.value;
-            
+
             switch (param.uniform.type) {
               case "BOOL":
                 input = (
@@ -230,38 +237,27 @@ const ShaderControls = observer(props => {
 
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
+      console.log("NODE HERE " + node.name, getSnapshot(node));
       let subpanels = [];
       let is_selected = props.selectedNode === node;
-      
+
       if (node.data) {
         let controls = null;
         switch (node.data.name) {
           case "Webcam":
             controls = [
-              <WebcamInputComponent
-                key={node.uuid}
-                ref={refs[i]}
-                data={node}
-              />
+              <WebcamInputComponent key={node.uuid} ref={refs[i]} data={node} />
             ];
             break;
           case "Image":
             controls = [
-              <ImageInputComponent 
-                key={node.uuid} 
-                ref={refs[i]} 
-                data={node} 
-              />
+              <ImageInputComponent key={node.uuid} ref={refs[i]} data={node} />
             ];
             break;
           case "Text":
             controls = [
-              <TextInputComponent 
-                key={node.uuid} 
-                ref={refs[i]} 
-                data={node} 
-              />
-            ]
+              <TextInputComponent key={node.uuid} ref={refs[i]} data={node} />
+            ];
             break;
           default:
             controls = generateInterface(node.data);
@@ -322,24 +318,24 @@ const ShaderControls = observer(props => {
         });
       }
     });
-  }, [props.data.selectedNode]);  
+  }, [props.data.selectedNode]);
 
   return (
-    <GenericPanel 
-      panel={props.panel} 
-      onFocus={handleFocus} 
+    <GenericPanel
+      panel={props.panel}
+      onFocus={handleFocus}
       onBlur={handleBlur}
-      toolbar={(
-        <ToolbarComponent 
+      toolbar={
+        <ToolbarComponent
           items={{
-            "ToggleExpand": {
+            ToggleExpand: {
               id: "ToggleExpand",
               label: expandAll ? "Collapse" : "Expand",
               onClick: () => setExpandAll(!expandAll)
             }
           }}
         />
-      )}
+      }
     >
       {props.data.nodes && panels}
     </GenericPanel>

@@ -150,7 +150,7 @@ const Graph = types
               .forEach(e => self.nodes.delete(e));
           });
 
-          node.children[0].mapInputsToParents();
+          // node.children[0].mapInputsToParents();
         } else {
           // otherwise, collapse and map first child to first parent
           node.parents[0].children[0] = node.children[0];
@@ -174,11 +174,13 @@ const Graph = types
         node.children[0].parents.splice(idx, 1);
       }
         
-      node.children[0].mapInputsToParents();
+      // node.children[0].mapInputsToParents();
 
       self.selectedNode = node.children[0];
       if (node.data) node.data.onRemove();
       self.nodes.delete(node.uuid);
+      
+      node.children[0].mapInputsToParents();
 
       self.update();
     }
