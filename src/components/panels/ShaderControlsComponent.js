@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useLayoutEffect
-} from "react";
+import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
 import MainContext from "../../MainContext";
 import {
   PanelComponent,
@@ -17,7 +12,7 @@ import {
 
 import styles from "./ShaderControlsComponent.module.css";
 import { observer } from "mobx-react";
-import { getSnapshot } from "mobx-state-tree";
+import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 
 // built in inputs
@@ -108,8 +103,6 @@ const ShaderControls = observer(props => {
   };
 
   const generateInterface = shader => {
-    // console.log("GENERATING INTERFACE FOR " + shader.name, shader);
-    // console.log("FOR THIS GRAPH: ", props.data);
     let controls = shader.uniforms.map(uniform => {
       return (
         <ControlGroupComponent key={uniform.name} name={uniform.name}>
@@ -235,9 +228,12 @@ const ShaderControls = observer(props => {
     refs = [...refs, { [id]: panel }];
   };
 
+  const handleSubpanelRef = (r, node) => {
+    if (isAlive(node)) addPanelRef(r, node.uuid);
+  };
+
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
-      console.log("NODE HERE " + node.name, getSnapshot(node));
       let subpanels = [];
       let is_selected = props.selectedNode === node;
 
@@ -262,11 +258,10 @@ const ShaderControls = observer(props => {
           default:
             controls = generateInterface(node.data);
         }
-        console.log('uuid', node.uuid)
         subpanels.push(
           <li
             key={node.uuid}
-            // ref={r => addPanelRef(r, node.uuid)}
+            ref={r => handleSubpanelRef(r, node)}
             style={{
               borderLeft: `3px solid ${branch_colors[node.branch_index]}`
             }}

@@ -68,7 +68,7 @@ const Scene = types
       self.operatorGraphs.forEach(e => {
         e.clear();
       });
-      console.log(getSnapshot(self.operatorGraphs));
+      
       self.operatorGraphs.clear();
       // } catch(error) {
       //     console.warn('camogen is still having issues with clearing scenes!',error)

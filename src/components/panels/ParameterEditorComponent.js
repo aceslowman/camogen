@@ -10,8 +10,6 @@ const OperatorEditor = observer(props => {
   const { data } = props;
   const graph = data ? data.graph : null;
 
-  console.log();
-
   const toolbar = props.data && (
     <ToolbarComponent
       items={{
