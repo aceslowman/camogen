@@ -72,29 +72,13 @@ const GraphNode = types
         self.parents.forEach((parent, i) => {
           parent_graph.removeNode(parent);
         });
-
         self.parents = [];
       }
       
-      // NOTE MAYBE its never being called...
-      // if an input was removed from the shader...
-//       if (self.data.inputs.length < self.parents.length) {
-//         console.log('hit A') 
-//         // remove all parents after the length of self.data.inputs
-//         self.parents.slice(self.data.inputs.length).forEach((parent, i) => {
-//           // delete upstream
-//           parent_graph.removeNode(parent);
-//         });
-
-//         self.parents.length = self.data.inputs.length;
-//       }
-
       // for each input in the shader...
       self.data.inputs.forEach((e, i) => {
         // if a new input was added
         if (i >= self.parents.length) {
-          console.log('hit B',i)
-          console.log('length',self.parents.length)
           let parent = GraphNode.create({
             uuid: nanoid(),
             name: e
@@ -109,7 +93,6 @@ const GraphNode = types
 
       // add new node if no children are present
       if (!self.children.length) {
-        console.log('hit C')
         let child = GraphNode.create({
           uuid: "next_" + nanoid(),
           name: "next"
@@ -118,8 +101,6 @@ const GraphNode = types
         parent_graph.addNode(child);
         return self.setChild(child).uuid;
       }
-            
-      console.log('check', getSnapshot(self))
     }
 
     function setParent(node, index = 0, fix = false) {

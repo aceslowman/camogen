@@ -130,8 +130,10 @@ const Graph = types
             is multi-input, reassign subtree
         */
         if (node.children[0].parents.length > 1 && node.parents.length > 1) {
+          let idx = node.children[0].parents.indexOf(node);
           node.parents.forEach((parent, i) => {
-            node.children[0].parents[i] = parent;
+            if(i === idx)
+              node.children[0].parents[i] = parent;
           });
         } 
         
@@ -139,8 +141,7 @@ const Graph = types
           otherwise, if the child is a multi-input shader
           delete node, all parents, and regenerate an empty node in it's place            
         */        
-        if (node.children[0].parents.length > 1) {
-          
+        if (node.children[0].parents.length > 1) {          
           // delete all uptree nodes
           node.parents.forEach((parent, i) => {
             traverseFrom(parent, null, true)
