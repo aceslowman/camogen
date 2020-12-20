@@ -237,7 +237,7 @@ const ShaderControls = observer(props => {
 
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
-      console.log("NODE HERE " + node.name, getSnapshot(node));
+      // console.log("NODE HERE " + node.name, getSnapshot(node));
       let subpanels = [];
       let is_selected = props.selectedNode === node;
 
