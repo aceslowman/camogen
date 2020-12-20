@@ -76,9 +76,10 @@ const GraphNode = types
         self.parents = [];
       }
 
-      // add new parent
+      // for each input in the shader...
       self.data.inputs.forEach((e, i) => {
-        // if an input was removed
+        
+        // if an input was removed from the shader...
         if (self.data.inputs.length < self.parents.length) {
           // remove all parents after the length of self.data.inputs
           self.parents.slice(self.data.inputs.length).forEach((parent, i) => {

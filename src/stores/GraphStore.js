@@ -164,23 +164,19 @@ const Graph = types
               .reverse()
               .forEach(e => self.nodes.delete(e));
           });
-        }
-        
-        let child = node.children[0];
-        self.selectedNode = child;
-        if (node.data) node.data.onRemove();
-        self.nodes.delete(node.uuid);
-        
-        // should re-add missing parents
-        child.mapInputsToParents();
+        }        
       } else {
         let idx = node.children[0].parents.indexOf(node);
-        node.children[0].parents.splice(idx, 1);
-        
-        self.selectedNode = node.children[0];
-        if (node.data) node.data.onRemove();
-        self.nodes.delete(node.uuid);
+        node.children[0].parents.splice(idx, 1);        
       }
+            
+      let child = node.children[0];
+      self.selectedNode = child;
+      if (node.data) node.data.onRemove();
+      self.nodes.delete(node.uuid);
+
+      // should re-add missing parents
+      child.mapInputsToParents();
 
       self.update();
     }
