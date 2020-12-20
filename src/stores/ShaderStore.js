@@ -297,7 +297,8 @@ let shader = types
       // setup samplers
       for (let i = 0; i < self.inputs.length; i++) {
         //error
-        if (parent_node.parents[i]) {
+        console.log(parent_node.parents.length)
+        if (i < parent_node.parents.length) {
           let input_shader = parent_node.parents[i].data;
 
           if (input_shader) {

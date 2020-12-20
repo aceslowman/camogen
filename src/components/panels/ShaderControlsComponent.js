@@ -102,13 +102,14 @@ const ShaderControls = observer(props => {
   };
 
   const generateInterface = shader => {
+    console.log('GENERATING INTERFACE FOR ' + shader.name, shader)
     let controls = shader.uniforms.map(uniform => {
       return (
         <ControlGroupComponent key={uniform.name} name={uniform.name}>
           {uniform.elements.map((param, i) => {
             let input = null;
             let value = param.value;
-            console.log('PARAM CHECK', param)
+            
             switch (param.uniform.type) {
               case "BOOL":
                 input = (
