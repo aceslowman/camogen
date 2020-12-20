@@ -55,7 +55,7 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
       });
 
       // if target exists, assign full queue
-      if (parent_scene.targets[branch_id])
+      if (branch_id < parent_scene.targets.length)
         parent_scene.targets[branch_id].setRenderQueue(subqueue);
     });
   }
