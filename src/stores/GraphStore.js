@@ -124,7 +124,7 @@ const Graph = types
           sure to reconnect those parent nodes to the
           next child node.
       */
-      if (node.parents.length) {        
+      if (node.parents.length) {
         /* 
             if first child AND deleted node are multi-input
             is multi-input, reassign
@@ -133,32 +133,29 @@ const Graph = types
           node.parents.forEach((parent, i) => {
             node.children[0].parents[i] = parent;
           });
-        } else if(node.children[0].parents.length > 1) {
-          console.log('child is a MIN', getSnapshot(node))
-          
+        } else if (node.children[0].parents.length > 1) {
+          console.log("child is a MIN", getSnapshot(node));
+
           /* 
             otherwise, if the child is a multi-input shader
             delete node, all parents, and regenerate an empty node in it's place            
           */
           let idx = node.children[0].parents.indexOf(node);
-          
+
           // remove all pruned parents
           // IDEA: these could also be held onto in a buffer
-          let node_parent = node;
-          
-          node.parents.forEach((parent, i) => {
-            // if (i === 0) return;
+          // let node_parent = node;
 
-            console.log('hitting')
-            // !!! why isn't this firing up the tree?
-            traverseFrom(parent, null, true)
-              .map(e => e.uuid)
-              .reverse()
-              .forEach(e => self.nodes.delete(e));
-          });
-          
+          console.log("hitting");
+          // first, deselect?
+          self.selectedNode = node.children[0];
+          // !!! why isn't this firing up the tree?
+          traverseFrom(node, null, true)
+            .map(e => e.uuid)
+            .reverse()
+            .forEach(e => self.nodes.delete(e));
+
           node.children[0].mapInputsToParents();
-          
         } else {
           // otherwise, collapse and map first child to first parent
           node.parents[0].children[0] = node.children[0];

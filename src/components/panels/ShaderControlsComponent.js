@@ -108,7 +108,7 @@ const ShaderControls = observer(props => {
           {uniform.elements.map((param, i) => {
             let input = null;
             let value = param.value;
-
+            console.log('PARAM CHECK', param)
             switch (param.uniform.type) {
               case "BOOL":
                 input = (
