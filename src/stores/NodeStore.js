@@ -74,7 +74,7 @@ const GraphNode = types
         });
         self.parents = [];
       }
-      
+
       // for each input in the shader...
       self.data.inputs.forEach((e, i) => {
         // if a new input was added
@@ -159,20 +159,11 @@ const GraphNode = types
       self.selected = false;
       return self;
     }
-    
-    function insertAbove() {
-      console.log('inserting above', getSnapshot(self))
-      /* 
-        for the time being, the behavior of this is to 
-        insert a passthru shader in the parent[0] slot
-      */
-      if(node.parents.length)
-    }
 
-    const setChildren = children => self.children = children;
-    const setParents = parents => self.parents = parents;
-    const setBranchIndex = idx => self.branch_index = idx;
-    const setName = name => self.name = name;
+    const setChildren = children => (self.children = children);
+    const setParents = parents => (self.parents = parents);
+    const setBranchIndex = idx => (self.branch_index = idx);
+    const setName = name => (self.name = name);
 
     return {
       afterAttach,
@@ -186,8 +177,7 @@ const GraphNode = types
       setBranchIndex,
       setName,
       select,
-      deselect,
-      insertAbove
+      deselect
     };
   });
 
