@@ -139,7 +139,14 @@ const GraphComponent = observer(props => {
         ctx.lineTo(cx, cy + 8 + spacing.y * 0.25 - 8);
         ctx.closePath();
         ctx.fill();
-      });
+                
+        // insert above / below markers        
+        ctx.fillStyle = branch_colors[parent.branch_index];
+        ctx.beginPath();
+        ctx.arc(cx, cy + spacing.y, 10, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.fill();
+      });      
 
       let label_border_color = theme.text_color;
       let label_border_style = node.data ? "solid" : "dashed";
