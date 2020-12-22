@@ -170,10 +170,7 @@ const Graph = types
     
     function insertAbove(
       node, 
-      _new_node = GraphNode.create({ 
-        uuid: "append_" + nanoid(),
-        data: Shader.create()
-      })
+      _new_node
     ) {
       /* 
         for the time being, the behavior of this is to 
@@ -181,14 +178,15 @@ const Graph = types
       */
       console.log("inserting above", getSnapshot(self));      
       
-      let new_node = self.addNode(_new_node);        
-      let t_parents = getSnapshot(node.parents);
+      let new_node = self.addNode(_new_node);   
         
-      new_node.setChild(new_node, 0);        
-      node.setParent(new_node, 0);
-      new_node.setParents(t_parents); 
-        
+      node.parents[0].setChild(new_node, 0);      
+      new_node.setParent(node.parents[0], 0); 
+      node.setParent(new_node, 0);        
+      new_node.setChild(node, 0);
       // self.update();
+        
+      return new_node;
     }
 
     /*
