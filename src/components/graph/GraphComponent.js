@@ -134,9 +134,9 @@ const GraphComponent = observer(props => {
         // direction triangle
         ctx.fillStyle = branch_colors[parent.branch_index];
         ctx.beginPath();
-        ctx.moveTo(cx - 8, cy + spacing.y * 0.25 - 8);
-        ctx.lineTo(cx + 8, cy + spacing.y * 0.25 - 8);
-        ctx.lineTo(cx, cy + 8 + spacing.y * 0.25 - 8);
+        ctx.moveTo(cx - 8, cy + spacing.y * 0.35 - 8);
+        ctx.lineTo(cx + 8, cy + spacing.y * 0.35 - 8);
+        ctx.lineTo(cx, cy + 8 + spacing.y * 0.35 - 8);
         ctx.closePath();
         ctx.fill();
       });      
@@ -151,7 +151,7 @@ const GraphComponent = observer(props => {
         // inverts on y-axis
         cy = wrapper_ref.current.offsetHeight - cy;
         cy += spacing.y / 2;
-        cy -= spacing.y / 4;
+        // cy -= spacing.y / 4;
         
         // insert above / below markers        
         ctx.strokeStyle = branch_colors[parent.branch_index];
@@ -164,14 +164,14 @@ const GraphComponent = observer(props => {
                 
         ctx.strokeStyle = theme.primary_color;
         ctx.beginPath();
-        ctx.moveTo(cx - 2, cy);
-        ctx.lineTo(cx + 2, cy);
+        ctx.moveTo(cx - 3, cy);
+        ctx.lineTo(cx + 3, cy);
         ctx.closePath();
         ctx.stroke();
         
         ctx.beginPath();
-        ctx.moveTo(cx, cy - 2);
-        ctx.lineTo(cx, cy + 2);
+        ctx.moveTo(cx, cy - 3);
+        ctx.lineTo(cx, cy + 3);
         ctx.closePath();
         ctx.stroke();        
       });  
