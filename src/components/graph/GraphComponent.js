@@ -139,42 +139,42 @@ const GraphComponent = observer(props => {
         ctx.lineTo(cx, cy + 8 + spacing.y * 0.35 - 8);
         ctx.closePath();
         ctx.fill();
-      });      
-      
-      node.parents.forEach((parent, p_i) => {
-        let cx = parent.coordinates.x;
-        let cy = parent.coordinates.y;
+      });
 
-        if (cx) cx *= spacing.x;
-        if (cy) cy *= spacing.y;
+      //       node.parents.forEach((parent, p_i) => {
+      //         let cx = parent.coordinates.x;
+      //         let cy = parent.coordinates.y;
 
-        // inverts on y-axis
-        cy = wrapper_ref.current.offsetHeight - cy;
-        cy += spacing.y / 2;
-        // cy -= spacing.y / 4;
-        
-        // insert above / below markers        
-        ctx.strokeStyle = branch_colors[parent.branch_index];
-        ctx.fillStyle = theme.text_color;
-        ctx.beginPath();
-        ctx.arc(cx, cy, 5, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
-                
-        ctx.strokeStyle = theme.primary_color;
-        ctx.beginPath();
-        ctx.moveTo(cx - 3, cy);
-        ctx.lineTo(cx + 3, cy);
-        ctx.closePath();
-        ctx.stroke();
-        
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - 3);
-        ctx.lineTo(cx, cy + 3);
-        ctx.closePath();
-        ctx.stroke();        
-      });  
+      //         if (cx) cx *= spacing.x;
+      //         if (cy) cy *= spacing.y;
+
+      //         // inverts on y-axis
+      //         cy = wrapper_ref.current.offsetHeight - cy;
+      //         cy += spacing.y / 2;
+      //         // cy -= spacing.y / 4;
+
+      //         // insert above / below markers
+      //         ctx.strokeStyle = branch_colors[parent.branch_index];
+      //         ctx.fillStyle = theme.text_color;
+      //         ctx.beginPath();
+      //         ctx.arc(cx, cy, 5, 0, 2 * Math.PI);
+      //         ctx.closePath();
+      //         ctx.stroke();
+      //         ctx.fill();
+
+      //         ctx.strokeStyle = theme.primary_color;
+      //         ctx.beginPath();
+      //         ctx.moveTo(cx - 3, cy);
+      //         ctx.lineTo(cx + 3, cy);
+      //         ctx.closePath();
+      //         ctx.stroke();
+
+      //         ctx.beginPath();
+      //         ctx.moveTo(cx, cy - 3);
+      //         ctx.lineTo(cx, cy + 3);
+      //         ctx.closePath();
+      //         ctx.stroke();
+      //       });
 
       let label_border_color = theme.text_color;
       let label_border_style = node.data ? "solid" : "dashed";
@@ -188,9 +188,42 @@ const GraphComponent = observer(props => {
         label_background_color = theme.accent_color;
       }
 
+      // insert labels
+      // if node has parents...
+      if (node.parents.length) {
+        _labels.push(
+          <div
+            key={"insert_" + node.uuid}
+            className={`${styles.label} ${styles.insert}`}
+            //className={`${styles.label} ${
+            //  props.data.selectedNode === node ? styles.selected : ""
+            //}`}
+            //onClick={() => node.select()}
+            //onContextMenu={e => handleContextMenu(e, node)}
+            style={{
+              left: x + spacing.x / 2 - 15,
+              top: y - spacing.y - 15
+            }}
+          >
+            <label
+              title="+"
+              style={{
+                backgroundColor: label_background_color,
+                borderColor: label_border_color,
+                borderStyle: label_border_style,
+                color: label_text_color
+              }}
+            >
+              +
+            </label>
+          </div>
+        );
+      }
+
+      // node labels
       _labels.push(
         <div
-          key={i}
+          key={"label_" + node.uuid}
           className={`${styles.label} ${
             props.data.selectedNode === node ? styles.selected : ""
           }`}
@@ -240,4 +273,4 @@ const GraphComponent = observer(props => {
 });
 
 export default GraphComponent;
-0
+0;

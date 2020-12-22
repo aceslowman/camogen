@@ -1,42 +1,46 @@
 .wrapper {
-    width:100%;
-    height:100%;
-    overflow: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .canvas {
-    width:100%;
-    height:100%; 
-    position:relative;
-    float:left;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  float: left;
+}
+
+.insert {
+  border-radius: 3px;
 }
 
 .labels {
-    width:100%;
-    height:100%;
-    position:relative;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .label {
-    position: absolute;
-    width: 30px;
-	  height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    white-space: pre;
-    font-weight: bold;
-    box-sizing:border-box;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: pre;
+  font-weight: bold;
+  box-sizing: border-box;
 }
 
 .label label {
-    padding: 3px 7px;
-    border: 1px solid black;
-    /* white-space: break-spaces; */
-    font-size: 0.8em;
-    cursor: pointer;
+  padding: 3px 7px;
+  border: 1px solid black;
+  /* white-space: break-spaces; */
+  font-size: 0.8em;
+  cursor: pointer;
 }
 
 .selected label {
-    border-style: dashed;
+  border-style: dashed;
 }
