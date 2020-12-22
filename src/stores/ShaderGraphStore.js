@@ -7,6 +7,7 @@ import {
   getParent
 } from "mobx-state-tree";
 import Shader from "./ShaderStore";
+import * as ThruShader from "./shaders/defaults/ThruShader";
 
 // special shaders
 import WebcamInput from "./shaders/inputs/WebcamInput";
@@ -71,6 +72,13 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
         return ImageInput.create();
       case "TextInput":
         return TextInput.create();
+      case "Thru":
+        return Shader.create({
+          name: "Thru",
+          precision: ThruShader.precision,
+          vert: ThruShader.vert,
+          frag: ThruShader.frag, 
+        })
       default:
         try {
           data = state_root.shader_collection.getByName(name).data;

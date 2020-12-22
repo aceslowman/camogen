@@ -170,7 +170,9 @@ const Graph = types
     
     function insertAbove(
       node, 
-      _new_node
+      _new_node = GraphNode.create({ 
+        uuid: "append_" + nanoid()
+      })
     ) {
       /* 
         for the time being, the behavior of this is to 
@@ -185,7 +187,6 @@ const Graph = types
       node.setParent(new_node, 0);        
       new_node.setChild(node, 0);
       // self.update();
-        
       return new_node;
     }
 

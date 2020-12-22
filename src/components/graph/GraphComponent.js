@@ -166,13 +166,10 @@ const GraphComponent = observer(props => {
             className={`${styles.label} ${styles.insert}`}
             onClick={() => {
               props.data.insertAbove(
-                node,
-                GraphNode.create({
-                  uuid: "append_" + nanoid()
-                })
+                node
               ).select();
               
-              props.data.setSelectedByName("HSV2RGB")
+              props.data.setSelectedByName("Thru")
             }}
             //onContextMenu={e => handleContextMenu(e, node)}
             style={{
