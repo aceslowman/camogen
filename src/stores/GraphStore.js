@@ -66,6 +66,7 @@ const Graph = types
     }
   }))
   .actions(self => {
+    
     function clear() {
       self.selectedNode = undefined;
       // TODO: currently not working when subgraphs are present!
