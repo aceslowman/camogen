@@ -159,6 +159,15 @@ const GraphNode = types
       self.selected = false;
       return self;
     }
+    
+    function insertAbove() {
+      console.log('inserting above', getSnapshot(self))
+      /* 
+        for the time being, the behavior of this is to 
+        insert a passthru shader in the parent[0] slot
+      */
+      if(node.parents.length)
+    }
 
     const setChildren = children => self.children = children;
     const setParents = parents => self.parents = parents;
@@ -177,7 +186,8 @@ const GraphNode = types
       setBranchIndex,
       setName,
       select,
-      deselect
+      deselect,
+      insertAbove
     };
   });
 
