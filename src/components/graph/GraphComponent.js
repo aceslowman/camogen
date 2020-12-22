@@ -205,8 +205,7 @@ const GraphComponent = observer(props => {
               top: y - spacing.y - 15
             }}
           >
-            <label
-              title="+"
+            <div
               style={{
                 backgroundColor: label_background_color,
                 borderColor: label_border_color,
@@ -215,7 +214,7 @@ const GraphComponent = observer(props => {
               }}
             >
               +
-            </label>
+            </div>
           </div>
         );
       }
