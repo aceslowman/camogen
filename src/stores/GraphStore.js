@@ -125,38 +125,18 @@ const Graph = types
       /*
           does the node have parents?
       */
-      if (node.parents.length) {
-        
-          
-        /* 
-            if first child AND deleted node are multi-input
-            is multi-input, reassign subtree
-        */
-        // if (node.children[0].parents.length > 1 && node.parents.length > 1) {
-        //   let idx = node.children[0].parents.indexOf(node);
-        //   node.parents.forEach((parent, i) => {
-        //     if(i === idx)
-        //       node.children[0].parents[i] = parent;
-        //   });
-        // } 
-        
+      if (node.parents.length) {        
         /* 
           is the child an MIN (multi-input node)?
         */        
         if (node.children[0].parents.length > 1 && node.children[0].parents.indexOf(node) > 0) {  
-          // let idx = node.children[0].parents.indexOf(node);
-          
-          // if(idx > 0) {
-            // delete all uptree nodes
-            node.parents.forEach((parent, i) => {
-              traverseFrom(parent, null, true)
-                .map(e => e.uuid)
-                .reverse()
-                .forEach(e => self.nodes.delete(e));
-            });
-
-            // parents still exist here, we haven't deleted the node  
-          // }          
+          // delete all uptree nodes
+          node.parents.forEach((parent, i) => {
+            traverseFrom(parent, null, true)
+              .map(e => e.uuid)
+              .reverse()
+              .forEach(e => self.nodes.delete(e));
+          });      
         } else {
           // otherwise, collapse and map first child to first parent
           node.parents[0].children[0] = node.children[0];
