@@ -194,23 +194,20 @@ const GraphComponent = observer(props => {
         _labels.push(
           <div
             key={"insert_" + node.uuid}
+            title="insert node"
             className={`${styles.label} ${styles.insert}`}
-            //className={`${styles.label} ${
-            //  props.data.selectedNode === node ? styles.selected : ""
-            //}`}
             //onClick={() => node.select()}
             //onContextMenu={e => handleContextMenu(e, node)}
             style={{
-              left: x + spacing.x / 2 - 15,
-              top: y - spacing.y - 15
+              left: Math.floor(x + spacing.x / 2 - 14),
+              top: Math.floor(y - spacing.y - 13)
             }}
           >
             <div
               style={{
-                backgroundColor: label_background_color,
-                borderColor: label_border_color,
-                borderStyle: label_border_style,
-                color: label_text_color
+                backgroundColor: theme.primary_color,
+                borderColor: theme.text_color,
+                color: theme.text_color
               }}
             >
               +

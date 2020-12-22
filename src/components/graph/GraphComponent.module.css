@@ -50,15 +50,16 @@
   background-color: white !important;
   mix-blend-mode: exclusion !important;
   color: black !important;
+  cursor: pointer;
 }
 
 .insert div {
   border-style: solid !important;
   border-radius: 12px;
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   padding: 0px;
-  font-size: 1em;
+  font-size: 0.8em;
   display: flex;
   align-items: center;
   justify-content: center;
