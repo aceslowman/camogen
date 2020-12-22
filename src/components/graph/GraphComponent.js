@@ -164,13 +164,6 @@ const GraphComponent = observer(props => {
             key={"insert_" + node.uuid}
             title="insert node"
             className={`${styles.label} ${styles.insert}`}
-            onClick={() => {
-              props.data.insertAbove(
-                node
-              ).select();
-              
-              props.data.setSelectedByName("Thru")
-            }}
             //onContextMenu={e => handleContextMenu(e, node)}
             style={{
               left: Math.floor(x + spacing.x / 2 - 14),
@@ -182,6 +175,11 @@ const GraphComponent = observer(props => {
                 backgroundColor: theme.primary_color,
                 borderColor: theme.text_color,
                 color: theme.text_color
+              }}
+              onClick={() => {
+                props.data.insertAbove(node).select();
+
+                props.data.setSelectedByName("Thru");
               }}
             >
               +
