@@ -11,10 +11,6 @@
   float: left;
 }
 
-.insert {
-  border-radius: 3px;
-}
-
 .labels {
   width: 100%;
   height: 100%;
@@ -43,4 +39,17 @@
 
 .selected label {
   border-style: dashed;
+}
+
+.insert {
+/*   padding: 0px; */
+/*   font-size: 0.5em; */
+}
+
+.insert label {  
+  border-radius: 12px;
+  width: 12px;
+  height: 12px;
+  padding: 0px;
+  font-size: 1em;
 }
