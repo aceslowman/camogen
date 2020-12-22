@@ -5,6 +5,7 @@ import { types, getSnapshot } from "mobx-state-tree";
 import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
 import Parameter from "./ParameterStore";
+import Shader from './ShaderStore';
 
 export const branch_colors = [
   "#0000FF", // blue
@@ -169,42 +170,25 @@ const Graph = types
     
     function insertAbove(
       node, 
-      _new_node = GraphNode.create({ uuid: "append_" + nanoid() })
+      _new_node = GraphNode.create({ 
+        uuid: "append_" + nanoid(),
+        data: Shader.create()
+      })
     ) {
-      let new_node = self.addNode(_new_node);
-        
-      let t_parents = node.parents;
-        
-      // node.
-
-        
-      // new_node.setParents(node.parents);
-      node.setParent(new_node, 0);
-      new_node.setChild(new_node, 0);
-      
-      // add parent
-      // node.setParent(new_node, 0);
-      console.log("inserting above", getSnapshot(self));
       /* 
         for the time being, the behavior of this is to 
         insert a passthru shader in the parent[0] slot
       */
-      // if (self.parents.length) {
-        // otherwise, collapse and map first child to first parent
-        // self.parents[0].children[0] = self.children[0];
-        // self.children[0].parents[0] = self.parents[0];
-
-        // remove all pruned parents
-        // self.parents.forEach((parent, i) => {
-        //   if (i === 0) return;
-        //   traverseFrom(parent, null, true)
-        //     .map(e => e.uuid)
-        //     .reverse()
-        //     .forEach(e => self.nodes.delete(e));
-        // });
-      // } else {
-        // console.error(`shouldn't be able to insert above this node`);
-      // }
+      console.log("inserting above", getSnapshot(self));      
+      
+      let new_node = self.addNode(_new_node);        
+      let t_parents = getSnapshot(node.parents);
+        
+      new_node.setChild(new_node, 0);        
+      node.setParent(new_node, 0);
+      new_node.setParents(t_parents); 
+        
+      // self.update();
     }
 
     /*
