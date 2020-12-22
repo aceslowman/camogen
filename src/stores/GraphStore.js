@@ -126,7 +126,7 @@ const Graph = types
           does the node have parents?
       */
       if (node.parents.length) {
-        let idx = node.children[0].parents.indexOf(node);
+        
           
         /* 
             if first child AND deleted node are multi-input
@@ -143,7 +143,9 @@ const Graph = types
         /* 
           is the child an MIN (multi-input node)?
         */        
-        if (node.children[0].parents.length > 1 && idx > 0) {             
+        if (node.children[0].parents.length > 1 && node.children[0].parents.indexOf(node) > 0) {  
+          // let idx = node.children[0].parents.indexOf(node);
+          
           // if(idx > 0) {
             // delete all uptree nodes
             node.parents.forEach((parent, i) => {
