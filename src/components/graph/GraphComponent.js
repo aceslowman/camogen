@@ -139,14 +139,42 @@ const GraphComponent = observer(props => {
         ctx.lineTo(cx, cy + 8 + spacing.y * 0.25 - 8);
         ctx.closePath();
         ctx.fill();
-                
-        // insert above / below markers        
-        ctx.fillStyle = branch_colors[parent.branch_index];
-        ctx.beginPath();
-        ctx.arc(cx, cy + spacing.y, 10, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
       });      
+      
+      node.parents.forEach((parent, p_i) => {
+        let cx = parent.coordinates.x;
+        let cy = parent.coordinates.y;
+
+        if (cx) cx *= spacing.x;
+        if (cy) cy *= spacing.y;
+
+        // inverts on y-axis
+        cy = wrapper_ref.current.offsetHeight - cy;
+        cy += spacing.y / 2;
+        cy -= spacing.y / 4;
+        
+        // insert above / below markers        
+        ctx.strokeStyle = branch_colors[parent.branch_index];
+        ctx.fillStyle = theme.text_color;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 5, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+                
+        ctx.strokeStyle = theme.primary_color;
+        ctx.beginPath();
+        ctx.moveTo(cx - 2, cy);
+        ctx.lineTo(cx + 2, cy);
+        ctx.closePath();
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - 2);
+        ctx.lineTo(cx, cy + 2);
+        ctx.closePath();
+        ctx.stroke();        
+      });  
 
       let label_border_color = theme.text_color;
       let label_border_style = node.data ? "solid" : "dashed";
