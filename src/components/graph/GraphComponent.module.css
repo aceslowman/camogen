@@ -46,10 +46,21 @@
 /*   font-size: 0.5em; */
 }
 
-.insert div {  
+.insert div:hover {
+  background-color: white !important;
+  mix-blend-mode: exclusion !important;
+  color: black !important;
+}
+
+.insert div {
+  border-style: solid !important;
   border-radius: 12px;
-  width: 12px;
-  height: 12px;
+  width: 15px;
+  height: 15px;
   padding: 0px;
   font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px !important;
 }
