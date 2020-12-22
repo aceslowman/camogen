@@ -119,40 +119,42 @@ const Graph = types
     function removeNode(node) {
       // can't remove root (root is always empty!)
       if (node === self.root) return;
+      // can't remove empty nodes!
+      if (!node.data) return;
 
       /*
-          if node being removed has a parent, make
-          sure to reconnect those parent nodes to the
-          next child node.
+          does the node have parents?
       */
       if (node.parents.length) {
+        let idx = node.children[0].parents.indexOf(node);
+          
         /* 
             if first child AND deleted node are multi-input
             is multi-input, reassign subtree
         */
-        if (node.children[0].parents.length > 1 && node.parents.length > 1) {
-          let idx = node.children[0].parents.indexOf(node);
-          node.parents.forEach((parent, i) => {
-            if(i === idx)
-              node.children[0].parents[i] = parent;
-          });
-        } 
+        // if (node.children[0].parents.length > 1 && node.parents.length > 1) {
+        //   let idx = node.children[0].parents.indexOf(node);
+        //   node.parents.forEach((parent, i) => {
+        //     if(i === idx)
+        //       node.children[0].parents[i] = parent;
+        //   });
+        // } 
         
         /* 
-          otherwise, if the child is a multi-input shader
-          delete node, all parents, and regenerate an empty node in it's place            
+          is the child an MIN (multi-input node)?
         */        
-        if (node.children[0].parents.length > 1) {          
-          // delete all uptree nodes
-          node.parents.forEach((parent, i) => {
-            traverseFrom(parent, null, true)
-              .map(e => e.uuid)
-              .reverse()
-              .forEach(e => self.nodes.delete(e));
-          });
+        if (node.children[0].parents.length > 1 && idx > 0) {             
+          // if(idx > 0) {
+            // delete all uptree nodes
+            node.parents.forEach((parent, i) => {
+              traverseFrom(parent, null, true)
+                .map(e => e.uuid)
+                .reverse()
+                .forEach(e => self.nodes.delete(e));
+            });
 
-          // parents still exist here, we haven't deleted the node
-          
+            // parents still exist here, we haven't deleted the node  
+          // }          
         } else {
           // otherwise, collapse and map first child to first parent
           node.parents[0].children[0] = node.children[0];
