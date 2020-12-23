@@ -16,6 +16,7 @@ import MainContext from "../../../MainContext";
 import styles from "./SketchInputComponent.module.css";
 import { getSnapshot } from "mobx-state-tree";
 let isDrawing = false;
+let x, y = 0;
 const SketchInputComponent = observer(props => {
   const store = useContext(MainContext).store;
   const { data } = props.data;
@@ -36,10 +37,15 @@ const SketchInputComponent = observer(props => {
       if (e.touches) e = e.touches[0];
 
       if (e.pageY) {
-        const x = e.pageX - dragOff[0];
-        const y = e.pageY - dragOff[1];
+        // const x = e.pageX - dragOff[0];
+        // const y = e.pageY - dragOff[1];
         
-        console.log('moving')
+        console.log('moving', [x,y])
+        
+        data.drawLine(x, y, e.offsetX, e.offsetY);
+        
+        x = e.offsetX;
+        y = e.offsetY;
 
         // limits to upper left
         // props.onPositionChange([x >= 0 ? x : 0, y >= 0 ? y : 0]);
@@ -50,8 +56,8 @@ const SketchInputComponent = observer(props => {
       if (e.touches && e.touches[0]) e = e.touches[0];
 
       if (e.pageY) {
-        const x = e.pageX - dragOff[0];
-        const y = e.pageY - dragOff[1];
+        // const x = e.pageX - dragOff[0];
+        // const y = e.pageY - dragOff[1];
 
         console.log('end')
         // limits to upper left
@@ -68,9 +74,9 @@ const SketchInputComponent = observer(props => {
     if (e.touches) e = e.touches[0];
 
     const p_bounds = wrapper_element.getBoundingClientRect();
-    let offset = { x: p_bounds.left, y: p_bounds.top };
-
-    let dragOff = [e.pageX - offset.x, e.pageY - offset.y];
+    
+    x = e.offsetX;
+    y = e.offsetY;
 
     document.addEventListener("mousemove", handleMove);
     document.addEventListener("mouseup", handleMoveEnd);
