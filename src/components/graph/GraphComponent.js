@@ -7,6 +7,7 @@ import { branch_colors } from "../../stores/GraphStore";
 import MainContext from "../../MainContext";
 import Shader from "../../stores/ShaderStore";
 import GraphNode from "../../stores/GraphStore";
+import { getSnapshot } from "mobx-state-tree";
 import { nanoid } from "nanoid";
 
 const GraphComponent = observer(props => {
@@ -156,9 +157,9 @@ const GraphComponent = observer(props => {
         label_background_color = theme.accent_color;
       }
 
-      // insert labels
-      // if node has parents...
-      if (node.parents.length) {
+      // insert labels BELOW node
+      // if node has children...
+      if (node.children.length) {
         _labels.push(
           <div
             key={"insert_" + node.uuid}
@@ -167,7 +168,8 @@ const GraphComponent = observer(props => {
             //onContextMenu={e => handleContextMenu(e, node)}
             style={{
               left: Math.floor(x + spacing.x / 2 - 14),
-              top: Math.floor(y - spacing.y - 13)
+              // top: Math.floor(y + spacing.y - 13)
+              top
             }}
           >
             <div
@@ -177,7 +179,8 @@ const GraphComponent = observer(props => {
                 color: theme.text_color
               }}
               onClick={() => {
-                props.data.insertAbove(node).select();
+                console.log(getSnapshot(node))
+                props.data.insertBelow(node).select();
 
                 props.data.setSelectedByName("Thru");
               }}

@@ -168,7 +168,7 @@ const Graph = types
       self.update();
     }
     
-    function insertAbove(
+    function insertBelow(
       node, 
       _new_node = GraphNode.create({ 
         uuid: "append_" + nanoid()
@@ -178,7 +178,7 @@ const Graph = types
         for the time being, the behavior of this is to 
         insert a passthru shader in the parent[0] slot
       */
-      console.log("inserting above", getSnapshot(self));      
+      console.log("inserting below", getSnapshot(self));      
       
       let new_node = self.addNode(_new_node);   
         
@@ -306,7 +306,7 @@ const Graph = types
       clear,
       update,
       appendNode,
-      insertAbove,
+      insertBelow,
       addNode,
       setSelected,
       removeSelected,
