@@ -5,7 +5,7 @@ import { types, getSnapshot } from "mobx-state-tree";
 import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
 import Parameter from "./ParameterStore";
-import Shader from './ShaderStore';
+import Shader from "./ShaderStore";
 
 export const branch_colors = [
   "#0000FF", // blue
@@ -67,7 +67,6 @@ const Graph = types
     }
   }))
   .actions(self => {
-    
     function clear() {
       self.selectedNode = undefined;
       // TODO: currently not working when subgraphs are present!
@@ -126,18 +125,22 @@ const Graph = types
       /*
           does the node have parents?
       */
-      if (node.parents.length) {        
+      if (node.parents.length) {
         /* 
           is the child an MIN (multi-input node)?
-        */        
-        if (node.children[0].parents.length > 1 && node.children[0].parents.indexOf(node) > 0) {  
+        */
+
+        if (
+          node.children[0].parents.length > 1 &&
+          node.children[0].parents.indexOf(node) > 0
+        ) {
           // delete all uptree nodes
           node.parents.forEach((parent, i) => {
             traverseFrom(parent, null, true)
               .map(e => e.uuid)
               .reverse()
               .forEach(e => self.nodes.delete(e));
-          });      
+          });
         } else {
           // otherwise, collapse and map first child to first parent
           node.parents[0].children[0] = node.children[0];
@@ -151,12 +154,12 @@ const Graph = types
               .reverse()
               .forEach(e => self.nodes.delete(e));
           });
-        }        
+        }
       } else {
         let idx = node.children[0].parents.indexOf(node);
-        node.children[0].parents.splice(idx, 1);        
+        node.children[0].parents.splice(idx, 1);
       }
-            
+
       let child = node.children[0];
       self.selectedNode = child;
       if (node.data) node.data.onRemove();
@@ -167,10 +170,10 @@ const Graph = types
 
       self.update();
     }
-    
+
     function insertBelow(
-      node, 
-      _new_node = GraphNode.create({ 
+      node,
+      _new_node = GraphNode.create({
         uuid: "append_" + nanoid()
       })
     ) {
@@ -178,15 +181,15 @@ const Graph = types
         for the time being, the behavior of this is to 
         insert a passthru shader in the parent[0] slot
       */
-      console.log("inserting below", getSnapshot(self));      
-      
-      let new_node = self.addNode(_new_node);   
-        
-      node.parents[0].setChild(new_node, 0);      
-      new_node.setParent(node.parents[0], 0); 
-      node.setParent(new_node, 0);        
-      new_node.setChild(node, 0);
-      // self.update();
+      let idx = node.children[0].parents.indexOf(node);
+
+      let new_node = self.addNode(_new_node);
+
+      node.children[0].setParent(new_node, idx);
+      new_node.setChild(node.children[0], 0);
+      node.setChild(new_node, 0);
+      new_node.setParent(node, 0);
+
       return new_node;
     }
 
