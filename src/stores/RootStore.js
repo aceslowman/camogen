@@ -393,6 +393,11 @@ const RootStore = types
       self.recentShaders.push(shader.id);
     };
     
+    const getCanvas = () => {
+      console.log(getSnapshot(self))
+      console.log(self.p5_instance.canvas)
+    }
+    
     const setTheme = (theme) => self.theme = theme;
     const setScene = (scene) => self.scene = scene;
     const setReady = (value) => self.ready = value;
@@ -416,7 +421,8 @@ const RootStore = types
       resizeCanvas,
       addToRecentShaders,
       persistShaderLibrary,
-      reloadDefaults
+      reloadDefaults,
+      getCanvas
     };
   });
 
