@@ -1,6 +1,6 @@
 import React from "react";
 import { getSnapshot, types, flow, applySnapshot } from "mobx-state-tree";
-// import { UndoManager } from "mst-middlewares";
+import { UndoManager } from "mst-middlewares";
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
 import defaultSnapshot from "../snapshots/default.json";
@@ -206,7 +206,7 @@ const RootStore = types
     }
   }))
   .actions(self => {
-    // setUndoManager(self)
+    setUndoManager(self)
 
     function afterCreate() {
       // window.localStorage.clear();
@@ -414,9 +414,9 @@ const RootStore = types
     };
   });
 
-// export let undoManager = {}
-// export const setUndoManager = (targetStore) => {
-//   undoManager = UndoManager.create({}, { targetStore })
-// }
+export let undoManager = {}
+export const setUndoManager = targetStore => {
+  undoManager = UndoManager.create({}, { targetStore })
+}
 
 export default RootStore;
