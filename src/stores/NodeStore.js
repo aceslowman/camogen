@@ -4,6 +4,7 @@ import { types, getParent, getSnapshot } from "mobx-state-tree";
 import Coordinate from "./utils/Coordinate";
 import { nanoid } from "nanoid";
 import { allOps } from "./operators";
+import SketchInput from "./shaders/inputs/SketchInput";
 import WebcamInput from "./shaders/inputs/WebcamInput";
 import ImageInput from "./shaders/inputs/ImageInput";
 import TextInput from "./shaders/inputs/TextInput";
@@ -14,6 +15,7 @@ const PossibleData = types.union(
     dispatcher: snap => {
       if (snap) {
         if (snap.type === "Shader") return Shader;
+        if (snap.type === "SketchInput") return SketchInput;
         if (snap.type === "WebcamInput") return WebcamInput;
         if (snap.type === "ImageInput") return ImageInput;
         if (snap.type === "TextInput") return TextInput;
@@ -26,6 +28,7 @@ const PossibleData = types.union(
   Shader,
   allOps,
   ImageInput,
+  SketchInput,
   WebcamInput,
   TextInput
 );

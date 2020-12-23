@@ -191,6 +191,12 @@ const RootStore = types
               label: "Text",
               onClick: () =>
                 self.scene.shaderGraph.setSelectedByName("TextInput")
+            },
+            Sketch: {
+              id: "Sketch",
+              label: "Sketch",
+              onClick: () =>
+                self.scene.shaderGraph.setSelectedByName("SketchInput")
             }
           }
         },

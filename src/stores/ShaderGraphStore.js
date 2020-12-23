@@ -73,8 +73,8 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
         return ImageInput.create();
       case "TextInput":
         return TextInput.create();
-      case "TextInput":
-        return TextInput.create();
+      case "SketchInput":
+        return SketchInput.create();
       case "Thru":
         return Shader.create({
           name: "Thru",

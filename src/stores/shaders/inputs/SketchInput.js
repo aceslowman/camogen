@@ -7,12 +7,8 @@ const sketch = types
   .model("Sketch", {
     type: "SketchInput",
     name: "Sketch", //TODO get rid of this, only need type
-    content: "Hell World",
-    fontFamily: "Arial",
-    fontSize: 40,
-    clearColor: "#000000",
-    fillColor: "#ffffff",
-    strokeColor: "#000000",
+    brushColor: "#000000",
+    brushRadius: 10,
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: `varying vec2 vTexCoord;
@@ -42,7 +38,6 @@ const sketch = types
       parent_node = getParent(self);
       
       // before destroy this autorun has to be disposed of
-      
       resize_autorun = autorun(() => {
         console.log('width has changed?', root_store.width);
         self.canvas.width = root_store.width;
@@ -62,7 +57,7 @@ const sketch = types
 
       self.canvas = document.createElement("canvas");
 
-      self.canvas.id = "TextLayer";
+      self.canvas.id = "SketchLayer";
       self.canvas.width = p.width || 50;
       self.canvas.height = p.height || 50;
       self.canvas.style.position = "absolute";
@@ -72,13 +67,9 @@ const sketch = types
 
       document.body.appendChild(self.canvas);
 
+      // begin graphics
       self.ctx = self.canvas.getContext("2d");
-      self.ctx.font = `${self.fontSize}px ${self.fontFamily}`;
-      self.ctx.fillStyle = self.fillColor;
-      self.ctx.textBaseline = "top";
-
-
-      self.ctx.fillText(self.content, 0, 0, self.canvas.width);
+      self.ctx.fillStyle = self.brushColor;
 
       self.texture = self.ctx.getImageData(
         0,
@@ -101,16 +92,6 @@ const sketch = types
 
       // prevents init() from being called twice
       self.ready = true;
-
-      // TODO: fix this
-      // removes 'tex0' from inputs, since it's provided
-      // by the text canvas.
-      // self.inputs = [];
-      // console.log(parent_node);
-      // parent_node.mapInputsToParents();
-      // parent_node.
-
-      console.log("self", getSnapshot(self));
     }
 
     function update(p) {
@@ -143,14 +124,10 @@ const sketch = types
     function redraw() {
       
       // TEMPORARY: should provide a way to allow clear/noClear
-      self.ctx.fillStyle = self.clearColor;
-      // self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
-      self.ctx.fillRect(0,0,self.canvas.width, self.canvas.height);
+      self.ctx.fillStyle = self.brushColor;
+      // self.ctx.fillRect(0,0,self.canvas.width, self.canvas.height);
       
       self.ctx.fillStyle = self.fillColor;
-      
-      wrapText(self.content, 0, 0, self.canvas.width);
-      // self.ctx.fillText(self.content, 10, 50, self.canvas.width);
 
       self.texture = self.ctx.getImageData(
         0,
@@ -159,81 +136,24 @@ const sketch = types
         self.canvas.height
       );
     }
-    
-    
-    //https://riptutorial.com/html5-canvas/example/18590/wrapping-text-into-paragraphs
-    function wrapText(text, x, y, maxWidth){
-      var firstY=y;
-      var words = text.split(' ');
-      var line = '';
-      var lineHeight=self.fontSize *1.286; // a good approx for 10-18px sizes
 
-      self.ctx.font = `${self.fontSize}px ${self.fontFamily}`;
-      self.ctx.textBaseline='top';
-
-      for(var n = 0; n < words.length; n++) {
-        var testLine = line + words[n] + ' ';
-        var metrics = self.ctx.measureText(testLine);
-        var testWidth = metrics.width;
-        if(testWidth > maxWidth) {
-          self.ctx.fillText(line, x, y);
-          if(n<words.length-1){
-              line = words[n] + ' ';
-              y += lineHeight;
-          }
-        }
-        else {
-          line = testLine;
-        }
-      }
-      self.ctx.fillText(line, x, y);
-    }
-
-    function setContent(text) {
-      self.content = text;
-      self.redraw();
-    }
-
-    function setFontFamily(v) {
-      self.fontFamily = v;
-      self.ctx.font = `${self.fontSize}px ${v}`;
-      self.redraw();
-    }
-
-    function setFontSize(v) {
-      self.fontSize = v;
-      self.ctx.font = `${v}px ${self.fontFamily}`;
-      self.redraw();
-    }
-
-    function setFillColor(v) {
-      self.fillColor = v;
+    function setBrushColor(v) {
+      self.brushColor = v;
       self.ctx.fillStyle = v;
-      self.redraw();
-    }
-
-    function setStrokeColor(v) {
-      self.strokeColor = v;
-      self.ctx.strokeStyle = v;
-      self.redraw();
+      // self.redraw();
     }
 
     return {
       afterAttach,
       beforeDestroy,
-      setContent,
       init,
       update,
-      redraw,
-      setFontFamily,
-      setFontSize,
-      setFillColor,
-      setStrokeColor
+      redraw
     };
   });
 
-const Text = types.compose(
+const Sketch = types.compose(
   Shader,
-  text
+  sketch
 );
-export default Text;
+export default Sketch;
