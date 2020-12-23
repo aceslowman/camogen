@@ -162,7 +162,7 @@ const Graph = types
 
       let child = node.children[0];
       self.selectedNode = child;
-      if (node.data) node.data.onRemove();
+      // if (node.data) node.data.onRemove(); // handled now with beforeDetach
       self.nodes.delete(node.uuid);
 
       // should re-add missing parents
