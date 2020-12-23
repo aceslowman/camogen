@@ -24,7 +24,7 @@ const SketchInputComponent = observer(props => {
   const handleBrushSizeChange = e => data.setBrushSize(e);
   const handleBrushColorChange = e => data.setBrushColor(e);
 
-  const handleMoveStart = (e, wrapper_element) => {
+  const handleMouseDown = (e, wrapper_element) => {
     /*
 			there are issues with drag events in firefox that make
 			the native 'drag' events less useful for this case. my 
@@ -38,9 +38,11 @@ const SketchInputComponent = observer(props => {
       if (e.pageY) {
         const x = e.pageX - dragOff[0];
         const y = e.pageY - dragOff[1];
+        
+        console.log('moving')
 
         // limits to upper left
-        props.onPositionChange([x >= 0 ? x : 0, y >= 0 ? y : 0]);
+        // props.onPositionChange([x >= 0 ? x : 0, y >= 0 ? y : 0]);
       }
     }
 
@@ -51,8 +53,9 @@ const SketchInputComponent = observer(props => {
         const x = e.pageX - dragOff[0];
         const y = e.pageY - dragOff[1];
 
+        console.log('end')
         // limits to upper left
-        props.onPositionChange([x >= 0 ? x : 0, y >= 0 ? y : 0]);
+        // props.onPositionChange([x >= 0 ? x : 0, y >= 0 ? y : 0]);
       }
 
       document.removeEventListener("mousemove", handleMove);
@@ -64,7 +67,7 @@ const SketchInputComponent = observer(props => {
     // use first touch event if on mobile device
     if (e.touches) e = e.touches[0];
 
-    const p_bounds = wrapper_element.current.getBoundingClientRect();
+    const p_bounds = wrapper_element.getBoundingClientRect();
     let offset = { x: p_bounds.left, y: p_bounds.top };
 
     let dragOff = [e.pageX - offset.x, e.pageY - offset.y];
