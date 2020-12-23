@@ -16,6 +16,7 @@ import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 
 // built in inputs
+import SketchInputComponent from "./shaders/SketchInputComponent";
 import WebcamInputComponent from "./shaders/WebcamInputComponent";
 import ImageInputComponent from "./shaders/ImageInputComponent";
 import TextInputComponent from "./shaders/TextInputComponent";
@@ -253,6 +254,11 @@ const ShaderControls = observer(props => {
           case "Text":
             controls = [
               <TextInputComponent key={node.uuid} ref={refs[i]} data={node} />
+            ];
+            break;
+          case "Sketch":
+            controls = [
+              <SketchInputComponent key={node.uuid} ref={refs[i]} data={node} />
             ];
             break;
           default:

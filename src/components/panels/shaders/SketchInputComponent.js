@@ -7,9 +7,9 @@ import {
   InputColor
 } from "maco-ui";
 
-import styles from './TextInputComponent.module.css';
+import styles from './SketchInputComponent.module.css';
 
-const TextInputComponent = observer(props => {
+const SketchInputComponent = observer(props => {
   const { data } = props.data;
 
   const handleTextChange = e => data.setContent(e.target.value);  
@@ -50,4 +50,4 @@ const TextInputComponent = observer(props => {
   );
 });
 
-export default TextInputComponent;
+export default SketchInputComponent;

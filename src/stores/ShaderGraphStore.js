@@ -13,6 +13,7 @@ import * as ThruShader from "./shaders/defaults/ThruShader";
 import WebcamInput from "./shaders/inputs/WebcamInput";
 import ImageInput from "./shaders/inputs/ImageInput";
 import TextInput from "./shaders/inputs/TextInput";
+import SketchInput from "./shaders/inputs/SketchInput";
 
 let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
   let state_root;
@@ -70,6 +71,8 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
         return WebcamInput.create();
       case "ImageInput":
         return ImageInput.create();
+      case "TextInput":
+        return TextInput.create();
       case "TextInput":
         return TextInput.create();
       case "Thru":
