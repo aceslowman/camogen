@@ -26,13 +26,6 @@ const SketchInputComponent = observer(props => {
   const handleBrushColorChange = e => data.setBrushColor(e);
 
   const handleMouseDown = (e, wrapper_element) => {
-    /*
-			there are issues with drag events in firefox that make
-			the native 'drag' events less useful for this case. my 
-			alternative was to use mouseEvents and create listeners 
-			on the document
-		*/
-
     function handleMove(e) {
       if (e.touches) e = e.touches[0];
 
@@ -60,6 +53,8 @@ const SketchInputComponent = observer(props => {
         // const y = e.pageY - dragOff[1];
 
         console.log('end')
+        x = 0;
+        y = 0;
         // limits to upper left
         // props.onPositionChange([x >= 0 ? x : 0, y >= 0 ? y : 0]);
       }

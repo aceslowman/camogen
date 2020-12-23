@@ -1,5 +1,5 @@
 import { getRoot, types, getSnapshot, getParent } from "mobx-state-tree";
-import { autorun } from 'mobx';
+import { autorun } from "mobx";
 import Shader from "../../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
 
@@ -36,17 +36,17 @@ const sketch = types
     function afterAttach() {
       root_store = getRoot(self);
       parent_node = getParent(self);
-      
+
       // before destroy this autorun has to be disposed of
       resize_autorun = autorun(() => {
-        console.log('width has changed?', root_store.width);
+        console.log("width has changed?", root_store.width);
         self.canvas.width = root_store.width;
         self.canvas.height = root_store.height;
-        
+
         self.redraw();
-      })
+      });
     }
-    
+
     function beforeDestroy() {
       // dispose of the autorun10l
       resize_autorun();
@@ -92,7 +92,7 @@ const sketch = types
 
       // prevents init() from being called twice
       self.ready = true;
-      
+
       // TODO: fix this
       // removes 'tex0' from inputs, since it's provided
       // by the text canvas.
@@ -128,11 +128,10 @@ const sketch = types
     }
 
     function redraw() {
-      
       // TEMPORARY: should provide a way to allow clear/noClear
       self.ctx.fillStyle = self.brushColor;
       // self.ctx.fillRect(0,0,self.canvas.width, self.canvas.height);
-      
+
       self.ctx.fillStyle = self.fillColor;
 
       self.texture = self.ctx.getImageData(
@@ -148,11 +147,22 @@ const sketch = types
       self.ctx.fillStyle = v;
       // self.redraw();
     }
-    
+
     function setBrushSize(v) {
       self.brushSize = v;
       // self.ctx.fillStyle = v;
       // self.redraw();
+    }
+
+    function drawLine(x1, y1, x2, y2) {
+      self.ctx.beginPath();
+      self.ctx.strokeStyle = "orange";
+      self.ctx.lineWidth = 10;
+      self.ctx.moveTo(x1, y1);
+      self.ctx.lineTo(x2, y2);
+      self.ctx.stroke();
+      self.ctx.closePath();
+      self.redraw();
     }
 
     return {
@@ -162,7 +172,8 @@ const sketch = types
       update,
       redraw,
       setBrushColor,
-      setBrushSize
+      setBrushSize,
+      drawLine
     };
   });
 
