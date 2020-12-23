@@ -8,7 +8,7 @@ const sketch = types
     type: "SketchInput",
     name: "Sketch", //TODO get rid of this, only need type
     brushColor: "#000000",
-    brushRadius: 10,
+    brushSize: 10,
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: `varying vec2 vTexCoord;
@@ -92,6 +92,12 @@ const sketch = types
 
       // prevents init() from being called twice
       self.ready = true;
+      
+      // TODO: fix this
+      // removes 'tex0' from inputs, since it's provided
+      // by the text canvas.
+      self.inputs = [];
+      parent_node.mapInputsToParents();
     }
 
     function update(p) {
@@ -142,13 +148,21 @@ const sketch = types
       self.ctx.fillStyle = v;
       // self.redraw();
     }
+    
+    function setBrushSize(v) {
+      self.brushSize = v;
+      // self.ctx.fillStyle = v;
+      // self.redraw();
+    }
 
     return {
       afterAttach,
       beforeDestroy,
       init,
       update,
-      redraw
+      redraw,
+      setBrushColor,
+      setBrushSize
     };
   });
 

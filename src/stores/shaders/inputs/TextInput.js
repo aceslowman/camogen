@@ -105,10 +105,8 @@ const text = types
       // TODO: fix this
       // removes 'tex0' from inputs, since it's provided
       // by the text canvas.
-      // self.inputs = [];
-      // console.log(parent_node);
-      // parent_node.mapInputsToParents();
-      // parent_node.
+      self.inputs = [];
+      parent_node.mapInputsToParents();
 
       console.log("self", getSnapshot(self));
     }

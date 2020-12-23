@@ -11,39 +11,24 @@ import styles from './SketchInputComponent.module.css';
 
 const SketchInputComponent = observer(props => {
   const { data } = props.data;
-
-  const handleTextChange = e => data.setContent(e.target.value);  
-  const handleFontFamilyChange = e => data.setFontFamily(e);  
-  const handleFontSizeChange = e => data.setFontSize(e);
-  const handleFillColorChange = e => data.setFillColor(e);  
+ 
+  const handleBrushSizeChange = e => data.setBrushSize(e);
+  const handleBrushColorChange = e => data.setBrushColor(e);  
+  
+  
 
   return (
     <React.Fragment>
-      <ControlGroupComponent>
-        <textarea
-          onChange={handleTextChange}
-          placeholder={data.content}
-          className={styles.textarea}
-        ></textarea>
-      </ControlGroupComponent>
-      <ControlGroupComponent name="Options">
-        <InputSelect
-          label="family"
-          onChange={handleFontFamilyChange}
-          options={[
-            { label: "arial", value: "arial" },
-            { label: "serif", value: "serif" }
-          ]}
-        />
+      <ControlGroupComponent name="Options">        
         <InputFloat 
           label='size'
-          value={data.fontSize} 
-          onChange={handleFontSizeChange}
+          value={data.brushSize} 
+          onChange={handleBrushSizeChange}
         />
         <InputColor 
-          label='fill'
-          value={data.fillColor} 
-          onChange={handleFillColorChange}
+          label='color'
+          value={data.brushColor} 
+          onChange={handleBrushColorChange}
         />
       </ControlGroupComponent>
     </React.Fragment>
