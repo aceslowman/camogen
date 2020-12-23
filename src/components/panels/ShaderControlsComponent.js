@@ -232,7 +232,7 @@ const ShaderControls = observer(props => {
   const handleSubpanelRef = (r, node) => {
     if (isAlive(node)) addPanelRef(r, node.uuid);
   };
-
+  
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
       let subpanels = [];

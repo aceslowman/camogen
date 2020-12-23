@@ -17,10 +17,20 @@ const SketchInputComponent = observer(props => {
   const handleBrushSizeChange = e => data.setBrushSize(e);
   const handleBrushColorChange = e => data.setBrushColor(e);  
   
+  const handleMouseMove = e => console.log('mouse event', e)
+  
   useEffect(() => {
     // add event listener for mouse on canvas
-    console.log(store.getCanvas())
+    // console.log(store.getCanvas())
+    console.log(document.getElementById("canvastest"))
     // return 
+    
+    // temp, shouldn't rely on this single ID'd canvas
+    let canvas = document.getElementById("canvastest");
+    
+    canvas.addEventListener('mousedown', (e) => handleMouseMove(e));
+    
+    return canvas.removeEventListener('mousedown', (e) => handleMouseMove(e)); 
   }, [])
 
   return (
