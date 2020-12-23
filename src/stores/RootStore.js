@@ -416,7 +416,7 @@ const RootStore = types
 
 export let undoManager = {}
 export const setUndoManager = targetStore => {
-  undoManager = UndoManager.create({}, { targetStore })
+  undoManager = UndoManager.create({}, { targetStore, maxHistoryLength: 20 })
 }
 
 export default RootStore;
