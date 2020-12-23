@@ -121,7 +121,7 @@ const Graph = types
       // can't remove root (root is always empty!)
       if (node === self.root) return;
       // can't remove empty nodes!
-      if (!node.data) return;
+      // if (!node.data) return;
 
       /*
           does the node have parents?
