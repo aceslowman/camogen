@@ -47,8 +47,7 @@ const GraphNode = types
   })
   .volatile(self => ({
     branch_index: 0,
-    trunk_distance: 0,
-    parent_graph: null
+    trunk_distance: 0
   }))
   .views(self => {
     let parent_graph;
@@ -58,7 +57,6 @@ const GraphNode = types
     }
     
     function selected() {
-      console.log(parent_graph.selectedNode)
       return parent_graph.selectedNode === self
     } 
     
@@ -68,9 +66,10 @@ const GraphNode = types
     }
   })
   .actions(self => {
+    let parent_graph;
 
     function afterAttach() {
-      self.parent_graph = getParent(self, 2);
+      parent_graph = getParent(self, 2);
     }
 
     function setData(data) {
@@ -78,8 +77,8 @@ const GraphNode = types
       self.name = data.name;
 
       // extract uniforms, map inputs/outputs
-      self.parent_graph.update();
-      self.parent_graph.afterUpdate();
+      parent_graph.update();
+      parent_graph.afterUpdate();
       self.mapInputsToParents();
     }
 

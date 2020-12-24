@@ -26,6 +26,7 @@ const SketchInputComponent = observer(props => {
   const handleBrushColorChange = e => data.setBrushColor(e);
 
   const handleMouseDown = (e, wrapper_element) => {
+    console.log('trigger mousedown')
     function handleMove(e) {
       if (e.touches) e = e.touches[0];
 
@@ -65,24 +66,25 @@ const SketchInputComponent = observer(props => {
     document.addEventListener("touchend", handleMoveEnd);
   };
 
-  console.log(props.data)
+//   console.log(props.data.selected())
   
   useEffect(() => {
-    console.log('selected changed')
+    console.log('selected changed', props.data.selected())
     // temp, shouldn't rely on this single ID'd canvas
     let canvas = document.getElementById("canvastest");
     
-    if(props.data.selected) {
+    if(props.data.selected()) {
       // add event listeners for mouse on canvas
-      canvas.addEventListener("mousedown", e => handleMouseDown(e, canvas));
+      canvas.addEventListener("mousedown", e => handleMouseDown(e, canvas), true);
     } else {
-      canvas.removeEventListener("mousedown", e => handleMouseDown(e, canvas));
+      console.log('test')
+      canvas.removeEventListener("mousedown", e => handleMouseDown(e, canvas), true);
     }
     
     
-    return canvas.removeEventListener("mousedown", e => handleMouseDown(e, canvas));
+    return canvas.removeEventListener("mousedown", e => handleMouseDown(e, canvas), true);
     
-  }, [props.data.selected]);
+  }, [props.data.selected()]);
 
   return (
     <React.Fragment>
