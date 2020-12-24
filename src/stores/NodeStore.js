@@ -42,18 +42,35 @@ const GraphNode = types
     data: types.maybe(PossibleData),
     children: types.array(nodeRef),
     parents: types.array(nodeRef),
-    selected: false,
+    // selected: false,
     coordinates: types.optional(Coordinate, { x: 0, y: 0 })
   })
   .volatile(self => ({
     branch_index: 0,
-    trunk_distance: 0
+    trunk_distance: 0,
+    parent_graph: null
   }))
-  .actions(self => {
+  .views(self => {
     let parent_graph;
 
     function afterAttach() {
       parent_graph = getParent(self, 2);
+    }
+    
+    function selected() {
+      console.log(parent_graph.selectedNode)
+      return parent_graph.selectedNode === self
+    } 
+    
+    return {
+      afterAttach,
+      selected
+    }
+  })
+  .actions(self => {
+
+    function afterAttach() {
+      self.parent_graph = getParent(self, 2);
     }
 
     function setData(data) {
@@ -61,8 +78,8 @@ const GraphNode = types
       self.name = data.name;
 
       // extract uniforms, map inputs/outputs
-      parent_graph.update();
-      parent_graph.afterUpdate();
+      self.parent_graph.update();
+      self.parent_graph.afterUpdate();
       self.mapInputsToParents();
     }
 
@@ -153,13 +170,11 @@ const GraphNode = types
 
     function select() {
       parent_graph.setSelected(self);
-      self.selected = true;
       return self;
     }
 
     function deselect() {
       parent_graph.setSelected(null);
-      self.selected = false;
       return self;
     }
 
