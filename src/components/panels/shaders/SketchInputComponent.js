@@ -65,15 +65,24 @@ const SketchInputComponent = observer(props => {
     document.addEventListener("touchend", handleMoveEnd);
   };
 
+  console.log(props.data)
+  
   useEffect(() => {
+    console.log('selected changed')
     // temp, shouldn't rely on this single ID'd canvas
     let canvas = document.getElementById("canvastest");
-    // add event listeners for mouse on canvas
-    canvas.addEventListener("mousedown", e => handleMouseDown(e, canvas));
-    return () => {
+    
+    if(props.data.selected) {
+      // add event listeners for mouse on canvas
+      canvas.addEventListener("mousedown", e => handleMouseDown(e, canvas));
+    } else {
       canvas.removeEventListener("mousedown", e => handleMouseDown(e, canvas));
-    };
-  }, []);
+    }
+    
+    
+    return canvas.removeEventListener("mousedown", e => handleMouseDown(e, canvas));
+    
+  }, [props.data.selected]);
 
   return (
     <React.Fragment>
