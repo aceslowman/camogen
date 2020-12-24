@@ -18,7 +18,7 @@ import styles from "./SketchInputComponent.module.css";
 import { getSnapshot } from "mobx-state-tree";
 
 let isDrawing = false;
-let x, y = 0;
+let x,y = 0;
 
 const SketchInputComponent = observer(props => {
   const store = useContext(MainContext).store;
@@ -27,9 +27,10 @@ const SketchInputComponent = observer(props => {
 
   const handleBrushSizeChange = e => data.setBrushSize(e);
   const handleBrushColorChange = e => data.setBrushColor(e);
-
+    
+  let canvas = document.getElementById("canvastest");
+  
   const handleMouseDown = useCallback((e) => {
-    let canvas = document.getElementById("canvastest");
     console.log("trigger mousedown");
     function handleMove(e) {
       if (e.touches) e = e.touches[0];
@@ -68,16 +69,14 @@ const SketchInputComponent = observer(props => {
     document.addEventListener("mouseup", handleMoveEnd);
     document.addEventListener("touchmove", handleMove);
     document.addEventListener("touchend", handleMoveEnd);
-  }, []);
+  }, [props.data.selected(), canvas]);
 
   useEffect(() => {
-    console.log("selected changed", props.data.selected());
     // temp, shouldn't rely on this single ID'd canvas
     let canvas = document.getElementById("canvastest");
 
     if (props.data.selected()) {
       console.log("adding listener");
-      // add event listeners for mouse on canvas
       canvas.addEventListener(
         "mousedown",
         handleMouseDown,
@@ -92,12 +91,12 @@ const SketchInputComponent = observer(props => {
       );
     }
 
-    return canvas.removeEventListener(
+    return () => canvas.removeEventListener(
       "mousedown",
       handleMouseDown,
       true
     );
-  }, [props.data.selected()]);
+  }, [props.data.selected(), handleMouseDown]);
 
   return (
     <React.Fragment>
