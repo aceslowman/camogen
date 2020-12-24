@@ -68,8 +68,6 @@ const SketchInputComponent = observer(props => {
     document.addEventListener("touchend", handleMoveEnd);
   };
 
-  //   console.log(props.data.selected())
-
   useEffect(() => {
     console.log("selected changed", props.data.selected());
     // temp, shouldn't rely on this single ID'd canvas
