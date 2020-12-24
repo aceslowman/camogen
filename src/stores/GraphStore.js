@@ -160,9 +160,10 @@ const Graph = types
         node.children[0].parents.splice(idx, 1);
       }
 
+      // after deleting, select parent, unless there are none
       let child = node.children[0];
-      self.selectedNode = child;
-      // if (node.data) node.data.onRemove(); // handled now with beforeDetach
+      self.selectedNode = node.parents.length ? node.parents[0] : child;
+      
       self.nodes.delete(node.uuid);
 
       // should re-add missing parents
