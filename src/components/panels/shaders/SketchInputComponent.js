@@ -16,7 +16,8 @@ import MainContext from "../../../MainContext";
 import styles from "./SketchInputComponent.module.css";
 import { getSnapshot } from "mobx-state-tree";
 let isDrawing = false;
-let x, y = 0;
+let x,
+  y = 0;
 const SketchInputComponent = observer(props => {
   const store = useContext(MainContext).store;
   const { data } = props.data;
@@ -25,65 +26,65 @@ const SketchInputComponent = observer(props => {
   const handleBrushSizeChange = e => data.setBrushSize(e);
   const handleBrushColorChange = e => data.setBrushColor(e);
 
-  const handleMouseDown = (e, wrapper_element) => {
-    console.log('trigger mousedown')
-    function handleMove(e) {
-      if (e.touches) e = e.touches[0];
+  //   console.log(props.data.selected())
 
-      if (e.pageY) {        
-        data.drawLine(x, y, e.offsetX, e.offsetY);
-        
-        x = e.offsetX;
-        y = e.offsetY;
-      }
-    }
-
-    function handleMoveEnd(e) {
-      if (e.touches && e.touches[0]) e = e.touches[0];
-
-      if (e.pageY) {
-        x = 0;
-        y = 0;
-      }
-
-      document.removeEventListener("mousemove", handleMove);
-      document.removeEventListener("mouseup", handleMoveEnd);
-      document.removeEventListener("touchmove", handleMove);
-      document.removeEventListener("touchend", handleMoveEnd);
-    }
-
-    // use first touch event if on mobile device
-    if (e.touches) e = e.touches[0];
-
-    const p_bounds = wrapper_element.getBoundingClientRect();
-    
-    x = e.offsetX;
-    y = e.offsetY;
-
-    document.addEventListener("mousemove", handleMove);
-    document.addEventListener("mouseup", handleMoveEnd);
-    document.addEventListener("touchmove", handleMove);
-    document.addEventListener("touchend", handleMoveEnd);
-  };
-
-//   console.log(props.data.selected())
-  
   useEffect(() => {
-    console.log('selected changed', props.data.selected())
+    console.log("selected changed", props.data.selected());
     // temp, shouldn't rely on this single ID'd canvas
     let canvas = document.getElementById("canvastest");
-    
-    if(props.data.selected()) {
+
+    const handleMouseDown = e => {
+      console.log("trigger mousedown");
+      function handleMove(e) {
+        if (e.touches) e = e.touches[0];
+
+        if (e.pageY) {
+          data.drawLine(x, y, e.offsetX, e.offsetY);
+
+          x = e.offsetX;
+          y = e.offsetY;
+        }
+      }
+
+      function handleMoveEnd(e) {
+        if (e.touches && e.touches[0]) e = e.touches[0];
+
+        if (e.pageY) {
+          x = 0;
+          y = 0;
+        }
+
+        document.removeEventListener("mousemove", handleMove);
+        document.removeEventListener("mouseup", handleMoveEnd);
+        document.removeEventListener("touchmove", handleMove);
+        document.removeEventListener("touchend", handleMoveEnd);
+      }
+
+      // use first touch event if on mobile device
+      if (e.touches) e = e.touches[0];
+
+      let canvas = document.getElementById("canvastest");
+      const p_bounds = canvas.getBoundingClientRect();
+
+      x = e.offsetX;
+      y = e.offsetY;
+
+      document.addEventListener("mousemove", handleMove);
+      document.addEventListener("mouseup", handleMoveEnd);
+      document.addEventListener("touchmove", handleMove);
+      document.addEventListener("touchend", handleMoveEnd);
+    };
+
+    if (props.data.selected()) {
+      console.log("adding listener");
       // add event listeners for mouse on canvas
-      canvas.addEventListener("mousedown", e => handleMouseDown(e, canvas), false);
+      canvas.addEventListener("mousedown", handleMouseDown, false);
     } else {
-      console.log('test')
-      canvas.removeEventListener("mousedown", e => handleMouseDown(e, canvas), false);
+      console.log("removing listener");
+      canvas.removeEventListener("mousedown", handleMouseDown, false);
     }
-    
-    
-    return canvas.removeEventListener("mousedown", e => handleMouseDown(e, canvas), false);
-    
+
+    return canvas.removeEventListener("mousedown", handleMouseDown, false);
   }, [props.data.selected()]);
 
   return (
