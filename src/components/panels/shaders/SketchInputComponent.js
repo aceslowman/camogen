@@ -4,7 +4,8 @@ import React, {
   useEffect,
   useLayoutEffect,
   useState,
-  useContext
+  useContext,
+  useCallback
 } from "react";
 import {
   ControlGroupComponent,
@@ -15,9 +16,10 @@ import {
 import MainContext from "../../../MainContext";
 import styles from "./SketchInputComponent.module.css";
 import { getSnapshot } from "mobx-state-tree";
+
 let isDrawing = false;
-let x,
-  y = 0;
+let x, y = 0;
+
 const SketchInputComponent = observer(props => {
   const store = useContext(MainContext).store;
   const { data } = props.data;
@@ -26,7 +28,7 @@ const SketchInputComponent = observer(props => {
   const handleBrushSizeChange = e => data.setBrushSize(e);
   const handleBrushColorChange = e => data.setBrushColor(e);
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = useCallback((e) => {
     let canvas = document.getElementById("canvastest");
     console.log("trigger mousedown");
     function handleMove(e) {
@@ -66,7 +68,7 @@ const SketchInputComponent = observer(props => {
     document.addEventListener("mouseup", handleMoveEnd);
     document.addEventListener("touchmove", handleMove);
     document.addEventListener("touchend", handleMoveEnd);
-  };
+  }, []);
 
   useEffect(() => {
     console.log("selected changed", props.data.selected());
