@@ -11,7 +11,7 @@ import Parameter from "./ParameterStore";
 import Collection from "./utils/Collection";
 import { nanoid } from "nanoid";
 import { OperatorGraph } from "./GraphStore";
-import Target from './TargetStore';
+import Target from "./TargetStore";
 
 const Uniform = types
   .model("Uniform", {
@@ -100,12 +100,12 @@ let shader = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: DefaultShader.frag,
-    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph))),
+    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
     // target: types.maybe(Target) // questionable
     // BIG TODO!
     // collection: types.safeReference(types.late(() => Collection))
   })
-  .volatile(() => ({    
+  .volatile(() => ({
     target: null,
     ready: false,
     hasChanged: false
@@ -325,12 +325,8 @@ let shader = types
       }
     }
 
-    // function onRemove() {
-    //   self.target.removeShaderNode(parent_node);
-    // }
-    
     function beforeDetach() {
-      self.target.removeShaderNode(parent_node); 
+      self.target.removeShaderNode(parent_node);
     }
 
     function saveToCollection() {
@@ -436,7 +432,6 @@ let shader = types
       setTarget,
       setName,
       update,
-      // onRemove,
       save,
       load,
       setHasChanged,

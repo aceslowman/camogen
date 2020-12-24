@@ -2,15 +2,17 @@
   p.setup = () => {
     let container = document.getElementById("canvastest");
 
-    let c = p.createCanvas(50, 50);
+    let canvas = p.createCanvas(50, 50);
     p.frameRate(30);
 
-    container.append(c.canvas);
+    container.append(canvas.canvas);
 
     let bounds = container.getBoundingClientRect();
 
-    c.resize(bounds.width, bounds.height);
+    canvas.resize(bounds.width, bounds.height);
     p.background(store.ui.theme.secondary_color);
+    
+    console.log('p', p)
   };
 
   p.draw = () => {

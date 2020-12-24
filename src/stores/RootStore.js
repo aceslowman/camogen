@@ -33,8 +33,11 @@ import p5 from "p5";
   [ParameterStore]
 */
 
+const currentDate = new Date();
+
 const RootStore = types
   .model("RootStore", {
+    name: `${currentDate.getMonth()+1}-${currentDate.getDate()}-${currentDate.getFullYear()}`,
     ui: UIStore,
     scene: types.maybe(Scene),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
@@ -45,8 +48,7 @@ const RootStore = types
     width: 512,
     height: 512
   })
-  .volatile(() => ({
-    name: "untitled",
+  .volatile(() => ({    
     p5_instance: null,
     ready: false,
     breakoutControlled: false,
