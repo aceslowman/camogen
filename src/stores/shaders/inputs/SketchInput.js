@@ -48,7 +48,7 @@ const sketch = types
     }
 
     function beforeDestroy() {
-      // dispose of the autorun10l
+      // dispose of the autorun
       resize_autorun();
     }
 
