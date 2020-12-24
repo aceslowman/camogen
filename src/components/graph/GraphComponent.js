@@ -166,8 +166,8 @@ const GraphComponent = observer(props => {
             title="insert node"
             className={`${styles.label} ${styles.insert}`}
             style={{
-              left: Math.floor(x + spacing.x / 2 - 14),
-              top: Math.floor(y - 13)
+              left: Math.floor(x + spacing.x / 2 - 15),
+              top: Math.floor(y - 15)
             }}
           >
             <div

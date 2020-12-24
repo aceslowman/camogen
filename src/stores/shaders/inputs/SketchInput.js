@@ -39,7 +39,6 @@ const sketch = types
 
       // before destroy this autorun has to be disposed of
       resize_autorun = autorun(() => {
-        console.log("width has changed?", root_store.width);
         self.canvas.width = root_store.width;
         self.canvas.height = root_store.height;
 

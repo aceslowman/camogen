@@ -41,10 +41,8 @@ const text = types
       root_store = getRoot(self);
       parent_node = getParent(self);
       
-      // before destroy this autorun has to be disposed of
-      
+      // before destroy this autorun has to be disposed of      
       resize_autorun = autorun(() => {
-        console.log('width has changed?', root_store.width);
         self.canvas.width = root_store.width;
         self.canvas.height = root_store.height;
         
