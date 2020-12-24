@@ -26,6 +26,48 @@ const SketchInputComponent = observer(props => {
   const handleBrushSizeChange = e => data.setBrushSize(e);
   const handleBrushColorChange = e => data.setBrushColor(e);
 
+  const handleMouseDown = (e) => {
+    let canvas = document.getElementById("canvastest");
+    console.log("trigger mousedown");
+    function handleMove(e) {
+      if (e.touches) e = e.touches[0];
+
+      if (e.pageY) {
+        data.drawLine(x, y, e.offsetX, e.offsetY);
+
+        x = e.offsetX;
+        y = e.offsetY;
+      }
+    }
+
+    function handleMoveEnd(e) {
+      if (e.touches && e.touches[0]) e = e.touches[0];
+
+      if (e.pageY) {
+        x = 0;
+        y = 0;
+      }
+
+      document.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseup", handleMoveEnd);
+      document.removeEventListener("touchmove", handleMove);
+      document.removeEventListener("touchend", handleMoveEnd);
+    }
+
+    // use first touch event if on mobile device
+    if (e.touches) e = e.touches[0];
+
+    const p_bounds = canvas.getBoundingClientRect();
+
+    x = e.offsetX;
+    y = e.offsetY;
+
+    document.addEventListener("mousemove", handleMove);
+    document.addEventListener("mouseup", handleMoveEnd);
+    document.addEventListener("touchmove", handleMove);
+    document.addEventListener("touchend", handleMoveEnd);
+  };
+
   //   console.log(props.data.selected())
 
   useEffect(() => {
@@ -33,58 +75,28 @@ const SketchInputComponent = observer(props => {
     // temp, shouldn't rely on this single ID'd canvas
     let canvas = document.getElementById("canvastest");
 
-    const handleMouseDown = e => {
-      console.log("trigger mousedown");
-      function handleMove(e) {
-        if (e.touches) e = e.touches[0];
-
-        if (e.pageY) {
-          data.drawLine(x, y, e.offsetX, e.offsetY);
-
-          x = e.offsetX;
-          y = e.offsetY;
-        }
-      }
-
-      function handleMoveEnd(e) {
-        if (e.touches && e.touches[0]) e = e.touches[0];
-
-        if (e.pageY) {
-          x = 0;
-          y = 0;
-        }
-
-        document.removeEventListener("mousemove", handleMove);
-        document.removeEventListener("mouseup", handleMoveEnd);
-        document.removeEventListener("touchmove", handleMove);
-        document.removeEventListener("touchend", handleMoveEnd);
-      }
-
-      // use first touch event if on mobile device
-      if (e.touches) e = e.touches[0];
-
-      let canvas = document.getElementById("canvastest");
-      const p_bounds = canvas.getBoundingClientRect();
-
-      x = e.offsetX;
-      y = e.offsetY;
-
-      document.addEventListener("mousemove", handleMove);
-      document.addEventListener("mouseup", handleMoveEnd);
-      document.addEventListener("touchmove", handleMove);
-      document.addEventListener("touchend", handleMoveEnd);
-    };
-
     if (props.data.selected()) {
       console.log("adding listener");
       // add event listeners for mouse on canvas
-      canvas.addEventListener("mousedown", handleMouseDown, false);
+      canvas.addEventListener(
+        "mousedown",
+        handleMouseDown,
+        true
+      );
     } else {
       console.log("removing listener");
-      canvas.removeEventListener("mousedown", handleMouseDown, false);
+      canvas.removeEventListener(
+        "mousedown",
+        handleMouseDown,
+        true
+      );
     }
 
-    return canvas.removeEventListener("mousedown", handleMouseDown, false);
+    return canvas.removeEventListener(
+      "mousedown",
+      handleMouseDown,
+      true
+    );
   }, [props.data.selected()]);
 
   return (
