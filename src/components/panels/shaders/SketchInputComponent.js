@@ -31,7 +31,6 @@ const SketchInputComponent = observer(props => {
   let canvas = document.getElementById("canvastest");
   
   const handleMouseDown = useCallback((e) => {
-    console.log("trigger mousedown");
     function handleMove(e) {
       if (e.touches) e = e.touches[0];
 
@@ -51,10 +50,10 @@ const SketchInputComponent = observer(props => {
         y = 0;
       }
 
-      document.removeEventListener("mousemove", handleMove);
-      document.removeEventListener("mouseup", handleMoveEnd);
-      document.removeEventListener("touchmove", handleMove);
-      document.removeEventListener("touchend", handleMoveEnd);
+      canvas.removeEventListener("mousemove", handleMove);
+      canvas.removeEventListener("mouseup", handleMoveEnd);
+      canvas.removeEventListener("touchmove", handleMove);
+      canvas.removeEventListener("touchend", handleMoveEnd);
     }
 
     // use first touch event if on mobile device
@@ -65,10 +64,10 @@ const SketchInputComponent = observer(props => {
     x = e.offsetX;
     y = e.offsetY;
 
-    document.addEventListener("mousemove", handleMove);
-    document.addEventListener("mouseup", handleMoveEnd);
-    document.addEventListener("touchmove", handleMove);
-    document.addEventListener("touchend", handleMoveEnd);
+    canvas.addEventListener("mousemove", handleMove);
+    canvas.addEventListener("mouseup", handleMoveEnd);
+    canvas.addEventListener("touchmove", handleMove);
+    canvas.addEventListener("touchend", handleMoveEnd);
   }, [props.data.selected(), canvas]);
 
   useEffect(() => {
@@ -76,14 +75,12 @@ const SketchInputComponent = observer(props => {
     let canvas = document.getElementById("canvastest");
 
     if (props.data.selected()) {
-      console.log("adding listener");
       canvas.addEventListener(
         "mousedown",
         handleMouseDown,
         true
       );
     } else {
-      console.log("removing listener");
       canvas.removeEventListener(
         "mousedown",
         handleMouseDown,

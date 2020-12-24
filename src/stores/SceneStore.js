@@ -22,8 +22,8 @@ const Scene = types
       */
       self.shaderGraph.addNode();
       // self.shaderGraph.setSelectedByName('TextInput');
-      // self.shaderGraph.setSelectedByName("SketchInput");
-      self.shaderGraph.setSelectedByName("UV");
+      self.shaderGraph.setSelectedByName("SketchInput");
+      // self.shaderGraph.setSelectedByName("UV");
       self.shaderGraph.root.select();
       // self.shaderGraph.setSelectedByName("Glyph");
       // self.shaderGraph.root.select();

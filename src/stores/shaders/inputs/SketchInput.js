@@ -90,12 +90,8 @@ const sketch = types
         }
       }
 
-      // prevents init() from being called twice
       self.ready = true;
 
-      // TODO: fix this
-      // removes 'tex0' from inputs, since it's provided
-      // by the text canvas.
       self.inputs = [];
       parent_node.mapInputsToParents();
     }
@@ -127,13 +123,7 @@ const sketch = types
       }
     }
 
-    function redraw() {
-      // TEMPORARY: should provide a way to allow clear/noClear
-      self.ctx.fillStyle = self.brushColor;
-      // self.ctx.fillRect(0,0,self.canvas.width, self.canvas.height);
-
-      self.ctx.fillStyle = self.fillColor;
-
+    function redraw() {      
       self.texture = self.ctx.getImageData(
         0,
         0,
@@ -141,29 +131,20 @@ const sketch = types
         self.canvas.height
       );
     }
-
-    function setBrushColor(v) {
-      self.brushColor = v;
-      self.ctx.fillStyle = v;
-      // self.redraw();
-    }
-
-    function setBrushSize(v) {
-      self.brushSize = v;
-      // self.ctx.fillStyle = v;
-      // self.redraw();
-    }
-
+    
     function drawLine(x1, y1, x2, y2) {
       self.ctx.beginPath();
-      self.ctx.strokeStyle = "orange";
-      self.ctx.lineWidth = 10;
+      self.ctx.strokeStyle = self.brushColor;
+      self.ctx.lineWidth = self.brushSize;
       self.ctx.moveTo(x1, y1);
       self.ctx.lineTo(x2, y2);
       self.ctx.stroke();
       self.ctx.closePath();
       self.redraw();
     }
+
+    const setBrushColor = v => self.brushColor = v;
+    const setBrushSize = v => self.brushSize = v;
 
     return {
       afterAttach,
