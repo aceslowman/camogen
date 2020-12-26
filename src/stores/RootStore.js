@@ -1,7 +1,5 @@
 import React from "react";
 import { getSnapshot, types, flow, applySnapshot } from "mobx-state-tree";
-import { UndoManager } from "mst-middlewares";
-import { undoManager, setUndoManager } from "./UndoManager";
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
 import defaultSnapshot from "../snapshots/default.json";
@@ -216,7 +214,6 @@ const RootStore = types
     }
   }))
   .actions(self => {
-    setUndoManager(self);
 
     const afterCreate = () => {      
       // window.localStorage.clear();
@@ -408,20 +405,29 @@ const RootStore = types
     const setShaderCollection = c => (self.shader_collection = c);
 
     return {
-      afterCreate: () => undoManager.withoutUndo(afterCreate),
-      setReady: v => undoManager.withoutUndo(() => setReady(v)),
-      setScene: s => undoManager.withoutUndo(() => setScene(s)),
-      setupP5: () => undoManager.withoutUndo(setupP5),
-      setTheme: v => undoManager.withoutUndo(() => setTheme(v)),
-      setName: v => undoManager.withoutUndo(() => setName(v)),
-      setShaderCollection: c => undoManager.withoutUndo(() => setShaderCollection(c)),
+      afterCreate,
+      setReady,
+      setScene,
+      setupP5,
+      setTheme,
+      setName,
+      setShaderCollection,
+      // afterCreate: () => undoManager.withoutUndo(afterCreate),
+      // setReady: v => undoManager.withoutUndo(() => setReady(v)),
+      // setScene: s => undoManager.withoutUndo(() => setScene(s)),
+      // setupP5: () => undoManager.withoutUndo(setupP5),
+      // setTheme: v => undoManager.withoutUndo(() => setTheme(v)),
+      // setName: v => undoManager.withoutUndo(() => setName(v)),
+      // setShaderCollection: c => undoManager.withoutUndo(() => setShaderCollection(c)),
       selectParameter,
       breakout,
       onBreakoutResize,
       save,
       load,
-      fetchShaderFiles: () => undoManager.withoutUndoFlow(fetchShaderFiles),
-      resizeCanvas: (w, h) => undoManager.withoutUndo(() => resizeCanvas(w, h)),
+      fetchShaderFiles,
+      resizeCanvas,
+      // fetchShaderFiles: () => undoManager.withoutUndoFlow(fetchShaderFiles),
+      // resizeCanvas: (w, h) => undoManager.withoutUndo(() => resizeCanvas(w, h)),
       addToRecentShaders,
       persistShaderLibrary,
       reloadDefaults

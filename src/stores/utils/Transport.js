@@ -148,14 +148,22 @@ const Transport = types
     }
 
     return {
-      afterAttach: () => undoManager.withoutUndo(afterAttach),
-      play: () => undoManager.withoutUndo(play),
-      stop: () => undoManager.withoutUndo(stop),
-      record: () => undoManager.withoutUndoFlow(record),
-      clearChunks: () => undoManager.withoutUndo(clearChunks),
-      skipToStart: () => undoManager.withoutUndo(skipToStart),
-      snapshot: f => undoManager.withoutUndoFlow(() => snapshot(f)),
-      incrementClock: () => undoManager.withoutUndo(incrementClock)
+      afterAttach,
+      play,
+      stop,
+      record,
+      clearChunks,
+      skipToStart,
+      snapshot,
+      incrementClock,
+      // afterAttach: () => undoManager.withoutUndo(afterAttach),
+      // play: () => undoManager.withoutUndo(play),
+      // stop: () => undoManager.withoutUndo(stop),
+      // record: () => undoManager.withoutUndoFlow(record),
+      // clearChunks: () => undoManager.withoutUndo(clearChunks),
+      // skipToStart: () => undoManager.withoutUndo(skipToStart),
+      // snapshot: f => undoManager.withoutUndoFlow(() => snapshot(f)),
+      // incrementClock: () => undoManager.withoutUndo(incrementClock)
     };
   });
 
