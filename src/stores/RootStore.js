@@ -46,7 +46,8 @@ const RootStore = types
     shader_collection: types.maybe(Collection),
     recentShaders: types.array(types.safeReference(Collection)),
     width: 512,
-    height: 512
+    height: 512,
+    history: types.optional(UndoManager, {})
   })
   .volatile(() => ({    
     p5_instance: null,
@@ -395,11 +396,6 @@ const RootStore = types
       self.recentShaders.push(shader.id);
     };
     
-    const getCanvas = () => {
-      console.log(getSnapshot(self))
-      console.log(self.p5_instance.canvas)
-    }
-    
     const setTheme = (theme) => self.theme = theme;
     const setScene = (scene) => self.scene = scene;
     const setReady = (value) => self.ready = value;
@@ -409,10 +405,11 @@ const RootStore = types
     return {
       afterCreate: () => undoManager.withoutUndo(afterCreate),
       // setReady,
-      setReady: (v) => undoManager.withoutUndo(() => setReady(v)),
-      setScene,
-      // setScene: () => undoManager.withoutUndo(setScene),
-      setupP5,
+      setReady: v => undoManager.withoutUndo(() => setReady(v)),
+      // setScene,
+      setScene: s => undoManager.withoutUndo(() => setScene(s)),
+      // setupP5,
+      setupP5: () => undoManager.withoutUndo(setupP5),
       setTheme,
       setName,
       setShaderCollection,
@@ -421,19 +418,19 @@ const RootStore = types
       onBreakoutResize,
       save,
       load,
-      fetchShaderFiles,
-      // fetchShaderFiles: () => undoManager.withoutUndo(fetchShaderFiles),
-      resizeCanvas,
+      // fetchShaderFiles,
+      fetchShaderFiles: () => undoManager.withoutUndoFlow(fetchShaderFiles),
+      // resizeCanvas,
+      resizeCanvas: (w,h) => undoManager.withoutUndo(() => resizeCanvas(w,h)),
       addToRecentShaders,
       persistShaderLibrary,
-      reloadDefaults,
-      getCanvas
+      reloadDefaults
     };
   });
 
 export let undoManager = {}
-export const setUndoManager = targetStore => {
-  undoManager = UndoManager.create({}, { targetStore, maxHistoryLength: 20 })
+export const setUndoManager = (targetStore) => {
+    undoManager = targetStore.history
 }
 
 export default RootStore;
