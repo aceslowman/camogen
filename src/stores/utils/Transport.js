@@ -1,4 +1,5 @@
 import { getRoot, types, flow } from "mobx-state-tree";
+import { undoManager } from '../UndoManager';
 
 const Transport = types
   .model("Transport", {
@@ -151,14 +152,14 @@ const Transport = types
     }
 
     return {
-      afterAttach,
-      play,
-      stop,
-      record,
-      clearChunks,
-      skipToStart,
-      snapshot,
-      incrementClock
+      afterAttach: undoManager.withoutUndo(afterAttach),
+      play: undoManager.withoutUndo(play),
+      stop: undoManager.withoutUndo(stop),
+      record: (f) => undoManager.withoutUndo(() => record(f)),
+      clearChunks: undoManager.withoutUndo(clearChunks),
+      skipToStart: undoManager.withoutUndo(skipToStart),
+      snapshot: undoManager.withoutUndo(snapshot),
+      incrementClock: undoManager.withoutUndo(incrementClock)
     };
   });
 

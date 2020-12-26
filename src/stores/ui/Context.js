@@ -1,6 +1,7 @@
 import { types } from "mobx-state-tree";
 import tinykeys from "tinykeys";
 import { observable } from 'mobx';
+import { undoManager } from '../UndoManager';
 
 export const ContextMenuItem = types
   .model("ContextMenuItem", {
@@ -21,17 +22,17 @@ const Context = types
     keymap: null
   }))
   .actions(self => ({
-    setKeymap: keymap => {
+    setKeymap: undoManager.withoutUndo(keymap => {
       if (self.keylistener) self.keylistener();
 
       self.keymap = keymap;
       self.keylistener = tinykeys(window, self.keymap);
-    },
-    removeKeymap: () => self.keylistener(),
-    setContextmenu: c => {
+    }),
+    removeKeymap: undoManager.withoutUndo(() => self.keylistener()),
+    setContextmenu: undoManager.withoutUndo(c => {
       console.log('set context menu',c)
       self.contextmenu = c
-    }
+    })
   }));
 
 export default Context;
