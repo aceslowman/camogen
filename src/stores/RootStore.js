@@ -407,9 +407,11 @@ const RootStore = types
     const setShaderCollection = c => self.shader_collection = c;
 
     return {
-      afterCreate,
-      setReady,
+      afterCreate: () => undoManager.withoutUndo(afterCreate),
+      // setReady,
+      setReady: (v) => undoManager.withoutUndo(() => setReady(v)),
       setScene,
+      // setScene: () => undoManager.withoutUndo(setScene),
       setupP5,
       setTheme,
       setName,
@@ -420,6 +422,7 @@ const RootStore = types
       save,
       load,
       fetchShaderFiles,
+      // fetchShaderFiles: () => undoManager.withoutUndo(fetchShaderFiles),
       resizeCanvas,
       addToRecentShaders,
       persistShaderLibrary,
