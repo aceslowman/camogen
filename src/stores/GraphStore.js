@@ -316,10 +316,10 @@ const Graph = types
       removeSelected,
       removeNode,
       traverseFrom,
-      // calculateBranches,
-      // calculateCoordinateBounds
-      calculateBranches: () => undoManager.withoutUndo(calculateBranches),
-      calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
+      calculateBranches,
+      calculateCoordinateBounds
+      // calculateBranches: () => undoManager.withoutUndo(calculateBranches),
+      // calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
     };
   });
 

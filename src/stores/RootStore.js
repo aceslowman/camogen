@@ -1,6 +1,7 @@
 import React from "react";
 import { getSnapshot, types, flow, applySnapshot } from "mobx-state-tree";
 import { UndoManager } from "mst-middlewares";
+import { undoManager, setUndoManager } from "./UndoManager";
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
 import defaultSnapshot from "../snapshots/default.json";
@@ -404,33 +405,23 @@ const RootStore = types
 
     return {
       afterCreate: () => undoManager.withoutUndo(afterCreate),
-      // setReady,
       setReady: v => undoManager.withoutUndo(() => setReady(v)),
-      // setScene,
       setScene: s => undoManager.withoutUndo(() => setScene(s)),
-      // setupP5,
       setupP5: () => undoManager.withoutUndo(setupP5),
-      setTheme,
-      setName,
-      setShaderCollection,
+      setTheme: v => undoManager.withoutUndo(() => setTheme(v)),
+      setName: v => undoManager.withoutUndo(() => setName(v)),
+      setShaderCollection: c => undoManager.withoutUndo(() => setShaderCollection(c)),
       selectParameter,
       breakout,
       onBreakoutResize,
       save,
       load,
-      // fetchShaderFiles,
       fetchShaderFiles: () => undoManager.withoutUndoFlow(fetchShaderFiles),
-      // resizeCanvas,
       resizeCanvas: (w,h) => undoManager.withoutUndo(() => resizeCanvas(w,h)),
       addToRecentShaders,
       persistShaderLibrary,
       reloadDefaults
     };
   });
-
-export let undoManager = {}
-export const setUndoManager = (targetStore) => {
-    undoManager = targetStore.history
-}
 
 export default RootStore;
