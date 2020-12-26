@@ -26,8 +26,8 @@ const ShaderGraph = observer(props => {
           if (props.data.history.canUndo) {
             console.log("HISTORY", getSnapshot(props.data.history));
             props.data.history.undo();
-            // props.data.update();
-            // props.data.afterUpdate();
+            props.data.update();
+            props.data.afterUpdate();
           } else {
             console.log("all out of undo");
           }
@@ -37,8 +37,8 @@ const ShaderGraph = observer(props => {
           if (props.data.history.canRedo) {
             console.log("HISTORY", getSnapshot(props.data.history));
             props.data.history.redo();
-            // props.data.update();
-            // props.data.afterUpdate();
+            props.data.update();
+            props.data.afterUpdate();
           } else {
             console.log("all out of redo");
           }

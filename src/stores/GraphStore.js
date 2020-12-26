@@ -311,14 +311,14 @@ const Graph = types
 
     return {
       clear,
-      update,
+      update: () => undoManager.withoutUndo(update),
       appendNode,
       insertBelow,
       addNode,
       setSelected,
       removeSelected,
       removeNode,
-      traverseFrom,
+      traverseFrom: (n,f,d) => undoManager.withoutUndo(() => traverseFrom(n,f,d)),
       // calculateBranches,
       // calculateCoordinateBounds
       calculateBranches: () => undoManager.withoutUndo(calculateBranches),
@@ -373,11 +373,6 @@ const operatorGraph = types
     };
   });
 
-export let undoManager = {}
-export const setUndoManager = (targetStore) => {
-    undoManager = targetStore.history
-}
-
 export const OperatorGraph = types
   .compose(
     Graph,
@@ -386,3 +381,7 @@ export const OperatorGraph = types
   .named("OperatorGraph");
 export default Graph;
 
+export let undoManager = {}
+export const setUndoManager = (targetStore) => {
+    undoManager = targetStore.history
+}
