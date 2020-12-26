@@ -38,7 +38,8 @@ const currentDate = new Date();
 
 const RootStore = types
   .model("RootStore", {
-    name: `${currentDate.getMonth()+1}-${currentDate.getDate()}-${currentDate.getFullYear()}`,
+    name: `${currentDate.getMonth() +
+      1}-${currentDate.getDate()}-${currentDate.getFullYear()}`,
     ui: UIStore,
     scene: types.maybe(Scene),
     selectedParameter: types.maybe(types.safeReference(Parameter)),
@@ -47,10 +48,9 @@ const RootStore = types
     shader_collection: types.maybe(Collection),
     recentShaders: types.array(types.safeReference(Collection)),
     width: 512,
-    height: 512,
-    history: types.optional(UndoManager, {})
+    height: 512
   })
-  .volatile(() => ({    
+  .volatile(() => ({
     p5_instance: null,
     ready: false,
     breakoutControlled: false,
@@ -60,7 +60,7 @@ const RootStore = types
   .views(self => ({
     get recentShaderLibrary() {
       let recentItems = {};
-      
+
       self.recentShaders.forEach((e, i) => {
         recentItems = {
           ...recentItems,
@@ -159,7 +159,7 @@ const RootStore = types
                       })
                     );
 
-                    self.persistShaderLibrary()
+                    self.persistShaderLibrary();
                   }
                 }
               }
@@ -216,9 +216,9 @@ const RootStore = types
     }
   }))
   .actions(self => {
-    setUndoManager(self)
+    setUndoManager(self);
 
-    function afterCreate() {
+    const afterCreate = () => {
       // window.localStorage.clear();
 
       // fetch default shaders
@@ -242,16 +242,16 @@ const RootStore = types
       });
     }
 
-    function setupP5() {
+    const setupP5 = () => {
       self.p5_instance = new p5(p => Runner(p, self));
     }
-    
-    function selectParameter(param) {
+
+    const selectParameter = (param) => {
       if (param && !param.graph) param.createGraph();
       self.selectedParameter = param;
     }
 
-    function save() {
+    const save = () => {
       console.log("saving project");
 
       let src = JSON.stringify(getSnapshot(self));
@@ -276,7 +276,7 @@ const RootStore = types
       link.click();
     }
 
-    function load() {
+    const load = () => {
       let link = document.createElement("input");
       link.type = "file";
 
@@ -301,7 +301,7 @@ const RootStore = types
       link.click();
     }
 
-    function breakout() {
+    const breakout = () => {
       let new_window = window.open(
         "/output_window.html",
         "window",
@@ -314,7 +314,7 @@ const RootStore = types
       self.breakoutControlled = true;
     }
 
-    function onBreakoutResize(w, h) {
+    const onBreakoutResize = (w, h) => {
       self.p5_instance.resizeCanvas(w, h);
 
       // update target dimensions
@@ -325,14 +325,14 @@ const RootStore = types
       self.p5_instance.draw();
     }
 
-    /*
-        fetchShaderFiles()
-
-        loads all shaders. defaults to the users localStorage,
-        but if that fails, it will phone home for a default 
-        shader collection
-    */
     const fetchShaderFiles = flow(function* fetchShaderFiles() {
+      /*
+          fetchShaderFiles()
+
+          loads all shaders. defaults to the users localStorage,
+          but if that fails, it will phone home for a default 
+          shader collection
+      */
       try {
         if (window.localStorage.getItem("shader_collection")) {
           console.log("cached shaders found, loading...", window.localStorage);
@@ -364,13 +364,13 @@ const RootStore = types
         console.error("failed to fetch shaders", err);
       }
     });
-    
+
     const reloadDefaults = () => {
       window.localStorage.clear();
       self.fetchShaderFiles();
-    }
-    
-    function persistShaderLibrary() {
+    };
+
+    const persistShaderLibrary = () => {
       // save collection to local storage
       window.localStorage.setItem(
         "shader_collection",
@@ -396,12 +396,16 @@ const RootStore = types
       if (self.recentShaders.length >= 5) self.recentShaders.shift();
       self.recentShaders.push(shader.id);
     };
+
+    const setTheme = theme => (self.theme = theme);
     
-    const setTheme = (theme) => self.theme = theme;
-    const setScene = (scene) => self.scene = scene;
-    const setReady = (value) => self.ready = value;
-    const setName = (name) => self.name = name;
-    const setShaderCollection = c => self.shader_collection = c;
+    const setScene = scene => (self.scene = scene);
+    
+    const setReady = value => (self.ready = value);
+    
+    const setName = name => (self.name = name);
+    
+    const setShaderCollection = c => (self.shader_collection = c);
 
     return {
       afterCreate: () => undoManager.withoutUndo(afterCreate),
@@ -417,7 +421,7 @@ const RootStore = types
       save,
       load,
       fetchShaderFiles: () => undoManager.withoutUndoFlow(fetchShaderFiles),
-      resizeCanvas: (w,h) => undoManager.withoutUndo(() => resizeCanvas(w,h)),
+      resizeCanvas: (w, h) => undoManager.withoutUndo(() => resizeCanvas(w, h)),
       addToRecentShaders,
       persistShaderLibrary,
       reloadDefaults

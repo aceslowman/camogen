@@ -1,7 +1,7 @@
 import GraphNode from "./NodeStore";
 import { nanoid } from "nanoid";
 import { types, getSnapshot } from "mobx-state-tree";
-// import { undoManager } from './RootStore';
+import { undoManager } from './UndoManager';
 import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
 import Parameter from "./ParameterStore";
@@ -316,10 +316,10 @@ const Graph = types
       removeSelected,
       removeNode,
       traverseFrom,
-      calculateBranches,
-      calculateCoordinateBounds
-      // calculateBranches: () => undoManager.withoutUndo(calculateBranches),
-      // calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
+      // calculateBranches,
+      // calculateCoordinateBounds
+      calculateBranches: () => undoManager.withoutUndo(calculateBranches),
+      calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
     };
   });
 
