@@ -46,7 +46,6 @@ root.ui.setLayoutVariants(LayoutVariants);
 
 makeInspectable(root);
 
-// ReactDOM.render(<App store={root} />, document.getElementById("root"));
 ReactDOM.render(<App store={root} history={undoManager}/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
