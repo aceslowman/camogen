@@ -3,8 +3,6 @@ import { getSnapshot, types } from "mobx-state-tree";
 import ShaderGraph from "./ShaderGraphStore";
 import Target from "./TargetStore";
 import { OperatorGraph } from "./GraphStore";
-import { UndoManager } from "mst-middlewares";
-import { undoManager, setUndoManager } from "./UndoManager";
 
 const Scene = types
   .model("Scene", {
@@ -13,7 +11,6 @@ const Scene = types
     targets: types.array(Target)
   })
   .actions(self => {
-    setUndoManager(self);
     
     function afterAttach() {
       self.shaderGraph = ShaderGraph.create({ uuid: nanoid() });

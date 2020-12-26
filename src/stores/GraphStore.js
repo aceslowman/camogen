@@ -1,7 +1,7 @@
 import GraphNode from "./NodeStore";
 import { nanoid } from "nanoid";
 import { types, getSnapshot } from "mobx-state-tree";
-import { undoManager } from './UndoManager';
+import { UndoManager } from "mst-middlewares"
 import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
 import Parameter from "./ParameterStore";
@@ -21,7 +21,8 @@ const Graph = types
     uuid: types.identifier,
     nodes: types.map(GraphNode),
     selectedNode: types.maybe(types.reference(GraphNode)),
-    coord_bounds: types.optional(Coordinate, { x: 0, y: 0 })
+    coord_bounds: types.optional(Coordinate, { x: 0, y: 0 }),
+    history: types.optional(UndoManager, {})
   })
   .volatile(() => ({
     queue: []
@@ -67,6 +68,8 @@ const Graph = types
     }
   }))
   .actions(self => {
+    setUndoManager(self)
+    
     function clear() {
       self.selectedNode = undefined;
       // TODO: currently not working when subgraphs are present!
@@ -370,6 +373,11 @@ const operatorGraph = types
     };
   });
 
+export let undoManager = {}
+export const setUndoManager = (targetStore) => {
+    undoManager = targetStore.history
+}
+
 export const OperatorGraph = types
   .compose(
     Graph,
@@ -377,3 +385,4 @@ export const OperatorGraph = types
   )
   .named("OperatorGraph");
 export default Graph;
+

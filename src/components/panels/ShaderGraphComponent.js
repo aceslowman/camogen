@@ -3,6 +3,7 @@ import MainContext from "../../MainContext";
 import GraphComponent from "../graph/GraphComponent";
 import { GenericPanel } from "maco-ui";
 import { observer } from "mobx-react";
+import { getSnapshot } from "mobx-state-tree";
 
 const ShaderGraph = observer(props => {
   const store = useContext(MainContext).store;
@@ -12,14 +13,36 @@ const ShaderGraph = observer(props => {
   const handleFocus = e => {
     setUseKeys(true);
   };
-  
+
   const handleBlur = e => {
     setUseKeys(false);
-  }
+  };
 
   useEffect(() => {
     if (useKeys) {
       store.context.setKeymap({
+        "$mod+KeyZ": () => {
+          console.log("undo");
+          if (props.data.history.canUndo) {
+            console.log("HISTORY", getSnapshot(props.data.history));
+            props.data.history.undo();
+            // props.data.update();
+            // props.data.afterUpdate();
+          } else {
+            console.log("all out of undo");
+          }
+        },
+        "$mod+Shift+KeyZ": () => {
+          console.log("redo");
+          if (props.data.history.canRedo) {
+            console.log("HISTORY", getSnapshot(props.data.history));
+            props.data.history.redo();
+            // props.data.update();
+            // props.data.afterUpdate();
+          } else {
+            console.log("all out of redo");
+          }
+        },
         ArrowUp: () => {
           if (props.selectedNode && props.selectedNode.parents.length)
             props.selectedNode.parents[0].select();
@@ -52,38 +75,42 @@ const ShaderGraph = observer(props => {
           }
         },
         "Shift+ArrowUp": () => {
-          if (props.selectedNode && props.selectedNode.parents.length) 
-            if (props.selectedNode.parents[0].parents.length) 
-              props.selectedNode.swapData(props.selectedNode.parents[0].select());                      
+          if (props.selectedNode && props.selectedNode.parents.length)
+            if (props.selectedNode.parents[0].parents.length)
+              props.selectedNode.swapData(
+                props.selectedNode.parents[0].select()
+              );
         },
-        "Shift+ArrowDown": () => {      
-          if (props.selectedNode && props.selectedNode.children.length) 
-            props.selectedNode.swapData(props.selectedNode.children[0].select());
+        "Shift+ArrowDown": () => {
+          if (props.selectedNode && props.selectedNode.children.length)
+            props.selectedNode.swapData(
+              props.selectedNode.children[0].select()
+            );
         },
         // "Shift+ArrowLeft": () => {
-        //   console.log('Shift+ArrowLeft')      
-//         if (props.selectedNode && props.selectedNode.children.length) {
-//           let idx = props.selectedNode.children[0].parents.indexOf(
-//             props.selectedNode
-//           );
-//           idx--;
+        //   console.log('Shift+ArrowLeft')
+        //         if (props.selectedNode && props.selectedNode.children.length) {
+        //           let idx = props.selectedNode.children[0].parents.indexOf(
+        //             props.selectedNode
+        //           );
+        //           idx--;
 
-//           if (idx >= 0) {
-//             props.selectedNode.children[0].parents[idx].select();
-//           }
-//         }
+        //           if (idx >= 0) {
+        //             props.selectedNode.children[0].parents[idx].select();
+        //           }
+        //         }
         // },
         // "Shift+ArrowRight": () => {
-        //   console.log('Shift+ArrowRigh')   
+        //   console.log('Shift+ArrowRigh')
         // if (props.selectedNode && props.selectedNode.children.length) {
-//           let idx = props.selectedNode.children[0].parents.indexOf(
-//             props.selectedNode
-//           );
-//           idx++;
+        //           let idx = props.selectedNode.children[0].parents.indexOf(
+        //             props.selectedNode
+        //           );
+        //           idx++;
 
-//           if (idx <= props.selectedNode.children[0].parents.length - 1)
-//             props.selectedNode.children[0].parents[idx].select();
-//         }
+        //           if (idx <= props.selectedNode.children[0].parents.length - 1)
+        //             props.selectedNode.children[0].parents[idx].select();
+        //         }
         // },
         Delete: () => {
           props.data.removeSelected();
@@ -92,13 +119,13 @@ const ShaderGraph = observer(props => {
     } else {
       store.context.removeKeymap();
     }
-  }, [props.selectedNode, props.data, store.context, useKeys]);
+  }, [props.selectedNode, props.data, store.context, useKeys, props.data.history]);
 
   const handleContextMenu = e => {
     e.stopPropagation();
 
     store.context.setContextmenu({
-      "Clear": {
+      Clear: {
         id: "Clear",
         label: "Clear",
         onClick: () => store.scene.clear()

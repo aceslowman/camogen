@@ -1,18 +1,17 @@
 import { types } from "mobx-state-tree";
 import tinykeys from "tinykeys";
-import { observable } from "mobx";
-import { undoManager } from "../UndoManager";
+import { observable } from 'mobx';
 
 export const ContextMenuItem = types
   .model("ContextMenuItem", {
     id: types.identifier,
-    label: types.frozen(),
-    buttons: types.frozen(),
-    dropDown: types.map(types.late(() => ContextMenuItem))
+    label: types.frozen(), 
+    buttons: types.frozen(), 
+    dropDown: types.map(types.late(()=>ContextMenuItem))
   })
   .volatile(self => ({
     onClick: () => {}
-  }));
+  }))
 
 const Context = types
   .model("Context", {})
@@ -22,26 +21,24 @@ const Context = types
     keymap: null
   }))
   .actions(self => ({
-    setKeymap: keymap =>
-      undoManager.withoutUndo(() => {
-        if (self.keylistener) self.keylistener();
+    setKeymap: keymap => {
+      if (self.keylistener) self.keylistener();
 
-        self.keymap = keymap;
-        self.keylistener = tinykeys(window, self.keymap);
-      }),
-    removeKeymap: () => undoManager.withoutUndo(self.keylistener),
-    setContextmenu: c =>
-      undoManager.withoutUndo(() => {
-        console.log("set context menu", c);
-        self.contextmenu = c;
-      })
+      self.keymap = keymap;
+      self.keylistener = tinykeys(window, self.keymap);
+    },
+    removeKeymap: () => self.keylistener(),
+    setContextmenu: c => {
+      console.log('set context menu',c)
+      self.contextmenu = c
+    }
   }));
 
 export default Context;
 
 // get recentShaderLibrary() {
 //       let recentItems = {};
-
+      
 //       self.recentShaders.forEach((e, i) => {
 //         recentItems = {
 //           ...recentItems,

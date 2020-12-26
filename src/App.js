@@ -41,28 +41,6 @@ const App = observer(props => {
 
   useEffect(() => {
     let unsubscribe = tinykeys(window, {
-      "$mod+KeyZ": () => {
-        console.log("undo");
-        if (props.store.scene.history.canUndo) {
-          console.log("HISTORY", getSnapshot(props.history));
-          props.store.scene.history.undo();
-          // store.scene.shaderGraph.update();
-          // store.scene.shaderGraph.afterUpdate();
-        } else {
-          console.log("all out of undo");
-        }
-      },
-      "$mod+Shift+KeyZ": () => {
-        console.log("redo");
-        if (props.store.scene.history.canRedo) {
-          console.log("HISTORY", getSnapshot(props.history));
-          props.store.scene.history.redo();
-          // store.scene.shaderGraph.update();
-          // store.scene.shaderGraph.afterUpdate();
-        } else {
-          console.log("all out of redo");
-        }
-      },
       "$mod+KeyS": e => {
         e.preventDefault();
         props.store.save();
@@ -74,7 +52,7 @@ const App = observer(props => {
     });
 
     return unsubscribe;
-  }, [props.store.scene.history, props.store]);
+  }, [props.store]);
 
   const getPanel = panel => {
     switch (panel.component_type) {
