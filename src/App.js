@@ -46,8 +46,8 @@ const App = observer(props => {
         if (props.history.canUndo) {
           console.log("HISTORY", getSnapshot(props.history));
           props.history.undo();
-          store.scene.shaderGraph.update();
-          store.scene.shaderGraph.afterUpdate();
+          // store.scene.shaderGraph.update();
+          // store.scene.shaderGraph.afterUpdate();
         } else {
           console.log("all out of undo");
         }
@@ -57,8 +57,8 @@ const App = observer(props => {
         if (props.history.canRedo) {
           console.log("HISTORY", getSnapshot(props.history));
           props.history.redo();
-          store.scene.shaderGraph.update();
-          store.scene.shaderGraph.afterUpdate();
+          // store.scene.shaderGraph.update();
+          // store.scene.shaderGraph.afterUpdate();
         } else {
           console.log("all out of redo");
         }

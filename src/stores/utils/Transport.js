@@ -1,5 +1,5 @@
 import { getRoot, types, flow } from "mobx-state-tree";
-import { undoManager } from '../UndoManager';
+import { undoManager } from "../UndoManager";
 
 const Transport = types
   .model("Transport", {
@@ -14,22 +14,20 @@ const Transport = types
     chunks: [],
     recordStart: null
   }))
-  .views(self => ({
-    
-  }))
+  .views(self => ({}))
   .actions(self => {
     let store_root;
 
-    function afterAttach() {
+    const afterAttach = () => {
       store_root = getRoot(self);
     }
 
-    function play() {
+    const play = () => {
       self.playing = true;
       if (self.recorder && self.recording) self.recorder.resume();
     }
 
-    function stop() {
+    const stop = () => {
       self.playing = false;
       if (self.recorder && self.recording) self.recorder.pause();
     }
@@ -37,23 +35,23 @@ const Transport = types
     const record = flow(function* record() {
       let canvas = store_root.p5_instance.canvas;
       self.recording = !self.recording;
-      console.log('recording started')
+      console.log("recording started");
 
       if (self.recording) {
-        if(!self.stream) self.stream = canvas.captureStream(30);
+        if (!self.stream) self.stream = canvas.captureStream(30);
         // self.stream = canvas.captureStream(0);
-        
+
         let mimeType;
 
         if (MediaRecorder.isTypeSupported("video/webm;codecs=h264")) {
-          console.log('using webm video!')
+          console.log("using webm video!");
           mimeType = "video/webm;codecs=h264";
         } else {
-          console.log('using mp4!')
-          mimeType = "video/mp4";          
+          console.log("using mp4!");
+          mimeType = "video/mp4";
         }
-        
-        if(!self.recorder) 
+
+        if (!self.recorder)
           self.recorder = new MediaRecorder(self.stream, {
             // audioBitsPerSecond: 128000,
             videoBitsPerSecond: 25000000, // still have some questions about this...
@@ -99,12 +97,10 @@ const Transport = types
       }
     });
 
-    /*
-      snapshot()
-
-      saves an image of the current scene
-    */
     const snapshot = flow(function* snapshot(format = "PNG") {
+      /*
+        saves an image of the current scene
+      */
       console.log("saving snapshot");
       let uri;
 
@@ -139,27 +135,27 @@ const Transport = types
       link.click();
     });
 
-    function clearChunks() {
+    const clearChunks = () => {
       self.chunks = [];
     }
 
-    function skipToStart() {
+    const skipToStart = () => {
       self.frameclock = 0;
     }
 
-    function incrementClock() {
+    const incrementClock = () => {
       self.frameclock++;
     }
 
     return {
-      afterAttach: undoManager.withoutUndo(afterAttach),
-      play: undoManager.withoutUndo(play),
-      stop: undoManager.withoutUndo(stop),
-      record: (f) => undoManager.withoutUndo(() => record(f)),
-      clearChunks: undoManager.withoutUndo(clearChunks),
-      skipToStart: undoManager.withoutUndo(skipToStart),
-      snapshot: undoManager.withoutUndo(snapshot),
-      incrementClock: undoManager.withoutUndo(incrementClock)
+      afterAttach: () => undoManager.withoutUndo(afterAttach),
+      play: () => undoManager.withoutUndo(play),
+      stop: () => undoManager.withoutUndo(stop),
+      record: () => undoManager.withoutUndoFlow(record),
+      clearChunks: () => undoManager.withoutUndo(clearChunks),
+      skipToStart: () => undoManager.withoutUndo(skipToStart),
+      snapshot: f => undoManager.withoutUndoFlow(() => snapshot(f)),
+      incrementClock: () => undoManager.withoutUndo(incrementClock)
     };
   });
 
