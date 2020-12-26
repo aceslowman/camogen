@@ -75,6 +75,10 @@ const App = observer(props => {
 
     return unsubscribe;
   }, [props.history, props.store]);
+  
+  useEffect(() => {
+    props.history.clear();
+  }, [])
 
   const getPanel = panel => {
     switch (panel.component_type) {

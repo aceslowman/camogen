@@ -218,8 +218,7 @@ const RootStore = types
   .actions(self => {
     setUndoManager(self);
 
-    const afterCreate = () => {
-      undoManager.clear();
+    const afterCreate = () => {      
       // window.localStorage.clear();
 
       // fetch default shaders
