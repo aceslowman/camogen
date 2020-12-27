@@ -37,7 +37,8 @@ module.exports = {
     liveReload: false,
     disableHostCheck: true,
     port: process.env.PORT,
-    public: "camogen.glitch.me",
+    public: "level-legend-answer.glitch.me",
+    // public: "camogen.glitch.me", 
     // https: true,
     proxy: {
       '/api': 'http://localhost:3001'
