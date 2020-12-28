@@ -147,10 +147,9 @@ let shader = types
       self.ready = true;
       return self;
     }
-
-    /*
-        extractUniforms()
-
+    
+    function extractUniforms() {
+      /*
         extracts all uniform variables from
         shader code. these then populate the
         interfaces. controls and input elements
@@ -168,8 +167,8 @@ let shader = types
         4: "{"name":"off","default":[0.0,0.0]}"
 
         TODO: have to remove parents when they are no longer needed
-    */
-    function extractUniforms() {
+      */
+      
       // TODO: change to u_resolution, u_time, etc
       const builtins = ["resolution"];
 
@@ -270,13 +269,11 @@ let shader = types
       if (!self.inputs.length) parent_node.mapInputsToParents();
     }
 
-    /*
-        update(p5_instance)
-
+    function update(p) {
+      /*
         this method is triggered within Runner.js
         and draws shaders to quads.
-    */
-    function update(p) {
+      */
       if (!self.ready) return;
 
       let shader = self.ref;
