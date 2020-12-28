@@ -9,7 +9,8 @@ const Help = props => {
           <h1>camogen</h1>
           <p>
             Hello! Thanks for trying <span style={{ color: "orange" }}>camogen</span>.
-            It's currently in beta so some features will not be totally functional
+            It's currently in beta so some features will not be totally functional and 
+            the structure of the system is still changing. 
           </p>   
           <p>
             <span style={{ color: "orange" }}>camogen</span> is a tool for creating
@@ -20,25 +21,30 @@ const Help = props => {
           <p>
             I want camogen to be approachable and accessible whether or not you know how to 
             program graphics shaders. If you see any way to improve the project in that way,
-            let me know
+            let me know.
           </p>
         </TextComponent>
         <TextComponent>
-          <h2>add effects</h2>
-          <ol>
-            <li>
-              under <em>graph</em>, right click on the 'next' node. select Library
-              -> Color -> 2HSV
-            </li>
-          </ol>
-          <h2>change parameters</h2>
-          <ol>
-            <li>
-              under 'controls', click and drag on any of the parameters to change
-              them.
-            </li>
-          </ol>
-
+          <h2>adding effects</h2>
+          
+          <p>
+            Individual effects in camogen (and webgl in general) are called <em>shaders</em>, 
+            and each shader can be composed within the Shader Graph system.
+          </p>
+          
+          <p>
+            To add a new effect, first right click on the 'next' node and open up the Library.
+            Every effect in camogen is organized in this library and they are organized by category.
+            Start by clicking on Effects and then Glyph. You should now see a pattern appear!
+          </p>
+          
+          <p>
+            Next, 
+          </p>
+          
+          
+        </TextComponent>
+        <TextComponent>
           <h2>add motion</h2>
           <ol>
             <li>
