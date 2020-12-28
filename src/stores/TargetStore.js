@@ -41,14 +41,14 @@ const Target = types
         }
 
         return {
-            afterAttach,
+            // afterAttach,
             afterAttach: () => undoManager.withoutUndo(()=>afterAttach()),
-            clear,
+            // clear,
             clear: () => undoManager.withoutUndo(()=>clear()),
             setRenderQueue,
-            setRenderQueue: (q) => undoManager.withoutUndo(()=>setRenderQueue(q)),
+            // setRenderQueue: (q) => undoManager.withoutUndo(()=>setRenderQueue(q)),
             removeShaderNode,
-            removeShaderNode: (n) => undoManager.withoutUndo(()=>removeShaderNode(n)),
+            // removeShaderNode: (n) => undoManager.withoutUndo(()=>removeShaderNode(n)),
         };
     })
 
