@@ -303,7 +303,8 @@ const Graph = types
 
     return {
       clear,
-      update: () => undoManager.withoutUndo(update),
+      update,
+      // update: () => undoManager.withoutUndo(update),
       appendNode,
       insertBelow,
       addNode,
@@ -311,6 +312,7 @@ const Graph = types
       setSelected,
       removeSelected,
       removeNode,
+      // traverseFrom,
       traverseFrom: (n, f, d) =>
         undoManager.withoutUndo(() => traverseFrom(n, f, d)),
       calculateBranches,

@@ -1,4 +1,5 @@
 import Shader from "./ShaderStore";
+import {undoManager} from "./GraphStore";
 import { types, getParent, getSnapshot } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
@@ -146,10 +147,10 @@ const GraphNode = types
       return node;
     }
 
-    /*
-      this makes it possible to move a node up or down the tree
-    */
     function swapData(target) {
+      /*
+        this makes it possible to move a node up or down the tree
+      */
       let selfcopy = getSnapshot(self.data);
       let targetcopy = getSnapshot(target.data);
 
@@ -183,18 +184,20 @@ const GraphNode = types
     const setName = name => (self.name = name);
 
     return {
-      afterAttach,
-      setData,
-      swapData,
-      mapInputsToParents,
-      setParent,
-      setChild,
-      setParents,
-      setChildren,
-      setBranchIndex,
-      setName,
-      select,
-      deselect
+      afterAttach: () => undoManager.withoutUndo(()=>afterAttach()),
+      setData: (d) => undoManager.withoutUndo(()=>setData(d)),
+      swapData: (t) => undoManager.withoutUndo(()=>swapData(t)),
+      mapInputsToParents: () => undoManager.withoutUndo(()=>mapInputsToParents()),
+      setParent
+      setChild
+      // setParent: (n,i,f) => undoManager.withoutUndo(()=>setParent(n,i,f)),
+      // setChild: (n,i,f) => undoManager.withoutUndo(()=>setChild(n,i,f)),
+      setParents: (p) => undoManager.withoutUndo(()=>setParents(p)),
+      setChildren: (c) => undoManager.withoutUndo(()=>setChildren(c)),
+      setBranchIndex: (i) => undoManager.withoutUndo(()=>setBranchIndex(i)),
+      setName: (n) => undoManager.withoutUndo(()=>setName(n)),
+      select: () => undoManager.withoutUndo(()=>select()),
+      deselect: () => undoManager.withoutUndo(()=>deselect())
     };
   });
 

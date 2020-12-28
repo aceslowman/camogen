@@ -1,4 +1,4 @@
-import Graph from "./GraphStore";
+import Graph, {undoManager} from "./GraphStore";
 import {
   types,
   getRoot,
@@ -105,10 +105,10 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
   }
 
   return {
-    afterAttach,
-    afterUpdate,
-    getShaderByName,
-    setSelectedByName
+    afterAttach: () => undoManager.withoutUndo(afterAttach),
+    afterUpdate: () => undoManager.withoutUndo(afterUpdate),
+    getShaderByName: (n) => undoManager.withoutUndo(()=>getShaderByName(n)),
+    setSelectedByName: (n,c) => undoManager.withoutUndo(()=>setSelectedByName(n,c))
   };
 });
 
