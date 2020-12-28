@@ -32,6 +32,7 @@ const Scene = types
       // self.shaderGraph.root.select();
       
       self.shaderGraph.update();
+      self.shaderGraph.history.clear();
     }
 
     function addTarget(target = Target.create()) {
