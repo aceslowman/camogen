@@ -1,7 +1,7 @@
 import GraphNode from "./NodeStore";
 import { nanoid } from "nanoid";
 import { types, getSnapshot } from "mobx-state-tree";
-import { UndoManager } from "mst-middlewares"
+import { UndoManager } from "mst-middlewares";
 import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
 import Parameter from "./ParameterStore";
@@ -68,8 +68,8 @@ const Graph = types
     }
   }))
   .actions(self => {
-    setUndoManager(self)
-    
+    setUndoManager(self);
+
     function clear() {
       self.selectedNode = undefined;
       // TODO: currently not working when subgraphs are present!
@@ -84,13 +84,11 @@ const Graph = types
       self.update();
     }
 
-    /* 
-        update()
-
+    function update() {
+      /* 
         self method will calculate the branches of the
         graph structure and then call afterUpdate()
-    */
-    function update() {
+      */
       let render_queues = calculateBranches();
 
       // calculate info for visualization
@@ -166,7 +164,7 @@ const Graph = types
       // after deleting, select parent, unless there are none
       let child = node.children[0];
       self.selectedNode = node.parents.length ? node.parents[0] : child;
-      
+
       self.nodes.delete(node.uuid);
 
       // should re-add missing parents
@@ -197,16 +195,14 @@ const Graph = types
       return new_node;
     }
 
-    /*
-        traverseFrom(f = null, depthFirst = false)
-
+    function traverseFrom(node = self.root, f = null, depthFirst = false) {
+      /*
         self method will crawl through the graph structure
         either depth first or breadth first.
 
         it's first argument is function that will be called
         during each step of the traversal.
-    */
-    function traverseFrom(node = self.root, f = null, depthFirst = false) {
+      */
       let result = [];
       let container = [node];
       let next_node;
@@ -234,12 +230,10 @@ const Graph = types
       return result;
     }
 
-    /* 
-        calculateBranches()
-
-        returns an array of queues, by branch_id
-    */
     function calculateBranches() {
+      /* 
+        returns an array of queues, by branch_id
+      */
       let x = 0;
 
       let current_branch = 0;
@@ -286,13 +280,11 @@ const Graph = types
       return render_queues;
     }
 
-    /*
-        calculateCoordinateBounds()
-
+    function calculateCoordinateBounds() {
+      /*
         returns an object representing the size of the graph,
         for centering, scaling, and positioning visualization
-    */
-    function calculateCoordinateBounds() {
+      */
       let max_x = 0;
       let max_y = 0;
 
@@ -315,14 +307,16 @@ const Graph = types
       appendNode,
       insertBelow,
       addNode,
+      // addNode: (n) => undoManager.withoutUndo(() => addNode(n)),
       setSelected,
       removeSelected,
       removeNode,
-      traverseFrom: (n,f,d) => undoManager.withoutUndo(() => traverseFrom(n,f,d)),
-      // calculateBranches,
-      // calculateCoordinateBounds
-      calculateBranches: () => undoManager.withoutUndo(calculateBranches),
-      calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
+      traverseFrom: (n, f, d) =>
+        undoManager.withoutUndo(() => traverseFrom(n, f, d)),
+      calculateBranches,
+      calculateCoordinateBounds
+      // calculateBranches: () => undoManager.withoutUndo(calculateBranches),
+      // calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
     };
   });
 
@@ -381,7 +375,7 @@ export const OperatorGraph = types
   .named("OperatorGraph");
 export default Graph;
 
-export let undoManager = {}
-export const setUndoManager = (targetStore) => {
-    undoManager = targetStore.history
-}
+export let undoManager = {};
+export const setUndoManager = targetStore => {
+  undoManager = targetStore.history;
+};
