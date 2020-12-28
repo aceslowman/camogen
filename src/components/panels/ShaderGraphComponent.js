@@ -10,21 +10,16 @@ const ShaderGraph = observer(props => {
   const [useKeys, setUseKeys] = useState(false);
   const mainRef = useRef();
 
-  const handleFocus = e => {
-    setUseKeys(true);
-  };
+  const handleFocus = e => setUseKeys(true);
 
-  const handleBlur = e => {
-    setUseKeys(false);
-  };
+  const handleBlur = e => setUseKeys(false);
 
   useEffect(() => {
     if (useKeys) {
       store.context.setKeymap({
         "$mod+KeyZ": () => {
-          console.log("undo");
           if (props.data.history.canUndo) {
-            console.log("HISTORY", getSnapshot(props.data.history));
+            console.log("UNDO", getSnapshot(props.data.history));
             props.data.history.undo();
             props.data.update();
             props.data.afterUpdate();
@@ -33,9 +28,8 @@ const ShaderGraph = observer(props => {
           }
         },
         "$mod+Shift+KeyZ": () => {
-          console.log("redo");
           if (props.data.history.canRedo) {
-            console.log("HISTORY", getSnapshot(props.data.history));
+            console.log("REDO", getSnapshot(props.data.history));
             props.data.history.redo();
             props.data.update();
             props.data.afterUpdate();
@@ -101,7 +95,7 @@ const ShaderGraph = observer(props => {
         //         }
         // },
         // "Shift+ArrowRight": () => {
-        //   console.log('Shift+ArrowRigh')
+        //   console.log('Shift+ArrowRight')
         // if (props.selectedNode && props.selectedNode.children.length) {
         //           let idx = props.selectedNode.children[0].parents.indexOf(
         //             props.selectedNode
