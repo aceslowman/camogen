@@ -315,10 +315,10 @@ const Graph = types
       // traverseFrom,
       traverseFrom: (n, f, d) =>
         undoManager.withoutUndo(() => traverseFrom(n, f, d)),
-      // calculateBranches,
-      // calculateCoordinateBounds
-      calculateBranches: () => undoManager.withoutUndo(calculateBranches),
-      calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
+      calculateBranches,
+      calculateCoordinateBounds
+      // calculateBranches: () => undoManager.withoutUndo(calculateBranches),
+      // calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
     };
   });
 
