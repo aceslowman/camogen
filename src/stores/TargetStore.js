@@ -1,5 +1,6 @@
 import { types, getRoot, getParent } from "mobx-state-tree";
 import GraphNode from './NodeStore';
+import {undoManager} from "./GraphStore";
 
 const Target = types
     .model("Target", {
@@ -40,10 +41,10 @@ const Target = types
         }
 
         return {
-            afterAttach,
-            clear,
-            setRenderQueue,
-            removeShaderNode,
+            afterAttach: () => undoManager.withoutUndo(()=>afterAttach()),
+            clear: () => undoManager.withoutUndo(()=>clear()),
+            setRenderQueue: (q) => undoManager.withoutUndo(()=>setRenderQueue(q)),
+            removeShaderNode: (n) => undoManager.withoutUndo(()=>removeShaderNode(n)),
         };
     })
 
