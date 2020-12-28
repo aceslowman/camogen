@@ -303,8 +303,8 @@ const Graph = types
 
     return {
       clear,
-      update,
-      // update: () => undoManager.withoutUndo(update),
+      // update,
+      update: () => undoManager.withoutUndo(update),
       appendNode,
       insertBelow,
       addNode,
@@ -315,10 +315,10 @@ const Graph = types
       // traverseFrom,
       traverseFrom: (n, f, d) =>
         undoManager.withoutUndo(() => traverseFrom(n, f, d)),
-      calculateBranches,
-      calculateCoordinateBounds
-      // calculateBranches: () => undoManager.withoutUndo(calculateBranches),
-      // calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
+      // calculateBranches,
+      // calculateCoordinateBounds
+      calculateBranches: () => undoManager.withoutUndo(calculateBranches),
+      calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
     };
   });
 
@@ -345,9 +345,6 @@ const operatorGraph = types
       }
     }
 
-    /*
-        afterUpdate(queue)
-    */
     function afterUpdate() {
       // this allows the parameter to remain unchanged
       // when the graph is empty.

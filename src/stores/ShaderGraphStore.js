@@ -23,17 +23,15 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
     state_root = getRoot(self);
     parent_scene = getParent(self);
   }
-
-  /*
-    afterUpdate(queue)
-
-    after graph updates, the shader graph updates targets
-    and syncs the shaders with the targets
-
-    accepts an array of arrays, representing each target and it's 
-    render queue.
-  */
+  
   function afterUpdate() {
+    /*
+      after graph updates, the shader graph updates targets
+      and syncs the shaders with the targets
+
+      accepts an array of arrays, representing each target and it's 
+      render queue.
+    */
     self.queue.forEach((subqueue, branch_id) => {
       /*
           assign targets to shaders
@@ -105,10 +103,14 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
   }
 
   return {
+    // afterAttach,
     afterAttach: () => undoManager.withoutUndo(afterAttach),
+    // afterUpdate,
     afterUpdate: () => undoManager.withoutUndo(afterUpdate),
+    // getShaderByName,
     getShaderByName: (n) => undoManager.withoutUndo(()=>getShaderByName(n)),
-    setSelectedByName: (n,c) => undoManager.withoutUndo(()=>setSelectedByName(n,c))
+    setSelectedByName,
+    // setSelectedByName: (n,c) => undoManager.withoutUndo(()=>setSelectedByName(n,c))
   };
 });
 

@@ -185,19 +185,28 @@ const GraphNode = types
 
     return {
       afterAttach: () => undoManager.withoutUndo(()=>afterAttach()),
-      setData: (d) => undoManager.withoutUndo(()=>setData(d)),
-      swapData: (t) => undoManager.withoutUndo(()=>swapData(t)),
-      mapInputsToParents: () => undoManager.withoutUndo(()=>mapInputsToParents()),
-      setParent
-      setChild
+      setData,
+      // setData: (d) => undoManager.withoutUndo(()=>setData(d)),
+      swapData,
+      // swapData: (t) => undoManager.withoutUndo(()=>swapData(t)),
+      mapInputsToParents,
+      // mapInputsToParents: () => undoManager.withoutUndo(()=>mapInputsToParents()),      
+      setParent,      
       // setParent: (n,i,f) => undoManager.withoutUndo(()=>setParent(n,i,f)),
+      setChild,
       // setChild: (n,i,f) => undoManager.withoutUndo(()=>setChild(n,i,f)),
-      setParents: (p) => undoManager.withoutUndo(()=>setParents(p)),
-      setChildren: (c) => undoManager.withoutUndo(()=>setChildren(c)),
-      setBranchIndex: (i) => undoManager.withoutUndo(()=>setBranchIndex(i)),
-      setName: (n) => undoManager.withoutUndo(()=>setName(n)),
-      select: () => undoManager.withoutUndo(()=>select()),
-      deselect: () => undoManager.withoutUndo(()=>deselect())
+      setParents,
+      // setParents: (p) => undoManager.withoutUndo(()=>setParents(p)),
+      setChildren,
+      // setChildren: (c) => undoManager.withoutUndo(()=>setChildren(c)),
+      setBranchIndex,
+      // setBranchIndex: (i) => undoManager.withoutUndo(()=>setBranchIndex(i)),
+      setName,
+      // setName: (n) => undoManager.withoutUndo(()=>setName(n)),
+      select,
+      // select: () => undoManager.withoutUndo(()=>select()),
+      deselect,
+      // deselect: () => undoManager.withoutUndo(()=>deselect())
     };
   });
 
