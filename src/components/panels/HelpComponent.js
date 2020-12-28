@@ -8,10 +8,20 @@ const Help = props => {
         <TextComponent>
           <h1>camogen</h1>
           <p>
-            hello! this is <span style={{ color: "orange" }}>camogen</span>, an
-            application that allows you to code, compose, tweak, and record visual
-            effects. It is in beta and not all planned features will be present.
-          </p>          
+            Hello! Thanks for trying <span style={{ color: "orange" }}>camogen</span>.
+            It's currently in beta so some features will not be totally functional
+          </p>   
+          <p>
+            <span style={{ color: "orange" }}>camogen</span> is a tool for creating
+            visual art. It includes a library of inputs and effects (WebGL Shaders) that can be 
+            combined in a graph system, and each individual effect parameter can be tweaked
+            or driven by another graph subsystem.
+          </p>   
+          <p>
+            I want camogen to be approachable and accessible whether or not you know how to 
+            program graphics shaders. If you see any way to improve the project in that way,
+            let me know
+          </p>
         </TextComponent>
         <TextComponent>
           <h2>add effects</h2>
