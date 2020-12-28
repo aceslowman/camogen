@@ -1,4 +1,5 @@
 import { NodeData } from "./NodeDataStore";
+import {undoManager} from "./GraphStore";
 import {
   types,
   getSnapshot,
@@ -324,6 +325,7 @@ let shader = types
     }
 
     function beforeDetach() {
+      console.log('detaching shader '+self.name)
       self.target.removeShaderNode(parent_node);
     }
 
@@ -421,22 +423,39 @@ let shader = types
 
     return {
       afterCreate,
+      // afterCreate: () => undoManager.withoutUndo(()=>afterCreate()),
       afterAttach,
+      // afterAttach: () => undoManager.withoutUndo(()=>afterAttach()),
       beforeDetach,
+      // beforeDetach: () => undoManager.withoutUndo(()=>beforeDetach()),
       init,
+      // init: () => undoManager.withoutUndo(()=>init()),
       extractUniforms,
+      // extractUniforms: () => undoManager.withoutUndo(()=>extractUniforms()),
       setVert,
+      // setVert: (v) => undoManager.withoutUndo(()=>setVert(v)),
       setFrag,
+      // setFrag: (f) => undoManager.withoutUndo(()=>setFrag(f)),
       setTarget,
+      // setTarget: (t) => undoManager.withoutUndo(()=>setTarget(t)),
       setName,
+      // setName: (n) => undoManager.withoutUndo(()=>setName(n)),
       update,
+      // update: () => undoManager.withoutUndo(()=>update()),
       save,
+      // save: () => undoManager.withoutUndo(()=>save()),
       load,
+      // load: () => undoManager.withoutUndo(()=>load()),
       setHasChanged,
+      // setHasChanged: (v) => undoManager.withoutUndo(()=>setHasChanged(v)),
       clear,
+      // clear: () => undoManager.withoutUndo(()=>clear()),
       addToUpdateGroup,
+      // addToUpdateGroup: (p) => undoManager.withoutUndo(()=>addToUpdateGroup(p)),
       setCollection,
+      // setCollection: (c) => undoManager.withoutUndo(()=>setCollection(c)),
       saveToCollection
+      // saveToCollection: () => undoManager.withoutUndo(()=>saveToCollection()),
     };
   });
 
