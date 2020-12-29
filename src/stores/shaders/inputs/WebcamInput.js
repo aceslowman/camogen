@@ -109,6 +109,7 @@ const webcam = types
 
             self.grabber = p.createCapture(constraints, ()=>{
                 console.log('grabber activated')
+                self.grabber.hide();
             });
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
@@ -146,7 +147,12 @@ const webcam = types
         }
 
         function setDisplayMode(mode) {
+            console.log('mode', mode)
             self.display_mode = mode;
+        }
+      
+        function setInput(input) {
+            console.log('input', input)
         }
 
         function update(p) {
@@ -177,10 +183,6 @@ const webcam = types
                 console.log('frag', shader)
                 p.noLoop();
             }
-        }
-
-        function setInput(input) {
-            console.log(input)
         }
 
         return {
