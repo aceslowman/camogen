@@ -38,7 +38,7 @@ module.exports = {
     disableHostCheck: true,
     port: process.env.PORT,
     public:
-      process.env.NODE_ENV === "production"
+      process.env.NODE_ENV === "development"
         ? "level-legend-answer.glitch.me"
         : "camogen.glitch.me",
     // https: true,
