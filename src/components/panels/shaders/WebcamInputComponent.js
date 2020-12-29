@@ -6,7 +6,7 @@ const WebcamInputComponent = observer((props) => {
   const { data } = props.data;
   
   const handleInputSelect = e => data.setInput(e.target.value);
-  const handleDisplayMode = e => data.setDisplayMode(e.target);
+  const handleDisplayMode = e => data.setDisplayMode(e);
   
 	return (
         <React.Fragment>
@@ -24,7 +24,8 @@ const WebcamInputComponent = observer((props) => {
             <ControlGroupComponent name="Display Mode">
                 <InputSelect
                     options={[
-                        {label: 'preserve aspect', value: 'preserve_aspect'},
+                        {label: 'fit vertical', value: 'fit_vertical'},
+                        {label: 'fit horizontal', value: 'fit_horizontal'},
                         {label: 'stretch', value: 'stretch'}
                     ]}
                     onChange={handleDisplayMode}
