@@ -39,10 +39,41 @@ const Help = props => {
           </p>
           
           <p>
-            Next, 
+            This 'Glyph' effect can be altered within the 'Shader Controls'. Try clicking and dragging
+            on some of these numbers.
           </p>
           
+          <p>
+            Next, add some color by right clicking on the 'next' node and selecting Color/HSV2RGB.
+            Follow this with one of the nodes under Math and you can see that the effects can begin
+            to branch.
+          </p>
           
+          <p>
+            You can swap out any effect with another, but you can also add new nodes in between 
+            by clicking the '+' button between each node.
+          </p>
+          
+          <p>
+            Nodes can be deleted with the 'delete' key, or by selecting 'Delete' after right-clicking 
+            a node.
+          </p>                    
+        </TextComponent>
+        <TextComponent>
+          <h2>navigating the interface</h2>
+          <p>
+            Camogen's panels can either float or be organized in a split layout. Try resizing the
+            individual panels or click the rectangle next to the "Help" text above. 
+          </p>
+          <p>
+            Your canvas in camogen is set to fullscreen by default, but if you'd like to move and resize
+            the canvas individually, click the '*' in the upper left hand corner of the screen.
+          </p>
+          
+          <p>
+            Camogen has a number of layouts containing different panels. Explore each of these layouts
+            by clicking on 'Layout' in the toolbar on the top of the page.
+          </p>
         </TextComponent>
         <TextComponent>
           <h2>add motion</h2>
