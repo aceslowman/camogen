@@ -1,6 +1,8 @@
 import { getRoot, types } from "mobx-state-tree";
-import Shader from "../../ShaderStore";
+import Shader, {Uniform} from "../../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
+import { nanoid } from "nanoid";
+import Parameter from '../../ParameterStore';
 
 const webcam = types
   .model("Image", {
@@ -17,7 +19,6 @@ const webcam = types
       ]),
       "fit_vertical"
     ),
-    pan: types.array(types.number),
     frag: `varying vec2 vTexCoord;
             uniform vec2 resolution;
             uniform vec2 img_dimensions;

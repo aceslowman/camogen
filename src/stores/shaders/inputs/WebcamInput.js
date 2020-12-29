@@ -20,27 +20,13 @@ const webcam = types
       ]),
       "fit_vertical"
     ),
-    attachment: types.optional(
-      types.enumeration("Attachment", [
-        "TOP_LEFT",
-        "TOP_CENTER",
-        "TOP_RIGHT",
-        "CENTER_LEFT",
-        "CENTER_CENTER",
-        "CENTER_RIGHT",
-        "BOTTOM_LEFT",
-        "BOTTOM_CENTER",
-        "BOTTOM_RIGHT"
-      ]),
-      "CENTER_CENTER"
-    ),
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: `varying vec2 vTexCoord;
             uniform vec2 resolution;
             uniform vec2 img_dimensions;
             uniform int display_mode;
-            uniform vec2 attachment;
+            uniform vec2 pan;
             uniform sampler2D tex0;
 
             void main() {                

@@ -1,12 +1,16 @@
 import { observer } from 'mobx-react';
 import React from 'react';
-import { ControlGroupComponent, InputSelect } from 'maco-ui';
+import { ControlGroupComponent, InputSelect, InputFloat } from 'maco-ui';
 
 const WebcamInputComponent = observer((props) => {
   const { data } = props.data;
   
   const handleInputSelect = e => data.setInput(e.target.value);
   const handleDisplayMode = e => data.setDisplayMode(e);
+  const handlePanChange = (x,y) => {
+    
+    param.setValue(e);
+  };
   
 	return (
         <React.Fragment>
@@ -30,7 +34,12 @@ const WebcamInputComponent = observer((props) => {
                     ]}
                     onChange={handleDisplayMode}
                 />				
-            </ControlGroupComponent>	
+            </ControlGroupComponent>
+            <ControlGroupComponent name="Pan">
+              <InputFloat 
+                onChange={handlePanX}
+              />
+            </ControlGroupComponent>
         </React.Fragment>        
 	)
 });
