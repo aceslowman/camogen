@@ -168,15 +168,15 @@ const ShaderEditor = props => {
   return (
     <GenericPanel
       panel={props.panel}
-      subtitle={
-        <span
-          style={{
-            fontStyle: props.hasChanged ? "italic" : "normal"
-          }}
-        >
-          {props.hasChanged ? "unsaved" : ""}
-        </span>
-      }
+      //subtitle={
+      //  <span
+      //    style={{
+      //      fontStyle: props.hasChanged ? "italic" : "normal"
+      //    }}
+      //  >
+      //    {props.hasChanged ? "unsaved" : ""}
+      //  </span>
+      //}
       toolbar={toolbar}
       onFocus={e => editor.focus()}
     >
