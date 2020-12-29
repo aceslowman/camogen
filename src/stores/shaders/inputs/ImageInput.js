@@ -10,41 +10,42 @@ const webcam = types
     vert: DefaultShader.vert,
     dataURL: "",
     display_mode: types.optional(
-      types.enumeration("Display Mode", ["preserve_aspect", "stretch"]),
-      "preserve_aspect"
-    ),
-    attachment: types.optional(
-      types.enumeration("Attachment", [
-        "TOP_LEFT",
-        "TOP_CENTER",
-        "TOP_RIGHT",
-        "CENTER_LEFT",
-        "CENTER_CENTER",
-        "CENTER_RIGHT",
-        "BOTTOM_LEFT",
-        "BOTTOM_CENTER",
-        "BOTTOM_RIGHT"
+      types.enumeration("Display Mode", [
+        "fit_vertical",
+        "fit_horizontal",
+        "stretch"
       ]),
-      "CENTER_CENTER"
+      "fit_vertical"
     ),
+    pan: types.array(types.number),
     frag: `varying vec2 vTexCoord;
             uniform vec2 resolution;
             uniform vec2 img_dimensions;
             uniform int display_mode;
-            uniform vec2 attachment;
+            uniform vec2 pan;
             uniform sampler2D tex0;
 
             void main() {                
                 vec3 color = vec3(0.0);
                 vec2 uv = vTexCoord;
 
-                float imgAspect = img_dimensions.x > img_dimensions.y ? 
-                    img_dimensions.x / img_dimensions.y : 
-                    img_dimensions.y / img_dimensions.x;
+                if (display_mode == 0) { // fit vertical
+                    float imgAspect = img_dimensions.x < img_dimensions.y ? 
+                      img_dimensions.x / img_dimensions.y : 
+                      img_dimensions.y / img_dimensions.x;
                     
-                float windowAspect = resolution.y / resolution.x;
-
-                if (display_mode == 0) { // preserve aspect
+                    float windowAspect = resolution.x / resolution.y;
+                
+                    uv.x *= windowAspect * imgAspect;
+                    uv.x -= (windowAspect * imgAspect) / 2.0;
+                    uv.x += 0.5;
+                } else if(display_mode == 1) { // fit horizontal
+                    float imgAspect = img_dimensions.x > img_dimensions.y ? 
+                      img_dimensions.x / img_dimensions.y : 
+                      img_dimensions.y / img_dimensions.x;
+                    
+                    float windowAspect = resolution.y / resolution.x;
+                
                     uv.y *= windowAspect * imgAspect;
                     uv.y -= (windowAspect * imgAspect) / 2.0;
                     uv.y += 0.5;
@@ -59,7 +60,9 @@ const webcam = types
   }))
   .views(self => ({
     get displayModeId() {
-      return ["preserve_aspect", "stretch"].indexOf(self.display_mode);
+      return ["fit_vertical", "fit_horizontal", "stretch"].indexOf(
+        self.display_mode
+      );
     }
   }))
   .actions(self => {
