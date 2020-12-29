@@ -25,7 +25,7 @@ const Help = props => {
           </p>
         </TextComponent>
         <TextComponent>
-          <h2>adding effects</h2>
+          <h2>Adding Effects</h2>
           
           <p>
             Individual effects in camogen (and webgl in general) are called <em>shaders</em>, 
@@ -60,7 +60,7 @@ const Help = props => {
           </p>                    
         </TextComponent>
         <TextComponent>
-          <h2>navigating the interface</h2>
+          <h2>Navigating the Interface</h2>
           <p>
             Camogen's panels can either float or be organized in a split layout. Try resizing the
             individual panels or click the rectangle next to the "Help" text above. 
@@ -77,18 +77,9 @@ const Help = props => {
         </TextComponent>
         <TextComponent>
           <h2>add motion</h2>
-          <ol>
-            <li>
-              under <em>graph</em>, click 'Glyph'. this will put the Glyph effect
-              in focus so it can be edited.
-            </li>
-            <li>
-              in the Glyph controls, under 'Shader Controls', right click on the
-              'x' input under 'scale' and click 'edit parameter'
-            </li>
-            <li>under 'Editor', click 'Counter'</li>
-          </ol>
-
+          <p></p>
+        </TextComponent>
+        <TextComponent>
           <h2>Roadmap</h2>
           <p></p>
         </TextComponent>
