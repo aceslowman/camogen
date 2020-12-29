@@ -47,20 +47,19 @@ const webcam = types
                 vec3 color = vec3(0.0);
                 vec2 uv = vTexCoord;
 
-                float imgAspect = img_dimensions.x > img_dimensions.y ? 
-                    img_dimensions.x / img_dimensions.y : 
-                    img_dimensions.y / img_dimensions.x;
-                    
-                float windowAspect = resolution.y / resolution.x;
 
-                if (display_mode == 0) { // fit vertical
+                if (display_mode == 0) { // fit vertical                
+                    float windowAspect = resolution.x / resolution.y;
+                    float imgAspect = img_dimensions.x / img_dimensions.y;
+                    uv.x *= windowAspect * imgAspect;
+                    // uv.x -= (windowAspect * imgAspect) / 2.0;
+                    // uv.x += 0.5;
+                } else if(display_mode == 1) { // fit horizontal                
+                    float windowAspect = resolution.y / resolution.x;
+                    float imgAspect = img_dimensions.y / img_dimensions.x;
                     uv.y *= windowAspect * imgAspect;
                     uv.y -= (windowAspect * imgAspect) / 2.0;
                     uv.y += 0.5;
-                } else if(display_mode == 1) { // fit horizontal
-                    uv.x *= windowAspect / imgAspect;
-                    uv.x -= (windowAspect / imgAspect) / 2.0;
-                    uv.x += 0.5;
                 }
                                 
                 vec4 src0 = texture2D(tex0, uv);
