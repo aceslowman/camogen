@@ -47,18 +47,23 @@ const webcam = types
                 vec3 color = vec3(0.0);
                 vec2 uv = vTexCoord;
 
-                float imgAspect = img_dimensions.x > img_dimensions.y ? 
-                    img_dimensions.x / img_dimensions.y : 
-                    img_dimensions.y / img_dimensions.x;
-                    
-                float windowAspect =  
-                    resolution.y / resolution.x;
-
                 if (display_mode == 0) { // fit vertical
-                    uv.x /= windowAspect * imgAspect;
-                    // uv.x -= (windowAspect * imgAspect) / 2.0;
-                    // uv.x += 0.5;
+                    float imgAspect = img_dimensions.x < img_dimensions.y ? 
+                      img_dimensions.x / img_dimensions.y : 
+                      img_dimensions.y / img_dimensions.x;
+                    
+                    float windowAspect = resolution.x / resolution.y;
+                
+                    uv.x *= windowAspect * imgAspect;
+                    uv.x -= (windowAspect * imgAspect) / 2.0;
+                    uv.x += 0.5;
                 } else if(display_mode == 1) { // fit horizontal
+                    float imgAspect = img_dimensions.x > img_dimensions.y ? 
+                      img_dimensions.x / img_dimensions.y : 
+                      img_dimensions.y / img_dimensions.x;
+                    
+                    float windowAspect = resolution.y / resolution.x;
+                
                     uv.y *= windowAspect * imgAspect;
                     uv.y -= (windowAspect * imgAspect) / 2.0;
                     uv.y += 0.5;
