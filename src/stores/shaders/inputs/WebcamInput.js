@@ -133,6 +133,7 @@ const webcam = types
           let videoinputs = devices.filter(e => e.kind === "videoinput");
           self.setInputOptions(videoinputs);
           videoinputs.forEach(function(device) {
+            console.log('DEVICE', device)
             console.log(
               device.kind + ": " + device.label + " id = " + device.deviceId
             );
@@ -161,8 +162,9 @@ const webcam = types
       self.display_mode = mode;
     }
 
-    function setInput(input) {
-      console.log("input", input);
+    function setInput(deviceId) {
+      
+      console.log("deviceId", deviceId);
       let p = root_store.p5_instance;
       let constraints = {
         video: {
@@ -170,17 +172,20 @@ const webcam = types
           //   minWidth: 1920,
           //   minHeight: 1080
           // }
-          // optional: [{
+          optional: [{
           // maxFrameRate: 10
-          // }]
+            sourceId: deviceId
+          }]
         },
-        deviceId: input,
+        // deviceId: deviceId,
         audio: false
       };
+      
+      // self.grabber = null;
 
-      self.grabber = p.createCapture(constraints, () => {
-        console.log("grabber activated");
-        self.grabber.hide();
+      self.grabber = p.createCapture(constraints, (e) => {
+        console.log("grabber activated", e);
+        // self.grabber.hide();
       });
     }
 
