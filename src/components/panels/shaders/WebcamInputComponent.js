@@ -1,9 +1,13 @@
 import { observer } from 'mobx-react';
-import React from 'react';
+import React, {useContext} from 'react';
 import { ControlGroupComponent, InputSelect, InputFloat } from 'maco-ui';
+import styles from './WebcamInputComponent.module.css';
+import MainContext from '../../../MainContext';
 
 const WebcamInputComponent = observer((props) => {
   const { data } = props.data;
+  const store = useContext(MainContext).store;
+  const { theme } = store.ui;
   
   let pan = data.getUniform('pan');
   
@@ -24,11 +28,16 @@ const WebcamInputComponent = observer((props) => {
                     onChange={handleInputSelect}
                 />		
                 <button
+                  className={styles.refresh}
+                  style={{
+                    color: theme.text_color,
+                    backgroundColor: theme.primary_color
+                  }}
                   onClick={() => {                    
                     console.log('refreshing inputs')
                     data.refresh();
                   }}  
-                >r
+                >↻
                 </button>
             </ControlGroupComponent>
             <ControlGroupComponent name="Display Mode">
