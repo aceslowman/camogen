@@ -28,10 +28,12 @@ const ImageInputComponent = observer(props => {
       
       if(this.naturalWidth > this.naturalHeight) {
         w = canvas_ref.current.width;
-        h = canvas_ref.current.width * aspect;
+        h = canvas_ref.current.width / aspect;
+        canvas_ref.current.height = h;
       } else {
         w = canvas_ref.current.width;
-        h = canvas_ref.current.width * aspect;
+        h = canvas_ref.current.width / aspect;
+        canvas_ref.current.height = h;
       }
       
       ctx.drawImage(this, 0, 0, w, h)
