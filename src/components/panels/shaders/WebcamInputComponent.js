@@ -28,12 +28,12 @@ const WebcamInputComponent = observer(props => {
         <div 
           className={styles.refresh}
           style={{
-            color: theme.text_color,
             backgroundColor: theme.secondary_color,
-            border: theme.outline_color
+            border: theme.outline_color,
+            color: theme.text_color
           }}
         >
-          <button            
+          <button
             onClick={() => {
               console.log("refreshing inputs");
               data.refresh();

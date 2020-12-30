@@ -120,7 +120,7 @@ const ShaderEditor = props => {
               },
               Refresh: {
                 id: "Refresh",
-                label: "Refresh",
+                label: "↻ Refresh",
                 onClick: () => handleRefresh()
               }
             }
