@@ -15,12 +15,12 @@ const ImageInputComponent = observer(props => {
   const handlePan = (param, v) => param.setValue(v);
   
   useLayoutEffect(() => {
-    console.log('file changed', data.img)
-    const ctx = canvas_ref.current.getContext("2d");
-    ctx.drawImage(data.img.canvas, 80, 80)
-    canvas_ref.current.width = 80;
-    canvas_ref.current.height = 80;
-  }, [data.img]);
+    console.log('file changed', data.image_url)
+    // const ctx = canvas_ref.current.getContext("2d");
+    // ctx.drawImage(data.img.canvas, 0, 0)
+    // canvas_ref.current.width = 80;
+    // canvas_ref.current.height = 80;
+  }, [data.image_url]);
 
   return (
     <React.Fragment>

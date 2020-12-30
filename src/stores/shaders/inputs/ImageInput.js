@@ -59,7 +59,8 @@ const webcam = types
             }`
   })
   .volatile(self => ({
-    img: null
+    img: null,
+    image_url: null
   }))
   .views(self => ({
     get displayModeId() {
@@ -110,6 +111,7 @@ const webcam = types
       reader.onload = e => {
         var image = document.createElement("img");
         let p = root_store.p5_instance;
+        self.setImageURL(e.target.result)
         self.setImage(p.loadImage(e.target.result));
       };
 
@@ -165,7 +167,8 @@ const webcam = types
       update,
       setDisplayMode,
       loadImage,
-      setImage
+      setImage,
+      setImageURL
     };
   });
 
