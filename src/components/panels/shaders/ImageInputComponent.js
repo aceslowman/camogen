@@ -16,10 +16,28 @@ const ImageInputComponent = observer(props => {
   
   useLayoutEffect(() => {
     console.log('file changed', data.image_url)
-    // const ctx = canvas_ref.current.getContext("2d");
-    // ctx.drawImage(data.img.canvas, 0, 0)
-    // canvas_ref.current.width = 80;
-    // canvas_ref.current.height = 80;
+    const ctx = canvas_ref.current.getContext("2d");
+    
+    let img = new Image();
+    
+    img.onload = function() {
+      console.log('img', [this.naturalWidth, this.naturalHeight])
+      let aspect = this.naturalWidth / this.naturalHeight;
+      let w = 0;
+      let h = 0;
+      
+      if(this.naturalWidth > this.naturalHeight) {
+        w = canvas_ref.current.width;
+        h = canvas_ref.current.width * aspect;
+      } else {
+        w = canvas_ref.current.width;
+        h = canvas_ref.current.width * aspect;
+      }
+      
+      ctx.drawImage(this, 0, 0, w, h)
+    }
+    
+    img.src = data.image_url;    
   }, [data.image_url]);
 
   return (
