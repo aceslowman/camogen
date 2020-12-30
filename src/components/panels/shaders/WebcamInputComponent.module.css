@@ -1,4 +1,18 @@
 .refresh {
   width: auto !important;
   cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.refresh button {
+/*   height: 100%; */
+  box-sizing: border-box;
+  padding: 0px 3px;
+}
+
+.refresh:hover {
+    background-color: white;
+    mix-blend-mode: exclusion;
+    color: black;
 }
