@@ -104,10 +104,10 @@ const webcam = types
 
       let constraints = {
         video: {
-          mandatory: {
-            minWidth: 1920,
-            minHeight: 1080
-          }
+          // mandatory: {
+          //   minWidth: 1920,
+          //   minHeight: 1080
+          // }
           // optional: [{
           // maxFrameRate: 10
           // }]
