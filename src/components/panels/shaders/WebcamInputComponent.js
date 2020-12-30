@@ -5,11 +5,19 @@ import { ControlGroupComponent, InputSelect, InputFloat } from 'maco-ui';
 const WebcamInputComponent = observer((props) => {
   const { data } = props.data;
   
+  let pan = data.getUniform('pan');
+  console.log('pan', pan)
+  
   const handleInputSelect = e => data.setInput(e.target.value);
   const handleDisplayMode = e => data.setDisplayMode(e);
-  const handlePanChange = (x,y) => {
-    
-    param.setValue(e);
+  const handlePanX = (x) => {
+    let param = pan.elements[0];
+    param.setValue(x);
+  };
+  
+  const handlePanY = (x) => {
+    let param = pan.elements[0];
+    param.setValue(x);
   };
   
 	return (
@@ -37,7 +45,12 @@ const WebcamInputComponent = observer((props) => {
             </ControlGroupComponent>
             <ControlGroupComponent name="Pan">
               <InputFloat 
-                onChange={handlePanX}
+                value={data.getUniform('pan').elements[0].value}
+                onChange={(e) => handlePanX(e)}
+              />
+              <InputFloat 
+                value={data.getUniform('pan').elements[1].value}
+                onChange={(e) => handlePanY(e)}
               />
             </ControlGroupComponent>
         </React.Fragment>        

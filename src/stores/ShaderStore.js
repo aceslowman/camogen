@@ -118,6 +118,16 @@ let shader = types
 
     get fragment() {
       return self.precision + self.frag;
+    }, 
+    
+    getUniform: (name) => {      
+      let uniform = null;
+      self.uniforms.forEach((e,i) => {
+        if(e.name === name)
+          uniform = e;  
+      });      
+      
+      return uniform;
     }
   }))
   .actions(self => {
