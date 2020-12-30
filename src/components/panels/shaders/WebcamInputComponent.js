@@ -22,7 +22,14 @@ const WebcamInputComponent = observer((props) => {
                         }))
                     }
                     onChange={handleInputSelect}
-                />				
+                />		
+                <button
+                  onClick={() => {                    
+                    console.log('refreshing inputs')
+                    data.refresh();
+                  }}  
+                >r
+                </button>
             </ControlGroupComponent>
             <ControlGroupComponent name="Display Mode">
                 <InputSelect

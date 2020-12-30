@@ -133,16 +133,10 @@ const webcam = types
           self.setInputOptions(videoinputs);
         
           videoinputs.forEach(function(device) {
-            // console.log('DEVICE', device)
             console.log(
               device.kind + ": " + device.label + " id = " + device.deviceId
             );
-          });
-        
-          // MediaStreamTrack.getSources(sources => {
-          //   console.log(sources);
-          // });
-          
+          });        
         })
         .catch(err => {
           console.log(err.name + ": " + err.message);
@@ -226,6 +220,26 @@ const webcam = types
         p.noLoop();
       }
     }
+    
+    function refresh() {
+      console.log('refreshing')
+      // List cameras
+      navigator.mediaDevices
+        .enumerateDevices()
+        .then(devices => {
+          let videoinputs = devices.filter(e => e.kind === "videoinput");
+          self.setInputOptions(videoinputs);
+        
+          videoinputs.forEach(function(device) {
+            console.log(
+              device.kind + ": " + device.label + " id = " + device.deviceId
+            );
+          });        
+        })
+        .catch(err => {
+          console.log(err.name + ": " + err.message);
+        });
+    }
 
     return {
       afterAttach,
@@ -233,7 +247,8 @@ const webcam = types
       update,
       setInputOptions,
       setDisplayMode,
-      setInput
+      setInput,
+      refresh
     };
   });
 
