@@ -11,6 +11,8 @@ const ImageInputComponent = observer(props => {
   
   const handleDisplayMode = e => data.setDisplayMode(e);
   const handlePan = (param, v) => param.setValue(v);
+  
+  useLayoutAffect
 
   return (
     <React.Fragment>
