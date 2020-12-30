@@ -19,6 +19,9 @@ const ImageInputComponent = observer(props => {
       I do not know whether or not this is efficient!
       I am grabbing the whole image each time and generating
       a smaller thumbnail.
+      
+      TODO: should limit width at some point, becomes too large
+      when the control panel is made wider
     */
     const ctx = canvas_ref.current.getContext("2d");
     
