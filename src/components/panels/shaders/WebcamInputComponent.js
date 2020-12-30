@@ -7,7 +7,7 @@ const WebcamInputComponent = observer((props) => {
   
   let pan = data.getUniform('pan');
   
-  const handleInputSelect = e => data.setInput(e.target.value);
+  const handleInputSelect = e => data.setInput(e);
   const handleDisplayMode = e => data.setDisplayMode(e);
   const handlePan = (param,v) => param.setValue(v);
   

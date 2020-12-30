@@ -163,6 +163,25 @@ const webcam = types
 
     function setInput(input) {
       console.log("input", input);
+      let p = root_store.p5_instance;
+      let constraints = {
+        video: {
+          // mandatory: {
+          //   minWidth: 1920,
+          //   minHeight: 1080
+          // }
+          // optional: [{
+          // maxFrameRate: 10
+          // }]
+        },
+        deviceId: input,
+        audio: false
+      };
+
+      self.grabber = p.createCapture(constraints, () => {
+        console.log("grabber activated");
+        self.grabber.hide();
+      });
     }
 
     function update(p) {
@@ -185,7 +204,6 @@ const webcam = types
         self.grabber.height
       ]);
       shader.setUniform("display_mode", self.displayModeId);
-      // shader.setUniform('attachment', self.attachmentId);
 
       target.shader(shader);
 
