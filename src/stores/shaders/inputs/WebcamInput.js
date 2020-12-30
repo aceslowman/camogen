@@ -26,7 +26,7 @@ const webcam = types
             uniform vec2 resolution;
             uniform vec2 img_dimensions;
             uniform int display_mode;
-            uniform vec2 pan;
+            uniform vec2 pan; // {'default':[0.0,0.0]}
             uniform sampler2D tex0;
 
             void main() {                
@@ -54,6 +54,8 @@ const webcam = types
                     uv.y -= (windowAspect * imgAspect) / 2.0;
                     uv.y += 0.5;
                 }
+                
+                uv += pan;
                                 
                 vec4 src0 = texture2D(tex0, uv);
                 gl_FragColor = vec4(src0);
@@ -156,7 +158,6 @@ const webcam = types
     }
 
     function setDisplayMode(mode) {
-      console.log("mode", mode);
       self.display_mode = mode;
     }
 

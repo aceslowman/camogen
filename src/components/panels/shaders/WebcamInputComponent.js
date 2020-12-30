@@ -6,19 +6,10 @@ const WebcamInputComponent = observer((props) => {
   const { data } = props.data;
   
   let pan = data.getUniform('pan');
-  console.log('pan', pan)
   
   const handleInputSelect = e => data.setInput(e.target.value);
   const handleDisplayMode = e => data.setDisplayMode(e);
-  const handlePanX = (x) => {
-    let param = pan.elements[0];
-    param.setValue(x);
-  };
-  
-  const handlePanY = (x) => {
-    let param = pan.elements[0];
-    param.setValue(x);
-  };
+  const handlePan = (param,v) => param.setValue(v);
   
 	return (
         <React.Fragment>
@@ -44,14 +35,15 @@ const WebcamInputComponent = observer((props) => {
                 />				
             </ControlGroupComponent>
             <ControlGroupComponent name="Pan">
-              <InputFloat 
-                value={data.getUniform('pan').elements[0].value}
-                onChange={(e) => handlePanX(e)}
-              />
-              <InputFloat 
-                value={data.getUniform('pan').elements[1].value}
-                onChange={(e) => handlePanY(e)}
-              />
+              {
+                data.getUniform('pan').elements.map((e,i) => (
+                  <InputFloat 
+                    key={e.uuid}
+                    value={e.value}
+                    onChange={(v) => handlePan(e,v)}
+                  />
+                ))
+              }
             </ControlGroupComponent>
         </React.Fragment>        
 	)
