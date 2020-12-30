@@ -17,7 +17,7 @@ const ImageInputComponent = observer(props => {
   useLayoutEffect(() => {
     console.log('file changed', data.img)
     const ctx = canvas_ref.current.getContext("2d");
-    ctx.drawImage(data.img.canvas, 0, 0)
+    ctx.drawImage(data.img.canvas, 80, 80)
     canvas_ref.current.width = 80;
     canvas_ref.current.height = 80;
   }, [data.img]);

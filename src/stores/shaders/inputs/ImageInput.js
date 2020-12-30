@@ -122,6 +122,10 @@ const webcam = types
       self.img = img;
     }
 
+    function setImageURL(img_url) {
+      self.image_url = img_url;
+    }
+    
     function setDisplayMode(mode) {
       self.display_mode = mode;
     }
