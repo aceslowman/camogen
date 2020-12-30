@@ -170,8 +170,10 @@ const webcam = types
     }
 
     function setInput(deviceId) {
-      self.grabber.remove();
+      // self.grabber.remove();
+      // self.grabber.stop();
       console.log("deviceId", deviceId);
+      console.log("grabber", self.grabber)
       let p = root_store.p5_instance;
       let constraints = {
         video: {
@@ -183,8 +185,8 @@ const webcam = types
           // maxFrameRate: 10
             // sourceId: deviceId
           // }]
+          deviceId: deviceId
         },
-        deviceId: deviceId,
         audio: false
       };
       
