@@ -15,26 +15,23 @@ const ImageInputComponent = observer(props => {
   const handlePan = (param, v) => param.setValue(v);
   
   useLayoutEffect(() => {
-    console.log('file changed', data.image_url)
+    /*
+      I do not know whether or not this is efficient!
+      I am grabbing the whole image each time and generating
+      a smaller thumbnail.
+    */
     const ctx = canvas_ref.current.getContext("2d");
     
     let img = new Image();
     
     img.onload = function() {
-      console.log('img', [this.naturalWidth, this.naturalHeight])
       let aspect = this.naturalWidth / this.naturalHeight;
       let w = 0;
       let h = 0;
-      
-      if(this.naturalWidth > this.naturalHeight) {
-        w = canvas_ref.current.width;
-        h = canvas_ref.current.width / aspect;
-        canvas_ref.current.height = h;
-      } else {
-        w = canvas_ref.current.width;
-        h = canvas_ref.current.width / aspect;
-        canvas_ref.current.height = h;
-      }
+            
+      w = canvas_ref.current.width;
+      h = canvas_ref.current.width / aspect;
+      canvas_ref.current.height = h;
       
       ctx.drawImage(this, 0, 0, w, h)
     }
