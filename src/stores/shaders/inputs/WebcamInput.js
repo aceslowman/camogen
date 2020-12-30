@@ -189,8 +189,6 @@ const webcam = types
         },
         audio: false
       };
-      
-      // self.grabber = null;
 
       self.grabber = p.createCapture(constraints, (e) => {
         console.log("grabber activated", e);
