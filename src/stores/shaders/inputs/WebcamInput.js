@@ -132,16 +132,23 @@ const webcam = types
         .then(devices => {
           let videoinputs = devices.filter(e => e.kind === "videoinput");
           self.setInputOptions(videoinputs);
+        
           videoinputs.forEach(function(device) {
-            console.log('DEVICE', device)
+            // console.log('DEVICE', device)
             console.log(
               device.kind + ": " + device.label + " id = " + device.deviceId
             );
           });
+        
+          // MediaStreamTrack.getSources(sources => {
+          //   console.log(sources);
+          // });
+          
         })
         .catch(err => {
           console.log(err.name + ": " + err.message);
         });
+      
 
       // allows user to capture screen, may be useful elsewhere!
       // navigator.mediaDevices.getDisplayMedia()
@@ -163,7 +170,7 @@ const webcam = types
     }
 
     function setInput(deviceId) {
-      
+      self.grabber.remove();
       console.log("deviceId", deviceId);
       let p = root_store.p5_instance;
       let constraints = {
@@ -172,12 +179,12 @@ const webcam = types
           //   minWidth: 1920,
           //   minHeight: 1080
           // }
-          optional: [{
+          // optional: [{
           // maxFrameRate: 10
-            sourceId: deviceId
-          }]
+            // sourceId: deviceId
+          // }]
         },
-        // deviceId: deviceId,
+        deviceId: deviceId,
         audio: false
       };
       
@@ -185,7 +192,7 @@ const webcam = types
 
       self.grabber = p.createCapture(constraints, (e) => {
         console.log("grabber activated", e);
-        // self.grabber.hide();
+        self.grabber.hide();
       });
     }
 
