@@ -43,6 +43,7 @@ const ShaderEditor = props => {
 
   const toolbar = (
     <ToolbarComponent
+      style={{zIndex: 6}}
       items={
         showEditor
           ? {

@@ -37,7 +37,8 @@ const MainToolbar = observer(props => {
   return (
     <ToolbarComponent
       style={{
-        position: "static"
+        position: "static",
+        zIndex: 6
       }}
       items={{
         Fullscreen: {
