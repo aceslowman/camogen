@@ -164,8 +164,6 @@ const GraphComponent = observer(props => {
         label_background_color = theme.accent_color;        
       }
       
-      
-
       // insert labels BELOW node
       // if node has children...
       if (node.children.length) {
