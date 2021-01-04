@@ -159,7 +159,7 @@ const GraphComponent = observer(props => {
         label_border_style = "dashed";
       }
       
-      if (props.data.selectedNode === node && !node.bypass) {
+      if (props.data.selectedNode === node) {
         label_text_color = theme.primary_color;
         label_background_color = theme.accent_color;        
       }
@@ -183,7 +183,7 @@ const GraphComponent = observer(props => {
               style={{
                 backgroundColor: theme.primary_color,
                 borderColor: theme.text_color,
-                color: theme.text_color
+                color: theme.text_color                
               }}              
               onContextMenu={e => {
                 // insert new node then open context menu
@@ -222,7 +222,8 @@ const GraphComponent = observer(props => {
               backgroundColor: label_background_color,
               borderColor: label_border_color,
               borderStyle: label_border_style,
-              color: label_text_color
+              color: label_text_color,
+              textDecoration: node.bypass ? 'line-through' : 'none'
             }}
           >
             {node.name}
