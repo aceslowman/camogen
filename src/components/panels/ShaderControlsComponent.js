@@ -274,6 +274,12 @@ const ShaderControls = observer(props => {
           >
             <PanelComponent
               title={node.data.name}
+              subtitle={(
+                <InputBool 
+                  value={node.bypass}  
+                  onChange={(e) => node.setBypass(!node.bypass)}
+                />
+              )}
               collapsible={controls.length ? true : false}
               titleStyle={{
                 color: is_selected ? theme.text_color : theme.text_color,

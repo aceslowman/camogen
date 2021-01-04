@@ -156,6 +156,9 @@ const GraphComponent = observer(props => {
         label_text_color = theme.primary_color;
         label_background_color = theme.accent_color;
       }
+      
+      // bypass indicator
+      if (node.bypass) label_background_color = 'red';
 
       // insert labels BELOW node
       // if node has children...

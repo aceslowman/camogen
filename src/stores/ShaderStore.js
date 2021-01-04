@@ -101,10 +101,8 @@ let shader = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: DefaultShader.frag,
-    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
-    // target: types.maybe(Target) // questionable
-    // BIG TODO!
-    // collection: types.safeReference(types.late(() => Collection))
+    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph))),
+    bypass: false
   })
   .volatile(() => ({
     target: null,
