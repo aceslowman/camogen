@@ -43,8 +43,8 @@ const GraphNode = types
     data: types.maybe(PossibleData),
     children: types.array(nodeRef),
     parents: types.array(nodeRef),
-    // selected: false,
-    coordinates: types.optional(Coordinate, { x: 0, y: 0 })
+    coordinates: types.optional(Coordinate, { x: 0, y: 0 }),
+    bypass: false
   })
   .volatile(self => ({
     branch_index: 0,
@@ -72,6 +72,8 @@ const GraphNode = types
     function afterAttach() {
       parent_graph = getParent(self, 2);
     }
+    
+    const setBypass = (b) => self.bypass = b
 
     function setData(data) {
       self.data = data;
@@ -191,6 +193,7 @@ const GraphNode = types
       // swapData: (t) => undoManager.withoutUndo(()=>swapData(t)),
       // mapInputsToParents,
       mapInputsToParents: () => undoManager.withoutUndo(()=>mapInputsToParents()),      
+      setBypass,
       setParent,      
       // setParent: (n,i,f) => undoManager.withoutUndo(()=>setParent(n,i,f)),
       setChild,

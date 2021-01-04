@@ -152,13 +152,19 @@ const GraphComponent = observer(props => {
         ? theme.secondary_color
         : theme.primary_color;
 
-      if (props.data.selectedNode === node) {
-        label_text_color = theme.primary_color;
-        label_background_color = theme.accent_color;
+      // bypass indicator
+      if (node.bypass) {
+        label_border_color = theme.accent_color;
+        label_background_color = theme.primary_color;
+        label_border_style = "dashed";
       }
       
-      // bypass indicator
-      if (node.bypass) label_background_color = 'red';
+      if (props.data.selectedNode === node && !node.bypass) {
+        label_text_color = theme.primary_color;
+        label_background_color = theme.accent_color;        
+      }
+      
+      
 
       // insert labels BELOW node
       // if node has children...

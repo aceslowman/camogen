@@ -101,8 +101,7 @@ let shader = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: DefaultShader.frag,
-    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph))),
-    bypass: false
+    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
   })
   .volatile(() => ({
     target: null,
@@ -279,6 +278,8 @@ let shader = types
     }
 
     function update(p) {
+      // skip if bypassed
+      if (parent_node.bypass) return;
       /*
         this method is triggered within Runner.js
         and draws shaders to quads.
