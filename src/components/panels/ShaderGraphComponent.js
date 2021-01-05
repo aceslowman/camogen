@@ -37,6 +37,10 @@ const ShaderGraph = observer(props => {
             console.log("all out of redo");
           }
         },
+        "b": () => { 
+          // bypass currently selected node
+          props.selectedNode.toggleBypass();
+        },
         ArrowUp: () => {
           if (props.selectedNode && props.selectedNode.parents.length)
             props.selectedNode.parents[0].select();

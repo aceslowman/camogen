@@ -279,10 +279,7 @@ const ShaderControls = observer(props => {
                   //hLabel
                   //label="bypass"
                   value={node.bypass}  
-                  onChange={(e) => {
-                    e.preventDefault();
-                    node.setBypass(!node.bypass);                  
-                  }}
+                  onChange={node.toggleBypass}
                 />
               )}
               collapsible={controls.length ? true : false}
@@ -292,7 +289,6 @@ const ShaderControls = observer(props => {
                   ? theme.accent_color
                   : theme.primary_color
               }}
-              //expanded={(node === props.data.selectedNode) || expandAll}
               expanded={expandAll}
               onRemove={() => node.remove()}
               gutters

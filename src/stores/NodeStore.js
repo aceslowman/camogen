@@ -73,8 +73,10 @@ const GraphNode = types
       parent_graph = getParent(self, 2);
     }
     
-    const setBypass = (b) => self.bypass = b
+    const setBypass = (b) => self.bypass = b;
 
+    const toggleBypass = () => self.bypass = !self.bypass;
+    
     function setData(data) {
       self.data = data;
       self.name = data.name;
@@ -194,6 +196,7 @@ const GraphNode = types
       // mapInputsToParents,
       mapInputsToParents: () => undoManager.withoutUndo(()=>mapInputsToParents()),      
       setBypass,
+      toggleBypass,
       setParent,      
       // setParent: (n,i,f) => undoManager.withoutUndo(()=>setParent(n,i,f)),
       setChild,
