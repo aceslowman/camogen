@@ -276,6 +276,8 @@ const ShaderControls = observer(props => {
               title={node.data.name}
               subtitle={(
                 <InputBool 
+                  hLabel
+                  label="bypass"
                   value={node.bypass}  
                   onChange={(e) => node.setBypass(!node.bypass)}
                 />
