@@ -276,10 +276,13 @@ const ShaderControls = observer(props => {
               title={node.data.name}
               subtitle={(
                 <InputBool 
-                  hLabel
-                  label="bypass"
+                  //hLabel
+                  //label="bypass"
                   value={node.bypass}  
-                  onChange={(e) => node.setBypass(!node.bypass)}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    node.setBypass(!node.bypass);                  
+                  }}
                 />
               )}
               collapsible={controls.length ? true : false}
