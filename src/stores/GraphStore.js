@@ -22,7 +22,8 @@ const Graph = types
     nodes: types.map(GraphNode),
     selectedNode: types.maybe(types.reference(GraphNode)),
     coord_bounds: types.optional(Coordinate, { x: 0, y: 0 }),
-    history: types.optional(UndoManager, {})
+    history: types.optional(UndoManager, {}) 
+    // TEMP disabled undo/redo, it's serializing and making save files massive
   })
   .volatile(() => ({
     queue: []
@@ -68,7 +69,7 @@ const Graph = types
     }
   }))
   .actions(self => {
-    setUndoManager(self);
+    // setUndoManager(self);
 
     function clear() {
       self.selectedNode = undefined;
@@ -374,7 +375,7 @@ export const OperatorGraph = types
   .named("OperatorGraph");
 export default Graph;
 
-export let undoManager = {};
-export const setUndoManager = targetStore => {
-  undoManager = targetStore.history;
-};
+export let undoManager = {}
+export const setUndoManager = (targetStore) => {
+    undoManager = UndoManager.create({}, { targetStore, maxHistoryLength: 10 })
+}
