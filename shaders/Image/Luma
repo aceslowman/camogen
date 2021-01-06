@@ -1,8 +1,6 @@
 {
   "type": "Shader",
   "name": "Luma",
-  "inputs": ["tex0"],
-  "outputs": ["out"],
   "precision": "\n\t\t#ifdef GL_ES\n\t\tprecision highp float;\n\t\t#endif \n\t",
   "vert": "\n    attribute vec3 aPosition;\n    attribute vec2 aTexCoord;\n    varying vec2 vTexCoord;\n    void main() {\n        vTexCoord = aTexCoord;\n        vec4 positionVec4 = vec4(aPosition,1.0);\n        positionVec4.xy = positionVec4.xy * vec2(1.,-1.);\n        gl_Position = positionVec4;\n    }\n\t",
   "frag": "varying vec2 vTexCoord;\nuniform sampler2D tex0;\nuniform vec2 resolution;\n\n// https://github.com/hughsk/glsl-luma\nfloat luma(vec3 color) {\n  \treturn dot(color, vec3(0.299, 0.587, 0.114));\n}\n\nfloat luma(vec4 color) {\n  \treturn dot(color.rgb, vec3(0.299, 0.587, 0.114));\n}\n\nvoid main() {\n    vec4 color = texture2D(tex0, vTexCoord);\n      \n\tcolor = vec4(vec3(luma(color)), color.a);\n  \n\tgl_FragColor = color;\n}\n"
