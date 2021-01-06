@@ -93,7 +93,8 @@ const webcam = types
       let p = root_store.p5_instance;
 
       self.img = p.loadImage("images/muybridge.jpg");
-
+      // self.dataURL = URL.createObjectURL("images/muybridge.jpg")
+      self.dataURL = "images/muybridge.jpg";
       // prevents init() from being called twice
       self.ready = true;
 
@@ -103,6 +104,9 @@ const webcam = types
     }
 
     function loadImage(e) {
+      // revoke previous url!      
+      if(self.dataURL) URL.revokeObjectURL(self.dataURL);
+      
       let file = e.target.files[0];
       if (!file.type.startsWith("image/")) return;
 
