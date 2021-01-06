@@ -17,12 +17,12 @@ const webcam = types
         "fit_horizontal",
         "stretch"
       ]),
-      "stretch"
+      "fit_vertical"
     ),
     frag: `varying vec2 vTexCoord;
             uniform vec2 resolution;
             uniform vec2 img_dimensions;
-            uniform int display_mode;            
+            uniform int display_mode;          
             uniform vec2 pan; // {'default':[0.0,0.0]}
             uniform sampler2D tex0;
 
