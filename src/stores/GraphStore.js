@@ -69,7 +69,7 @@ const Graph = types
     }
   }))
   .actions(self => {
-    // setUndoManager(self);
+    setUndoManager(self);
 
     function clear() {
       self.selectedNode = undefined;

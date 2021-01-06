@@ -209,6 +209,13 @@ const RootStore = types
           onClick: () => {
             self.persistShaderLibrary();
           }
+        },
+        LoadCollection: {
+          id: "LoadCollection",
+          label: "Load Collection",
+          onClick: () => {
+            self.loadShaderLibrary();
+          }
         }
       };
     }
@@ -366,6 +373,56 @@ const RootStore = types
       window.localStorage.clear();
       self.fetchShaderFiles();
     };
+    
+    const saveShaderCollection = () => {
+      console.log("saving collection");
+
+      let src = JSON.stringify(getSnapshot(self.shader_collection));
+      let blob = new Blob([src], { type: "text/plain" });
+
+      let link = document.createElement("a");
+      link.download = `${self.name}.camo`;
+
+      if (window.webkitURL != null) {
+        // Chrome allows the link to be clicked without actually adding it to the DOM.
+        link.href = window.webkitURL.createObjectURL(blob);
+      } else {
+        // Firefox requires the link to be added to the DOM before it can be clicked.
+        link.href = window.URL.createObjectURL(blob);
+        link.onclick = e => {
+          document.body.removeChild(e.target);
+        };
+        link.style.display = "none";
+        document.body.appendChild(link);
+      }
+
+      link.click();
+    }
+
+    const loadShaderCollection = () => {
+      let link = document.createElement("input");
+      link.type = "file";
+
+      link.onchange = e => {
+        var file = e.target.files[0];
+
+        let reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+
+        reader.onload = e => {
+          let content = e.target.result;
+
+          self.setName(name);
+          self.scene.clear();
+          applySnapshot(self, JSON.parse(content));
+          self.scene.shaderGraph.update();
+          self.scene.shaderGraph.afterUpdate();
+          // undoManager.clear();
+        };
+      };
+
+      link.click();
+    }
 
     const persistShaderLibrary = () => {
       // save collection to local storage
@@ -412,6 +469,8 @@ const RootStore = types
       setTheme,
       setName,
       setShaderCollection,
+      loadShaderCollection,      
+      persistShaderLibrary,
       selectParameter,
       breakout,
       onBreakoutResize,
@@ -420,7 +479,6 @@ const RootStore = types
       fetchShaderFiles,
       resizeCanvas,
       addToRecentShaders,
-      persistShaderLibrary,
       reloadDefaults
     };
   });
