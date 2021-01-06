@@ -8,6 +8,7 @@ const { nanoid } = require('nanoid');
  
 let shader_collection; 
  
+/* TODO: should rely on camo.collection files */
 function preloadDefaultShaders() {
   const shader_path = path.resolve(__dirname, '../shaders');
    
@@ -19,7 +20,7 @@ function preloadDefaultShaders() {
           console.error(err);  
         } else { 
           file.data = JSON.parse(data);
-        }
+        } 
       })      
     },
     dir => {    // directories
