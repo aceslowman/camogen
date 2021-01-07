@@ -39,19 +39,21 @@ const MainToolbar = observer(props => {
 
   const handleAddPanel = name => {};
   
-  useEffect(() => {
-    console.log(ui.layoutVariants)
-  }, [ui.layoutVariants]);
+  let layouts = [];
   
-  let layouts = ui.layoutVariants.map((e,i) => {
-    return {
-      [e.id]: {
-        id: e.id,
-        label: e.title,
-        onClick: () => handleLayoutSelect(e.id)
+  useEffect(() => {
+    // console.log(ui.layoutVariants)
+    layouts = Object.keys(ui.layoutVariants).map((_e,i) => {
+      let e = 
+      return {
+        [e.id]: {
+          id: e.id,
+          label: e.title,
+          onClick: () => handleLayoutSelect(e.id)
+        }
       }
-    }
-  });
+    });
+  }, [ui.layoutVariants]);
   
   return (
     <ToolbarComponent
