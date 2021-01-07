@@ -154,8 +154,8 @@ const App = observer(props => {
             </GenericPanel>
           )}
         </div>
-        {showAbout && (
-          <AboutOverlay onRemove={() => setShowAbout(!showAbout)} />
+        {store.showSplash && (
+          <AboutOverlay onRemove={() => store.setShowSplash(!store.showSplash)} />
         )}
       </ThemeContext.Provider>
     </MainProvider>

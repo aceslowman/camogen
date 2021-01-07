@@ -1,5 +1,11 @@
 import React from "react";
-import { onSnapshot, getSnapshot, types, flow, applySnapshot } from "mobx-state-tree";
+import {
+  onSnapshot,
+  getSnapshot,
+  types,
+  flow,
+  applySnapshot
+} from "mobx-state-tree";
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
 import defaultSnapshot from "../snapshots/default.json";
@@ -53,7 +59,8 @@ const RootStore = types
     ready: false,
     breakoutControlled: false,
     messages: Messages.create(),
-    context: Context.create()
+    context: Context.create(),
+    showSplash: true
   }))
   .views(self => ({
     get recentShaderLibrary() {
@@ -229,20 +236,21 @@ const RootStore = types
   }))
   .actions(self => {
     const afterCreate = () => {
-      
       // window.localStorage.clear();
-      
+
       onSnapshot(self.ui.theme, () => {
-        console.log('snapshot is ready')
+        console.log("snapshot is ready");
         window.localStorage.setItem(
           "theme",
           JSON.stringify(getSnapshot(self.ui.theme))
         );
-      })
-      
-      if(window.localStorage.getItem("theme")) {
-        console.log(window.localStorage.getItem("theme"))
-        self.ui.theme.setTheme(JSON.parse(window.localStorage.getItem("theme")))
+      });
+
+      if (window.localStorage.getItem("theme")) {
+        console.log(window.localStorage.getItem("theme"));
+        self.ui.theme.setTheme(
+          JSON.parse(window.localStorage.getItem("theme"))
+        );
       }
 
       // fetch default shaders
@@ -276,8 +284,6 @@ const RootStore = types
     };
 
     const save = () => {
-      console.log("saving project");
-
       let src = JSON.stringify(getSnapshot(self));
       let blob = new Blob([src], { type: "text/plain" });
 
@@ -298,6 +304,8 @@ const RootStore = types
       }
 
       link.click();
+      
+      console.log("project saved!");
     };
 
     const load = () => {
