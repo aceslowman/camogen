@@ -1,5 +1,5 @@
 import React from "react";
-import { getSnapshot, types, flow, applySnapshot } from "mobx-state-tree";
+import { onSnapshot, getSnapshot, types, flow, applySnapshot } from "mobx-state-tree";
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
 import defaultSnapshot from "../snapshots/default.json";
@@ -229,6 +229,9 @@ const RootStore = types
   }))
   .actions(self => {
     const afterCreate = () => {
+      onSnapshot(self.ui.theme, () => {
+        console.log('snapshot is ready')
+      })
       // window.localStorage.clear();
 
       // fetch default shaders
