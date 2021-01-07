@@ -248,7 +248,7 @@ export const LayoutVariants = {
   PARAMETER: {
     id: "PARAMETER",
     title: "Parameter",
-    // direction: "HORIZONTAL",
+    direction: "HORIZONTAL",
     size: 1,
     children: [
       {
@@ -276,7 +276,14 @@ export const LayoutVariants = {
   PREFERENCES: {
     id: "PREFERENCES",
     title: "Preferences",
-    panel: "PREFERENCES",
+    size: 1, 
+    children: [
+      {
+        id: "PREFERENCES",
+        panel: "PREFERENCES",
+        size: 1
+      }
+    ],
     panels: {
       PREFERENCES: PanelVariants['PREFERENCES']
     }

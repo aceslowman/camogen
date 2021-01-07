@@ -113,7 +113,6 @@ const App = observer(props => {
           />
         );
       case "PREFERENCES":
-        console.log("CHECK", panel)
         return (<PreferencesComponent key={panel.id} panel={panel} />);
       case "CAPTURE":
         return <CaptureComponent key={panel.id} panel={panel} />;

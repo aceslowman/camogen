@@ -18,12 +18,7 @@ import { PanelVariants, LayoutVariants } from "../stores/ui/Variants";
 const MainToolbar = observer(props => {
   const store = useContext(MainContext).store;
   const { ui, scene } = store;
-  
-  
-  
-  
-  
-  
+
   const canvasPanel = ui.getPanel("CANVAS");
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
@@ -42,9 +37,7 @@ const MainToolbar = observer(props => {
   let layouts = {};
       
   Object.keys(ui.layoutVariants).forEach((_e,i) => {
-    let e = ui.layoutVariants[_e];
-    
-    console.log('e',e)
+    let e = ui.layoutVariants[_e];    
     layouts = {
       ...layouts,
       [e.id]: {
