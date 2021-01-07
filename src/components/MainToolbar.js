@@ -19,7 +19,10 @@ const MainToolbar = observer(props => {
   const store = useContext(MainContext).store;
   const { ui, scene } = store;
   
-  console.log(ui.layoutVariants)
+  
+  
+  
+  
   
   const canvasPanel = ui.getPanel("CANVAS");
   const mainPanel = ui.getPanel("MAIN");
@@ -35,6 +38,20 @@ const MainToolbar = observer(props => {
   };
 
   const handleAddPanel = name => {};
+  
+  useEffect(() => {
+    console.log(ui.layoutVariants)
+  }, [ui.layoutVariants]);
+  
+  let layouts = ui.layoutVariants.map((e,i) => {
+    return {
+      [e.id]: {
+        id: e.id,
+        label: e.title,
+        onClick: () => handleLayoutSelect(e.id)
+      }
+    }
+  });
   
   return (
     <ToolbarComponent
@@ -139,83 +156,7 @@ const MainToolbar = observer(props => {
           id: "Layout",
           label: "Layout",
           dropDown: {
-            
-            Welcome: {
-              id: "Welcome",
-              label: "Welcome",
-              onClick: () => handleLayoutSelect("WELCOME")
-            },
-            Shader_Edit: {
-              id: "Shader_Edit",
-              label: "Shader Edit",
-              onClick: () => handleLayoutSelect("SHADER_EDIT")
-            },
-            Shader_Control: {
-              id: "Shader_Control",
-              label: "Shader Control",
-              onClick: () => handleLayoutSelect("SHADER_CONTROL")
-            },
-            Parameter_Editor: {
-              id: "Parameter_Editor",
-              label: "Parameter Editor",
-              onClick: () => handleLayoutSelect("PARAMETER")
-            },
-            Debug: {
-              id: "Debug",
-              label: "Debug",
-              onClick: () => handleLayoutSelect("DEBUG")
-            },
-            Add_Panel: {
-              id: "Add_Panel",
-              label: "Add Panel",
-              dropDown: {
-                "Shader Graph": {
-                  id: "Shader Graph",
-                  label: "Shader Graph",
-                  onClick: () => handleAddPanel("SHADER_GRAPH")
-                },
-                "Shader Editor": {
-                  id: "Shader Editor",
-                  label: "Shader Editor",
-                  onClick: () => handleAddPanel("SHADER_EDITOR")
-                },
-                "Shader Controls": {
-                  id: "Shader Controls",
-                  label: "Shader Controls",
-                  onClick: () => handleAddPanel("SHADER_CONTROLS")
-                },
-                "Parameter Editor": {
-                  id: "Parameter Editor",
-                  label: "Parameter Editor",
-                  onClick: () => handleAddPanel("PARAMETER_EDITOR")
-                },
-                Help: {
-                  id: "Help",
-                  label: "Help",
-                  onClick: () => handleAddPanel("HELP")
-                },
-                Debug: {
-                  id: "Debug",
-                  label: "Debug",
-                  onClick: () => handleAddPanel("DEBUG")
-                },
-                Messages: {
-                  id: "Messages",
-                  label: "Messages",
-                  onClick: () => handleAddPanel("MESSAGES")
-                },
-                Preferences: {
-                  id: "Preferences",
-                  label: "Preferences",
-                  onClick: () => handleAddPanel("PREFERENCES")
-                },
-                Capture: {
-                  id: "Capture",
-                  label: "Capture",
-                  onClick: () => handleAddPanel("CAPTURE")
-                }
-              }
-            }
+            ...layouts
           }
         },
         Breakout: {
