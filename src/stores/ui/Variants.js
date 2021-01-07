@@ -248,7 +248,7 @@ export const LayoutVariants = {
   PARAMETER: {
     id: "PARAMETER",
     title: "Parameter",
-    direction: "HORIZONTAL",
+    // direction: "HORIZONTAL",
     size: 1,
     children: [
       {

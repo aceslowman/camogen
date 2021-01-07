@@ -9,8 +9,13 @@ import {
     Themes
 } from 'maco-ui';
 
-const Preferences = (props) => {
+import { observer } from "mobx-react";
+
+const Preferences = observer((props) => {
     const store = useContext(MainContext).store;    
+  
+  
+        console.log('hello')
 
     return(
         <GenericPanel panel={props.panel}>
@@ -79,6 +84,6 @@ const Preferences = (props) => {
             </ControlGroupComponent>					
         </GenericPanel>	
     )
-}
+})
 
 export default Preferences;
