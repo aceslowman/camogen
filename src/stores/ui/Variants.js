@@ -266,6 +266,10 @@ export const LayoutVariants = {
       SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
       SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"],
       PARAMETER_EDITOR: PanelVariants["PARAMETER_EDITOR"]
-    }
+    },    
+  },
+  PREFERENCES: {
+    id: "PREFERENCES",
+    panel: "PREFERENCES"
   }
 };
