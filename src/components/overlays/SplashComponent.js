@@ -13,17 +13,20 @@ const Splash = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
 
-  const [position, setPosition] = useState([window.innerWidth / 2 - 300, window.innerHeight / 2 - 200]);
-  const [dimensions, setDimensions] = useState([600, 400]);
-  
+  const [position, setPosition] = useState([
+    window.innerWidth / 2 - 300,
+    window.innerHeight / 2 - 125
+  ]);
+  const [dimensions, setDimensions] = useState([600, 250]);
+
   // dimensions: [700, 500],
   // position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250],
 
   const handlePosition = setPosition;
 
   const handleDimensions = setDimensions;
-  
-  console.log(theme)
+
+  console.log(theme);
 
   return (
     <PanelComponent
@@ -46,20 +49,28 @@ const Splash = observer(props => {
       }}
     >
       <TextComponent>
-        <h1 2s>
+        <h1 style={{ fontSize: "5em", margin: "15px" }}>
           camogen{" "}
           <small>
             <sub>v0.1.0</sub>
           </small>
         </h1>
-
-        <p>created by austin slominski</p>
-        <small>
-          <a target="_blank" href="https://twitter.com/aceslowman">
-            @aceslowman
-          </a>
-        </small>
       </TextComponent>
+      <div className={styles.credit}>
+        <p>created by austin slominski</p>
+        <div
+          style={{
+            backgroundColor: theme.text_color,
+            color: theme.primary_color
+          }}
+        >
+          <small>
+            <a target="_blank" href="https://twitter.com/aceslowman">
+              @aceslowman
+            </a>
+          </small>
+        </div>
+      </div>
     </PanelComponent>
   );
 });

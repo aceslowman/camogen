@@ -1,3 +1,11 @@
-.wrapper {
-  
+.credit {
+    width: 100%;
+    font-size: 0.8em;
+    padding: 15px;
+/*     text-align: right; */
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+  flex-flow: row;
+/*     right: 0px; */
 }
