@@ -19,6 +19,8 @@ const MainToolbar = observer(props => {
   const store = useContext(MainContext).store;
   const { ui, scene } = store;
   
+  console.log(getSnapshot(store))
+  
   const canvasPanel = ui.getPanel("CANVAS");
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
@@ -137,6 +139,7 @@ const MainToolbar = observer(props => {
           id: "Layout",
           label: "Layout",
           dropDown: {
+            
             Welcome: {
               id: "Welcome",
               label: "Welcome",
