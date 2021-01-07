@@ -15,9 +15,9 @@ const Splash = observer(props => {
 
   const [position, setPosition] = useState([
     window.innerWidth / 2 - 300,
-    window.innerHeight / 2 - 125
+    window.innerHeight / 2 - 100
   ]);
-  const [dimensions, setDimensions] = useState([600, 250]);
+  const [dimensions, setDimensions] = useState([600, 200]);
 
   // dimensions: [700, 500],
   // position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250],
@@ -58,18 +58,13 @@ const Splash = observer(props => {
       </TextComponent>
       <div className={styles.credit}>
         <p>created by austin slominski</p>
-        <div
-          style={{
-            backgroundColor: theme.text_color,
-            color: theme.primary_color
-          }}
+
+        <a 
+          target="_blank" 
+          href="https://twitter.com/aceslowman"
         >
-          <small>
-            <a target="_blank" href="https://twitter.com/aceslowman">
-              @aceslowman
-            </a>
-          </small>
-        </div>
+          @aceslowman
+        </a>
       </div>
     </PanelComponent>
   );
