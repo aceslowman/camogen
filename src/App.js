@@ -25,7 +25,7 @@ import ParameterEditorComponent from "./components/panels/ParameterEditorCompone
 import MessagesComponent from "./components/panels/MessagesComponent";
 import CaptureComponent from "./components/panels/CaptureComponent";
 import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
-import AboutOverlay from "./components/overlays/AboutOverlayComponent";
+import Splash from "./components/overlays/SplashComponent";
 import MainToolbar from "./components/MainToolbar";
 
 const App = observer(props => {
@@ -155,7 +155,7 @@ const App = observer(props => {
           )}
         </div>
         {store.showSplash && (
-          <AboutOverlay onRemove={() => store.setShowSplash(!store.showSplash)} />
+          <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
         )}
       </ThemeContext.Provider>
     </MainProvider>

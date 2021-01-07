@@ -304,7 +304,7 @@ const RootStore = types
       }
 
       link.click();
-      
+
       console.log("project saved!");
     };
 
@@ -490,6 +490,8 @@ const RootStore = types
 
     const setShaderCollection = c => (self.shader_collection = c);
 
+    const setShowSplash = s => (self.showSplash = s);
+
     return {
       afterCreate,
       setReady,
@@ -498,6 +500,7 @@ const RootStore = types
       setTheme,
       setName,
       setShaderCollection,
+      setShowSplash,
       saveShaderCollection,
       loadShaderCollection,
       persistShaderCollection,

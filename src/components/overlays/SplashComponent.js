@@ -5,16 +5,19 @@ import {
   PanelComponent,
   TextComponent
 } from "maco-ui";
-import styles from "./AboutOverlayComponent.module.css";
+import styles from "./SplashComponent.module.css";
 import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 
-const AboutOverlay = observer(props => {
+const Splash = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
 
-  const [position, setPosition] = useState([50, 50]);
-  const [dimensions, setDimensions] = useState([225, 225]);
+  const [position, setPosition] = useState([window.innerWidth / 2 - 300, window.innerHeight / 2 - 200]);
+  const [dimensions, setDimensions] = useState([600, 400]);
+  
+  // dimensions: [700, 500],
+  // position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250],
 
   const handlePosition = setPosition;
 
@@ -30,7 +33,7 @@ const AboutOverlay = observer(props => {
       onDimensionsChange={handleDimensions}
       className={styles.wrapper}
       floating={true}
-      title="about"
+      //title="about"
       showTitle={true}
       style={{
         backgroundColor: theme.primary_color,
@@ -43,7 +46,7 @@ const AboutOverlay = observer(props => {
       }}
     >
       <TextComponent>
-        <h1>
+        <h1 2s>
           camogen{" "}
           <small>
             <sub>v0.1.0</sub>
@@ -61,4 +64,4 @@ const AboutOverlay = observer(props => {
   );
 });
 
-export default AboutOverlay;
+export default Splash;
