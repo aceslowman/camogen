@@ -229,10 +229,21 @@ const RootStore = types
   }))
   .actions(self => {
     const afterCreate = () => {
+      
+      // window.localStorage.clear();
+      
       onSnapshot(self.ui.theme, () => {
         console.log('snapshot is ready')
+        window.localStorage.setItem(
+          "theme",
+          JSON.stringify(getSnapshot(self.ui.theme))
+        );
       })
-      // window.localStorage.clear();
+      
+      if(window.localStorage.getItem("theme")) {
+        console.log(window.localStorage.getItem("theme"))
+        self.ui.theme.setTheme(JSON.parse(window.localStorage.getItem("theme")))
+      }
 
       // fetch default shaders
       fetchShaderFiles().then(d => {
