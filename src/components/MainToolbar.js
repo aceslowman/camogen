@@ -19,7 +19,7 @@ const MainToolbar = observer(props => {
   const store = useContext(MainContext).store;
   const { ui, scene } = store;
   
-  console.log(getSnapshot(store))
+  console.log(getSnapshot(store.layoutVariants))
   
   const canvasPanel = ui.getPanel("CANVAS");
   const mainPanel = ui.getPanel("MAIN");

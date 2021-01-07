@@ -124,6 +124,7 @@ export const PanelVariants = {
 export const LayoutVariants = {
   WELCOME: {
     id: "WELCOME",
+    title: "Welcome",
     direction: "HORIZONTAL",
     size: 1,
     children: [
@@ -151,6 +152,7 @@ export const LayoutVariants = {
   },
   SHADER_EDIT: {
     id: "SHADER_EDIT",
+    title: "Shader Edit",
     direction: "HORIZONTAL",
     size: 1,
     children: [
@@ -191,6 +193,7 @@ export const LayoutVariants = {
   },
   SHADER_CONTROL: {
     id: "SHADER_CONTROL",
+    title: "Shader Control",
     direction: "HORIZONTAL",
     size: 1,
     children: [
@@ -211,6 +214,7 @@ export const LayoutVariants = {
   },
   DEBUG: {
     id: "DEBUG",
+    title: "Debug",
     direction: "HORIZONTAL",
     size: 1,
     children: [
@@ -243,6 +247,7 @@ export const LayoutVariants = {
   },
   PARAMETER: {
     id: "PARAMETER",
+    title: "Parameter",
     direction: "HORIZONTAL",
     size: 1,
     children: [
@@ -270,6 +275,7 @@ export const LayoutVariants = {
   },
   PREFERENCES: {
     id: "PREFERENCES",
+    title: "Preferences",
     panel: "PREFERENCES"
   }
 };
