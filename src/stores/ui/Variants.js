@@ -276,6 +276,9 @@ export const LayoutVariants = {
   PREFERENCES: {
     id: "PREFERENCES",
     title: "Preferences",
-    panel: "PREFERENCES"
+    panel: "PREFERENCES",
+    panels: {
+      PREFERENCES: PanelVariants['PREFERENCES']
+    }
   }
 };
