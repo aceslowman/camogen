@@ -52,7 +52,9 @@ const Splash = observer(props => {
       canRemove={true}
       onRemove={props.onRemove}
       style={{
-        zIndex: 100
+        zIndex: 100,
+          minWidth: 625,
+            minHeight: 425
       }}
     >
       <div className={styles.wrapper}>
