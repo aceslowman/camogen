@@ -3,8 +3,8 @@
   font-size: 0.8em;
   padding-left: 15px;
   /*     text-align: right; */
-  position: absolute;
-  bottom: 0px;
+/*   position: absolute; */
+/*   bottom: 0px; */
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -20,9 +20,12 @@
 }
 
 .title {
+  height: 100%;
   width: 50%;
   font-size: 2em;
-  padding-left:15px;
+  padding-left:30px;
+  height:100%;
+  border-right: 1px solid white;
 }
 
 .title h1 {
@@ -35,5 +38,12 @@
 
 .titleWrapper {
   display: flex;
-  flexflow: row;
+  flex-flow: row;
+  flex-grow: 2;
+}
+
+.wrapper {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
 }

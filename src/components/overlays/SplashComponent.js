@@ -55,22 +55,24 @@ const Splash = observer(props => {
         zIndex: 100
       }}
     >
-      <div className={styles.titleWrapper}>
-        <div className={styles.title}>
-          <h1>camogen </h1>
-          <small>v0.1.0</small>
+      <div className={styles.wrapper}>
+        <div className={styles.titleWrapper}>
+          <div className={styles.title}>
+            <h1>camogen </h1>
+            <small>v0.1.0</small>
+          </div>
+          <div className={styles.recent}>
+            <TextComponent>all kinds of stuff</TextComponent>
+          </div>
         </div>
-        <div className={styles.recent}>
-          <TextComponent>all kinds of stuff</TextComponent>
+
+        <div className={styles.credit}>
+          <p>created by austin slominski</p>
+
+          <a target="_blank" href="https://twitter.com/aceslowman">
+            @aceslowman
+          </a>
         </div>
-      </div>
-
-      <div className={styles.credit}>
-        <p>created by austin slominski</p>
-
-        <a target="_blank" href="https://twitter.com/aceslowman">
-          @aceslowman
-        </a>
       </div>
     </PanelComponent>
   );
