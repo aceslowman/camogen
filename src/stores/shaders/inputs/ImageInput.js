@@ -31,20 +31,14 @@ const webcam = types
                 vec2 uv = vTexCoord;
 
                 if (display_mode == 0) { // fit vertical
-                    float imgAspect = img_dimensions.x < img_dimensions.y ? 
-                      img_dimensions.x / img_dimensions.y : 
-                      img_dimensions.y / img_dimensions.x;
-                    
+                    float imgAspect = img_dimensions.y / img_dimensions.x;                    
                     float windowAspect = resolution.x / resolution.y;
                 
                     uv.x *= windowAspect * imgAspect;
                     uv.x -= (windowAspect * imgAspect) / 2.0;
                     uv.x += 0.5;
                 } else if(display_mode == 1) { // fit horizontal
-                    float imgAspect = img_dimensions.x > img_dimensions.y ? 
-                      img_dimensions.x / img_dimensions.y : 
-                      img_dimensions.y / img_dimensions.x;
-                    
+                    float imgAspect = img_dimensions.x / img_dimensions.y;                    
                     float windowAspect = resolution.y / resolution.x;
                 
                     uv.y *= windowAspect * imgAspect;
