@@ -20,14 +20,9 @@ const Splash = observer(props => {
   ]);
   const [dimensions, setDimensions] = useState([600, 200]);
 
-  // dimensions: [700, 500],
-  // position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250],
-
   const handlePosition = setPosition;
 
   const handleDimensions = setDimensions;
-
-  // console.log('CHECK',window.localStorage.getItem('showSplash'));
 
   return (
     <PanelComponent
@@ -60,14 +55,26 @@ const Splash = observer(props => {
         zIndex: 100
       }}
     >
-      <TextComponent>
-        <h1 style={{ fontSize: "5em", margin: "15px" }}>
-          camogen{" "}
-          <small>
-            <sub>v0.1.0</sub>
-          </small>
-        </h1>
-      </TextComponent>
+      <div className={styles.title}>
+        <TextComponent>
+          <h1 style={{ fontSize: "5em", margin: "15px" }}>
+            camogen{" "}
+            <small>
+              <sub>v0.1.0</sub>
+            </small>
+          </h1>
+        </TextComponent>
+      </div>  
+      <div className={styles.recent}>
+        <TextComponent>
+          <h1 style={{ fontSize: "5em", margin: "15px" }}>
+            camogen{" "}
+            <small>
+              <sub>v0.1.0</sub>
+            </small>
+          </h1>
+        </TextComponent>
+      </div>  
       <div className={styles.credit}>
         <p>created by austin slominski</p>
 
