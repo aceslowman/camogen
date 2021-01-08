@@ -27,7 +27,7 @@ const Splash = observer(props => {
 
   const handleDimensions = setDimensions;
 
-  console.log('CHECK',window.localStorage.getItem('showSplash'));
+  // console.log('CHECK',window.localStorage.getItem('showSplash'));
 
   return (
     <PanelComponent
@@ -42,9 +42,10 @@ const Splash = observer(props => {
         <InputBool
           hLabel
           label="show on startup"
-          value={window.localStorage.getItem('showSplash')}
+          checked={store.showSplash}
           onChange={(e) => {
             window.localStorage.setItem('showSplash', e)
+            store.setShowSplash(e)
           }}
         />
       }
