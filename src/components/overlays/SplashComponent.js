@@ -15,10 +15,10 @@ const Splash = observer(props => {
   const store = useContext(MainContext).store;
 
   const [position, setPosition] = useState([
-    window.innerWidth / 2 - 300,
-    window.innerHeight / 2 - 100
+    window.innerWidth / 2 - 400,
+    window.innerHeight / 2 - 200
   ]);
-  const [dimensions, setDimensions] = useState([600, 200]);
+  const [dimensions, setDimensions] = useState([800, 400]);
 
   const handlePosition = setPosition;
 
@@ -38,9 +38,9 @@ const Splash = observer(props => {
           hLabel
           label="show on startup"
           checked={store.showSplash}
-          onChange={(e) => {
-            window.localStorage.setItem('showSplash', e)
-            store.setShowSplash(e)
+          onChange={e => {
+            window.localStorage.setItem("showSplash", e);
+            store.setShowSplash(e);
           }}
         />
       }
@@ -55,26 +55,16 @@ const Splash = observer(props => {
         zIndex: 100
       }}
     >
-      <div className={styles.title}>
-        <TextComponent>
-          <h1 style={{ fontSize: "5em", margin: "15px" }}>
-            camogen{" "}
-            <small>
-              <sub>v0.1.0</sub>
-            </small>
-          </h1>
-        </TextComponent>
-      </div>  
-      <div className={styles.recent}>
-        <TextComponent>
-          <h1 style={{ fontSize: "5em", margin: "15px" }}>
-            camogen{" "}
-            <small>
-              <sub>v0.1.0</sub>
-            </small>
-          </h1>
-        </TextComponent>
-      </div>  
+      <div className={styles.titleWrapper}>
+        <div className={styles.title}>
+          <h1>camogen </h1>
+          <small>v0.1.0</small>
+        </div>
+        <div className={styles.recent}>
+          <TextComponent>all kinds of stuff</TextComponent>
+        </div>
+      </div>
+
       <div className={styles.credit}>
         <p>created by austin slominski</p>
 

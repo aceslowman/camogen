@@ -1,20 +1,39 @@
 .credit {
-    width: 100%;
-    font-size: 0.8em;
-    padding-left: 15px;
-/*     text-align: right; */
-    position: absolute;
-    bottom: 0px;
-    display: flex;
+  width: 100%;
+  font-size: 0.8em;
+  padding-left: 15px;
+  /*     text-align: right; */
+  position: absolute;
+  bottom: 0px;
+  display: flex;
   flex-flow: row;
   align-items: center;
-/*     right: 0px; */
+  /*     right: 0px; */
 }
 
 .credit p {
-/*   margin:0px; */
+  /*   margin:0px; */
 }
 
 .credit a {
+  padding-left: 15px;
+}
+
+.title {
+  width: 50%;
+  font-size: 2em;
   padding-left:15px;
+}
+
+.title h1 {
+  margin: 0px;
+}
+
+.recent {
+  width: 50%;
+}
+
+.titleWrapper {
+  display: flex;
+  flexflow: row;
 }
