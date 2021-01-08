@@ -60,7 +60,7 @@ const RootStore = types
     breakoutControlled: false,
     messages: Messages.create(),
     context: Context.create(),
-    showSplash: true
+    showSplash: null
   }))
   .views(self => ({
     get recentShaderLibrary() {
@@ -253,13 +253,14 @@ const RootStore = types
         );
       }
       
-      if (window.localStorage.getItem('showSplash')) {
-        self.showSplash = window.localStorage.getItem('showSplash');
+      if (window.localStorage.getItem('showSplash') !== null) {
+        self.showSplash = JSON.parse(window.localStorage.getItem('showSplash'));
       } else {
         window.localStorage.setItem('showSplash', true)
         self.showSplash = true;
       }
       
+      console.log(self.showSplash)
 
       // fetch default shaders
       fetchShaderFiles().then(d => {

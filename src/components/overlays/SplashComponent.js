@@ -27,7 +27,7 @@ const Splash = observer(props => {
 
   const handleDimensions = setDimensions;
 
-  console.log(theme);
+  console.log('CHECK',window.localStorage.getItem('showSplash'));
 
   return (
     <PanelComponent
@@ -44,7 +44,7 @@ const Splash = observer(props => {
           label="show on startup"
           value={window.localStorage.getItem('showSplash')}
           onChange={(e) => {
-            window.localStorage.setItem('showSplash', e.target.value)
+            window.localStorage.setItem('showSplash', e)
           }}
         />
       }
