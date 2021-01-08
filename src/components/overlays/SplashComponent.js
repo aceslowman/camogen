@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import {
   InputSelect,
+  InputBool,
   ThemeContext,
   PanelComponent,
   TextComponent
@@ -37,7 +38,16 @@ const Splash = observer(props => {
       className={styles.wrapper}
       floating={true}
       //title="about"
-      subtitle={}
+      subtitle={
+        <InputBool
+          hLabel
+          label="show on startup"
+          value={window.localStorage.getItem('showSplash')}
+          onChange={(e) => {
+            window.localStorage.setItem('showSplash', e.target.value)
+          }}
+        />
+      }
       showTitle={true}
       style={{
         backgroundColor: theme.primary_color,
@@ -60,10 +70,7 @@ const Splash = observer(props => {
       <div className={styles.credit}>
         <p>created by austin slominski</p>
 
-        <a 
-          target="_blank" 
-          href="https://twitter.com/aceslowman"
-        >
+        <a target="_blank" href="https://twitter.com/aceslowman">
           @aceslowman
         </a>
       </div>

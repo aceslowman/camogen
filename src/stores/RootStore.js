@@ -252,6 +252,14 @@ const RootStore = types
           JSON.parse(window.localStorage.getItem("theme"))
         );
       }
+      
+      if (window.localStorage.getItem('showSplash')) {
+        self.showSplash = window.localStorage.getItem('showSplash');
+      } else {
+        window.localStorage.setItem('showSplash', true)
+        self.showSplash = true;
+      }
+      
 
       // fetch default shaders
       fetchShaderFiles().then(d => {
