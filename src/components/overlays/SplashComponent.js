@@ -15,10 +15,10 @@ const Splash = observer(props => {
   const store = useContext(MainContext).store;
 
   const [position, setPosition] = useState([
-    window.innerWidth / 2 - 400,
-    window.innerHeight / 2 - 200
+    window.innerWidth / 2 - 312,
+    window.innerHeight / 2 - 212
   ]);
-  const [dimensions, setDimensions] = useState([800, 400]);
+  const [dimensions, setDimensions] = useState([625, 425]);
 
   const handlePosition = setPosition;
 
