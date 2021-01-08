@@ -37,6 +37,7 @@ const Splash = observer(props => {
       className={styles.wrapper}
       floating={true}
       //title="about"
+      subtitle={}
       showTitle={true}
       style={{
         backgroundColor: theme.primary_color,
