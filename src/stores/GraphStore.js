@@ -18,8 +18,8 @@ export const branch_colors = [
 
 const Clipboard = types
   .model("Clipboard", {
-    selection: types.array(GraphNode),
-    buffer: types.array(GraphNode),
+    selection: types.map(GraphNode),
+    buffer: types.map(GraphNode),
   })
   .actions(self => ({
     copy: () => {
@@ -31,14 +31,22 @@ const Clipboard = types
     paste: () => {
       
     },
-    addSelection: () => {
+    select: (n) => {
+      self.selection.put(n);
+      console.log('adding single node to clipboard', getSnapshot(self.selection))
+    },
+    addSelection: (n) => {
+      self.selection.put(n);
       console.log('adding node to clipboard', getSnapshot(self.selection))
     },
-    removeSelection: () => {
+    removeSelection: (n) => {
+      self.selection.delete(n);
       console.log('remove node from clipboard', getSnapshot(self.selection))
     },
-    clearSelection: () => {
-      console.log('clearing selection')
+    clear: () => {
+      console.log('clearing selection and buffer')      
+      self.selection.clear();
+      self.buffer.clear();
     }
   }))
 
@@ -99,6 +107,7 @@ const Graph = types
     setUndoManager(self);
 
     function clear() {
+      self.clipboard.clear();
       self.selectedNode = undefined;
       // TODO: currently not working when subgraphs are present!
       // TODO: what if I cleared the graph from the root up?
