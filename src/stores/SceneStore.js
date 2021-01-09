@@ -21,7 +21,7 @@ const Scene = types
           likely to be replaced with
           single loaded snapshot in RootScene
       */
-      self.shaderGraph.addNode();
+      self.shaderGraph.addNode().select();
       // self.shaderGraph.setSelectedByName('WebcamInput');
       // self.shaderGraph.setSelectedByName('TextInput');
       // self.shaderGraph.setSelectedByName("SketchInput");

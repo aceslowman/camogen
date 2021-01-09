@@ -102,7 +102,7 @@ const Graph = types
     },
     
     get selectedNode() {
-      console.trace('CHECK',self.clipboard.selection.keys()[0])
+      console.trace('CHECK',self.clipboard.selection.entries().next())
       return self.clipboard.selection[self.clipboard.selection.keys()[0]]
     }
   }))
@@ -110,7 +110,7 @@ const Graph = types
     setUndoManager(self);
     
     function afterAttach() {
-      self.clipboard.select(self.root);
+      // self.clipboard.select(self.root);
     }
 
     function clear() {
