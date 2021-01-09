@@ -173,11 +173,13 @@ const GraphNode = types
     }
 
     function select() {
+      // TODO: adding clipboard system
       parent_graph.setSelected(self);
       return self;
     }
 
     function deselect() {
+      // TODO: adding clipboard system
       parent_graph.setSelected(null);
       return self;
     }

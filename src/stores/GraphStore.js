@@ -147,10 +147,12 @@ const Graph = types
     }
 
     function setSelected(node) {
+      if(node) self.clipboard.select(node)
       self.selectedNode = node;
     }
 
     function removeSelected() {
+      self.clipboard.removeSelection(self.selectedNode)
       self.removeNode(self.selectedNode);
     }
 
