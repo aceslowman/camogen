@@ -32,19 +32,20 @@ const Clipboard = types
       
     },
     select: (n) => {
+      self.selection.clear();
       self.selection.put(n);
-      console.trace('adding single node to clipboard', getSnapshot(self.selection))
+      // console.log('selecting single node', getSnapshot(self.selection))
     },
     addSelection: (n) => {
       self.selection.put(n);
-      console.log('adding node to clipboard', getSnapshot(self.selection))
+      // console.log('adding node to clipboard', getSnapshot(self.selection))
     },
     removeSelection: (n) => {
       self.selection.delete(n);
-      console.log('remove node from clipboard', getSnapshot(self.selection))
+      // console.log('remove node from clipboard', getSnapshot(self.selection))
     },
     clear: () => {
-      console.log('clearing selection and buffer')      
+      // console.log('clearing selection and buffer')      
       self.selection.clear();
       self.buffer.clear();
     }
@@ -102,7 +103,6 @@ const Graph = types
     },
     
     get selectedNode() {
-      // console.trace('CHECK',self.clipboard.selection.entries().next().value[1]  )
       return self.clipboard.selection.entries().next().value[1]
     }
   }))
