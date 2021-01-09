@@ -36,7 +36,8 @@ const Clipboard = types
     },
     removeSelection: () => {
       
-    }
+    },
+    
   }))
 
 const Graph = types
