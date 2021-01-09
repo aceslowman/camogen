@@ -72,14 +72,14 @@ const ShaderGraph = observer(props => {
               props.selectedNode.children[0].parents[idx].select();
           }
         },
-        "Shift+ArrowUp": () => {
+        "$mod+Shift+ArrowUp": () => {
           if (props.selectedNode && props.selectedNode.parents.length)
             if (props.selectedNode.parents[0].parents.length)
               props.selectedNode.swapData(
                 props.selectedNode.parents[0].select()
               );
         },
-        "Shift+ArrowDown": () => {
+        "$mod+Shift+ArrowDown": () => {
           if (props.selectedNode && props.selectedNode.children.length)
             props.selectedNode.swapData(
               props.selectedNode.children[0].select()
