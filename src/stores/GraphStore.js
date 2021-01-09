@@ -102,8 +102,8 @@ const Graph = types
     },
     
     get selectedNode() {
-      console.trace('CHECK',self.clipboard.selection.entries().next()  )
-      return self.clipboard.selection[self.clipboard.selection.keys()[0]]
+      // console.trace('CHECK',self.clipboard.selection.entries().next().value[1]  )
+      return self.clipboard.selection.entries().next().value[1]
     }
   }))
   .actions(self => {
