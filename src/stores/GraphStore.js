@@ -54,14 +54,14 @@ const Graph = types
   .model("Graph", {
     uuid: types.identifier,
     nodes: types.map(GraphNode),
-    selectedNode: types.maybe(types.reference(GraphNode)),
+    // selectedNode: types.maybe(types.reference(GraphNode)),
     coord_bounds: types.optional(Coordinate, { x: 0, y: 0 }),
     history: types.optional(UndoManager, {}),    
     // TEMP disabled undo/redo, it's serializing and making save files massive
   })
   .volatile(() => ({
     queue: [],
-    clipboard: Clipboard 
+    clipboard: Clipboard.create() 
   }))
   .views(self => ({
     get root() {
@@ -101,6 +101,10 @@ const Graph = types
       }
 
       return count;
+    },
+    
+    get selectedNode() {
+      return self.clipboard.selection[self.clipboard.selection.keys()[0]]
     }
   }))
   .actions(self => {
@@ -108,7 +112,7 @@ const Graph = types
 
     function clear() {
       self.clipboard.clear();
-      self.selectedNode = undefined;
+      // self.selectedNode = undefined;
       // TODO: currently not working when subgraphs are present!
       // TODO: what if I cleared the graph from the root up?
       // re-initialize the nodes map
@@ -148,7 +152,7 @@ const Graph = types
 
     function setSelected(node) {
       if(node) self.clipboard.select(node)
-      self.selectedNode = node;
+      // self.selectedNode = node;
     }
 
     function removeSelected() {
@@ -202,7 +206,8 @@ const Graph = types
 
       // after deleting, select parent, unless there are none
       let child = node.children[0];
-      self.selectedNode = node.parents.length ? node.parents[0] : child;
+      // self.selectedNode = node.parents.length ? node.parents[0] : child;
+      self.clipboard.select(node.parents.length ? node.parents[0] : child);
 
       self.nodes.delete(node.uuid);
 
