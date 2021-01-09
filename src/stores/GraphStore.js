@@ -56,12 +56,12 @@ const Graph = types
     nodes: types.map(GraphNode),
     // selectedNode: types.maybe(types.reference(GraphNode)),
     coord_bounds: types.optional(Coordinate, { x: 0, y: 0 }),
-    history: types.optional(UndoManager, {}),    
+    history: types.optional(UndoManager, {}),   
+    clipboard: Clipboard 
     // TEMP disabled undo/redo, it's serializing and making save files massive
   })
   .volatile(() => ({
-    queue: [],
-    clipboard: Clipboard.create() 
+    queue: []    
   }))
   .views(self => ({
     get root() {
