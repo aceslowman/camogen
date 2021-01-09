@@ -54,11 +54,9 @@ const Graph = types
   .model("Graph", {
     uuid: types.identifier,
     nodes: types.map(GraphNode),
-    // selectedNode: types.maybe(types.reference(GraphNode)),
     coord_bounds: types.optional(Coordinate, { x: 0, y: 0 }),
     history: types.optional(UndoManager, {}),   
-    clipboard: Clipboard 
-    // TEMP disabled undo/redo, it's serializing and making save files massive
+    clipboard: types.optional(Clipboard, () => Clipboard.create())
   })
   .volatile(() => ({
     queue: []    
@@ -110,6 +108,10 @@ const Graph = types
   }))
   .actions(self => {
     setUndoManager(self);
+    
+    function afterAttach() {
+      self.clipboard.select(self.root);
+    }
 
     function clear() {
       self.clipboard.clear();
@@ -337,6 +339,7 @@ const Graph = types
     }
 
     return {
+      afterAttach,
       clear,
       // update,
       update: () => undoManager.withoutUndo(update),
