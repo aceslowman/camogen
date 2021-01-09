@@ -33,7 +33,7 @@ const Clipboard = types
     },
     select: (n) => {
       self.selection.put(n);
-      console.log('adding single node to clipboard', getSnapshot(self.selection))
+      console.trace('adding single node to clipboard', getSnapshot(self.selection))
     },
     addSelection: (n) => {
       self.selection.put(n);
@@ -104,7 +104,7 @@ const Graph = types
     },
     
     get selectedNode() {
-      console.info('CHECK',self.clipboard.selection.keys()[0])
+      console.trace('CHECK',self.clipboard.selection.keys()[0])
       return self.clipboard.selection[self.clipboard.selection.keys()[0]]
     }
   }))

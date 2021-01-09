@@ -93,7 +93,6 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
   }
 
   function setSelectedByName(name, collection = null) {
-    // if (!self.selectedNode) self.selectedNode = self.root;
     if (!self.selectedNode) self.clipboard.select(self.root);
     let shader = getShaderByName(name);
     if (collection) shader.setCollection(collection);
