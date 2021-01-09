@@ -18,7 +18,7 @@ export const branch_colors = [
 
 const Clipboard = types
   .model("Clipboard", {
-    selection: types.map(GraphNode),
+    selection: types.map(types.safeReference(GraphNode)),
     buffer: types.map(GraphNode),
   })
   .actions(self => ({
@@ -104,6 +104,7 @@ const Graph = types
     },
     
     get selectedNode() {
+      console.info('CHECK',self.clipboard.selection.keys()[0])
       return self.clipboard.selection[self.clipboard.selection.keys()[0]]
     }
   }))
@@ -112,7 +113,7 @@ const Graph = types
 
     function clear() {
       self.clipboard.clear();
-      // self.selectedNode = undefined;
+      
       // TODO: currently not working when subgraphs are present!
       // TODO: what if I cleared the graph from the root up?
       // re-initialize the nodes map
@@ -121,6 +122,7 @@ const Graph = types
       // create root node, select it
       self.addNode();
       self.root.select();
+      
       // recalculate
       self.update();
     }
@@ -148,16 +150,6 @@ const Graph = types
       let current_root = self.root;
       let new_node = self.addNode(node);
       current_root.setChild(new_node);
-    }
-
-    function setSelected(node) {
-      if(node) self.clipboard.select(node)
-      // self.selectedNode = node;
-    }
-
-    function removeSelected() {
-      self.clipboard.removeSelection(self.selectedNode)
-      self.removeNode(self.selectedNode);
     }
 
     function removeNode(node) {
@@ -206,7 +198,6 @@ const Graph = types
 
       // after deleting, select parent, unless there are none
       let child = node.children[0];
-      // self.selectedNode = node.parents.length ? node.parents[0] : child;
       self.clipboard.select(node.parents.length ? node.parents[0] : child);
 
       self.nodes.delete(node.uuid);
@@ -353,8 +344,6 @@ const Graph = types
       insertBelow,
       addNode,
       // addNode: (n) => undoManager.withoutUndo(() => addNode(n)),
-      setSelected,
-      removeSelected,
       removeNode,
       // traverseFrom,
       traverseFrom: (n, f, d) =>
@@ -379,7 +368,7 @@ const operatorGraph = types
     }
 
     function setSelectedByName(name) {
-      if (!self.selectedNode) self.selectedNode = self.root;
+      if (!self.selectedNode) self.clipboard.select(self.root);
       let op = getOperator(name);
       if (op) {
         self.selectedNode.setData(op);
