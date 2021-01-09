@@ -23,7 +23,7 @@ const Clipboard = types
   })
   .actions(self => ({
     copy: () => {
-      
+      console.log('copying selection to buffer')
     },
     cut: () => {
       
@@ -32,12 +32,14 @@ const Clipboard = types
       
     },
     addSelection: () => {
-      
+      console.log('adding node to clipboard', getSnapshot(self.selection))
     },
     removeSelection: () => {
-      
+      console.log('remove node from clipboard', getSnapshot(self.selection))
     },
-    
+    clearSelection: () => {
+      console.log('clearing selection')
+    }
   }))
 
 const Graph = types
@@ -46,12 +48,12 @@ const Graph = types
     nodes: types.map(GraphNode),
     selectedNode: types.maybe(types.reference(GraphNode)),
     coord_bounds: types.optional(Coordinate, { x: 0, y: 0 }),
-    history: types.optional(UndoManager, {}),
-    clipboard: Clipboard 
+    history: types.optional(UndoManager, {}),    
     // TEMP disabled undo/redo, it's serializing and making save files massive
   })
   .volatile(() => ({
-    queue: []
+    queue: [],
+    clipboard: Clipboard 
   }))
   .views(self => ({
     get root() {
