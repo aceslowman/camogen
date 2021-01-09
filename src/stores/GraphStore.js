@@ -16,6 +16,29 @@ export const branch_colors = [
   "#FF6000" // orange
 ];
 
+const Clipboard = types
+  .model("Clipboard", {
+    selection: types.array(GraphNode),
+    buffer: types.array(GraphNode),
+  })
+  .actions(self => ({
+    copy: () => {
+      
+    },
+    cut: () => {
+      
+    },
+    paste: () => {
+      
+    },
+    addSelection: () => {
+      
+    },
+    removeSelection: () => {
+      
+    }
+  }))
+
 const Graph = types
   .model("Graph", {
     uuid: types.identifier,
@@ -23,7 +46,7 @@ const Graph = types
     selectedNode: types.maybe(types.reference(GraphNode)),
     coord_bounds: types.optional(Coordinate, { x: 0, y: 0 }),
     history: types.optional(UndoManager, {}),
-    clipboard: types.array(GraphNode)
+    clipboard: Clipboard 
     // TEMP disabled undo/redo, it's serializing and making save files massive
   })
   .volatile(() => ({
