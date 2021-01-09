@@ -70,6 +70,11 @@ const webcam = types
       console.log("attached image input");
       root_store = getRoot(self);
     }
+    
+    function beforeDestroy() {      
+      // revoke previous url!p      
+      if(self.dataURL) URL.revokeObjectURL(self.dataURL);
+    }
 
     function init() {
       self.ref = self.target.ref.createShader(self.vertex, self.fragment);
@@ -160,6 +165,7 @@ const webcam = types
 
     return {
       afterAttach,
+      beforeDestroy,
       init,
       update,
       setDisplayMode,
