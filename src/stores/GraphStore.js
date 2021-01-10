@@ -38,11 +38,11 @@ const Clipboard = types
     },
     addSelection: (n) => {
       self.selection.put(n);
-      // console.log('adding node to clipboard', getSnapshot(self.selection))
+      console.log('adding node to clipboard', getSnapshot(self.selection))
     },
     removeSelection: (n) => {
       self.selection.delete(n);
-      // console.log('remove node from clipboard', getSnapshot(self.selection))
+      console.log('remove node from clipboard', getSnapshot(self.selection))
     },
     clear: () => {
       // console.log('clearing selection and buffer')      
