@@ -74,34 +74,38 @@ const ShaderGraph = observer(props => {
         },
         "Shift+ArrowUp": () => {
           
-          //special conditions 
-          
+          // special conditions           
           // if the next node already exists in selection, then it should be removed.
           
           if (props.selectedNode && props.selectedNode.parents.length) {
-            // props.selectedNode.parents[0].select();
+            console.log('CHECK', props.data.clipboard.selection)
             let next = props.selectedNode.parents[0];
-            
-            if(props.data.clipboard.selection.get(next)) {
+            console.log('uuid', next.uuid)
+            console.log('NEXT', props.data.clipboard.selection.get(next.uuid))            
+            if(props.data.clipboard.selection.get(next.uuid)) {
+              console.log('removing')
               props.data.clipboard.removeSelection(next)
             } else {
+              console.log('adding')
               props.data.clipboard.addSelection(next) 
             }            
           }
         },
         "Shift+ArrowDown": () => {
           
-          //special conditions 
-          
+          // special conditions           
           // if the next node already exists in selection, then it should be removed.
           
           if (props.selectedNode && props.selectedNode.children.length) {
-            // props.selectedNode.children[0].select();
+            console.log('CHECK', props.data.clipboard.selection)
             let next = props.selectedNode.children[0];
-                                                  
-            if(props.data.clipboard.selection.get(next)) {
+            console.log('uuid', next.uuid)
+            console.log('NEXT', props.data.clipboard.selection.get(next.uuid))                                                  
+            if(props.data.clipboard.selection.get(next.uuid)) {
+              console.log('removing')
               props.data.clipboard.removeSelection(next)
             } else {
+              console.log('adding')
               props.data.clipboard.addSelection(next) 
             }            
           }
