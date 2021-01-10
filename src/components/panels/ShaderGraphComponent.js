@@ -73,15 +73,37 @@ const ShaderGraph = observer(props => {
           }
         },
         "Shift+ArrowUp": () => {
+          
+          //special conditions 
+          
+          // if the next node already exists in selection, then it should be removed.
+          
           if (props.selectedNode && props.selectedNode.parents.length) {
             // props.selectedNode.parents[0].select();
-            props.data.clipboard.addSelection(props.selectedNode.parents[0])
+            let next = props.selectedNode.parents[0];
+            
+            if(props.data.clipboard.selection.get(next)) {
+              props.data.clipboard.removeSelection(next)
+            } else {
+              props.data.clipboard.addSelection(next) 
+            }            
           }
         },
         "Shift+ArrowDown": () => {
+          
+          //special conditions 
+          
+          // if the next node already exists in selection, then it should be removed.
+          
           if (props.selectedNode && props.selectedNode.children.length) {
             // props.selectedNode.children[0].select();
-            props.data.clipboard.addSelection(props.selectedNode.children[0])
+            let next = props.selectedNode.children[0];
+                                                  
+            if(props.data.clipboard.selection.get(next)) {
+              props.data.clipboard.removeSelection(next)
+            } else {
+              props.data.clipboard.addSelection(next) 
+            }            
           }
         },
         "Shift+ArrowLeft": () => {
