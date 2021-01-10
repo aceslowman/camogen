@@ -38,6 +38,10 @@
 }
 
 .selected label {
+  border-style: dotted;
+}
+
+.activeSelected label {
   border-style: dashed;
 }
 

@@ -205,7 +205,7 @@ const GraphComponent = observer(props => {
         <div
           key={"label_" + node.uuid}
           className={`${styles.label} ${
-            props.data.selectedNode === node ? styles.selected : ""
+            props.data.selectedNode === node ? styles.activeSelected : ""
           }`}
           onClick={() => node.select()}
           onContextMenu={e => handleContextMenu(e, node)}
