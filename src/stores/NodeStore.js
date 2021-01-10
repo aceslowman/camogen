@@ -62,13 +62,14 @@ const GraphNode = types
     } 
     
     function isSelected() {
-      
+      console.log(parent_graph.clipboard.selection.get(self.uuid))
+      return parent_graph.clipboard.selection.get(self.uuid);
     }
     
     return {
       afterAttach,
       isActiveSelection,
-      selected
+      isSelected
     }
   })
   .actions(self => {

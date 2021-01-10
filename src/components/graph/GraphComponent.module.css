@@ -39,6 +39,7 @@
 
 .selected label {
   border-style: dotted;
+  color: orange;
 }
 
 .activeSelected label {
