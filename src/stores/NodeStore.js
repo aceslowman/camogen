@@ -57,12 +57,17 @@ const GraphNode = types
       parent_graph = getParent(self, 2);
     }
     
-    function selected() {
-      return parent_graph.selectedNode === self
+    function isActiveSelection() {
+      return parent_graph.selectedNode === self;
     } 
+    
+    function isSelected() {
+      
+    }
     
     return {
       afterAttach,
+      isActiveSelection,
       selected
     }
   })
