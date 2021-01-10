@@ -43,7 +43,7 @@ const Clipboard = types
     },
     removeSelection: (n) => {
       console.log('removing', n)
-      self.selection.delete(n);
+      self.selection.delete(n.uuid);
       console.log('removed node from clipboard', getSnapshot(self.selection))
     },
     clear: () => {
@@ -108,7 +108,7 @@ const Graph = types
       // left to right insertion
       // return self.clipboard.selection.entries().next().value[1]
       // right to left insertion
-      return self.clipboard.selection.entries().reverse().next().value[1]
+      return Array.from(self.clipboard.selection.entries()).reverse()[0][1];
     }
   }))
   .actions(self => {
