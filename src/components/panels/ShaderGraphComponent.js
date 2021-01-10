@@ -81,7 +81,7 @@ const ShaderGraph = observer(props => {
             console.log('CHECK', props.data.clipboard.selection)
             let next = props.selectedNode.parents[0];
             console.log('uuid', next.uuid)
-            console.log('NEXT', props.data.clipboard.selection.get(next.uuid))            
+            console.log('NEXT', getSnapshot(props.data.clipboard.selection))            
             if(props.data.clipboard.selection.get(next.uuid)) {
               console.log('removing')
               props.data.clipboard.removeSelection(next)
@@ -100,7 +100,7 @@ const ShaderGraph = observer(props => {
             console.log('CHECK', props.data.clipboard.selection)
             let next = props.selectedNode.children[0];
             console.log('uuid', next.uuid)
-            console.log('NEXT', props.data.clipboard.selection.get(next.uuid))                                                  
+            console.log('NEXT', getSnapshot(props.data.clipboard.selection))                                                  
             if(props.data.clipboard.selection.get(next.uuid)) {
               console.log('removing')
               props.data.clipboard.removeSelection(next)
