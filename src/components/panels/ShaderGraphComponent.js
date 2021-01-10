@@ -94,6 +94,7 @@ const ShaderGraph = observer(props => {
           
           if (props.selectedNode && props.selectedNode.children.length) {
             let next = props.selectedNode.children[0];
+            console.log('next node', next.name)
 
             if(props.data.clipboard.selection.get(next.uuid)) {
               props.data.clipboard.removeSelection(next)
