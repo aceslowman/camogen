@@ -48,35 +48,24 @@ const GraphNode = types
   })
   .volatile(self => ({
     branch_index: 0,
-    trunk_distance: 0
+    trunk_distance: 0,
+    parent_graph: null
   }))
-  .views(self => {
-    let parent_graph;
-
-    function afterAttach() {
-      parent_graph = getParent(self, 2);
-    }
+  .views(self => ({    
+    get isActiveSelection() {
+      console.log('isActiveSelection')
+      return self.parent_graph.selectedNode === self;
+    },
     
-    function isActiveSelection() {
-      return parent_graph.selectedNode === self;
-    } 
-    
-    function isSelected() {
-      console.log(parent_graph.clipboard.selection.get(self.uuid))
-      return parent_graph.clipboard.selection.get(self.uuid);
+    get isSelected() {
+      console.log('isSelected')
+      return self.parent_graph.clipboard.selection.get(self.uuid);
     }
-    
-    return {
-      afterAttach,
-      isActiveSelection,
-      isSelected
-    }
-  })
+  }))
   .actions(self => {
-    let parent_graph;
 
     function afterAttach() {
-      parent_graph = getParent(self, 2);
+      self.parent_graph = getParent(self, 2);
     }
     
     const setBypass = (b) => self.bypass = b;
@@ -88,8 +77,8 @@ const GraphNode = types
       self.name = data.name;
 
       // extract uniforms, map inputs/outputs
-      parent_graph.update();
-      parent_graph.afterUpdate();
+      self.parent_graph.update();
+      self.parent_graph.afterUpdate();
       self.mapInputsToParents();
     }
 
@@ -100,7 +89,7 @@ const GraphNode = types
       if (!self.data.inputs.length) {
         // remove all upstream parents
         self.parents.forEach((parent, i) => {
-          parent_graph.removeNode(parent);
+          self.parent_graph.removeNode(parent);
         });
         self.parents = [];
       }
@@ -114,11 +103,11 @@ const GraphNode = types
             name: e
           });
 
-          parent_graph.addNode(parent);
+          self.parent_graph.addNode(parent);
           self.setParent(parent, i, true);
         }
 
-        parent_graph.update();
+        self.parent_graph.update();
       });
 
       // add new node if no children are present
@@ -128,7 +117,7 @@ const GraphNode = types
           name: "next"
         });
 
-        parent_graph.addNode(child);
+        self.parent_graph.addNode(child);
         return self.setChild(child).uuid;
       }
     }
@@ -167,8 +156,8 @@ const GraphNode = types
       target.setData(selfcopy);
       self.setData(targetcopy);
 
-      parent_graph.update();
-      parent_graph.afterUpdate();
+      self.parent_graph.update();
+      self.parent_graph.afterUpdate();
 
       self.data.init();
       target.data.init();
@@ -179,12 +168,12 @@ const GraphNode = types
     }
 
     function select() {
-      parent_graph.clipboard.select(self);
+      self.parent_graph.clipboard.select(self);
       return self;
     }
 
     function deselect() {
-      parent_graph.clipboard.removeSelection(self);
+      self.parent_graph.clipboard.removeSelection(self);
       return self;
     }
 

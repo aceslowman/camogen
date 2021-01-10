@@ -107,6 +107,7 @@ const Graph = types
     get selectedNode() {
       // left to right insertion
       // return self.clipboard.selection.entries().next().value[1]
+      
       // right to left insertion
       return Array.from(self.clipboard.selection.entries()).reverse()[0][1];
     }
