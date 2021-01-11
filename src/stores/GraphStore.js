@@ -1,6 +1,6 @@
 import GraphNode from "./NodeStore";
 import { nanoid } from "nanoid";
-import { types, getSnapshot } from "mobx-state-tree";
+import { types, getSnapshot, clone } from "mobx-state-tree";
 import { UndoManager } from "mst-middlewares";
 import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
@@ -22,9 +22,12 @@ const Clipboard = types
     buffer: types.array(GraphNode),
   })
   .actions(self => ({
-    copy: () => {
-      console.log('copying selection to buffer',self.selection);
-      self.buffer.put(self.selection)
+    copy: () => {      
+      self.buffer = [];
+      self.selection.forEach((e,i) => {
+        self.buffer.push(clone(e))
+      });
+      console.log('copied selection to buffer',self.buffer);
     },
     cut: () => {
       console.log('cutting selection and copying to buffer');
@@ -34,22 +37,17 @@ const Clipboard = types
     },
     select: (n) => {
       self.selection = [];
-      self.selection.push(n.uuid);
-      // console.log('selecting single node', getSnapshot(self.selection))
+      self.selection.push(n.uuid);      
     },
     addSelection: (n) => {
-      console.log('added', n.name)
       self.selection.push(n.uuid);
       console.log('adding node to clipboard', getSnapshot(self.selection))
     },
     removeSelection: (n) => {
-      console.log('removing', n.name)
-      // self.selection.delete(n.uuid);
       self.selection = self.selection.filter(e => e !== n);
       console.log('removed node from clipboard', getSnapshot(self.selection))
     },
-    clear: () => {
-      // console.log('clearing selection and buffer')      
+    clear: () => {     
       self.selection.clear();
       self.buffer.clear();
     }

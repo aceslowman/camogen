@@ -160,7 +160,7 @@ const GraphComponent = observer(props => {
       }
 
       if (node.isActiveSelection) {
-        label_border_style = "dashed";
+        label_border_style = "solid";
         label_text_color = theme.primary_color;
         label_background_color = theme.accent_color;
       } else if (node.isSelected) {
@@ -173,6 +173,7 @@ const GraphComponent = observer(props => {
         node === props.data.clipboard.selection[0] &&
         props.data.clipboard.selection.length > 1
       ) {
+        label_border_style = "dashed";
         label_border_color = theme.accent_color;
       }
 
