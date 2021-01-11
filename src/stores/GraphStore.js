@@ -29,6 +29,11 @@ const Clipboard = types
         // snap.uuid = nanoid();
         console.log('hit',snap)
         
+        snap.data.uniforms = snap.data.uniforms.map((e,i) => ({
+          ...e,
+          uuid: nanoid()
+        }))
+        
         self.buffer.push(GraphNode.create({
           ...snap,
           uuid: nanoid()
