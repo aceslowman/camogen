@@ -174,16 +174,15 @@ const ShaderGraph = observer(props => {
         },
         // copy
         "$mod+c": () => {
-          console.log('copy')
           clipboard.copy();
         },
         // cut
         "$mod+x": () => {
-          console.log('cut')
+          clipboard.cut();
         },
         // paste
         "$mod+v": () => {
-          console.log('paste')
+          clipboard.paste();
         },
       });
     } else {

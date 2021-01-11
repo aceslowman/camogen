@@ -23,13 +23,14 @@ const Clipboard = types
   })
   .actions(self => ({
     copy: () => {
-      console.log('copying selection to buffer')
+      console.log('copying selection to buffer',self.selection);
+      self.buffer.put(self.selection)
     },
     cut: () => {
-      
+      console.log('cutting selection and copying to buffer');
     },
     paste: () => {
-      
+      console.log('pasting buffer to selection');
     },
     select: (n) => {
       self.selection.clear();
