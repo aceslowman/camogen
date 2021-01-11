@@ -1,6 +1,6 @@
 import GraphNode from "./NodeStore";
 import { nanoid } from "nanoid";
-import { types, getSnapshot, clone } from "mobx-state-tree";
+import { types, getSnapshot, clone, detach } from "mobx-state-tree";
 import { UndoManager } from "mst-middlewares";
 import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
@@ -25,7 +25,17 @@ const Clipboard = types
     copy: () => {      
       self.buffer = [];
       self.selection.forEach((e,i) => {
-        self.buffer.push(clone(e))
+        let snap = getSnapshot(e);
+        // snap.uuid = nanoid();
+        // self.buffer.push(GraphNode.create({
+        //   ...snap,
+        //   uniforms: {
+        //     ...snap.uniforms,
+        //     uuid: nanoid()
+        //   },
+        //   uuid: nanoid()
+        // }))
+        // self.buffer.push(detach(e))
       });
       console.log('copied selection to buffer',self.buffer);
     },
