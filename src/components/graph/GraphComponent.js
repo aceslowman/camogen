@@ -199,15 +199,15 @@ const GraphComponent = observer(props => {
           </div>
         );
       }
-
+      
       // node labels
       _labels.push(
         <div
           key={"label_" + node.uuid}
           className={`
-            ${styles.label} 
+            ${styles.label}
             ${node.isSelected ? styles.selected : ""}
-            ${node.isActiveSelection ? styles.activeSelected : ""}            
+            ${node.isActiveSelection ? styles.activeSelected : ""}     
           `}
           onClick={() => node.select()}
           onContextMenu={e => handleContextMenu(e, node)}
