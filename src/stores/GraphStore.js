@@ -18,8 +18,8 @@ export const branch_colors = [
 
 const Clipboard = types
   .model("Clipboard", {
-    selection: types.map(types.safeReference(GraphNode)),
-    buffer: types.map(GraphNode),
+    selection: types.array(types.safeReference(GraphNode)),
+    buffer: types.array(GraphNode),
   })
   .actions(self => ({
     copy: () => {
@@ -33,13 +33,13 @@ const Clipboard = types
       console.log('pasting buffer to selection');
     },
     select: (n) => {
-      self.selection.clear();
-      self.selection.put(n);
+      self.selection = [];
+      self.selection.push(n);
       // console.log('selecting single node', getSnapshot(self.selection))
     },
     addSelection: (n) => {
       console.log('added', n.name)
-      self.selection.put(n);
+      self.selection.push(n);
       console.log('adding node to clipboard', getSnapshot(self.selection))
     },
     removeSelection: (n) => {
