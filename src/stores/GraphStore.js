@@ -29,6 +29,7 @@ const Clipboard = types
         // snap.uuid = nanoid();
         console.log('hit',snap)
         
+        // can not write over readonly property uniforms
         snap.data.uniforms = snap.data.uniforms.map((e,i) => ({
           ...e,
           uuid: nanoid()
