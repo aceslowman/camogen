@@ -81,6 +81,8 @@ const ShaderGraph = observer(props => {
             let next = props.selectedNode.parents[0];
             
             if(props.data.clipboard.selection.get(next.uuid)) {
+              // not correct to delete NEXT, should actually remove the last node before it?
+              // the last node should be removed
               props.data.clipboard.removeSelection(next)
             } else {
               props.data.clipboard.addSelection(next) 
@@ -96,6 +98,8 @@ const ShaderGraph = observer(props => {
             let next = props.selectedNode.children[0];
 
             if(props.data.clipboard.selection.get(next.uuid)) {
+              // not correct to delete NEXT, should actually remove the last node before it?
+              // the last node should be removed
               props.data.clipboard.removeSelection(next)
             } else {
               props.data.clipboard.addSelection(next) 
