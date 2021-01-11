@@ -7,6 +7,7 @@ import { getSnapshot } from "mobx-state-tree";
 
 const ShaderGraph = observer(props => {
   const store = useContext(MainContext).store;
+  const { clipboard } = props.data;
   const [useKeys, setUseKeys] = useState(false);
   const mainRef = useRef();
 
@@ -17,6 +18,7 @@ const ShaderGraph = observer(props => {
   useEffect(() => {
     if (useKeys) {
       store.context.setKeymap({
+        // redo
         "$mod+KeyZ": () => {
           if (props.data.history.canUndo) {
             console.log("UNDO", getSnapshot(props.data.history));
@@ -26,7 +28,8 @@ const ShaderGraph = observer(props => {
           } else {
             console.log("all out of undo");
           }
-        },
+        },        
+        // undo
         "$mod+Shift+KeyZ": () => {
           if (props.data.history.canRedo) {
             console.log("REDO", getSnapshot(props.data.history));
@@ -37,18 +40,21 @@ const ShaderGraph = observer(props => {
             console.log("all out of redo");
           }
         },
-        b: () => {
-          // bypass currently selected node
+        // bypass
+        b: () => {          
           props.selectedNode.toggleBypass();
         },
+        // select up
         ArrowUp: () => {
           if (props.selectedNode && props.selectedNode.parents.length)
             props.selectedNode.parents[0].select();
         },
+        // select down
         ArrowDown: () => {
           if (props.selectedNode && props.selectedNode.children.length)
             props.selectedNode.children[0].select();
         },
+        // select left
         ArrowLeft: () => {
           if (props.selectedNode && props.selectedNode.children.length) {
             let idx = props.selectedNode.children[0].parents.indexOf(
@@ -61,6 +67,7 @@ const ShaderGraph = observer(props => {
             }
           }
         },
+        // select right        
         ArrowRight: () => {
           if (props.selectedNode && props.selectedNode.children.length) {
             let idx = props.selectedNode.children[0].parents.indexOf(
@@ -72,63 +79,56 @@ const ShaderGraph = observer(props => {
               props.selectedNode.children[0].parents[idx].select();
           }
         },
-        "Shift+ArrowUp": () => {
-          
-          // special conditions           
-          // if the next node already exists in selection, then it should be removed.
-          
+        // add selection up 
+        "Shift+ArrowUp": () => { 
           if (props.selectedNode && props.selectedNode.parents.length) {
             let next = props.selectedNode.parents[0];
             
-            if(props.data.clipboard.selection.get(next.uuid)) {
-              // not correct to delete NEXT, should actually remove the last node before it?
-              // the last node should be removed
-              props.data.clipboard.removeSelection(props.selectedNode)
+            if(clipboard.selection.get(next.uuid)) {
+              clipboard.removeSelection(props.selectedNode)
             } else {
-              props.data.clipboard.addSelection(next) 
+              clipboard.addSelection(next) 
             }            
           }
         },
-        "Shift+ArrowDown": () => {
-          
-          // special conditions           
-          // if the next node already exists in selection, then it should be removed.
-          
+        // add selection down 
+        "Shift+ArrowDown": () => { 
           if (props.selectedNode && props.selectedNode.children.length) {
             let next = props.selectedNode.children[0];
 
-            if(props.data.clipboard.selection.get(next.uuid)) {
-              // not correct to delete NEXT, should actually remove the last node before it?
-              // the last node should be removed
-              props.data.clipboard.removeSelection(next)
+            if(clipboard.selection.get(next.uuid)) {
+              clipboard.removeSelection(props.selectedNode)
             } else {
-              props.data.clipboard.addSelection(next) 
+              clipboard.addSelection(next) 
             }            
           }
         },
+        // add selection left
         "Shift+ArrowLeft": () => {
-          if (props.selectedNode && props.selectedNode.children.length) {
-            let idx = props.selectedNode.children[0].parents.indexOf(
-              props.selectedNode
-            );
-            idx--;
+//           if (props.selectedNode && props.selectedNode.children.length) {
+//             let idx = props.selectedNode.children[0].parents.indexOf(
+//               props.selectedNode
+//             );
+//             idx--;
 
-            if (idx >= 0) {
-              props.selectedNode.children[0].parents[idx].select();
-            }
-          }
+//             if (idx >= 0) {
+//               props.selectedNode.children[0].parents[idx].select();
+//             }
+//           }
         },
+        // add selection right
         "Shift+ArrowRight": () => {
-          if (props.selectedNode && props.selectedNode.children.length) {
-            let idx = props.selectedNode.children[0].parents.indexOf(
-              props.selectedNode
-            );
-            idx++;
+//           if (props.selectedNode && props.selectedNode.children.length) {
+//             let idx = props.selectedNode.children[0].parents.indexOf(
+//               props.selectedNode
+//             );
+//             idx++;
 
-            if (idx <= props.selectedNode.children[0].parents.length - 1)
-              props.selectedNode.children[0].parents[idx].select();
-          }
+//             if (idx <= props.selectedNode.children[0].parents.length - 1)
+//               props.selectedNode.children[0].parents[idx].select();
+//           }
         },
+        // swap up
         "$mod+Shift+ArrowUp": () => {
           if (props.selectedNode && props.selectedNode.parents.length)
             if (props.selectedNode.parents[0].parents.length)
@@ -136,12 +136,14 @@ const ShaderGraph = observer(props => {
                 props.selectedNode.parents[0].select()
               );
         },
+        // swap down
         "$mod+Shift+ArrowDown": () => {
           if (props.selectedNode && props.selectedNode.children.length)
             props.selectedNode.swapData(
               props.selectedNode.children[0].select()
             );
         },
+        // swap left
         "$mod+Shift+ArrowLeft": () => {
           //           console.log("Shift+ArrowLeft");
           //           if (props.selectedNode && props.selectedNode.children.length) {
@@ -154,6 +156,7 @@ const ShaderGraph = observer(props => {
           //             }
           //           }
         },
+        // swap right
         "$mod+Shift+ArrowRight": () => {
           //           console.log("Shift+ArrowRight");
           //           if (props.selectedNode && props.selectedNode.children.length) {
@@ -165,9 +168,23 @@ const ShaderGraph = observer(props => {
           //               elect();
           //           }
         },
+        // delete
         Delete: () => {
           props.data.removeSelected();
-        }
+        },
+        // copy
+        "$mod+c": () => {
+          console.log('copy')
+          clipboard.copy();
+        },
+        // cut
+        "$mod+x": () => {
+          console.log('cut')
+        },
+        // paste
+        "$mod+v": () => {
+          console.log('paste')
+        },
       });
     } else {
       store.context.removeKeymap();
