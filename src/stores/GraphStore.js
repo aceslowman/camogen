@@ -45,7 +45,7 @@ const Clipboard = types
     removeSelection: (n) => {
       console.log('removing', n.name)
       // self.selection.delete(n.uuid);
-      self.selection = self.selection.filter(e => e !== n.uuid);
+      self.selection = self.selection.filter(e => e !== n);
       console.log('removed node from clipboard', getSnapshot(self.selection))
     },
     clear: () => {

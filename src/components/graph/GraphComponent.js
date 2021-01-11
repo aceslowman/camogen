@@ -49,7 +49,6 @@ const GraphComponent = observer(props => {
   };
 
   const drawGraph = () => {
-    console.log('REDRAWING')
     const ctx = canvas_ref.current.getContext("2d");
     const wrapper_bounds = wrapper_ref.current.getBoundingClientRect();
     let _labels = [];
@@ -159,17 +158,24 @@ const GraphComponent = observer(props => {
         label_background_color = theme.primary_color;
         label_border_style = "dashed";
       }
-      
+
       if (node.isActiveSelection) {
-        label_border_style = "dashed";        
+        label_border_style = "dashed";
         label_text_color = theme.primary_color;
         label_background_color = theme.accent_color;
       } else if (node.isSelected) {
-        label_border_style = "dotted";      
+        label_border_style = "dotted";
         label_text_color = theme.accent_color;
-        label_background_color = theme.secondary_color;  
+        label_background_color = theme.secondary_color;
       }
-      
+
+      if (
+        node === props.data.clipboard.selection[0] &&
+        props.data.clipboard.selection.length > 1
+      ) {
+        label_border_color = theme.accent_color;
+      }
+
       // insert labels BELOW node
       // if node has children...
       if (node.children.length) {
@@ -187,8 +193,8 @@ const GraphComponent = observer(props => {
               style={{
                 backgroundColor: theme.primary_color,
                 borderColor: theme.text_color,
-                color: theme.text_color                
-              }}              
+                color: theme.text_color
+              }}
               onContextMenu={e => {
                 // insert new node then open context menu
                 props.data.insertBelow(node).select();
@@ -205,7 +211,7 @@ const GraphComponent = observer(props => {
           </div>
         );
       }
-      
+
       // node labels
       _labels.push(
         <div
@@ -227,7 +233,7 @@ const GraphComponent = observer(props => {
               borderColor: label_border_color,
               borderStyle: label_border_style,
               color: label_text_color,
-              textDecoration: node.bypass ? 'line-through' : 'none'
+              textDecoration: node.bypass ? "line-through" : "none"
             }}
           >
             {node.name}

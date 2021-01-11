@@ -57,7 +57,6 @@ const App = observer(props => {
   const getPanel = panel => {
     switch (panel.component_type) {
       case "SHADER_GRAPH":
-        console.log('HITTING GRAPH')
         return (
           <ShaderGraphComponent
             key={panel.id}

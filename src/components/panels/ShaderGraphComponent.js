@@ -83,10 +83,8 @@ const ShaderGraph = observer(props => {
         "Shift+ArrowUp": () => { 
           if (props.selectedNode && props.selectedNode.parents.length) {
             let next = props.selectedNode.parents[0];
-            console.log(next)
-            console.log('clipboard.selection', getSnapshot(clipboard.selection))
             
-            if(clipboard.selection.includes(next.uuid)) {
+            if(clipboard.selection.includes(next)) {
               clipboard.removeSelection(props.selectedNode);
             } else {
               clipboard.addSelection(next);
@@ -98,7 +96,7 @@ const ShaderGraph = observer(props => {
           if (props.selectedNode && props.selectedNode.children.length) {
             let next = props.selectedNode.children[0];
 
-            if(clipboard.selection.includes(next.uuid)) {
+            if(clipboard.selection.includes(next)) {
               clipboard.removeSelection(props.selectedNode);
             } else {
               clipboard.addSelection(next);
