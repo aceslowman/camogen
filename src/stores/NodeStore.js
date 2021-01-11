@@ -53,13 +53,11 @@ const GraphNode = types
   }))
   .views(self => ({    
     get isActiveSelection() {
-      console.log('isActiveSelection')
       return self.parent_graph.selectedNode === self;
     },
     
     get isSelected() {
-      console.log('isSelected')
-      return self.parent_graph.clipboard.selection.get(self.uuid);
+      return self.parent_graph.clipboard.selection.get(self.uuid) ? true : false;
     }
   }))
   .actions(self => {

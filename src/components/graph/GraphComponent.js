@@ -49,6 +49,7 @@ const GraphComponent = observer(props => {
   };
 
   const drawGraph = () => {
+    console.log('REDRAWING')
     const ctx = canvas_ref.current.getContext("2d");
     const wrapper_bounds = wrapper_ref.current.getBoundingClientRect();
     let _labels = [];
@@ -200,13 +201,16 @@ const GraphComponent = observer(props => {
         );
       }
       
+      console.log('node.isSelected',node.isSelected)
+      console.log('node.isActiveSelection',node.isActiveSelection)
+      
       // node labels
       _labels.push(
         <div
           key={"label_" + node.uuid}
           className={`
             ${styles.label}
-            ${node.isSelected ? styles.selected : ""}
+            ${node.console.log(console.log()) ? styles.selected : ""}
             ${node.isActiveSelection ? styles.activeSelected : ""}     
           `}
           onClick={() => node.select()}
@@ -235,7 +239,7 @@ const GraphComponent = observer(props => {
     setLabels(_labels);
   };
 
-  useResizeObserver(drawGraph, wrapper_ref);
+  // useResizeObserver(drawGraph, wrapper_ref);
 
   useLayoutEffect(() => {
     drawGraph();
@@ -256,4 +260,3 @@ const GraphComponent = observer(props => {
 });
 
 export default GraphComponent;
-0;
