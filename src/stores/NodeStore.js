@@ -57,7 +57,7 @@ const GraphNode = types
     },
     
     get isSelected() {
-      return self.parent_graph.clipboard.selection.get(self.uuid) ? true : false;
+      return self.parent_graph.clipboard.selection.includes(self.uuid) ? true : false;
     }
   }))
   .actions(self => {

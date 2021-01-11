@@ -34,17 +34,18 @@ const Clipboard = types
     },
     select: (n) => {
       self.selection = [];
-      self.selection.push(n);
+      self.selection.push(n.uuid);
       // console.log('selecting single node', getSnapshot(self.selection))
     },
     addSelection: (n) => {
       console.log('added', n.name)
-      self.selection.push(n);
+      self.selection.push(n.uuid);
       console.log('adding node to clipboard', getSnapshot(self.selection))
     },
     removeSelection: (n) => {
       console.log('removing', n.name)
-      self.selection.delete(n.uuid);
+      // self.selection.delete(n.uuid);
+      self.selection = self.selection.filter(e => e !== n.uuid);
       console.log('removed node from clipboard', getSnapshot(self.selection))
     },
     clear: () => {
@@ -110,7 +111,8 @@ const Graph = types
       // return self.clipboard.selection.entries().next().value[1]
       
       // right to left insertion
-      return Array.from(self.clipboard.selection.entries()).reverse()[0][1];
+      // return Array.from(self.clipboard.selection.entries()).reverse()[0][1];
+      return self.clipboard.selection[self.clipboard.selection.length-1];
     }
   }))
   .actions(self => {
