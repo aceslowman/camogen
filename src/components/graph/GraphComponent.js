@@ -160,9 +160,14 @@ const GraphComponent = observer(props => {
         label_border_style = "dashed";
       }
       
-      if (props.data.selectedNode === node) {
+      if (node.isActiveSelection) {
+        label_border_style = "dashed";        
         label_text_color = theme.primary_color;
-        label_background_color = theme.accent_color;        
+        label_background_color = theme.accent_color;
+      } else if (node.isSelected) {
+        label_border_style = "dotted";      
+        label_text_color = theme.accent_color;
+        label_background_color = theme.secondary_color;  
       }
       
       // insert labels BELOW node
@@ -201,17 +206,12 @@ const GraphComponent = observer(props => {
         );
       }
       
-      console.log('node.isSelected',node.isSelected)
-      console.log('node.isActiveSelection',node.isActiveSelection)
-      
       // node labels
       _labels.push(
         <div
           key={"label_" + node.uuid}
           className={`
             ${styles.label}
-            ${node.console.log(console.log()) ? styles.selected : ""}
-            ${node.isActiveSelection ? styles.activeSelected : ""}     
           `}
           onClick={() => node.select()}
           onContextMenu={e => handleContextMenu(e, node)}

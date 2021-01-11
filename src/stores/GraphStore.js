@@ -37,12 +37,12 @@ const Clipboard = types
       // console.log('selecting single node', getSnapshot(self.selection))
     },
     addSelection: (n) => {
-      console.log('added', n)
+      console.log('added', n.name)
       self.selection.put(n);
       console.log('adding node to clipboard', getSnapshot(self.selection))
     },
     removeSelection: (n) => {
-      console.log('removing', n)
+      console.log('removing', n.name)
       self.selection.delete(n.uuid);
       console.log('removed node from clipboard', getSnapshot(self.selection))
     },

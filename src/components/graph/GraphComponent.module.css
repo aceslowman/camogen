@@ -37,15 +37,6 @@
   cursor: pointer;
 }
 
-.selected label {
-  border-style: dotted;
-  color: orange;
-}
-
-.activeSelected label {
-  border-style: dashed;
-}
-
 .insert div:hover {
   background-color: white !important;
   mix-blend-mode: exclusion !important;
