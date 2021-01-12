@@ -64,7 +64,7 @@ export const PanelVariants = {
     canFloat: true,
     canRemove: true,
     canFullscreen: false,
-    dimensions: [200, 350],
+    dimensions: [300, 450],
     position: [30, 30]
   },
   DEBUG: {
