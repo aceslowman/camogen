@@ -56,13 +56,23 @@ const Clipboard = types
       console.log(
         `pasting buffer (${self.buffer[0].name}) to selection (${self.selection[0].name})`
       );
+      
+      // before pasting
+      
+      // if the node in the buffer has no parent,
+      // then the node in selection 
 
       applySnapshot(self.selection[0], {
         ...getSnapshot(self.buffer[0]),
         uuid: self.selection[0].uuid,
         children: self.selection[0].children,
         parents: self.selection[0].parents
-      });      
+      });     
+      
+      
+      // INIT ALMOST WORKS, but it refreshes default values...
+      // self.selection[0].data.init();
+      self.selection[0].data.refresh();
     },
     select: n => {
       self.selection = [];

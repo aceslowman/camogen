@@ -139,6 +139,10 @@ let shader = types
       self.ready = false; // initializing?
       self.hasChanged = false;
     }
+    
+    function refresh() {
+      self.ref = self.target.ref.createShader(self.vertex, self.fragment);
+    }
 
     function init() {
       // create shader for given target
@@ -431,6 +435,7 @@ let shader = types
     const setTarget = t => self.target = t;
 
     return {
+      refresh,
       afterCreate,
       // afterCreate: () => undoManager.withoutUndo(()=>afterCreate()),
       afterAttach,
