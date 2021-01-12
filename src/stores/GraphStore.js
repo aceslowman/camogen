@@ -23,6 +23,10 @@ const Clipboard = types
   })
   .actions(self => ({
     copy: () => {      
+      /* 
+        how will copying work?
+      */
+      
       self.buffer = [];
       self.selection.forEach((e,i) => {
         let snap = {...getSnapshot(e)};
