@@ -1,6 +1,12 @@
 import GraphNode from "./NodeStore";
 import { nanoid } from "nanoid";
-import { types, getSnapshot, clone, detach } from "mobx-state-tree";
+import {
+  types,
+  applySnapshot,
+  getSnapshot,
+  clone,
+  detach
+} from "mobx-state-tree";
 import { UndoManager } from "mst-middlewares";
 import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
@@ -19,69 +25,77 @@ export const branch_colors = [
 const Clipboard = types
   .model("Clipboard", {
     selection: types.array(types.safeReference(GraphNode)),
-    buffer: types.array(GraphNode),
+    buffer: types.array(GraphNode)
   })
   .actions(self => ({
-    copy: () => {      
-      /* 
-        how will copying work?
-      */
-      
+    copy: () => {
       self.buffer = [];
-      self.selection.forEach((e,i) => {
-        let snap = {...getSnapshot(e)};
-        // snap.uuid = nanoid();
-        console.log('hit',snap)
-        
-        self.buffer.push(GraphNode.create({
-          ...snap,
-          data: {
-            ...snap.data,
-            uniforms: snap.data.uniforms.map((e,i) => ({
-              ...e,
-              uuid: nanoid()
-            }))
-          },
-          uuid: nanoid()
-        }))
-        // self.buffer.push(detach(e))
+      self.selection.forEach((e, i) => {
+        let snap = { ...getSnapshot(e) };
+
+        self.buffer.push(
+          GraphNode.create({
+            ...snap,
+            data: {
+              ...snap.data,
+              uniforms: snap.data.uniforms.map((e, i) => ({
+                ...e,
+                uuid: nanoid()
+              }))
+            },
+            uuid: nanoid()
+          })
+        );
       });
-      console.log('copied selection to buffer',getSnapshot(self.buffer));
+      console.log("copied selection to buffer", getSnapshot(self.buffer));
     },
     cut: () => {
-      console.log('cutting selection and copying to buffer');
+      console.log("cutting selection and copying to buffer");
     },
     paste: () => {
-      console.log('pasting buffer to selection');
+      console.log(
+        `pasting buffer (${self.buffer[0].name}) to selection (${self.selection[0].name})`
+      );
+      
+      self.selection[0] = {
+        ...self.selection[0],
+        data: {
+          ...self.selection[0].data
+        }
+      }
+      // applySnapshot(self.selection[0], {
+      //   ...self.buffer[0],
+      //   uuid: self.selection[0].uuid
+      // });
     },
-    select: (n) => {
+    select: n => {
       self.selection = [];
-      self.selection.push(n.uuid);      
-    },
-    addSelection: (n) => {
       self.selection.push(n.uuid);
-      console.log('adding node to clipboard', getSnapshot(self.selection))
     },
-    removeSelection: (n) => {
+    addSelection: n => {
+      self.selection.push(n.uuid);
+      console.log("adding node to clipboard", getSnapshot(self.selection));
+    },
+    removeSelection: n => {
       self.selection = self.selection.filter(e => e !== n);
-      console.log('removed node from clipboard', getSnapshot(self.selection))
+      console.log("removed node from clipboard", getSnapshot(self.selection));
     },
-    clear: () => {     
+    clear: () => {
       self.selection.clear();
       self.buffer.clear();
     }
-  }))
+  }));
 
 const Graph = types
   .model("Graph", {
     uuid: types.identifier,
     nodes: types.map(GraphNode),
     coord_bounds: types.optional(Coordinate, { x: 0, y: 0 }),
-    history: types.optional(UndoManager, {}),   
+    history: types.optional(UndoManager, {}),
     clipboard: types.optional(Clipboard, () => Clipboard.create())
   })
   .volatile(() => ({
-    queue: []    
+    queue: []
   }))
   .views(self => ({
     get root() {
@@ -122,26 +136,26 @@ const Graph = types
 
       return count;
     },
-    
+
     get selectedNode() {
       // left to right insertion
       // return self.clipboard.selection.entries().next().value[1]
-      
+
       // right to left insertion
       // return Array.from(self.clipboard.selection.entries()).reverse()[0][1];
-      return self.clipboard.selection[self.clipboard.selection.length-1];
+      return self.clipboard.selection[self.clipboard.selection.length - 1];
     }
   }))
   .actions(self => {
     setUndoManager(self);
-    
+
     function afterAttach() {
       // self.clipboard.select(self.root);
     }
 
     function clear() {
       self.clipboard.clear();
-      
+
       // TODO: currently not working when subgraphs are present!
       // TODO: what if I cleared the graph from the root up?
       // re-initialize the nodes map
@@ -150,7 +164,7 @@ const Graph = types
       // create root node, select it
       self.addNode();
       self.root.select();
-      
+
       // recalculate
       self.update();
     }
@@ -436,7 +450,7 @@ export const OperatorGraph = types
   .named("OperatorGraph");
 export default Graph;
 
-export let undoManager = {}
-export const setUndoManager = (targetStore) => {
-    undoManager = UndoManager.create({}, { targetStore, maxHistoryLength: 10 })
-}
+export let undoManager = {};
+export const setUndoManager = targetStore => {
+  undoManager = UndoManager.create({}, { targetStore, maxHistoryLength: 10 });
+};
