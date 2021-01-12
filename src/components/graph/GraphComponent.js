@@ -246,7 +246,8 @@ const GraphComponent = observer(props => {
     setLabels(_labels);
   };
 
-  // useResizeObserver(drawGraph, wrapper_ref);
+  // TO DO this causes way too many redraws!
+  useResizeObserver(drawGraph, wrapper_ref);
 
   useLayoutEffect(() => {
     drawGraph();
