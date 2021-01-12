@@ -179,6 +179,8 @@ let shader = types
         4: "{"name":"off","default":[0.0,0.0]}"
 
         TODO: have to remove parents when they are no longer needed
+        TODO: you should be able to write options both inline and as 
+              a larger single object
       */
       
       // TODO: change to u_resolution, u_time, etc

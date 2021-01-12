@@ -13,7 +13,7 @@ export const PanelVariants = {
     canRemove: true,
     canFullscreen: false,
     dimensions: [100, 300],
-    position: [10, 10]
+    position: [30, 30]
   },
   SHADER_EDITOR: {
     id: "SHADER_EDITOR",
@@ -26,7 +26,7 @@ export const PanelVariants = {
     canRemove: true,
     canFullscreen: false,
     dimensions: [100, 300],
-    position: [10, 10]
+    position: [30, 30]
   },
   SHADER_CONTROLS: {
     id: "SHADER_CONTROLS",
@@ -39,7 +39,7 @@ export const PanelVariants = {
     canRemove: true,
     canFullscreen: false,
     dimensions: [100, 300],
-    position: [10, 10]
+    position: [30, 30]
   },
   PARAMETER_EDITOR: {
     id: "PARAMETER_EDITOR",
@@ -52,7 +52,7 @@ export const PanelVariants = {
     canRemove: true,
     canFullscreen: false,
     dimensions: [100, 300],
-    position: [10, 10]
+    position: [30, 30]
   },
   HELP: {
     id: "HELP",
@@ -64,8 +64,8 @@ export const PanelVariants = {
     canFloat: true,
     canRemove: true,
     canFullscreen: false,
-    dimensions: [100, 300],
-    position: [10, 10]
+    dimensions: [200, 350],
+    position: [30, 30]
   },
   DEBUG: {
     id: "DEBUG",
@@ -78,7 +78,7 @@ export const PanelVariants = {
     canRemove: true,
     canFullscreen: false,
     dimensions: [100, 300],
-    position: [10, 10]
+    position: [30, 30]
   },
   MESSAGES: {
     id: "MESSAGES",
@@ -91,7 +91,7 @@ export const PanelVariants = {
     canRemove: true,
     canFullscreen: false,
     dimensions: [100, 300],
-    position: [10, 10]
+    position: [30, 30]
   },
   PREFERENCES: {
     id: "PREFERENCES",
@@ -104,7 +104,7 @@ export const PanelVariants = {
     canRemove: true,
     canFullscreen: false,
     dimensions: [100, 300],
-    position: [10, 10]
+    position: [30, 30]
   },
   CAPTURE: {
     id: "CAPTURE",
@@ -117,7 +117,7 @@ export const PanelVariants = {
     canRemove: true,
     canFullscreen: false,
     dimensions: [100, 300],
-    position: [10, 10]
+    position: [30, 30]
   }
 };
 
