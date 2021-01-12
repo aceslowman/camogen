@@ -384,6 +384,10 @@ const Graph = types
 
       return self.coord_bounds;
     }
+    
+    function removeSelected() {
+      self.removeNode(self.selectedNode);
+    }
 
     return {
       afterAttach,
@@ -399,7 +403,8 @@ const Graph = types
       traverseFrom: (n, f, d) =>
         undoManager.withoutUndo(() => traverseFrom(n, f, d)),
       calculateBranches,
-      calculateCoordinateBounds
+      calculateCoordinateBounds,
+      removeSelected
       // calculateBranches: () => undoManager.withoutUndo(calculateBranches),
       // calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
     };
