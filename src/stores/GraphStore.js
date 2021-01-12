@@ -56,17 +56,13 @@ const Clipboard = types
       console.log(
         `pasting buffer (${self.buffer[0].name}) to selection (${self.selection[0].name})`
       );
+
+      let sel = {
+        ...self.buffer[0],
+        uuid: self.selection[0].uuid
+      };
       
-      self.selection[0] = {
-        ...self.selection[0],
-        data: {
-          ...self.selection[0].data
-        }
-      }
-      // applySnapshot(self.selection[0], {
-      //   ...self.buffer[0],
-      //   uuid: self.selection[0].uuid
-      // });
+      applySnapshot(self.selection[0],sel);
     },
     select: n => {
       self.selection = [];

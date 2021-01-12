@@ -183,6 +183,8 @@ const ShaderGraph = observer(props => {
         // paste
         "$mod+v": () => {
           clipboard.paste();
+          props.data.update();
+          props.data.afterUpdate();
         },
       });
     } else {
