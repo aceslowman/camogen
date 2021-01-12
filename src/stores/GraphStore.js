@@ -32,7 +32,7 @@ const Clipboard = types
       self.buffer = [];
       self.selection.forEach((e, i) => {
         let snap = { ...getSnapshot(e) };
-
+        // clone
         self.buffer.push(
           GraphNode.create({
             ...snap,
@@ -57,12 +57,10 @@ const Clipboard = types
         `pasting buffer (${self.buffer[0].name}) to selection (${self.selection[0].name})`
       );
 
-      let sel = {
+      applySnapshot(self.selection[0], {
         ...self.buffer[0],
         uuid: self.selection[0].uuid
-      };
-      
-      applySnapshot(self.selection[0],sel);
+      });
     },
     select: n => {
       self.selection = [];
