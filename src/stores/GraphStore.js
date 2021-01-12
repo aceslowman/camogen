@@ -60,7 +60,8 @@ const Clipboard = types
       // before pasting
       
       // if the node in the buffer has no parent,
-      // then the node in selection 
+      // then the node in selection should have no parent
+      // else, 
 
       applySnapshot(self.selection[0], {
         ...getSnapshot(self.buffer[0]),
