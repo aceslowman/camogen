@@ -10,9 +10,9 @@ const Scene = types
     operatorGraphs: types.map(OperatorGraph),
     targets: types.array(Target)
   })
-  .actions(self => {
+  .actions(self => ({
     
-    function afterAttach() {
+    afterAttach: () => {
       self.shaderGraph = ShaderGraph.create({ uuid: nanoid() });
 
       /*
@@ -35,27 +35,27 @@ const Scene = types
       
       self.shaderGraph.update();
       self.shaderGraph.history.clear();
-    }
+    },
 
-    function addTarget(target = Target.create()) {
+    addTarget: (target = Target.create()) => {
       self.targets.push(target);
       return target;
-    }
+    },
 
-    function addOperatorGraph(param) {
+    addOperatorGraph: (param) => {
       return self.operatorGraphs.put(
         OperatorGraph.create({
           uuid: "opgraph_" + nanoid(),
           param: param
         })
       );
-    }
+    },
 
-    function removeTarget(target) {
+    removeTarget: (target) => {
       self.targets = self.targets.filter(item => item !== target);
-    }
+    },
 
-    function clear() {
+    clear: () => {
       self.shaderGraph.clear();
 
       self.targets = [];
@@ -79,14 +79,6 @@ const Scene = types
       //     console.warn('camogen is still having issues with clearing scenes!',error)
       // }
     }
-
-    return {
-      afterAttach,
-      addTarget,
-      addOperatorGraph,
-      removeTarget,
-      clear
-    };
-  });
+  }));
 
 export default Scene;
