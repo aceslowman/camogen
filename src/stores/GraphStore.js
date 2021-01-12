@@ -33,19 +33,20 @@ const Clipboard = types
         // snap.uuid = nanoid();
         console.log('hit',snap)
         
-        // can not write over readonly property uniforms
-        snap.data.uniforms = snap.data.uniforms.map((e,i) => ({
-          ...e,
-          uuid: nanoid()
-        }))
-        
         self.buffer.push(GraphNode.create({
           ...snap,
+          data: {
+            ...snap.data,
+            uniforms: snap.data.uniforms.map((e,i) => ({
+              ...e,
+              uuid: nanoid()
+            }))
+          },
           uuid: nanoid()
         }))
         // self.buffer.push(detach(e))
       });
-      console.log('copied selection to buffer',self.buffer);
+      console.log('copied selection to buffer',getSnapshot(self.buffer));
     },
     cut: () => {
       console.log('cutting selection and copying to buffer');
