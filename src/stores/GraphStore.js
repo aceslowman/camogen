@@ -58,9 +58,11 @@ const Clipboard = types
       );
 
       applySnapshot(self.selection[0], {
-        ...self.buffer[0],
-        uuid: self.selection[0].uuid
-      });
+        ...getSnapshot(self.buffer[0]),
+        uuid: self.selection[0].uuid,
+        children: self.selection[0].children,
+        parents: self.selection[0].parents
+      });      
     },
     select: n => {
       self.selection = [];

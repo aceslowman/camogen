@@ -5,7 +5,7 @@ import { Uniform } from "./ShaderStore";
 const Parameter = types
   .model("Parameter", {
     uuid: types.identifier,
-    uniform: types.maybe(types.reference(types.late(() => Uniform))),
+    // uniform: types.maybe(types.reference(types.late(() => Uniform))),
     name: types.maybe(types.string),
     value: types.optional(
       types.union(types.number, types.string, types.boolean),
