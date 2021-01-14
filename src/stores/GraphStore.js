@@ -98,11 +98,12 @@ const Graph = types
     uuid: types.identifier,
     nodes: types.map(GraphNode),
     coord_bounds: types.optional(Coordinate, { x: 0, y: 0 }),
-    history: types.optional(UndoManager, {}),
+    // history: types.optional(UndoManager, {}),
     clipboard: types.optional(Clipboard, () => Clipboard.create())
   })
   .volatile(() => ({
-    queue: []
+    queue: [],
+    history: undoManager
   }))
   .views(self => ({
     get root() {

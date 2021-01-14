@@ -132,7 +132,7 @@ let shader = types
 
     function afterAttach() {
       parent_node = getParent(self);
-      console.log('attaching '+self.name)      
+      // console.log('attaching '+self.name)      
     }
 
     function afterCreate() {

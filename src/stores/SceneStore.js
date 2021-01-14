@@ -34,7 +34,7 @@ const Scene = types
       // self.shaderGraph.root.select();
       
       self.shaderGraph.update();
-      self.shaderGraph.history.clear();
+      // self.shaderGraph.history.clear();
     },
 
     addTarget: (target = Target.create()) => {
