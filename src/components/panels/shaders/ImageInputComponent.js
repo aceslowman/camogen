@@ -46,6 +46,7 @@ const ImageInputComponent = observer(props => {
     <React.Fragment>
       <canvas ref={canvas_ref} className={styles.canvas} />
       <ControlGroupComponent name="Image File">
+        
         <input type="file" onChange={handleFileSubmit} />
       </ControlGroupComponent>
       <ControlGroupComponent name="Display Mode">
