@@ -90,9 +90,10 @@ const webcam = types
       }
 
       let p = root_store.p5_instance;
-
-      self.img = p.loadImage("images/muybridge.jpg");
-      self.setImageURL("images/muybridge.jpg");
+      
+      // "images/muybridge.jpg" also works
+      self.img = p.loadImage("images/checkerboard1024.png");
+      self.setImageURL("images/checkerboard1024.png");
       // prevents init() from being called twice
       self.ready = true;
 
