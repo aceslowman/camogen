@@ -1,5 +1,5 @@
 import Shader from "./ShaderStore";
-import {undoManager} from "./GraphStore";
+import { undoManager } from "./GraphStore";
 import { types, getParent, getSnapshot } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
@@ -51,26 +51,25 @@ const GraphNode = types
     trunk_distance: 0,
     parent_graph: null
   }))
-  .views(self => ({    
+  .views(self => ({
     get isActiveSelection() {
       return self.parent_graph.selectedNode === self;
     },
-    
+
     get isSelected() {
-      return self.parent_graph.clipboard.selection.includes(self) ? true : false;
+      return self.parent_graph.clipboard.selection.includes(self)
+        ? true
+        : false;
     }
   }))
-  .actions(self => {
+  .actions(self => ({
+    afterAttach: () => (self.parent_graph = getParent(self, 2)),
 
-    function afterAttach() {
-      self.parent_graph = getParent(self, 2);
-    }
-    
-    const setBypass = (b) => self.bypass = b;
+    setBypass: b => (self.bypass = b),
 
-    const toggleBypass = () => self.bypass = !self.bypass;
-    
-    function setData(data) {
+    toggleBypass: () => (self.bypass = !self.bypass),
+
+    setData(data) {
       self.data = data;
       self.name = data.name;
 
@@ -78,9 +77,9 @@ const GraphNode = types
       self.parent_graph.update();
       self.parent_graph.afterUpdate();
       self.mapInputsToParents();
-    }
+    },
 
-    function mapInputsToParents() {
+    mapInputsToParents: () => {
       if (!self.data) return;
 
       // if there are no inputs to map...
@@ -118,9 +117,9 @@ const GraphNode = types
         self.parent_graph.addNode(child);
         return self.setChild(child).uuid;
       }
-    }
+    },
 
-    function setParent(node, index = 0, fix = false) {
+    setParent: (node, index = 0, fix = false) => {
       if (index < self.parents.length) {
         self.parents[index] = node.uuid;
       } else {
@@ -132,9 +131,9 @@ const GraphNode = types
       }
 
       return node;
-    }
+    },
 
-    function setChild(node, index = 0, fix = false) {
+    setChild: (node, index = 0, fix = false) => {
       self.children[index] = node.uuid;
 
       if (!node.parents.includes(self)) {
@@ -142,9 +141,9 @@ const GraphNode = types
       }
 
       return node;
-    }
+    },
 
-    function swapData(target) {
+    swapData: target => {
       /*
         this makes it possible to move a node up or down the tree
       */
@@ -163,50 +162,22 @@ const GraphNode = types
       // extract uniforms, map inputs/outputs
       self.mapInputsToParents();
       target.mapInputsToParents();
-    }
+    },
 
-    function select() {
+    select: () => {
       self.parent_graph.clipboard.select(self);
       return self;
-    }
+    },
 
-    function deselect() {
+    deselect: () => {
       self.parent_graph.clipboard.removeSelection(self);
       return self;
-    }
+    },
 
-    const setChildren = children => (self.children = children);
-    const setParents = parents => (self.parents = parents);
-    const setBranchIndex = idx => (self.branch_index = idx);
-    const setName = name => (self.name = name);
-
-    return {
-      afterAttach: () => undoManager.withoutUndo(()=>afterAttach()),
-      setData,
-      // setData: (d) => undoManager.withoutUndo(()=>setData(d)),
-      swapData,
-      // swapData: (t) => undoManager.withoutUndo(()=>swapData(t)),
-      // mapInputsToParents,
-      mapInputsToParents: () => undoManager.withoutUndo(()=>mapInputsToParents()),      
-      setBypass,
-      toggleBypass,
-      setParent,      
-      // setParent: (n,i,f) => undoManager.withoutUndo(()=>setParent(n,i,f)),
-      setChild,
-      // setChild: (n,i,f) => undoManager.withoutUndo(()=>setChild(n,i,f)),
-      setParents,
-      // setParents: (p) => undoManager.withoutUndo(()=>setParents(p)),
-      setChildren,
-      // setChildren: (c) => undoManager.withoutUndo(()=>setChildren(c)),
-      setBranchIndex,
-      // setBranchIndex: (i) => undoManager.withoutUndo(()=>setBranchIndex(i)),
-      setName,
-      // setName: (n) => undoManager.withoutUndo(()=>setName(n)),
-      select,
-      // select: () => undoManager.withoutUndo(()=>select()),
-      deselect,
-      // deselect: () => undoManager.withoutUndo(()=>deselect())
-    };
-  });
+    setChildren: children => (self.children = children),
+    setParents: parents => (self.parents = parents),
+    setBranchIndex: idx => (self.branch_index = idx),
+    setName: name => (self.name = name)
+  }));
 
 export default GraphNode;

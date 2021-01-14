@@ -416,13 +416,13 @@ const operatorGraph = types
   .model("OperatorGraph", {
     param: types.reference(Parameter)
   })
-  .actions(self => {
-    function afterAttach() {
+  .actions(self => ({
+    afterAttach: () => {
       self.addNode();
       self.update();
-    }
+    },
 
-    function setSelectedByName(name) {
+    setSelectedByName: (name) => {
       if (!self.selectedNode) self.clipboard.select(self.root);
       let op = getOperator(name);
       if (op) {
@@ -431,9 +431,9 @@ const operatorGraph = types
       } else {
         console.error("operator was not found!");
       }
-    }
+    },
 
-    function afterUpdate() {
+    afterUpdate: () => {
       // this allows the parameter to remain unchanged
       // when the graph is empty.
       if (self.nodes.size <= 1) return;
@@ -445,14 +445,7 @@ const operatorGraph = types
         self.param.setValue(result);
       }
     }
-
-    return {
-      afterAttach,
-      afterUpdate,
-      getOperator,
-      setSelectedByName
-    };
-  });
+  }));
 
 export const OperatorGraph = types
   .compose(

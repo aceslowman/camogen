@@ -1,52 +1,40 @@
 import { types, getRoot, getParent } from "mobx-state-tree";
-import GraphNode from './NodeStore';
-import {undoManager} from "./GraphStore";
+import GraphNode from "./NodeStore";
+import { undoManager } from "./GraphStore";
 
 const Target = types
-    .model("Target", {
-        render_queue: types.array(types.safeReference(types.late(()=>GraphNode)))     
-    })
-    .volatile(() => ({
-        ref: null
-    }))
-    .actions(self => ({
-        afterAttach: () => {
-            root_store = getRoot(self);
-            parent_scene = getParent(self,2);
-            
-            let p = root_store.p5_instance;
+  .model("Target", {
+    render_queue: types.array(types.safeReference(types.late(() => GraphNode)))
+  })
+  .volatile(() => ({
+    ref: null
+  }))
+  .actions(self => ({
+    afterAttach: () => {
+      let root_store = getRoot(self);
+      let parent_scene = getParent(self, 2);
 
-            self.ref = p.createGraphics(
-                p.width,
-                p.height,
-                p.WEBGL
-            );
-        },
+      let p = root_store.p5_instance;
 
-        clear: () => {
-            self.render_queue = [];
-        },
+      self.ref = p.createGraphics(p.width, p.height, p.WEBGL);
+    },
 
-        setRenderQueue: (queue) => {
-            self.render_queue = queue;
-        }
+    clear: () => {
+      self.render_queue = [];
+    },
 
-        removeShaderNode(shader) => {
-            self.render_queue = self.render_queue.filter((item) => item.uuid !== shader.uuid);
+    setRenderQueue: queue => {
+      self.render_queue = queue;
+    },
 
-            if (self.render_queue.length === 0) parent_scene.removeTarget(self);
-        }
+    removeShaderNode: shader => {
+      let parent_scene = getParent(self, 2);
+      self.render_queue = self.render_queue.filter(
+        item => item.uuid !== shader.uuid
+      );
 
-        // return {
-        //     // afterAttach,
-        //     afterAttach: () => undoManager.withoutUndo(()=>afterAttach()),
-        //     // clear,
-        //     clear: () => undoManager.withoutUndo(()=>clear()),
-        //     setRenderQueue,
-        //     // setRenderQueue: (q) => undoManager.withoutUndo(()=>setRenderQueue(q)),
-        //     removeShaderNode,
-        //     // removeShaderNode: (n) => undoManager.withoutUndo(()=>removeShaderNode(n)),
-        // };
-    })
+      if (self.render_queue.length === 0) parent_scene.removeTarget(self);
+    }
+  }));
 
 export default Target;
