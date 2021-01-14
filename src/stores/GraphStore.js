@@ -12,6 +12,7 @@ import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
 import Parameter from "./ParameterStore";
 import Shader from "./ShaderStore";
+import Clipboard from "./utils/Clipboard";
 
 export const branch_colors = [
   "#0000FF", // blue
@@ -21,77 +22,6 @@ export const branch_colors = [
   "#9900FF", // purple
   "#FF6000" // orange
 ];
-
-const Clipboard = types
-  .model("Clipboard", {
-    selection: types.array(types.safeReference(GraphNode)),
-    buffer: types.array(GraphNode)
-  })
-  .actions(self => ({
-    copy: () => {
-      self.buffer = [];
-      self.selection.forEach((e, i) => {
-        let snap = { ...getSnapshot(e) };
-        // clone
-        self.buffer.push(
-          GraphNode.create({
-            ...snap,
-            data: {
-              ...snap.data,
-              uniforms: snap.data.uniforms.map((e, i) => ({
-                ...e,
-                uuid: nanoid()
-              }))
-            },
-            uuid: nanoid()
-          })
-        );
-      });
-      console.log("copied selection to buffer", getSnapshot(self.buffer));
-    },
-    cut: () => {
-      console.log("cutting selection and copying to buffer");
-    },
-    paste: () => {
-      console.log(
-        `pasting buffer (${self.buffer[0].name}) to selection (${self.selection[0].name})`
-      );
-      
-      // before pasting
-      
-      // if the node in the buffer has no parent,
-      // then the node in selection should have no parent
-      // else, 
-
-      applySnapshot(self.selection[0], {
-        ...getSnapshot(self.buffer[0]),
-        uuid: self.selection[0].uuid,
-        children: self.selection[0].children,
-        parents: self.selection[0].parents
-      });     
-      
-      
-      // INIT ALMOST WORKS, but it refreshes default values...
-      // self.selection[0].data.init();
-      self.selection[0].data.refresh();
-    },
-    select: n => {
-      self.selection = [];
-      self.selection.push(n.uuid);
-    },
-    addSelection: n => {
-      self.selection.push(n.uuid);
-      console.log("adding node to clipboard", getSnapshot(self.selection));
-    },
-    removeSelection: n => {
-      self.selection = self.selection.filter(e => e !== n);
-      console.log("removed node from clipboard", getSnapshot(self.selection));
-    },
-    clear: () => {
-      self.selection.clear();
-      self.buffer.clear();
-    }
-  }));
 
 const Graph = types
   .model("Graph", {
@@ -157,257 +87,239 @@ const Graph = types
   .actions(self => {
     setUndoManager(self);
 
-    function afterAttach() {
-      // self.clipboard.select(self.root);
-    }
+    return {
+      afterAttach: () => {
+        // self.clipboard.select(self.root);
+      },
 
-    function clear() {
-      self.clipboard.clear();
+      clear: () => {
+        self.clipboard.clear();
 
-      // TODO: currently not working when subgraphs are present!
-      // TODO: what if I cleared the graph from the root up?
-      // re-initialize the nodes map
-      self.nodes.clear();
+        // TODO: currently not working when subgraphs are present!
+        // TODO: what if I cleared the graph from the root up?
+        // re-initialize the nodes map
+        self.nodes.clear();
 
-      // create root node, select it
-      self.addNode();
-      self.root.select();
+        // create root node, select it
+        self.addNode();
+        self.root.select();
 
-      // recalculate
-      self.update();
-    }
+        // recalculate
+        self.update();
+      },
 
-    function update() {
-      /* 
+      update: () => {
+        /* 
         self method will calculate the branches of the
         graph structure and then call afterUpdate()
       */
-      let render_queues = calculateBranches();
+        let render_queues = self.calculateBranches();
 
-      // calculate info for visualization
-      self.calculateCoordinateBounds();
+        // calculate info for visualization
+        self.calculateCoordinateBounds();
 
-      self.queue = render_queues;
-    }
+        self.queue = render_queues;
+      },
 
-    function addNode(node = GraphNode.create({ uuid: "add_" + nanoid() })) {
-      return self.nodes.put(node);
-    }
+      addNode: (node = GraphNode.create({ uuid: "add_" + nanoid() })) => {
+        return self.nodes.put(node);
+      },
 
-    function appendNode(
-      node = GraphNode.create({ uuid: "append_" + nanoid() })
-    ) {
-      let current_root = self.root;
-      let new_node = self.addNode(node);
-      current_root.setChild(new_node);
-    }
+      appendNode: (node = GraphNode.create({ uuid: "append_" + nanoid() })) => {
+        let current_root = self.root;
+        let new_node = self.addNode(node);
+        current_root.setChild(new_node);
+      },
 
-    function removeNode(node) {
-      // can't remove root (root is always empty!)
-      if (node === self.root) return;
-      // can't remove empty nodes!
-      // if (!node.data) return;
+      removeNode: node => {
+        // can't remove root (root is always empty!)
+        if (node === self.root) return;
+        // can't remove empty nodes!
+        // if (!node.data) return;
 
-      /*
+        /*
           does the node have parents?
       */
-      if (node.parents.length) {
-        /* 
+        if (node.parents.length) {
+          /* 
           is the child an MIN (multi-input node)?
         */
 
-        if (
-          node.children[0].parents.length > 1 &&
-          node.children[0].parents.indexOf(node) > 0
-        ) {
-          // delete all uptree nodes
-          node.parents.forEach((parent, i) => {
-            traverseFrom(parent, null, true)
-              .map(e => e.uuid)
-              .reverse()
-              .forEach(e => self.nodes.delete(e));
-          });
+          if (
+            node.children[0].parents.length > 1 &&
+            node.children[0].parents.indexOf(node) > 0
+          ) {
+            // delete all uptree nodes
+            node.parents.forEach((parent, i) => {
+              self
+                .traverseFrom(parent, null, true)
+                .map(e => e.uuid)
+                .reverse()
+                .forEach(e => self.nodes.delete(e));
+            });
+          } else {
+            // otherwise, collapse and map first child to first parent
+            node.parents[0].children[0] = node.children[0];
+            node.children[0].parents[0] = node.parents[0];
+
+            // remove all pruned parents
+            node.parents.forEach((parent, i) => {
+              if (i === 0) return;
+              self
+                .traverseFrom(parent, null, true)
+                .map(e => e.uuid)
+                .reverse()
+                .forEach(e => self.nodes.delete(e));
+            });
+          }
         } else {
-          // otherwise, collapse and map first child to first parent
-          node.parents[0].children[0] = node.children[0];
-          node.children[0].parents[0] = node.parents[0];
-
-          // remove all pruned parents
-          node.parents.forEach((parent, i) => {
-            if (i === 0) return;
-            traverseFrom(parent, null, true)
-              .map(e => e.uuid)
-              .reverse()
-              .forEach(e => self.nodes.delete(e));
-          });
+          let idx = node.children[0].parents.indexOf(node);
+          node.children[0].parents.splice(idx, 1);
         }
-      } else {
-        let idx = node.children[0].parents.indexOf(node);
-        node.children[0].parents.splice(idx, 1);
-      }
 
-      // after deleting, select parent, unless there are none
-      let child = node.children[0];
-      self.clipboard.select(node.parents.length ? node.parents[0] : child);
+        // after deleting, select parent, unless there are none
+        let child = node.children[0];
+        self.clipboard.select(node.parents.length ? node.parents[0] : child);
 
-      self.nodes.delete(node.uuid);
+        self.nodes.delete(node.uuid);
 
-      // should re-add missing parents
-      child.mapInputsToParents();
+        // should re-add missing parents
+        child.mapInputsToParents();
 
-      self.update();
-    }
+        self.update();
+      },
 
-    function insertBelow(
-      node,
-      _new_node = GraphNode.create({
-        uuid: "append_" + nanoid()
-      })
-    ) {
-      /* 
+      insertBelow: (
+        node,
+        _new_node = GraphNode.create({
+          uuid: "append_" + nanoid()
+        })
+      ) => {
+        /* 
         for the time being, the behavior of this is to 
         insert a passthru shader in the parent[0] slot
       */
-      let idx = node.children[0].parents.indexOf(node);
+        let idx = node.children[0].parents.indexOf(node);
 
-      let new_node = self.addNode(_new_node);
+        let new_node = self.addNode(_new_node);
 
-      node.children[0].setParent(new_node, idx);
-      new_node.setChild(node.children[0], 0);
-      node.setChild(new_node, 0);
-      new_node.setParent(node, 0);
+        node.children[0].setParent(new_node, idx);
+        new_node.setChild(node.children[0], 0);
+        node.setChild(new_node, 0);
+        new_node.setParent(node, 0);
 
-      return new_node;
-    }
+        return new_node;
+      },
 
-    function traverseFrom(node = self.root, f = null, depthFirst = false) {
-      /*
+      traverseFrom: (node = self.root, f = null, depthFirst = false) => {
+        /*
         self method will crawl through the graph structure
         either depth first or breadth first.
 
         it's first argument is function that will be called
         during each step of the traversal.
       */
-      let result = [];
-      let container = [node];
-      let next_node;
-      let distance_from_root = 0;
-      let distance_from_trunk = 0;
+        let result = [];
+        let container = [node];
+        let next_node;
+        let distance_from_root = 0;
+        let distance_from_trunk = 0;
 
-      while (container.length) {
-        next_node = container.shift();
+        while (container.length) {
+          next_node = container.shift();
 
-        if (next_node) {
-          result.push(next_node);
-          distance_from_root = self.distanceBetween(next_node, node);
-          distance_from_trunk = self.distanceFromTrunk(next_node);
+          if (next_node) {
+            result.push(next_node);
+            distance_from_root = self.distanceBetween(next_node, node);
+            distance_from_trunk = self.distanceFromTrunk(next_node);
 
-          if (f) f(next_node, distance_from_root, distance_from_trunk);
+            if (f) f(next_node, distance_from_root, distance_from_trunk);
 
-          if (next_node.parents) {
-            container = depthFirst
-              ? container.concat(next_node.parents) // depth first search
-              : next_node.parents.concat(container); // breadth first search
+            if (next_node.parents) {
+              container = depthFirst
+                ? container.concat(next_node.parents) // depth first search
+                : next_node.parents.concat(container); // breadth first search
+            }
           }
         }
-      }
 
-      return result;
-    }
+        return result;
+      },
 
-    function calculateBranches() {
-      /* 
+      calculateBranches: () => {
+        /* 
         returns an array of queues, by branch_id
       */
-      let x = 0;
+        let x = 0;
 
-      let current_branch = 0;
-      let render_queues = [];
+        let current_branch = 0;
+        let render_queues = [];
 
-      self.traverseFrom(self.root, (next_node, d_root, d_trunk) => {
-        next_node.branch_index = undefined;
-        next_node.trunk_distance = d_trunk;
-        next_node.coordinates.set(x, d_root);
+        self.traverseFrom(self.root, (next_node, d_root, d_trunk) => {
+          next_node.branch_index = undefined;
+          next_node.trunk_distance = d_trunk;
+          next_node.coordinates.set(x, d_root);
 
-        // if we hit the topmost node
-        if (!next_node.parents.length) {
-          let t_node = next_node;
-          t_node.setBranchIndex(current_branch);
-
-          if (current_branch >= render_queues.length) {
-            render_queues.push([]);
-          }
-
-          // only add to render queue if there is data to process
-          if (t_node.data) render_queues[current_branch].push(t_node);
-
-          // propogate the new branch down the chain
-          // until it hits a node already with a branch_index
-          while (
-            t_node.children.length &&
-            t_node.children[0].branch_index === undefined
-          ) {
-            t_node.children[0].setBranchIndex(current_branch);
-            t_node = t_node.children[0];
+          // if we hit the topmost node
+          if (!next_node.parents.length) {
+            let t_node = next_node;
+            t_node.setBranchIndex(current_branch);
 
             if (current_branch >= render_queues.length) {
               render_queues.push([]);
             }
 
+            // only add to render queue if there is data to process
             if (t_node.data) render_queues[current_branch].push(t_node);
+
+            // propogate the new branch down the chain
+            // until it hits a node already with a branch_index
+            while (
+              t_node.children.length &&
+              t_node.children[0].branch_index === undefined
+            ) {
+              t_node.children[0].setBranchIndex(current_branch);
+              t_node = t_node.children[0];
+
+              if (current_branch >= render_queues.length) {
+                render_queues.push([]);
+              }
+
+              if (t_node.data) render_queues[current_branch].push(t_node);
+            }
+
+            current_branch++;
+            x++;
           }
+        });
 
-          current_branch++;
-          x++;
-        }
-      });
+        return render_queues;
+      },
 
-      return render_queues;
-    }
-
-    function calculateCoordinateBounds() {
-      /*
+      calculateCoordinateBounds: () => {
+        /*
         returns an object representing the size of the graph,
         for centering, scaling, and positioning visualization
       */
-      let max_x = 0;
-      let max_y = 0;
+        let max_x = 0;
+        let max_y = 0;
 
-      self.nodes.forEach(v => {
-        max_x = v.coordinates.x > max_x ? v.coordinates.x : max_x;
-        max_y = v.coordinates.y > max_y ? v.coordinates.y : max_y;
-      });
+        self.nodes.forEach(v => {
+          max_x = v.coordinates.x > max_x ? v.coordinates.x : max_x;
+          max_y = v.coordinates.y > max_y ? v.coordinates.y : max_y;
+        });
 
-      self.coord_bounds = {
-        x: max_x,
-        y: max_y
-      };
+        self.coord_bounds = {
+          x: max_x,
+          y: max_y
+        };
 
-      return self.coord_bounds;
-    }
-    
-    function removeSelected() {
-      self.removeNode(self.selectedNode);
-    }
+        return self.coord_bounds;
+      },
 
-    return {
-      afterAttach,
-      clear,
-      // update,
-      update: () => undoManager.withoutUndo(update),
-      appendNode,
-      insertBelow,
-      addNode,
-      // addNode: (n) => undoManager.withoutUndo(() => addNode(n)),
-      removeNode,
-      // traverseFrom,
-      traverseFrom: (n, f, d) =>
-        undoManager.withoutUndo(() => traverseFrom(n, f, d)),
-      calculateBranches,
-      calculateCoordinateBounds,
-      removeSelected
-      // calculateBranches: () => undoManager.withoutUndo(calculateBranches),
-      // calculateCoordinateBounds: () => undoManager.withoutUndo(calculateCoordinateBounds),
+      removeSelected: () => {
+        self.removeNode(self.selectedNode);
+      }
     };
   });
 
@@ -423,7 +335,7 @@ const operatorGraph = types
       self.update();
     },
 
-    setSelectedByName: (name) => {
+    setSelectedByName: name => {
       if (!self.selectedNode) self.clipboard.select(self.root);
       let op = getOperator(name);
       if (op) {
@@ -458,5 +370,8 @@ export default Graph;
 
 export let undoManager = {};
 export const setUndoManager = targetStore => {
-  undoManager = UndoManager.create({}, { targetStore: targetStore, maxHistoryLength: 10 });
+  undoManager = UndoManager.create(
+    {},
+    { targetStore: targetStore, maxHistoryLength: 10 }
+  );
 };
