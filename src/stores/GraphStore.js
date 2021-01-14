@@ -77,10 +77,9 @@ const Graph = types
 
     get selectedNode() {
       // left to right insertion
-      // return self.clipboard.selection.entries().next().value[1]
-
+      // return self.clipboard.selection[0];
+      
       // right to left insertion
-      // return Array.from(self.clipboard.selection.entries()).reverse()[0][1];
       return self.clipboard.selection[self.clipboard.selection.length - 1];
     }
   }))
@@ -139,11 +138,11 @@ const Graph = types
 
         /*
           does the node have parents?
-      */
+        */
         if (node.parents.length) {
           /* 
-          is the child an MIN (multi-input node)?
-        */
+            is the child an MIN (multi-input node)?
+          */
 
           if (
             node.children[0].parents.length > 1 &&
@@ -298,9 +297,9 @@ const Graph = types
 
       calculateCoordinateBounds: () => {
         /*
-        returns an object representing the size of the graph,
-        for centering, scaling, and positioning visualization
-      */
+          returns an object representing the size of the graph,
+          for centering, scaling, and positioning visualization
+        */
         let max_x = 0;
         let max_y = 0;
 
