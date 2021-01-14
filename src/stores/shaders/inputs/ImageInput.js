@@ -101,11 +101,7 @@ const webcam = types
       self.inputs = [];
     }
 
-    function loadImage(e) {
-      // revoke previous url!p      
-      if(self.dataURL) URL.revokeObjectURL(self.dataURL);
-      
-      let file = e.target.files[0];
+    function loadImage(file) {
       if (!file.type.startsWith("image/")) return;
 
       var reader = new FileReader();

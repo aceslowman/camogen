@@ -8,6 +8,21 @@ const ImageInputComponent = observer(props => {
   const canvas_ref = useRef(null);
 
   const handleFileSubmit = e => {
+    
+      console.log('load image', e);
+      // revoke previous url!    
+      if(self.dataURL) URL.revokeObjectURL(self.dataURL);
+      
+      let file = e.target.files[0];
+    
+    data.loadImage(e);
+  };
+  
+  const handleFileDrop = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('onDrop', e.dataTransfer.files)
+
     data.loadImage(e);
   };
 
@@ -68,11 +83,7 @@ const ImageInputComponent = observer(props => {
               e.stopPropagation();
               console.log('onDragLeave')
             }}
-            onDrop={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('onDrop', e.dataTransfer.files)
-            }}
+            onDrop={handleFileDrop}
           >
             drop file
           </div>
