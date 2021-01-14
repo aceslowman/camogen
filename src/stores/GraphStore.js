@@ -464,5 +464,5 @@ export default Graph;
 
 export let undoManager = {};
 export const setUndoManager = targetStore => {
-  undoManager = UndoManager.create({}, { targetStore, maxHistoryLength: 10 });
+  undoManager = UndoManager.create({}, { targetStore: targetStore, maxHistoryLength: 10 });
 };

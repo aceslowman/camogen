@@ -9,11 +9,8 @@ const Target = types
     .volatile(() => ({
         ref: null
     }))
-    .actions(self => {
-        let root_store; 
-        let parent_scene;
-
-        function afterAttach() {
+    .actions(self => ({
+        afterAttach: () => {
             root_store = getRoot(self);
             parent_scene = getParent(self,2);
             
@@ -24,32 +21,32 @@ const Target = types
                 p.height,
                 p.WEBGL
             );
-        }
+        },
 
-        function clear() {
+        clear: () => {
             self.render_queue = [];
-        }
+        },
 
-        function setRenderQueue(queue) {
+        setRenderQueue: (queue) => {
             self.render_queue = queue;
         }
 
-        function removeShaderNode(shader) {
+        removeShaderNode(shader) => {
             self.render_queue = self.render_queue.filter((item) => item.uuid !== shader.uuid);
 
             if (self.render_queue.length === 0) parent_scene.removeTarget(self);
         }
 
-        return {
-            // afterAttach,
-            afterAttach: () => undoManager.withoutUndo(()=>afterAttach()),
-            // clear,
-            clear: () => undoManager.withoutUndo(()=>clear()),
-            setRenderQueue,
-            // setRenderQueue: (q) => undoManager.withoutUndo(()=>setRenderQueue(q)),
-            removeShaderNode,
-            // removeShaderNode: (n) => undoManager.withoutUndo(()=>removeShaderNode(n)),
-        };
+        // return {
+        //     // afterAttach,
+        //     afterAttach: () => undoManager.withoutUndo(()=>afterAttach()),
+        //     // clear,
+        //     clear: () => undoManager.withoutUndo(()=>clear()),
+        //     setRenderQueue,
+        //     // setRenderQueue: (q) => undoManager.withoutUndo(()=>setRenderQueue(q)),
+        //     removeShaderNode,
+        //     // removeShaderNode: (n) => undoManager.withoutUndo(()=>removeShaderNode(n)),
+        // };
     })
 
 export default Target;
