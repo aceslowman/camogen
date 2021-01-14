@@ -1,8 +1,21 @@
+import { nanoid } from "nanoid";
+import {
+  types,
+  applySnapshot,
+  getSnapshot,
+  clone,
+  detach
+} from "mobx-state-tree";
+import GraphNode from "../NodeStore";
+
 const Clipboard = types
   .model("Clipboard", {
     selection: types.array(types.safeReference(GraphNode)),
     buffer: types.array(GraphNode)
   })
+  .volatile(self => ({
+    
+  }))
   .actions(self => ({
     copy: () => {
       self.buffer = [];
