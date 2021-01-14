@@ -9,11 +9,11 @@ const ImageInputComponent = observer(props => {
 
   const handleFileSubmit = e => {
     data.loadImage(e);
-  }
-  
+  };
+
   const handleDisplayMode = e => data.setDisplayMode(e);
   const handlePan = (param, v) => param.setValue(v);
-  
+
   useLayoutEffect(() => {
     /*
       I do not know whether or not this is efficient!
@@ -24,29 +24,55 @@ const ImageInputComponent = observer(props => {
       when the control panel is made wider
     */
     const ctx = canvas_ref.current.getContext("2d");
-    
+
     let img = new Image();
-    
+
     img.onload = function() {
       let aspect = this.naturalWidth / this.naturalHeight;
       let w = 0;
       let h = 0;
-            
+
       w = canvas_ref.current.width;
       h = canvas_ref.current.width / aspect;
       canvas_ref.current.height = h;
-      
-      ctx.drawImage(this, 0, 0, w, h)
-    }
-    
-    img.src = data.image_url;    
+
+      ctx.drawImage(this, 0, 0, w, h);
+    };
+
+    img.src = data.image_url;
   }, [data.image_url]);
 
   return (
     <React.Fragment>
       <canvas ref={canvas_ref} className={styles.canvas} />
       <ControlGroupComponent name="Image File">
-        
+        <div>
+          <div
+            className={styles.drop}
+            style={{
+              border: "1px dotted white",
+              color: "white"
+            }}
+            onDragEnter={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('onDragEnter')
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('onDragLeave')
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('onDrop')
+            }}
+          >
+            drop file
+          </div>
+        </div>
+
         <input type="file" onChange={handleFileSubmit} />
       </ControlGroupComponent>
       <ControlGroupComponent name="Display Mode">
