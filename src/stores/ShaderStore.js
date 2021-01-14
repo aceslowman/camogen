@@ -194,11 +194,15 @@ let shader = types
         }));
 
         // remove all uniforms that aren't present in new result set
-        self.uniforms = self.uniforms.filter(u => {
+        // ie, removes uniforms that aren't needed anymore
+        // I have a bug here!
+        self.uniforms = self.uniforms.filter(u => {          
+          // name and type must match!
           return (
-            result.filter(
-              e => e.name === u.name && e.type.toLowerCase() === u.type
-            ).length > 0
+            result.filter(e => {
+              console.log(`comparing ${e.name} to ${u.name}`);
+              return e.name === u.name && e.type.toLowerCase() === u.type;
+            }).length > 0
           );
         });
 
@@ -207,9 +211,9 @@ let shader = types
           return result.filter(e => e.name === input.name).length > 0;
         });
 
-        for(let i = 0; i < result.length; i++) {
+        for (let i = 0; i < result.length; i++) {
           let e = result[i];
-          console.log(e)
+          console.log(e);
           // ignore built-ins
           if (builtins.includes(e.name)) continue;
 
@@ -219,15 +223,14 @@ let shader = types
           */
 
           // ignore if uniform already exists (persist param values)
-          console.log('uniforms',getSnapshot(self.uniforms))
+          console.log("uniforms", getSnapshot(self.uniforms));
           for (let j = 0; j < self.uniforms.length; j++) {
-            console.log('checking param!', e)
-            console.log('comparing to', self.uniforms[j])
+            console.log(`comparing ${self.uniforms[j].name} to ${e.name}`);
             if (
               self.uniforms[j].name === e.name &&
               self.uniforms[j].type.toLowerCase() === e.type
             ) {
-              console.log('param exists',e)
+              console.log("param exists", e);
               return;
             }
           }
@@ -285,7 +288,7 @@ let shader = types
           }
 
           if (uniform.elements.length) self.uniforms.push(uniform);
-        };
+        }
 
         if (!self.inputs.length) parent_node.mapInputsToParents();
       },
