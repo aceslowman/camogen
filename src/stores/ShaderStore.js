@@ -197,11 +197,11 @@ let shader = types
         // ie, removes uniforms that aren't needed anymore
         // I have a bug here!
         self.uniforms = self.uniforms.filter(u => {          
-          // name and type must match!
+          // name and type must match!          
           return (
             result.filter(e => {
-              console.log(`comparing ${e.name} to ${u.name}`);
-              return e.name === u.name && e.type.toLowerCase() === u.type;
+              // console.log(`comparing ${e.name}(${e.type.toLowerCase()}) to ${u.name}(${u.type})`);
+              return e.name === u.name && e.type.toLowerCase() === u.type.toLowerCase();
             }).length > 0
           );
         });
@@ -213,7 +213,6 @@ let shader = types
 
         for (let i = 0; i < result.length; i++) {
           let e = result[i];
-          console.log(e);
           // ignore built-ins
           if (builtins.includes(e.name)) continue;
 
@@ -223,16 +222,12 @@ let shader = types
           */
 
           // ignore if uniform already exists (persist param values)
-          console.log("uniforms", getSnapshot(self.uniforms));
           for (let j = 0; j < self.uniforms.length; j++) {
-            console.log(`comparing ${self.uniforms[j].name} to ${e.name}`);
+            // console.log(`comparing ${self.uniforms[j].name} to ${e.name}`);
             if (
               self.uniforms[j].name === e.name &&
-              self.uniforms[j].type.toLowerCase() === e.type
-            ) {
-              console.log("param exists", e);
-              return;
-            }
+              self.uniforms[j].type.toLowerCase() === e.type.toLowerCase()
+            ) return;            
           }
 
           // ignore if input already exists
