@@ -221,8 +221,10 @@ let shader = types
             if (
               self.uniforms[i].name === e.name &&
               self.uniforms[i].type.toLowerCase() === e.type
-            )
+            ) {
+              console.log('param exists',e)
               return;
+            }
           }
 
           // ignore if input already exists
@@ -250,27 +252,27 @@ let shader = types
               parent_node.mapInputsToParents();
               break;
             case "int":
-              value = opt.default ?? opt.default : 1;
+              value = opt.default ?? 1;
               uniform.addInt(value, opt);
               break;
             case "float":
-              value = opt.default ?? opt.default : 1.0;
+              value = opt.default ?? 1.0;
               uniform.addFloat(value, opt);
               break;
             case "vec2":
-              value = opt.default ?? opt.default : [1, 1];
+              value = opt.default ?? [1, 1];
               uniform.addVec2(value, opt);
               break;
             case "vec3":
-              value = opt.default ?? opt.default : [1, 1, 1];
+              value = opt.default ?? [1, 1, 1];
               uniform.addVec3(value, opt);
               break;
             case "vec4":
-              value = opt.default ?? opt.default : [1, 1, 1, 1];
+              value = opt.default ?? [1, 1, 1, 1];
               uniform.addVec4(value, opt);
               break;
             case "bool":
-              value = opt.default ?? opt.default : false;
+              value = opt.default ?? false;
               uniform.addBool(value, opt);
               break;
             default:
