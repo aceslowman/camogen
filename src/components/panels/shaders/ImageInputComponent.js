@@ -58,6 +58,11 @@ const ImageInputComponent = observer(props => {
               e.stopPropagation();
               console.log('onDragEnter')
             }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('onDragOver')
+            }}
             onDragLeave={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -66,7 +71,7 @@ const ImageInputComponent = observer(props => {
             onDrop={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log('onDrop')
+              console.log('onDrop', e.dataTransfer.files)
             }}
           >
             drop file
