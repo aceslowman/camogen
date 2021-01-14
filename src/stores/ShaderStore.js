@@ -207,9 +207,11 @@ let shader = types
           return result.filter(e => e.name === input.name).length > 0;
         });
 
-        result.forEach(e => {
+        for(let i = 0; i < result.length; i++) {
+          let e = result[i];
+          console.log(e)
           // ignore built-ins
-          if (builtins.includes(e.name)) return;
+          if (builtins.includes(e.name)) continue;
 
           /*
             NOTE: Array.forEach can't exit the calling function
@@ -217,10 +219,13 @@ let shader = types
           */
 
           // ignore if uniform already exists (persist param values)
-          for (let i = 0; i < self.uniforms.length; i++) {
+          console.log('uniforms',getSnapshot(self.uniforms))
+          for (let j = 0; j < self.uniforms.length; j++) {
+            console.log('checking param!', e)
+            console.log('comparing to', self.uniforms[j])
             if (
-              self.uniforms[i].name === e.name &&
-              self.uniforms[i].type.toLowerCase() === e.type
+              self.uniforms[j].name === e.name &&
+              self.uniforms[j].type.toLowerCase() === e.type
             ) {
               console.log('param exists',e)
               return;
@@ -280,7 +285,7 @@ let shader = types
           }
 
           if (uniform.elements.length) self.uniforms.push(uniform);
-        });
+        };
 
         if (!self.inputs.length) parent_node.mapInputsToParents();
       },
@@ -316,18 +321,18 @@ let shader = types
         }
 
         // setup samplers
-        for (let i = 0; i < self.inputs.length; i++) {
+        for (let j = 0; j < self.inputs.length; j++) {
           // if parent exists
-          if (i < parent_node.parents.length) {
-            let input_shader = parent_node.parents[i].data;
+          if (j < parent_node.parents.length) {
+            let input_shader = parent_node.parents[j].data;
 
             if (input_shader) {
               let input_target = input_shader.target.ref;
-              shader.setUniform(self.inputs[i], input_target);
+              shader.setUniform(self.inputs[j], input_target);
             }
           } else {
             // if parent doesn't exist, warn me, it's a buge
-            console.log("not enough parents!", i);
+            console.log("not enough parents!", j);
             p.noLoop();
           }
         }
