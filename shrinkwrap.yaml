@@ -1,5 +1,6 @@
 dependencies:
   '@babel/core': 7.12.10
+  '@babel/plugin-proposal-nullish-coalescing-operator': 7.12.1
   '@babel/preset-env': 7.12.11
   '@babel/preset-react': 7.12.10
   babel-loader: 8.2.2
@@ -5345,6 +5346,7 @@ shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   '@babel/core': ^7.12.3
+  '@babel/plugin-proposal-nullish-coalescing-operator': ^7.12.1
   '@babel/preset-env': ^7.12.0
   '@babel/preset-react': ^7.12.5
   babel-loader: ^8.2.1

@@ -162,26 +162,26 @@ let shader = types
 
       extractUniforms: () => {
         /*
-        extracts all uniform variables from
-        shader code. these then populate the
-        interfaces. controls and input elements
-        are created here
+          extracts all uniform variables from
+          shader code. these then populate the
+          interfaces. controls and input elements
+          are created here
 
-        special options can be passed to a uniform
-        to provide default values, and eventually
-        annotations and UI knob/slider/dial type.
+          special options can be passed to a uniform
+          to provide default values, and eventually
+          annotations and UI knob/slider/dial type.
 
-        camogen extracts: 
-        0: "uniform vec2 offset; // {"name":"off","default":[0.0,0.0]}"
-        1: "uniform"
-        2: "vec2"
-        3: "offset"
-        4: "{"name":"off","default":[0.0,0.0]}"
+          camogen extracts: 
+          0: "uniform vec2 offset; // {"name":"off","default":[0.0,0.0]}"
+          1: "uniform"
+          2: "vec2"
+          3: "offset"
+          4: "{"name":"off","default":[0.0,0.0]}"
 
-        TODO: have to remove parents when they are no longer needed
-        TODO: you should be able to write options both inline and as 
-              a larger single object
-      */
+          TODO: have to remove parents when they are no longer needed
+          TODO: you should be able to write options both inline and as 
+                a larger single object
+        */
 
         // TODO: change to u_resolution, u_time, etc
         const builtins = ["resolution"];
@@ -212,9 +212,9 @@ let shader = types
           if (builtins.includes(e.name)) return;
 
           /*
-          NOTE: Array.forEach can't exit the calling function
-          https://medium.com/@virtual_khan/javascript-foreach-a-return-will-not-exit-the-calling-function-cfbc6fa7b199
-        */
+            NOTE: Array.forEach can't exit the calling function
+            https://medium.com/@virtual_khan/javascript-foreach-a-return-will-not-exit-the-calling-function-cfbc6fa7b199
+          */
 
           // ignore if uniform already exists (persist param values)
           for (let i = 0; i < self.uniforms.length; i++) {
@@ -250,27 +250,27 @@ let shader = types
               parent_node.mapInputsToParents();
               break;
             case "int":
-              value = opt.default ? opt.default : 1;
+              value = opt.default ?? opt.default : 1;
               uniform.addInt(value, opt);
               break;
             case "float":
-              value = opt.default ? opt.default : 1.0;
+              value = opt.default ?? opt.default : 1.0;
               uniform.addFloat(value, opt);
               break;
             case "vec2":
-              value = opt.default ? opt.default : [1, 1];
+              value = opt.default ?? opt.default : [1, 1];
               uniform.addVec2(value, opt);
               break;
             case "vec3":
-              value = opt.default ? opt.default : [1, 1, 1];
+              value = opt.default ?? opt.default : [1, 1, 1];
               uniform.addVec3(value, opt);
               break;
             case "vec4":
-              value = opt.default ? opt.default : [1, 1, 1, 1];
+              value = opt.default ?? opt.default : [1, 1, 1, 1];
               uniform.addVec4(value, opt);
               break;
             case "bool":
-              value = opt.default ? opt.default : false;
+              value = opt.default ?? opt.default : false;
               uniform.addBool(value, opt);
               break;
             default:
