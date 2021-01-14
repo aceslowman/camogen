@@ -1,5 +1,5 @@
 import { NodeData } from "./NodeDataStore";
-import {undoManager} from "./GraphStore";
+import { undoManager } from "./GraphStore";
 import {
   types,
   getSnapshot,
@@ -115,15 +115,14 @@ let shader = types
 
     get fragment() {
       return self.precision + self.frag;
-    }, 
-    
-    getUniform: (name) => {      
+    },
+
+    getUniform: name => {
       let uniform = null;
-      self.uniforms.forEach((e,i) => {
-        if(e.name === name)
-          uniform = e;  
-      });      
-      
+      self.uniforms.forEach((e, i) => {
+        if (e.name === name) uniform = e;
+      });
+
       return uniform;
     }
   }))
@@ -131,38 +130,38 @@ let shader = types
     let parent_node;
 
     return {
-    function afterAttach() {
-      parent_node = getParent(self);
-      // console.log('attaching '+self.name)      
-    }
+      afterAttach: () => {
+        parent_node = getParent(self);
+        // console.log('attaching '+self.name)
+      },
 
-    function afterCreate() {
-      self.ready = false; // initializing?
-      self.hasChanged = false;
-    }
-    
-    function refresh() {
-      self.ref = self.target.ref.createShader(self.vertex, self.fragment);
-    }
+      afterCreate: () => {
+        self.ready = false; // initializing?
+        self.hasChanged = false;
+      },
 
-    function init() {
-      // create shader for given target
-      self.ref = self.target.ref.createShader(self.vertex, self.fragment);
+      refresh: () => {
+        self.ref = self.target.ref.createShader(self.vertex, self.fragment);
+      },
 
-      // extract and assign uniforms to shader
-      extractUniforms();
+      init: () => {
+        // create shader for given target
+        self.ref = self.target.ref.createShader(self.vertex, self.fragment);
 
-      for (let uniform of self.uniforms) {
-        self.ref.setUniform(uniform.name, uniform.elements);
-      }
+        // extract and assign uniforms to shader
+        self.extractUniforms();
 
-      // flag as ready to render
-      self.ready = true;
-      return self;
-    }
-    
-    function extractUniforms() {
-      /*
+        for (let uniform of self.uniforms) {
+          self.ref.setUniform(uniform.name, uniform.elements);
+        }
+
+        // flag as ready to render
+        self.ready = true;
+        return self;
+      },
+
+      extractUniforms: () => {
+        /*
         extracts all uniform variables from
         shader code. these then populate the
         interfaces. controls and input elements
@@ -183,261 +182,263 @@ let shader = types
         TODO: you should be able to write options both inline and as 
               a larger single object
       */
-      
-      // TODO: change to u_resolution, u_time, etc
-      const builtins = ["resolution"];
 
-      let regex = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
-      let result = [...self.frag.matchAll(regex)].map(e => ({
-        type: e[2],
-        name: e[3],
-        options: e[4]
-      }));
+        // TODO: change to u_resolution, u_time, etc
+        const builtins = ["resolution"];
 
-      // remove all uniforms that aren't present in new result set
-      self.uniforms = self.uniforms.filter(u => {
-        return (
-          result.filter(
-            e => e.name === u.name && e.type.toLowerCase() === u.type
-          ).length > 0
-        );
-      });
+        let regex = /(\buniform\b)\s([a-zA-Z_][a-zA-Z0-9]+)\s([a-zA-Z_][a-zA-Z0-9_]+);\s+\/?\/?\s?({(.*?)})?/g;
+        let result = [...self.frag.matchAll(regex)].map(e => ({
+          type: e[2],
+          name: e[3],
+          options: e[4]
+        }));
 
-      // remove all inputs that aren't present in new result set
-      self.inputs = self.inputs.filter(input => {
-        return result.filter(e => e.name === input.name).length > 0;
-      });
+        // remove all uniforms that aren't present in new result set
+        self.uniforms = self.uniforms.filter(u => {
+          return (
+            result.filter(
+              e => e.name === u.name && e.type.toLowerCase() === u.type
+            ).length > 0
+          );
+        });
 
-      result.forEach(e => {
-        // ignore built-ins
-        if (builtins.includes(e.name)) return;
+        // remove all inputs that aren't present in new result set
+        self.inputs = self.inputs.filter(input => {
+          return result.filter(e => e.name === input.name).length > 0;
+        });
 
-        /*
+        result.forEach(e => {
+          // ignore built-ins
+          if (builtins.includes(e.name)) return;
+
+          /*
           NOTE: Array.forEach can't exit the calling function
           https://medium.com/@virtual_khan/javascript-foreach-a-return-will-not-exit-the-calling-function-cfbc6fa7b199
         */
 
-        // ignore if uniform already exists (persist param values)
-        for (let i = 0; i < self.uniforms.length; i++) {
-          if (
-            self.uniforms[i].name === e.name &&
-            self.uniforms[i].type.toLowerCase() === e.type
-          )
-            return;
-        }
+          // ignore if uniform already exists (persist param values)
+          for (let i = 0; i < self.uniforms.length; i++) {
+            if (
+              self.uniforms[i].name === e.name &&
+              self.uniforms[i].type.toLowerCase() === e.type
+            )
+              return;
+          }
 
-        // ignore if input already exists
-        for (let i = 0; i < self.inputs.length; i++) {
-          if (self.inputs[i] === e.name) return;
-        }
+          // ignore if input already exists
+          for (let i = 0; i < self.inputs.length; i++) {
+            if (self.inputs[i] === e.name) return;
+          }
 
-        let value;
-        let opt = {};
+          let value;
+          let opt = {};
 
-        // replace all single quotes in options with double quotes
-        if (e.options) {
-          opt = JSON.parse(e.options.replace(/'/g, '"'));
-        }
+          // replace all single quotes in options with double quotes
+          if (e.options) {
+            opt = JSON.parse(e.options.replace(/'/g, '"'));
+          }
 
-        let uniform = Uniform.create({
-          uuid: nanoid(),
-          name: e.name,
-          shader: self
+          let uniform = Uniform.create({
+            uuid: nanoid(),
+            name: e.name,
+            shader: self
+          });
+
+          switch (e.type) {
+            case "sampler2D":
+              self.inputs.push(e.name);
+              parent_node.mapInputsToParents();
+              break;
+            case "int":
+              value = opt.default ? opt.default : 1;
+              uniform.addInt(value, opt);
+              break;
+            case "float":
+              value = opt.default ? opt.default : 1.0;
+              uniform.addFloat(value, opt);
+              break;
+            case "vec2":
+              value = opt.default ? opt.default : [1, 1];
+              uniform.addVec2(value, opt);
+              break;
+            case "vec3":
+              value = opt.default ? opt.default : [1, 1, 1];
+              uniform.addVec3(value, opt);
+              break;
+            case "vec4":
+              value = opt.default ? opt.default : [1, 1, 1, 1];
+              uniform.addVec4(value, opt);
+              break;
+            case "bool":
+              value = opt.default ? opt.default : false;
+              uniform.addBool(value, opt);
+              break;
+            default:
+              break;
+          }
+
+          if (uniform.elements.length) self.uniforms.push(uniform);
         });
 
-        switch (e.type) {
-          case "sampler2D":
-            self.inputs.push(e.name);
-            parent_node.mapInputsToParents();
-            break;
-          case "int":
-            value = opt.default ? opt.default : 1;
-            uniform.addInt(value, opt);
-            break;
-          case "float":
-            value = opt.default ? opt.default : 1.0;
-            uniform.addFloat(value, opt);
-            break;
-          case "vec2":
-            value = opt.default ? opt.default : [1, 1];
-            uniform.addVec2(value, opt);
-            break;
-          case "vec3":
-            value = opt.default ? opt.default : [1, 1, 1];
-            uniform.addVec3(value, opt);
-            break;
-          case "vec4":
-            value = opt.default ? opt.default : [1, 1, 1, 1];
-            uniform.addVec4(value, opt);
-            break;
-          case "bool":
-            value = opt.default ? opt.default : false;
-            uniform.addBool(value, opt);
-            break;
-          default:
-            break;
-        }
+        if (!self.inputs.length) parent_node.mapInputsToParents();
+      },
 
-        if (uniform.elements.length) self.uniforms.push(uniform);
-      });
-
-      if (!self.inputs.length) parent_node.mapInputsToParents();
-    }
-
-    function update(p) {
-      // skip if bypassed
-      if (parent_node.bypass) return;
-      /*
+      update: p => {
+        // skip if bypassed
+        if (parent_node.bypass) return;
+        /*
         this method is triggered within Runner.js
         and draws shaders to quads.
       */
-      if (!self.ready) return;
+        if (!self.ready) return;
 
-      let shader = self.ref;
-      let target = self.target.ref;
+        let shader = self.ref;
+        let target = self.target.ref;
 
-      /* 
+        /* 
           Loop through all active parameter graphs to recompute 
           values in sync with the frame rate
       */
-      self.updateGroup.forEach(e => e.afterUpdate());
+        self.updateGroup.forEach(e => e.afterUpdate());
 
-      for (let uniform_data of self.uniforms) {
-        if (uniform_data.elements.length > 1) {
-          let elements = uniform_data.elements.map(e => e.value);
-          shader.setUniform(uniform_data.name, elements);
-        } else {
-          shader.setUniform(uniform_data.name, uniform_data.elements[0].value);
-        }
-      }
-
-      // setup samplers
-      for (let i = 0; i < self.inputs.length; i++) {
-        // if parent exists
-        if (i < parent_node.parents.length) {
-          let input_shader = parent_node.parents[i].data;
-
-          if (input_shader) {
-            let input_target = input_shader.target.ref;
-            shader.setUniform(self.inputs[i], input_target);
+        for (let uniform_data of self.uniforms) {
+          if (uniform_data.elements.length > 1) {
+            let elements = uniform_data.elements.map(e => e.value);
+            shader.setUniform(uniform_data.name, elements);
+          } else {
+            shader.setUniform(
+              uniform_data.name,
+              uniform_data.elements[0].value
+            );
           }
-        } else {
-          // if parent doesn't exist, warn me, it's a buge
-          console.log("not enough parents!", i);
+        }
+
+        // setup samplers
+        for (let i = 0; i < self.inputs.length; i++) {
+          // if parent exists
+          if (i < parent_node.parents.length) {
+            let input_shader = parent_node.parents[i].data;
+
+            if (input_shader) {
+              let input_target = input_shader.target.ref;
+              shader.setUniform(self.inputs[i], input_target);
+            }
+          } else {
+            // if parent doesn't exist, warn me, it's a buge
+            console.log("not enough parents!", i);
+            p.noLoop();
+          }
+        }
+
+        shader.setUniform("resolution", [target.width, target.height]);
+
+        target.shader(shader);
+
+        try {
+          target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
+        } catch (error) {
+          console.error(error);
           p.noLoop();
         }
-      }
+      },
 
-      shader.setUniform("resolution", [target.width, target.height]);
+      beforeDetach: () => {
+        console.log("detaching shader " + self.name);
+        self.target.removeShaderNode(parent_node);
+      },
 
-      target.shader(shader);
+      saveToCollection: () => {
+        console.log("saving to collection", self);
+        if (self.collection) {
+          // remove uniforms before saving
+          let new_data = getSnapshot(self);
+          // delete new_data.uniforms;
+          // new_data.uniforms = [];
+          self.collection.setData({
+            ...new_data,
+            uniforms: []
+          });
+        }
+      },
 
-      try {
-        target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
-      } catch (error) {
-        console.error(error);
-        p.noLoop();
-      }
-    }
+      save: () => {
+        console.log("saving project");
 
-    function beforeDetach() {
-      console.log('detaching shader '+self.name)
-      self.target.removeShaderNode(parent_node);
-    }
+        let src = JSON.stringify(getSnapshot(self));
+        let blob = new Blob([src], { type: "text/plain" });
 
-    function saveToCollection() {
-      console.log("saving to collection", self);
-      if (self.collection) {
-        // remove uniforms before saving
-        let new_data = getSnapshot(self);
-        // delete new_data.uniforms;
-        // new_data.uniforms = [];
-        self.collection.setData({
-          ...new_data,
-          uniforms: []
-        });
-      }
-    }
+        let link = document.createElement("a");
+        link.download = `${self.name}.shader.camo`;
 
-    function save() {
-      console.log("saving project");
+        if (window.webkitURL != null) {
+          // Chrome allows the link to be clicked without actually adding it to the DOM.
+          link.href = window.webkitURL.createObjectURL(blob);
+        } else {
+          // Firefox requires the link to be added to the DOM before it can be clicked.
+          link.href = window.URL.createObjectURL(blob);
+          link.onclick = e => {
+            document.body.removeChild(e.target);
+          };
+          link.style.display = "none";
+          document.body.appendChild(link);
+        }
 
-      let src = JSON.stringify(getSnapshot(self));
-      let blob = new Blob([src], { type: "text/plain" });
+        link.click();
+      },
 
-      let link = document.createElement("a");
-      link.download = `${self.name}.shader.camo`;
+      load: () => {
+        let link = document.createElement("input");
+        link.type = "file";
 
-      if (window.webkitURL != null) {
-        // Chrome allows the link to be clicked without actually adding it to the DOM.
-        link.href = window.webkitURL.createObjectURL(blob);
-      } else {
-        // Firefox requires the link to be added to the DOM before it can be clicked.
-        link.href = window.URL.createObjectURL(blob);
-        link.onclick = e => {
-          document.body.removeChild(e.target);
+        link.onchange = e => {
+          var file = e.target.files[0];
+
+          let reader = new FileReader();
+          reader.readAsText(file, "UTF-8");
+
+          reader.onload = e => {
+            let content = JSON.parse(e.target.result);
+            applySnapshot(self, content);
+            parent_node.setName(content.name);
+            // undoManager.clear();
+            self.init();
+          };
         };
-        link.style.display = "none";
-        document.body.appendChild(link);
-      }
 
-      link.click();
-    }
+        link.click();
+      },
 
-    function load() {
-      let link = document.createElement("input");
-      link.type = "file";
+      clear: () => {
+        applySnapshot(self, DefaultShader);
+        self.name = "New Shader";
+        parent_node.setName("New Shader");
+        self.init();
+      },
 
-      link.onchange = e => {
-        var file = e.target.files[0];
+      addToUpdateGroup: p_graph => {
+        self.updateGroup.put(p_graph);
+        return p_graph;
+      },
 
-        let reader = new FileReader();
-        reader.readAsText(file, "UTF-8");
+      setVert: v => {
+        self.vert = v;
+        self.hasChanged = true;
+      },
 
-        reader.onload = e => {
-          let content = JSON.parse(e.target.result);
-          applySnapshot(self, content);
-          parent_node.setName(content.name);
-          // undoManager.clear();
-          self.init();
-        };
-      };
+      setFrag: v => {
+        self.frag = v;
+        self.hasChanged = true;
+      },
 
-      link.click();
-    }
+      setName: n => {
+        self.name = n;
+        parent_node.setName(n);
+      },
 
-    function clear() {
-      applySnapshot(self, DefaultShader);
-      self.name = "New Shader";
-      parent_node.setName("New Shader");
-      self.init();
-    }
-
-    function addToUpdateGroup(p_graph) {
-      self.updateGroup.put(p_graph);
-      return p_graph;
-    }
-
-    function setVert(v) {
-      self.vert = v;
-      self.hasChanged = true;
-    }
-
-    function setFrag(v) {
-      self.frag = v;
-      self.hasChanged = true;
-    }
-
-    function setName(n) {
-      self.name = n;
-      parent_node.setName(n);
-    }
-
-    const setCollection = c => self.collection = c;
-    const setHasChanged = v => self.hasChanged = v;
-    const setTarget = t => self.target = t;
-
-    }
+      setCollection: c => (self.collection = c),
+      setHasChanged: v => (self.hasChanged = v),
+      setTarget: t => (self.target = t)
+    };
   });
 
 const Shader = types.compose(
