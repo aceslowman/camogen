@@ -102,6 +102,9 @@ const webcam = types
     }
 
     function loadImage(file) {
+      // revoke previous url!    
+      if(self.dataURL) URL.revokeObjectURL(self.dataURL);
+      
       if (!file.type.startsWith("image/")) return;
 
       var reader = new FileReader();

@@ -8,22 +8,16 @@ const ImageInputComponent = observer(props => {
   const canvas_ref = useRef(null);
 
   const handleFileSubmit = e => {
+    let file = e.target.files[0];
     
-      console.log('load image', e);
-      // revoke previous url!    
-      if(self.dataURL) URL.revokeObjectURL(self.dataURL);
-      
-      let file = e.target.files[0];
-    
-    data.loadImage(e);
+    data.loadImage(file);
   };
   
   const handleFileDrop = e => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('onDrop', e.dataTransfer.files)
 
-    data.loadImage(e);
+    data.loadImage(e.dataTransfer.files[0]);
   };
 
   const handleDisplayMode = e => data.setDisplayMode(e);
