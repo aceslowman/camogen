@@ -25,7 +25,7 @@ import ParameterEditorComponent from "./components/panels/ParameterEditorCompone
 import MessagesComponent from "./components/panels/MessagesComponent";
 import CaptureComponent from "./components/panels/CaptureComponent";
 import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
-import Splash from "./components/overlays/SplashComponent";
+import Splash from "./components/SplashComponent";
 import MainToolbar from "./components/MainToolbar";
 
 const App = observer(props => {

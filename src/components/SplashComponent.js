@@ -7,7 +7,7 @@ import {
   TextComponent
 } from "maco-ui";
 import styles from "./SplashComponent.module.css";
-import MainContext from "../../MainContext";
+import MainContext from "../MainContext";
 import { observer } from "mobx-react";
 
 const Splash = observer(props => {
@@ -61,10 +61,12 @@ const Splash = observer(props => {
         <div className={styles.titleWrapper}>
           <div className={styles.title}>
             <h1>camogen </h1>
-            <small>v0.1.0</small>
+            <small>v0.1.0 BETA</small>
           </div>
           <div className={styles.recent}>
-            <TextComponent>all kinds of stuff</TextComponent>
+            <TextComponent>
+              <h2>Recent projects</h2>
+            </TextComponent>
           </div>
         </div>
 
