@@ -66,22 +66,22 @@ const Splash = observer(props => {
           </p>
           
           <ul>
-            <li>
+            <li style={{color:'red'}}>
               motion graphs can be added to parameters, 
               but save files will no longer work
             </li>
-            <li>
+            <li style={{color:'red'}}>
               copy / paste works for single-input nodes, but fails
               with multi-input nodes. Selecting multiple nodes / subgraphs
               is in the works but currently disabled.
             </li>
-            <li>
+            <li style={{color:'green'}}>
               shader library can be added to and deleted from by using
               the toolbar at the top of the screen. The same functionality
               is not currently working when using the library through a 
               context menu.
             </li>
-            <li>
+            <li style={{color:'orange'}}>
               undo/redo is not currently functioning and is disabled in the meantime
             </li>
           </ul>
