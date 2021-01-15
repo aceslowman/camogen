@@ -155,13 +155,15 @@ const App = observer(props => {
             </GenericPanel>
           )}
         </div>
-        {store.showSplash && (
-          <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
-        )}
         
         {store.showUpdates && (
           <Updates onRemove={() => store.setShowUpdates(!store.showUpdates)} />
         )}
+        
+        {store.showSplash && (
+          <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
+        )}
+        
       </ThemeContext.Provider>
     </MainProvider>
   );
