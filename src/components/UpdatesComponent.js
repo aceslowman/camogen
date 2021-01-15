@@ -60,25 +60,32 @@ const Splash = observer(props => {
     >
       <PagesContainer>
         <TextComponent>
-          <h1>camogen</h1>
+          <h1>beta updates and caveats!</h1>
           <p>
-            Hello! Thanks for trying{" "}
-            <span style={{ color: "orange" }}>camogen</span>. It's currently in
-            beta so some features will not be totally functional and the
-            structure of the system is still changing.
+            below are a number of critical issues and caveats 
           </p>
-          <p>
-            <span style={{ color: "orange" }}>camogen</span> is a tool for
-            creating visual art. It includes a library of inputs and effects
-            (WebGL Shaders) that can be combined in a graph system, and each
-            individual effect parameter can be tweaked or driven by another
-            graph subsystem.
-          </p>
-          <p>
-            I want camogen to be approachable and accessible whether or not you
-            know how to program graphics shaders. If you see any way to improve
-            the project in that way, let me know.
-          </p>
+          
+          <ul>
+            <li>
+              motion graphs can be added to parameters, 
+              but save files will no longer work
+            </li>
+            <li>
+              copy / paste works for single-input nodes, but fails
+              with multi-input nodes. Selecting multiple nodes / subgraphs
+              is in the works but currently disabled.
+            </li>
+            <li>
+              shader library can be added to and deleted from by using
+              the toolbar at the top of the screen. The same functionality
+              is not currently working when using the library through a 
+              context menu.
+            </li>
+            <li>
+              undo/redo is not currently functioning and is disabled in the meantime
+            </li>
+          </ul>
+          
         </TextComponent>
         <TextComponent>
           <h2>Adding Effects</h2>
