@@ -60,7 +60,8 @@ const RootStore = types
     breakoutControlled: false,
     messages: Messages.create(),
     context: Context.create(),
-    showSplash: null
+    showSplash: null,
+    showUpdates: null
   }))
   .views(self => ({
     get recentShaderLibrary() {
@@ -234,8 +235,8 @@ const RootStore = types
       };
     }
   }))
-  .actions(self => {
-    const afterCreate = () => {
+  .actions(self => ({
+    afterCreate: () => {
       // window.localStorage.clear();
 
       onSnapshot(self.ui.theme, () => {
@@ -260,10 +261,15 @@ const RootStore = types
         self.showSplash = true;
       }
       
-      console.log(self.showSplash)
+      if (window.localStorage.getItem('showUpdates') !== null) {
+        self.showUpdates = JSON.parse(window.localStorage.getItem('showUpdates'));
+      } else {
+        window.localStorage.setItem('showUpdates', true)
+        self.showUpdates = true;
+      }
 
       // fetch default shaders
-      fetchShaderFiles().then(d => {
+      self.fetchShaderFiles().then(d => {
         self.setupP5();
         self.setScene(Scene.create());
 
@@ -281,18 +287,18 @@ const RootStore = types
         // remove loading overlay
         document.querySelector(".loading").style.display = "none";
       });
-    };
+    },
 
-    const setupP5 = () => {
+    setupP5: () => {
       self.p5_instance = new p5(p => Runner(p, self));
-    };
+    },
 
-    const selectParameter = param => {
+    selectParameter: param => {
       if (param && !param.graph) param.createGraph();
       self.selectedParameter = param;
-    };
+    },
 
-    const save = () => {
+    save: () => {
       let src = JSON.stringify(getSnapshot(self));
       let blob = new Blob([src], { type: "text/plain" });
 
@@ -315,9 +321,9 @@ const RootStore = types
       link.click();
 
       console.log("project saved!");
-    };
+    },
 
-    const load = () => {
+    load: () => {
       let link = document.createElement("input");
       link.type = "file";
 
@@ -340,9 +346,9 @@ const RootStore = types
       };
 
       link.click();
-    };
+    },
 
-    const breakout = () => {
+    breakout: () => {
       let new_window = window.open(
         "/output_window.html",
         "window",
@@ -353,9 +359,9 @@ const RootStore = types
       new_window.gl = self.p5_instance.canvas.getContext("2d");
 
       self.breakoutControlled = true;
-    };
+    },
 
-    const onBreakoutResize = (w, h) => {
+    onBreakoutResize: (w, h) => {
       self.p5_instance.resizeCanvas(w, h);
 
       // update target dimensions
@@ -364,9 +370,9 @@ const RootStore = types
       }
 
       self.p5_instance.draw();
-    };
+    },
 
-    const fetchShaderFiles = flow(function* fetchShaderFiles() {
+    fetchShaderFiles: flow(function* fetchShaderFiles() {
       /*
           fetchShaderFiles()
 
@@ -404,14 +410,14 @@ const RootStore = types
       } catch (err) {
         console.error("failed to fetch shaders", err);
       }
-    });
+    }),
 
-    const reloadDefaults = () => {
+    reloadDefaults: () => {
       window.localStorage.clear();
       self.fetchShaderFiles();
-    };
+    },
 
-    const saveShaderCollection = () => {
+    saveShaderCollection: () => {
       console.log("saving collection");
 
       let src = JSON.stringify(getSnapshot(self.shader_collection));
@@ -434,9 +440,9 @@ const RootStore = types
       }
 
       link.click();
-    };
+    },
 
-    const loadShaderCollection = () => {
+    loadShaderCollection: () => {
       let link = document.createElement("input");
       link.type = "file";
 
@@ -460,17 +466,17 @@ const RootStore = types
       };
 
       link.click();
-    };
+    },
 
-    const persistShaderCollection = () => {
+    persistShaderCollection: () => {
       // save collection to local storage
       window.localStorage.setItem(
         "shader_collection",
         JSON.stringify(getSnapshot(self.shader_collection))
       );
-    };
+    },
 
-    const resizeCanvas = (w, h) => {
+    resizeCanvas: (w, h) => {
       if (!w) w = 1; // never resize canvas to 0
       if (!h) h = 1; // never resize canvas to 0
       self.p5_instance.resizeCanvas(w, h);
@@ -481,48 +487,28 @@ const RootStore = types
       for (let target_data of self.scene.targets) {
         target_data.ref.resizeCanvas(w, h);
       }
-    };
+    },
 
-    const addToRecentShaders = shader => {
+    addToRecentShaders: shader => {
       // limit to 5
       if (self.recentShaders.length >= 5) self.recentShaders.shift();
       self.recentShaders.push(shader.id);
-    };
+    },
 
-    const setTheme = theme => (self.theme = theme);
+    setTheme: theme => (self.theme = theme),
 
-    const setScene = scene => (self.scene = scene);
+    setScene: scene => (self.scene = scene),
 
-    const setReady = value => (self.ready = value);
+    setReady: value => (self.ready = value),
 
-    const setName = name => (self.name = name);
+    setName: name => (self.name = name),
 
-    const setShaderCollection = c => (self.shader_collection = c);
+    setShaderCollection: c => (self.shader_collection = c),
 
-    const setShowSplash = s => (self.showSplash = s);
+    setShowSplash: s => (self.showSplash = s),
+    
+    setShowUpdates: s => (self.showUpdates = s),
 
-    return {
-      afterCreate,
-      setReady,
-      setScene,
-      setupP5,
-      setTheme,
-      setName,
-      setShaderCollection,
-      setShowSplash,
-      saveShaderCollection,
-      loadShaderCollection,
-      persistShaderCollection,
-      selectParameter,
-      breakout,
-      onBreakoutResize,
-      save,
-      load,
-      fetchShaderFiles,
-      resizeCanvas,
-      addToRecentShaders,
-      reloadDefaults
-    };
-  });
+  }));
 
 export default RootStore;

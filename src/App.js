@@ -26,6 +26,7 @@ import MessagesComponent from "./components/panels/MessagesComponent";
 import CaptureComponent from "./components/panels/CaptureComponent";
 import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
 import Splash from "./components/SplashComponent";
+import Updates from "./components/UpdatesComponent";
 import MainToolbar from "./components/MainToolbar";
 
 const App = observer(props => {
@@ -156,6 +157,10 @@ const App = observer(props => {
         </div>
         {store.showSplash && (
           <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
+        )}
+        
+        {store.showUpdates && (
+          <Updates onRemove={() => store.setShowUpdates(!store.showUpdates)} />
         )}
       </ThemeContext.Provider>
     </MainProvider>
