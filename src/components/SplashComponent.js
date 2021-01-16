@@ -63,11 +63,11 @@ const Splash = observer(props => {
             <h1>camogen </h1>
             <small>v0.1.0 BETA</small>
           </div>
-          <div className={styles.recent}>
+          {/*<div className={styles.recent}>
             <TextComponent>
               <h2>Recent projects</h2>
             </TextComponent>
-          </div>
+          </div>*/}
         </div>
 
         <div className={styles.credit}>
