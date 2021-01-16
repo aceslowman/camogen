@@ -76,8 +76,9 @@ const Help = props => {
           </p>
         </TextComponent>
         <TextComponent>
-          <h2>add motion</h2>
-          <p></p>
+          <h2>Adding Motion</h2>
+          <p><em>For the time being, motion is limited. You can right click on any (number) parameter under 
+            Shader Controls, click 'Edit', and </em></p>
         </TextComponent>
         <TextComponent>
           <h2>Roadmap</h2>

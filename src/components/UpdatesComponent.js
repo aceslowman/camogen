@@ -66,22 +66,27 @@ const Splash = observer(props => {
           
           <ul>
             <li style={{color:'red'}}>
-              motion graphs can be added to parameters, 
-              but save files will no longer work
+              Motion graphs can be added to parameters, 
+              but save files will no longer work.
             </li>
             <li style={{color:'red'}}>
-              copy / paste works for single-input nodes, but fails
+              It is safe to add a counter through the motion graph, but other 
+              nodes have issues. I'll be focusing on motion after fixing issues
+              with serialization.
+            </li>
+            <li style={{color:'red'}}>
+              Copy / paste works for single-input nodes, but fails
               with multi-input nodes. Selecting multiple nodes / subgraphs
               is in the works but currently disabled.
             </li>
             <li style={{color:'red'}}>
-              shader library can be added to and deleted from by using
+              Shader library can be added to and deleted from by using
               the toolbar at the top of the screen. The same functionality
               is not currently working when using the library through a 
               context menu.
             </li>
-            <li style={{color:'redm'}}>
-              undo/redo is not currently functioning and is disabled in the meantime
+            <li style={{color:'red'}}>
+              Undo/redo is not currently functioning and is disabled in the meantime
             </li>            
           </ul>
           
@@ -90,7 +95,7 @@ const Splash = observer(props => {
           </p>
           
           <p>
-            if/when you run into issues, please let me know, preferably by creating an issue at <a style={{color:theme.accent_color}} href="https://github.com/aceslowman/camogen/issues">https://github.com/aceslowman/camogen/issuese</a>
+            if/when you run into issues, please let me know by creating an issue at <a target="_blank" rel="noopener noreferrer" style={{color:theme.accent_color}} href="https://github.com/aceslowman/camogen/issues">https://github.com/aceslowman/camogen/issues</a>
           </p>
           
         </TextComponent>
