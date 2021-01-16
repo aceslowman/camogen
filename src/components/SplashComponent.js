@@ -62,6 +62,12 @@ const Splash = observer(props => {
           <div className={styles.title}>
             <h1>camogen </h1>
             <small>v0.1.0 BETA</small>
+            
+            <p>
+              <a style={{color:theme.accent_color, fontSize: '0.5em'}} target="_blank" href="https://discord.gg/TAxb2Kg">
+                join the discord!
+              </a>
+            </p>            
           </div>
           {/*<div className={styles.recent}>
             <TextComponent>
