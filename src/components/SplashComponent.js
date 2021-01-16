@@ -73,11 +73,14 @@ const Splash = observer(props => {
         <div className={styles.credit}>
           <p>created by austin slominski (<em>@aceslowman</em>)</p>
 
-          <a target="_blank" href="https://twitter.com/aceslowman">
+          <a style={{color:theme.accent_color}} target="_blank" href="https://twitter.com/aceslowman">
             twitter
           </a>
-          <a target="_blank" href="https://instagram.com/aceslowman">
+          <a style={{color:theme.accent_color}} target="_blank" href="https://instagram.com/aceslowman">
             insta
+          </a>
+          <a style={{color:theme.accent_color}} target="_blank" href="https://github.com/aceslowman">
+            github
           </a>
         </div>
       </div>
