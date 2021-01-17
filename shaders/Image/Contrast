@@ -1,0 +1,7 @@
+{
+  "type": "Shader",
+  "name": "Contrast",
+  "precision": "#ifdef GL_ES \n   precision highp float; \n#endif \n",
+  "vert": "attribute vec3 aPosition; \nattribute vec2 aTexCoord; \nvarying vec2 vTexCoord; \n\nvoid main() {  \n   vTexCoord = aTexCoord; \n   vec4 positionVec4 = vec4(aPosition, 1.0); \n   positionVec4.xy = positionVec4.xy * vec2(1., -1.); \n   gl_Position = positionVec4; \n}",
+  "frag": "varying vec2 vTexCoord; \nuniform sampler2D tex0; \nuniform vec2 resolution; \nuniform float amount;\nuniform float saturation;\n\nvoid main() {\n\tvec3 color = vec3(texture2D(tex0, vTexCoord));\n\tconst vec3 LumCoeff = vec3(0.2125, 0.7154, 0.0721);\n\t\n\tvec3 AvgLumin = vec3(0.5, 0.5, 0.5);\n\n\tvec3 intensity = vec3(dot(color, LumCoeff));\n\n\t// could substitute a uniform for this 1. and have variable saturation\n\tvec3 satColor = mix(intensity, color, saturation); \n\tvec3 conColor = mix(AvgLumin, satColor, amount);\n\n\tgl_FragColor = vec4(conColor, 1);\n}"
+}

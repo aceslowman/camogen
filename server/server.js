@@ -27,7 +27,7 @@ function preloadDefaultShaders() {
       dir.id = nanoid();
     },
   );  
-  
+   
   shader_collection.id = 'default-collection_'+nanoid();
 }   
 

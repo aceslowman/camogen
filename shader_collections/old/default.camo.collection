@@ -1,19 +1,19 @@
 {
-  "id": "default-collection_u2TVZ3vU1gFAx8I450Yfu",
+  "id": "default-collection_dwva8U4VhZgUsgvrhFEfO",
   "path": "/app/shaders",
   "name": "shaders",
   "size": 36387,
   "type": "directory",
   "children": [
     {
-      "id": "k9U-GY0DiSgl9XRFKpblr",
+      "id": "5JzXzYotnoAfSgp6J3FRA",
       "path": "/app/shaders/Color",
       "name": "Color",
       "size": 2257,
       "type": "directory",
       "children": [
         {
-          "id": "yQzLNRWY30s1ImQVJzZWA",
+          "id": "wzubeAyJXAdM19vnY_8df",
           "path": "/app/shaders/Color/HSV2RGB",
           "name": "HSV2RGB",
           "size": 1030,
@@ -32,7 +32,7 @@
           }
         },
         {
-          "id": "YmeykwG0VZleoNzUwstBK",
+          "id": "2tgPph7CV2lmVtNNhXiXX",
           "path": "/app/shaders/Color/RGB2HSV",
           "name": "RGB2HSV",
           "size": 1227,
@@ -53,7 +53,7 @@
       ]
     },
     {
-      "id": "nQA6rrqxRYjj1yZ2Dtuvc",
+      "id": "CqERbUf9uqqo1nIPfPKvs",
       "path": "/app/shaders/Default",
       "name": "Default",
       "size": 565,
@@ -72,14 +72,14 @@
       }
     },
     {
-      "id": "pJjFsRzSFLz1_DxcSQ1El",
+      "id": "j3wjwS7_lg9bTW2LaU_so",
       "path": "/app/shaders/Effects",
       "name": "Effects",
       "size": 9454,
       "type": "directory",
       "children": [
         {
-          "id": "Uzpa0FtU6chiIaqoL1UzC",
+          "id": "sX77taSVNXQdEwqrLocaT",
           "path": "/app/shaders/Effects/Displace",
           "name": "Displace",
           "size": 857,
@@ -98,7 +98,7 @@
           }
         },
         {
-          "id": "2pQx-TKt7ksiC57Lt4iVw",
+          "id": "8ox43-HoIz2TmbiKKLwyO",
           "path": "/app/shaders/Effects/Glyph",
           "name": "Glyph",
           "size": 6597,
@@ -117,7 +117,7 @@
           }
         },
         {
-          "id": "v9mBfKHu-uGPQM4f75TJx",
+          "id": "Eis85b6H1LBgnz0KqkCa1",
           "path": "/app/shaders/Effects/Lumakey",
           "name": "Lumakey",
           "size": 1222,
@@ -136,7 +136,7 @@
           }
         },
         {
-          "id": "9QXeT7f5By5CjY9zcmz7S",
+          "id": "c8JMYjKxH_jFOh_kbg3lv",
           "path": "/app/shaders/Effects/Wavy",
           "name": "Wavy",
           "size": 778,
@@ -157,14 +157,14 @@
       ]
     },
     {
-      "id": "84s1fiyDM7iAOhU54-ONH",
+      "id": "QFXu62KYOIRBGTfq0tFFS",
       "path": "/app/shaders/Generators",
       "name": "Generators",
       "size": 5500,
       "type": "directory",
       "children": [
         {
-          "id": "hhbyLqE0mT3KEn6NrNIg1",
+          "id": "fYz0hicWDyW4SBtNBVk76",
           "path": "/app/shaders/Generators/Circular",
           "name": "Circular",
           "size": 854,
@@ -183,7 +183,7 @@
           }
         },
         {
-          "id": "kBSYvhYmjexSW1UMOmzjf",
+          "id": "uUBL8lSlWdxJgSpPJMMWZ",
           "path": "/app/shaders/Generators/FBM",
           "name": "FBM",
           "size": 1889,
@@ -202,7 +202,7 @@
           }
         },
         {
-          "id": "Soj_K4FiO3z_IID8_oM5_",
+          "id": "dJPNSMJw1503dn5ScPybq",
           "path": "/app/shaders/Generators/Radial",
           "name": "Radial",
           "size": 759,
@@ -221,7 +221,7 @@
           }
         },
         {
-          "id": "xGPKJLLUXQybnonYc4r3j",
+          "id": "5phLpwXet5IVloLGC6UEr",
           "path": "/app/shaders/Generators/SinOsc",
           "name": "SinOsc",
           "size": 1277,
@@ -240,7 +240,7 @@
           }
         },
         {
-          "id": "npreoZXdbjOWHmVbiLaeN",
+          "id": "Vwn4UidetrG8LjF9xE-D-",
           "path": "/app/shaders/Generators/UV",
           "name": "UV",
           "size": 721,
@@ -261,14 +261,14 @@
       ]
     },
     {
-      "id": "M-yHctKbRzzwb3_IcINk7",
+      "id": "q2pgGu_Dqylk2MVsioCCS",
       "path": "/app/shaders/Gradients",
       "name": "Gradients",
       "size": 772,
       "type": "directory",
       "children": [
         {
-          "id": "LP0RShPHjshf3aJduR4fc",
+          "id": "inqB7X5K2U87CrH6VTmR4",
           "path": "/app/shaders/Gradients/Circle",
           "name": "Circle",
           "size": 772,
@@ -289,14 +289,14 @@
       ]
     },
     {
-      "id": "AusWWfHqANkFEQ_CBDXUu",
+      "id": "ep504yxezGYz3gW_WU3Cc",
       "path": "/app/shaders/Image",
       "name": "Image",
       "size": 11253,
       "type": "directory",
       "children": [
         {
-          "id": "YBnmTNVuZo5fnAm1AoWaF",
+          "id": "43zxTocLLVsgJXu3T1nfg",
           "path": "/app/shaders/Image/Blur",
           "name": "Blur",
           "size": 2952,
@@ -315,7 +315,7 @@
           }
         },
         {
-          "id": "kIRxK5zie_X0HJytIBYZC",
+          "id": "6OAsKlUUmZ8Yt3_pwwhPR",
           "path": "/app/shaders/Image/EdgeDetect",
           "name": "EdgeDetect",
           "size": 2033,
@@ -334,7 +334,7 @@
           }
         },
         {
-          "id": "fuzA4liO36JYNUisBM7k2",
+          "id": "h7rsVIlBLRafYnzmXT35H",
           "path": "/app/shaders/Image/Invert",
           "name": "Invert",
           "size": 662,
@@ -353,7 +353,7 @@
           }
         },
         {
-          "id": "YWxeuCnzqpP7CefKAbHAz",
+          "id": "U17TYw7nH1VvU7ZaOLLuA",
           "path": "/app/shaders/Image/Luma",
           "name": "Luma",
           "size": 882,
@@ -372,7 +372,7 @@
           }
         },
         {
-          "id": "5-RiJvfB64Ov_Ez39cUtQ",
+          "id": "DRdeaC7UcS8RM7TPSvJNK",
           "path": "/app/shaders/Image/Pixelate",
           "name": "Pixelate",
           "size": 1628,
@@ -391,7 +391,7 @@
           }
         },
         {
-          "id": "SOXrj0yoSqurj5mwXwr9n",
+          "id": "s6y_5IuoWAj09ZdkIVEy8",
           "path": "/app/shaders/Image/Sharpen",
           "name": "Sharpen",
           "size": 1238,
@@ -410,7 +410,7 @@
           }
         },
         {
-          "id": "oZu4-k1-JvYgxf-1bPp40",
+          "id": "k4JXH-3KI0LofAfA23BwM",
           "path": "/app/shaders/Image/Threshold",
           "name": "Threshold",
           "size": 1101,
@@ -429,7 +429,7 @@
           }
         },
         {
-          "id": "P_Y2u7uSGFRp9OrdbH4IR",
+          "id": "uSEBAsSIKmzMiUMYywQmb",
           "path": "/app/shaders/Image/ZoomPan",
           "name": "ZoomPan",
           "size": 757,
@@ -446,34 +446,18 @@
             "frag": "varying vec2 vTexCoord;  \nuniform vec2 resolution; \n\nuniform sampler2D tex0;\nuniform vec2 zoom; //{'zoom':[1,1]}\nuniform vec2 pan; //{'default':[0,0]}\n\nvoid main() {  \n  vec2 uv = vTexCoord;\n  uv *= zoom;\n  uv += pan;\n  vec4 src = texture2D(tex0, uv);\n  gl_FragColor = src;    \n}",
             "updateGroup": {}
           }
-        },
-        {
-          "id": "4kkTh",
-          "name": "Contrast",
-          "type": "file",
-          "data": {
-            "type": "Shader",
-            "name": "Contrast",
-            "inputs": ["tex0"],
-            "outputs": ["out"],
-            "uniforms": [],
-            "precision": "#ifdef GL_ES \n   precision highp float; \n#endif \n",
-            "vert": "attribute vec3 aPosition; \nattribute vec2 aTexCoord; \nvarying vec2 vTexCoord; \n\nvoid main() {  \n   vTexCoord = aTexCoord; \n   vec4 positionVec4 = vec4(aPosition, 1.0); \n   positionVec4.xy = positionVec4.xy * vec2(1., -1.); \n   gl_Position = positionVec4; \n}",
-            "frag": "varying vec2 vTexCoord; \nuniform sampler2D tex0; \nuniform vec2 resolution; \nuniform float amount;\nuniform float saturation;\n\nvoid main() {\n\tvec3 color = vec3(texture2D(tex0, vTexCoord));\n\tconst vec3 LumCoeff = vec3(0.2125, 0.7154, 0.0721);\n\t\n\tvec3 AvgLumin = vec3(0.5, 0.5, 0.5);\n\n\tvec3 intensity = vec3(dot(color, LumCoeff));\n\n\t// could substitute a uniform for this 1. and have variable saturation\n\tvec3 satColor = mix(intensity, color, saturation); \n\tvec3 conColor = mix(AvgLumin, satColor, amount);\n\n\tgl_FragColor = vec4(conColor, 1);\n}",
-            "updateGroup": {}
-          }
         }
       ]
     },
     {
-      "id": "LafWlFpYCeavK88GZG1EG",
+      "id": "0bBxXo_7rPscefYNqn4zN",
       "path": "/app/shaders/Math",
       "name": "Math",
       "size": 2637,
       "type": "directory",
       "children": [
         {
-          "id": "7Gwxn0aukD9xa8LKE7-n6",
+          "id": "vCqVIFr40c6vV9IqUek-f",
           "path": "/app/shaders/Math/Add",
           "name": "Add",
           "size": 660,
@@ -492,7 +476,7 @@
           }
         },
         {
-          "id": "__OCyaG8Li9g64dwO-vj1",
+          "id": "KydhGCYtil4XKt_R6pwut",
           "path": "/app/shaders/Math/Divide",
           "name": "Divide",
           "size": 645,
@@ -511,7 +495,7 @@
           }
         },
         {
-          "id": "yw2eKJaa_mgFM5YS-1wL4",
+          "id": "uLH9L1jNSEay4vDWV1N7q",
           "path": "/app/shaders/Math/Multiply",
           "name": "Multiply",
           "size": 646,
@@ -530,7 +514,7 @@
           }
         },
         {
-          "id": "-Xr3NAcyymhU-JKP5bneA",
+          "id": "ZDNPGexP8diKGjRnKRJer",
           "path": "/app/shaders/Math/Subtract",
           "name": "Subtract",
           "size": 686,
@@ -551,14 +535,14 @@
       ]
     },
     {
-      "id": "CquqfCQi8azdZBQIqK0Rn",
+      "id": "M6X4H38GOVWq5LRqRVyfw",
       "path": "/app/shaders/Spirit Deck",
       "name": "Spirit Deck",
       "size": 3949,
       "type": "directory",
       "children": [
         {
-          "id": "G37YJAGkUMlXYameXZEGD",
+          "id": "pHQljahK0WqQIzfZP3Tqn",
           "path": "/app/shaders/Spirit Deck/The_Chariot",
           "name": "The_Chariot",
           "size": 1648,
@@ -577,7 +561,7 @@
           }
         },
         {
-          "id": "705giPcKXgGxujXR8fAo9",
+          "id": "2LkQGkf27mtJPkGnadb8V",
           "path": "/app/shaders/Spirit Deck/The_Empress",
           "name": "The_Empress",
           "size": 1151,
@@ -596,7 +580,7 @@
           }
         },
         {
-          "id": "TTJrPC25pIjjjcrkFFdaE",
+          "id": "45DAF0wAYSjSWzg3uKWM5",
           "path": "/app/shaders/Spirit Deck/The_Tower",
           "name": "The_Tower",
           "size": 1150,
