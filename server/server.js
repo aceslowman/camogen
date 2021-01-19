@@ -18,7 +18,7 @@ function preloadDefaultShaders() {
       fs.readFile(file.path, 'utf8', (err, data) => {        
         if(err) {
           console.error(err);  
-        } else { 
+        } else {  
           file.data = JSON.parse(data);
         } 
       })      
@@ -61,6 +61,7 @@ console.log("❇️ NODE_ENV is", process.env.NODE_ENV);
 if (process.env.NODE_ENV === "production") {
   port = process.env.PORT || 3000;
   app.use(express.static(path.join(__dirname, "../build")));
+  app.use(express.static(path.join(__dirname, "../public")));
   app.get("*", (request, response) => {
     response.sendFile(path.join(__dirname, "../build", "index.html"));
   });
