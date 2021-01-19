@@ -129,9 +129,7 @@ const MainToolbar = observer(props => {
               id: "Preferences",
               label: "Preferences",
               onClick: () => {
-                console.log(getSnapshot(store))
-                mainLayout.clear();
-                mainLayout.addPanel("PREFERENCES");
+                handleLayoutSelect("PREFERENCES");
               }
             }
           }

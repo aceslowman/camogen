@@ -176,17 +176,21 @@ const ShaderGraph = observer(props => {
         },
         // copy
         "$mod+c": () => {
-          clipboard.copy();
+          if (process.env.NODE_ENV === "development") 
+            clipboard.copy();            
         },
         // cut
         "$mod+x": () => {
-          clipboard.cut();
+          if (process.env.NODE_ENV === "development")
+            clipboard.cut();
         },
         // paste
         "$mod+v": () => {
-          clipboard.paste();
-          props.data.update();
-          props.data.afterUpdate();
+          if (process.env.NODE_ENV === "development") {
+            clipboard.paste();
+            props.data.update();
+            props.data.afterUpdate(); 
+          }          
         }
       });
     } else {
