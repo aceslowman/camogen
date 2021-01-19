@@ -53,7 +53,26 @@ const ImageInputComponent = observer(props => {
 
   return (
     <React.Fragment>
-      <canvas ref={canvas_ref} className={styles.canvas} />
+      <canvas 
+        ref={canvas_ref} 
+        className={styles.canvas}
+        onDragEnter={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('onDragEnter')
+        }}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('onDragOver')
+        }}
+        onDragLeave={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('onDragLeave')
+        }}
+        onDrop={handleFileDrop}
+      />
       <ControlGroupComponent name="Image File">
         <div>
           <div

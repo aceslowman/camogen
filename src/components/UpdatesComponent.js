@@ -75,9 +75,7 @@ const Splash = observer(props => {
               with serialization.
             </li>
             <li style={{color:'red'}}>
-              Copy / paste works for single-input nodes, but fails
-              with multi-input nodes. Selecting multiple nodes / subgraphs
-              is in the works but currently disabled.
+              Copy / paste is in progress but is temporarily disabled.
             </li>
             <li style={{color:'red'}}>
               Shader library can be added to and deleted from by using
@@ -86,7 +84,7 @@ const Splash = observer(props => {
               context menu.
             </li>
             <li style={{color:'red'}}>
-              Undo/redo is not currently functioning and is disabled in the meantime
+              Undo/redo is in progress but is temporarily disabled.
             </li>            
           </ul>
           

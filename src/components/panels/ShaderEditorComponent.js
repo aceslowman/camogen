@@ -103,7 +103,7 @@ const ShaderEditor = props => {
                   "NewShader": {
                     id: "NewShader",
                     label: "New Shader",
-                    onClick: () => props.data.clear()
+                    onClick: () => props.graph.setSelectedByName("Thru")
                   }
                 }
               },
@@ -129,7 +129,7 @@ const ShaderEditor = props => {
               NewShaderEmpty: {
                 id: "NewShaderEmpty",
                 label: "New Shader",
-                onClick: () => props.graph.setSelectedByName("Default")
+                onClick: () => props.graph.setSelectedByName("Thru")
               }
             }
       }
@@ -169,15 +169,15 @@ const ShaderEditor = props => {
   return (
     <GenericPanel
       panel={props.panel}
-      //subtitle={
-      //  <span
-      //    style={{
-      //      fontStyle: props.hasChanged ? "italic" : "normal"
-      //    }}
-      //  >
-      //    {props.hasChanged ? "unsaved" : ""}
-      //  </span>
-      //}
+      subtitle={
+        <span
+          style={{
+            fontStyle: props.hasChanged ? "italic" : "normal"
+          }}
+        >
+          {props.hasChanged ? "unsaved" : ""}
+        </span>
+      }
       toolbar={toolbar}
       onFocus={e => editor.focus()}
     >
