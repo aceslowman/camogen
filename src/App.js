@@ -146,7 +146,11 @@ const App = observer(props => {
           <CanvasDisplay panel={canvasPanel} />
 
           {store.ready && (
-            <GenericPanel panel={mainPanel} subtitle={store.name} collapsible>
+            <GenericPanel 
+              panel={mainPanel} 
+              subtitle={store.name} 
+              collapsible
+            >
               <LayoutContainer layout={mainLayout}>
                 {Array.from(mainLayout.panels).map(e => {
                   return getPanel(e[1]);
