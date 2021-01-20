@@ -59,7 +59,7 @@ const Splash = observer(props => {
       }}
     >
         <TextComponent>
-          <h1>beta updates and caveats!</h1>
+          <h1>alpha updates and caveats!</h1>
           <p>
             below are a number of critical issues and caveats 
           </p>

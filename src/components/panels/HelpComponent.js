@@ -10,7 +10,7 @@ const Help = props => {
           <p>
             Hello! Thanks for trying{" "}
             <span style={{ color: "orange" }}>camogen</span>. It's currently in
-            beta so some features will not be totally functional and the
+            alpha so some features will not be totally functional and the
             structure of the system is still changing.
           </p>
           <p>
