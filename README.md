@@ -1,4 +1,4 @@
-# camogen
+# camogen v1.0.0-alpha
 
 
 ![Camogen](https://cdn.glitch.com/dc2a8e0d-c671-426a-903d-ad1a4fc36b99%2Fmain.png?v=1609269460983)
