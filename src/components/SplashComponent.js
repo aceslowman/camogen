@@ -67,7 +67,11 @@ const Splash = observer(props => {
               <a style={{color:theme.accent_color, fontSize: '0.5em'}} target="_blank" href="https://discord.gg/TAxb2Kg">
                 join the discord!
               </a>
-            </p>            
+            </p>
+            
+            <p style={{color:'red', fontSize: '0.5em'}}>
+                Note: for the time being, camogen works best in Chrome!
+            </p>  
           </div>
           {/*<div className={styles.recent}>
             <TextComponent>
