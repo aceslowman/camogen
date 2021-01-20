@@ -23,13 +23,12 @@ and beyond that, at some point in the future:
 
 ![Camogen](https://cdn.glitch.com/dc2a8e0d-c671-426a-903d-ad1a4fc36b99%2Fmain.png?v=1609269460983)
 
-
 ## UI Features
+
+The user interface for camogen is available as an npm package on [github](https://github.com/aceslowman/maco-ui) and it is free for use in your own projects. In the future I hope to clean up the library and make it more generally useful, but for the time being it's relatively tailor made for Camogen.
 
 - Adjustable, themeable split layout system that can be broken out into windows.
 - Graph system that allows you to visually arrange and chain together shader programs.
 - Keymaps for keyboard accessibility.
 - Effect controls automatically generated from shader code. Each control can be customized and annotated.
 - Cross platform, written in Javascript and WebGL.
-
-github.com/aceslowman/maco-ui
