@@ -1,7 +1,7 @@
 {
   "name": "camogen",
   "description": "a webgl video synthesizer and toolkit",
-  "version": "0.1.0",
+  "version": "1.0.0-alpha",
   "author": {
     "name": "Austin Slominski",
     "email": "austin@aceslowman.com",
