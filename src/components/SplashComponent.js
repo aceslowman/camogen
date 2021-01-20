@@ -61,20 +61,36 @@ const Splash = observer(props => {
         <div className={styles.titleWrapper}>
           <div className={styles.title}>
             <h1>camogen </h1>
-            <small>v0.1.0 BETA</small>
+            <small>v1.0.0-alpha</small>
+            
+            <p>
+              <a style={{color:theme.accent_color, fontSize: '0.5em'}} target="_blank" href="https://discord.gg/TAxb2Kg">
+                join the discord!
+              </a>
+            </p>
+            
+            <p style={{color:'red', fontSize: '0.5em'}}>
+                Note: for the time being, camogen works best in Chrome!
+            </p>  
           </div>
-          <div className={styles.recent}>
+          {/*<div className={styles.recent}>
             <TextComponent>
               <h2>Recent projects</h2>
             </TextComponent>
-          </div>
+          </div>*/}
         </div>
 
         <div className={styles.credit}>
-          <p>created by austin slominski</p>
+          <p>created by austin slominski (<em>@aceslowman</em>)</p>
 
-          <a target="_blank" href="https://twitter.com/aceslowman">
-            @aceslowman
+          <a style={{color:theme.accent_color}} target="_blank" href="https://twitter.com/aceslowman">
+            twitter
+          </a>
+          <a style={{color:theme.accent_color}} target="_blank" href="https://instagram.com/aceslowman">
+            insta
+          </a>
+          <a style={{color:theme.accent_color}} target="_blank" href="https://github.com/aceslowman">
+            github
           </a>
         </div>
       </div>

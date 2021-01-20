@@ -4,6 +4,7 @@ import {
   ControlGroupComponent,
   GenericPanel,
   InputColor,
+  InputBool,
   InputSelect,
   TextComponent,
   Themes
@@ -66,6 +67,27 @@ const Preferences = observer(props => {
           label="outline"
           value={ui.theme.outline_color}
           onChange={v => ui.theme.setOutlineColor(v)}
+        />
+      </ControlGroupComponent>
+
+      <ControlGroupComponent>
+        <InputBool
+          hLabel
+          label="show splash screen"
+          checked={store.showSplash}
+          onChange={e => {
+            window.localStorage.setItem("showSplash", e);
+            store.setShowSplash(e);
+          }}
+        />
+        <InputBool
+          hLabel
+          label="show updates"
+          checked={store.showUpdates}
+          onChange={e => {
+            window.localStorage.setItem("showUpdates", e);
+            store.setShowUpdates(e);
+          }}
         />
       </ControlGroupComponent>
     </GenericPanel>

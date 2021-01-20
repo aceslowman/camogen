@@ -131,6 +131,7 @@ const App = observer(props => {
   return (
     <MainProvider value={{ store: store }}>
       <ThemeContext.Provider value={ui.theme}>
+        {props.store.ready && <MainToolbar />}
         <div
           id="APP"
           ref={mainRef}
@@ -141,12 +142,15 @@ const App = observer(props => {
         >
           <ContextMenuComponent items={store.context.contextmenu} />
 
-          {props.store.ready && <MainToolbar />}
-
           <CanvasDisplay panel={canvasPanel} />
 
           {store.ready && (
-            <GenericPanel panel={mainPanel} subtitle={store.name} collapsible>
+            <GenericPanel
+              panel={mainPanel}
+              subtitle={store.name}
+              collapsible
+              style={{ position: "absolute" }}
+            >
               <LayoutContainer layout={mainLayout}>
                 {Array.from(mainLayout.panels).map(e => {
                   return getPanel(e[1]);
@@ -155,15 +159,14 @@ const App = observer(props => {
             </GenericPanel>
           )}
         </div>
-        
+
         {store.showUpdates && (
           <Updates onRemove={() => store.setShowUpdates(!store.showUpdates)} />
         )}
-        
+
         {store.showSplash && (
           <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
         )}
-        
       </ThemeContext.Provider>
     </MainProvider>
   );

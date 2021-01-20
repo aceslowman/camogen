@@ -20,28 +20,32 @@ const ShaderGraph = observer(props => {
       store.context.setKeymap({
         // redo
         "$mod+KeyZ": () => {
-          if (props.data.history.canUndo) {
-            console.log("UNDO", getSnapshot(props.data.history));
-            props.data.history.undo();
-            props.data.update();
-            props.data.afterUpdate();
-          } else {
-            console.log("all out of undo");
+          if (process.env.NODE_ENV === "development") {
+            if (props.data.history.canUndo) {
+              console.log("UNDO", getSnapshot(props.data.history));
+              props.data.history.undo();
+              props.data.update();
+              props.data.afterUpdate();
+            } else {
+              console.log("all out of undo");
+            }
           }
-        },        
+        },
         // undo
         "$mod+Shift+KeyZ": () => {
-          if (props.data.history.canRedo) {
-            console.log("REDO", getSnapshot(props.data.history));
-            props.data.history.redo();
-            props.data.update();
-            props.data.afterUpdate();
-          } else {
-            console.log("all out of redo");
+          if (process.env.NODE_ENV === "development") {
+            if (props.data.history.canRedo) {
+              console.log("REDO", getSnapshot(props.data.history));
+              props.data.history.redo();
+              props.data.update();
+              props.data.afterUpdate();
+            } else {
+              console.log("all out of redo");
+            }
           }
         },
         // bypass
-        b: () => {          
+        b: () => {
           props.selectedNode.toggleBypass();
         },
         // select up
@@ -67,7 +71,7 @@ const ShaderGraph = observer(props => {
             }
           }
         },
-        // select right        
+        // select right
         ArrowRight: () => {
           if (props.selectedNode && props.selectedNode.children.length) {
             let idx = props.selectedNode.children[0].parents.indexOf(
@@ -79,54 +83,52 @@ const ShaderGraph = observer(props => {
               props.selectedNode.children[0].parents[idx].select();
           }
         },
-        // add selection up 
-        "Shift+ArrowUp": () => { 
+        // add selection up
+        "Shift+ArrowUp": () => {
           if (props.selectedNode && props.selectedNode.parents.length) {
             let next = props.selectedNode.parents[0];
-            
-            if(clipboard.selection.includes(next)) {
+
+            if (clipboard.selection.includes(next)) {
               clipboard.removeSelection(props.selectedNode);
             } else {
               clipboard.addSelection(next);
-            }            
+            }
           }
         },
-        // add selection down 
-        "Shift+ArrowDown": () => { 
+        // add selection down
+        "Shift+ArrowDown": () => {
           if (props.selectedNode && props.selectedNode.children.length) {
             let next = props.selectedNode.children[0];
 
-            if(clipboard.selection.includes(next)) {
+            if (clipboard.selection.includes(next)) {
               clipboard.removeSelection(props.selectedNode);
             } else {
               clipboard.addSelection(next);
-            }            
+            }
           }
         },
         // add selection left
         "Shift+ArrowLeft": () => {
-//           if (props.selectedNode && props.selectedNode.children.length) {
-//             let idx = props.selectedNode.children[0].parents.indexOf(
-//               props.selectedNode
-//             );
-//             idx--;
-
-//             if (idx >= 0) {
-//               props.selectedNode.children[0].parents[idx].select();
-//             }
-//           }
+          //           if (props.selectedNode && props.selectedNode.children.length) {
+          //             let idx = props.selectedNode.children[0].parents.indexOf(
+          //               props.selectedNode
+          //             );
+          //             idx--;
+          //             if (idx >= 0) {
+          //               props.selectedNode.children[0].parents[idx].select();
+          //             }
+          //           }
         },
         // add selection right
         "Shift+ArrowRight": () => {
-//           if (props.selectedNode && props.selectedNode.children.length) {
-//             let idx = props.selectedNode.children[0].parents.indexOf(
-//               props.selectedNode
-//             );
-//             idx++;
-
-//             if (idx <= props.selectedNode.children[0].parents.length - 1)
-//               props.selectedNode.children[0].parents[idx].select();
-//           }
+          //           if (props.selectedNode && props.selectedNode.children.length) {
+          //             let idx = props.selectedNode.children[0].parents.indexOf(
+          //               props.selectedNode
+          //             );
+          //             idx++;
+          //             if (idx <= props.selectedNode.children[0].parents.length - 1)
+          //               props.selectedNode.children[0].parents[idx].select();
+          //           }
         },
         // swap up
         "$mod+Shift+ArrowUp": () => {
@@ -174,18 +176,22 @@ const ShaderGraph = observer(props => {
         },
         // copy
         "$mod+c": () => {
-          clipboard.copy();
+          if (process.env.NODE_ENV === "development") 
+            clipboard.copy();            
         },
         // cut
         "$mod+x": () => {
-          clipboard.cut();
+          if (process.env.NODE_ENV === "development")
+            clipboard.cut();
         },
         // paste
         "$mod+v": () => {
-          clipboard.paste();
-          props.data.update();
-          props.data.afterUpdate();
-        },
+          if (process.env.NODE_ENV === "development") {
+            clipboard.paste();
+            props.data.update();
+            props.data.afterUpdate(); 
+          }          
+        }
       });
     } else {
       store.context.removeKeymap();

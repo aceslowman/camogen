@@ -32,7 +32,7 @@ const root = RootStore.create({
         canFloat: false,
         collapsible: true,
         fullscreen: false,
-        canFullscreen: true,
+        // canFullscreen: true, // this is temporarily disabled
         dimensions: [700, 500],
         position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250],
         layout: LayoutVariants['WELCOME']
