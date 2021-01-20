@@ -150,6 +150,7 @@ const App = observer(props => {
               panel={mainPanel} 
               subtitle={store.name} 
               collapsible
+              style={{position:'fixed'}}
             >
               <LayoutContainer layout={mainLayout}>
                 {Array.from(mainLayout.panels).map(e => {
