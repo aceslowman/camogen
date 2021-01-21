@@ -21,7 +21,7 @@ function preloadDefaultShaders() {
         } else {  
           file.data = JSON.parse(data);
         } 
-      })      
+      })       
     },
     dir => {    // directories
       dir.id = nanoid();
