@@ -137,7 +137,11 @@ const App = observer(props => {
           ref={mainRef}
           onContextMenu={handleContextMenu}
           style={{
-            backgroundColor: ui.theme.secondary_color
+            backgroundColor: ui.theme.secondary_color,
+            height:'100%',
+        width:'100%',
+        display:'flex', 
+        flexFlow: 'column'
           }}
         >
           <ContextMenuComponent items={store.context.contextmenu} />
@@ -148,7 +152,6 @@ const App = observer(props => {
             <GenericPanel
               panel={mainPanel}
               subtitle={store.name}
-              collapsible
               style={{ position: "absolute" }}
             >
               <LayoutContainer layout={mainLayout}>

@@ -30,7 +30,8 @@ const root = RootStore.create({
         id: "MAIN",
         floating: true,
         canFloat: false,
-        collapsible: true,
+        // collapsible: true,
+        collapsible: false,
         fullscreen: false,
         // canFullscreen: true, // this is temporarily disabled
         dimensions: [700, 500],
