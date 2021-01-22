@@ -12,6 +12,7 @@ import Modulus from './math/Modulus';
 import Sin from './math/Sin';
 import Cos from './math/Cos';
 import Tan from './math/Tan';
+import Thru from './Thru';
 
 export const allOps = types.union(
     Counter, 
@@ -24,7 +25,8 @@ export const allOps = types.union(
     Modulus, 
     Sin, 
     Cos, 
-    Tan
+    Tan,
+    Thru
 );
 
 export const opList = [
@@ -38,7 +40,8 @@ export const opList = [
   "Modulus", 
   "Sin", 
   "Cos", 
-  "Tan"
+  "Tan",
+  "Thru"
 ];
 
 export const getOperator = (name) => {
@@ -109,6 +112,12 @@ export const getOperator = (name) => {
             operator = Tan.create({
                 uuid: 'Tan_'+nanoid(),
                 name: 'Tan'
+            })
+            break;
+        case 'Thru':
+            operator = Thru.create({
+                uuid: 'Thru_'+nanoid(),
+                name: 'Thru'
             })
             break;
         default:

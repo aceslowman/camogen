@@ -61,7 +61,7 @@ const Splash = observer(props => {
         <div className={styles.titleWrapper}>
           <div className={styles.title}>
             <h1>camogen </h1>
-            <small>v1.0.0-alpha</small>
+            <small>v1.0.1-alpha</small>
             
             <p>
               <a style={{color:theme.accent_color, fontSize: '0.5em'}} target="_blank" href="https://discord.gg/TAxb2Kg">

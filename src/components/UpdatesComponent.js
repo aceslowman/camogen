@@ -70,11 +70,6 @@ const Splash = observer(props => {
               but save files will no longer work.
             </li>
             <li style={{color:'red'}}>
-              It is safe to add a counter through the motion graph, but other 
-              nodes have issues. I'll be focusing on motion after fixing issues
-              with serialization.
-            </li>
-            <li style={{color:'red'}}>
               Copy / paste is in progress but is temporarily disabled.
             </li>
             <li style={{color:'red'}}>

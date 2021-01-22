@@ -22,11 +22,14 @@ const OperatorControls = observer(props => {
     store.workspace.removePanel("OPERATOR_CONTROLS");
   };
 
+  /*
+    this isn't the best way to do this, it's *different* than
+    how it's being done in the ShaderControls. for now it works,
+    but this is a place for improvement
+  */
   const generateInterface = e => {
     let controls = null;
 
-    console.log('hello?', e)
-    
     if (e) {
       let c;
 
