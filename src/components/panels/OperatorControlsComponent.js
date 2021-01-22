@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import MainContext from "../../MainContext";
-import { PanelComponent, ThemeContext } from "maco-ui";
+import { PanelComponent, ThemeContext, ControlGroupComponent } from "maco-ui";
 import CounterComponent from "./operators/inputs/CounterComponent";
 import MIDIComponent from "./operators/inputs/MIDIComponent";
 import FloatComponent from "./operators/inputs/FloatComponent";
@@ -25,10 +25,12 @@ const OperatorControls = observer(props => {
   const generateInterface = e => {
     let controls = null;
 
-    if (e.data) {
+    console.log('hello?', e)
+    
+    if (e) {
       let c;
 
-      switch (e.data.name) {
+      switch (e.name) {
         case "Counter":
           c = <CounterComponent data={e.data} />;
           break;
@@ -38,89 +40,17 @@ const OperatorControls = observer(props => {
         case "Float":
           c = <FloatComponent data={e.data} />;
           break;
-        default:
+        default:          
           break;
       }
 
       controls = c;
+    } else {
+      controls = (<ControlGroupComponent></ControlGroupComponent>)
     }
 
     return controls;
   };
-
-//   let refs = [];
-//   const panels = [];
-
-//   const addPanelRef = (panel, id) => {
-//     refs = [...refs, { [id]: panel }];
-//   };
-
-//   const handleSubpanelRef = (r, node) => {
-//     if (isAlive(node)) addPanelRef(r, node.uuid);
-//   };
-
-//   if (props.data) { // can I remove this?
-//     props.data.queue.forEach(subqueue => {
-//       subqueue.forEach((node, i) => {
-//         let subpanels = [];
-//         let is_selected = props.data.selectedNode === node;
-
-//         if (node.data) {
-//           let controls = generateInterface(node);
-          
-//           subpanels.push(
-//             <li
-//               key={node.uuid}
-//               ref={r => handleSubpanelRef(r, node)}
-//               style={{
-//                 borderLeft: `3px solid ${branch_colors[node.branch_index]}`
-//               }}
-//             >
-//               <PanelComponent
-//                 title={node.data.name}
-//                 collapsible={controls ? true : false}
-//                 titleStyle={{
-//                   color: is_selected ? theme.text_color : theme.text_color,
-//                   backgroundColor: is_selected
-//                     ? theme.accent_color
-//                     : theme.primary_color
-//                 }}
-//                 expanded={expandAll}
-//                 onRemove={() => node.remove()}
-//                 gutters
-//               >
-//                 {controls}
-//               </PanelComponent>
-//             </li>
-//           );
-//         }
-
-//         panels.push(
-//           <ul
-//             key={node.uuid}
-//             className={styles.listtree}
-//           >
-//             {subpanels}
-//           </ul>
-//         );
-//       });
-//     });
-//   }
-  
-//   // this should all be refactored into a single Controls component in maco-ui
-//   useEffect(() => {
-//     // scroll panels into view when they are selected.
-//     refs.forEach((e, i) => {
-//       if (Object.keys(e)[0] === props.selectedNode.uuid) {
-//         e[props.selectedNode.uuid].scrollIntoView({
-//           block: "center"
-//           // bug in chrome for 'smooth'
-//           // behavior: 'smooth'
-//         });
-//       }
-//     });
-//   }, [props.data.selectedNode]);
-
 
   return (
     <PanelComponent

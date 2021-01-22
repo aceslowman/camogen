@@ -68,6 +68,7 @@ const Controls = observer(props => {
           default:
             controls = props.generateInterface(node.data);
         }
+        console.log('CHECK', controls)
         subpanels.push(
           <li
             key={node.uuid}
