@@ -85,7 +85,7 @@ const OperatorControls = observer(props => {
                     ? theme.accent_color
                     : theme.primary_color
                 }}
-                expanded={node === props.data.selectedNode}
+                expanded={expandAll}
                 onRemove={() => node.remove()}
                 gutters
               >
