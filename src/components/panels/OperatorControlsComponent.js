@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import MainContext from "../../MainContext";
 import { PanelComponent, ThemeContext } from "maco-ui";
 import CounterComponent from "./operators/inputs/CounterComponent";
@@ -7,11 +7,16 @@ import FloatComponent from "./operators/inputs/FloatComponent";
 
 import styles from "./OperatorControlsComponent.module.css";
 import { observer } from "mobx-react";
+
+import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 
 const OperatorControls = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
+  
+  const [useKeys, setUseKeys] = useState(false);
+  const [expandAll, setExpandAll] = useState(true);
 
   const handleRemove = () => {
     store.workspace.removePanel("OPERATOR_CONTROLS");
@@ -43,9 +48,18 @@ const OperatorControls = observer(props => {
     return controls;
   };
 
+  let refs = [];
   const panels = [];
 
-  if (props.data) {
+  const addPanelRef = (panel, id) => {
+    refs = [...refs, { [id]: panel }];
+  };
+
+  const handleSubpanelRef = (r, node) => {
+    if (isAlive(node)) addPanelRef(r, node.uuid);
+  };
+
+  if (props.data) { // can I remove this?
     props.data.queue.forEach(subqueue => {
       subqueue.forEach((node, i) => {
         let subpanels = [];
@@ -55,13 +69,13 @@ const OperatorControls = observer(props => {
           let controls = generateInterface(node);
           subpanels.push(
             <li
-              key={i}
+              key={node.uuid}
+              ref={r => handleSubpanelRef(r, node)}
               style={{
                 borderLeft: `3px solid ${branch_colors[node.branch_index]}`
               }}
             >
               <PanelComponent
-                key={i}
                 title={node.data.name}
                 collapsible={controls ? true : false}
                 titleStyle={{
@@ -96,6 +110,21 @@ const OperatorControls = observer(props => {
       });
     });
   }
+  
+  // this should all be refactored into a single Controls component in maco-ui
+  useEffect(() => {
+    // scroll panels into view when they are selected.
+    refs.forEach((e, i) => {
+      if (Object.keys(e)[0] === props.selectedNode.uuid) {
+        e[props.selectedNode.uuid].scrollIntoView({
+          block: "center"
+          // bug in chrome for 'smooth'
+          // behavior: 'smooth'
+        });
+      }
+    });
+  }, [props.data.selectedNode]);
+
 
   return (
     <PanelComponent

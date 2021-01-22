@@ -120,7 +120,7 @@ const OperatorEditor = observer(props => {
             selectedNode={data.graph.selectedNode}
             coord_bounds={props.coord_bounds}
           />
-          <OperatorControls data={graph} />
+          <OperatorControls data={graph} selectedNode={data.graph.selectedNode}/>
         </SplitContainer>
       )}
 
