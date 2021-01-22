@@ -67,6 +67,7 @@ const OperatorControls = observer(props => {
 
         if (node.data) {
           let controls = generateInterface(node);
+          
           subpanels.push(
             <li
               key={node.uuid}
@@ -98,11 +99,6 @@ const OperatorControls = observer(props => {
           <ul
             key={node.uuid}
             className={styles.listtree}
-            style={
-              {
-                // marginLeft: node.trunk_distance * 5,
-              }
-            }
           >
             {subpanels}
           </ul>
