@@ -136,6 +136,7 @@ const ShaderEditor = props => {
     />
   );
 
+  // when the component mounts, setup CodeMirror
   useLayoutEffect(() => {
     editor = CodeMirror(editorRef.current, {
       mode: "x-shader/x-fragment",
@@ -148,6 +149,7 @@ const ShaderEditor = props => {
     editor.getDoc().on("change", handleEditorChange);
   }, []);
 
+  // changes editor display depending on what mode is selected
   useLayoutEffect(() => {
     let doc;
 

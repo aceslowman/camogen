@@ -4,7 +4,7 @@ import { PanelComponent, ThemeContext } from "maco-ui";
 import CounterComponent from "./operators/inputs/CounterComponent";
 import MIDIComponent from "./operators/inputs/MIDIComponent";
 import FloatComponent from "./operators/inputs/FloatComponent";
-
+import ControlsComponent from "../controls/ControlsComponent";
 import styles from "./OperatorControlsComponent.module.css";
 import { observer } from "mobx-react";
 
@@ -48,78 +48,78 @@ const OperatorControls = observer(props => {
     return controls;
   };
 
-  let refs = [];
-  const panels = [];
+//   let refs = [];
+//   const panels = [];
 
-  const addPanelRef = (panel, id) => {
-    refs = [...refs, { [id]: panel }];
-  };
+//   const addPanelRef = (panel, id) => {
+//     refs = [...refs, { [id]: panel }];
+//   };
 
-  const handleSubpanelRef = (r, node) => {
-    if (isAlive(node)) addPanelRef(r, node.uuid);
-  };
+//   const handleSubpanelRef = (r, node) => {
+//     if (isAlive(node)) addPanelRef(r, node.uuid);
+//   };
 
-  if (props.data) { // can I remove this?
-    props.data.queue.forEach(subqueue => {
-      subqueue.forEach((node, i) => {
-        let subpanels = [];
-        let is_selected = props.data.selectedNode === node;
+//   if (props.data) { // can I remove this?
+//     props.data.queue.forEach(subqueue => {
+//       subqueue.forEach((node, i) => {
+//         let subpanels = [];
+//         let is_selected = props.data.selectedNode === node;
 
-        if (node.data) {
-          let controls = generateInterface(node);
+//         if (node.data) {
+//           let controls = generateInterface(node);
           
-          subpanels.push(
-            <li
-              key={node.uuid}
-              ref={r => handleSubpanelRef(r, node)}
-              style={{
-                borderLeft: `3px solid ${branch_colors[node.branch_index]}`
-              }}
-            >
-              <PanelComponent
-                title={node.data.name}
-                collapsible={controls ? true : false}
-                titleStyle={{
-                  color: is_selected ? theme.text_color : theme.text_color,
-                  backgroundColor: is_selected
-                    ? theme.accent_color
-                    : theme.primary_color
-                }}
-                expanded={expandAll}
-                onRemove={() => node.remove()}
-                gutters
-              >
-                {controls}
-              </PanelComponent>
-            </li>
-          );
-        }
+//           subpanels.push(
+//             <li
+//               key={node.uuid}
+//               ref={r => handleSubpanelRef(r, node)}
+//               style={{
+//                 borderLeft: `3px solid ${branch_colors[node.branch_index]}`
+//               }}
+//             >
+//               <PanelComponent
+//                 title={node.data.name}
+//                 collapsible={controls ? true : false}
+//                 titleStyle={{
+//                   color: is_selected ? theme.text_color : theme.text_color,
+//                   backgroundColor: is_selected
+//                     ? theme.accent_color
+//                     : theme.primary_color
+//                 }}
+//                 expanded={expandAll}
+//                 onRemove={() => node.remove()}
+//                 gutters
+//               >
+//                 {controls}
+//               </PanelComponent>
+//             </li>
+//           );
+//         }
 
-        panels.push(
-          <ul
-            key={node.uuid}
-            className={styles.listtree}
-          >
-            {subpanels}
-          </ul>
-        );
-      });
-    });
-  }
+//         panels.push(
+//           <ul
+//             key={node.uuid}
+//             className={styles.listtree}
+//           >
+//             {subpanels}
+//           </ul>
+//         );
+//       });
+//     });
+//   }
   
-  // this should all be refactored into a single Controls component in maco-ui
-  useEffect(() => {
-    // scroll panels into view when they are selected.
-    refs.forEach((e, i) => {
-      if (Object.keys(e)[0] === props.selectedNode.uuid) {
-        e[props.selectedNode.uuid].scrollIntoView({
-          block: "center"
-          // bug in chrome for 'smooth'
-          // behavior: 'smooth'
-        });
-      }
-    });
-  }, [props.data.selectedNode]);
+//   // this should all be refactored into a single Controls component in maco-ui
+//   useEffect(() => {
+//     // scroll panels into view when they are selected.
+//     refs.forEach((e, i) => {
+//       if (Object.keys(e)[0] === props.selectedNode.uuid) {
+//         e[props.selectedNode.uuid].scrollIntoView({
+//           block: "center"
+//           // bug in chrome for 'smooth'
+//           // behavior: 'smooth'
+//         });
+//       }
+//     });
+//   }, [props.data.selectedNode]);
 
 
   return (
@@ -131,7 +131,12 @@ const OperatorControls = observer(props => {
       detachable
       onDetach={props.onDetach ? props.onDetach : () => {}}
     >
-      {props.data.nodes && panels}
+      {/*props.data.nodes && panels*/}
+      <ControlsComponent 
+        data={props.data}  
+        selectedNode={props.selectedNode}
+        generateInterface={generateInterface}
+      />
     </PanelComponent>
   );
 });
