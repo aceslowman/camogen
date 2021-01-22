@@ -14,6 +14,7 @@ import styles from "./ShaderControlsComponent.module.css";
 import { observer } from "mobx-react";
 import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
+import ControlsComponent from "../controls/ControlsComponent";
 
 // built in inputs
 import SketchInputComponent from "./shaders/SketchInputComponent";
@@ -345,7 +346,11 @@ const ShaderControls = observer(props => {
         />
       }
     >
-      {props.data.nodes && panels}
+      {/*props.data.nodes && panels*/}
+      <ControlsComponent 
+        data={props.data}  
+        selectedNode={props.selectedNode}
+      />
     </GenericPanel>
   );
 });

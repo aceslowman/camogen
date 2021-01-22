@@ -323,24 +323,7 @@ const Controls = observer(props => {
   }, [props.data.selectedNode]);
 
   return (
-    <GenericPanel
-      panel={props.panel}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-      toolbar={
-        <ToolbarComponent
-          items={{
-            ToggleExpand: {
-              id: "ToggleExpand",
-              label: expandAll ? "Collapse" : "Expand",
-              onClick: () => setExpandAll(!expandAll)
-            }
-          }}
-        />
-      }
-    >
-      {props.data.nodes && panels}
-    </GenericPanel>
+      props.data.nodes && panels
   );
 });
 
