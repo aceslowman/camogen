@@ -32,13 +32,13 @@ const OperatorControls = observer(props => {
 
       switch (e.name) {
         case "Counter":
-          c = <CounterComponent data={e.data} />;
+          c = (<CounterComponent data={e} />);
           break;
         case "MIDI":
-          c = <MIDIComponent data={e.data} />;
+          c = (<MIDIComponent data={e} />);
           break;
         case "Float":
-          c = <FloatComponent data={e.data} />;
+          c = (<FloatComponent data={e} />);
           break;
         default:          
           break;
@@ -46,6 +46,7 @@ const OperatorControls = observer(props => {
 
       controls = c;
     } else {
+      // this fallback is for addition, subtraction, etc, controlless nodes
       controls = (<ControlGroupComponent></ControlGroupComponent>)
     }
 

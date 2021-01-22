@@ -10,6 +10,15 @@ import {
   ToolbarComponent
 } from "maco-ui";
 
+// built in inputs
+import SketchInputComponent from "../panels/shaders/SketchInputComponent";
+import WebcamInputComponent from "../panels/shaders/WebcamInputComponent";
+import ImageInputComponent from "../panels/shaders/ImageInputComponent";
+import TextInputComponent from "../panels/shaders/TextInputComponent";
+
+// built in operators
+
+
 import styles from "./ControlsComponent.module.css";
 import { observer } from "mobx-react";
 import { getSnapshot, isAlive } from "mobx-state-tree";
@@ -46,29 +55,30 @@ const Controls = observer(props => {
         let controls = null;
         switch (node.data.name) {
           case "Webcam":
-            controls = [
+            controls = (
               <WebcamInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            ];
+            );
             break;
           case "Image":
-            controls = [
+            controls = (
               <ImageInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            ];
+            );
             break;
           case "Text":
-            controls = [
+            controls = (
               <TextInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            ];
+            );
             break;
           case "Sketch":
-            controls = [
+            controls = (
               <SketchInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            ];
+            );
             break;
           default:
             controls = props.generateInterface(node.data);
         }
-        console.log('CHECK', controls)
+        // console.log('CHECK', controls)
+        
         subpanels.push(
           <li
             key={node.uuid}
@@ -87,7 +97,7 @@ const Controls = observer(props => {
                   onChange={node.toggleBypass}
                 />
               )}
-              collapsible={controls.length ? true : false}
+              collapsible={controls ? true : false}
               titleStyle={{
                 color: is_selected ? theme.text_color : theme.text_color,
                 backgroundColor: is_selected
