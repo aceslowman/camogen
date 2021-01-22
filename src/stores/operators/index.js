@@ -3,6 +3,7 @@ import {nanoid} from 'nanoid';
 
 import Counter from './inputs/Counter';
 import MIDI from './inputs/MIDI';
+import Float from './inputs/Float';
 import Add from './math/Add';
 import Subtract from './math/Subtract';
 import Divide from './math/Divide';
@@ -15,6 +16,7 @@ import Tan from './math/Tan';
 export const allOps = types.union(
     Counter, 
     MIDI, 
+    Float,
     Add, 
     Subtract, 
     Divide, 
@@ -41,6 +43,12 @@ export const getOperator = (name) => {
                 name: 'MIDI'
             })
             break;
+        case 'Float':
+            operator = Float.create({
+                uuid: 'Float_'+nanoid(),
+                name: 'Float'
+            });
+            break;        
         case 'Add':
             operator = Add.create({
                 uuid: 'Add_'+nanoid(),
