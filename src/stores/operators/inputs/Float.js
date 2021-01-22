@@ -4,14 +4,14 @@ import Operator from "../../OperatorStore";
 const float = types
   .model("Float", {
     type: "Float",
-    value: 0,
-    modifier: 100
+    value: 0
   })
   .actions(self => ({
     update: () => {
-      // self.value =
-        // self.modifier !== 0 ? (self.value += 1 / self.modifier) : self.value;
       return self.value;
+    },
+    handleChange: e => {
+      self.value = e;
     }
   }));
 

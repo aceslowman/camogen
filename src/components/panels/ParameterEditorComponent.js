@@ -10,6 +10,7 @@ const OperatorEditor = observer(props => {
   const { data } = props;
   const graph = data ? data.graph : null;
 
+  // TODO: these should autopopulate from available operators
   const toolbar = props.data && (
     <ToolbarComponent
       items={{
@@ -26,6 +27,11 @@ const OperatorEditor = observer(props => {
               id: "Counter",
               label: "Counter",
               onClick: () => graph.setSelectedByName("Counter")
+            },
+            Float: {
+              id: "Float",
+              label: "Float",
+              onClick: () => graph.setSelectedByName("Float")
             }
           }
         },

@@ -3,6 +3,7 @@ import MainContext from "../../MainContext";
 import { PanelComponent, ThemeContext } from "maco-ui";
 import CounterComponent from "./operators/inputs/CounterComponent";
 import MIDIComponent from "./operators/inputs/MIDIComponent";
+import FloatComponent from "./operators/inputs/FloatComponent";
 
 import styles from "./OperatorControlsComponent.module.css";
 import { observer } from "mobx-react";
@@ -21,7 +22,7 @@ const OperatorControls = observer(props => {
 
     if (e.data) {
       let c;
-
+      // TODO this can be refactored, plus, should dereference late
       switch (e.data.name) {
         case "Counter":
           c = (
@@ -39,6 +40,16 @@ const OperatorControls = observer(props => {
               value={e.data.value}
               handleInputSelect={e.data.handleInputSelect}
               midi_inputs={e.data.midi_inputs}
+            />
+          );
+          break;
+        case "Float":
+          c = (
+            <FloatComponent
+              // modifier={e.data.modifier}
+              // value={e.data.value}
+              // handleChange={e.data.handleChange}
+              data={e.data}
             />
           );
           break;

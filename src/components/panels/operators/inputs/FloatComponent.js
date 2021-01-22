@@ -7,8 +7,8 @@ const FloatComponent = observer((props) => {
 		<ControlGroupComponent name="value">
 			<InputFloat
 				step={0.1}
-				value={props.value}
-				onChange={props.handleChange}
+				value={props.data.value}
+				onChange={props.data.handleChange}
 			/>
 		</ControlGroupComponent>
 	)
