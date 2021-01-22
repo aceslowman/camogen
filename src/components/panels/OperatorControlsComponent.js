@@ -22,31 +22,17 @@ const OperatorControls = observer(props => {
 
     if (e.data) {
       let c;
-      // TODO this can be refactored, plus, should dereference late
+
       switch (e.data.name) {
         case "Counter":
-          c = (
-            <CounterComponent
-              modifier={e.data.modifier}
-              value={e.data.value}
-              handleChange={e.data.handleChange}
-            />
-          );
+          c = <CounterComponent data={e.data} />;
           break;
         case "MIDI":
-          c = (
-            <MIDIComponent
-              modifier={e.data.modifier}
-              value={e.data.value}
-              handleInputSelect={e.data.handleInputSelect}
-              midi_inputs={e.data.midi_inputs}
-            />
-          );
+          c = <MIDIComponent data={e.data} />;
           break;
         case "Float":
           c = <FloatComponent data={e.data} />;
           break;
-
         default:
           break;
       }

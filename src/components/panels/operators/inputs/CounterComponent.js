@@ -15,8 +15,8 @@ const CounterComponent = observer((props) => {
 			</fieldset> */}
 			<InputFloat
 				step={0.1}
-				value={props.modifier}
-				onChange={props.handleChange}
+				value={props.data.modifier}
+				onChange={props.data.handleChange}
 			/>
 		</ControlGroupComponent>
 	)
