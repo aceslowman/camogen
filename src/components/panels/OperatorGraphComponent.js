@@ -64,6 +64,7 @@ const OperatorGraph = observer((props) => {
 				data={props.data.graph}
 				coord_bounds={props.coord_bounds}
 				selectedNode={props.selectedNode}
+        onContextMenu={props.onContextMenu}
 			/>
 
 			{ props.data && props.data.updateFlag }

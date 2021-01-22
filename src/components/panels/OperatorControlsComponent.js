@@ -44,14 +44,7 @@ const OperatorControls = observer(props => {
           );
           break;
         case "Float":
-          c = (
-            <FloatComponent
-              // modifier={e.data.modifier}
-              // value={e.data.value}
-              // handleChange={e.data.handleChange}
-              data={e.data}
-            />
-          );
+          c = <FloatComponent data={e.data} />;
           break;
 
         default:
