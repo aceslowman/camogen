@@ -14,6 +14,37 @@ const ShaderGraph = observer(props => {
   const handleFocus = e => setUseKeys(true);
 
   const handleBlur = e => setUseKeys(false);
+  
+  const handleContextMenu = (e, node) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    node.select(); // select with right click
+    store.context.setContextmenu({
+      Library: {
+        id: "Library",
+        label: "Library",
+        dropDown: store.shaderLibrary
+      },
+      Delete: {
+        id: "Delete",
+        label: "Delete",
+        onClick: () => {
+          props.data.removeNode(node);
+          store.context.setContextmenu(); // removes menu
+        }
+      },
+      EditShader: {
+        id: "EditShader",
+        label: "Edit Shader",
+        onClick: () => {
+          let variant = store.ui.getLayoutVariant("SHADER_EDIT");
+          store.ui.getPanel("MAIN").setLayout(variant);
+          store.context.setContextmenu(); // removes menu
+        }
+      }
+    });
+  };
 
   useEffect(() => {
     if (useKeys) {
@@ -204,7 +235,7 @@ const ShaderGraph = observer(props => {
     props.data.history
   ]);
 
-  const handleContextMenu = e => {
+  const handlePanelContextMenu = e => {
     e.stopPropagation();
 
     store.context.setContextmenu({
@@ -219,7 +250,7 @@ const ShaderGraph = observer(props => {
   return (
     <GenericPanel
       panel={props.panel}
-      onContextMenu={handleContextMenu}
+      onContextMenu={handlePanelContextMenu}
       onFocus={handleFocus}
       onBlur={handleBlur}
       indicators={
@@ -240,6 +271,7 @@ const ShaderGraph = observer(props => {
           data={props.data}
           coord_bounds={props.coord_bounds}
           selectedNode={props.selectedNode}
+          onContextMenu={handleContextMenu}
         />
       )}
 

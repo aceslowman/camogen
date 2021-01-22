@@ -1,7 +1,7 @@
 import React from "react";
 import OperatorGraph from "./OperatorGraphComponent";
 import styles from "./ParameterEditorComponent.module.css";
-
+import { opList } from "../../stores/operators";
 import { GenericPanel, SplitContainer, ToolbarComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import OperatorControls from "./OperatorControlsComponent";
@@ -11,6 +11,8 @@ const OperatorEditor = observer(props => {
   const graph = data ? data.graph : null;
 
   // TODO: these should autopopulate from available operators
+  console.log('HEY CHECK',opList)
+  
   const toolbar = props.data && (
     <ToolbarComponent
       items={{

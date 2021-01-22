@@ -17,37 +17,6 @@ const GraphComponent = observer(props => {
   const canvas_ref = useRef(null);
   const [labels, setLabels] = useState([]);
 
-  const handleContextMenu = (e, node) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    node.select(); // select with right click
-    store.context.setContextmenu({
-      Library: {
-        id: "Library",
-        label: "Library",
-        dropDown: store.shaderLibrary
-      },
-      Delete: {
-        id: "Delete",
-        label: "Delete",
-        onClick: () => {
-          props.data.removeNode(node);
-          store.context.setContextmenu(); // removes menu
-        }
-      },
-      EditShader: {
-        id: "EditShader",
-        label: "Edit Shader",
-        onClick: () => {
-          let variant = store.ui.getLayoutVariant("SHADER_EDIT");
-          store.ui.getPanel("MAIN").setLayout(variant);
-          store.context.setContextmenu(); // removes menu
-        }
-      }
-    });
-  };
-
   const drawGraph = () => {
     const ctx = canvas_ref.current.getContext("2d");
     const wrapper_bounds = wrapper_ref.current.getBoundingClientRect();
@@ -200,7 +169,7 @@ const GraphComponent = observer(props => {
                 // insert new node then open context menu
                 props.data.insertBelow(node).select();
                 props.data.setSelectedByName("Thru");
-                handleContextMenu(e, node);
+                props.onContextMenu(e, node);
               }}
               onClick={() => {
                 props.data.insertBelow(node).select();
@@ -221,7 +190,7 @@ const GraphComponent = observer(props => {
             ${styles.label}
           `}
           onClick={() => node.select()}
-          onContextMenu={e => handleContextMenu(e, node)}
+          onContextMenu={e => props.onContextMenu(e, node)}
           style={{
             left: x + spacing.x / 2 - 15,
             top: y - spacing.y / 2 - 15

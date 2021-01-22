@@ -27,6 +27,20 @@ export const allOps = types.union(
     Tan
 );
 
+export const opList = [
+  "Counter", 
+  "MIDI", 
+  "Float",
+  "Add", 
+  "Subtract", 
+  "Divide", 
+  "Multiply", 
+  "Modulus", 
+  "Sin", 
+  "Cos", 
+  "Tan"
+];
+
 export const getOperator = (name) => {
     let operator = null;
 
