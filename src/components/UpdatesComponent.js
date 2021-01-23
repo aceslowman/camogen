@@ -58,6 +58,9 @@ const Splash = observer(props => {
         minHeight: 425
       }}
     >
+      <PageContainer>
+      
+      </PageContainer>
         <TextComponent>
           <h1>alpha updates and caveats!</h1>
           <p>
