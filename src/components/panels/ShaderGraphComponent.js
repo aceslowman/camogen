@@ -12,199 +12,56 @@ const ShaderGraph = observer(props => {
   const mainRef = useRef();
 
   const handleFocus = e => setUseKeys(true);
-
   const handleBlur = e => setUseKeys(false);
 
-  useEffect(() => {
-    if (useKeys) {
-      store.context.setKeymap({
-        // redo
-        "$mod+KeyZ": () => {
-          if (process.env.NODE_ENV === "development") {
-            if (props.data.history.canUndo) {
-              console.log("UNDO", getSnapshot(props.data.history));
-              props.data.history.undo();
-              props.data.update();
-              props.data.afterUpdate();
-            } else {
-              console.log("all out of undo");
-            }
-          }
-        },
-        // undo
-        "$mod+Shift+KeyZ": () => {
-          if (process.env.NODE_ENV === "development") {
-            if (props.data.history.canRedo) {
-              console.log("REDO", getSnapshot(props.data.history));
-              props.data.history.redo();
-              props.data.update();
-              props.data.afterUpdate();
-            } else {
-              console.log("all out of redo");
-            }
-          }
-        },
-        // bypass
-        b: () => {
-          props.selectedNode.toggleBypass();
-        },
-        // select up
-        ArrowUp: () => {
-          if (props.selectedNode && props.selectedNode.parents.length)
-            props.selectedNode.parents[0].select();
-        },
-        // select down
-        ArrowDown: () => {
-          if (props.selectedNode && props.selectedNode.children.length)
-            props.selectedNode.children[0].select();
-        },
-        // select left
-        ArrowLeft: () => {
-          if (props.selectedNode && props.selectedNode.children.length) {
-            let idx = props.selectedNode.children[0].parents.indexOf(
-              props.selectedNode
-            );
-            idx--;
+  const handleContextMenu = (e, node) => {
+    e.stopPropagation();
+    e.preventDefault();
 
-            if (idx >= 0) {
-              props.selectedNode.children[0].parents[idx].select();
-            }
-          }
-        },
-        // select right
-        ArrowRight: () => {
-          if (props.selectedNode && props.selectedNode.children.length) {
-            let idx = props.selectedNode.children[0].parents.indexOf(
-              props.selectedNode
-            );
-            idx++;
+    // let dev_debug = ;
 
-            if (idx <= props.selectedNode.children[0].parents.length - 1)
-              props.selectedNode.children[0].parents[idx].select();
-          }
-        },
-        // add selection up
-        "Shift+ArrowUp": () => {
-          if (props.selectedNode && props.selectedNode.parents.length) {
-            let next = props.selectedNode.parents[0];
-
-            if (clipboard.selection.includes(next)) {
-              clipboard.removeSelection(props.selectedNode);
-            } else {
-              clipboard.addSelection(next);
-            }
-          }
-        },
-        // add selection down
-        "Shift+ArrowDown": () => {
-          if (props.selectedNode && props.selectedNode.children.length) {
-            let next = props.selectedNode.children[0];
-
-            if (clipboard.selection.includes(next)) {
-              clipboard.removeSelection(props.selectedNode);
-            } else {
-              clipboard.addSelection(next);
-            }
-          }
-        },
-        // add selection left
-        "Shift+ArrowLeft": () => {
-          //           if (props.selectedNode && props.selectedNode.children.length) {
-          //             let idx = props.selectedNode.children[0].parents.indexOf(
-          //               props.selectedNode
-          //             );
-          //             idx--;
-          //             if (idx >= 0) {
-          //               props.selectedNode.children[0].parents[idx].select();
-          //             }
-          //           }
-        },
-        // add selection right
-        "Shift+ArrowRight": () => {
-          //           if (props.selectedNode && props.selectedNode.children.length) {
-          //             let idx = props.selectedNode.children[0].parents.indexOf(
-          //               props.selectedNode
-          //             );
-          //             idx++;
-          //             if (idx <= props.selectedNode.children[0].parents.length - 1)
-          //               props.selectedNode.children[0].parents[idx].select();
-          //           }
-        },
-        // swap up
-        "$mod+Shift+ArrowUp": () => {
-          if (props.selectedNode && props.selectedNode.parents.length)
-            if (props.selectedNode.parents[0].parents.length)
-              props.selectedNode.swapData(
-                props.selectedNode.parents[0].select()
-              );
-        },
-        // swap down
-        "$mod+Shift+ArrowDown": () => {
-          if (props.selectedNode && props.selectedNode.children.length)
-            props.selectedNode.swapData(
-              props.selectedNode.children[0].select()
-            );
-        },
-        // swap left
-        "$mod+Shift+ArrowLeft": () => {
-          //           console.log("Shift+ArrowLeft");
-          //           if (props.selectedNode && props.selectedNode.children.length) {
-          //             let idx = props.selectedNode.children[0].parents.indexOf(
-          //               props.selectedNode
-          //             );
-          //             idx--;
-          //             if (idx >= 0) {
-          //               props.selectedNode.children[0].parents[idx].select();
-          //             }
-          //           }
-        },
-        // swap right
-        "$mod+Shift+ArrowRight": () => {
-          //           console.log("Shift+ArrowRight");
-          //           if (props.selectedNode && props.selectedNode.children.length) {
-          //             let idx = props.selectedNode.children[0].parents.indexOf(
-          //               props.selectedNode
-          //             );
-          //             idx++;
-          //             if (idx <= props.selectedNode.children[0].parents.length - 1)
-          //               elect();
-          //           }
-        },
-        // delete
-        Delete: () => {
-          props.data.removeSelected();
-        },
-        // copy
-        "$mod+c": () => {
-          if (process.env.NODE_ENV === "development") 
-            clipboard.copy();            
-        },
-        // cut
-        "$mod+x": () => {
-          if (process.env.NODE_ENV === "development")
-            clipboard.cut();
-        },
-        // paste
-        "$mod+v": () => {
-          if (process.env.NODE_ENV === "development") {
-            clipboard.paste();
-            props.data.update();
-            props.data.afterUpdate(); 
-          }          
+    node.select(); // select with right click
+    store.context.setContextmenu({
+      Library: {
+        id: "Library",
+        label: "Library",
+        dropDown: store.shaderLibrary
+      },
+      Delete: {
+        id: "Delete",
+        label: "Delete",
+        onClick: () => {
+          props.data.removeNode(node);
+          store.context.setContextmenu(); // removes menu
         }
-      });
-    } else {
-      store.context.removeKeymap();
-    }
-  }, [
-    props.selectedNode,
-    props.data,
-    store.context,
-    useKeys,
-    props.data.history
-  ]);
+      },
+      EditShader: {
+        id: "EditShader",
+        label: "Edit Shader",
+        onClick: () => {
+          let variant = store.ui.getLayoutVariant("SHADER_EDIT");
+          store.ui.getPanel("MAIN").setLayout(variant);
+          store.context.setContextmenu(); // removes menu
+        }
+      },
+      ...(process.env.NODE_ENV === "development"
+        ? {
+            PrintDebug: {
+              id: "PrintDebug",
+              label: <em>Print Debug</em>,
+              onClick: () => {
+                console.log(
+                  props.data.selectedNode.name,
+                  getSnapshot(props.data.selectedNode)
+                );
+              }
+            }
+          }
+        : {})
+    });
+  };
 
-  const handleContextMenu = e => {
+  const handlePanelContextMenu = e => {
     e.stopPropagation();
 
     store.context.setContextmenu({
@@ -212,14 +69,25 @@ const ShaderGraph = observer(props => {
         id: "Clear",
         label: "Clear",
         onClick: () => store.scene.clear()
-      }
+      },
+      ...(process.env.NODE_ENV === "development"
+        ? {
+            PrintDebug: {
+              id: "PrintDebug",
+              label: <em>Print Debug</em>,
+              onClick: () => {
+                console.log("GRAPH", getSnapshot(props.data));
+              }
+            }
+          }
+        : {})
     });
   };
 
   return (
     <GenericPanel
       panel={props.panel}
-      onContextMenu={handleContextMenu}
+      onContextMenu={handlePanelContextMenu}
       onFocus={handleFocus}
       onBlur={handleBlur}
       indicators={
@@ -240,6 +108,8 @@ const ShaderGraph = observer(props => {
           data={props.data}
           coord_bounds={props.coord_bounds}
           selectedNode={props.selectedNode}
+          onContextMenu={handleContextMenu}
+          useKeys={useKeys}
         />
       )}
 

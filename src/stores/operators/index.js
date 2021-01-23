@@ -3,6 +3,7 @@ import {nanoid} from 'nanoid';
 
 import Counter from './inputs/Counter';
 import MIDI from './inputs/MIDI';
+import Float from './inputs/Float';
 import Add from './math/Add';
 import Subtract from './math/Subtract';
 import Divide from './math/Divide';
@@ -11,10 +12,12 @@ import Modulus from './math/Modulus';
 import Sin from './math/Sin';
 import Cos from './math/Cos';
 import Tan from './math/Tan';
+import Thru from './Thru';
 
 export const allOps = types.union(
     Counter, 
     MIDI, 
+    Float,
     Add, 
     Subtract, 
     Divide, 
@@ -22,8 +25,24 @@ export const allOps = types.union(
     Modulus, 
     Sin, 
     Cos, 
-    Tan
+    Tan,
+    Thru
 );
+
+export const opList = [
+  "Counter", 
+  "MIDI", 
+  "Float",
+  "Add", 
+  "Subtract", 
+  "Divide", 
+  "Multiply", 
+  "Modulus", 
+  "Sin", 
+  "Cos", 
+  "Tan",
+  "Thru"
+];
 
 export const getOperator = (name) => {
     let operator = null;
@@ -41,6 +60,12 @@ export const getOperator = (name) => {
                 name: 'MIDI'
             })
             break;
+        case 'Float':
+            operator = Float.create({
+                uuid: 'Float_'+nanoid(),
+                name: 'Float'
+            });
+            break;        
         case 'Add':
             operator = Add.create({
                 uuid: 'Add_'+nanoid(),
@@ -87,6 +112,12 @@ export const getOperator = (name) => {
             operator = Tan.create({
                 uuid: 'Tan_'+nanoid(),
                 name: 'Tan'
+            })
+            break;
+        case 'Thru':
+            operator = Thru.create({
+                uuid: 'Thru_'+nanoid(),
+                name: 'Thru'
             })
             break;
         default:

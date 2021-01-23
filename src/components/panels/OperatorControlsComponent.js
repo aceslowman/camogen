@@ -1,111 +1,60 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import MainContext from "../../MainContext";
-import { PanelComponent, ThemeContext } from "maco-ui";
+import { PanelComponent, ThemeContext, ControlGroupComponent } from "maco-ui";
 import CounterComponent from "./operators/inputs/CounterComponent";
 import MIDIComponent from "./operators/inputs/MIDIComponent";
-
+import FloatComponent from "./operators/inputs/FloatComponent";
+import ControlsComponent from "../controls/ControlsComponent";
 import styles from "./OperatorControlsComponent.module.css";
 import { observer } from "mobx-react";
+
+import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 
 const OperatorControls = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
+  
+  const [useKeys, setUseKeys] = useState(false);
+  const [expandAll, setExpandAll] = useState(true);
 
   const handleRemove = () => {
     store.workspace.removePanel("OPERATOR_CONTROLS");
   };
 
+  /*
+    this isn't the best way to do this, it's *different* than
+    how it's being done in the ShaderControls. for now it works,
+    but this is a place for improvement
+  */
   const generateInterface = e => {
     let controls = null;
 
-    if (e.data) {
+    if (e) {
       let c;
 
-      switch (e.data.name) {
+      switch (e.name) {
         case "Counter":
-          c = (
-            <CounterComponent
-              modifier={e.data.modifier}
-              value={e.data.value}
-              handleChange={e.data.handleChange}
-            />
-          );
+          c = (<CounterComponent data={e} />);
           break;
         case "MIDI":
-          c = (
-            <MIDIComponent
-              modifier={e.data.modifier}
-              value={e.data.value}
-              handleInputSelect={e.data.handleInputSelect}
-              midi_inputs={e.data.midi_inputs}
-            />
-          );
+          c = (<MIDIComponent data={e} />);
           break;
-
-        default:
+        case "Float":
+          c = (<FloatComponent data={e} />);
+          break;
+        default:          
           break;
       }
 
       controls = c;
+    } else {
+      // this fallback is for addition, subtraction, etc, controlless nodes
+      controls = (<ControlGroupComponent></ControlGroupComponent>)
     }
 
     return controls;
   };
-
-  const panels = [];
-
-  if (props.data) {
-    props.data.queue.forEach(subqueue => {
-      subqueue.forEach((node, i) => {
-        let subpanels = [];
-        let is_selected = props.data.selectedNode === node;
-
-        if (node.data) {
-          let controls = generateInterface(node);
-          subpanels.push(
-            <li
-              key={i}
-              style={{
-                borderLeft: `3px solid ${branch_colors[node.branch_index]}`
-              }}
-            >
-              <PanelComponent
-                key={i}
-                title={node.data.name}
-                collapsible={controls ? true : false}
-                titleStyle={{
-                  color: is_selected ? theme.text_color : theme.text_color,
-                  backgroundColor: is_selected
-                    ? theme.accent_color
-                    : theme.primary_color
-                }}
-                expanded={node === props.data.selectedNode}
-                onRemove={() => node.remove()}
-                gutters
-              >
-                {controls}
-              </PanelComponent>
-            </li>
-          );
-        }
-
-        panels.push(
-          <ul
-            key={node.uuid}
-            className={styles.listtree}
-            style={
-              {
-                // marginLeft: node.trunk_distance * 5,
-              }
-            }
-          >
-            {subpanels}
-          </ul>
-        );
-      });
-    });
-  }
 
   return (
     <PanelComponent
@@ -116,7 +65,12 @@ const OperatorControls = observer(props => {
       detachable
       onDetach={props.onDetach ? props.onDetach : () => {}}
     >
-      {props.data.nodes && panels}
+      {/*props.data.nodes && panels*/}
+      <ControlsComponent 
+        data={props.data}  
+        selectedNode={props.selectedNode}
+        generateInterface={generateInterface}
+      />
     </PanelComponent>
   );
 });

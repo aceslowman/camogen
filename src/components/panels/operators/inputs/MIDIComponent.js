@@ -7,20 +7,20 @@ const MIDIComponent = observer((props) => {
 		<React.Fragment>
 			<ControlGroupComponent name="MIDI Settings">
 				<InputSelect
-					options={props.midi_inputs.map((e,i)=>(
+					options={props.data.midi_inputs.map((e,i)=>(
 						{
 							label: e.name, 
 							value: e.name
 						}
 					))}
-					onChange={props.handleInputSelect}
+					onChange={props.data.handleInputSelect}
 				/>
 			</ControlGroupComponent>
 			<ControlGroupComponent name="normalize (0-1)">
 				<InputBool
-					checked={props.modifier === 127}
+					checked={props.data.modifier === 127}
 					onChange={(e)=>{
-						props.setModifier(e ? 127 : 1)
+						props.data.setModifier(e ? 127 : 1)
 					}}
 				/>
 			</ControlGroupComponent>

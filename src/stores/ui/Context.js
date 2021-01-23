@@ -1,17 +1,17 @@
 import { types } from "mobx-state-tree";
 import tinykeys from "tinykeys";
-import { observable } from 'mobx';
+import { observable } from "mobx";
 
 export const ContextMenuItem = types
   .model("ContextMenuItem", {
     id: types.identifier,
-    label: types.frozen(), 
-    buttons: types.frozen(), 
-    dropDown: types.map(types.late(()=>ContextMenuItem))
+    label: types.frozen(),
+    buttons: types.frozen(),
+    dropDown: types.map(types.late(() => ContextMenuItem))
   })
   .volatile(self => ({
     onClick: () => {}
-  }))
+  }));
 
 const Context = types
   .model("Context", {})
@@ -29,8 +29,7 @@ const Context = types
     },
     removeKeymap: () => self.keylistener(),
     setContextmenu: c => {
-      console.log('set context menu',c)
-      self.contextmenu = c
+      self.contextmenu = c;
     }
   }));
 
@@ -38,7 +37,7 @@ export default Context;
 
 // get recentShaderLibrary() {
 //       let recentItems = {};
-      
+
 //       self.recentShaders.forEach((e, i) => {
 //         recentItems = {
 //           ...recentItems,

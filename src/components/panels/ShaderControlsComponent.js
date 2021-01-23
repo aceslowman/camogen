@@ -14,6 +14,7 @@ import styles from "./ShaderControlsComponent.module.css";
 import { observer } from "mobx-react";
 import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
+import ControlsComponent from "../controls/ControlsComponent";
 
 // built in inputs
 import SketchInputComponent from "./shaders/SketchInputComponent";
@@ -221,113 +222,7 @@ const ShaderControls = observer(props => {
 
     return controls;
   };
-
-  let refs = [];
-  const panels = [];
-
-  const addPanelRef = (panel, id) => {
-    refs = [...refs, { [id]: panel }];
-  };
-
-  const handleSubpanelRef = (r, node) => {
-    if (isAlive(node)) addPanelRef(r, node.uuid);
-  };
   
-  props.data.queue.forEach(subqueue => {
-    subqueue.forEach((node, i) => {
-      let subpanels = [];
-      let is_selected = props.selectedNode === node;
-
-      if (node.data) {
-        let controls = null;
-        switch (node.data.name) {
-          case "Webcam":
-            controls = [
-              <WebcamInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            ];
-            break;
-          case "Image":
-            controls = [
-              <ImageInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            ];
-            break;
-          case "Text":
-            controls = [
-              <TextInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            ];
-            break;
-          case "Sketch":
-            controls = [
-              <SketchInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            ];
-            break;
-          default:
-            controls = generateInterface(node.data);
-        }
-        subpanels.push(
-          <li
-            key={node.uuid}
-            ref={r => handleSubpanelRef(r, node)}
-            style={{
-              borderLeft: `3px solid ${branch_colors[node.branch_index]}`
-            }}
-          >
-            <PanelComponent
-              title={node.data.name}
-              subtitle={(
-                <InputBool 
-                  //hLabel
-                  //label="bypass"
-                  value={node.bypass}  
-                  onChange={node.toggleBypass}
-                />
-              )}
-              collapsible={controls.length ? true : false}
-              titleStyle={{
-                color: is_selected ? theme.text_color : theme.text_color,
-                backgroundColor: is_selected
-                  ? theme.accent_color
-                  : theme.primary_color
-              }}
-              expanded={expandAll}
-              onRemove={() => node.remove()}
-              gutters
-            >
-              {controls}
-            </PanelComponent>
-          </li>
-        );
-      }
-
-      panels.push(
-        <ul
-          key={node.uuid}
-          className={styles.listtree}
-          style={
-            {
-              // marginLeft: node.trunk_distance * 5,
-            }
-          }
-        >
-          {subpanels}
-        </ul>
-      );
-    });
-  });
-
-  useEffect(() => {
-    // scroll panels into view when they are selected.
-    refs.forEach((e, i) => {
-      if (Object.keys(e)[0] === props.selectedNode.uuid) {
-        e[props.selectedNode.uuid].scrollIntoView({
-          block: "center"
-          // bug in chrome for 'smooth'
-          // behavior: 'smooth'
-        });
-      }
-    });
-  }, [props.data.selectedNode]);
-
   return (
     <GenericPanel
       panel={props.panel}
@@ -345,7 +240,12 @@ const ShaderControls = observer(props => {
         />
       }
     >
-      {props.data.nodes && panels}
+      {/*props.data.nodes && panels*/}
+      <ControlsComponent 
+        data={props.data}  
+        selectedNode={props.selectedNode}
+        generateInterface={generateInterface}
+      />
     </GenericPanel>
   );
 });
