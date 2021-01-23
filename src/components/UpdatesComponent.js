@@ -111,6 +111,7 @@ const Splash = observer(props => {
           <h2>v1.0.2-alpha</h2>
           <ul>
             <li>Restored keybindings to operator graphs.</li>
+            <li>Cleaned up some styling around operator graphs.</li>
           </ul>
         </TextComponent>
       </PagesContainer>

@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import MainContext from "../../MainContext";
 import GraphComponent from "../graph/GraphComponent";
 import { getSnapshot, applySnapshot } from "mobx-state-tree";
-
 import { PanelComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import useKeymap from "../hooks/UseKeymap";
@@ -48,17 +47,17 @@ const OperatorGraph = observer(props => {
       onFocus={handleFocus}
       onBlur={handleBlur}
       onContextMenu={handlePanelContextMenu}
-      indicators={
-        useKeys
-          ? [
-              {
-                label: "k",
-                color: store.ui.theme.accent_color,
-                title: "Keybind Focus"
-              }
-            ]
-          : null
-      }
+      //indicators={
+      //  useKeys
+      //   ? [
+      //        {
+      //          label: "k",
+      //          color: store.ui.theme.accent_color,
+      //          title: "Keybind Focus"
+      //        }
+      //      ]
+      //    : null
+      //}
     >
       <GraphComponent
         data={props.data.graph}

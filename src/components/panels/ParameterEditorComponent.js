@@ -1,8 +1,8 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import OperatorGraph from "./OperatorGraphComponent";
 import styles from "./ParameterEditorComponent.module.css";
 import { opList } from "../../stores/operators";
-
+import { getSnapshot, applySnapshot } from "mobx-state-tree";
 import { GenericPanel, SplitContainer, ToolbarComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import OperatorControls from "./OperatorControlsComponent";
@@ -88,17 +88,28 @@ const OperatorEditor = observer(props => {
         }
       }
     },
+    Delete: {
+      id: "Delete",
+      label: "Delete",
+      onClick: () => {
+        graph.removeNode(graph.selectedNode);
+        store.context.setContextmenu(); // removes menu
+      }
+    },
     ...(process.env.NODE_ENV === "development"
-        ? {
-            PrintDebug: {
-              id: "PrintDebug",
-              label: <em>Print Debug</em>,
-              onClick: () => {
-                console.log("GRAPH", getSnapshot(props.data.graph));
-              }
+      ? {
+          PrintDebug: {
+            id: "PrintDebug",
+            label: <em>Print Debug</em>,
+            onClick: () => {
+              console.log(
+                data.graph.selectedNode.name,
+                getSnapshot(data.graph.selectedNode)
+              );
             }
           }
-        : {})
+        }
+      : {})
   };
 
   const handleContextMenu = (e, node) => {
@@ -132,7 +143,10 @@ const OperatorEditor = observer(props => {
             selectedNode={data.graph.selectedNode}
             coord_bounds={props.coord_bounds}
           />
-          <OperatorControls data={graph} selectedNode={data.graph.selectedNode}/>
+          <OperatorControls
+            data={graph}
+            selectedNode={data.graph.selectedNode}
+          />
         </SplitContainer>
       )}
 
