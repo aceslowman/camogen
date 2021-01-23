@@ -2,6 +2,7 @@ import React, {useContext} from "react";
 import OperatorGraph from "./OperatorGraphComponent";
 import styles from "./ParameterEditorComponent.module.css";
 import { opList } from "../../stores/operators";
+
 import { GenericPanel, SplitContainer, ToolbarComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import OperatorControls from "./OperatorControlsComponent";
@@ -86,7 +87,18 @@ const OperatorEditor = observer(props => {
           onClick: () => graph.setSelectedByName("Tan")
         }
       }
-    }
+    },
+    ...(process.env.NODE_ENV === "development"
+        ? {
+            PrintDebug: {
+              id: "PrintDebug",
+              label: <em>Print Debug</em>,
+              onClick: () => {
+                console.log("GRAPH", getSnapshot(props.data.graph));
+              }
+            }
+          }
+        : {})
   };
 
   const handleContextMenu = (e, node) => {

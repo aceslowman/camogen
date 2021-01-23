@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import MainContext from "../../MainContext";
 import GraphComponent from "../graph/GraphComponent";
+import { getSnapshot, applySnapshot } from "mobx-state-tree";
 
 import { PanelComponent } from "maco-ui";
 import { observer } from "mobx-react";
@@ -13,6 +14,29 @@ const OperatorGraph = observer(props => {
   const handleFocus = e => setUseKeys(true);
   const handleBlur = e => setUseKeys(false);
   
+  const handlePanelContextMenu = e => {
+    e.stopPropagation();
+
+    store.context.setContextmenu({
+      Clear: {
+        id: "Clear",
+        label: "Clear",
+        onClick: () => store.scene.clear()
+      },
+      ...(process.env.NODE_ENV === "development"
+        ? {
+            PrintDebug: {
+              id: "PrintDebug",
+              label: <em>Print Debug</em>,
+              onClick: () => {
+                console.log("GRAPH", getSnapshot(props.data.graph));
+              }
+            }
+          }
+        : {})
+    });
+  };
+  
   return (
     <PanelComponent
       detachable
@@ -23,6 +47,7 @@ const OperatorGraph = observer(props => {
       defaultSize={props.defaultSize}
       onFocus={handleFocus}
       onBlur={handleBlur}
+      onContextMenu={handlePanelContextMenu}
       indicators={
         useKeys
           ? [
