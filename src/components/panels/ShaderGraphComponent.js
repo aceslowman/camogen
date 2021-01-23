@@ -13,10 +13,12 @@ const ShaderGraph = observer(props => {
 
   const handleFocus = e => setUseKeys(true);
   const handleBlur = e => setUseKeys(false);
-  
+
   const handleContextMenu = (e, node) => {
     e.stopPropagation();
     e.preventDefault();
+
+    // let dev_debug = ;
 
     node.select(); // select with right click
     store.context.setContextmenu({
@@ -41,7 +43,21 @@ const ShaderGraph = observer(props => {
           store.ui.getPanel("MAIN").setLayout(variant);
           store.context.setContextmenu(); // removes menu
         }
-      }
+      },
+      ...(process.env.NODE_ENV === "development"
+        ? {
+            PrintDebug: {
+              id: "PrintDebug",
+              label: <em>Print Debug</em>,
+              onClick: () => {
+                console.log(
+                  props.data.selectedNode.name,
+                  getSnapshot(props.data.selectedNode)
+                );
+              }
+            }
+          }
+        : {})
     });
   };
 
@@ -53,7 +69,18 @@ const ShaderGraph = observer(props => {
         id: "Clear",
         label: "Clear",
         onClick: () => store.scene.clear()
-      }
+      },
+      ...(process.env.NODE_ENV === "development"
+        ? {
+            PrintDebug: {
+              id: "PrintDebug",
+              label: <em>Print Debug</em>,
+              onClick: () => {
+                console.log("GRAPH", getSnapshot(props.data));
+              }
+            }
+          }
+        : {})
     });
   };
 
