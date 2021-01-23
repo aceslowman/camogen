@@ -58,44 +58,61 @@ const Splash = observer(props => {
         minHeight: 425
       }}
     >
-      <PageContainer>
-      
-      </PageContainer>
+      <PagesContainer>
         <TextComponent>
           <h1>alpha updates and caveats!</h1>
-          <p>
-            below are a number of critical issues and caveats 
-          </p>
-          
+          <p>below are a number of critical issues and caveats</p>
+
           <ul>
-            <li style={{color:'red'}}>
-              Motion graphs can be added to parameters, 
-              but save files will no longer work.
+            <li style={{ color: "red" }}>
+              Motion graphs can be added to parameters, but when they are loaded from a save file they stop functioning.
             </li>
-            <li style={{color:'red'}}>
+            <li style={{ color: "red" }}>
               Copy / paste is in progress but is temporarily disabled.
             </li>
-            <li style={{color:'red'}}>
-              Shader library can be added to and deleted from by using
-              the toolbar at the top of the screen. The same functionality
-              is not currently working when using the library through a 
-              context menu.
+            <li style={{ color: "red" }}>
+              Shader library can be added to and deleted from by using the
+              toolbar at the top of the screen. The same functionality is not
+              currently working when using the library through a context menu.
             </li>
-            <li style={{color:'red'}}>
+            <li style={{ color: "red" }}>
               Undo/redo is in progress but is temporarily disabled.
-            </li>            
+            </li>
           </ul>
-          
-          <p>
-            I'll be adding to this list often, and at the moment, camogen will be updated often and there will be a chance that save files and / or shader collections could be overwritten. You can backup your collection by going to Library {'->'} Save Collection.
-          </p>
-          
-          <p>
-            if/when you run into issues, please let me know by creating an issue at <a target="_blank" rel="noopener noreferrer" style={{color:theme.accent_color}} href="https://github.com/aceslowman/camogen/issues">https://github.com/aceslowman/camogen/issues</a>
-          </p>
-          
-        </TextComponent>
 
+          <p>
+            I'll be adding to this list often, and at the moment, camogen will
+            be updated often and there will be a chance that save files and / or
+            shader collections could be overwritten. You can backup your
+            collection by going to Library {"->"} Save Collection.
+          </p>
+
+          <p>
+            if/when you run into issues, please let me know by creating an issue
+            at{" "}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: theme.accent_color }}
+              href="https://github.com/aceslowman/camogen/issues"
+            >
+              https://github.com/aceslowman/camogen/issues
+            </a>
+          </p>
+        </TextComponent>
+        <TextComponent>
+          <h1>changelog</h1>
+          <h2>v1.0.1-alpha</h2>
+          <ul>            
+            <li>Added 'Float' node to operator graphs.</li>
+            <li>Fixed issues with operator controls and refactored.</li>
+          </ul>
+          <h2>v1.0.2-alpha</h2>
+          <ul>            
+            <li>Restored keybindings to operator graphs.</li>
+          </ul>
+        </TextComponent>
+      </PagesContainer>
     </PanelComponent>
   );
 });
