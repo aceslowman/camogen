@@ -330,27 +330,21 @@ const RootStore = types
       link.onchange = e => {
         var file = e.target.files[0];
 
-        yield new Promise((resolve,reject) => {
-          let reader = new FileReader();   
+        let reader = new FileReader();
+        reader.readAsText(file, "UTF-8");        
 
-          reader.onload = e => {
-            let content = e.target.result;
+        reader.onload = e => {
+          let content = e.target.result;
 
-            self.setName(name);
-            // self.scene.clear(); // this just fails early
-            // console.log('clearing')
-
-            applySnapshot(self, JSON.parse(content));
-            self.scene.shaderGraph.update();
-            self.scene.shaderGraph.afterUpdate();
-            // undoManager.clear();
-            resolve(true)
-          };
-                    
-          reader.readAsText(file, "UTF-8");     
-        })
-        
-        
+          self.setName(name);
+          // self.scene.clear(); // this just fails early
+          // console.log('clearing')
+          
+          applySnapshot(self, JSON.parse(content));
+          self.scene.shaderGraph.update();
+          self.scene.shaderGraph.afterUpdate();
+          // undoManager.clear();
+        };
       };
 
       link.click();
