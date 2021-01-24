@@ -26,9 +26,7 @@ const Parameter = types
 
       let opgraph = parent_shader.addOperatorGraph(self);
 
-      // parent_shader.addToUpdateGroup(opgraph);
-
-      self.graph = opgraph;
+      self.graph = opgraph.uuid;
       self.graph.addNode().select(); // initial root node!
     },
     

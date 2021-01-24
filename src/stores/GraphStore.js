@@ -89,7 +89,7 @@ const Graph = types
       },
 
       clear: () => {
-        self.clipboard.clear();
+        // self.clipboard.clear();
         
         // self.nodes.forEach(e => {
         //   console.log('shader', getSnapshot(e))
@@ -100,7 +100,12 @@ const Graph = types
         // TODO: currently not working when subgraphs are present!
         // TODO: what if I cleared the graph from the root up?
         // re-initialize the nodes map
-        self.nodes.clear();
+        // self.nodes.clear();
+        // console.log()
+        self.traverseFrom().forEach((e,i) => {
+          console.log('e',e)
+          self.nodes.delete(e.uuid)
+        });
 
         // create root node, select it
         self.addNode();
@@ -215,12 +220,12 @@ const Graph = types
 
       traverseFrom: (node = self.root, f = null, depthFirst = false) => {
         /*
-        self method will crawl through the graph structure
-        either depth first or breadth first.
+          self method will crawl through the graph structure
+          either depth first or breadth first.
 
-        it's first argument is function that will be called
-        during each step of the traversal.
-      */
+          it's first argument is function that will be called
+          during each step of the traversal.
+        */
         let result = [];
         let container = [node];
         let next_node;
