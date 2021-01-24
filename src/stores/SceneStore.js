@@ -56,11 +56,10 @@ const Scene = types
     },
 
     clear: () => {
-      
-      self.operatorGraphs.clear();
       self.shaderGraph.clear();
       self.targets = [];
       
+      self.operatorGraphs.clear();
     }
   }));
 
