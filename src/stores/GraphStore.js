@@ -103,7 +103,8 @@ const Graph = types
         // self.nodes.clear();
         // console.log()
         self.traverseFrom().forEach((e,i) => {
-          console.log('e',e)
+          console.log('e',e.uuid)
+          console.log(getSnapshot(self.nodes))
           self.nodes.delete(e.uuid)
         });
 

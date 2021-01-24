@@ -1,6 +1,6 @@
 import Shader from "./ShaderStore";
 import { undoManager } from "./GraphStore";
-import { types, getParent, getSnapshot } from "mobx-state-tree";
+import { types, getParent, getSnapshot, destroy } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
 import { nanoid } from "nanoid";
@@ -172,6 +172,16 @@ const GraphNode = types
     deselect: () => {
       self.parent_graph.clipboard.removeSelection(self);
       return self;
+    },
+    
+    beforeDetach: () => {
+      console.log("detaching node " + self.name);
+      // self.target.removeShaderNode(parent_node);
+    },
+
+    beforeDestroy: () => {
+      console.log('destroying node ' + self.name + '('+self.uuid+')')
+      if(self.data) destroy(self.data)
     },
 
     setChildren: children => (self.children = children),
