@@ -29,7 +29,6 @@ const Scene = types
       self.shaderGraph.root.select();
       self.shaderGraph.setSelectedByName("Glyph");
       self.shaderGraph.root.select();
-      1;
       //       self.shaderGraph.setSelectedByName("HSV2RGB");
       //       self.shaderGraph.root.select();
 
@@ -57,8 +56,22 @@ const Scene = types
 
     clear: () => {
       self.shaderGraph.clear();
+      self.shaderGraph.nodes.forEach((e) => {        
+        console.log('node', getSnapshot(e))
+        // e.nodes.clear1();
+      })
       self.targets = [];
-      self.operatorGraphs.clear();
+      // self.operatorGraphs.clear();
+      self.operatorGraphs.forEach((e) => {  
+        console.log('graph', getSnapshot(e))
+        
+        destroy(e.param)
+        self.operatorGraphs.delete(e.uuid);
+        
+        console.log('deted')
+        // destroy(e)
+        
+      })
     }
   }));
 
