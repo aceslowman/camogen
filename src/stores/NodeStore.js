@@ -175,12 +175,12 @@ const GraphNode = types
     },
     
     beforeDetach: () => {
-      console.log("detaching node " + self.name);
+      // console.log("detaching node " + self.name);
       // self.target.removeShaderNode(parent_node);
     },
 
     beforeDestroy: () => {
-      console.log('destroying node ' + self.name + '('+self.uuid+')')
+      // console.log('destroying node ' + self.name + '('+self.uuid+')')
       if(self.data) destroy(self.data)
     },
 
