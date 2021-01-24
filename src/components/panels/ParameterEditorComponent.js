@@ -136,15 +136,18 @@ const OperatorEditor = observer(props => {
       }
     >
       {data && (
-        <OperatorGraph
-          data={data}
-          onContextMenu={handleContextMenu}
-          selectedNode={data.graph.selectedNode}
-          coord_bounds={props.coord_bounds}
-        />
-      )}
-      {data && (
-        <OperatorControls data={graph} selectedNode={data.graph.selectedNode} />
+        <SplitContainer vertical>
+          <OperatorGraph
+            data={data}
+            onContextMenu={handleContextMenu}
+            selectedNode={data.graph.selectedNode}
+            coord_bounds={props.coord_bounds}
+          />
+          <OperatorControls
+            data={graph}
+            selectedNode={data.graph.selectedNode}
+          />
+        </SplitContainer>
       )}
 
       {!data && (
