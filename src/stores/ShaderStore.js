@@ -100,9 +100,11 @@ let shader = types
     name: types.maybe(types.string),
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
-    frag: DefaultShader.frag,    
-    operatorGraphs: types.map(types.late(() => OperatorGraph)),
-    // updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
+    frag: DefaultShader.frag,
+    // operatorGraphs: types.map(types.late(() => OperatorGraph)),
+    operatorGraphs: types.map(
+      types.safeReference(types.late(() => OperatorGraph))
+    )
   })
   .volatile(() => ({
     target: null,
@@ -197,12 +199,15 @@ let shader = types
         // remove all uniforms that aren't present in new result set
         // ie, removes uniforms that aren't needed anymore
         // I have a bug here!
-        self.uniforms = self.uniforms.filter(u => {          
-          // name and type must match!          
+        self.uniforms = self.uniforms.filter(u => {
+          // name and type must match!
           return (
             result.filter(e => {
               // console.log(`comparing ${e.name}(${e.type.toLowerCase()}) to ${u.name}(${u.type})`);
-              return e.name === u.name && e.type.toLowerCase() === u.type.toLowerCase();
+              return (
+                e.name === u.name &&
+                e.type.toLowerCase() === u.type.toLowerCase()
+              );
             }).length > 0
           );
         });
@@ -228,7 +233,8 @@ let shader = types
             if (
               self.uniforms[j].name === e.name &&
               self.uniforms[j].type.toLowerCase() === e.type.toLowerCase()
-            ) return;            
+            )
+              return;
           }
 
           // ignore if input already exists
@@ -352,9 +358,9 @@ let shader = types
         console.log("detaching shader " + self.name);
         self.target.removeShaderNode(parent_node);
       },
-      
+
       beforeDestroy: () => {
-        console.log('destroying shader!')
+        console.log("destroying shader!");
       },
 
       saveToCollection: () => {
@@ -424,14 +430,9 @@ let shader = types
         parent_node.setName("New Shader");
         self.init();
       },
-            
-      addOperatorGraph: param => {
-        return self.operatorGraphs.put(
-          OperatorGraph.create({
-            uuid: "opgraph_" + nanoid(),
-            param: param
-          })
-        );
+
+      addOperatorGraph: graph => {
+        self.operatorGraphs.put(graph);
       },
 
       setVert: v => {

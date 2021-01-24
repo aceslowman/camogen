@@ -40,34 +40,12 @@ const Scene = types
       return target;
     },
 
-    // addOperatorGraph: param => {
-    //   return self.operatorGraphs.put(
-    //     OperatorGraph.create({
-    //       uuid: "opgraph_" + nanoid(),
-    //       param: param
-    //     })
-    //   );
-    // },
-
     removeTarget: target => {
       self.targets = self.targets.filter(item => item !== target);
     },
 
     clear: () => {
 
-//       self.operatorGraphs.forEach((e) => {  
-//         console.log('graph', getSnapshot(e))
-//         console.log('param', getSnapshot(e.param))
-//         // e.param.clearGraph();
-        
-//         console.log('paramafter', getSnapshot(e.param))
-//         // destroy(e.param)
-//         // self.operatorGraphs.delete(e.uuid);
-        
-//         console.log('deted')
-//         // destroy(e)
-        
-//       })
       self.shaderGraph.clear();
 //       
       // self.shaderGraph.nodes.forEach((e) => {        

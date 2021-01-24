@@ -32,7 +32,7 @@ const Parameter = types
         param: self
       });
       
-      parent_shader.addOperatorGraph(self)
+      parent_shader.addOperatorGraph(self.graph)
       
       self.graph.addNode().select(); // initial root node!
     },

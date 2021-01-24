@@ -6,7 +6,8 @@ import {
   getSnapshot,
   clone,
   detach,
-  isAlive
+  isAlive,
+  isValidReference
 } from "mobx-state-tree";
 import { UndoManager } from "mst-middlewares";
 import Coordinate from "./utils/Coordinate";
@@ -105,7 +106,8 @@ const Graph = types
         self.traverseFrom().forEach((e,i) => {
           console.log('e',e.uuid)
           console.log(getSnapshot(self.nodes))
-          self.nodes.delete(e.uuid)
+          console.log('isValidReference', isValidReference(() => e))
+          if(isAlive(self.nodes.get(e.uuid))) self.nodes.delete(e.uuid)
         });
 
         // create root node, select it
