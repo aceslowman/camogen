@@ -106,8 +106,6 @@ const ShaderGraph = observer(props => {
         <GraphComponent
           onRef={mainRef}
           data={props.data}
-          coord_bounds={props.coord_bounds}
-          selectedNode={props.selectedNode}
           onContextMenu={handleContextMenu}
           useKeys={useKeys}
         />

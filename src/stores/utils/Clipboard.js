@@ -16,6 +16,15 @@ const Clipboard = types
   .volatile(self => ({
     
   }))
+  .views(self => ({
+    get currentlySelected() {
+      // left to right insertion
+      // return self.clipboard.selection[0];
+      
+      // right to left insertion
+      return self.selection[self.selection.length - 1];
+    }
+  }))
   .actions(self => ({
     copy: () => {
       self.buffer = [];

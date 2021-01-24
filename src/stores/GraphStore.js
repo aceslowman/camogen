@@ -76,11 +76,7 @@ const Graph = types
     },
 
     get selectedNode() {
-      // left to right insertion
-      // return self.clipboard.selection[0];
-      
-      // right to left insertion
-      return self.clipboard.selection[self.clipboard.selection.length - 1];
+      return self.clipboard.currentlySelected;
     }
   }))
   .actions(self => {

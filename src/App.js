@@ -62,8 +62,8 @@ const App = observer(props => {
           <ShaderGraphComponent
             key={panel.id}
             // this helps rerendering, despite dereferencing late...
-            selectedNode={scene.shaderGraph.selectedNode}
-            coord_bounds={scene.shaderGraph.coord_bounds}
+            // selectedNode={scene.shaderGraph.selectedNode}
+            // coord_bounds={scene.shaderGraph.coord_bounds}
             data={scene.shaderGraph}
             panel={panel}
           />
