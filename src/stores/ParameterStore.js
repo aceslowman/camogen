@@ -9,7 +9,7 @@ const Parameter = types
       types.union(types.number, types.string, types.boolean),
       0
     ),
-    graph: types.maybe(types.reference(types.late(() => OperatorGraph))),
+    graph: types.maybe(types.safeReference(types.late(() => OperatorGraph))),
     controlType: types.maybe(types.string)
   })
   .volatile(self => ({
