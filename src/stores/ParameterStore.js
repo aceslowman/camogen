@@ -24,9 +24,9 @@ const Parameter = types
       let parent_shader = getParent(self, 4);
       let parent_scene = getRoot(self).scene;
 
-      let opgraph = parent_scene.addOperatorGraph(self);
+      let opgraph = parent_shader.addOperatorGraph(self);
 
-      parent_shader.addToUpdateGroup(opgraph);
+      // parent_shader.addToUpdateGroup(opgraph);
 
       self.graph = opgraph;
       self.graph.addNode().select(); // initial root node!

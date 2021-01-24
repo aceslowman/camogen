@@ -7,7 +7,6 @@ import { OperatorGraph } from "./GraphStore";
 const Scene = types
   .model("Scene", {
     shaderGraph: types.maybe(ShaderGraph),
-    operatorGraphs: types.map(OperatorGraph),
     targets: types.array(Target)
   })
   .actions(self => ({
@@ -41,25 +40,21 @@ const Scene = types
       return target;
     },
 
-    addOperatorGraph: param => {
-      return self.operatorGraphs.put(
-        OperatorGraph.create({
-          uuid: "opgraph_" + nanoid(),
-          param: param
-        })
-      );
-    },
+    // addOperatorGraph: param => {
+    //   return self.operatorGraphs.put(
+    //     OperatorGraph.create({
+    //       uuid: "opgraph_" + nanoid(),
+    //       param: param
+    //     })
+    //   );
+    // },
 
     removeTarget: target => {
       self.targets = self.targets.filter(item => item !== target);
     },
 
     clear: () => {
-      // self.shaderGraph.nodes.forEach((e) => {        
-      //   console.log('node', getSnapshot(e))
-      //   // e.nodes.clear1();
-      // })
-      
+
 //       self.operatorGraphs.forEach((e) => {  
 //         console.log('graph', getSnapshot(e))
 //         console.log('param', getSnapshot(e.param))
@@ -74,6 +69,12 @@ const Scene = types
         
 //       })
       self.shaderGraph.clear();
+//       
+      // self.shaderGraph.nodes.forEach((e) => {        
+      //   console.log('node', getSnapshot(e))
+      //   e.nodes.clear();
+      // })
+      
       
       self.targets = [];
       // self.operatorGraphs.clear();

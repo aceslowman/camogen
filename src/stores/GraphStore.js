@@ -81,7 +81,7 @@ const Graph = types
     }
   }))
   .actions(self => {
-    setUndoManager(self);
+    // setUndoManager(self);
 
     return {
       afterAttach: () => {

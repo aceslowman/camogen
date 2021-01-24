@@ -100,12 +100,9 @@ let shader = types
     name: types.maybe(types.string),
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
-    frag: DefaultShader.frag,
-    
-    
-    
-    
-    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
+    frag: DefaultShader.frag,    
+    operatorGraphs: types.map(types.late(() => OperatorGraph)),
+    // updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
   })
   .volatile(() => ({
     target: null,
@@ -308,7 +305,7 @@ let shader = types
           Loop through all active parameter graphs to recompute 
           values in sync with the frame rate
       */
-        self.updateGroup.forEach(e => e.afterUpdate());
+        self.operatorGraphs.forEach(e => e.afterUpdate());
 
         for (let uniform_data of self.uniforms) {
           if (uniform_data.elements.length > 1) {
@@ -423,14 +420,14 @@ let shader = types
         parent_node.setName("New Shader");
         self.init();
       },
-
-      addToUpdateGroup: p_graph => {
-        self.updateGroup.put(p_graph);
-        return p_graph;
-      },
-      
-      clearUpdateGroup: () => {
-        self.updateGroup = undefined;
+            
+      addOperatorGraph: param => {
+        return self.operatorGraphs.put(
+          OperatorGraph.create({
+            uuid: "opgraph_" + nanoid(),
+            param: param
+          })
+        );
       },
 
       setVert: v => {

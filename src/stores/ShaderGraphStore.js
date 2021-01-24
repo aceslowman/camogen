@@ -103,12 +103,12 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
   }
 
   return {
-    // afterAttach,
-    afterAttach: () => undoManager.withoutUndo(afterAttach),
-    // afterUpdate,
-    afterUpdate: () => undoManager.withoutUndo(afterUpdate),
-    // getShaderByName,
-    getShaderByName: (n) => undoManager.withoutUndo(()=>getShaderByName(n)),
+    afterAttach,
+    // afterAttach: () => undoManager.withoutUndo(afterAttach),
+    afterUpdate,
+    // afterUpdate: () => undoManager.withoutUndo(afterUpdate),
+    getShaderByName,
+    // getShaderByName: (n) => undoManager.withoutUndo(()=>getShaderByName(n)),
     setSelectedByName,
     // setSelectedByName: (n,c) => undoManager.withoutUndo(()=>setSelectedByName(n,c))
   };
