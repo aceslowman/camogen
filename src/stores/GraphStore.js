@@ -90,6 +90,10 @@ const Graph = types
 
       clear: () => {
         self.clipboard.clear();
+        
+        self.nodes.forEach(e => {
+          console.log('shader', getSnapshot(e))
+        })
 
         // TODO: currently not working when subgraphs are present!
         // TODO: what if I cleared the graph from the root up?

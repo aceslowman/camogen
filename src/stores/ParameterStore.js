@@ -31,6 +31,10 @@ const Parameter = types
       self.graph = opgraph;
       self.graph.addNode().select(); // initial root node!
     },
+    
+    clearGraph: () => {
+      self.graph = undefined;
+    },
 
     setValue: (v) => {
       self.value = v;

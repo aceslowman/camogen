@@ -55,7 +55,6 @@ const Scene = types
     },
 
     clear: () => {
-      self.shaderGraph.clear();
       self.shaderGraph.nodes.forEach((e) => {        
         console.log('node', getSnapshot(e))
         // e.nodes.clear1();
@@ -64,14 +63,19 @@ const Scene = types
       // self.operatorGraphs.clear();
       self.operatorGraphs.forEach((e) => {  
         console.log('graph', getSnapshot(e))
+        console.log('param', getSnapshot(e.param))
+        e.param.clearGraph();
         
-        destroy(e.param)
-        self.operatorGraphs.delete(e.uuid);
+        console.log('paramafter', getSnapshot(e.param))
+        // destroy(e.param)
+        // self.operatorGraphs.delete(e.uuid);
         
         console.log('deted')
         // destroy(e)
         
       })
+      
+      self.shaderGraph.clear();
     }
   }));
 
