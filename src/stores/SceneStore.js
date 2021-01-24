@@ -60,7 +60,7 @@ const Scene = types
       //   // e.nodes.clear1();
       // })
       self.targets = [];
-      // self.operatorGraphs.clear();
+      self.operatorGraphs.clear();
       self.operatorGraphs.forEach((e) => {  
         console.log('graph', getSnapshot(e))
         console.log('param', getSnapshot(e.param))
