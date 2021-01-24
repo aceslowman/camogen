@@ -91,9 +91,11 @@ const Graph = types
       clear: () => {
         self.clipboard.clear();
         
-        self.nodes.forEach(e => {
-          console.log('shader', getSnapshot(e))
-        })
+        // self.nodes.forEach(e => {
+        //   console.log('shader', getSnapshot(e))
+        //   if(e.data) e.data.clearUpdateGroup()
+        //   if(e.data) console.log('shader after', getSnapshot(e.data))
+        // })
 
         // TODO: currently not working when subgraphs are present!
         // TODO: what if I cleared the graph from the root up?

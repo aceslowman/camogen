@@ -424,6 +424,10 @@ let shader = types
         self.updateGroup.put(p_graph);
         return p_graph;
       },
+      
+      clearUpdateGroup: () => {
+        self.updateGroup = undefined;
+      },
 
       setVert: v => {
         self.vert = v;
