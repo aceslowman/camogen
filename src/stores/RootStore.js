@@ -4,7 +4,8 @@ import {
   getSnapshot,
   types,
   flow,
-  applySnapshot
+  applySnapshot,
+  destroy
 } from "mobx-state-tree";
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
@@ -339,6 +340,7 @@ const RootStore = types
           self.setName(name);
           self.scene.clear(); // this just fails early
           console.log('clearing')
+          // destroy(self.scene)
           
           applySnapshot(self, JSON.parse(content));
           self.scene.shaderGraph.update();

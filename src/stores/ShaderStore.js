@@ -101,7 +101,7 @@ let shader = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: DefaultShader.frag,
-    updateGroup: types.array(types.reference(types.late(() => OperatorGraph)))
+    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
   })
   .volatile(() => ({
     target: null,
@@ -421,7 +421,7 @@ let shader = types
       },
 
       addToUpdateGroup: p_graph => {
-        self.updateGroup.push(p_graph);
+        self.updateGroup.put(p_graph);
         return p_graph;
       },
 

@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { getSnapshot, types } from "mobx-state-tree";
+import { getSnapshot, types, destroy } from "mobx-state-tree";
 import ShaderGraph from "./ShaderGraphStore";
 import Target from "./TargetStore";
 import { OperatorGraph } from "./GraphStore";
@@ -56,12 +56,7 @@ const Scene = types
     },
 
     clear: () => {
-      // self.shaderGraph.clear();
-      
-      self.shaderGraph.nodes.forEach((e) => {
-        console.log('node',getSnapshot(e))
-        
-      })
+      self.shaderGraph.clear();
       self.targets = [];
       self.operatorGraphs.clear();
     }
