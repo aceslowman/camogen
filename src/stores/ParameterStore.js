@@ -9,7 +9,7 @@ const Parameter = types
       types.union(types.number, types.string, types.boolean),
       0
     ),
-    graph: types.maybe(types.safeReference(types.late(() => OperatorGraph))),
+    // graph: types.maybe(types.safeReference(types.late(() => OperatorGraph))),
     controlType: types.maybe(types.string)
   })
   .volatile(self => ({
@@ -18,6 +18,8 @@ const Parameter = types
   .actions(self => ({
     afterAttach: () => {
       self.uniform = getParent(self, 2);
+      console.log(getParent(self, 4))
+      // self.graph = 
     },
 
     createGraph: () => {
