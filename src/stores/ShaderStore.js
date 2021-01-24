@@ -101,6 +101,10 @@ let shader = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: DefaultShader.frag,
+    
+    
+    
+    
     updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
   })
   .volatile(() => ({

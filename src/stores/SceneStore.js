@@ -73,9 +73,10 @@ const Scene = types
 //         // destroy(e)
         
 //       })
-      self.targets = [];
-      self.operatorGraphs.clear();
       self.shaderGraph.clear();
+      
+      self.targets = [];
+      // self.operatorGraphs.clear();
     }
   }));
 
