@@ -106,7 +106,7 @@ const Graph = types
         self.traverseFrom().forEach((e,i) => {
           console.log('e',e.uuid)
           console.log(getSnapshot(self.nodes))
-          console.log('isValidReference', isValidReference(() => e))
+          console.log('isValidReference', isValidReference(() => self.nodes.get(e.uuid)))
           if(isAlive(self.nodes.get(e.uuid))) self.nodes.delete(e.uuid)
         });
 

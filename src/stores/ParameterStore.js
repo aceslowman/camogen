@@ -19,8 +19,6 @@ const Parameter = types
   .actions(self => ({
     afterAttach: () => {
       self.uniform = getParent(self, 2);
-      // console.log(getParent(self, 3))
-      // self.graph =
     },
 
     createGraph: () => {

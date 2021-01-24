@@ -45,17 +45,8 @@ const Scene = types
     },
 
     clear: () => {
-
       self.shaderGraph.clear();
-//       
-      // self.shaderGraph.nodes.forEach((e) => {        
-      //   console.log('node', getSnapshot(e))
-      //   e.nodes.clear();
-      // })
-      
-      
       self.targets = [];
-      // self.operatorGraphs.clear();
     }
   }));
 

@@ -26,8 +26,9 @@ const PossibleData = types.union(
       }
     }
   },
-  Shader,
+  
   allOps,
+  Shader,
   ImageInput,
   SketchInput,
   WebcamInput,
