@@ -59,22 +59,22 @@ const Scene = types
       //   console.log('node', getSnapshot(e))
       //   // e.nodes.clear1();
       // })
+      
+//       self.operatorGraphs.forEach((e) => {  
+//         console.log('graph', getSnapshot(e))
+//         console.log('param', getSnapshot(e.param))
+//         // e.param.clearGraph();
+        
+//         console.log('paramafter', getSnapshot(e.param))
+//         // destroy(e.param)
+//         // self.operatorGraphs.delete(e.uuid);
+        
+//         console.log('deted')
+//         // destroy(e)
+        
+//       })
       self.targets = [];
       self.operatorGraphs.clear();
-      self.operatorGraphs.forEach((e) => {  
-        console.log('graph', getSnapshot(e))
-        console.log('param', getSnapshot(e.param))
-        // e.param.clearGraph();
-        
-        console.log('paramafter', getSnapshot(e.param))
-        // destroy(e.param)
-        // self.operatorGraphs.delete(e.uuid);
-        
-        console.log('deted')
-        // destroy(e)
-        
-      })
-      
       self.shaderGraph.clear();
     }
   }));
