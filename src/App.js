@@ -85,7 +85,6 @@ const App = observer(props => {
           <ShaderControlsComponent
             key={panel.id}
             data={scene.shaderGraph}
-            selectedNode={scene.shaderGraph.selectedNode}
             panel={panel}
           />
         );

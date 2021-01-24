@@ -24,10 +24,6 @@ const GraphComponent = observer(props => {
   const canvas_ref = useRef(null);
   const [labels, setLabels] = useState([]);
 
-  const handleFocus = e => setUseKeys(true);
-
-  const handleBlur = e => setUseKeys(false);
-
   const drawGraph = () => {
     const ctx = canvas_ref.current.getContext("2d");
     const wrapper_bounds = wrapper_ref.current.getBoundingClientRect();
@@ -420,10 +416,10 @@ const GraphComponent = observer(props => {
     }
   }, [
     props.data.selectedNode,
+    props.data.history,
     props.data,
     store.context,
-    props.useKeys,
-    props.data.history
+    props.useKeys    
   ]);
 
   return (

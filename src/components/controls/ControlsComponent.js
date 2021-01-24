@@ -49,7 +49,7 @@ const Controls = observer(props => {
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
       let subpanels = [];
-      let is_selected = props.selectedNode === node;
+      let is_selected = props.data.selectedNode === node;
 
       if (node.data) {
         let controls = null;
@@ -133,8 +133,8 @@ const Controls = observer(props => {
   useEffect(() => {
     // scroll panels into view when they are selected.
     refs.forEach((e, i) => {
-      if (Object.keys(e)[0] === props.selectedNode.uuid) {
-        e[props.selectedNode.uuid].scrollIntoView({
+      if (Object.keys(e)[0] === props.data.selectedNode.uuid) {
+        e[props.data.selectedNode.uuid].scrollIntoView({
           block: "center"
           // bug in chrome for 'smooth'
           // behavior: 'smooth'
