@@ -61,8 +61,6 @@ const OperatorGraph = observer(props => {
     >
       <GraphComponent
         data={props.data.graph}
-        coord_bounds={props.coord_bounds}
-        selectedNode={props.selectedNode}
         onContextMenu={props.onContextMenu}
         useKeys={useKeys}
       />
