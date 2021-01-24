@@ -77,8 +77,7 @@ const Graph = types
     },
 
     get selectedNode() {
-      if(isAlive(self))
-        return self.clipboard.currentlySelected;
+      if (isAlive(self)) return self.clipboard.currentlySelected;
     }
   }))
   .actions(self => {

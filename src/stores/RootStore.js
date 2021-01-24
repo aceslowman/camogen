@@ -337,8 +337,8 @@ const RootStore = types
           let content = e.target.result;
 
           self.setName(name);
-          // self.scene.clear(); // this just fails early
-          // console.log('clearing')
+          self.scene.clear(); // this just fails early
+          console.log('clearing')
           
           applySnapshot(self, JSON.parse(content));
           self.scene.shaderGraph.update();
