@@ -6,6 +6,7 @@ import {
   getSnapshot,
   clone,
   detach,
+  destroy,
   isAlive,
   isValidReference
 } from "mobx-state-tree";
@@ -85,32 +86,17 @@ const Graph = types
     // setUndoManager(self);
 
     return {
-      afterAttach: () => {
-        // self.clipboard.select(self.root);
-      },
-
       clear: () => {
-        // self.clipboard.clear();
-        
-        // self.nodes.forEach(e => {
-        //   console.log('shader', getSnapshot(e))
-        //   if(e.data) e.data.clearUpdateGroup()
-        //   if(e.data) console.log('shader after', getSnapshot(e.data))
-        // })
+        self.clipboard.clear();
 
-        // TODO: currently not working when subgraphs are present!
-        // TODO: what if I cleared the graph from the root up?
-        // re-initialize the nodes map
-        // self.nodes.clear();
-        // console.log()
         self.queue = [];
-        self.traverseFrom().forEach((e,i) => {
-          console.log('e',e.uuid)
-          console.log(self.nodes)
-          console.log(getSnapshot(self.nodes.get(e.uuid)))
-          console.log('isValidReference', isValidReference(() => self.nodes.get(e.uuid)))
-          self.nodes.delete(e.uuid)
+
+        // THIS DID IT! "Not a child" error resolved by destroying the internal shader
+        self.traverseFrom().forEach((e, i) => {
+          if (e.data) destroy(e.data);
         });
+
+        self.nodes.clear();
 
         // create root node, select it
         self.addNode();

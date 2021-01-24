@@ -14,7 +14,6 @@ import TextInput from "./shaders/inputs/TextInput";
 const PossibleData = types.union(
   {
     dispatcher: snap => {
-      console.log('SNAP', snap)
       if (snap) {
         if (snap.type === "Shader") return Shader;
         if (snap.type === "SketchInput") return SketchInput;
