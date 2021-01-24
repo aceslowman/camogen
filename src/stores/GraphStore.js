@@ -5,7 +5,8 @@ import {
   applySnapshot,
   getSnapshot,
   clone,
-  detach
+  detach,
+  isAlive
 } from "mobx-state-tree";
 import { UndoManager } from "mst-middlewares";
 import Coordinate from "./utils/Coordinate";
@@ -76,7 +77,8 @@ const Graph = types
     },
 
     get selectedNode() {
-      return self.clipboard.currentlySelected;
+      if(isAlive(self))
+        return self.clipboard.currentlySelected;
     }
   }))
   .actions(self => {
