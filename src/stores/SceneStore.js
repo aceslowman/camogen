@@ -57,8 +57,9 @@ const Scene = types
 
     clear: () => {
       self.shaderGraph.clear();
-      self.operatorGraphs.clear();
       self.targets = [];
+      
+      // self.operatorGraphs.clear();
     }
   }));
 
