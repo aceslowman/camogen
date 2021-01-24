@@ -329,11 +329,6 @@ const operatorGraph = types
     param: types.reference(Parameter)
   })
   .actions(self => ({
-    afterAttach: () => {
-      self.addNode();
-      self.update();
-    },
-
     setSelectedByName: name => {
       if (!self.selectedNode) self.clipboard.select(self.root);
       let op = getOperator(name);
