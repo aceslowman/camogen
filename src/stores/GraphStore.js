@@ -103,11 +103,13 @@ const Graph = types
         // re-initialize the nodes map
         // self.nodes.clear();
         // console.log()
+        self.queue = [];
         self.traverseFrom().forEach((e,i) => {
           console.log('e',e.uuid)
-          console.log(getSnapshot(self.nodes))
+          console.log(self.nodes)
+          console.log(getSnapshot(self.nodes.get(e.uuid)))
           console.log('isValidReference', isValidReference(() => self.nodes.get(e.uuid)))
-          if(isAlive(self.nodes.get(e.uuid))) self.nodes.delete(e.uuid)
+          self.nodes.delete(e.uuid)
         });
 
         // create root node, select it
