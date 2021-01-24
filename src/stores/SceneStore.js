@@ -29,7 +29,7 @@ const Scene = types
       self.shaderGraph.setSelectedByName("UV");
       self.shaderGraph.root.select();
       self.shaderGraph.setSelectedByName("Glyph");
-      self.shaderGraph.root.select();
+      self.shaderGraph.root.select();1
 //       self.shaderGraph.setSelectedByName("HSV2RGB");
 //       self.shaderGraph.root.select();
       

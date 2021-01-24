@@ -29,8 +29,7 @@ const Parameter = types
       parent_shader.addToUpdateGroup(opgraph);
 
       self.graph = opgraph;
-
-      self.graph.root.select();
+      self.graph.addNode().select(); // initial root node!
     },
 
     setValue: (v) => {
