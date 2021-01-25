@@ -15,9 +15,9 @@ import Tan from './math/Tan';
 import Thru from './Thru';
 
 export const allOps = types.union(
+    Float,  
     Counter, 
-    MIDI, 
-    Float,
+    MIDI,     
     Add, 
     Subtract, 
     Divide, 

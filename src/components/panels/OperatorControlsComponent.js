@@ -33,8 +33,6 @@ const OperatorControls = observer(props => {
   const generateInterface = e => {
     return null;
   };
-  
-  // console.log('OPCONTROLS', getSnapshot(props.data))
 
   return (
     <PanelComponent
@@ -46,9 +44,8 @@ const OperatorControls = observer(props => {
       onDetach={props.onDetach ? props.onDetach : () => {}}
     >
       <ControlsComponent 
-        data={props.data}  
-        selectedNode={props.selectedNode}
-        generateInterface={() => generateInterface()}
+        data={props.data} 
+        generateInterface={generateInterface}
       />
     </PanelComponent>
   );

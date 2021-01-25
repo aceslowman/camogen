@@ -41,12 +41,14 @@ const Controls = observer(props => {
   const handleSubpanelRef = (r, node) => {
     if (isAlive(node)) addPanelRef(r, node.uuid);
   };
+  
+  console.log('CONTROLS INITIALIZING', props.data)
 
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
       let subpanels = [];
       let is_selected = props.data.selectedNode === node;
-
+      console.log('NODE', getSnapshot(node))
       if (node.data) {
         let controls = null;
         switch (node.data.name) {
@@ -83,6 +85,7 @@ const Controls = observer(props => {
             );
             break;
           case "Float":
+            console.log('FLOAT FOUND')
             controls = (
               <FloatComponent key={node.uuid} ref={refs[i]} data={node} />
             );
