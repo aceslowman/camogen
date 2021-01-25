@@ -64,10 +64,7 @@ const Splash = observer(props => {
           <p>below are a number of critical issues and caveats</p>
 
           <ul>
-            <li style={{ color: "red" }}>
-              Motion graphs can be added to parameters, but when they are loaded
-              from a save file they stop functioning.
-            </li>
+            
             <li style={{ color: "red" }}>
               Copy / paste is in progress but is temporarily disabled.
             </li>
@@ -113,6 +110,12 @@ const Splash = observer(props => {
             <li>Restored keybindings to operator graphs.</li>
             <li>Cleaned up some styling around operator graphs.</li>
           </ul>
+          <h2>v1.0.3-alpha</h2>
+          <ul>
+            <li>Fixed deserialization issues with motion graphs.</li>
+            <li>Fixed and refactored operator controls.</li>
+          </ul>
+          
         </TextComponent>
       </PagesContainer>
     </PanelComponent>
