@@ -43,6 +43,7 @@ const OperatorControls = observer(props => {
       detachable
       onDetach={props.onDetach ? props.onDetach : () => {}}
     >
+      HELLO
       <ControlsComponent 
         data={props.data} 
         generateInterface={generateInterface}

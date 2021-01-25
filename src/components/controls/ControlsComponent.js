@@ -42,13 +42,13 @@ const Controls = observer(props => {
     if (isAlive(node)) addPanelRef(r, node.uuid);
   };
   
-  console.log('CONTROLS INITIALIZING', props.data)
+  // console.log('CHECK CONTROSL', getSnapshot(props.data))
 
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
       let subpanels = [];
       let is_selected = props.data.selectedNode === node;
-      console.log('NODE', getSnapshot(node))
+      // console.log('NODE', getSnapshot(node))
       if (node.data) {
         let controls = null;
         switch (node.data.name) {
@@ -93,7 +93,7 @@ const Controls = observer(props => {
           default:
             controls = props.generateInterface(node.data);
         }
-        console.log('CHECK', controls)
+        // console.log('CHECK', controls)
 
         subpanels.push(
           <li

@@ -86,6 +86,10 @@ const Graph = types
     // setUndoManager(self);
 
     return {
+      afterAttach: () => {
+        self.up
+      },
+      
       clear: () => {
         self.clipboard.clear();
 
