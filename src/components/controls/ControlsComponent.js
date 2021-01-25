@@ -10,14 +10,10 @@ import {
   ToolbarComponent
 } from "maco-ui";
 
-// built in inputs
-import SketchInputComponent from "../panels/shaders/SketchInputComponent";
-import WebcamInputComponent from "../panels/shaders/WebcamInputComponent";
-import ImageInputComponent from "../panels/shaders/ImageInputComponent";
-import TextInputComponent from "../panels/shaders/TextInputComponent";
-
-// built in operators
-
+// built-in operators
+import CounterComponent from "../panels/operators/inputs/CounterComponent";
+import MIDIComponent from "../panels/operators/inputs/MIDIComponent";
+import FloatComponent from "../panels/operators/inputs/FloatComponent";
 
 import styles from "./ControlsComponent.module.css";
 import { observer } from "mobx-react";
@@ -45,10 +41,7 @@ const Controls = observer(props => {
   const handleSubpanelRef = (r, node) => {
     if (isAlive(node)) addPanelRef(r, node.uuid);
   };
-  
-  useEffect(() => {
-    
-  }, [props.data]);
+
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
       let subpanels = [];
@@ -57,6 +50,7 @@ const Controls = observer(props => {
       if (node.data) {
         let controls = null;
         switch (node.data.name) {
+          // SHADERS
           case "Webcam":
             controls = (
               <WebcamInputComponent key={node.uuid} ref={refs[i]} data={node} />
@@ -77,11 +71,27 @@ const Controls = observer(props => {
               <SketchInputComponent key={node.uuid} ref={refs[i]} data={node} />
             );
             break;
+          // OPERATORS
+          case "Counter":
+            controls = (
+              <CounterComponent key={node.uuid} ref={refs[i]} data={node} />
+            );
+            break;
+          case "MIDI":
+            controls = (
+              <MIDIComponent key={node.uuid} ref={refs[i]} data={node} />
+            );
+            break;
+          case "Float":
+            controls = (
+              <FloatComponent key={node.uuid} ref={refs[i]} data={node} />
+            );
+            break;
           default:
             controls = props.generateInterface(node.data);
         }
         // console.log('CHECK', controls)
-        
+
         subpanels.push(
           <li
             key={node.uuid}
@@ -92,14 +102,14 @@ const Controls = observer(props => {
           >
             <PanelComponent
               title={node.data.name}
-              subtitle={(
-                <InputBool 
+              subtitle={
+                <InputBool
                   //hLabel
                   //label="bypass"
-                  value={node.bypass}  
+                  value={node.bypass}
                   onChange={node.toggleBypass}
                 />
-              )}
+              }
               collapsible={controls ? true : false}
               titleStyle={{
                 color: is_selected ? theme.text_color : theme.text_color,
@@ -146,12 +156,7 @@ const Controls = observer(props => {
     });
   }, [props.data.selectedNode]);
 
-  return (
-    <div style={{backgroundColor:'red'}}>
-      {panels}
-    </div>
-      
-  );
+  return <div style={{ backgroundColor: "red" }}>{panels}</div>;
 });
 
 export default Controls;

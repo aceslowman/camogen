@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import MainContext from "../../MainContext";
 import { PanelComponent, ThemeContext, ControlGroupComponent } from "maco-ui";
+
+// built-in operators
 import CounterComponent from "./operators/inputs/CounterComponent";
 import MIDIComponent from "./operators/inputs/MIDIComponent";
 import FloatComponent from "./operators/inputs/FloatComponent";
+
 import ControlsComponent from "../controls/ControlsComponent";
 import styles from "./OperatorControlsComponent.module.css";
 import { observer } from "mobx-react";
@@ -52,11 +55,11 @@ const OperatorControls = observer(props => {
       // this fallback is for addition, subtraction, etc, controlless nodes
       controls = (<ControlGroupComponent></ControlGroupComponent>)
     }
-  console.log('e',e)
+  // console.log('e',e)
     return controls;
   };
   
-  console.log('OPCONTROLS', getSnapshot(props.data))
+  // console.log('OPCONTROLS', getSnapshot(props.data))
 
   return (
     <PanelComponent
