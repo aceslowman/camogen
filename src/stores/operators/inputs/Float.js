@@ -4,7 +4,7 @@ import Operator from "../../OperatorStore";
 const float = types
   .model("Float", {
     type: "Float",
-    value: 0
+    value: 1
   })
   .actions(self => ({
     update: () => {

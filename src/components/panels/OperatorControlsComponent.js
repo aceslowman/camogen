@@ -31,32 +31,7 @@ const OperatorControls = observer(props => {
     but this is a place for improvement
   */
   const generateInterface = e => {
-    let controls = null;
-
-    if (e) {
-      let c;
-
-      switch (e.name) {
-        case "Counter":
-          c = (<CounterComponent data={e} />);
-          break;
-        case "MIDI":
-          c = (<MIDIComponent data={e} />);
-          break;
-        case "Float":
-          c = (<FloatComponent data={e} />);
-          break;
-        default:          
-          break;
-      }
-
-      controls = c;
-    } else {
-      // this fallback is for addition, subtraction, etc, controlless nodes
-      controls = (<ControlGroupComponent></ControlGroupComponent>)
-    }
-  // console.log('e',e)
-    return controls;
+    return null;
   };
   
   // console.log('OPCONTROLS', getSnapshot(props.data))

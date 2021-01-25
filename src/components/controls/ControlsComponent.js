@@ -90,7 +90,7 @@ const Controls = observer(props => {
           default:
             controls = props.generateInterface(node.data);
         }
-        // console.log('CHECK', controls)
+        console.log('CHECK', controls)
 
         subpanels.push(
           <li
@@ -156,7 +156,7 @@ const Controls = observer(props => {
     });
   }, [props.data.selectedNode]);
 
-  return <div style={{ backgroundColor: "red" }}>{panels}</div>;
+  return (panels);
 });
 
 export default Controls;

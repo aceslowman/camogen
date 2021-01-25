@@ -3,6 +3,7 @@ import React from 'react';
 import { ControlGroupComponent, InputFloat } from 'maco-ui';
 
 const FloatComponent = observer((props) => {
+  console.log('props data', props.data)
 	return (
 		<ControlGroupComponent name="value">
 			<InputFloat
