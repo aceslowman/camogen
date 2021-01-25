@@ -121,7 +121,7 @@ const OperatorEditor = observer(props => {
   };
 
   // TODO: these should autopopulate from available operators
-  // console.log("HEY CHECK", opList);
+  console.log("HEY CHECK",  opList);
 
   const toolbar = props.data && <ToolbarComponent items={ctxmenu} />;
 
@@ -137,7 +137,7 @@ const OperatorEditor = observer(props => {
     >
       {data && (
         <SplitContainer vertical>
-          <OperatorGraph data={data} onContextMenu={handleContextMenu} />
+          <OperatorGraph data={graph} onContextMenu={handleContextMenu} />
           <OperatorControls data={graph} />
         </SplitContainer>
       )}

@@ -176,7 +176,7 @@ const GraphNode = types
     
     beforeDetach: () => {
       // console.log("detaching node " + self.name);
-      // self.target.removeShaderNode(parent_node);
+      // self.target.removeShaderNode(self.parent_node);
     },
 
     beforeDestroy: () => {

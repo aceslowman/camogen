@@ -35,7 +35,7 @@ const OperatorGraph = observer(props => {
         : {})
     });
   };
-  
+  console.log('hit opgraph', getSnapshot(props.data.graph))
   return (
     <PanelComponent
       detachable
