@@ -46,6 +46,9 @@ const Controls = observer(props => {
     if (isAlive(node)) addPanelRef(r, node.uuid);
   };
   
+  useEffect(() => {
+    
+  }, [props.data]);
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
       let subpanels = [];
@@ -144,7 +147,10 @@ const Controls = observer(props => {
   }, [props.data.selectedNode]);
 
   return (
-      props.data.nodes && panels
+    <div style={{backgroundColor:'red'}}>
+      {panels}
+    </div>
+      
   );
 });
 

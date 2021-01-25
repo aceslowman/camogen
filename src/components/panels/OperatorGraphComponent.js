@@ -28,14 +28,17 @@ const OperatorGraph = observer(props => {
               id: "PrintDebug",
               label: <em>Print Debug</em>,
               onClick: () => {
-                console.log("GRAPH", getSnapshot(props.data.graph));
+                console.log("GRAPH", getSnapshot(props.data));
               }
             }
           }
         : {})
     });
   };
-  console.log('hit opgraph', getSnapshot(props.data.graph))
+  
+  // when a Counter is present, this goes at frame rate  
+  // console.log('hit opgraph', getSnapshot(props.data))
+  
   return (
     <PanelComponent
       detachable
@@ -60,7 +63,7 @@ const OperatorGraph = observer(props => {
       //}
     >
       <GraphComponent
-        data={props.data.graph}
+        data={props.data}
         onContextMenu={props.onContextMenu}
         useKeys={useKeys}
       />

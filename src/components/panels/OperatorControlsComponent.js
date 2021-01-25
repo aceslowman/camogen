@@ -52,9 +52,11 @@ const OperatorControls = observer(props => {
       // this fallback is for addition, subtraction, etc, controlless nodes
       controls = (<ControlGroupComponent></ControlGroupComponent>)
     }
-
+  console.log('e',e)
     return controls;
   };
+  
+  console.log('OPCONTROLS', getSnapshot(props.data))
 
   return (
     <PanelComponent
@@ -65,11 +67,10 @@ const OperatorControls = observer(props => {
       detachable
       onDetach={props.onDetach ? props.onDetach : () => {}}
     >
-      {/*props.data.nodes && panels*/}
       <ControlsComponent 
         data={props.data}  
         selectedNode={props.selectedNode}
-        generateInterface={generateInterface}
+        generateInterface={() => generateInterface()}
       />
     </PanelComponent>
   );
