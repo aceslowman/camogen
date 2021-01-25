@@ -121,8 +121,6 @@ const OperatorEditor = observer(props => {
   };
 
   // TODO: these should autopopulate from available operators
-  console.log("HEY CHECK",  opList);
-
   const toolbar = props.data && <ToolbarComponent items={ctxmenu} />;
 
   return (

@@ -85,7 +85,6 @@ const Controls = observer(props => {
             );
             break;
           case "Float":
-            console.log('FLOAT FOUND')
             controls = (
               <FloatComponent key={node.uuid} ref={refs[i]} data={node} />
             );

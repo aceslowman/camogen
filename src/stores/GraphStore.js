@@ -87,7 +87,7 @@ const Graph = types
 
     return {
       afterAttach: () => {
-        self.up
+        self.update(); // ESSENTIAL FOR GRAPHS TO RELOAD 
       },
       
       clear: () => {
