@@ -84,12 +84,13 @@ const ShaderControls = observer(props => {
                     value={value}
                     onChange={e => handleValueChange(param, e)}
                     focused={param === store.selectedParameter}
-                    inputStyle={{
-                      fontWeight: param.graph ? "bold" : "normal",
-                      color: param.graph
-                        ? theme.accent_color
-                        : theme.text_color,
-                      fontStyle: param.graph ? "italic" : "normal"
+                    style={{
+                      //fontWeight: param.graph ? "bold" : "normal",
+                      //color: param.graph
+                      //  ? theme.accent_color
+                      //  : theme.text_color,
+                      //fontStyle: param.graph ? "italic" : "normal",
+                      border: `1px solid ${theme.accent_color}`
                       // textDecoration: param.graph ? 'underline' : 'none'
                     }}
                     onDoubleClick={e => {
@@ -142,6 +143,7 @@ const ShaderControls = observer(props => {
               case "COLOR":
               // TODO
               default:
+                console.log('PARAM', getSnapshot(param))
                 input = (
                   <InputFloat
                     key={i}
@@ -150,6 +152,7 @@ const ShaderControls = observer(props => {
                     onChange={e => handleValueChange(param, e)}
                     focused={param === store.selectedParameter}
                     inputStyle={{
+                      border: param === store.selectedParameter ? `1px solid ${theme.accent_color}` : 'none',
                       fontWeight: param.graph ? "bold" : "normal",
                       color: param.graph ? theme.accent_color : theme.text_color
                     }}
