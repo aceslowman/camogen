@@ -15,6 +15,13 @@ import CounterComponent from "../panels/operators/inputs/CounterComponent";
 import MIDIComponent from "../panels/operators/inputs/MIDIComponent";
 import FloatComponent from "../panels/operators/inputs/FloatComponent";
 
+// built in inputs
+import SketchInputComponent from "../panels/shaders/SketchInputComponent";
+import WebcamInputComponent from "../panels/shaders/WebcamInputComponent";
+import ImageInputComponent from "../panels/shaders/ImageInputComponent";
+import VideoInputComponent from "../panels/shaders/VideoInputComponent";
+import TextInputComponent from "../panels/shaders/TextInputComponent";
+
 import styles from "./ControlsComponent.module.css";
 import { observer } from "mobx-react";
 import { getSnapshot, isAlive } from "mobx-state-tree";
