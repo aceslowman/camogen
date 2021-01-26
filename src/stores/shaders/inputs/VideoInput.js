@@ -93,8 +93,11 @@ const video = types
       let p = root_store.p5_instance;
       
       // "images/muybridge.jpg" also works
-      self.img = p.loadVideo("images/checkerboard1024.png");
-      self.setVideoURL("images/checkerboard1024.png");
+      self.video = p.createVideo("videos/duck_demo.mp4", () => {
+        self.video.loop();
+        self.video.hide();
+      });
+      self.setVideoURL("videos/duck_demo.mp4");
       // prevents init() from being called twice
       self.ready = true;
 
@@ -115,7 +118,7 @@ const video = types
         var video = document.createElement("video");
         let p = root_store.p5_instance;
         self.setVideoURL(e.target.result)
-        self.setVideo(p.loadVideo(e.target.result));
+        self.setVideo(p.createVideo(e.target.result));
       };
 
       reader.readAsDataURL(file);
@@ -148,9 +151,9 @@ const video = types
         }
       }
 
-      shader.setUniform("tex0", self.img);
+      shader.setUniform("tex0", self.video);
       shader.setUniform("resolution", [target.width, target.height]);
-      shader.setUniform("img_dimensions", [self.img.width, self.img.height]);
+      shader.setUniform("img_dimensions", [self.video.width, self.video.height]);
       shader.setUniform("display_mode", self.displayModeId);
 
       target.shader(shader);
