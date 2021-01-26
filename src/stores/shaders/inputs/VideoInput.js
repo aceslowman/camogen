@@ -53,8 +53,8 @@ const video = types
             }`
   })
   .volatile(self => ({
-    img: null,
-    image_url: null
+    video: null,
+    video_url: null
   }))
   .views(self => ({
     get displayModeId() {
@@ -66,17 +66,18 @@ const video = types
   .actions(self => {
     let root_store;
 
-    function afterAttach() {
-      console.log("attached image input");
+    return {
+    afterAttach: () => {
+      console.log("attached video input");
       root_store = getRoot(self);
-    }
+    },
     
-    function beforeDestroy() {      
+    beforeDestroy: () => {      
       // revoke previous url!p      
       if(self.dataURL) URL.revokeObjectURL(self.dataURL);
-    }
+    },
 
-    function init() {
+    init: () => {
       self.ref = self.target.ref.createShader(self.vertex, self.fragment);
 
       self.extractUniforms();
@@ -100,9 +101,9 @@ const video = types
       // removes 'tex0' from inputs, since it's provided
       // by the webcam stream.
       self.inputs = [];
-    }
+    },
 
-    function loadVideo(file) {
+    loadVideo: (file) => {
       // revoke previous url!    
       if(self.dataURL) URL.revokeObjectURL(self.dataURL);
       
@@ -120,21 +121,21 @@ const video = types
       reader.readAsDataURL(file);
       self.dataURL = URL.createObjectURL(file);
       console.log('URL.createObjectURL()', URL.createObjectURL(file))
-    }
+    },
 
-    function setVideo(video) {
+    setVideo: (video) => {
       self.video = video;
-    }
+    },
 
-    function setVideoURL(video_url) {
+    setVideoURL: (video_url) => {
       self.video_url = video_url;
-    }
+    },
     
-    function setDisplayMode(mode) {
+    setDisplayMode: (mode) => {
       self.display_mode = mode;
-    }
+    },
 
-    function update(p) {
+    update: (p) => {
       let shader = self.ref;
       let target = self.target.ref;
 
@@ -161,18 +162,7 @@ const video = types
         console.log("frag", shader);
         p.noLoop();
       }
-    }
-
-    return {
-      afterAttach,
-      beforeDestroy,
-      init,
-      update,
-      setDisplayMode,
-      loadImage,
-      setImage,
-      setImageURL
-    };
+    }}
   });
 
 const Video = types.compose(
