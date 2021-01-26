@@ -1,7 +1,0 @@
-{
-     "type": "Shader",
-    "name": "The_Tower",
-    "precision": "\n\t\t#ifdef GL_ES\n\t\tprecision highp float;\n\t\t#endif \n\t",
-    "vert": "attribute vec3 aPosition;\nattribute vec2 aTexCoord;\nvarying vec2 vTexCoord;\nvoid main() {\n    vTexCoord = aTexCoord;\n    vec4 positionVec4 = vec4(aPosition, 1.0);\n    positionVec4.xy = positionVec4.xy * vec2(1., -1.);\n    gl_Position = positionVec4;\n}",
-    "frag": "varying vec2 vTexCoord;\nuniform sampler2D tex0;\nuniform vec2 resolution;\n\nfloat flip(float v, float pct) {\n    return mix(v, 1.0 - v, pct);\n}\n\nfloat stroke(float x, float s, float w) {\n    float d = step(s,x+w*0.5) - step(s,x-w*0.5);\n    return clamp(d, 0.0, 1.0);\n}\n\nfloat fill(float x, float size) {\n    return 1.0-step(size, x);\n}\n\nfloat rectSDF(vec2 st, vec2 s) {\n    st = st*2.0-1.0;\n    return max(abs(st.x/s.x),abs(st.y/s.y));\n}\n\nvoid main() {\n    vec4 color = vec4(0.0);\n    vec2 st = vTexCoord;\n    float rect = rectSDF(st, vec2(0.5,1.0));\n    float diag = (st.x+st.y)*0.5;\n    color  +=  flip(fill(rect,0.6),stroke(diag,0.5,0.01));\n    \n    gl_FragColor = vec4(vec3(color.rgb), 1.0);\n}"
-}

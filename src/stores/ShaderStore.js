@@ -355,12 +355,12 @@ let shader = types
       },
 
       beforeDetach: () => {
-        console.log("detaching shader " + self.name);
+        // console.log("detaching shader " + self.name);
         self.target.removeShaderNode(parent_node);
       },
 
       beforeDestroy: () => {
-        console.log("destroying shader!");
+        // console.log("destroying shader!");
       },
 
       saveToCollection: () => {

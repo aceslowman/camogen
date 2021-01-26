@@ -458,7 +458,10 @@ const RootStore = types
 
         reader.onload = e => {
           let content = e.target.result;
+          
           self.setShaderCollection(JSON.parse(content));
+          
+          // TODO: is this all still necessary to keep around?
           // applySnapshot(self.shader_collection, JSON.parse(content));
           //           self.setName(name);
           //           self.scene.clear();
