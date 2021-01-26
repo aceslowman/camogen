@@ -10,6 +10,7 @@ import { allOps } from "./operators";
 import SketchInput from "./shaders/inputs/SketchInput";
 import WebcamInput from "./shaders/inputs/WebcamInput";
 import ImageInput from "./shaders/inputs/ImageInput";
+import VideoInput from "./shaders/inputs/VideoInput";
 import TextInput from "./shaders/inputs/TextInput";
 
 import Counter from './operators/inputs/Counter';
@@ -33,6 +34,7 @@ const PossibleData = types.union(
         if (snap.type === "Shader") return Shader;
         if (snap.type === "SketchInput") return SketchInput;
         if (snap.type === "WebcamInput") return WebcamInput;
+        if (snap.type === "VideoInput") return VideoInput;
         if (snap.type === "ImageInput") return ImageInput;
         if (snap.type === "TextInput") return TextInput;
         if (snap.type === "Counter") return Counter;
@@ -47,7 +49,7 @@ const PossibleData = types.union(
         if (snap.type === "Cos") return Cos;
         if (snap.type === "Tan") return Tan;
         if (snap.type === "Thru") return Thru;
-        console.log(snap.type)
+
         return allOps;
       } else {
         return Shader;
@@ -57,6 +59,7 @@ const PossibleData = types.union(
   Shader,
   allOps,
   ImageInput,
+  VideoInput,
   SketchInput,
   WebcamInput,
   TextInput

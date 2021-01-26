@@ -4,7 +4,7 @@ import * as DefaultShader from "../defaults/DefaultShader";
 import { nanoid } from "nanoid";
 import Parameter from '../../ParameterStore';
 
-const webcam = types
+const video = types
   .model("Video", {
     type: "VideoInput",
     name: "Video",
@@ -177,6 +177,6 @@ const webcam = types
 
 const Video = types.compose(
   Shader,
-  Video
+  video
 );
 export default Video;

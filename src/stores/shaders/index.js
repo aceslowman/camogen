@@ -28,9 +28,12 @@ export const SketchInput = _SketchInput;
 
 adding new shader effects:
 
+this needs to be simplified for sure
+
 1. Create a new store in this folder.
 2. Add that store to this file
 3. Create a new component for the effect (components/panels/shaders)
 4. Add component to ControlsComponent
-5. Add to mainToolbar
+5. Add to RootStore -> ShaderLibrary
+6. Add to NodeStore
 */

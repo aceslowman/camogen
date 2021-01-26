@@ -197,6 +197,12 @@ const RootStore = types
               onClick: () =>
                 self.scene.shaderGraph.setSelectedByName("ImageInput")
             },
+            Video: {
+              id: "Video",
+              label: "Video",
+              onClick: () =>
+                self.scene.shaderGraph.setSelectedByName("VideoInput")
+            },
             Text: {
               id: "Text",
               label: "Text",
