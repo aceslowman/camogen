@@ -16,12 +16,6 @@ import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 import ControlsComponent from "../controls/ControlsComponent";
 
-// built in inputs
-import SketchInputComponent from "./shaders/SketchInputComponent";
-import WebcamInputComponent from "./shaders/WebcamInputComponent";
-import ImageInputComponent from "./shaders/ImageInputComponent";
-import TextInputComponent from "./shaders/TextInputComponent";
-
 const ShaderControls = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
