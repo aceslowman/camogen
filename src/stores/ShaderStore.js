@@ -101,7 +101,10 @@ let shader = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     frag: DefaultShader.frag,
-    updateGroup: types.map(types.safeReference(types.late(() => OperatorGraph)))
+    // operatorGraphs: types.map(types.late(() => OperatorGraph)),
+    operatorGraphs: types.map(
+      types.safeReference(types.late(() => OperatorGraph))
+    )
   })
   .volatile(() => ({
     target: null,
@@ -196,12 +199,15 @@ let shader = types
         // remove all uniforms that aren't present in new result set
         // ie, removes uniforms that aren't needed anymore
         // I have a bug here!
-        self.uniforms = self.uniforms.filter(u => {          
-          // name and type must match!          
+        self.uniforms = self.uniforms.filter(u => {
+          // name and type must match!
           return (
             result.filter(e => {
               // console.log(`comparing ${e.name}(${e.type.toLowerCase()}) to ${u.name}(${u.type})`);
-              return e.name === u.name && e.type.toLowerCase() === u.type.toLowerCase();
+              return (
+                e.name === u.name &&
+                e.type.toLowerCase() === u.type.toLowerCase()
+              );
             }).length > 0
           );
         });
@@ -227,7 +233,8 @@ let shader = types
             if (
               self.uniforms[j].name === e.name &&
               self.uniforms[j].type.toLowerCase() === e.type.toLowerCase()
-            ) return;            
+            )
+              return;
           }
 
           // ignore if input already exists
@@ -304,7 +311,7 @@ let shader = types
           Loop through all active parameter graphs to recompute 
           values in sync with the frame rate
       */
-        self.updateGroup.forEach(e => e.afterUpdate());
+        self.operatorGraphs.forEach(e => e.afterUpdate());
 
         for (let uniform_data of self.uniforms) {
           if (uniform_data.elements.length > 1) {
@@ -348,8 +355,12 @@ let shader = types
       },
 
       beforeDetach: () => {
-        console.log("detaching shader " + self.name);
+        // console.log("detaching shader " + self.name);
         self.target.removeShaderNode(parent_node);
+      },
+
+      beforeDestroy: () => {
+        // console.log("destroying shader!");
       },
 
       saveToCollection: () => {
@@ -420,9 +431,8 @@ let shader = types
         self.init();
       },
 
-      addToUpdateGroup: p_graph => {
-        self.updateGroup.put(p_graph);
-        return p_graph;
+      addOperatorGraph: graph => {
+        self.operatorGraphs.put(graph);
       },
 
       setVert: v => {

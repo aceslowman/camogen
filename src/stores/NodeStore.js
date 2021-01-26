@@ -1,14 +1,29 @@
 import Shader from "./ShaderStore";
 import { undoManager } from "./GraphStore";
-import { types, getParent, getSnapshot } from "mobx-state-tree";
+import { types, getParent, getSnapshot, destroy } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
 import { nanoid } from "nanoid";
 import { allOps } from "./operators";
+
+
 import SketchInput from "./shaders/inputs/SketchInput";
 import WebcamInput from "./shaders/inputs/WebcamInput";
 import ImageInput from "./shaders/inputs/ImageInput";
 import TextInput from "./shaders/inputs/TextInput";
+
+import Counter from './operators/inputs/Counter';
+import MIDI from './operators/inputs/MIDI';
+import Float from './operators/inputs/Float';
+import Add from './operators/math/Add';
+import Subtract from './operators/math/Subtract';
+import Divide from './operators/math/Divide';
+import Multiply from './operators/math/Multiply';
+import Modulus from './operators/math/Modulus';
+import Sin from './operators/math/Sin';
+import Cos from './operators/math/Cos';
+import Tan from './operators/math/Tan';
+import Thru from './operators/Thru';
 
 // NOTE: rearranged ImageInput and Shader, keep an eye on this for issues
 const PossibleData = types.union(
@@ -20,6 +35,19 @@ const PossibleData = types.union(
         if (snap.type === "WebcamInput") return WebcamInput;
         if (snap.type === "ImageInput") return ImageInput;
         if (snap.type === "TextInput") return TextInput;
+        if (snap.type === "Counter") return Counter;
+        if (snap.type === "MIDI") return MIDI;
+        if (snap.type === "Float") return Float;
+        if (snap.type === "Add") return Add;
+        if (snap.type === "Subtract") return Subtract;
+        if (snap.type === "Divide") return Divide;
+        if (snap.type === "Multiply") return Multiply;
+        if (snap.type === "Modulus") return Modulus;
+        if (snap.type === "Sin") return Sin;
+        if (snap.type === "Cos") return Cos;
+        if (snap.type === "Tan") return Tan;
+        if (snap.type === "Thru") return Thru;
+        console.log(snap.type)
         return allOps;
       } else {
         return Shader;
@@ -172,6 +200,16 @@ const GraphNode = types
     deselect: () => {
       self.parent_graph.clipboard.removeSelection(self);
       return self;
+    },
+    
+    beforeDetach: () => {
+      // console.log("detaching node " + self.name);
+      // self.target.removeShaderNode(self.parent_node);
+    },
+
+    beforeDestroy: () => {
+      // console.log('destroying node ' + self.name + '('+self.uuid+')')
+      if(self.data) destroy(self.data)
     },
 
     setChildren: children => (self.children = children),

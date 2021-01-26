@@ -121,32 +121,22 @@ const OperatorEditor = observer(props => {
   };
 
   // TODO: these should autopopulate from available operators
-  // console.log("HEY CHECK", opList);
-
   const toolbar = props.data && <ToolbarComponent items={ctxmenu} />;
 
   return (
     <GenericPanel
       panel={props.panel}
       toolbar={data && toolbar}
-      title=" "
-      subtitle={
-        data &&
-        `${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`
-      }
+      title="Parameter Editor"
+      //subtitle={
+      //  data &&
+      //  `${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`
+      //}
     >
       {data && (
         <SplitContainer vertical>
-          <OperatorGraph
-            data={data}
-            onContextMenu={handleContextMenu}
-            selectedNode={data.graph.selectedNode}
-            coord_bounds={props.coord_bounds}
-          />
-          <OperatorControls
-            data={graph}
-            selectedNode={data.graph.selectedNode}
-          />
+          <OperatorGraph data={graph} onContextMenu={handleContextMenu} />
+          <OperatorControls data={graph} />
         </SplitContainer>
       )}
 

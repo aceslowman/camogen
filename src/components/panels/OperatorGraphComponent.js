@@ -28,7 +28,7 @@ const OperatorGraph = observer(props => {
               id: "PrintDebug",
               label: <em>Print Debug</em>,
               onClick: () => {
-                console.log("GRAPH", getSnapshot(props.data.graph));
+                console.log("GRAPH", getSnapshot(props.data));
               }
             }
           }
@@ -36,11 +36,14 @@ const OperatorGraph = observer(props => {
     });
   };
   
+  // when a Counter is present, this goes at frame rate  
+  // console.log('hit opgraph', getSnapshot(props.data))
+  
   return (
     <PanelComponent
       detachable
       onDetach={props.onDetach ? props.onDetach : () => {}}
-      collapsed={props.collapsed}
+      // collapsed={props.collapsed}
       //title="Operator Graph"
       onRemove={() => store.workspace.removePanel("Operator Graph")}
       defaultSize={props.defaultSize}
@@ -60,9 +63,7 @@ const OperatorGraph = observer(props => {
       //}
     >
       <GraphComponent
-        data={props.data.graph}
-        coord_bounds={props.coord_bounds}
-        selectedNode={props.selectedNode}
+        data={props.data}
         onContextMenu={props.onContextMenu}
         useKeys={useKeys}
       />

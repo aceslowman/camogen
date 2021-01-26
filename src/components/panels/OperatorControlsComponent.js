@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import MainContext from "../../MainContext";
 import { PanelComponent, ThemeContext, ControlGroupComponent } from "maco-ui";
+
+// built-in operators
 import CounterComponent from "./operators/inputs/CounterComponent";
 import MIDIComponent from "./operators/inputs/MIDIComponent";
 import FloatComponent from "./operators/inputs/FloatComponent";
+
 import ControlsComponent from "../controls/ControlsComponent";
 import styles from "./OperatorControlsComponent.module.css";
 import { observer } from "mobx-react";
@@ -28,32 +31,7 @@ const OperatorControls = observer(props => {
     but this is a place for improvement
   */
   const generateInterface = e => {
-    let controls = null;
-
-    if (e) {
-      let c;
-
-      switch (e.name) {
-        case "Counter":
-          c = (<CounterComponent data={e} />);
-          break;
-        case "MIDI":
-          c = (<MIDIComponent data={e} />);
-          break;
-        case "Float":
-          c = (<FloatComponent data={e} />);
-          break;
-        default:          
-          break;
-      }
-
-      controls = c;
-    } else {
-      // this fallback is for addition, subtraction, etc, controlless nodes
-      controls = (<ControlGroupComponent></ControlGroupComponent>)
-    }
-
-    return controls;
+    return null;
   };
 
   return (
@@ -65,10 +43,8 @@ const OperatorControls = observer(props => {
       detachable
       onDetach={props.onDetach ? props.onDetach : () => {}}
     >
-      {/*props.data.nodes && panels*/}
       <ControlsComponent 
-        data={props.data}  
-        selectedNode={props.selectedNode}
+        data={props.data} 
         generateInterface={generateInterface}
       />
     </PanelComponent>

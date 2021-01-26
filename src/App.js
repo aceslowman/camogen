@@ -61,9 +61,6 @@ const App = observer(props => {
         return (
           <ShaderGraphComponent
             key={panel.id}
-            // this helps rerendering, despite dereferencing late...
-            selectedNode={scene.shaderGraph.selectedNode}
-            coord_bounds={scene.shaderGraph.coord_bounds}
             data={scene.shaderGraph}
             panel={panel}
           />
@@ -88,7 +85,6 @@ const App = observer(props => {
           <ShaderControlsComponent
             key={panel.id}
             data={scene.shaderGraph}
-            selectedNode={scene.shaderGraph.selectedNode}
             panel={panel}
           />
         );
@@ -138,10 +134,10 @@ const App = observer(props => {
           onContextMenu={handleContextMenu}
           style={{
             backgroundColor: ui.theme.secondary_color,
-            height:'100%',
-        width:'100%',
-        display:'flex', 
-        flexFlow: 'column'
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            flexFlow: "column"
           }}
         >
           <ContextMenuComponent items={store.context.contextmenu} />

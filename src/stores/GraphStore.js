@@ -5,7 +5,10 @@ import {
   applySnapshot,
   getSnapshot,
   clone,
-  detach
+  detach,
+  destroy,
+  isAlive,
+  isValidReference
 } from "mobx-state-tree";
 import { UndoManager } from "mst-middlewares";
 import Coordinate from "./utils/Coordinate";
@@ -76,27 +79,27 @@ const Graph = types
     },
 
     get selectedNode() {
-      // left to right insertion
-      // return self.clipboard.selection[0];
-      
-      // right to left insertion
-      return self.clipboard.selection[self.clipboard.selection.length - 1];
+      if (isAlive(self)) return self.clipboard.currentlySelected;
     }
   }))
   .actions(self => {
-    setUndoManager(self);
+    // setUndoManager(self);
 
     return {
       afterAttach: () => {
-        // self.clipboard.select(self.root);
+        self.update(); // ESSENTIAL FOR GRAPHS TO RELOAD 
       },
-
+      
       clear: () => {
         self.clipboard.clear();
 
-        // TODO: currently not working when subgraphs are present!
-        // TODO: what if I cleared the graph from the root up?
-        // re-initialize the nodes map
+        self.queue = [];
+
+        // THIS DID IT! "Not a child" error resolved by destroying the internal shader
+        self.traverseFrom().forEach((e, i) => {
+          if (e.data) destroy(e.data);
+        });
+
         self.nodes.clear();
 
         // create root node, select it
@@ -212,12 +215,12 @@ const Graph = types
 
       traverseFrom: (node = self.root, f = null, depthFirst = false) => {
         /*
-        self method will crawl through the graph structure
-        either depth first or breadth first.
+          self method will crawl through the graph structure
+          either depth first or breadth first.
 
-        it's first argument is function that will be called
-        during each step of the traversal.
-      */
+          it's first argument is function that will be called
+          during each step of the traversal.
+        */
         let result = [];
         let container = [node];
         let next_node;
@@ -329,11 +332,6 @@ const operatorGraph = types
     param: types.reference(Parameter)
   })
   .actions(self => ({
-    afterAttach: () => {
-      self.addNode();
-      self.update();
-    },
-
     setSelectedByName: name => {
       if (!self.selectedNode) self.clipboard.select(self.root);
       let op = getOperator(name);

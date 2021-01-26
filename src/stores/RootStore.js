@@ -4,7 +4,8 @@ import {
   getSnapshot,
   types,
   flow,
-  applySnapshot
+  applySnapshot,
+  destroy
 } from "mobx-state-tree";
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
@@ -46,7 +47,7 @@ const RootStore = types
       1}-${currentDate.getDate()}-${currentDate.getFullYear()}`,
     ui: UIStore,
     scene: types.maybe(Scene),
-    selectedParameter: types.maybe(types.safeReference(Parameter)),
+    selectedParameter: types.safeReference(Parameter),
     keyFocus: types.maybe(types.string),
     transport: types.optional(Transport, {}),
     shader_collection: types.maybe(Collection),
@@ -323,7 +324,7 @@ const RootStore = types
       console.log("project saved!");
     },
 
-    load: () => {
+    load: flow(function* load() {
       let link = document.createElement("input");
       link.type = "file";
 
@@ -331,13 +332,16 @@ const RootStore = types
         var file = e.target.files[0];
 
         let reader = new FileReader();
-        reader.readAsText(file, "UTF-8");
+        reader.readAsText(file, "UTF-8");        
 
         reader.onload = e => {
           let content = e.target.result;
 
           self.setName(name);
-          self.scene.clear();
+          self.scene.clear(); // this just fails early
+          console.log('clearing')
+          // destroy(self.scene)
+          
           applySnapshot(self, JSON.parse(content));
           self.scene.shaderGraph.update();
           self.scene.shaderGraph.afterUpdate();
@@ -346,7 +350,7 @@ const RootStore = types
       };
 
       link.click();
-    },
+    }),
 
     breakout: () => {
       let new_window = window.open(
@@ -454,7 +458,10 @@ const RootStore = types
 
         reader.onload = e => {
           let content = e.target.result;
+          
           self.setShaderCollection(JSON.parse(content));
+          
+          // TODO: is this all still necessary to keep around?
           // applySnapshot(self.shader_collection, JSON.parse(content));
           //           self.setName(name);
           //           self.scene.clear();

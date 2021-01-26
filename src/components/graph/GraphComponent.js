@@ -24,10 +24,6 @@ const GraphComponent = observer(props => {
   const canvas_ref = useRef(null);
   const [labels, setLabels] = useState([]);
 
-  const handleFocus = e => setUseKeys(true);
-
-  const handleBlur = e => setUseKeys(false);
-
   const drawGraph = () => {
     const ctx = canvas_ref.current.getContext("2d");
     const wrapper_bounds = wrapper_ref.current.getBoundingClientRect();
@@ -270,28 +266,28 @@ const GraphComponent = observer(props => {
         },
         // bypass
         b: () => {
-          props.selectedNode.toggleBypass();
+          props.data.selectedNode.toggleBypass();
         },
         // select up
         ArrowUp: () => {
-          if (props.selectedNode && props.selectedNode.parents.length)
-            props.selectedNode.parents[0].select();
+          if (props.data.selectedNode && props.data.selectedNode.parents.length)
+            props.data.selectedNode.parents[0].select();
         },
         // select down
         ArrowDown: () => {
-          if (props.selectedNode && props.selectedNode.children.length)
-            props.selectedNode.children[0].select();
+          if (props.data.selectedNode && props.data.selectedNode.children.length)
+            props.data.selectedNode.children[0].select();
         },
         // select left
         ArrowLeft: () => {
-          if (props.selectedNode && props.selectedNode.children.length) {
-            let idx = props.selectedNode.children[0].parents.indexOf(
-              props.selectedNode
+          if (props.data.selectedNode && props.data.selectedNode.children.length) {
+            let idx = props.data.selectedNode.children[0].parents.indexOf(
+              props.data.selectedNode
             );
             idx--;
 
             if (idx >= 0) {
-              props.selectedNode.children[0].parents[idx].select();
+              props.data.selectedNode.children[0].parents[idx].select();
             }
           }
         },
@@ -321,11 +317,11 @@ const GraphComponent = observer(props => {
         },
         // add selection down
         "Shift+ArrowDown": () => {
-          if (props.selectedNode && props.selectedNode.children.length) {
-            let next = props.selectedNode.children[0];
+          if (props.data.selectedNode && props.data.selectedNode.children.length) {
+            let next = props.data.selectedNode.children[0];
 
             if (clipboard.selection.includes(next)) {
-              clipboard.removeSelection(props.selectedNode);
+              clipboard.removeSelection(props.data.selectedNode);
             } else {
               clipboard.addSelection(next);
             }
@@ -356,17 +352,17 @@ const GraphComponent = observer(props => {
         },
         // swap up
         "$mod+Shift+ArrowUp": () => {
-          if (props.selectedNode && props.selectedNode.parents.length)
-            if (props.selectedNode.parents[0].parents.length)
-              props.selectedNode.swapData(
-                props.selectedNode.parents[0].select()
+          if (props.data.selectedNode && props.data.selectedNode.parents.length)
+            if (props.data.selectedNode.parents[0].parents.length)
+              props.data.selectedNode.swapData(
+                props.data.selectedNode.parents[0].select()
               );
         },
         // swap down
         "$mod+Shift+ArrowDown": () => {
-          if (props.selectedNode && props.selectedNode.children.length)
-            props.selectedNode.swapData(
-              props.selectedNode.children[0].select()
+          if (props.data.selectedNode && props.data.selectedNode.children.length)
+            props.data.selectedNode.swapData(
+              props.data.selectedNode.children[0].select()
             );
         },
         // swap left
@@ -419,11 +415,11 @@ const GraphComponent = observer(props => {
       store.context.removeKeymap();
     }
   }, [
-    props.selectedNode,
+    props.data.selectedNode,
+    props.data.history,
     props.data,
     store.context,
-    props.useKeys,
-    props.data.history
+    props.useKeys    
   ]);
 
   return (

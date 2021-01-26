@@ -29,58 +29,6 @@ const ShaderControls = observer(props => {
   const [useKeys, setUseKeys] = useState(false);
   const [expandAll, setExpandAll] = useState(true);
 
-  const handleFocus = e => {
-    // setUseKeys(true);
-  };
-
-  const handleBlur = e => {
-    // setUseKeys(false);
-  };
-
-  // TODO: this is currently breaking the keymap in shadergraph
-  //   useEffect(() => {
-  //     if (useKeys) {
-  //       store.context.setKeymap({
-  //         ArrowUp: () => {
-  //           if (props.selectedNode && props.selectedNode.parents.length)
-  //             props.selectedNode.parents[0].select();
-  //         },
-  //         ArrowDown: () => {
-  //           if (props.selectedNode && props.selectedNode.children.length)
-  //             props.selectedNode.children[0].select();
-  //         },
-  //         ArrowLeft: () => {
-  //           if (props.selectedNode && props.selectedNode.children.length) {
-  //             let idx = props.selectedNode.children[0].parents.indexOf(
-  //               props.selectedNode
-  //             );
-  //             idx--;
-
-  //             if (idx >= 0) {
-  //               props.selectedNode.children[0].parents[idx].select();
-  //             }
-  //           }
-  //         },
-  //         ArrowRight: () => {
-  //           if (props.selectedNode && props.selectedNode.children.length) {
-  //             let idx = props.selectedNode.children[0].parents.indexOf(
-  //               props.selectedNode
-  //             );
-  //             idx++;
-
-  //             if (idx <= props.selectedNode.children[0].parents.length - 1)
-  //               props.selectedNode.children[0].parents[idx].select();
-  //           }
-  //         },
-  //         Delete: () => {
-  //           props.data.removeSelected();
-  //         }
-  //       });
-  //     } else {
-  //       store.context.removeKeymap();
-  //     }
-  //   }, [props.selectedNode, props.data, store.context, useKeys]);
-
   const handleValueChange = (param, e) => {
     param.setValue(e);
   };
@@ -136,12 +84,13 @@ const ShaderControls = observer(props => {
                     value={value}
                     onChange={e => handleValueChange(param, e)}
                     focused={param === store.selectedParameter}
-                    inputStyle={{
-                      fontWeight: param.graph ? "bold" : "normal",
-                      color: param.graph
-                        ? theme.accent_color
-                        : theme.text_color,
-                      fontStyle: param.graph ? "italic" : "normal"
+                    style={{
+                      //fontWeight: param.graph ? "bold" : "normal",
+                      //color: param.graph
+                      //  ? theme.accent_color
+                      //  : theme.text_color,
+                      //fontStyle: param.graph ? "italic" : "normal",
+                      border: `1px solid ${theme.accent_color}`
                       // textDecoration: param.graph ? 'underline' : 'none'
                     }}
                     onDoubleClick={e => {
@@ -178,7 +127,7 @@ const ShaderControls = observer(props => {
               // TODO
               // input = (
               //   <InputSlider
-              //     key={i}
+              //     key={800i}
               //     step={1}
               //     min={0}
               //     max={100}
@@ -193,7 +142,11 @@ const ShaderControls = observer(props => {
               // break;
               case "COLOR":
               // TODO
+              // VEC2 and everything else like that ends up here, since 
+              // they are assumed to be float. that doesn't account for
+              // ivec but I'll look into that when it becomes an issue
               default:
+                // console.log('PARAM', param.uniform.type)
                 input = (
                   <InputFloat
                     key={i}
@@ -202,6 +155,7 @@ const ShaderControls = observer(props => {
                     onChange={e => handleValueChange(param, e)}
                     focused={param === store.selectedParameter}
                     inputStyle={{
+                      border: param === store.selectedParameter ? `1px solid ${theme.accent_color}` : 'none',
                       fontWeight: param.graph ? "bold" : "normal",
                       color: param.graph ? theme.accent_color : theme.text_color
                     }}
@@ -226,8 +180,6 @@ const ShaderControls = observer(props => {
   return (
     <GenericPanel
       panel={props.panel}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
       toolbar={
         <ToolbarComponent
           items={{
@@ -240,10 +192,8 @@ const ShaderControls = observer(props => {
         />
       }
     >
-      {/*props.data.nodes && panels*/}
       <ControlsComponent 
-        data={props.data}  
-        selectedNode={props.selectedNode}
+        data={props.data} 
         generateInterface={generateInterface}
       />
     </GenericPanel>
