@@ -28,7 +28,7 @@ export const SketchInput = _SketchInput;
 
 adding new shader effects:
 
-this needs to be simplified for sure
+needs to be massively simplified...
 
 1. Create a new store in this folder.
 2. Add that store to this file
@@ -36,4 +36,5 @@ this needs to be simplified for sure
 4. Add component to ControlsComponent
 5. Add to RootStore -> ShaderLibrary
 6. Add to NodeStore
+7. Add to ShaderGraphStore
 */

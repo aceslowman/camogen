@@ -92,8 +92,8 @@ const video = types
       let p = root_store.p5_instance;
       
       // "images/muybridge.jpg" also works
-      self.img = p.loadImage("images/checkerboard1024.png");
-      self.setImageURL("images/checkerboard1024.png");
+      self.img = p.loadVideo("images/checkerboard1024.png");
+      self.setVideoURL("images/checkerboard1024.png");
       // prevents init() from being called twice
       self.ready = true;
 
@@ -102,19 +102,19 @@ const video = types
       self.inputs = [];
     }
 
-    function loadImage(file) {
+    function loadVideo(file) {
       // revoke previous url!    
       if(self.dataURL) URL.revokeObjectURL(self.dataURL);
       
-      if (!file.type.startsWith("image/")) return;
+      if (!file.type.startsWith("video/")) return;
 
       var reader = new FileReader();
 
       reader.onload = e => {
-        var image = document.createElement("img");
+        var video = document.createElement("video");
         let p = root_store.p5_instance;
-        self.setImageURL(e.target.result)
-        self.setImage(p.loadImage(e.target.result));
+        self.setVideoURL(e.target.result)
+        self.setVideo(p.loadVideo(e.target.result));
       };
 
       reader.readAsDataURL(file);
@@ -122,12 +122,12 @@ const video = types
       console.log('URL.createObjectURL()', URL.createObjectURL(file))
     }
 
-    function setImage(img) {
-      self.img = img;
+    function setVideo(video) {
+      self.video = video;
     }
 
-    function setImageURL(img_url) {
-      self.image_url = img_url;
+    function setVideoURL(video_url) {
+      self.video_url = video_url;
     }
     
     function setDisplayMode(mode) {

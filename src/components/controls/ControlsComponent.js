@@ -70,6 +70,11 @@ const Controls = observer(props => {
               <ImageInputComponent key={node.uuid} ref={refs[i]} data={node} />
             );
             break;
+          case "Video":
+            controls = (
+              <VideoInputComponent key={node.uuid} ref={refs[i]} data={node} />
+            );
+            break;
           case "Text":
             controls = (
               <TextInputComponent key={node.uuid} ref={refs[i]} data={node} />
