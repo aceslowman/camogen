@@ -92,7 +92,6 @@ const video = types
 
       let p = root_store.p5_instance;
       
-      // "images/muybridge.jpg" also works
       self.video = p.createVideo("videos/duck_demo.mp4", () => {
         self.video.loop();
         self.video.hide();
