@@ -127,7 +127,7 @@ const ShaderControls = observer(props => {
               // TODO
               // input = (
               //   <InputSlider
-              //     key={i}
+              //     key={800i}
               //     step={1}
               //     min={0}
               //     max={100}
@@ -142,8 +142,11 @@ const ShaderControls = observer(props => {
               // break;
               case "COLOR":
               // TODO
+              // VEC2 and everything else like that ends up here, since 
+              // they are assumed to be float. that doesn't account for
+              // ivec but I'll look into that when it becomes an issue
               default:
-                console.log('PARAM', getSnapshot(param))
+                // console.log('PARAM', param.uniform.type)
                 input = (
                   <InputFloat
                     key={i}

@@ -127,11 +127,11 @@ const OperatorEditor = observer(props => {
     <GenericPanel
       panel={props.panel}
       toolbar={data && toolbar}
-      title=" "
-      subtitle={
-        data &&
-        `${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`
-      }
+      title="Parameter Editor"
+      //subtitle={
+      //  data &&
+      //  `${data.uniform.shader.name} > ${data.uniform.name} > ${data.name}`
+      //}
     >
       {data && (
         <SplitContainer vertical>
