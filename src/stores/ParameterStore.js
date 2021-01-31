@@ -46,8 +46,8 @@ const Parameter = types
       self.value = v;
     },
 
-    resetDefault: () => {
-      console.log("resetting to default value", getSnapshot(self));
+    resetToDefault: () => {
+      // console.log("resetting to default value", getSnapshot(self));
       self.value = self.default;
     }
   }));

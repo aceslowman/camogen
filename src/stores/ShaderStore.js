@@ -50,46 +50,45 @@ const Uniform = types
           name: name,
           value: value,
           uniform: self,
-          default: defaultValue
+          default: value
         })
       );
     },
 
     addFloat: (value, options) => {
       self.type = "FLOAT";
-      self.default = options.default;
-      self.addElement("", value, options);
+      self.addElement("", value, options.default, options);
     },
 
     addInt: (value, options) => {
       self.type = "INT";
-      self.addElement("", value, options);
+      self.addElement("", value, options.default, options);
     },
 
     addVec2: (value, options) => {
       self.type = "VEC2";
-      self.addElement("x:", value[0], options);
-      self.addElement("y:", value[1], options);
+      self.addElement("x:", value[0], options.default[0], options);
+      self.addElement("y:", value[1], options.default[1], options);
     },
 
     addVec3: (value, options) => {
       self.type = "VEC3";
-      self.addElement("x:", value[0], options);
-      self.addElement("y:", value[1], options);
-      self.addElement("z:", value[2], options);
+      self.addElement("x:", value[0], options.default[0], options);
+      self.addElement("y:", value[1], options.default[1], options);
+      self.addElement("z:", value[2], options.default[2], options);
     },
 
     addVec4: (value, options) => {
       self.type = "VEC4";
-      self.addElement("x:", value[0], options);
-      self.addElement("y:", value[1], options);
-      self.addElement("z:", value[2], options);
-      self.addElement("w:", value[3], options);
+      self.addElement("x:", value[0], options.default[0], options);
+      self.addElement("y:", value[1], options.default[1], options);
+      self.addElement("z:", value[2], options.default[2], options);
+      self.addElement("w:", value[3], options.default[3], options);
     },
 
     addBool: (value, options) => {
       self.type = "BOOL";
-      self.addElement("", value, options);      
+      self.addElement("", value, options.default, options);      
     }
 
     // TODO: mat2, mat3, mat4, sampler2D and samplerCube
@@ -430,6 +429,14 @@ let shader = types
         self.name = "New Shader";
         parent_node.setName("New Shader");
         self.init();
+      },
+      
+      resetToDefault: () => {
+        self.uniforms.forEach(e => {
+          e.elements.forEach(j => {
+            j.resetToDefault();
+          })
+        })
       },
 
       addOperatorGraph: graph => {

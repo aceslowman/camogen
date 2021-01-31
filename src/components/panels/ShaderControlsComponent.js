@@ -47,7 +47,7 @@ const ShaderControls = observer(props => {
         id: "ResetDefault",
         label: "Reset to Default",
         onClick: () => {
-          param.resetDefault();
+          param.resetToDefault();
           store.context.setContextmenu(); // removes menu
         }
       }

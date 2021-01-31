@@ -44,6 +44,13 @@ const ShaderGraph = observer(props => {
           store.context.setContextmenu(); // removes menu
         }
       },
+      ResetToDefault: {
+        id: "ResetToDefault",
+        label: "Reset To Default",
+        onClick: () => {
+          node.data.resetToDefault();
+        }
+      },
       ...(process.env.NODE_ENV === "development"
         ? {
             PrintDebug: {
