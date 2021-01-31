@@ -19,7 +19,6 @@ const Uniform = types
     uuid: types.identifier,
     name: types.maybe(types.string),
     elements: types.array(Parameter),
-    default: types.frozen(),
     type: types.maybe(
       types.enumeration("Type", [
         "FLOAT",
@@ -42,7 +41,7 @@ const Uniform = types
       self.shader = getParent(self, 2);
     },
 
-    addElement: (name, value, options) => {
+    addElement: (name, value, defaultValue, options) => {
       self.controlType = options.type ? options.type.toUpperCase() : "NORMAL";
 
       self.elements.push(
@@ -50,28 +49,27 @@ const Uniform = types
           uuid: "param_" + nanoid(),
           name: name,
           value: value,
-          uniform: self
+          uniform: self,
+          default: defaultValue
         })
       );
     },
 
     addFloat: (value, options) => {
       self.type = "FLOAT";
-      self.addElement("", value, options);
       self.default = options.default;
+      self.addElement("", value, options);
     },
 
     addInt: (value, options) => {
       self.type = "INT";
       self.addElement("", value, options);
-      self.default = options.default;
     },
 
     addVec2: (value, options) => {
       self.type = "VEC2";
       self.addElement("x:", value[0], options);
       self.addElement("y:", value[1], options);
-      self.default = options.default;
     },
 
     addVec3: (value, options) => {
@@ -79,7 +77,6 @@ const Uniform = types
       self.addElement("x:", value[0], options);
       self.addElement("y:", value[1], options);
       self.addElement("z:", value[2], options);
-      self.default = options.default;
     },
 
     addVec4: (value, options) => {
@@ -88,13 +85,11 @@ const Uniform = types
       self.addElement("y:", value[1], options);
       self.addElement("z:", value[2], options);
       self.addElement("w:", value[3], options);
-      self.default = options.default;
     },
 
     addBool: (value, options) => {
       self.type = "BOOL";
-      self.addElement("", value, options);
-      self.default = options.default;
+      self.addElement("", value, options);      
     }
 
     // TODO: mat2, mat3, mat4, sampler2D and samplerCube

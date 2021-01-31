@@ -42,6 +42,14 @@ const ShaderControls = observer(props => {
           store.ui.getPanel("MAIN").setLayout(variant);
           store.context.setContextmenu(); // removes menu
         }
+      },
+      ResetDefault: {
+        id: "ResetDefault",
+        label: "Reset to Default",
+        onClick: () => {
+          param.resetDefault();
+          store.context.setContextmenu(); // removes menu
+        }
       }
     });
   };

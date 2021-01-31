@@ -1,15 +1,18 @@
-import { getParent, getRoot, types } from "mobx-state-tree";
+import { getParent, getSnapshot, getRoot, types } from "mobx-state-tree";
 import { OperatorGraph } from "./GraphStore";
 import { nanoid } from "nanoid";
+
+const valueType = types.optional(
+  types.union(types.number, types.string, types.boolean),
+  0
+);
 
 const Parameter = types
   .model("Parameter", {
     uuid: types.identifier,
     name: types.maybe(types.string),
-    value: types.optional(
-      types.union(types.number, types.string, types.boolean),
-      0
-    ),
+    default: valueType,
+    value: valueType,
     graph: types.maybe(types.late(() => OperatorGraph)),
     controlType: types.maybe(types.string)
   })
@@ -29,9 +32,9 @@ const Parameter = types
         uuid: "opgraph_" + nanoid(),
         param: self
       });
-      
-      parent_shader.addOperatorGraph(self.graph)
-      
+
+      parent_shader.addOperatorGraph(self.graph);
+
       self.graph.addNode().select(); // initial root node!
     },
 
@@ -41,6 +44,11 @@ const Parameter = types
 
     setValue: v => {
       self.value = v;
+    },
+
+    resetDefault: () => {
+      console.log("resetting to default value", getSnapshot(self));
+      self.value = self.default;
     }
   }));
 
