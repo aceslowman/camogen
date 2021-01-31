@@ -6,8 +6,8 @@ const dirTree = require('directory-tree');
 const app = express(); 
 const { nanoid } = require('nanoid');
  
-let shader_collection;  
- 
+let shader_collection;   
+  
 /* TODO: should rely on camo.collection files */
 function preloadDefaultShaders() {
   const shader_path = path.resolve(__dirname, '../shaders');
