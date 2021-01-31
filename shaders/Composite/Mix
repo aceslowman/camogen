@@ -1,0 +1,7 @@
+{
+  "type": "Shader",
+  "name": "Mix",
+  "precision": "#ifdef GL_ES \n   precision highp float; \n#endif \n",
+  "vert": "attribute vec3 aPosition; \nattribute vec2 aTexCoord; \nvarying vec2 vTexCoord; \n\nvoid main() {  \n   vTexCoord = aTexCoord; \n   vec4 positionVec4 = vec4(aPosition, 1.0); \n   positionVec4.xy = positionVec4.xy * vec2(1., -1.); \n   gl_Position = positionVec4; \n}",
+  "frag": "varying vec2 vTexCoord; \nuniform sampler2D tex0; \nuniform sampler2D tex1;\nuniform vec2 resolution; \n\nuniform float amount; // {'default': 0}\n\nvoid main() { \n   vec4 color0 = texture2D(tex0, vTexCoord); \n   vec4 color1 = texture2D(tex1, vTexCoord);\n   gl_FragColor = mix(color0, color1, amount); \n} \n"
+}
