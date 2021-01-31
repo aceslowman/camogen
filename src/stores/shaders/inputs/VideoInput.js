@@ -1,8 +1,8 @@
 import { getRoot, types, flow } from "mobx-state-tree";
-import Shader, {Uniform} from "../../ShaderStore";
+import Shader, { Uniform } from "../../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
 import { nanoid } from "nanoid";
-import Parameter from '../../ParameterStore';
+import Parameter from "../../ParameterStore";
 
 const video = types
   .model("Video", {
@@ -67,104 +67,109 @@ const video = types
     let root_store;
 
     return {
-    afterAttach: () => {
-      console.log("attached video input");
-      root_store = getRoot(self);
-    },
-    
-    beforeDestroy: () => {      
-      // revoke previous url!p      
-      if(self.dataURL) URL.revokeObjectURL(self.dataURL);
-    },
+      afterAttach: () => {
+        console.log("attached video input");
+        root_store = getRoot(self);
+      },
 
-    init: () => {
-      self.ref = self.target.ref.createShader(self.vertex, self.fragment);
+      beforeDestroy: () => {
+        // revoke previous url!p
+        if (self.dataURL) URL.revokeObjectURL(self.dataURL);
+      },
 
-      self.extractUniforms();
+      init: () => {
+        self.ref = self.target.ref.createShader(self.vertex, self.fragment);
 
-      for (let uniform of self.uniforms) {
-        self.ref.setUniform(uniform.name, uniform.elements);
+        self.extractUniforms();
 
-        for (let param of uniform.elements) {
-          if (param.graph) self.parameter_graphs.push(param.graph);
+        for (let uniform of self.uniforms) {
+          self.ref.setUniform(uniform.name, uniform.elements);
+
+          for (let param of uniform.elements) {
+            if (param.graph) self.parameter_graphs.push(param.graph);
+          }
         }
-      }
 
-      let p = root_store.p5_instance;
-      
-      self.video = p.createVideo("videos/duck_demo.mp4", () => {
-        self.video.loop();
-        self.video.hide();
-      });
-      self.setVideoURL("videos/duck_demo.mp4");
-      // prevents init() from being called twice
-      self.ready = true;
+        self.setVideo("videos/duck_demo.mp4");
 
-      // removes 'tex0' from inputs, since it's provided
-      // by the webcam stream.
-      self.inputs = [];
-    },
+        // prevents init() from being called twice
+        self.ready = true;
 
-    loadVideo: (file) => {
-      // revoke previous url!    
-      if(self.dataURL) URL.revokeObjectURL(self.dataURL);
-      
-      if (!file.type.startsWith("video/")) return;
+        // removes 'tex0' from inputs, since it's provided
+        // by the video stream.
+        self.inputs = [];
+      },
 
-      var reader = new FileReader();
+      loadVideo: file => {
+        // revoke previous url!
+        if (self.dataURL) URL.revokeObjectURL(self.dataURL);
 
-      reader.onload = e => {
-        var video = document.createElement("video");
+        if (!file.type.startsWith("video/")) return;
+
+        var reader = new FileReader();
+
+        reader.onload = e => {
+          var video = document.createElement("video");
+          self.setVideo(e.target.result);
+        };
+
+        reader.readAsDataURL(file);
+        self.dataURL = URL.createObjectURL(file);
+        console.log("URL.createObjectURL()", URL.createObjectURL(file));
+      },
+
+      setVideo: video => {
         let p = root_store.p5_instance;
-        self.setVideoURL(e.target.result)
-        self.setVideo(p.createVideo(e.target.result));
-      };
+        self.video = p.createVideo(video, () => {
+          self.video.loop();
+          self.video.hide();
+          self.video.volume(0);
+        });
+      },
 
-      reader.readAsDataURL(file);
-      self.dataURL = URL.createObjectURL(file);
-      console.log('URL.createObjectURL()', URL.createObjectURL(file))
-    },
+      setVideoURL: video_url => {
+        self.video_url = video_url;
+      },
 
-    setVideo: (video) => {
-      self.video = video;
-    },
+      setDisplayMode: mode => {
+        self.display_mode = mode;
+      },
 
-    setVideoURL: (video_url) => {
-      self.video_url = video_url;
-    },
-    
-    setDisplayMode: (mode) => {
-      self.display_mode = mode;
-    },
+      update: p => {
+        let shader = self.ref;
+        let target = self.target.ref;
 
-    update: (p) => {
-      let shader = self.ref;
-      let target = self.target.ref;
+        for (let uniform_data of self.uniforms) {
+          if (uniform_data.elements.length > 1) {
+            let elements = uniform_data.elements.map(e => e.value);
+            shader.setUniform(uniform_data.name, elements);
+          } else {
+            shader.setUniform(
+              uniform_data.name,
+              uniform_data.elements[0].value
+            );
+          }
+        }
 
-      for (let uniform_data of self.uniforms) {
-        if (uniform_data.elements.length > 1) {
-          let elements = uniform_data.elements.map(e => e.value);
-          shader.setUniform(uniform_data.name, elements);
-        } else {
-          shader.setUniform(uniform_data.name, uniform_data.elements[0].value);
+        shader.setUniform("tex0", self.video);
+        shader.setUniform("resolution", [target.width, target.height]);
+        shader.setUniform("img_dimensions", [
+          self.video.width,
+          self.video.height
+        ]);
+        shader.setUniform("display_mode", self.displayModeId);
+
+        target.shader(shader);
+
+        try {
+          target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
+        } catch (error) {
+          console.error(error);
+          console.log("frag", shader);
+          p.noLoop();
         }
       }
-
-      shader.setUniform("tex0", self.video);
-      shader.setUniform("resolution", [target.width, target.height]);
-      shader.setUniform("img_dimensions", [self.video.width, self.video.height]);
-      shader.setUniform("display_mode", self.displayModeId);
-
-      target.shader(shader);
-
-      try {
-        target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
-      } catch (error) {
-        console.error(error);
-        console.log("frag", shader);
-        p.noLoop();
-      }
-    }}
+    };
   });
 
 const Video = types.compose(
