@@ -244,7 +244,7 @@ const RootStore = types
   }))
   .actions(self => ({
     afterCreate: () => {
-      // window.localStorage.clear();
+      window.localStorage.clear();
 
       onSnapshot(self.ui.theme, () => {
         console.log("snapshot is ready");

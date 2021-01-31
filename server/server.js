@@ -24,7 +24,7 @@ function preloadDefaultShaders() {
       })       
     },
     dir => {    // directories
-      dir.id = nanoid();
+      dir.id = nanoid(); 
     },
   );  
    
