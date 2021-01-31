@@ -68,12 +68,11 @@ const video = types
 
     return {
       afterAttach: () => {
-        console.log("attached video input");
         root_store = getRoot(self);
       },
 
       beforeDestroy: () => {
-        // revoke previous url!p
+        // revoke previous url!
         if (self.dataURL) URL.revokeObjectURL(self.dataURL);
       },
 
@@ -90,13 +89,16 @@ const video = types
           }
         }
 
+        // set default video
         self.setVideo("videos/duck_demo.mp4");
 
         // prevents init() from being called twice
         self.ready = true;
 
-        // removes 'tex0' from inputs, since it's provided
-        // by the video stream.
+        /* 
+          removes 'tex0' from inputs, since it's provided
+          by the video stream.
+        */
         self.inputs = [];
       },
 
