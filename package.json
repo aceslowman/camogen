@@ -38,7 +38,8 @@
     "nanoid": "^3.1.19",
     "prop-types": "^15.7.2",
     "regenerator-runtime": "^0.13.7",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1"
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
+    "react-dropzone": "^11.2.3"
   },
   "scripts": {
     "start": "bash ./start-all.sh",
