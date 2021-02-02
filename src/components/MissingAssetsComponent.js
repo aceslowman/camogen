@@ -42,8 +42,7 @@ const MissingAssets = observer(props => {
       onRemove={props.onRemove}
       style={{
         zIndex: 1000,
-        minWidth: 625,
-        minHeight: 425
+        borderColor: "red"
       }}
     >
       <ul>
