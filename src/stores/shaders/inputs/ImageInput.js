@@ -11,7 +11,7 @@ const image = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     dataURL: "",
-    user_filepath: "images/checkerboard1024.png",
+    user_filename: "",
     display_mode: types.optional(
       types.enumeration("Display Mode", [
         "fit_vertical",
@@ -54,7 +54,8 @@ const image = types
             }`
   })
   .volatile(self => ({
-    img: null
+    img: null,
+    image_url: null
   }))
   .views(self => ({
     get displayModeId() {
@@ -69,7 +70,9 @@ const image = types
       afterAttach: () => {
         console.log("attached image input", getSnapshot(self));
         root_store = getRoot(self);
-        
+        if(self.user_filename) {
+          console.log('flag RootStore!', getRoot(self))
+        }
       },
 
       beforeDestroy: () => {
@@ -112,8 +115,8 @@ const image = types
         reader.onload = e => {
           var image = document.createElement("img");
           let p = root_store.p5_instance;
-          console.log('is there a plane file name in here', file)
-          self.setImage(e.target.result, file.name);
+          self.setImage(e.target.result);
+          self.setUserFilename(file.name);
         };
 
         reader.readAsDataURL(file);
@@ -125,7 +128,11 @@ const image = types
       setImage: img_url => {
         let p = root_store.p5_instance;
         self.img = p.loadImage(img_url);
-        self.user_filepath = img_url;
+        self.image_url = img_url;
+      },
+      
+      setUserFilename: filename => {
+        self.user_filename = filename;
       },
 
       setDisplayMode: mode => {
