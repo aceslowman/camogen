@@ -72,6 +72,7 @@ const image = types
         root_store = getRoot(self);
         if(self.user_filename) {
           console.log('flag RootStore!', getRoot(self))
+          let rootStore = getRoot(self).flagAssetsAsMissing(self);
         }
       },
 

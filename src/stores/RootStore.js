@@ -62,7 +62,9 @@ const RootStore = types
     messages: Messages.create(),
     context: Context.create(),
     showSplash: null,
-    showUpdates: null
+    showUpdates: null,
+    missingAssets: [],
+    assetsAreMissing: false
   }))
   .views(self => ({
     get recentShaderLibrary() {
@@ -357,6 +359,14 @@ const RootStore = types
 
       link.click();
     }),
+    
+    flagAssetsAsMissing: (model) => {
+      let missing_asset_filename = getSnapshot(model).user_filename;
+      console.log('assets are missing ' + missing_asset_filename, getSnapshot(model))
+      self.missingAssets.push(model);
+      console.log('MISSING_ASSETS', self.missingAssets)
+      self.assetsAreMissing = true;
+    },
 
     breakout: () => {
       let new_window = window.open(
