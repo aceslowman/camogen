@@ -1,4 +1,4 @@
-import { getRoot, types, flow } from "mobx-state-tree";
+import { getRoot, getSnapshot, types, flow } from "mobx-state-tree";
 import Shader, { Uniform } from "../../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
 import { nanoid } from "nanoid";
@@ -67,8 +67,9 @@ const webcam = types
     let root_store;
     return {
       afterAttach: () => {
-        console.log("attached image input");
+        console.log("attached image input", getSnapshot(self));
         root_store = getRoot(self);
+        
       },
 
       beforeDestroy: () => {
@@ -89,11 +90,9 @@ const webcam = types
           }
         }
 
-        let p = root_store.p5_instance;
-
+        
+        self.setImage("images/checkerboard1024.png");
         // "images/muybridge.jpg" also works
-        self.img = p.loadImage("images/checkerboard1024.png");
-        self.setImageURL("images/checkerboard1024.png");
         // prevents init() from being called twice
         self.ready = true;
 
@@ -113,8 +112,7 @@ const webcam = types
         reader.onload = e => {
           var image = document.createElement("img");
           let p = root_store.p5_instance;
-          self.setImageURL(e.target.result);
-          self.setImage(p.loadImage(e.target.result));
+          self.setImage(e.target.result);
         };
 
         reader.readAsDataURL(file);
@@ -122,11 +120,9 @@ const webcam = types
         console.log("URL.createObjectURL()", URL.createObjectURL(file));
       },
 
-      setImage: img => {
-        self.img = img;
-      },
-
-      setImageURL: img_url => {
+      setImage: img_url => {
+        let p = root_store.p5_instance;
+        self.img = p.loadImage(img_url);
         self.image_url = img_url;
       },
 
