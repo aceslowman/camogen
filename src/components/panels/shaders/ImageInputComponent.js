@@ -48,8 +48,8 @@ const ImageInputComponent = observer(props => {
       ctx.drawImage(this, 0, 0, w, h);
     };
 
-    img.src = data.image_url;
-  }, [data.image_url]);
+    img.src = data.user_filepath;
+  }, [data.user_filepath]);
 
   return (
     <React.Fragment>

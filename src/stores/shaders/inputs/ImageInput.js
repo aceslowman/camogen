@@ -4,13 +4,14 @@ import * as DefaultShader from "../defaults/DefaultShader";
 import { nanoid } from "nanoid";
 import Parameter from "../../ParameterStore";
 
-const webcam = types
+const image = types
   .model("Image", {
     type: "ImageInput",
     name: "Image",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     dataURL: "",
+    user_filepath: "images/checkerboard1024.png",
     display_mode: types.optional(
       types.enumeration("Display Mode", [
         "fit_vertical",
@@ -53,8 +54,7 @@ const webcam = types
             }`
   })
   .volatile(self => ({
-    img: null,
-    image_url: null
+    img: null
   }))
   .views(self => ({
     get displayModeId() {
@@ -112,10 +112,12 @@ const webcam = types
         reader.onload = e => {
           var image = document.createElement("img");
           let p = root_store.p5_instance;
-          self.setImage(e.target.result);
+          console.log('is there a plane file name in here', file)
+          self.setImage(e.target.result, file.name);
         };
 
         reader.readAsDataURL(file);
+        // dataURL helps retrieve the image for other places in the ui
         self.dataURL = URL.createObjectURL(file);
         console.log("URL.createObjectURL()", URL.createObjectURL(file));
       },
@@ -123,7 +125,7 @@ const webcam = types
       setImage: img_url => {
         let p = root_store.p5_instance;
         self.img = p.loadImage(img_url);
-        self.image_url = img_url;
+        self.user_filepath = img_url;
       },
 
       setDisplayMode: mode => {
@@ -164,8 +166,8 @@ const webcam = types
     };
   });
 
-const Webcam = types.compose(
+const Image = types.compose(
   Shader,
-  webcam
+  image
 );
-export default Webcam;
+export default Image;
