@@ -6,7 +6,7 @@ import {
   PanelComponent,
   TextComponent
 } from "maco-ui";
-import styles from "./SplashComponent.module.css";
+import styles from "./MissingAssetsComponent.module.css";
 import MainContext from "../MainContext";
 import { observer } from "mobx-react";
 
@@ -32,18 +32,7 @@ const MissingAssets = observer(props => {
       onDimensionsChange={handleDimensions}
       className={styles.wrapper}
       floating={true}
-      //title="about"
-      subtitle={
-        <InputBool
-          hLabel
-          label="show on startup"
-          checked={store.showSplash}
-          onChange={e => {
-            window.localStorage.setItem("showSplash", e);
-            store.setShowSplash(e);
-          }}
-        />
-      }
+      title="Missing Assets"
       showTitle={true}
       style={{
         backgroundColor: theme.primary_color,
@@ -52,12 +41,16 @@ const MissingAssets = observer(props => {
       canRemove={true}
       onRemove={props.onRemove}
       style={{
-        zIndex: 100,
+        zIndex: 1000,
         minWidth: 625,
         minHeight: 425
       }}
     >
-      
+      <ul>
+        {store.missingAssets.map((e, i) => {
+          return <li>{e.name}</li>;
+        })}
+      </ul>
     </PanelComponent>
   );
 });

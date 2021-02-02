@@ -25,6 +25,8 @@ import ParameterEditorComponent from "./components/panels/ParameterEditorCompone
 import MessagesComponent from "./components/panels/MessagesComponent";
 import CaptureComponent from "./components/panels/CaptureComponent";
 import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
+
+import MissingAssets from "./components/MissingAssetsComponent";
 import Splash from "./components/SplashComponent";
 import Updates from "./components/UpdatesComponent";
 import MainToolbar from "./components/MainToolbar";
@@ -165,6 +167,10 @@ const App = observer(props => {
 
         {store.showSplash && (
           <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
+        )}
+        
+        {store.assetsAreMissing && (
+          <MissingAssets />
         )}
       </ThemeContext.Provider>
     </MainProvider>
