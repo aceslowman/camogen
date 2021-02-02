@@ -48,7 +48,7 @@ const MissingAssets = observer(props => {
     >
       <ul>
         {store.missingAssets.map((e, i) => {
-          return <li>{e.name}</li>;
+          return <li>{e.user_filename}</li>;
         })}
       </ul>
     </PanelComponent>
