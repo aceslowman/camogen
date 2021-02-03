@@ -71,7 +71,7 @@ const MissingAssets = observer(props => {
             <h3>the following assets can't be found</h3>
             <ul>
               {store.missingAssets.map((e, i) => {
-                return <li key={e.user_filename}>{e.user_filename}</li>;
+                return <li key={e.user_filename} style={{color:'red'}}>{e.user_filename}</li>;
               })}
             </ul>
           </TextComponent>
@@ -79,7 +79,7 @@ const MissingAssets = observer(props => {
             <h3>matches:</h3>
             <ul>
               {matches.map((e, i) => {
-                return <li key={e}>{e}</li>;
+                return <li key={e} style={{color:'green'}}>{e}</li>;
               })}
             </ul>
           </TextComponent>
