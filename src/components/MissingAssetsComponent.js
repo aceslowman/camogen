@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import Dropzone from 'react-dropzone'
 import {
   InputSelect,
   InputBool,
@@ -45,11 +46,17 @@ const MissingAssets = observer(props => {
         borderColor: "red"
       }}
     >
-      <ul>
-        {store.missingAssets.map((e, i) => {
-          return <li>{e.user_filename}</li>;
-        })}
-      </ul>
+      <div>
+        <ul>
+          {store.missingAssets.map((e, i) => {
+            return <li>{e.user_filename}</li>;
+          })}
+        </ul>
+      </div>
+      <div>
+        <Dropzone onDrop={(e) => console.log('dropped',e)}>
+        </Dropzone>
+      </div>
     </PanelComponent>
   );
 });
