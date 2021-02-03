@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import Dropzone from 'react-dropzone'
+import Dropzone from "react-dropzone";
 import {
   InputSelect,
   InputBool,
@@ -46,16 +46,28 @@ const MissingAssets = observer(props => {
         borderColor: "red"
       }}
     >
-      <div>
-        <ul>
-          {store.missingAssets.map((e, i) => {
-            return <li>{e.user_filename}</li>;
-          })}
-        </ul>
-      </div>
-      <div>
-        <Dropzone onDrop={(e) => console.log('dropped',e)}>
-        </Dropzone>
+      <div className={styles.wrapper}>
+        <div className={styles.list}>
+          <ul>
+            {store.missingAssets.map((e, i) => {
+              return <li>{e.user_filename}</li>;
+            })}
+          </ul>
+        </div>
+        <div className={styles.dropzone} style={{ padding: '15px' }}>
+          <Dropzone
+            onDrop={e => console.log("dropped", e)}            
+          >
+            {({ getRootProps, getInputProps }) => (
+              <section>
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <p>Drag 'n' drop some files here, or click to select files</p>
+                </div>
+              </section>
+            )}
+          </Dropzone>
+        </div>
       </div>
     </PanelComponent>
   );
