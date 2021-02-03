@@ -24,6 +24,19 @@ const MissingAssets = observer(props => {
   const handlePosition = setPosition;
 
   const handleDimensions = setDimensions;
+  
+  const handleDrop = files => {
+    console.log("dropped", files);
+    files.forEach((e,i) => {
+      console.log('e', e)
+      
+      store.missingAssets.forEach((j) => {
+        console.log('j', j)
+        if(e.name === j.name) console.log('hit')
+      })
+      
+    })
+  }
 
   return (
     <PanelComponent
@@ -43,29 +56,42 @@ const MissingAssets = observer(props => {
       onRemove={props.onRemove}
       style={{
         zIndex: 1000,
-        borderColor: "red"
+        // borderColor: "red"
       }}
     >
       <div className={styles.wrapper}>
         <div className={styles.list}>
           <TextComponent>
             <h3>the following assets can't be found</h3>
+            <ul>
+              {store.missingAssets.map((e, i) => {
+                return <li>{e.user_filename}</li>;
+              })}
+            </ul>
           </TextComponent>
-          <ul>
-            {store.missingAssets.map((e, i) => {
-              return <li>{e.user_filename}</li>;
-            })}
-          </ul>
         </div>
-        <div className={styles.dropzone} style={{ padding: '15px' }}>
-          <Dropzone
-            onDrop={e => console.log("dropped", e)}            
-          >
+        <div className={styles.dropzone} style={{ padding: "15px" }}>
+          <Dropzone onDrop={handleDrop}>
             {({ getRootProps, getInputProps }) => (
               <section style={{ border: "1px dotted white", height: "100%" }}>
-                <div {...getRootProps({style:{ height: "100%", padding: 15 }})}>
+                <div
+                  {...getRootProps({
+                    style: {
+                      height: "100%",
+                      padding: "15px",
+                      display: "flex",
+                      alignItems: "center"
+                    }
+                  })}
+                >
                   <input {...getInputProps()} />
-                  <p>Drag 'n' drop some files here, or click to select files</p>
+                  <TextComponent>
+                    <p>select the missing images and drop them here.</p>
+                    <p>
+                      you can also create a folder of them and drop them in all
+                      at once.
+                    </p>
+                  </TextComponent>
                 </div>
               </section>
             )}
