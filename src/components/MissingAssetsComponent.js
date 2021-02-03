@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import Dropzone from "react-dropzone";
+import { getSnapshot } from "mobx-state-tree";
 import {
   InputSelect,
   InputBool,
@@ -20,6 +21,7 @@ const MissingAssets = observer(props => {
     window.innerHeight / 2 - 212
   ]);
   const [dimensions, setDimensions] = useState([625, 425]);
+  const [matches, setMatches] = useState([]);
 
   const handlePosition = setPosition;
 
@@ -31,11 +33,15 @@ const MissingAssets = observer(props => {
       console.log('e', e)
       
       store.missingAssets.forEach((j) => {
-        console.log('j', j)
-        if(e.name === j.name) console.log('hit')
-      })
-      
+        
+        if(e.name === j.user_filename) {
+          console.log('HIT', getSnapshot(j))
+          setMatches(prevMatches => [...prevMatches, j.user_filename])        
+        }
+      })      
     })
+    
+    console.log('MATCHES',matches)
   }
 
   return (
@@ -65,13 +71,21 @@ const MissingAssets = observer(props => {
             <h3>the following assets can't be found</h3>
             <ul>
               {store.missingAssets.map((e, i) => {
-                return <li>{e.user_filename}</li>;
+                return <li key={e.user_filename}>{e.user_filename}</li>;
+              })}
+            </ul>
+          </TextComponent>
+          <TextComponent>
+            <h3>matches:</h3>
+            <ul>
+              {matches.map((e, i) => {
+                return <li key={e}>{e}</li>;
               })}
             </ul>
           </TextComponent>
         </div>
         <div className={styles.dropzone} style={{ padding: "15px" }}>
-          <Dropzone onDrop={handleDrop}>
+          <Dropzone onDrop={(e) => handleDrop(e)}>
             {({ getRootProps, getInputProps }) => (
               <section style={{ border: "1px dotted white", height: "100%" }}>
                 <div
