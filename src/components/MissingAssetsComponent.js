@@ -48,6 +48,9 @@ const MissingAssets = observer(props => {
     >
       <div className={styles.wrapper}>
         <div className={styles.list}>
+          <TextComponent>
+            <h3>the following assets can't be found</h3>
+          </TextComponent>
           <ul>
             {store.missingAssets.map((e, i) => {
               return <li>{e.user_filename}</li>;
@@ -59,8 +62,8 @@ const MissingAssets = observer(props => {
             onDrop={e => console.log("dropped", e)}            
           >
             {({ getRootProps, getInputProps }) => (
-              <section>
-                <div {...getRootProps()}>
+              <section style={{ border: "1px dotted white", height: "100%" }}>
+                <div {...getRootProps({style:{ height: "100%", padding: 15 }})}>
                   <input {...getInputProps()} />
                   <p>Drag 'n' drop some files here, or click to select files</p>
                 </div>
