@@ -64,13 +64,17 @@ const ImageInputComponent = observer(props => {
               style={{ border: `1px dotted ${theme.text_color}` }}
             >
               <div>
-                <canvas
-                  ref={canvas_ref}
-                  className={styles.canvas}
-                />
+                <canvas ref={canvas_ref} className={styles.canvas} />
               </div>
               <div
-                {...{ ...getRootProps(), className: styles.dropzoneOverlay }}
+                {...{
+                  ...getRootProps(),
+                  className: styles.dropzoneOverlay,
+                  style: {
+                    backgroundColor: theme.primary_color,
+                    color: theme.text_color
+                  }
+                }}
               >
                 <input {...getInputProps()} />
                 <TextComponent>

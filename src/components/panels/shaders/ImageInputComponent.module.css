@@ -24,14 +24,10 @@
 .dropzoneOverlay {
   position: absolute;
   color: black;
-  /*   visibility: hidden; */
-/*   background-color: orange; */
+  opacity: 0%;
 }
 
 .dropzoneOverlay:hover {
-  /*   visibility: visible !important; */
-  /*   color:red; */
-  background-color: white;
-  mix-blend-mode: exclusion;
-  color: black;
+  visibility: visible !important;
+  opacity: 80%;
 }
