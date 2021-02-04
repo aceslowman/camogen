@@ -150,7 +150,6 @@ const App = observer(props => {
             <GenericPanel
               panel={mainPanel}
               subtitle={store.name}
-              style={{ position: "absolute" }}
             >
               <LayoutContainer layout={mainLayout}>
                 {Array.from(mainLayout.panels).map(e => {

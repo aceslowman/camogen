@@ -3,13 +3,7 @@
 }
 
 .dropzone {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  position: relative; 
 }
 
 .dropzone > div {
@@ -23,11 +17,9 @@
 
 .dropzoneOverlay {
   position: absolute;
-  color: black;
   opacity: 0%;
 }
 
 .dropzoneOverlay:hover {
-  visibility: visible !important;
   opacity: 80%;
 }

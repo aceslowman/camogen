@@ -332,6 +332,7 @@ const RootStore = types
       console.log("project saved!");
     },
 
+//     does this need to be flow?
     load: flow(function* load() {
       let link = document.createElement("input");
       link.type = "file";
@@ -359,6 +360,17 @@ const RootStore = types
 
       link.click();
     }),
+    
+    loadRecentSave: () => {
+      self.setName(name);
+          self.scene.clear(); // this just fails early
+          console.log('clearing')
+          // destroy(self.scene)
+          
+          applySnapshot(self, JSON.parse(content));
+          self.scene.shaderGraph.update();
+          self.scene.shaderGraph.afterUpdate();
+    },
     
     flagAssetsAsMissing: (model) => {
       let missing_asset_filename = getSnapshot(model).user_filename;
