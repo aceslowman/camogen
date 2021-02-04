@@ -67,7 +67,7 @@ const RootStore = types
   }))
   .views(self => ({
     get assetsAreMissing() {
-      console.log(self.missingAssets)
+      console.log('ASSETS',self.missingAssets)
       return self.missingAssets.length > 0;
     },
     get recentShaderLibrary() {
@@ -365,9 +365,8 @@ const RootStore = types
     
     flagAssetsAsMissing: (model) => {
       let missing_asset_filename = getSnapshot(model).user_filename;
-      console.log('assets are missing ' + missing_asset_filename, getSnapshot(model))
       self.missingAssets.push(model);
-      console.log('MISSING_ASSETS', self.missingAssets)
+      // console.log('MISSING_ASSETS', self.missingAssets)
     },
 
     breakout: () => {

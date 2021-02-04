@@ -48,7 +48,7 @@ const MissingAssets = observer(props => {
 
           reader.readAsDataURL(file);
           // dataURL helps retrieve the image for other places in the ui
-          asset.dataURL = URL.createObjectURL(file);
+          // asset.dataURL = URL.createObjectURL(file);
         }
       })      
     })
