@@ -1,48 +1,54 @@
 import { observer } from "mobx-react";
 import React, { useLayoutEffect, useRef } from "react";
 import Dropzone from "react-dropzone";
-import { ControlGroupComponent, InputSelect, InputFloat, TextComponent } from "maco-ui";
+
+import {
+  ControlGroupComponent,
+  InputSelect,
+  InputFloat,
+  TextComponent
+} from "maco-ui";
 import styles from "./ImageInputComponent.module.css";
 
 const ImageInputComponent = observer(props => {
+  const theme = useContext(ThemeContext);
+  const store = useContext(MainContext).store;
   const { data } = props.data;
   const canvas_ref = useRef(null);
 
-  const handleFileSubmit = e => {
-    
-  };
-  
+  const handleFileSubmit = e => {};
+
   const handleFileDrop = e => {
     e.preventDefault();
     e.stopPropagation();
 
     data.loadImage(e.dataTransfer.files[0]);
   };
-  
+
   const handleDrop = files => {
     data.loadImage(files[0]);
-//     files.forEach((file, i) => {
-//       console.log('FILE', file)
-//       // let file = e.target.files[0];
-    
-//       data.loadImage(file);
-// //       store.missingAssets.forEach(asset => {
-// //         if (file.name === asset.user_filename) {
-// //           if (matches.indexOf(asset.user_filename) < 0)
-// //             setMatches(prevMatches => [...prevMatches, asset.user_filename]);
+    //     files.forEach((file, i) => {
+    //       console.log('FILE', file)
+    //       // let file = e.target.files[0];
 
-// //           var reader = new FileReader();
+    //       data.loadImage(file);
+    // //       store.missingAssets.forEach(asset => {
+    // //         if (file.name === asset.user_filename) {
+    // //           if (matches.indexOf(asset.user_filename) < 0)
+    // //             setMatches(prevMatches => [...prevMatches, asset.user_filename]);
 
-// //           reader.onload = e => {
-// //             var image = document.createElement("img");
-// //             asset.setImage(e.target.result);
-// //             asset.setUserFilename(file.name);
-// //           };
+    // //           var reader = new FileReader();
 
-// //           reader.readAsDataURL(file);
-// //         }
-// //       });
-//     });
+    // //           reader.onload = e => {
+    // //             var image = document.createElement("img");
+    // //             asset.setImage(e.target.result);
+    // //             asset.setUserFilename(file.name);
+    // //           };
+
+    // //           reader.readAsDataURL(file);
+    // //         }
+    // //       });
+    //     });
   };
 
   const handleDisplayMode = e => data.setDisplayMode(e);
@@ -78,48 +84,37 @@ const ImageInputComponent = observer(props => {
 
   return (
     <React.Fragment>
-      <canvas 
-        ref={canvas_ref} 
-        className={styles.canvas}
-        onDragEnter={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('onDragEnter')
-        }}
-        onDragOver={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('onDragOver')
-        }}
-        onDragLeave={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('onDragLeave')
-        }}
-        onDrop={handleFileDrop}
-      />
       <ControlGroupComponent name="Image File">
         <Dropzone onDrop={e => handleDrop(e)}>
-            {({ getRootProps, getInputProps }) => (
-              <section style={{ border: "1px dotted white", height: "100%" }}>
-                <div
-                  {...getRootProps({
-                    style: {
-                      height: "100%",
-                      padding: "15px",
-                      display: "flex",
-                      alignItems: "center"
-                    }
-                  })}
-                >
-                  <input {...getInputProps()} />
-                  <TextComponent>
-                    <p>click or drop an image</p>
-                  </TextComponent>
-                </div>
-              </section>
-            )}
-          </Dropzone>
+          {({ getRootProps, getInputProps }) => (
+            <section
+              className={styles.dropzone}
+              style={{border: `1px dotted ${theme.outline_color}`}}
+            >
+              <div
+                {...getRootProps({
+                  style: {
+                    height: "100%",
+                    // padding: "15px 0px",
+                    display: "flex",
+                    flexFlow: "column",
+                    alignItems: "center"
+                  }
+                })}
+              >
+                <input {...getInputProps()} />
+                <canvas
+                  ref={canvas_ref}
+                  className={styles.canvas}
+                  //onDrop={handleFileDrop}
+                />
+                <TextComponent>
+                  <p>click or drop an image</p>
+                </TextComponent>
+              </div>
+            </section>
+          )}
+        </Dropzone>
       </ControlGroupComponent>
       <ControlGroupComponent name="Display Mode">
         <InputSelect
