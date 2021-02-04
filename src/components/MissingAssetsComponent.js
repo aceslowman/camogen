@@ -26,17 +26,15 @@ const MissingAssets = observer(props => {
   const handlePosition = setPosition;
 
   const handleDimensions = setDimensions;
-  
+
   const handleDrop = files => {
-    console.log("dropped", files);
-    files.forEach((file,i) => {
-      console.log('e', file)
+    files.forEach((file, i) => {
       
-      store.missingAssets.forEach((asset) => {
-        
-        if(file.name === asset.user_filename) {
-          console.log('HIT', getSnapshot(asset))
-          setMatches(prevMatches => [...prevMatches, asset.user_filename]) 
+      store.missingAssets.forEach(asset => {
+        if (file.name === asset.user_filename) {
+          
+          if (matches.indexOf(asset.user_filename) < 0)
+            setMatches(prevMatches => [...prevMatches, asset.user_filename]);
 
           var reader = new FileReader();
 
@@ -47,14 +45,12 @@ const MissingAssets = observer(props => {
           };
 
           reader.readAsDataURL(file);
-          // dataURL helps retrieve the image for other places in the ui
-          // asset.dataURL = URL.createObjectURL(file);
         }
-      })      
-    })
-    
-    console.log('MATCHES',matches)
-  }
+      });
+    });
+
+    console.log("MATCHES", matches);
+  };
 
   return (
     <PanelComponent
@@ -73,7 +69,7 @@ const MissingAssets = observer(props => {
       canRemove={true}
       onRemove={props.onRemove}
       style={{
-        zIndex: 1000,
+        zIndex: 1000
         // borderColor: "red"
       }}
     >
@@ -83,7 +79,11 @@ const MissingAssets = observer(props => {
             <h3>the following assets can't be found</h3>
             <ul>
               {store.missingAssets.map((e, i) => {
-                return <li key={e.user_filename} style={{color:'red'}}>{e.user_filename}</li>;
+                return (
+                  <li key={e.user_filename} style={{ color: "red" }}>
+                    {e.user_filename}
+                  </li>
+                );
               })}
             </ul>
           </TextComponent>
@@ -91,13 +91,17 @@ const MissingAssets = observer(props => {
             <h3>matches:</h3>
             <ul>
               {matches.map((e, i) => {
-                return <li key={e} style={{color:'green'}}>{e}</li>;
+                return (
+                  <li key={e} style={{ color: "green" }}>
+                    {e}
+                  </li>
+                );
               })}
             </ul>
           </TextComponent>
         </div>
         <div className={styles.dropzone} style={{ padding: "15px" }}>
-          <Dropzone onDrop={(e) => handleDrop(e)}>
+          <Dropzone onDrop={e => handleDrop(e)}>
             {({ getRootProps, getInputProps }) => (
               <section style={{ border: "1px dotted white", height: "100%" }}>
                 <div

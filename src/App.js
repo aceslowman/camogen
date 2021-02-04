@@ -169,8 +169,8 @@ const App = observer(props => {
           <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
         )}
         
-        {store.missingAssets.length > 0 && (
-          <MissingAssets assets={store.missingAssets}/>
+        {store.showMissingAssets && (
+          <MissingAssets onRemove={() => store.setShowMissingAssets(!store.showMissingAssets)} />
         )}
       </ThemeContext.Provider>
     </MainProvider>
