@@ -29,10 +29,8 @@ const MissingAssets = observer(props => {
 
   const handleDrop = files => {
     files.forEach((file, i) => {
-      
       store.missingAssets.forEach(asset => {
         if (file.name === asset.user_filename) {
-          
           if (matches.indexOf(asset.user_filename) < 0)
             setMatches(prevMatches => [...prevMatches, asset.user_filename]);
 
@@ -69,8 +67,7 @@ const MissingAssets = observer(props => {
       canRemove={true}
       onRemove={props.onRemove}
       style={{
-        zIndex: 1000
-        // borderColor: "red"
+        zIndex: 101
       }}
     >
       <div className={styles.wrapper}>
@@ -80,7 +77,16 @@ const MissingAssets = observer(props => {
             <ul>
               {store.missingAssets.map((e, i) => {
                 return (
-                  <li key={e.user_filename} style={{ color: "red" }}>
+                  <li
+                    key={e.user_filename}
+                    style={{
+                      color: "red",
+                      textDecoration: // line-through when asset has been found
+                        matches.indexOf(e.user_filename) !== -1
+                          ? "line-through"
+                          : "none"
+                    }}
+                  >
                     {e.user_filename}
                   </li>
                 );

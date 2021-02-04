@@ -531,7 +531,7 @@ const RootStore = types
     
     setShowUpdates: s => (self.showUpdates = s),
     
-    setShowMissingAssets: s => (self.setShowMissingAssets = s),
+    setShowMissingAssets: s => (self.showMissingAssets = s),
 
   }));
 
