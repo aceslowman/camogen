@@ -12,9 +12,10 @@
   display: flex;
   flex-flow: column;
   align-items: center;
+  float:left;
 }
 
 .dropzoneOverlay {
-  position:absolute;  
+  position: relative;
 }
                 

@@ -67,7 +67,6 @@ const ImageInputComponent = observer(props => {
                 <canvas
                   ref={canvas_ref}
                   className={styles.canvas}
-                  //onDrop={handleFileDrop}
                 />
               </div>
               <div
