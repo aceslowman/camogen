@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef, useContext } from "react";
 import Dropzone from "react-dropzone";
+import MainContext from "../../../MainContext";
 
 import {
   ControlGroupComponent,
@@ -11,44 +12,15 @@ import {
 import styles from "./ImageInputComponent.module.css";
 
 const ImageInputComponent = observer(props => {
-  const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
+  const theme = store.ui.theme;
   const { data } = props.data;
   const canvas_ref = useRef(null);
 
   const handleFileSubmit = e => {};
 
-  const handleFileDrop = e => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    data.loadImage(e.dataTransfer.files[0]);
-  };
-
   const handleDrop = files => {
     data.loadImage(files[0]);
-    //     files.forEach((file, i) => {
-    //       console.log('FILE', file)
-    //       // let file = e.target.files[0];
-
-    //       data.loadImage(file);
-    // //       store.missingAssets.forEach(asset => {
-    // //         if (file.name === asset.user_filename) {
-    // //           if (matches.indexOf(asset.user_filename) < 0)
-    // //             setMatches(prevMatches => [...prevMatches, asset.user_filename]);
-
-    // //           var reader = new FileReader();
-
-    // //           reader.onload = e => {
-    // //             var image = document.createElement("img");
-    // //             asset.setImage(e.target.result);
-    // //             asset.setUserFilename(file.name);
-    // //           };
-
-    // //           reader.readAsDataURL(file);
-    // //         }
-    // //       });
-    //     });
   };
 
   const handleDisplayMode = e => data.setDisplayMode(e);
@@ -89,25 +61,19 @@ const ImageInputComponent = observer(props => {
           {({ getRootProps, getInputProps }) => (
             <section
               className={styles.dropzone}
-              style={{border: `1px dotted ${theme.outline_color}`}}
+              style={{ border: `1px dotted ${theme.text_color}` }}
             >
-              <div
-                {...getRootProps({
-                  style: {
-                    height: "100%",
-                    // padding: "15px 0px",
-                    display: "flex",
-                    flexFlow: "column",
-                    alignItems: "center"
-                  }
-                })}
-              >
-                <input {...getInputProps()} />
+              <div>
                 <canvas
                   ref={canvas_ref}
                   className={styles.canvas}
                   //onDrop={handleFileDrop}
                 />
+              </div>
+              <div
+                {...{ ...getRootProps(), className: styles.dropzoneOverlay }}
+              >
+                <input {...getInputProps()} />
                 <TextComponent>
                   <p>click or drop an image</p>
                 </TextComponent>
