@@ -5,17 +5,26 @@
 .dropzone {
   width: 100%;
   height: 100%;
-}
-
-.dropzone > div {
-  height: 100%;
   display: flex;
   flex-flow: column;
   align-items: center;
-  float:left;
+  justify-content: center;
+}
+
+.dropzone > div {
+  /*   height: 100%; */
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  float: left;
 }
 
 .dropzoneOverlay {
-  position: relative;
+  position: absolute;
+  color: black;
+  visibility: hidden;
 }
-                
+
+/* .dropzoneOverlay:hover {
+  visibility: visible;
+} */
