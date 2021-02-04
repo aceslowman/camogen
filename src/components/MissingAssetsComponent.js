@@ -29,14 +29,26 @@ const MissingAssets = observer(props => {
   
   const handleDrop = files => {
     console.log("dropped", files);
-    files.forEach((e,i) => {
-      console.log('e', e)
+    files.forEach((file,i) => {
+      console.log('e', file)
       
-      store.missingAssets.forEach((j) => {
+      store.missingAssets.forEach((asset) => {
         
-        if(e.name === j.user_filename) {
-          console.log('HIT', getSnapshot(j))
-          setMatches(prevMatches => [...prevMatches, j.user_filename])        
+        if(file.name === asset.user_filename) {
+          console.log('HIT', getSnapshot(asset))
+          setMatches(prevMatches => [...prevMatches, asset.user_filename]) 
+
+          var reader = new FileReader();
+
+          reader.onload = e => {
+            var image = document.createElement("img");
+            asset.setImage(e.target.result);
+            asset.setUserFilename(file.name);
+          };
+
+          reader.readAsDataURL(file);
+          // dataURL helps retrieve the image for other places in the ui
+          asset.dataURL = URL.createObjectURL(file);
         }
       })      
     })

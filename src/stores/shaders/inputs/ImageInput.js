@@ -115,7 +115,6 @@ const image = types
 
         reader.onload = e => {
           var image = document.createElement("img");
-          let p = root_store.p5_instance;
           self.setImage(e.target.result);
           self.setUserFilename(file.name);
         };

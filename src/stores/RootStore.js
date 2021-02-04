@@ -63,10 +63,13 @@ const RootStore = types
     context: Context.create(),
     showSplash: null,
     showUpdates: null,
-    missingAssets: [],
-    assetsAreMissing: false
+    missingAssets: []
   }))
   .views(self => ({
+    get assetsAreMissing() {
+      console.log(self.missingAssets)
+      return self.missingAssets.length > 0;
+    },
     get recentShaderLibrary() {
       let recentItems = {};
 
@@ -365,7 +368,6 @@ const RootStore = types
       console.log('assets are missing ' + missing_asset_filename, getSnapshot(model))
       self.missingAssets.push(model);
       console.log('MISSING_ASSETS', self.missingAssets)
-      self.assetsAreMissing = true;
     },
 
     breakout: () => {
