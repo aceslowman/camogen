@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
 import React, { useLayoutEffect, useRef } from "react";
-import { ControlGroupComponent, InputSelect, InputFloat } from "maco-ui";
+import Dropzone from "react-dropzone";
+import { ControlGroupComponent, InputSelect, InputFloat, TextComponent } from "maco-ui";
 import styles from "./ImageInputComponent.module.css";
 
 const ImageInputComponent = observer(props => {
@@ -8,9 +9,7 @@ const ImageInputComponent = observer(props => {
   const canvas_ref = useRef(null);
 
   const handleFileSubmit = e => {
-    let file = e.target.files[0];
     
-    data.loadImage(file);
   };
   
   const handleFileDrop = e => {
@@ -18,6 +17,32 @@ const ImageInputComponent = observer(props => {
     e.stopPropagation();
 
     data.loadImage(e.dataTransfer.files[0]);
+  };
+  
+  const handleDrop = files => {
+    data.loadImage(files[0]);
+//     files.forEach((file, i) => {
+//       console.log('FILE', file)
+//       // let file = e.target.files[0];
+    
+//       data.loadImage(file);
+// //       store.missingAssets.forEach(asset => {
+// //         if (file.name === asset.user_filename) {
+// //           if (matches.indexOf(asset.user_filename) < 0)
+// //             setMatches(prevMatches => [...prevMatches, asset.user_filename]);
+
+// //           var reader = new FileReader();
+
+// //           reader.onload = e => {
+// //             var image = document.createElement("img");
+// //             asset.setImage(e.target.result);
+// //             asset.setUserFilename(file.name);
+// //           };
+
+// //           reader.readAsDataURL(file);
+// //         }
+// //       });
+//     });
   };
 
   const handleDisplayMode = e => data.setDisplayMode(e);
@@ -74,35 +99,27 @@ const ImageInputComponent = observer(props => {
         onDrop={handleFileDrop}
       />
       <ControlGroupComponent name="Image File">
-        <div>
-          <div
-            className={styles.drop}
-            style={{
-              border: "1px dotted white",
-              color: "white"
-            }}
-            onDragEnter={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('onDragEnter')
-            }}
-            onDragOver={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('onDragOver')
-            }}
-            onDragLeave={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('onDragLeave')
-            }}
-            onDrop={handleFileDrop}
-          >
-            drop file
-          </div>
-        </div>
-
-        <input type="file" onChange={handleFileSubmit} />
+        <Dropzone onDrop={e => handleDrop(e)}>
+            {({ getRootProps, getInputProps }) => (
+              <section style={{ border: "1px dotted white", height: "100%" }}>
+                <div
+                  {...getRootProps({
+                    style: {
+                      height: "100%",
+                      padding: "15px",
+                      display: "flex",
+                      alignItems: "center"
+                    }
+                  })}
+                >
+                  <input {...getInputProps()} />
+                  <TextComponent>
+                    <p>click or drop an image</p>
+                  </TextComponent>
+                </div>
+              </section>
+            )}
+          </Dropzone>
       </ControlGroupComponent>
       <ControlGroupComponent name="Display Mode">
         <InputSelect
