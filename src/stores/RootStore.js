@@ -262,18 +262,20 @@ const RootStore = types
           JSON.parse(window.localStorage.getItem("theme"))
         );
       }
-      
-      if (window.localStorage.getItem('showSplash') !== null) {
-        self.showSplash = JSON.parse(window.localStorage.getItem('showSplash'));
+
+      if (window.localStorage.getItem("showSplash") !== null) {
+        self.showSplash = JSON.parse(window.localStorage.getItem("showSplash"));
       } else {
-        window.localStorage.setItem('showSplash', true)
+        window.localStorage.setItem("showSplash", true);
         self.showSplash = true;
       }
-      
-      if (window.localStorage.getItem('showUpdates') !== null) {
-        self.showUpdates = JSON.parse(window.localStorage.getItem('showUpdates'));
+
+      if (window.localStorage.getItem("showUpdates") !== null) {
+        self.showUpdates = JSON.parse(
+          window.localStorage.getItem("showUpdates")
+        );
       } else {
-        window.localStorage.setItem('showUpdates', true)
+        window.localStorage.setItem("showUpdates", true);
         self.showUpdates = true;
       }
 
@@ -328,11 +330,12 @@ const RootStore = types
       }
 
       link.click();
+      window.localStorage.setItem("recent_save", src);
 
       console.log("project saved!");
     },
 
-//     does this need to be flow?
+    //     does this need to be flow?
     load: flow(function* load() {
       let link = document.createElement("input");
       link.type = "file";
@@ -341,16 +344,16 @@ const RootStore = types
         var file = e.target.files[0];
 
         let reader = new FileReader();
-        reader.readAsText(file, "UTF-8");        
+        reader.readAsText(file, "UTF-8");
 
         reader.onload = e => {
           let content = e.target.result;
 
           self.setName(name);
           self.scene.clear(); // this just fails early
-          console.log('clearing')
+          console.log("clearing");
           // destroy(self.scene)
-          
+
           applySnapshot(self, JSON.parse(content));
           self.scene.shaderGraph.update();
           self.scene.shaderGraph.afterUpdate();
@@ -360,19 +363,25 @@ const RootStore = types
 
       link.click();
     }),
-    
+
     loadRecentSave: () => {
-      self.setName(name);
-          self.scene.clear(); // this just fails early
-          console.log('clearing')
-          // destroy(self.scene)
-          
-          applySnapshot(self, JSON.parse(content));
-          self.scene.shaderGraph.update();
-          self.scene.shaderGraph.afterUpdate();
+      let content = window.localStorage.getItem("recent_save");
+
+      if (content) {
+        self.setName(name);
+        self.scene.clear(); // this just fails early
+        console.log("clearing");
+        // destroy(self.scene)
+
+        applySnapshot(self, JSON.parse(content));
+        self.scene.shaderGraph.update();
+        self.scene.shaderGraph.afterUpdate();
+      } else {
+        console.log('no recent saves!')
+      }
     },
-    
-    flagAssetsAsMissing: (model) => {
+
+    flagAssetsAsMissing: model => {
       let missing_asset_filename = getSnapshot(model).user_filename;
       self.missingAssets.push(model);
       // console.log('MISSING_ASSETS', self.missingAssets)
@@ -485,9 +494,9 @@ const RootStore = types
 
         reader.onload = e => {
           let content = e.target.result;
-          
+
           self.setShaderCollection(JSON.parse(content));
-          
+
           // TODO: is this all still necessary to keep around?
           // applySnapshot(self.shader_collection, JSON.parse(content));
           //           self.setName(name);
@@ -540,11 +549,10 @@ const RootStore = types
     setShaderCollection: c => (self.shader_collection = c),
 
     setShowSplash: s => (self.showSplash = s),
-    
-    setShowUpdates: s => (self.showUpdates = s),
-    
-    setShowMissingAssets: s => (self.showMissingAssets = s),
 
+    setShowUpdates: s => (self.showUpdates = s),
+
+    setShowMissingAssets: s => (self.showMissingAssets = s)
   }));
 
 export default RootStore;

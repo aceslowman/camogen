@@ -73,11 +73,11 @@ const Splash = observer(props => {
                 Note: for the time being, camogen works best in Chrome!
             </p>  
           </div>
-          {/*<div className={styles.recent}>
+          {<div className={styles.recent}>
             <TextComponent>
-              <h2>Recent projects</h2>
+              <button onClick={()=>store.loadRecentSave()}>load recent</button>
             </TextComponent>
-          </div>*/}
+          </div>}
         </div>
 
         <div className={styles.credit}>
