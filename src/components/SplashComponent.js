@@ -62,34 +62,54 @@ const Splash = observer(props => {
           <div className={styles.title}>
             <h1>camogen </h1>
             <small>v1.0.3-alpha</small>
-            
+
             <p>
-              <a style={{color:theme.accent_color, fontSize: '0.5em'}} target="_blank" href="https://discord.gg/TAxb2Kg">
+              <a
+                style={{ color: theme.accent_color, fontSize: "0.5em" }}
+                target="_blank"
+                href="https://discord.gg/TAxb2Kg"
+              >
                 join the discord!
               </a>
             </p>
-            
-            <p style={{color:'red', fontSize: '0.5em'}}>
-                Note: for the time being, camogen works best in Chrome!
-            </p>  
+
+            <p style={{ color: "red", fontSize: "0.5em" }}>
+              Note: for the time being, camogen works best in Chrome!
+            </p>
           </div>
-          {<div className={styles.recent}>
-            <TextComponent>
-              <button onClick={()=>store.loadRecentSave()}>load recent</button>
-            </TextComponent>
-          </div>}
+          {window.localStorage.getItem("recent_save") && (
+            <div className={styles.recent}>
+              <button onClick={() => store.loadRecentSave()}>
+                load most recent save
+              </button>
+            </div>
+          )}
         </div>
 
         <div className={styles.credit}>
-          <p>created by austin slominski (<em>@aceslowman</em>)</p>
+          <p>
+            created by austin slominski (<em>@aceslowman</em>)
+          </p>
 
-          <a style={{color:theme.accent_color}} target="_blank" href="https://twitter.com/aceslowman">
+          <a
+            style={{ color: theme.accent_color }}
+            target="_blank"
+            href="https://twitter.com/aceslowman"
+          >
             twitter
           </a>
-          <a style={{color:theme.accent_color}} target="_blank" href="https://instagram.com/aceslowman">
+          <a
+            style={{ color: theme.accent_color }}
+            target="_blank"
+            href="https://instagram.com/aceslowman"
+          >
             insta
           </a>
-          <a style={{color:theme.accent_color}} target="_blank" href="https://github.com/aceslowman">
+          <a
+            style={{ color: theme.accent_color }}
+            target="_blank"
+            href="https://github.com/aceslowman"
+          >
             github
           </a>
         </div>
