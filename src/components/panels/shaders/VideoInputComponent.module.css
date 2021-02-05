@@ -2,6 +2,25 @@
   width: 100%;
 }
 
-.drop {
-  
+.dropzone {
+  position: relative; 
 }
+
+.dropzone > div {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-evenly;
+  float: left;
+}
+/* 
+.dropzoneOverlay {
+  position: absolute;
+  opacity: 0%;
+}
+
+.dropzoneOverlay:hover {
+  opacity: 80%;
+} 
+*/

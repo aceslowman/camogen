@@ -95,7 +95,7 @@ const image = types
         }
 
         
-        self.setImage("images/checkerboard1024.png");
+        self.setAsset("images/checkerboard1024.png");
         // "images/muybridge.jpg" also works
         // prevents init() from being called twice
         self.ready = true;
@@ -115,7 +115,7 @@ const image = types
 
         reader.onload = e => {
           var image = document.createElement("img");
-          self.setImage(e.target.result);
+          self.setAsset(e.target.result);
           self.setUserFilename(file.name);
         };
 
@@ -125,7 +125,7 @@ const image = types
         console.log("URL.createObjectURL()", URL.createObjectURL(file));
       },
 
-      setImage: img_url => {
+      setAsset: img_url => {
         let p = root_store.p5_instance;
         self.img = p.loadImage(img_url);
         self.image_url = img_url;

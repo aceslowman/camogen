@@ -17,8 +17,6 @@ const ImageInputComponent = observer(props => {
   const { data } = props.data;
   const canvas_ref = useRef(null);
 
-  const handleFileSubmit = e => {};
-
   const handleDrop = files => {
     data.loadImage(files[0]);
   };

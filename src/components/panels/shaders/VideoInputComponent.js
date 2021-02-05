@@ -1,23 +1,18 @@
 import { observer } from "mobx-react";
-import React, { useLayoutEffect, useRef } from "react";
-import { ControlGroupComponent, InputSelect, InputFloat } from "maco-ui";
+import React, { useLayoutEffect, useRef, useContext } from "react";
+import { ControlGroupComponent, InputSelect, InputFloat, TextComponent } from "maco-ui";
 import styles from "./VideoInputComponent.module.css";
+import Dropzone from "react-dropzone";
+import MainContext from "../../../MainContext";
 
 const VideoInputComponent = observer(props => {
+  const store = useContext(MainContext).store;
+  const theme = store.ui.theme;
   const { data } = props.data;
   const canvas_ref = useRef(null);
 
-  const handleFileSubmit = e => {
-    let file = e.target.files[0];
-    
-    data.loadVideo(file);
-  };
-  
-  const handleFileDrop = e => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    data.loadVideo(e.dataTransfer.files[0]);
+  const handleDrop = files => {
+    data.loadVideo(files[0]);
   };
 
   const handleDisplayMode = e => data.setDisplayMode(e);
@@ -52,57 +47,35 @@ const VideoInputComponent = observer(props => {
 //   }, [data.image_url]);
 
   return (
-    <React.Fragment>
-{/*       <canvas 
-        ref={canvas_ref} 
-        className={styles.canvas}
-        onDragEnter={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('onDragEnter')
-        }}
-        onDragOver={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('onDragOver')
-        }}
-        onDragLeave={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('onDragLeave')
-        }}
-        onDrop={handleFileDrop}
-      /> */
-}      <ControlGroupComponent name="Video File">
-        <div>
-          <div
-            className={styles.drop}
-            style={{
-              border: "1px dotted white",
-              color: "white"
-            }}
-            onDragEnter={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('onDragEnter')
-            }}
-            onDragOver={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('onDragOver')
-            }}
-            onDragLeave={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('onDragLeave')
-            }}
-            onDrop={handleFileDrop}
-          >
-            drop file
-          </div>
-        </div>
-
-        <input type="file" onChange={handleFileSubmit} />
+    <React.Fragment>      
+      <ControlGroupComponent name="Image File">
+        <Dropzone onDrop={e => handleDrop(e)}>
+          {({ getRootProps, getInputProps }) => (
+            <section
+              className={styles.dropzone}
+              style={{ border: `1px dotted ${theme.text_color}` }}
+            >
+              {/*<div>
+                <canvas ref={canvas_ref} className={styles.canvas} />
+              </div>*/}
+              <div
+                {...{
+                  ...getRootProps(),
+                  className: styles.dropzoneOverlay,
+                  style: {
+                    backgroundColor: theme.primary_color,
+                    color: theme.text_color
+                  }
+                }}
+              >
+                <input {...getInputProps()} />
+                <TextComponent>
+                  <p>click or drop a video</p>
+                </TextComponent>
+              </div>
+            </section>
+          )}
+        </Dropzone>
       </ControlGroupComponent>
       <ControlGroupComponent name="Display Mode">
         <InputSelect

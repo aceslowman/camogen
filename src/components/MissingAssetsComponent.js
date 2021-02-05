@@ -37,8 +37,8 @@ const MissingAssets = observer(props => {
           var reader = new FileReader();
 
           reader.onload = e => {
-            var image = document.createElement("img");
-            asset.setImage(e.target.result);
+            // var image = document.createElement("img");
+            asset.setAsset(e.target.result);
             asset.setUserFilename(file.name);
           };
 

@@ -10,6 +10,7 @@ const video = types
     name: "Video",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
+    user_filename: "",
     dataURL: "",
     display_mode: types.optional(
       types.enumeration("Display Mode", [
@@ -95,7 +96,7 @@ const video = types
         }
 
         // set default video
-        self.setVideo("videos/duck_demo.mp4");
+        self.setAsset("videos/duck_demo.mp4");
 
         // prevents init() from being called twice
         self.ready = true;
@@ -117,7 +118,7 @@ const video = types
 
         reader.onload = e => {
           var video = document.createElement("video");
-          self.setVideo(e.target.result);
+          self.setAsset(e.target.result);
           self.setUserFilename(file.name);
         };
 
@@ -127,7 +128,7 @@ const video = types
         console.log("URL.createObjectURL()", URL.createObjectURL(file));
       },
 
-      setVideo: video => {
+      setAsset: video => {
         let p = root_store.p5_instance;
         self.video = p.createVideo(video, () => {
           self.video.loop();
