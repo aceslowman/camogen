@@ -12,6 +12,8 @@ const webcam = types
     type: "WebcamInput",
     name: "Webcam",
     input_options: types.array(types.frozen()),
+    dataURL: "",
+    user_filename: "",
     display_mode: types.optional(
       types.enumeration("Display Mode", [
         "fit_vertical",

@@ -68,7 +68,12 @@ const video = types
 
     return {
       afterAttach: () => {
+        // console.log("attached image input", getSnapshot(self));
         root_store = getRoot(self);
+        if(self.user_filename) {
+          console.log('flag RootStore!', getRoot(self))
+          let rootStore = getRoot(self).flagAssetsAsMissing(self);
+        }
       },
 
       beforeDestroy: () => {
@@ -113,9 +118,11 @@ const video = types
         reader.onload = e => {
           var video = document.createElement("video");
           self.setVideo(e.target.result);
+          self.setUserFilename(file.name);
         };
 
         reader.readAsDataURL(file);
+        // dataURL helps retrieve the image for other places in the ui
         self.dataURL = URL.createObjectURL(file);
         console.log("URL.createObjectURL()", URL.createObjectURL(file));
       },
@@ -127,10 +134,11 @@ const video = types
           self.video.hide();
           self.video.volume(0);
         });
+        self.video_url = video;
       },
-
-      setVideoURL: video_url => {
-        self.video_url = video_url;
+      
+      setUserFilename: filename => {
+        self.user_filename = filename;
       },
 
       setDisplayMode: mode => {

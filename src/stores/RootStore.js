@@ -384,7 +384,7 @@ const RootStore = types
     flagAssetsAsMissing: model => {
       let missing_asset_filename = getSnapshot(model).user_filename;
       self.missingAssets.push(model);
-      // console.log('MISSING_ASSETS', self.missingAssets)
+      console.log('MISSING_ASSETS', self.missingAssets)
       self.showMissingAssets = true;
     },
 
