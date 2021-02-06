@@ -61,7 +61,7 @@ const Splash = observer(props => {
         <div className={styles.titleWrapper}>
           <div className={styles.title}>
             <h1>camogen </h1>
-            <small>v1.0.3-alpha</small>
+            <small>{store.version}</small>
 
             <p>
               <a

@@ -43,6 +43,7 @@ const currentDate = new Date();
 
 const RootStore = types
   .model("RootStore", {
+    version: "v1.0.3-alpha",
     name: `${currentDate.getMonth() +
       1}-${currentDate.getDate()}-${currentDate.getFullYear()}`,
     ui: UIStore,
