@@ -63,8 +63,7 @@ const Splash = observer(props => {
           <h1>alpha updates and caveats!</h1>
           <p>below are a number of critical issues and caveats</p>
 
-          <ul>
-            
+          <ul>            
             <li style={{ color: "red" }}>
               Copy / paste is in progress but is temporarily disabled.
             </li>
@@ -114,6 +113,12 @@ const Splash = observer(props => {
           <ul>
             <li>Fixed deserialization issues with motion graphs.</li>
             <li>Fixed and refactored operator controls.</li>
+          </ul>
+          <h2>v1.1.3-alpha</h2>
+          <ul>
+            <li>Added video node</li>
+            <li>Added 'missing assets' dialog when loading a project.</li>
+            <li>Improved image node dropzone.</li>
           </ul>
           
         </TextComponent>
