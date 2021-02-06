@@ -11,7 +11,7 @@ dependencies:
   file-loader: 6.2.0
   html-webpack-plugin: 4.5.0
   http-proxy-middleware: 1.0.6
-  maco-ui: 0.3.30
+  maco-ui: 0.3.31
   mobx: 6.0.5
   mobx-devtools-mst: 0.9.30
   mobx-react: 7.0.6
@@ -3308,11 +3308,11 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
-  /maco-ui/0.3.30:
+  /maco-ui/0.3.31:
     dependencies:
       classnames: 2.2.6
-      mobx: 6.0.5
-      mobx-react: /mobx-react/7.0.6/mobx@6.0.5
+      mobx: 6.1.5
+      mobx-react: /mobx-react/7.1.0/mobx@6.1.5
       nanoid: 3.1.20
       prop-types: 15.7.2
       tinykeys: 1.1.1
@@ -3322,7 +3322,7 @@ packages:
     peerDependencies:
       react: ^16.0.0
     resolution:
-      integrity: sha512-uj/WsBBC5D//WGw4WOQvmlrt93BiTabmn0ILmO/ubrhJEm9w27XLBJTLoBVoSfZYymchN3oAhACfnXFWqf4AdA==
+      integrity: sha512-q6TLJ47zEgydQiH3SLTayVTji+CBRHF17Pmnr0EmqiHj9vmp6NCJ8bwRhjzQ7ftbERCl3yn8Mp50yOP/9VMBmg==
   /make-dir/3.1.0:
     dependencies:
       semver: 6.3.0
@@ -3485,16 +3485,16 @@ packages:
       react: ^16.8.0 || ^17
     resolution:
       integrity: sha512-G6kgur98RrEpoi563ERzxlSwn606xY6Ay4BOtfYXl/QaHZYXbhbCe3YJGROPU2ao4f2bfhnt8iZW3YnBW2BqXQ==
-  /mobx-react-lite/3.1.7/mobx@6.0.5:
+  /mobx-react-lite/3.2.0/mobx@6.1.5:
     dependencies:
-      mobx: 6.0.5
+      mobx: 6.1.5
     dev: false
-    id: registry.npmjs.org/mobx-react-lite/3.1.7
+    id: registry.npmjs.org/mobx-react-lite/3.2.0
     peerDependencies:
-      mobx: ^6.0.5
+      mobx: ^6.1.0
       react: ^16.8.0 || ^17
     resolution:
-      integrity: sha512-G6kgur98RrEpoi563ERzxlSwn606xY6Ay4BOtfYXl/QaHZYXbhbCe3YJGROPU2ao4f2bfhnt8iZW3YnBW2BqXQ==
+      integrity: sha512-q5+UHIqYCOpBoFm/PElDuOhbcatvTllgRp3M1s+Hp5j0Z6XNgDbgqxawJ0ZAUEyKM8X1zs70PCuhAIzX1f4Q/g==
   /mobx-react/7.0.6:
     dependencies:
       mobx-react-lite: 3.1.7
@@ -3504,17 +3504,17 @@ packages:
       react: ^16.8.0 || ^17
     resolution:
       integrity: sha512-EBNfDXnXNd0KmxtykioybOrJVX0Rc446aPZ69gDxguJnHPl/pPE032PhZ83EGWSZO3KiYsC251Ax3JlPqUwWBw==
-  /mobx-react/7.0.6/mobx@6.0.5:
+  /mobx-react/7.1.0/mobx@6.1.5:
     dependencies:
-      mobx: 6.0.5
-      mobx-react-lite: /mobx-react-lite/3.1.7/mobx@6.0.5
+      mobx: 6.1.5
+      mobx-react-lite: /mobx-react-lite/3.2.0/mobx@6.1.5
     dev: false
-    id: registry.npmjs.org/mobx-react/7.0.6
+    id: registry.npmjs.org/mobx-react/7.1.0
     peerDependencies:
-      mobx: ^6.0.5
+      mobx: ^6.1.0
       react: ^16.8.0 || ^17
     resolution:
-      integrity: sha512-EBNfDXnXNd0KmxtykioybOrJVX0Rc446aPZ69gDxguJnHPl/pPE032PhZ83EGWSZO3KiYsC251Ax3JlPqUwWBw==
+      integrity: sha512-DxvA6VXmnZ+N9f/UTtolWtdRnAAQY2iHWTSPLktfpj8NKlXUe4dabBAjuXrBcZUM8GjLWnxD1ZEjssXq1M0RAw==
   /mobx-state-tree/5.0.0:
     dev: false
     peerDependencies:
@@ -3525,6 +3525,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-Q3/GiSj/QyazDn1n44PjdiMlokCE6gVs85BnFR0xCJmkF2d34k/ZnWAEG7wGbnJYEi+0f5CdvzDquBiKeo56bA==
+  /mobx/6.1.5:
+    dev: false
+    resolution:
+      integrity: sha512-BsVAHEk/Ty+6BmCis0CUvA7E9u5aJpUkdRM91YwBt4lVha4heDLjRT43z2pqENeFuVZPfA1RRaf7sRcqRB2i4Q==
   /ms/2.0.0:
     dev: false
     resolution:
@@ -5388,7 +5392,7 @@ specifiers:
   file-loader: ^6.1.1
   html-webpack-plugin: ^4.5.0
   http-proxy-middleware: ^1.0.5
-  maco-ui: ^0.3.30
+  maco-ui: ^0.3.31
   mobx: ^6.0.4
   mobx-devtools-mst: ^0.9.26
   mobx-react: ^7.0.5
