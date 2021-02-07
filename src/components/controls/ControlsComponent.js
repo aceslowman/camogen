@@ -42,7 +42,7 @@ const Controls = observer(props => {
   const handleSubpanelRef = (r, node) => {
     if (isAlive(node)) addPanelRef(r, node.uuid);
   };
-  
+
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
       let subpanels = [];
@@ -50,40 +50,17 @@ const Controls = observer(props => {
       // console.log('NODE', getSnapshot(node))
       if (node.data) {
         let controls = null;
-        
-        //TODO procedurally create shaders
-        if(ShaderComponents.has(node.data.name)) {
-          let component = ShaderComponents.get(node.data.name);
-          controls = (<component key={node.uuid} ref={refs[i]} data={node} />);
+
+        //procedurally create shaders
+        if (ShaderComponents.has(node.data.name)) {
+          let Component = ShaderComponents.get(node.data.name);
+          controls = <Component key={node.uuid} ref={refs[i]} data={node} />;
+        } else if (OperatorComponents.has(node.data.name)) {
+          let Component = OperatorComponents.get(node.data.name);
+          controls = <Component key={node.uuid} ref={refs[i]} data={node} />;
+        } else {
+          controls = props.generateInterface(node.data);
         }
-        
-        // TODO procedurally create operators
-        if(OperatorComponents.has(node.data.name)) {
-          let component = OperatorComponents.get(node.data.name);
-          controls = (<component key={node.uuid} ref={refs[i]} data={node} />);
-        }
-        
-        switch (node.data.name) {
-          // OPERATORS
-          // case "Counter":
-          //   controls = (
-          //     <CounterComponent key={node.uuid} ref={refs[i]} data={node} />
-          //   );
-          //   break;
-          // case "MIDI":
-          //   controls = (
-          //     <MIDIComponent key={node.uuid} ref={refs[i]} data={node} />
-          //   );
-          //   break;
-          // case "Float":
-          //   controls = (
-          //     <FloatComponent key={node.uuid} ref={refs[i]} data={node} />
-          //   );
-          //   break;
-          default:
-            controls = props.generateInterface(node.data);
-        }
-        // console.log('CHECK', controls)
 
         subpanels.push(
           <li
@@ -149,7 +126,7 @@ const Controls = observer(props => {
     });
   }, [props.data.selectedNode]);
 
-  return (panels);
+  return panels;
 });
 
 export default Controls;
