@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 
 import * as _DefaultShader from "./defaults/DefaultShader";
 
+import _Shader from "./ShaderStore"; 
 import _ImageInput from "./inputs/ImageInput";
 import _VideoInput from "./inputs/VideoInput";
 import _TextInput from "./inputs/TextInput";
@@ -10,6 +11,7 @@ import _WebcamInput from "./inputs/WebcamInput";
 import _SketchInput from "./inputs/SketchInput";
 
 export const Shaders = [
+  _Shader,
   _ImageInput,
   _VideoInput,
   _TextInput,
@@ -21,6 +23,7 @@ export const allShaders = types.union(
   ...Shaders
 );
 
+export const CustomShader = _Shader;
 export const DefaultShader = _DefaultShader;
 export const ImageInput = _ImageInput;
 export const VideoInput = VideoInput;

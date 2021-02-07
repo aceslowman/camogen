@@ -144,7 +144,7 @@ const ShaderControls = observer(props => {
               // break;
               case "COLOR":
               // TODO
-              // VEC2 and everything else like that ends up here, since 
+              // VEC2 and everything else like that ends up here, since
               // they are assumed to be float. that doesn't account for
               // ivec but I'll look into that when it becomes an issue
               default:
@@ -157,7 +157,10 @@ const ShaderControls = observer(props => {
                     onChange={e => handleValueChange(param, e)}
                     focused={param === store.selectedParameter}
                     inputStyle={{
-                      border: param === store.selectedParameter ? `1px solid ${theme.accent_color}` : 'none',
+                      border:
+                        param === store.selectedParameter
+                          ? `1px solid ${theme.accent_color}`
+                          : "none",
                       fontWeight: param.graph ? "bold" : "normal",
                       color: param.graph ? theme.accent_color : theme.text_color
                     }}
@@ -178,7 +181,7 @@ const ShaderControls = observer(props => {
 
     return controls;
   };
-  
+
   return (
     <GenericPanel
       panel={props.panel}
@@ -194,8 +197,8 @@ const ShaderControls = observer(props => {
         />
       }
     >
-      <ControlsComponent 
-        data={props.data} 
+      <ControlsComponent
+        data={props.data}
         generateInterface={generateInterface}
       />
     </GenericPanel>

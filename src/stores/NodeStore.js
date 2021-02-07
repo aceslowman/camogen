@@ -3,43 +3,28 @@ import { types, getParent, getSnapshot, destroy } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
 import Coordinate from "./utils/Coordinate";
 import { nanoid } from "nanoid";
-import { allOps } from "./operators";
 
 import Shader from "./shaders/ShaderStore";
-import SketchInput from "./shaders/inputs/SketchInput";
-import WebcamInput from "./shaders/inputs/WebcamInput";
-import ImageInput from "./shaders/inputs/ImageInput";
-import VideoInput from "./shaders/inputs/VideoInput";
-import TextInput from "./shaders/inputs/TextInput";
 
-import {Operators} from "./operators";
-import {Shaders} from "./shaders";
+import { Operators, allOps } from "./operators";
+import { Shaders, allShaders } from "./shaders";
 
 // NOTE: rearranged ImageInput and Shader, keep an eye on this for issues
 const PossibleData = types.union(
   {
     dispatcher: snap => {
-      if (snap) {       
-        
+      if (snap) {
         // check for matching operators
-        for(let i = 0; i < Operators.length; i++) {
-          let model = Operators[i];          
-          if (snap.type === model.name) return model;          
+        for (let i = 0; i < Operators.length; i++) {
+          let model = Operators[i];
+          if (snap.type === model.name) return model;
         }
-        
-        // TODO: check for matching shaders
-        for(let i = 0; i < Shaders.length; i++) {
-          let model = Shaders[i];    
-          console.log('MODEL', getSnapshot(model))
-          // if (snap.type === model.name) return model;          
+
+        // check for matching shaders
+        for (let i = 0; i < Shaders.length; i++) {
+          let model = Shaders[i];
+          if (snap.type === model.name) return model;
         }
-        
-        if (snap.type === "Shader") return Shader;
-        if (snap.type === "SketchInput") return SketchInput;
-        if (snap.type === "WebcamInput") return WebcamInput;
-        if (snap.type === "VideoInput") return VideoInput;
-        if (snap.type === "ImageInput") return ImageInput;
-        if (snap.type === "TextInput") return TextInput;
 
         return allOps;
       } else {
@@ -49,11 +34,7 @@ const PossibleData = types.union(
   },
   Shader,
   allOps,
-  ImageInput,
-  VideoInput,
-  SketchInput,
-  WebcamInput,
-  TextInput
+  allShaders
 );
 
 const nodeRef = types.safeReference(types.late(() => GraphNode));

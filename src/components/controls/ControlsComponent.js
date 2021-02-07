@@ -49,8 +49,6 @@ const Controls = observer(props => {
     if (isAlive(node)) addPanelRef(r, node.uuid);
   };
   
-  // console.log('CHECK CONTROSL', getSnapshot(props.data))
-
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
       let subpanels = [];
@@ -58,6 +56,14 @@ const Controls = observer(props => {
       // console.log('NODE', getSnapshot(node))
       if (node.data) {
         let controls = null;
+        
+        //TODO procedurally create shaders
+//         for(let i = 0; i < ShaderComponents.length; i++) {
+//           let component = ShaderComponents[i];
+//           if(node.data.name === component.name) {
+            
+//           }
+//         }
         switch (node.data.name) {
           // SHADERS
           case "Webcam":
