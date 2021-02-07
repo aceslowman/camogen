@@ -18,8 +18,6 @@ const ShaderGraph = observer(props => {
     e.stopPropagation();
     e.preventDefault();
 
-    // let dev_debug = ;
-
     node.select(); // select with right click
     store.ui.context.setContextmenu({
       Library: {

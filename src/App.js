@@ -58,6 +58,8 @@ const App = observer(props => {
     return unsubscribe;
   }, [props.store]);
 
+  // TODO: can likely refactor in a way similar to operator shader index.js imports
+  
   const getPanel = panel => {
     switch (panel.component_type) {
       case "SHADER_GRAPH":

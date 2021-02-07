@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 
 import * as _DefaultShader from "./defaults/DefaultShader";
 
-import _Shader from "./ShaderStore"; 
+import _Shader from "./ShaderStore";
 import _ImageInput from "./inputs/ImageInput";
 import _VideoInput from "./inputs/VideoInput";
 import _TextInput from "./inputs/TextInput";
@@ -19,9 +19,7 @@ export const Shaders = [
   _SketchInput
 ];
 
-export const allShaders = types.union(
-  ...Shaders
-);
+export const allShaders = types.union(...Shaders);
 
 export const CustomShader = _Shader;
 export const DefaultShader = _DefaultShader;
@@ -32,7 +30,6 @@ export const WebcamInput = _WebcamInput;
 export const SketchInput = _SketchInput;
 
 /*
-
 adding new shader effects:
 
 TODO: needs to be massively simplified...
@@ -45,39 +42,3 @@ TODO: needs to be massively simplified...
 6. Add to NodeStore
 7. Add to ShaderGraphStore
 */
-
-
-// // MAIN OPERATOR LIST
-// export const Operators = [
-//   Float,
-//   Counter,
-//   MIDI,
-//   Add,
-//   Subtract,
-//   Divide,
-//   Multiply,
-//   Modulus,
-//   Sin,
-//   Cos,
-//   Tan,
-//   Thru
-// ];
-
-// export const allOps = types.union(...Operators);
-
-// export const getOperator = name => {
-//   let operator = null;
-
-//   Operators.forEach((model, i) => {
-//     if (name === model.name) {
-//       operator = model.create({
-//         uuid: name + "_" + nanoid(),
-//         name: name
-//       });
-
-//       return false;
-//     }
-//   });
-
-//   return operator;
-// };
