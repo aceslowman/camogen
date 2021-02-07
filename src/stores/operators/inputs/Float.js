@@ -18,6 +18,6 @@ const float = types
 const Float = types.compose(
   Operator,
   float
-);
+).named("Float");
 
 export default Float;
