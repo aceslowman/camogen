@@ -6,7 +6,7 @@ import {
   applySnapshot,
   getParent
 } from "mobx-state-tree";
-import Shader from "./ShaderStore";
+import Shader from "./shaders/ShaderStore";
 import * as ThruShader from "./shaders/defaults/ThruShader";
 
 // special shaders

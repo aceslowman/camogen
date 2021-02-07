@@ -260,5 +260,5 @@ const webcam = types
 const Webcam = types.compose(
   Shader,
   webcam
-);
+).named("WebcamInput");
 export default Webcam;

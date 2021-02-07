@@ -176,5 +176,5 @@ const image = types
 const Image = types.compose(
   Shader,
   image
-);
+).named("ImageInput");
 export default Image;

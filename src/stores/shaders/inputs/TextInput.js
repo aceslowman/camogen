@@ -231,5 +231,5 @@ const text = types
 const Text = types.compose(
   Shader,
   text
-);
+).named("TextInput");
 export default Text;

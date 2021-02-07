@@ -186,5 +186,5 @@ const video = types
 const Video = types.compose(
   Shader,
   video
-);
+).named("VideoInput");
 export default Video;

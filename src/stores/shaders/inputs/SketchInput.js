@@ -160,5 +160,6 @@ const sketch = types
 const Sketch = types.compose(
   Shader,
   sketch
-);
+).named("SketchInput");
+
 export default Sketch;

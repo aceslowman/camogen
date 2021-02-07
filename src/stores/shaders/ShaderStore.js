@@ -1,5 +1,5 @@
-import { NodeData } from "./NodeDataStore";
-import { undoManager } from "./GraphStore";
+import { NodeData } from "../NodeDataStore";
+import { undoManager } from "../GraphStore";
 import {
   types,
   getSnapshot,
@@ -7,12 +7,12 @@ import {
   getParent,
   getRoot
 } from "mobx-state-tree";
-import * as DefaultShader from "./shaders/defaults/DefaultShader";
-import Parameter from "./ParameterStore";
-import Collection from "./utils/Collection";
+import * as DefaultShader from "./defaults/DefaultShader";
+import Parameter from "../ParameterStore";
+import Collection from "../utils/Collection";
 import { nanoid } from "nanoid";
-import { OperatorGraph } from "./GraphStore";
-import Target from "./TargetStore";
+import { OperatorGraph } from "../GraphStore";
+import Target from "../TargetStore";
 
 const Uniform = types
   .model("Uniform", {

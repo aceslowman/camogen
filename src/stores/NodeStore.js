@@ -12,7 +12,8 @@ import ImageInput from "./shaders/inputs/ImageInput";
 import VideoInput from "./shaders/inputs/VideoInput";
 import TextInput from "./shaders/inputs/TextInput";
 
-import {Operators} from "./operators"
+import {Operators} from "./operators";
+import {Shaders} from "./shaders";
 
 // NOTE: rearranged ImageInput and Shader, keep an eye on this for issues
 const PossibleData = types.union(
