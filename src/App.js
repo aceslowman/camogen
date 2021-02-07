@@ -8,7 +8,8 @@ import {
   ToolbarComponent,
   LayoutContainer,
   GenericPanel,
-  ContextMenuComponent
+  ContextMenuComponent,
+  MacoWrapperComponent
 } from "maco-ui";
 
 import "maco-ui/dist/index.css";
