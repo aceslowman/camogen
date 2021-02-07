@@ -81,6 +81,7 @@ const CanvasDisplay = observer(props => {
       showTitle={!props.panel.fullscreen}
       floating={false}
       onRef={panel_ref}
+      onContext
       footbar={
         <ToolbarComponent
           style={{

@@ -10,7 +10,6 @@ import {
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
 import defaultSnapshot from "../snapshots/default.json";
-import Context from "./ui/Context";
 import Messages from "./utils/Messages";
 import Transport from "./utils/Transport";
 import Collection from "./utils/Collection";
@@ -60,12 +59,12 @@ const RootStore = types
     p5_instance: null,
     ready: false,
     breakoutControlled: false,
-    messages: Messages.create(),
-    context: Context.create(),
+    messages: Messages.create(),    
+    missingAssets: [],
+    // 'show' individual panels
     showSplash: null,
     showUpdates: null,
-    showMissingAssets: null,
-    missingAssets: []
+    showMissingAssets: null
   }))
   .views(self => ({
     get recentShaderLibrary() {

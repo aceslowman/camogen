@@ -237,7 +237,7 @@ const GraphComponent = observer(props => {
 
   useEffect(() => {
     if (props.useKeys) {
-      store.context.setKeymap({
+      store.ui.context.setKeymap({
         // redo
         "$mod+KeyZ": () => {
           if (process.env.NODE_ENV === "development") {
@@ -412,7 +412,7 @@ const GraphComponent = observer(props => {
         }
       });
     } else {
-      store.context.removeKeymap();
+      store.ui.context.removeKeymap();
     }
   }, [
     props.data.selectedNode,

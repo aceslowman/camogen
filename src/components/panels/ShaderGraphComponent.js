@@ -21,7 +21,7 @@ const ShaderGraph = observer(props => {
     // let dev_debug = ;
 
     node.select(); // select with right click
-    store.context.setContextmenu({
+    store.ui.context.setContextmenu({
       Library: {
         id: "Library",
         label: "Library",
@@ -32,7 +32,7 @@ const ShaderGraph = observer(props => {
         label: "Delete",
         onClick: () => {
           props.data.removeNode(node);
-          store.context.setContextmenu(); // removes menu
+          store.ui.context.setContextmenu(); // removes menu
         }
       },
       EditShader: {
@@ -41,7 +41,7 @@ const ShaderGraph = observer(props => {
         onClick: () => {
           let variant = store.ui.getLayoutVariant("SHADER_EDIT");
           store.ui.getPanel("MAIN").setLayout(variant);
-          store.context.setContextmenu(); // removes menu
+          store.ui.context.setContextmenu(); // removes menu
         }
       },
       ResetToDefault: {
@@ -71,7 +71,7 @@ const ShaderGraph = observer(props => {
   const handlePanelContextMenu = e => {
     e.stopPropagation();
 
-    store.context.setContextmenu({
+    store.ui.context.setContextmenu({
       Clear: {
         id: "Clear",
         label: "Clear",

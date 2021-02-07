@@ -121,18 +121,8 @@ const App = observer(props => {
     }
   };
 
-  const handleContextMenu = e => {
-    // prevents context menu anywhere that hasn't been
-    // explicitly allowed
-    store.context.setContextmenu();
-  };
-
   return (
-    <MacoWrapperComponent
-      store={store}
-      titlebar={{}}
-      contextmenu={store.context.contextmenu}
-    >
+    <MacoWrapperComponent store={store}>
       <MainProvider value={{ store: store }}>
         {props.store.ready && <MainToolbar />}
 
