@@ -61,7 +61,7 @@ const Controls = observer(props => {
 //         for(let i = 0; i < ShaderComponents.length; i++) {
 //           let component = ShaderComponents[i];
 //           if(node.data.name === component.name) {
-            
+//             controls = (<component key=key={node.uuid} ref={refs[i]} data={node} />)
 //           }
 //         }
         switch (node.data.name) {
