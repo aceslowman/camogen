@@ -1,4 +1,3 @@
-import Shader from "./ShaderStore";
 import { undoManager } from "./GraphStore";
 import { types, getParent, getSnapshot, destroy } from "mobx-state-tree";
 // import { undoManager } from './RootStore';
@@ -6,6 +5,7 @@ import Coordinate from "./utils/Coordinate";
 import { nanoid } from "nanoid";
 import { allOps } from "./operators";
 
+import Shader from "./shaders/ShaderStore";
 import SketchInput from "./shaders/inputs/SketchInput";
 import WebcamInput from "./shaders/inputs/WebcamInput";
 import ImageInput from "./shaders/inputs/ImageInput";
@@ -28,10 +28,11 @@ const PossibleData = types.union(
         }
         
         // TODO: check for matching shaders
-        // for(let i = 0; i < Shaders.length; i++) {
-        //   let model = Shaders[i];          
-        //   if (snap.type === model.name) return model;          
-        // }
+        for(let i = 0; i < Shaders.length; i++) {
+          let model = Shaders[i];    
+          console.log('MODEL', getSnapshot(model))
+          // if (snap.type === model.name) return model;          
+        }
         
         if (snap.type === "Shader") return Shader;
         if (snap.type === "SketchInput") return SketchInput;

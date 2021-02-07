@@ -1,4 +1,4 @@
-import { NodeData } from "./NodeDataStore";
+import { NodeData } from "../NodeDataStore";
 import { getParent, types } from "mobx-state-tree";
 
 let operator = types

@@ -11,7 +11,6 @@ import { ThemeContext } from "maco-ui";
 import useResizeObserver from "../hooks/ResizeHook";
 import { branch_colors } from "../../stores/GraphStore";
 import MainContext from "../../MainContext";
-import Shader from "../../stores/ShaderStore";
 import GraphNode from "../../stores/GraphStore";
 import { getSnapshot } from "mobx-state-tree";
 import { nanoid } from "nanoid";

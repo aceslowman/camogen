@@ -1,5 +1,5 @@
 import { getRoot, getSnapshot, types, flow } from "mobx-state-tree";
-import Shader, { Uniform } from "../../ShaderStore";
+import Shader, { Uniform } from "../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
 import { nanoid } from "nanoid";
 import Parameter from "../../ParameterStore";

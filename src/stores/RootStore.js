@@ -14,7 +14,7 @@ import Messages from "./utils/Messages";
 import Transport from "./utils/Transport";
 import Collection from "./utils/Collection";
 import Parameter from "./ParameterStore";
-import Shader from "./ShaderStore";
+import Shader from "./shaders/ShaderStore";
 import Scene from "./SceneStore";
 import Runner from "../Runner";
 import { nanoid } from "nanoid";

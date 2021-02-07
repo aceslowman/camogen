@@ -1,5 +1,5 @@
 import { getRoot, types } from "mobx-state-tree";
-import Shader from "../../ShaderStore";
+import Shader from "../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
 
 /*
