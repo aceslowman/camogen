@@ -11,16 +11,10 @@ import {
 } from "maco-ui";
 
 // built-in operators
-import CounterComponent from "../panels/operators/inputs/CounterComponent";
-import MIDIComponent from "../panels/operators/inputs/MIDIComponent";
-import FloatComponent from "../panels/operators/inputs/FloatComponent";
+import { OperatorComponents } from "../panels/operator";
 
 // built in inputs
-import SketchInputComponent from "../panels/shaders/SketchInputComponent";
-import WebcamInputComponent from "../panels/shaders/WebcamInputComponent";
-import ImageInputComponent from "../panels/shaders/ImageInputComponent";
-import VideoInputComponent from "../panels/shaders/VideoInputComponent";
-import TextInputComponent from "../panels/shaders/TextInputComponent";
+import { ShaderComponents } from "../panels/shaders";
 
 import styles from "./ControlsComponent.module.css";
 import { observer } from "mobx-react";
@@ -58,39 +52,18 @@ const Controls = observer(props => {
         let controls = null;
         
         //TODO procedurally create shaders
-//         for(let i = 0; i < ShaderComponents.length; i++) {
-//           let component = ShaderComponents[i];
-//           if(node.data.name === component.name) {
-//             controls = (<component key=key={node.uuid} ref={refs[i]} data={node} />)
-//           }
-//         }
+        if(ShaderComponents.has(node.data.name)) {
+          let component = ShaderComponents.get(node.data.name);
+          controls = (<component key={node.uuid} ref={refs[i]} data={node} />);
+        }
+        
+        // TODO procedurally create operators
+        if(OperatorComponents.has(node.data.name)) {
+          let component = OperatorComponents.get(node.data.name);
+          controls = (<component key={node.uuid} ref={refs[i]} data={node} />);
+        }
+        
         switch (node.data.name) {
-          // SHADERS
-          case "Webcam":
-            controls = (
-              <WebcamInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "Image":
-            controls = (
-              <ImageInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "Video":
-            controls = (
-              <VideoInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "Text":
-            controls = (
-              <TextInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "Sketch":
-            controls = (
-              <SketchInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
           // OPERATORS
           case "Counter":
             controls = (
