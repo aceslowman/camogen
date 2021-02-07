@@ -128,8 +128,12 @@ const App = observer(props => {
   };
 
   return (
+    <MacoWrapperComponent 
+        store={store}
+        titlebar={}
+        contextmenu={}
+    >
     <MainProvider value={{ store: store }}>
-      <ThemeContext.Provider value={ui.theme}>
         {props.store.ready && <MainToolbar />}
         <div
           id="APP"
@@ -172,8 +176,8 @@ const App = observer(props => {
         {store.showMissingAssets && (
           <MissingAssets onRemove={() => store.setShowMissingAssets(!store.showMissingAssets)} />
         )}
-      </ThemeContext.Provider>
     </MainProvider>
+      </MacoWrapperComponent>
   );
 });
 
