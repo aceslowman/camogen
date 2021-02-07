@@ -128,42 +128,25 @@ const App = observer(props => {
   };
 
   return (
-    <MacoWrapperComponent 
-        store={store}
-        titlebar={}
-        contextmenu={}
+    <MacoWrapperComponent
+      store={store}
+      titlebar={{}}
+      contextmenu={store.context.contextmenu}
     >
-    <MainProvider value={{ store: store }}>
+      <MainProvider value={{ store: store }}>
         {props.store.ready && <MainToolbar />}
-        <div
-          id="APP"
-          ref={mainRef}
-          onContextMenu={handleContextMenu}
-          style={{
-            backgroundColor: ui.theme.secondary_color,
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            flexFlow: "column"
-          }}
-        >
-          <ContextMenuComponent items={store.context.contextmenu} />
 
-          <CanvasDisplay panel={canvasPanel} />
+        <CanvasDisplay panel={canvasPanel} />
 
-          {store.ready && (
-            <GenericPanel
-              panel={mainPanel}
-              subtitle={store.name}
-            >
-              <LayoutContainer layout={mainLayout}>
-                {Array.from(mainLayout.panels).map(e => {
-                  return getPanel(e[1]);
-                })}
-              </LayoutContainer>
-            </GenericPanel>
-          )}
-        </div>
+        {store.ready && (
+          <GenericPanel panel={mainPanel} subtitle={store.name}>
+            <LayoutContainer layout={mainLayout}>
+              {Array.from(mainLayout.panels).map(e => {
+                return getPanel(e[1]);
+              })}
+            </LayoutContainer>
+          </GenericPanel>
+        )}
 
         {store.showUpdates && (
           <Updates onRemove={() => store.setShowUpdates(!store.showUpdates)} />
@@ -172,12 +155,16 @@ const App = observer(props => {
         {store.showSplash && (
           <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
         )}
-        
+
         {store.showMissingAssets && (
-          <MissingAssets onRemove={() => store.setShowMissingAssets(!store.showMissingAssets)} />
+          <MissingAssets
+            onRemove={() =>
+              store.setShowMissingAssets(!store.showMissingAssets)
+            }
+          />
         )}
-    </MainProvider>
-      </MacoWrapperComponent>
+      </MainProvider>
+    </MacoWrapperComponent>
   );
 });
 
