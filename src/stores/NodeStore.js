@@ -12,29 +12,25 @@ import ImageInput from "./shaders/inputs/ImageInput";
 import VideoInput from "./shaders/inputs/VideoInput";
 import TextInput from "./shaders/inputs/TextInput";
 
-// import Counter from "./operators/inputs/Counter";
-// import MIDI from "./operators/inputs/MIDI";
-// import Float from "./operators/inputs/Float";
-// import Add from "./operators/math/Add";
-// import Subtract from "./operators/math/Subtract";
-// import Divide from "./operators/math/Divide";
-// import Multiply from "./operators/math/Multiply";
-// import Modulus from "./operators/math/Modulus";
-// import Sin from "./operators/math/Sin";
-// import Cos from "./operators/math/Cos";
-// import Tan from "./operators/math/Tan";
-// import Thru from "./operators/Thru";
 import {Operators} from "./operators"
 
 // NOTE: rearranged ImageInput and Shader, keep an eye on this for issues
 const PossibleData = types.union(
   {
     dispatcher: snap => {
-      if (snap) {        
+      if (snap) {       
+        
+        // check for matching operators
         for(let i = 0; i < Operators.length; i++) {
           let model = Operators[i];          
           if (snap.type === model.name) return model;          
         }
+        
+        // TODO: check for matching shaders
+        // for(let i = 0; i < Shaders.length; i++) {
+        //   let model = Shaders[i];          
+        //   if (snap.type === model.name) return model;          
+        // }
         
         if (snap.type === "Shader") return Shader;
         if (snap.type === "SketchInput") return SketchInput;
@@ -42,18 +38,6 @@ const PossibleData = types.union(
         if (snap.type === "VideoInput") return VideoInput;
         if (snap.type === "ImageInput") return ImageInput;
         if (snap.type === "TextInput") return TextInput;
-        // if (snap.type === "Counter") return Counter;
-        // if (snap.type === "MIDI") return MIDI;
-        // if (snap.type === "Float") return Float;
-        // if (snap.type === "Add") return Add;
-        // if (snap.type === "Subtract") return Subtract;
-        // if (snap.type === "Divide") return Divide;
-        // if (snap.type === "Multiply") return Multiply;
-        // if (snap.type === "Modulus") return Modulus;
-        // if (snap.type === "Sin") return Sin;
-        // if (snap.type === "Cos") return Cos;
-        // if (snap.type === "Tan") return Tan;
-        // if (snap.type === "Thru") return Thru;
 
         return allOps;
       } else {
