@@ -65,21 +65,21 @@ const Controls = observer(props => {
         
         switch (node.data.name) {
           // OPERATORS
-          case "Counter":
-            controls = (
-              <CounterComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "MIDI":
-            controls = (
-              <MIDIComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "Float":
-            controls = (
-              <FloatComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
+          // case "Counter":
+          //   controls = (
+          //     <CounterComponent key={node.uuid} ref={refs[i]} data={node} />
+          //   );
+          //   break;
+          // case "MIDI":
+          //   controls = (
+          //     <MIDIComponent key={node.uuid} ref={refs[i]} data={node} />
+          //   );
+          //   break;
+          // case "Float":
+          //   controls = (
+          //     <FloatComponent key={node.uuid} ref={refs[i]} data={node} />
+          //   );
+          //   break;
           default:
             controls = props.generateInterface(node.data);
         }
