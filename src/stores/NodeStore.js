@@ -6,25 +6,24 @@ import Coordinate from "./utils/Coordinate";
 import { nanoid } from "nanoid";
 import { allOps } from "./operators";
 
-
 import SketchInput from "./shaders/inputs/SketchInput";
 import WebcamInput from "./shaders/inputs/WebcamInput";
 import ImageInput from "./shaders/inputs/ImageInput";
 import VideoInput from "./shaders/inputs/VideoInput";
 import TextInput from "./shaders/inputs/TextInput";
 
-import Counter from './operators/inputs/Counter';
-import MIDI from './operators/inputs/MIDI';
-import Float from './operators/inputs/Float';
-import Add from './operators/math/Add';
-import Subtract from './operators/math/Subtract';
-import Divide from './operators/math/Divide';
-import Multiply from './operators/math/Multiply';
-import Modulus from './operators/math/Modulus';
-import Sin from './operators/math/Sin';
-import Cos from './operators/math/Cos';
-import Tan from './operators/math/Tan';
-import Thru from './operators/Thru';
+import Counter from "./operators/inputs/Counter";
+import MIDI from "./operators/inputs/MIDI";
+import Float from "./operators/inputs/Float";
+import Add from "./operators/math/Add";
+import Subtract from "./operators/math/Subtract";
+import Divide from "./operators/math/Divide";
+import Multiply from "./operators/math/Multiply";
+import Modulus from "./operators/math/Modulus";
+import Sin from "./operators/math/Sin";
+import Cos from "./operators/math/Cos";
+import Tan from "./operators/math/Tan";
+import Thru from "./operators/Thru";
 
 // NOTE: rearranged ImageInput and Shader, keep an eye on this for issues
 const PossibleData = types.union(
@@ -204,7 +203,7 @@ const GraphNode = types
       self.parent_graph.clipboard.removeSelection(self);
       return self;
     },
-    
+
     beforeDetach: () => {
       // console.log("detaching node " + self.name);
       // self.target.removeShaderNode(self.parent_node);
@@ -212,7 +211,7 @@ const GraphNode = types
 
     beforeDestroy: () => {
       // console.log('destroying node ' + self.name + '('+self.uuid+')')
-      if(self.data) destroy(self.data)
+      if (self.data) destroy(self.data);
     },
 
     setChildren: children => (self.children = children),

@@ -14,20 +14,7 @@ import Cos from './math/Cos';
 import Tan from './math/Tan';
 import Thru from './Thru';
 
-export const allOps = types.union(
-    Float,  
-    Counter, 
-    MIDI,     
-    Add, 
-    Subtract, 
-    Divide, 
-    Multiply, 
-    Modulus, 
-    Sin, 
-    Cos, 
-    Tan,
-    Thru
-);
+
 
 export const opList = [
   "Counter", 
@@ -43,6 +30,10 @@ export const opList = [
   "Tan",
   "Thru"
 ];
+
+export const allOps = types.union(
+    ...opList
+);
 
 export const getOperator = (name) => {
     let operator = null;

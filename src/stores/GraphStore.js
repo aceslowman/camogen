@@ -87,9 +87,9 @@ const Graph = types
 
     return {
       afterAttach: () => {
-        self.update(); // ESSENTIAL FOR GRAPHS TO RELOAD 
+        self.update(); // ESSENTIAL FOR GRAPHS TO RELOAD
       },
-      
+
       clear: () => {
         self.clipboard.clear();
 

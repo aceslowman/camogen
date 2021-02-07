@@ -32,7 +32,7 @@ const ShaderControls = observer(props => {
     e.stopPropagation();
     e.preventDefault();
 
-    store.context.setContextmenu({
+    store.ui.context.setContextmenu({
       ParamEdit: {
         id: "ParamEdit",
         label: "Edit Parameter",
@@ -40,7 +40,7 @@ const ShaderControls = observer(props => {
           store.selectParameter(param);
           let variant = store.ui.getLayoutVariant("PARAMETER");
           store.ui.getPanel("MAIN").setLayout(variant);
-          store.context.setContextmenu(); // removes menu
+          store.ui.context.setContextmenu(); // removes menu
         }
       },
       ResetDefault: {
@@ -48,7 +48,7 @@ const ShaderControls = observer(props => {
         label: "Reset to Default",
         onClick: () => {
           param.resetToDefault();
-          store.context.setContextmenu(); // removes menu
+          store.ui.context.setContextmenu(); // removes menu
         }
       }
     });
