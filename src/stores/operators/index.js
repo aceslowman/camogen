@@ -14,10 +14,8 @@ import Cos from "./math/Cos";
 import Tan from "./math/Tan";
 import Thru from "./Thru";
 
-console.log("FLOAT", Float);
-
 // MAIN OPERATOR LIST
-export const opList = [
+export const Operators = [
   Float,
   Counter,
   MIDI,
@@ -32,98 +30,21 @@ export const opList = [
   Thru
 ];
 
-export const allOps = types.union(...opList);
+export const allOps = types.union(...Operators);
 
 export const getOperator = name => {
   let operator = null;
-  
-  opList.forEach((model,i) => {
-    console.log('model', model)
-    if(name === model.name) {
-      console.log('MATCH', name)
+
+  Operators.forEach((model, i) => {
+    if (name === model.name) {
       operator = model.create({
         uuid: name + "_" + nanoid(),
         name: name
-      })
+      });
+      
+      return false;
     }
-  })
-
-  switch (name) {
-    case "Counter":
-      operator = Counter.create({
-        uuid: "Counter_" + nanoid(),
-        name: "Counter"
-      });
-      break;
-    case "MIDI":
-      operator = MIDI.create({
-        uuid: "MIDI_" + nanoid(),
-        name: "MIDI"
-      });
-      break;
-    case "Float":
-      operator = Float.create({
-        uuid: "Float_" + nanoid(),
-        name: "Float"
-      });
-      break;
-    case "Add":
-      operator = Add.create({
-        uuid: "Add_" + nanoid(),
-        name: "+"
-      });
-      break;
-    case "Subtract":
-      operator = Subtract.create({
-        uuid: "Subtract_" + nanoid(),
-        name: "-"
-      });
-      break;
-    case "Divide":
-      operator = Divide.create({
-        uuid: "Divide_" + nanoid(),
-        name: "/"
-      });
-      break;
-    case "Multiply":
-      operator = Multiply.create({
-        uuid: "Multiply_" + nanoid(),
-        name: "*"
-      });
-      break;
-    case "Modulus":
-      operator = Modulus.create({
-        uuid: "Modulus_" + nanoid(),
-        name: "%"
-      });
-      break;
-    case "Sin":
-      operator = Sin.create({
-        uuid: "Sin_" + nanoid(),
-        name: "Sin"
-      });
-      break;
-    case "Cos":
-      operator = Cos.create({
-        uuid: "Cos_" + nanoid(),
-        name: "Cos"
-      });
-      break;
-    case "Tan":
-      operator = Tan.create({
-        uuid: "Tan_" + nanoid(),
-        name: "Tan"
-      });
-      break;
-    case "Thru":
-      operator = Thru.create({
-        uuid: "Thru_" + nanoid(),
-        name: "Thru"
-      });
-      break;
-    default:
-      break;
-  }
+  });
 
   return operator;
 };
