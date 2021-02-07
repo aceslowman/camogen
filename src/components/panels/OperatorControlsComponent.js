@@ -3,9 +3,10 @@ import MainContext from "../../MainContext";
 import { PanelComponent, ThemeContext, ControlGroupComponent } from "maco-ui";
 
 // built-in operators
-import CounterComponent from "./operators/inputs/CounterComponent";
-import MIDIComponent from "./operators/inputs/MIDIComponent";
-import FloatComponent from "./operators/inputs/FloatComponent";
+// TODO: remove in favor of single import
+import CounterComponent from "./operators/CounterComponent";
+import MIDIComponent from "./operators/MIDIComponent";
+import FloatComponent from "./operators/FloatComponent";
 
 import ControlsComponent from "../controls/ControlsComponent";
 import styles from "./OperatorControlsComponent.module.css";

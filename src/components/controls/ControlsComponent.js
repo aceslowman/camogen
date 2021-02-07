@@ -11,7 +11,7 @@ import {
 } from "maco-ui";
 
 // built-in operators
-import { OperatorComponents } from "../panels/operator";
+import { OperatorComponents } from "../panels/operators";
 
 // built in inputs
 import { ShaderComponents } from "../panels/shaders";
