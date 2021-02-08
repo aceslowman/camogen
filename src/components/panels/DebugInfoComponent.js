@@ -25,7 +25,7 @@ const DebugInfo = observer((props) => {
 		overflowX: 'auto'
 	}
 
-	return(
+	return (
 		<GenericPanel panel={props.panel}>
 			<PanelComponent
 				title="graph"
@@ -54,7 +54,7 @@ const DebugInfo = observer((props) => {
 				<TextComponent>					
 
 					<pre>
-						{JSON.stringify(getSnapshot(scene.operatorGraphs), null, 5)}
+						{scene.operatorGraphs && JSON.stringify(getSnapshot(scene.operatorGraphs), null, 5)}
 					</pre>
 										
 				</TextComponent>

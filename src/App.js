@@ -16,18 +16,9 @@ import "maco-ui/dist/index.css";
 
 import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 
-// TODO: these should be imported from ./components/panels
 import { Panels } from "./components/panels";
-import ShaderGraphComponent from "./components/panels/ShaderGraphComponent";
-import ShaderControlsComponent from "./components/panels/ShaderControlsComponent";
-import DebugInfoComponent from "./components/panels/DebugInfoComponent";
-import HelpComponent from "./components/panels/HelpComponent";
-import ShaderEditorComponent from "./components/panels/ShaderEditorComponent";
-import PreferencesComponent from "./components/panels/PreferencesComponent";
-import ParameterEditorComponent from "./components/panels/ParameterEditorComponent";
-import MessagesComponent from "./components/panels/MessagesComponent";
-import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
 
+import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
 import MissingAssets from "./components/MissingAssetsComponent";
 import Splash from "./components/SplashComponent";
 import Updates from "./components/UpdatesComponent";
@@ -59,7 +50,7 @@ const App = observer(props => {
     return unsubscribe;
   }, [props.store]);
 
-  const getPanel = panel => {
+  const getPanelComponent = panel => {
     if (Panels.has(panel.id)) {
       let Component = Panels.get(panel.id);
       return <Component key={panel.id} panel={panel} />;
@@ -77,7 +68,7 @@ const App = observer(props => {
           <GenericPanel panel={mainPanel} subtitle={store.name}>
             <LayoutContainer layout={mainLayout}>
               {Array.from(mainLayout.panels).map(e => {
-                return getPanel(e[1]);
+                return getPanelComponent(e[1]);
               })}
             </LayoutContainer>
           </GenericPanel>
