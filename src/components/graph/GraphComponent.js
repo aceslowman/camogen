@@ -234,6 +234,7 @@ const GraphComponent = observer(props => {
     props.data.root // helped with clear() rerender
   ]);
 
+  // TODO: swap out with useKeymap hook?
   useEffect(() => {
     if (props.useKeys) {
       store.ui.context.setKeymap({
