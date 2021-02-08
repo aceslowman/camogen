@@ -17,6 +17,7 @@ import "maco-ui/dist/index.css";
 import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 
 // TODO: these should be imported from ./components/panels
+import { Panels } from "./components/panels";
 import ShaderGraphComponent from "./components/panels/ShaderGraphComponent";
 import ShaderControlsComponent from "./components/panels/ShaderControlsComponent";
 import DebugInfoComponent from "./components/panels/DebugInfoComponent";
@@ -58,17 +59,17 @@ const App = observer(props => {
     return unsubscribe;
   }, [props.store]);
 
-  
   const getPanel = panel => {
-    
+    console.log('PANEL', panel)
     // TODO: can likely refactor in a way similar to operator shader index.js imports
-    if (Panels.has(panel.data.name)) {
+    if (Panels.has(panel.id)) {
       let Component = Panels.get(panel.data.name);
-      return (<Component key={panel.uuid}  data={panel} />);
+      
+      //return <Component key={panel.id} data={panel} />;
     } else {
       return props.generateInterface(panel.data);
     }
-    
+
     switch (panel.component_type) {
       case "SHADER_GRAPH":
         return (
