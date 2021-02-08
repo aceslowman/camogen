@@ -19,6 +19,7 @@ import ControlsComponent from "../controls/ControlsComponent";
 const ShaderControls = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
+  const data = store.scene.shaderGraph;
 
   const [useKeys, setUseKeys] = useState(false);
   const [expandAll, setExpandAll] = useState(true);

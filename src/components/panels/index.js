@@ -10,14 +10,14 @@ import MessagesComponent from "./MessagesComponent";
 import DebugInfoComponent from "./DebugInfoComponent";
 
 export const Panels = new Map([
-  ["Shader Graph", ShaderGraphComponent],
-  ["Shader Editor", ShaderEditorComponent],
-  ["Shader Controls", ShaderControlsComponent],
-  ["Preferences", PreferencesComponent],
-  ["Parameter Editor", ParameterEditorComponent],
-  ["Operator Graph", OperatorGraphComponent],
-  ["Operator Controls", OperatorControlsComponent],
-  ["Help", HelpComponent],
-  ["Messages", MessagesComponent],
-  ["Debug Info", DebugInfoComponent]
+  ["SHADER_GRAPH", ShaderGraphComponent],
+  ["SHADER_EDITOR", ShaderEditorComponent],
+  ["SHADER_CONTROLS", ShaderControlsComponent],
+  ["PREFERENCES", PreferencesComponent],
+  ["PARAMETER_EDITOR", ParameterEditorComponent],
+  ["OPERATOR_GRAPH", OperatorGraphComponent],
+  ["OPERATOR_CONTROLS", OperatorControlsComponent],
+  ["HELP", HelpComponent],
+  ["MESSAGES", MessagesComponent],
+  ["DEBUG", DebugInfoComponent]
 ]);

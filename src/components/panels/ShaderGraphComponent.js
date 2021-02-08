@@ -7,7 +7,11 @@ import { getSnapshot } from "mobx-state-tree";
 
 const ShaderGraph = observer(props => {
   const store = useContext(MainContext).store;
-  const { clipboard } = props.data;
+  
+  const data = store.scene.shaderGraph;
+  
+  // const { clipboard } = props.data;
+  const { clipboard } = data;
   const [useKeys, setUseKeys] = useState(false);
   const mainRef = useRef();
 
