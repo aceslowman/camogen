@@ -19,9 +19,12 @@ import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 import { Panels } from "./components/panels";
 
 import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
-import MissingAssets from "./components/MissingAssetsComponent";
-import Splash from "./components/SplashComponent";
-import Updates from "./components/UpdatesComponent";
+
+// Dialogs
+import MissingAssets from "./components/dialogs/MissingAssetsComponent";
+import Splash from "./components/dialogs/SplashComponent";
+import Updates from "./components/dialogs/UpdatesComponent";
+
 import MainToolbar from "./components/MainToolbar";
 
 const App = observer(props => {

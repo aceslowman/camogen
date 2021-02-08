@@ -9,7 +9,7 @@ import {
   TextComponent
 } from "maco-ui";
 import styles from "./MissingAssetsComponent.module.css";
-import MainContext from "../MainContext";
+import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 
 const MissingAssets = observer(props => {

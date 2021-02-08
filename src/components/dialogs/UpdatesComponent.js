@@ -8,7 +8,7 @@ import {
   PagesContainer
 } from "maco-ui";
 import styles from "./SplashComponent.module.css";
-import MainContext from "../MainContext";
+import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 
 const Splash = observer(props => {
