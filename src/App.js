@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MainProvider } from "./MainContext";
+
 import { getSnapshot, applySnapshot } from "mobx-state-tree";
 import { observer } from "mobx-react";
-import tinykeys from "tinykeys";
+
+
 import {
   ThemeContext,
   ToolbarComponent,
@@ -27,6 +28,8 @@ import Updates from "./components/dialogs/UpdatesComponent";
 
 import MainToolbar from "./components/MainToolbar";
 
+import useKeymap from "./components/hooks/UseKeymap";
+
 const App = observer(props => {
   const { store } = props;
   const { ui, scene } = store;
@@ -38,8 +41,8 @@ const App = observer(props => {
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
 
-  useEffect(() => {
-    let unsubscribe = tinykeys(window, {
+  useKeymap(
+    {
       "$mod+KeyS": e => {
         e.preventDefault();
         props.store.save();
@@ -48,10 +51,9 @@ const App = observer(props => {
         e.preventDefault();
         props.store.load();
       }
-    });
-
-    return unsubscribe;
-  }, [props.store]);
+    },
+    true
+  );
 
   const getPanelComponent = panel => {
     if (Panels.has(panel.id)) {
