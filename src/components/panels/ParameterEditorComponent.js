@@ -7,7 +7,7 @@ import { GenericPanel, SplitContainer, ToolbarComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import OperatorControls from "./OperatorControlsComponent";
 import MainContext from "../../MainContext";
-
+//         data={store.selectedParameter}
 const OperatorEditor = observer(props => {
   const { data } = props;
   const store = useContext(MainContext).store;

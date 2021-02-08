@@ -60,83 +60,10 @@ const App = observer(props => {
   }, [props.store]);
 
   const getPanel = panel => {
-    console.log('PANEL', panel)
-    // TODO: can likely refactor in a way similar to operator shader index.js imports
     if (Panels.has(panel.id)) {
       let Component = Panels.get(panel.id);
-      console.log('COMPONENT', Component)
       return <Component key={panel.id} panel={panel} />;
     }
-    /*
-      as a test I am altering:
-      
-      HELP
-      SHADER_GRAPH
-      SHADER_CONTROLS
-      
-      to call the store themselves and update.
-    */
-
-    // switch (panel.component_type) {
-    //   case "SHADER_GRAPH":
-    //     return (
-    //       <ShaderGraphComponent
-    //         key={panel.id}
-    //         data={scene.shaderGraph}
-    //         panel={panel}
-    //       />
-    //     );
-    //   case "SHADER_EDITOR":
-    //     return (
-    //       <ShaderEditorComponent
-    //         key={panel.id}
-    //         node={scene.shaderGraph.selectedNode}
-    //         data={scene.shaderGraph.selectedNode.data}
-    //         graph={scene.shaderGraph}
-    //         hasChanged={
-    //           scene.shaderGraph.selectedNode.data
-    //             ? scene.shaderGraph.selectedNode.data.hasChanged
-    //             : null
-    //         }
-    //         panel={panel}
-    //       />
-    //     );
-    //   case "SHADER_CONTROLS":
-    //     return (
-    //       <ShaderControlsComponent
-    //         key={panel.id}
-    //         data={scene.shaderGraph}
-    //         panel={panel}
-    //       />
-    //     );
-    //   case "PARAMETER_EDITOR":
-    //     return (
-    //       <ParameterEditorComponent
-    //         key={panel.id}
-    //         data={store.selectedParameter}
-    //         panel={panel}
-    //       />
-    //     );
-    //   case "HELP":
-    //     return <HelpComponent key={panel.id} panel={panel} />;
-    //   case "DEBUG":
-    //     return <DebugInfoComponent key={panel.id} panel={panel} />;
-    //   case "MESSAGES":
-    //     return (
-    //       <MessagesComponent
-    //         key={panel.id}
-    //         data={props.store.messages}
-    //         log={props.store.messages.log}
-    //         panel={panel}
-    //       />
-    //     );
-    //   case "PREFERENCES":
-    //     return <PreferencesComponent key={panel.id} panel={panel} />;
-    //   case "CAPTURE":
-    //     return <CaptureComponent key={panel.id} panel={panel} />;
-    //   default:
-    //     break;
-    // }
   };
 
   return (

@@ -199,7 +199,7 @@ const ShaderControls = observer(props => {
       }
     >
       <ControlsComponent
-        data={props.data}
+        data={data}
         generateInterface={generateInterface}
       />
     </GenericPanel>

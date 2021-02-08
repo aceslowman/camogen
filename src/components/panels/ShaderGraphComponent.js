@@ -111,16 +111,16 @@ const ShaderGraph = observer(props => {
           : null
       }
     >
-      {props.data && (
+      {data && (
         <GraphComponent
           onRef={mainRef}
-          data={props.data}
+          data={data}
           onContextMenu={handleContextMenu}
           useKeys={useKeys}
         />
       )}
 
-      {props.data && props.data.updateFlag}
+      {data && data.updateFlag}
     </GenericPanel>
   );
 });
