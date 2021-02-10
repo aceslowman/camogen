@@ -1,5 +1,5 @@
 import { getRoot, types } from "mobx-state-tree";
-import Shader from "../../ShaderStore";
+import Shader from "../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
 
 /*
@@ -12,6 +12,8 @@ const webcam = types
     type: "WebcamInput",
     name: "Webcam",
     input_options: types.array(types.frozen()),
+    dataURL: "",
+    user_filename: "",
     display_mode: types.optional(
       types.enumeration("Display Mode", [
         "fit_vertical",
@@ -83,177 +85,180 @@ const webcam = types
   .actions(self => {
     let root_store;
 
-    function afterAttach() {
-      root_store = getRoot(self);
-    }
-
-    function init() {
-      self.ref = self.target.ref.createShader(self.vertex, self.fragment);
-
-      self.extractUniforms();
-
-      for (let uniform of self.uniforms) {
-        self.ref.setUniform(uniform.name, uniform.elements);
-
-        for (let param of uniform.elements) {
-          if (param.graph) self.parameter_graphs.push(param.graph);
-        }
-      }
-
-      let p = root_store.p5_instance;
-
-      let constraints = {
-        video: {
-          // mandatory: {
-          //   minWidth: 1920,
-          //   minHeight: 1080
-          // }
-          // optional: [{
-          // maxFrameRate: 10
-          // }]
-        },
-        audio: false
-      };
-
-      self.grabber = p.createCapture(constraints, () => {
-        console.log("grabber activated");
-        self.grabber.hide();
-      });
-
-      if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-        console.log("enumerateDevices() not supported.");
-        return;
-      }
-
-      // List cameras
-      navigator.mediaDevices
-        .enumerateDevices()
-        .then(devices => {
-          let videoinputs = devices.filter(e => e.kind === "videoinput");
-          self.setInputOptions(videoinputs);
-        
-          videoinputs.forEach(function(device) {
-            console.log(
-              device.kind + ": " + device.label + " id = " + device.deviceId
-            );
-          });        
-        })
-        .catch(err => {
-          console.log(err.name + ": " + err.message);
-        });
-      
-
-      // allows user to capture screen, may be useful elsewhere!
-      // navigator.mediaDevices.getDisplayMedia()
-
-      // prevents init() from being called twice
-      self.ready = true;
-
-      // removes 'tex0' from inputs, since it's provided
-      // by the webcam stream.
-      self.inputs = [];
-    }
-
-    function setInputOptions(opt) {
-      self.input_options = opt;
-    }
-
-    function setDisplayMode(mode) {
-      self.display_mode = mode;
-    }
-
-    function setInput(deviceId) {
-      self.grabber.remove();
-      self.grabber.stop();
-      console.log("deviceId", deviceId);
-      console.log("grabber", self.grabber)
-      let p = root_store.p5_instance;
-      let constraints = {
-        video: {
-          // mandatory: {
-          //   minWidth: 1920,
-          //   minHeight: 1080
-          // }
-          // optional: [{
-          // maxFrameRate: 10
-            // sourceId: deviceId
-          // }]
-          deviceId: deviceId
-        },
-        audio: false
-      };
-
-      self.grabber = p.createCapture(constraints, (e) => {
-        console.log("grabber activated", e);
-        self.grabber.hide();
-      });
-    }
-
-    function update(p) {
-      let shader = self.ref;
-      let target = self.target.ref;
-
-      for (let uniform_data of self.uniforms) {
-        if (uniform_data.elements.length > 1) {
-          let elements = uniform_data.elements.map(e => e.value);
-          shader.setUniform(uniform_data.name, elements);
-        } else {
-          shader.setUniform(uniform_data.name, uniform_data.elements[0].value);
-        }
-      }
-
-      shader.setUniform("tex0", self.grabber);
-      shader.setUniform("resolution", [target.width, target.height]);
-      shader.setUniform("img_dimensions", [
-        self.grabber.width,
-        self.grabber.height
-      ]);
-      shader.setUniform("display_mode", self.displayModeId);
-
-      target.shader(shader);
-
-      try {
-        target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
-      } catch (error) {
-        console.error(error);
-        console.log("frag", shader);
-        p.noLoop();
-      }
-    }
-    
-    function refresh() {
-      console.log('refreshing')
-      // List cameras
-      navigator.mediaDevices
-        .enumerateDevices()
-        .then(devices => {
-          let videoinputs = devices.filter(e => e.kind === "videoinput");
-          self.setInputOptions(videoinputs);
-        
-          videoinputs.forEach(function(device) {
-            console.log(
-              device.kind + ": " + device.label + " id = " + device.deviceId
-            );
-          });        
-        })
-        .catch(err => {
-          console.log(err.name + ": " + err.message);
-        });
-    }
-
     return {
-      afterAttach,
-      init,
-      update,
-      setInputOptions,
-      setDisplayMode,
-      setInput,
-      refresh
+      afterAttach: () => {
+        root_store = getRoot(self);
+      },
+
+      beforeDestroy: () => {
+        console.log('removing webcam')
+        // remove webcam video!
+        self.grabber.remove();
+      },
+
+      init: () => {
+        self.ref = self.target.ref.createShader(self.vertex, self.fragment);
+
+        self.extractUniforms();
+
+        for (let uniform of self.uniforms) {
+          self.ref.setUniform(uniform.name, uniform.elements);
+
+          for (let param of uniform.elements) {
+            if (param.graph) self.parameter_graphs.push(param.graph);
+          }
+        }
+
+        let p = root_store.p5_instance;
+
+        let constraints = {
+          video: {
+            // mandatory: {
+            //   minWidth: 1920,
+            //   minHeight: 1080
+            // }
+            // optional: [{
+            // maxFrameRate: 10
+            // }]
+          },
+          audio: false
+        };
+
+        self.grabber = p.createCapture(constraints, () => {
+          console.log("grabber activated");
+          self.grabber.hide();
+        });
+
+        if (
+          !navigator.mediaDevices ||
+          !navigator.mediaDevices.enumerateDevices
+        ) {
+          console.log("enumerateDevices() not supported.");
+          return;
+        }
+
+        // List cameras
+        navigator.mediaDevices
+          .enumerateDevices()
+          .then(devices => {
+            let videoinputs = devices.filter(e => e.kind === "videoinput");
+            self.setInputOptions(videoinputs);
+
+            videoinputs.forEach(function(device) {
+              console.log(
+                device.kind + ": " + device.label + " id = " + device.deviceId
+              );
+            });
+          })
+          .catch(err => {
+            console.log(err.name + ": " + err.message);
+          });
+
+        // allows user to capture screen, may be useful elsewhere!
+        // navigator.mediaDevices.getDisplayMedia()
+
+        // prevents init() from being called twice
+        self.ready = true;
+
+        // removes 'tex0' from inputs, since it's provided
+        // by the webcam stream.
+        self.inputs = [];
+      },
+
+      setInputOptions: opt => {
+        self.input_options = opt;
+      },
+
+      setDisplayMode: mode => {
+        self.display_mode = mode;
+      },
+
+      setInput: deviceId => {
+        self.grabber.remove();
+        self.grabber.stop();
+        console.log("deviceId", deviceId);
+        console.log("grabber", self.grabber);
+        let p = root_store.p5_instance;
+        let constraints = {
+          video: {
+            // mandatory: {
+            //   minWidth: 1920,
+            //   minHeight: 1080
+            // }
+            // optional: [{
+            // maxFrameRate: 10
+            // sourceId: deviceId
+            // }]
+            deviceId: deviceId
+          },
+          audio: false
+        };
+
+        self.grabber = p.createCapture(constraints, e => {
+          console.log("grabber activated", e);
+          self.grabber.hide();
+        });
+      },
+
+      update: p => {
+        let shader = self.ref;
+        let target = self.target.ref;
+
+        for (let uniform_data of self.uniforms) {
+          if (uniform_data.elements.length > 1) {
+            let elements = uniform_data.elements.map(e => e.value);
+            shader.setUniform(uniform_data.name, elements);
+          } else {
+            shader.setUniform(
+              uniform_data.name,
+              uniform_data.elements[0].value
+            );
+          }
+        }
+
+        shader.setUniform("tex0", self.grabber);
+        shader.setUniform("resolution", [target.width, target.height]);
+        shader.setUniform("img_dimensions", [
+          self.grabber.width,
+          self.grabber.height
+        ]);
+        shader.setUniform("display_mode", self.displayModeId);
+
+        target.shader(shader);
+
+        try {
+          target.quad(-1, -1, 1, -1, 1, 1, -1, 1);
+        } catch (error) {
+          console.error(error);
+          console.log("frag", shader);
+          p.noLoop();
+        }
+      },
+
+      refresh: () => {
+        console.log("refreshing");
+        // List cameras
+        navigator.mediaDevices
+          .enumerateDevices()
+          .then(devices => {
+            let videoinputs = devices.filter(e => e.kind === "videoinput");
+            self.setInputOptions(videoinputs);
+
+            videoinputs.forEach(function(device) {
+              console.log(
+                device.kind + ": " + device.label + " id = " + device.deviceId
+              );
+            });
+          })
+          .catch(err => {
+            console.log(err.name + ": " + err.message);
+          });
+      }
     };
   });
 
 const Webcam = types.compose(
   Shader,
   webcam
-);
+).named("WebcamInput");
 export default Webcam;

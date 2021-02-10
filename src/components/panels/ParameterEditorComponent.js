@@ -9,11 +9,12 @@ import OperatorControls from "./OperatorControlsComponent";
 import MainContext from "../../MainContext";
 
 const OperatorEditor = observer(props => {
-  const { data } = props;
   const store = useContext(MainContext).store;
   const { ui } = store;
+  const data = store.selectedParameter;
   const graph = data ? data.graph : null;
 
+  // TODO: generate these from Operators list
   const ctxmenu = {
     Inputs: {
       id: "Inputs",
@@ -93,7 +94,7 @@ const OperatorEditor = observer(props => {
       label: "Delete",
       onClick: () => {
         graph.removeNode(graph.selectedNode);
-        store.context.setContextmenu(); // removes menu
+        store.ui.context.setContextmenu(); // removes menu
       }
     },
     ...(process.env.NODE_ENV === "development"
@@ -117,11 +118,11 @@ const OperatorEditor = observer(props => {
     e.preventDefault();
 
     node.select(); // select with right click
-    store.context.setContextmenu(ctxmenu);
+    store.ui.context.setContextmenu(ctxmenu);
   };
 
   // TODO: these should autopopulate from available operators
-  const toolbar = props.data && <ToolbarComponent items={ctxmenu} />;
+  const toolbar = data && <ToolbarComponent items={ctxmenu} />;
 
   return (
     <GenericPanel

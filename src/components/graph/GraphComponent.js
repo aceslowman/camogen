@@ -11,7 +11,6 @@ import { ThemeContext } from "maco-ui";
 import useResizeObserver from "../hooks/ResizeHook";
 import { branch_colors } from "../../stores/GraphStore";
 import MainContext from "../../MainContext";
-import Shader from "../../stores/ShaderStore";
 import GraphNode from "../../stores/GraphStore";
 import { getSnapshot } from "mobx-state-tree";
 import { nanoid } from "nanoid";
@@ -235,9 +234,10 @@ const GraphComponent = observer(props => {
     props.data.root // helped with clear() rerender
   ]);
 
+  // TODO: swap out with useKeymap hook?
   useEffect(() => {
     if (props.useKeys) {
-      store.context.setKeymap({
+      store.ui.context.setKeymap({
         // redo
         "$mod+KeyZ": () => {
           if (process.env.NODE_ENV === "development") {
@@ -412,7 +412,7 @@ const GraphComponent = observer(props => {
         }
       });
     } else {
-      store.context.removeKeymap();
+      store.ui.context.removeKeymap();
     }
   }, [
     props.data.selectedNode,

@@ -1,33 +1,30 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MainProvider } from "./MainContext";
+
 import { getSnapshot, applySnapshot } from "mobx-state-tree";
 import { observer } from "mobx-react";
-import tinykeys from "tinykeys";
+import { MainProvider } from "./MainContext";
+import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
+import { Panels } from "./components/panels";
+import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
+
 import {
   ThemeContext,
   ToolbarComponent,
   LayoutContainer,
   GenericPanel,
-  ContextMenuComponent
+  ContextMenuComponent,
+  MacoWrapperComponent
 } from "maco-ui";
-
 import "maco-ui/dist/index.css";
 
-import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
+// Dialogs
+import MissingAssets from "./components/dialogs/MissingAssetsComponent";
+import Splash from "./components/dialogs/SplashComponent";
+import Updates from "./components/dialogs/UpdatesComponent";
 
-import ShaderGraphComponent from "./components/panels/ShaderGraphComponent";
-import ShaderControlsComponent from "./components/panels/ShaderControlsComponent";
-import DebugInfoComponent from "./components/panels/DebugInfoComponent";
-import HelpComponent from "./components/panels/HelpComponent";
-import ShaderEditorComponent from "./components/panels/ShaderEditorComponent";
-import PreferencesComponent from "./components/panels/PreferencesComponent";
-import ParameterEditorComponent from "./components/panels/ParameterEditorComponent";
-import MessagesComponent from "./components/panels/MessagesComponent";
-import CaptureComponent from "./components/panels/CaptureComponent";
-import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
-import Splash from "./components/SplashComponent";
-import Updates from "./components/UpdatesComponent";
 import MainToolbar from "./components/MainToolbar";
+
+import useKeymap from "./components/hooks/UseKeymap";
 
 const App = observer(props => {
   const { store } = props;
@@ -40,8 +37,8 @@ const App = observer(props => {
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
 
-  useEffect(() => {
-    let unsubscribe = tinykeys(window, {
+  useKeymap(
+    {
       "$mod+KeyS": e => {
         e.preventDefault();
         props.store.save();
@@ -50,114 +47,33 @@ const App = observer(props => {
         e.preventDefault();
         props.store.load();
       }
-    });
+    },
+    true
+  );
 
-    return unsubscribe;
-  }, [props.store]);
-
-  const getPanel = panel => {
-    switch (panel.component_type) {
-      case "SHADER_GRAPH":
-        return (
-          <ShaderGraphComponent
-            key={panel.id}
-            data={scene.shaderGraph}
-            panel={panel}
-          />
-        );
-      case "SHADER_EDITOR":
-        return (
-          <ShaderEditorComponent
-            key={panel.id}
-            node={scene.shaderGraph.selectedNode}
-            data={scene.shaderGraph.selectedNode.data}
-            graph={scene.shaderGraph}
-            hasChanged={
-              scene.shaderGraph.selectedNode.data
-                ? scene.shaderGraph.selectedNode.data.hasChanged
-                : null
-            }
-            panel={panel}
-          />
-        );
-      case "SHADER_CONTROLS":
-        return (
-          <ShaderControlsComponent
-            key={panel.id}
-            data={scene.shaderGraph}
-            panel={panel}
-          />
-        );
-      case "PARAMETER_EDITOR":
-        return (
-          <ParameterEditorComponent
-            key={panel.id}
-            data={store.selectedParameter}
-            panel={panel}
-          />
-        );
-      case "HELP":
-        return <HelpComponent key={panel.id} panel={panel} />;
-      case "DEBUG":
-        return <DebugInfoComponent key={panel.id} panel={panel} />;
-      case "MESSAGES":
-        return (
-          <MessagesComponent
-            key={panel.id}
-            data={props.store.messages}
-            log={props.store.messages.log}
-            panel={panel}
-          />
-        );
-      case "PREFERENCES":
-        return <PreferencesComponent key={panel.id} panel={panel} />;
-      case "CAPTURE":
-        return <CaptureComponent key={panel.id} panel={panel} />;
-      default:
-        break;
+  const getPanelComponent = panel => {
+    if (Panels.has(panel.id)) {
+      let Component = Panels.get(panel.id);
+      return <Component key={panel.id} panel={panel} />;
     }
   };
 
-  const handleContextMenu = e => {
-    // prevents context menu anywhere that hasn't been
-    // explicitly allowed
-    store.context.setContextmenu();
-  };
-
   return (
-    <MainProvider value={{ store: store }}>
-      <ThemeContext.Provider value={ui.theme}>
+    <MacoWrapperComponent store={store}>
+      <MainProvider value={{ store: store }}>
         {props.store.ready && <MainToolbar />}
-        <div
-          id="APP"
-          ref={mainRef}
-          onContextMenu={handleContextMenu}
-          style={{
-            backgroundColor: ui.theme.secondary_color,
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            flexFlow: "column"
-          }}
-        >
-          <ContextMenuComponent items={store.context.contextmenu} />
 
-          <CanvasDisplay panel={canvasPanel} />
+        <CanvasDisplay panel={canvasPanel} />
 
-          {store.ready && (
-            <GenericPanel
-              panel={mainPanel}
-              subtitle={store.name}
-              style={{ position: "absolute" }}
-            >
-              <LayoutContainer layout={mainLayout}>
-                {Array.from(mainLayout.panels).map(e => {
-                  return getPanel(e[1]);
-                })}
-              </LayoutContainer>
-            </GenericPanel>
-          )}
-        </div>
+        {store.ready && (
+          <GenericPanel panel={mainPanel} subtitle={store.name}>
+            <LayoutContainer layout={mainLayout}>
+              {Array.from(mainLayout.panels).map(e => {
+                return getPanelComponent(e[1]);
+              })}
+            </LayoutContainer>
+          </GenericPanel>
+        )}
 
         {store.showUpdates && (
           <Updates onRemove={() => store.setShowUpdates(!store.showUpdates)} />
@@ -166,8 +82,16 @@ const App = observer(props => {
         {store.showSplash && (
           <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
         )}
-      </ThemeContext.Provider>
-    </MainProvider>
+
+        {store.showMissingAssets && (
+          <MissingAssets
+            onRemove={() =>
+              store.setShowMissingAssets(!store.showMissingAssets)
+            }
+          />
+        )}
+      </MainProvider>
+    </MacoWrapperComponent>
   );
 });
 

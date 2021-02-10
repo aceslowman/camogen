@@ -1,6 +1,6 @@
 import { getRoot, types, getSnapshot, getParent } from "mobx-state-tree";
 import { autorun } from "mobx";
-import Shader from "../../ShaderStore";
+import Shader from "../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
 
 const sketch = types
@@ -122,7 +122,7 @@ const sketch = types
       }
     }
 
-    function redraw() {      
+    function redraw() {
       self.texture = self.ctx.getImageData(
         0,
         0,
@@ -130,7 +130,7 @@ const sketch = types
         self.canvas.height
       );
     }
-    
+
     function drawLine(x1, y1, x2, y2) {
       self.ctx.beginPath();
       self.ctx.strokeStyle = self.brushColor;
@@ -142,8 +142,8 @@ const sketch = types
       self.redraw();
     }
 
-    const setBrushColor = v => self.brushColor = v;
-    const setBrushSize = v => self.brushSize = v;
+    const setBrushColor = v => (self.brushColor = v);
+    const setBrushSize = v => (self.brushSize = v);
 
     return {
       afterAttach,
@@ -157,8 +157,11 @@ const sketch = types
     };
   });
 
-const Sketch = types.compose(
-  Shader,
-  sketch
-);
+const Sketch = types
+  .compose(
+    Shader,
+    sketch
+  )
+  .named("SketchInput");
+
 export default Sketch;

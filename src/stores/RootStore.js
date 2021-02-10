@@ -10,12 +10,11 @@ import {
 import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
 import defaultSnapshot from "../snapshots/default.json";
-import Context from "./ui/Context";
 import Messages from "./utils/Messages";
 import Transport from "./utils/Transport";
 import Collection from "./utils/Collection";
 import Parameter from "./ParameterStore";
-import Shader from "./ShaderStore";
+import Shader from "./shaders/ShaderStore";
 import Scene from "./SceneStore";
 import Runner from "../Runner";
 import { nanoid } from "nanoid";
@@ -43,6 +42,7 @@ const currentDate = new Date();
 
 const RootStore = types
   .model("RootStore", {
+    version: "v1.1.3-alpha",
     name: `${currentDate.getMonth() +
       1}-${currentDate.getDate()}-${currentDate.getFullYear()}`,
     ui: UIStore,
@@ -59,10 +59,12 @@ const RootStore = types
     p5_instance: null,
     ready: false,
     breakoutControlled: false,
-    messages: Messages.create(),
-    context: Context.create(),
+    messages: Messages.create(),    
+    missingAssets: [],
+    // 'show' individual panels
     showSplash: null,
-    showUpdates: null
+    showUpdates: null,
+    showMissingAssets: null
   }))
   .views(self => ({
     get recentShaderLibrary() {
@@ -197,6 +199,12 @@ const RootStore = types
               onClick: () =>
                 self.scene.shaderGraph.setSelectedByName("ImageInput")
             },
+            Video: {
+              id: "Video",
+              label: "Video",
+              onClick: () =>
+                self.scene.shaderGraph.setSelectedByName("VideoInput")
+            },
             Text: {
               id: "Text",
               label: "Text",
@@ -254,18 +262,20 @@ const RootStore = types
           JSON.parse(window.localStorage.getItem("theme"))
         );
       }
-      
-      if (window.localStorage.getItem('showSplash') !== null) {
-        self.showSplash = JSON.parse(window.localStorage.getItem('showSplash'));
+
+      if (window.localStorage.getItem("showSplash") !== null) {
+        self.showSplash = JSON.parse(window.localStorage.getItem("showSplash"));
       } else {
-        window.localStorage.setItem('showSplash', true)
+        window.localStorage.setItem("showSplash", true);
         self.showSplash = true;
       }
-      
-      if (window.localStorage.getItem('showUpdates') !== null) {
-        self.showUpdates = JSON.parse(window.localStorage.getItem('showUpdates'));
+
+      if (window.localStorage.getItem("showUpdates") !== null) {
+        self.showUpdates = JSON.parse(
+          window.localStorage.getItem("showUpdates")
+        );
       } else {
-        window.localStorage.setItem('showUpdates', true)
+        window.localStorage.setItem("showUpdates", true);
         self.showUpdates = true;
       }
 
@@ -320,10 +330,12 @@ const RootStore = types
       }
 
       link.click();
+      window.localStorage.setItem("recent_save", src);
 
       console.log("project saved!");
     },
 
+    //     does this need to be flow?
     load: flow(function* load() {
       let link = document.createElement("input");
       link.type = "file";
@@ -332,16 +344,16 @@ const RootStore = types
         var file = e.target.files[0];
 
         let reader = new FileReader();
-        reader.readAsText(file, "UTF-8");        
+        reader.readAsText(file, "UTF-8");
 
         reader.onload = e => {
           let content = e.target.result;
 
           self.setName(name);
           self.scene.clear(); // this just fails early
-          console.log('clearing')
+          console.log("clearing");
           // destroy(self.scene)
-          
+
           applySnapshot(self, JSON.parse(content));
           self.scene.shaderGraph.update();
           self.scene.shaderGraph.afterUpdate();
@@ -351,6 +363,30 @@ const RootStore = types
 
       link.click();
     }),
+
+    loadRecentSave: () => {
+      let content = window.localStorage.getItem("recent_save");
+
+      if (content) {
+        self.setName(name);
+        self.scene.clear(); // this just fails early
+        console.log("clearing");
+        // destroy(self.scene)
+
+        applySnapshot(self, JSON.parse(content));
+        self.scene.shaderGraph.update();
+        self.scene.shaderGraph.afterUpdate();
+      } else {
+        console.log('no recent saves!')
+      }
+    },
+
+    flagAssetsAsMissing: model => {
+      let missing_asset_filename = getSnapshot(model).user_filename;
+      self.missingAssets.push(model);
+      console.log('MISSING_ASSETS', self.missingAssets)
+      self.showMissingAssets = true;
+    },
 
     breakout: () => {
       let new_window = window.open(
@@ -458,9 +494,9 @@ const RootStore = types
 
         reader.onload = e => {
           let content = e.target.result;
-          
+
           self.setShaderCollection(JSON.parse(content));
-          
+
           // TODO: is this all still necessary to keep around?
           // applySnapshot(self.shader_collection, JSON.parse(content));
           //           self.setName(name);
@@ -513,9 +549,10 @@ const RootStore = types
     setShaderCollection: c => (self.shader_collection = c),
 
     setShowSplash: s => (self.showSplash = s),
-    
+
     setShowUpdates: s => (self.showUpdates = s),
 
+    setShowMissingAssets: s => (self.showMissingAssets = s)
   }));
 
 export default RootStore;

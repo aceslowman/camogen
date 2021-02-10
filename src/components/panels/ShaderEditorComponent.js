@@ -18,40 +18,56 @@ import { GenericPanel, ToolbarComponent } from "maco-ui";
 
 let editor;
 
+// key={panel.id}
+//         node={scene.shaderGraph.selectedNode}
+//         data={scene.shaderGraph.selectedNode.data}
+//         graph={scene.shaderGraph}
+//         hasChanged={
+//           scene.shaderGraph.selectedNode.data
+//             ? scene.shaderGraph.selectedNode.data.hasChanged
+//             : null
+//         }
+//         panel={panel}
+
 const ShaderEditor = props => {
   const store = useContext(MainContext).store;
   const mainRef = useRef(null);
   const editorRef = useRef(null);
   const [editType, setEditType] = useState("vert");
 
+  const graph = store.scene.shaderGraph;
+  const node = graph.selectedNode;
+  const data = node.data;
+  const hasChanged = data ? data.hasChanged : null;
+
   const handleRefresh = () => {
     store.p5_instance.loop();
-    props.data.init();
+    data.init();
   };
 
   const handleEditorChange = (doc, changes) => {
     let value = doc.getValue();
 
     if (editType === "vert") {
-      props.data.setVert(value);
+      data.setVert(value);
     } else {
-      props.data.setFrag(value);
+      data.setFrag(value);
     }
   };
 
-  const showEditor = props.node !== undefined && props.data;
+  const showEditor = node !== undefined && data;
 
   const toolbar = (
     <ToolbarComponent
-      style={{zIndex: 6}}
+      style={{ zIndex: 6 }}
       items={
         showEditor
           ? {
-              "File": {
+              File: {
                 id: "File",
                 label: "File",
                 dropDown: {
-                  "NameShader": {
+                  NameShader: {
                     id: "NameShader",
                     label: (
                       <div
@@ -71,9 +87,9 @@ const ShaderEditor = props => {
                             fontFamily: "inherit"
                           }}
                           type="text"
-                          placeholder={props.data.name}
+                          placeholder={data.name}
                           onChange={e => {
-                            props.node.data.setName(e.target.value);
+                            node.data.setName(e.target.value);
                           }}
                           onFocus={e => {
                             e.stopPropagation();
@@ -82,28 +98,28 @@ const ShaderEditor = props => {
                       </div>
                     )
                   },
-                  "SaveShader": {
+                  SaveShader: {
                     id: "SaveShader",
                     label: "Save Shader",
-                    onClick: () => props.data.save()
+                    onClick: () => data.save()
                   },
                   SaveCollection: {
                     id: "SaveCollection",
                     label: "Save to Collection",
                     onClick: () => {
-                      props.data.saveToCollection();
+                      data.saveToCollection();
                       store.persistShaderCollection();
                     }
                   },
-                  "LoadShader": {
+                  LoadShader: {
                     id: "LoadShader",
                     label: "Load Shader",
-                    onClick: () => props.data.load()
+                    onClick: () => data.load()
                   },
-                  "NewShader": {
+                  NewShader: {
                     id: "NewShader",
                     label: "New Shader",
-                    onClick: () => props.graph.setSelectedByName("Thru")
+                    onClick: () => graph.setSelectedByName("Thru")
                   }
                 }
               },
@@ -129,7 +145,7 @@ const ShaderEditor = props => {
               NewShaderEmpty: {
                 id: "NewShaderEmpty",
                 label: "New Shader",
-                onClick: () => props.graph.setSelectedByName("Thru")
+                onClick: () => graph.setSelectedByName("Thru")
               }
             }
       }
@@ -153,9 +169,9 @@ const ShaderEditor = props => {
   useLayoutEffect(() => {
     let doc;
 
-    if (props.data) {
+    if (data) {
       doc = CodeMirror.Doc(
-        editType === "frag" ? props.data.frag : props.data.vert,
+        editType === "frag" ? data.frag : data.vert,
         "x-shader/x-fragment"
       );
       editor.swapDoc(doc);
@@ -166,7 +182,7 @@ const ShaderEditor = props => {
 
     // do I need to remove listener?
     doc.on("change", handleEditorChange);
-  }, [editType, props.data]);
+  }, [editType, data]);
 
   return (
     <GenericPanel
@@ -174,10 +190,10 @@ const ShaderEditor = props => {
       subtitle={
         <span
           style={{
-            fontStyle: props.hasChanged ? "italic" : "normal"
+            fontStyle: hasChanged ? "italic" : "normal"
           }}
         >
-          {props.hasChanged ? "unsaved" : ""}
+          {hasChanged ? "unsaved" : ""}
         </span>
       }
       toolbar={toolbar}

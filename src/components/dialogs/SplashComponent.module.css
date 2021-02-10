@@ -1,0 +1,60 @@
+.credit {
+  width: 100%;
+  font-size: 0.8em;
+  padding-left: 15px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
+
+.credit p {
+}
+
+.credit a {
+  padding-left: 15px;
+}
+
+.title {
+  height: 100%;
+  width: 50%;
+  font-size: 1.5em;
+  padding-left: 30px;
+  height: 100%;
+}
+
+.title h1 {
+  margin: 0px;
+}
+
+.recent {
+  width: 50%;
+}
+
+/* this should be simplified and added in maco UI */
+.recent button {
+  padding: 2px 5px;
+  border: none;
+  cursor: pointer;
+  background-color: inherit;
+  color: inherit;
+  font-family: inherit;
+  white-space: pre;
+}
+
+.recent button:hover {
+  background-color: white;
+  mix-blend-mode: exclusion;
+  color: black;
+}
+
+.titleWrapper {
+  display: flex;
+  flex-flow: row;
+  flex-grow: 2;
+}
+
+.wrapper {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}

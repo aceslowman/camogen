@@ -1,5 +1,5 @@
 import { types } from "mobx-state-tree";
-import Operator from "../../OperatorStore";
+import Operator from "../OperatorStore";
 
 const float = types
   .model("Float", {
@@ -18,6 +18,6 @@ const float = types
 const Float = types.compose(
   Operator,
   float
-);
+).named("Float");
 
 export default Float;

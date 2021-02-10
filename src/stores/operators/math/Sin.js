@@ -1,5 +1,5 @@
 import { types } from "mobx-state-tree";
-import Operator from "../../OperatorStore";
+import Operator from "../OperatorStore";
 
 const sin = types
   .model("Sin", {

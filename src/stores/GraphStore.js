@@ -14,7 +14,7 @@ import { UndoManager } from "mst-middlewares";
 import Coordinate from "./utils/Coordinate";
 import { getOperator } from "./operators";
 import Parameter from "./ParameterStore";
-import Shader from "./ShaderStore";
+import Shader from "./shaders/ShaderStore";
 import Clipboard from "./utils/Clipboard";
 
 export const branch_colors = [
@@ -87,9 +87,9 @@ const Graph = types
 
     return {
       afterAttach: () => {
-        self.update(); // ESSENTIAL FOR GRAPHS TO RELOAD 
+        self.update(); // ESSENTIAL FOR GRAPHS TO RELOAD
       },
-      
+
       clear: () => {
         self.clipboard.clear();
 

@@ -1,6 +1,6 @@
 import { getRoot, types, getSnapshot, getParent } from "mobx-state-tree";
 import { autorun } from 'mobx';
-import Shader from "../../ShaderStore";
+import Shader from "../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
 
 const text = types
@@ -231,5 +231,5 @@ const text = types
 const Text = types.compose(
   Shader,
   text
-);
+).named("TextInput");
 export default Text;

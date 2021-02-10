@@ -11,9 +11,10 @@ import {
 } from "maco-ui";
 
 // built-in operators
-import CounterComponent from "../panels/operators/inputs/CounterComponent";
-import MIDIComponent from "../panels/operators/inputs/MIDIComponent";
-import FloatComponent from "../panels/operators/inputs/FloatComponent";
+import { OperatorComponents } from "../panels/operators";
+
+// built in inputs
+import { ShaderComponents } from "../panels/shaders";
 
 import styles from "./ControlsComponent.module.css";
 import { observer } from "mobx-react";
@@ -41,8 +42,6 @@ const Controls = observer(props => {
   const handleSubpanelRef = (r, node) => {
     if (isAlive(node)) addPanelRef(r, node.uuid);
   };
-  
-  // console.log('CHECK CONTROSL', getSnapshot(props.data))
 
   props.data.queue.forEach(subqueue => {
     subqueue.forEach((node, i) => {
@@ -51,48 +50,17 @@ const Controls = observer(props => {
       // console.log('NODE', getSnapshot(node))
       if (node.data) {
         let controls = null;
-        switch (node.data.name) {
-          // SHADERS
-          case "Webcam":
-            controls = (
-              <WebcamInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "Image":
-            controls = (
-              <ImageInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "Text":
-            controls = (
-              <TextInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "Sketch":
-            controls = (
-              <SketchInputComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          // OPERATORS
-          case "Counter":
-            controls = (
-              <CounterComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "MIDI":
-            controls = (
-              <MIDIComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          case "Float":
-            controls = (
-              <FloatComponent key={node.uuid} ref={refs[i]} data={node} />
-            );
-            break;
-          default:
-            controls = props.generateInterface(node.data);
+
+        //procedurally create shaders
+        if (ShaderComponents.has(node.data.name)) {
+          let Component = ShaderComponents.get(node.data.name);
+          controls = <Component key={node.uuid} ref={refs[i]} data={node} />;
+        } else if (OperatorComponents.has(node.data.name)) {
+          let Component = OperatorComponents.get(node.data.name);
+          controls = <Component key={node.uuid} ref={refs[i]} data={node} />;
+        } else {
+          controls = props.generateInterface(node.data);
         }
-        // console.log('CHECK', controls)
 
         subpanels.push(
           <li
@@ -158,7 +126,7 @@ const Controls = observer(props => {
     });
   }, [props.data.selectedNode]);
 
-  return (panels);
+  return panels;
 });
 
 export default Controls;

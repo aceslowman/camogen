@@ -7,7 +7,11 @@ import { getSnapshot } from "mobx-state-tree";
 
 const ShaderGraph = observer(props => {
   const store = useContext(MainContext).store;
-  const { clipboard } = props.data;
+  
+  const data = store.scene.shaderGraph;
+  
+  // const { clipboard } = props.data;
+  const { clipboard } = data;
   const [useKeys, setUseKeys] = useState(false);
   const mainRef = useRef();
 
@@ -18,10 +22,8 @@ const ShaderGraph = observer(props => {
     e.stopPropagation();
     e.preventDefault();
 
-    // let dev_debug = ;
-
     node.select(); // select with right click
-    store.context.setContextmenu({
+    store.ui.context.setContextmenu({
       Library: {
         id: "Library",
         label: "Library",
@@ -32,7 +34,7 @@ const ShaderGraph = observer(props => {
         label: "Delete",
         onClick: () => {
           props.data.removeNode(node);
-          store.context.setContextmenu(); // removes menu
+          store.ui.context.setContextmenu(); // removes menu
         }
       },
       EditShader: {
@@ -41,7 +43,14 @@ const ShaderGraph = observer(props => {
         onClick: () => {
           let variant = store.ui.getLayoutVariant("SHADER_EDIT");
           store.ui.getPanel("MAIN").setLayout(variant);
-          store.context.setContextmenu(); // removes menu
+          store.ui.context.setContextmenu(); // removes menu
+        }
+      },
+      ResetToDefault: {
+        id: "ResetToDefault",
+        label: "Reset To Default",
+        onClick: () => {
+          node.data.resetToDefault();
         }
       },
       ...(process.env.NODE_ENV === "development"
@@ -64,7 +73,7 @@ const ShaderGraph = observer(props => {
   const handlePanelContextMenu = e => {
     e.stopPropagation();
 
-    store.context.setContextmenu({
+    store.ui.context.setContextmenu({
       Clear: {
         id: "Clear",
         label: "Clear",
@@ -102,16 +111,16 @@ const ShaderGraph = observer(props => {
           : null
       }
     >
-      {props.data && (
+      {data && (
         <GraphComponent
           onRef={mainRef}
-          data={props.data}
+          data={data}
           onContextMenu={handleContextMenu}
           useKeys={useKeys}
         />
       )}
 
-      {props.data && props.data.updateFlag}
+      {data && data.updateFlag}
     </GenericPanel>
   );
 });

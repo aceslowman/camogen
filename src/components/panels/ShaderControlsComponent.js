@@ -16,15 +16,10 @@ import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 import ControlsComponent from "../controls/ControlsComponent";
 
-// built in inputs
-import SketchInputComponent from "./shaders/SketchInputComponent";
-import WebcamInputComponent from "./shaders/WebcamInputComponent";
-import ImageInputComponent from "./shaders/ImageInputComponent";
-import TextInputComponent from "./shaders/TextInputComponent";
-
 const ShaderControls = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
+  const data = store.scene.shaderGraph;
 
   const [useKeys, setUseKeys] = useState(false);
   const [expandAll, setExpandAll] = useState(true);
@@ -38,7 +33,7 @@ const ShaderControls = observer(props => {
     e.stopPropagation();
     e.preventDefault();
 
-    store.context.setContextmenu({
+    store.ui.context.setContextmenu({
       ParamEdit: {
         id: "ParamEdit",
         label: "Edit Parameter",
@@ -46,7 +41,15 @@ const ShaderControls = observer(props => {
           store.selectParameter(param);
           let variant = store.ui.getLayoutVariant("PARAMETER");
           store.ui.getPanel("MAIN").setLayout(variant);
-          store.context.setContextmenu(); // removes menu
+          store.ui.context.setContextmenu(); // removes menu
+        }
+      },
+      ResetDefault: {
+        id: "ResetDefault",
+        label: "Reset to Default",
+        onClick: () => {
+          param.resetToDefault();
+          store.ui.context.setContextmenu(); // removes menu
         }
       }
     });
@@ -142,7 +145,7 @@ const ShaderControls = observer(props => {
               // break;
               case "COLOR":
               // TODO
-              // VEC2 and everything else like that ends up here, since 
+              // VEC2 and everything else like that ends up here, since
               // they are assumed to be float. that doesn't account for
               // ivec but I'll look into that when it becomes an issue
               default:
@@ -155,7 +158,10 @@ const ShaderControls = observer(props => {
                     onChange={e => handleValueChange(param, e)}
                     focused={param === store.selectedParameter}
                     inputStyle={{
-                      border: param === store.selectedParameter ? `1px solid ${theme.accent_color}` : 'none',
+                      border:
+                        param === store.selectedParameter
+                          ? `1px solid ${theme.accent_color}`
+                          : "none",
                       fontWeight: param.graph ? "bold" : "normal",
                       color: param.graph ? theme.accent_color : theme.text_color
                     }}
@@ -176,7 +182,7 @@ const ShaderControls = observer(props => {
 
     return controls;
   };
-  
+
   return (
     <GenericPanel
       panel={props.panel}
@@ -192,8 +198,8 @@ const ShaderControls = observer(props => {
         />
       }
     >
-      <ControlsComponent 
-        data={props.data} 
+      <ControlsComponent
+        data={data}
         generateInterface={generateInterface}
       />
     </GenericPanel>

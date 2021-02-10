@@ -6,12 +6,13 @@ import {
   applySnapshot,
   getParent
 } from "mobx-state-tree";
-import Shader from "./ShaderStore";
+import Shader from "./shaders/ShaderStore";
 import * as ThruShader from "./shaders/defaults/ThruShader";
 
 // special shaders
 import WebcamInput from "./shaders/inputs/WebcamInput";
 import ImageInput from "./shaders/inputs/ImageInput";
+import VideoInput from "./shaders/inputs/VideoInput";
 import TextInput from "./shaders/inputs/TextInput";
 import SketchInput from "./shaders/inputs/SketchInput";
 
@@ -69,6 +70,8 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
         return WebcamInput.create();
       case "ImageInput":
         return ImageInput.create();
+      case "VideoInput":
+        return VideoInput.create();
       case "TextInput":
         return TextInput.create();
       case "SketchInput":

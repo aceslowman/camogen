@@ -1,5 +1,5 @@
 import { types } from "mobx-state-tree";
-import Operator from "../../OperatorStore";
+import Operator from "../OperatorStore";
 
 const counter = types
   .model("Counter", {
@@ -18,6 +18,6 @@ const counter = types
 const Counter = types.compose(
   Operator,
   counter
-);
+).named("Counter");
 
 export default Counter;
