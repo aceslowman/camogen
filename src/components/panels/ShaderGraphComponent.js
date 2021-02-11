@@ -100,14 +100,15 @@ const ShaderGraph = observer(props => {
       onBlur={handleBlur}
       tooltip={
         <React.Fragment>
-          <h2>Shader Graph</h2>
           <p>
             Here you can combine your effects into a graph. You can right-click on any node to access the library and change the effect.
           </p>
+          
+          <hr />
 
           <p>Keyboard Shortcuts:</p>
           <p>
-            <em>First, click within the graph to focus the keymap!</em>
+            <em><small>First, click within the graph to focus the keymap!</small></em>
           </p>
 
           <table style={{width:'100%'}}>
