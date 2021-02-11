@@ -52,12 +52,16 @@ const App = observer(props => {
   );
   
   useEffect(() => {
+    
+    // TODO: 
+    // this should only occur if something in state has changed
     const beforeUnload = (e) => {
       let message = "You have unsaved data!";
       e.returnValue = message;
       return message
     }
     window.addEventListener("beforeunload", beforeUnload);
+    window.onbeforeunload = beforeUnload;
     return (window.removeEventListener("beforeunload", beforeUnload))
   },[])
 

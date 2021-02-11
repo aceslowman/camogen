@@ -124,6 +124,7 @@ const Splash = observer(props => {
           <ul>
             <li>Fixed control collapse/expand buttons.</li>
             <li>Fixed issue where adding a new shader wouldn't persist to storage.</li>
+            <li>Added warning before navigating away from page.</li>
           </ul>
           
         </TextComponent>
