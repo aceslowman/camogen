@@ -168,7 +168,7 @@ const RootStore = types
                       })
                     );
 
-                    self.persistShaderLibrary();
+                    self.persistShaderCollection();
                   }
                 }
               }
@@ -277,6 +277,12 @@ const RootStore = types
       } else {
         window.localStorage.setItem("showUpdates", true);
         self.showUpdates = true;
+      }
+      
+      // this will notify the user that they have
+      // unsaved data
+      window.onbeforeunload = () => {
+        return 'you have unsaved data'
       }
 
       // fetch default shaders
