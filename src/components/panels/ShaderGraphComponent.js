@@ -33,7 +33,7 @@ const ShaderGraph = observer(props => {
         id: "Delete",
         label: "Delete",
         onClick: () => {
-          props.data.removeNode(node);
+          data.removeNode(node);
           store.ui.context.setContextmenu(); // removes menu
         }
       },
@@ -60,8 +60,8 @@ const ShaderGraph = observer(props => {
               label: <em>Print Debug</em>,
               onClick: () => {
                 console.log(
-                  props.data.selectedNode.name,
-                  getSnapshot(props.data.selectedNode)
+                  data.selectedNode.name,
+                  getSnapshot(data.selectedNode)
                 );
               }
             }
@@ -85,7 +85,7 @@ const ShaderGraph = observer(props => {
               id: "PrintDebug",
               label: <em>Print Debug</em>,
               onClick: () => {
-                console.log("GRAPH", getSnapshot(props.data));
+                console.log("GRAPH", getSnapshot(data));
               }
             }
           }
