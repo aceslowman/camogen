@@ -7,9 +7,9 @@ import { getSnapshot } from "mobx-state-tree";
 
 const ShaderGraph = observer(props => {
   const store = useContext(MainContext).store;
-  
+
   const data = store.scene.shaderGraph;
-  
+
   // const { clipboard } = props.data;
   const { clipboard } = data;
   const [useKeys, setUseKeys] = useState(false);
@@ -99,10 +99,22 @@ const ShaderGraph = observer(props => {
       onContextMenu={handlePanelContextMenu}
       onFocus={handleFocus}
       onBlur={handleBlur}
-      tooltip={`here you can combine your effects into a graph of inputs and outputs.
-      
-      The graph can be navigated using the keyboard. Use the arrow keys to select nodes and
-      `}
+      tooltip={(
+        <React.Fragment>
+          <p>
+            Here you can combine your effects into a graph of inputs and
+            outputs.
+          </p>
+
+          <p>Keyboard Shortcuts:</p>
+
+          <ul>
+            <li>Arrow keys to navigate</li>
+            <li>Delete key to remove selected node</li>
+            <li>'B' key to bypass selected node</li>
+          </ul>
+        </React.Fragment>
+      )}a
       indicators={
         useKeys
           ? [

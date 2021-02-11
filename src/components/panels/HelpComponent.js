@@ -84,20 +84,11 @@ const Help = props => {
         </TextComponent>
         <TextComponent>
           <h2>Adding Motion</h2>
-          <p>
-            <em>
-              For the time being, motion is limited. This is my priority after
-              polishing the save system.{" "}
-            </em>
-          </p>
           <p>  
-            <em>
-              You can right click on any (number) parameter under Shader
-              Controls and click 'Edit Parameter', which will add a new
-              'Parameter Editor'. This graph works the same as the Shader Graph,
-              but is used to shape changing values. For now, stick to adding
-              Counter or MIDI, both found under 'Inputs'.
-            </em>
+            You can right click on any (number) parameter under Shader
+            Controls and click 'Edit Parameter', which will add a new
+            'Parameter Editor'. This graph works the same as the Shader Graph,
+            but is used to shape changing values.
           </p>
         </TextComponent>
         <TextComponent>
