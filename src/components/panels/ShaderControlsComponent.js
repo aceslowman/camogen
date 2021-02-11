@@ -201,6 +201,7 @@ const ShaderControls = observer(props => {
       <ControlsComponent
         data={data}
         generateInterface={generateInterface}
+        expandAll={expandAll}
       />
     </GenericPanel>
   );

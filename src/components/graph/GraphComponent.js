@@ -392,6 +392,7 @@ const GraphComponent = observer(props => {
         },
         // delete
         Delete: () => {
+          console.log('deleting')
           props.data.removeSelected();
         },
         // copy

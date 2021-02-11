@@ -26,7 +26,6 @@ const Controls = observer(props => {
   const store = useContext(MainContext).store;
 
   const [useKeys, setUseKeys] = useState(false);
-  const [expandAll, setExpandAll] = useState(true);
 
   const handleValueChange = (param, e) => {
     param.setValue(e);
@@ -87,7 +86,7 @@ const Controls = observer(props => {
                   ? theme.accent_color
                   : theme.primary_color
               }}
-              expanded={expandAll}
+              expanded={props.expandAll}
               onRemove={() => node.remove()}
               gutters
             >

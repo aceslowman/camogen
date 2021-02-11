@@ -42,7 +42,7 @@ const currentDate = new Date();
 
 const RootStore = types
   .model("RootStore", {
-    version: "v1.1.3-alpha",
+    version: "v1.1.4-alpha",
     name: `${currentDate.getMonth() +
       1}-${currentDate.getDate()}-${currentDate.getFullYear()}`,
     ui: UIStore,
@@ -168,7 +168,7 @@ const RootStore = types
                       })
                     );
 
-                    self.persistShaderLibrary();
+                    self.persistShaderCollection();
                   }
                 }
               }

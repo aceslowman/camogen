@@ -120,6 +120,13 @@ const Splash = observer(props => {
             <li>Added 'missing assets' dialog when loading a project.</li>
             <li>Improved image node dropzone.</li>
           </ul>
+          <h2>v1.1.4-alpha</h2>
+          <ul>
+            <li>Fixed control collapse/expand buttons.</li>
+            <li>Fixed issue where adding a new shader wouldn't persist to storage.</li>
+            <li>Added warning before navigating away from page.</li>
+            <li>Fixed issue with delete button</li>
+          </ul>
           
         </TextComponent>
       </PagesContainer>

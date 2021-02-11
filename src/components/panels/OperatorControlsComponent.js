@@ -1,6 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import MainContext from "../../MainContext";
-import { PanelComponent, ThemeContext, ControlGroupComponent } from "maco-ui";
+import {
+  PanelComponent,
+  ThemeContext,
+  ControlGroupComponent,
+  ToolbarComponent
+} from "maco-ui";
 
 // built-in operators
 // TODO: remove in favor of single import
@@ -18,7 +23,7 @@ import { branch_colors } from "../../stores/GraphStore";
 const OperatorControls = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
-  
+
   const [useKeys, setUseKeys] = useState(false);
   const [expandAll, setExpandAll] = useState(true);
 
@@ -43,10 +48,22 @@ const OperatorControls = observer(props => {
       defaultSize={props.defaultSize}
       detachable
       onDetach={props.onDetach ? props.onDetach : () => {}}
+      toolbar={
+        <ToolbarComponent
+          items={{
+            ToggleExpand: {
+              id: "ToggleExpand",
+              label: expandAll ? "Collapse" : "Expand",
+              onClick: () => setExpandAll(!expandAll)
+            }
+          }}
+        />
+      }
     >
-      <ControlsComponent 
-        data={props.data} 
+      <ControlsComponent
+        data={props.data}
         generateInterface={generateInterface}
+        expandAll={expandAll}
       />
     </PanelComponent>
   );
