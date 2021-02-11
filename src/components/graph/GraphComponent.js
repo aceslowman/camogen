@@ -293,14 +293,14 @@ const GraphComponent = observer(props => {
         },
         // select right
         ArrowRight: () => {
-          if (props.selectedNode && props.selectedNode.children.length) {
+          if (props.data.selectedNode && props.selectedNode.children.length) {
             let idx = props.selectedNode.children[0].parents.indexOf(
-              props.selectedNode
+              props.data.selectedNode
             );
             idx++;
 
             if (idx <= props.selectedNode.children[0].parents.length - 1)
-              props.selectedNode.children[0].parents[idx].select();
+              props.data.selectedNode.children[0].parents[idx].select();
           }
         },
         // add selection up

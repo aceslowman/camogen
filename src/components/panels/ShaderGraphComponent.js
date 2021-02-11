@@ -10,7 +10,6 @@ const ShaderGraph = observer(props => {
 
   const data = store.scene.shaderGraph;
 
-  // const { clipboard } = props.data;
   const { clipboard } = data;
   const [useKeys, setUseKeys] = useState(false);
   const mainRef = useRef();
@@ -107,11 +106,12 @@ const ShaderGraph = observer(props => {
           </p>
 
           <p>Keyboard Shortcuts:</p>
+          <p><em>First, click within the graph to focus the keymap!</em></p>
 
           <ul>
-            <li>Arrow keys to navigate</li>
-            <li>Delete key to remove selected node</li>
-            <li>'B' key to bypass selected node</li>
+            <li>Arrow keys - Change selected ndoe</li>
+            <li>Delete - Remove selected node</li>
+            <li>'B' - bypass selected node</li>
           </ul>
         </React.Fragment>
       )}a
