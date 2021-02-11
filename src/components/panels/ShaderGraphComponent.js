@@ -99,6 +99,10 @@ const ShaderGraph = observer(props => {
       onContextMenu={handlePanelContextMenu}
       onFocus={handleFocus}
       onBlur={handleBlur}
+      tooltip={`here you can combine your effects into a graph of inputs and outputs.
+      
+      The graph can be navigated using the keyboard. Use the arrow keys to select nodes and
+      `}
       indicators={
         useKeys
           ? [
