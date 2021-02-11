@@ -98,23 +98,38 @@ const ShaderGraph = observer(props => {
       onContextMenu={handlePanelContextMenu}
       onFocus={handleFocus}
       onBlur={handleBlur}
-      tooltip={(
+      tooltip={
         <React.Fragment>
+          <h2>Shader Graph</h2>
           <p>
-            Here you can combine your effects into a graph of inputs and
-            outputs.
+            Here you can combine your effects into a graph. You can right-click on any node to access the library and change the effect.
           </p>
 
           <p>Keyboard Shortcuts:</p>
-          <p><em>First, click within the graph to focus the keymap!</em></p>
+          <p>
+            <em>First, click within the graph to focus the keymap!</em>
+          </p>
 
-          <ul>
-            <li>Arrow keys - Change selected ndoe</li>
-            <li>Delete - Remove selected node</li>
-            <li>'B' - bypass selected node</li>
-          </ul>
+          <table style={{width:'100%'}}>
+            <tr>
+              <th>Key</th>
+              <th>Action</th>
+            </tr>
+            <tr>
+              <td>Arrows</td>
+              <td>Select Node</td>
+            </tr>
+            <tr>
+              <td>Delete</td>
+              <td>Remove Selected</td>
+            </tr>
+            <tr>
+              <td>B</td>
+              <td>Bypass Selected</td>
+            </tr>
+          </table>
         </React.Fragment>
-      )}a
+      }
       indicators={
         useKeys
           ? [

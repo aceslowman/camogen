@@ -293,13 +293,13 @@ const GraphComponent = observer(props => {
         },
         // select right
         ArrowRight: () => {
-          if (props.data.selectedNode && props.selectedNode.children.length) {
-            let idx = props.selectedNode.children[0].parents.indexOf(
+          if (props.data.selectedNode && props.data.selectedNode.children.length) {
+            let idx = props.data.selectedNode.children[0].parents.indexOf(
               props.data.selectedNode
             );
             idx++;
 
-            if (idx <= props.selectedNode.children[0].parents.length - 1)
+            if (idx <= props.data.selectedNode.children[0].parents.length - 1)
               props.data.selectedNode.children[0].parents[idx].select();
           }
         },
