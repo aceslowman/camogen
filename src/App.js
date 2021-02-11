@@ -50,6 +50,16 @@ const App = observer(props => {
     },
     true
   );
+  
+  useEffect(() => {
+    const beforeUnload = (e) => {
+      let message = "You have unsaved data!";
+      e.returnValue = message;
+      return message
+    }
+    window.addEventListener("beforeunload", beforeUnload);
+    return (window.removeEventListener("beforeunload", beforeUnload))
+  },[])
 
   const getPanelComponent = panel => {
     if (Panels.has(panel.id)) {

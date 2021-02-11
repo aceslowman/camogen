@@ -278,12 +278,6 @@ const RootStore = types
         window.localStorage.setItem("showUpdates", true);
         self.showUpdates = true;
       }
-      
-      // this will notify the user that they have
-      // unsaved data
-      window.onbeforeunload = () => {
-        return 'you have unsaved data'
-      }
 
       // fetch default shaders
       self.fetchShaderFiles().then(d => {
