@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import MainContext from "../../MainContext";
 import styles from "./ShaderEditorComponent.module.css";
-
+import { observer } from "mobx-react";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/monokai.css";
@@ -29,11 +29,13 @@ let editor;
 //         }
 //         panel={panel}
 
-const ShaderEditor = props => {
+const ShaderEditor = observer(props => {
   const store = useContext(MainContext).store;
   const mainRef = useRef(null);
   const editorRef = useRef(null);
   const [editType, setEditType] = useState("vert");
+  
+  const [selectingCollection, setSelectingCollection] = useState(false);
 
   const graph = store.scene.shaderGraph;
   const node = graph.selectedNode;
@@ -54,6 +56,11 @@ const ShaderEditor = props => {
       data.setFrag(value);
     }
   };
+  
+  const handleSave = () => {
+    // TODO: if collection isn't defined, ask user to choose one
+    data.save();
+  }
 
   const showEditor = node !== undefined && data;
 
@@ -101,7 +108,11 @@ const ShaderEditor = props => {
                   SaveShader: {
                     id: "SaveShader",
                     label: "Save Shader",
-                    onClick: () => data.save()
+                    onClick: () => handleSave(),
+                    dropDown: selectingCollection ? ({
+                      aintmuch: {label: 'hey it aint much'},
+                      something: {label: 'but its something'}
+                    }) : null
                   },
                   SaveCollection: {
                     id: "SaveCollection",
@@ -202,6 +213,6 @@ const ShaderEditor = props => {
       <div className={styles.editor} ref={editorRef}></div>
     </GenericPanel>
   );
-};
+});
 
 export default ShaderEditor;

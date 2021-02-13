@@ -127,6 +127,10 @@ const Splash = observer(props => {
             <li>Added warning before navigating away from page.</li>
             <li>Fixed issue with delete button</li>
           </ul>
+          <h2>v1.1.5-alpha</h2>
+          <ul>
+            <li>Fixed issue where Shader Editor didn't update properly.</li>
+          </ul>
           
         </TextComponent>
       </PagesContainer>
