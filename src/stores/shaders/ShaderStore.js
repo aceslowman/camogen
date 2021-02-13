@@ -31,7 +31,8 @@ const Uniform = types
     ),
     controlType: types.maybe(
       types.enumeration("ControlType", ["NORMAL", "SLIDER"])
-    )
+    ),
+    collection: types.maybe(Collection)
   })
   .volatile(self => ({
     shader: null
@@ -363,6 +364,8 @@ let shader = types
       },
 
       saveToCollection: () => {
+        // TODO: this needs to be offered to user when creating
+        // a shader with no collection already defined1
         console.log("saving to collection", self);
         if (self.collection) {
           // remove uniforms before saving
