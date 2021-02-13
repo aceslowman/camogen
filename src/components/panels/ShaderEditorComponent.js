@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useLayoutEffect,
   useContext,
-  useRef,
+  useRef
 } from "react";
 import { getSnapshot } from "mobx-state-tree";
 import MainContext from "../../MainContext";
@@ -58,24 +58,43 @@ const ShaderEditor = observer(props => {
     }
   };
 
-  const handleSaveToFile = () => {    
+  const handleSaveToFile = () => {
     data.save();
   };
 
-  const handleSaveToCollection = (e) => {
+  const handleSaveToCollection = e => {
     // TODO: if collection isn't defined, ask user to choose one
-    console.log('handling the ' + e.name)
-    if(data.collection) {      
+    console.log("handling the " + e.name + " collection");
+    if (data.collection) {
       data.saveToCollection();
       store.persistShaderCollection();
     } else {
-      console.log('theres no collection')
-      setSelectingCollection(true)
+      console.log("theres no collection");
+      setSelectingCollection(true);
     }
   };
 
   const showEditor = node !== undefined && data;
-console.log('CHECK', getSnapshot(store.shader_collection))
+  console.log("CHECK", getSnapshot(store.shader_collection));
+
+  // TODO: working on making assinging collections more straightforward
+  let collections = {};
+
+  store.shader_collection.children.forEach((e, i) => {
+    // console.log("E", e);
+    if (e.children) {
+      collections = {
+        ...collections,
+        [e.name]: {
+          label: e.name,
+          onClick: () => handleSaveToCollection(e)
+        }
+      };
+    }
+  });
+
+  console.log("COLLECTIONS", collections);
+
   const toolbar = (
     <ToolbarComponent
       style={{ zIndex: 6 }}
@@ -126,17 +145,7 @@ console.log('CHECK', getSnapshot(store.shader_collection))
                     id: "SaveToCollection",
                     label: "Save to Collection",
                     // TODO: this is another option, offer full collection tree here
-                    dropDown: {
-                      ...store.shader_collection.children.map((e,i) => {
-                        // console.log('E',e)
-                        return ({
-                          [e.name]: {
-                            label: e.name,
-                            onClick: () => handleSaveToCollection(e)
-                          }
-                        })
-                      })
-                    }
+                    dropDown: collections
                     // onClick: () => handleSaveToCollection(),
                     // dropDown: selectingCollection
                     //   ? {
