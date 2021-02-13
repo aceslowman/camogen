@@ -3,8 +3,9 @@ import React, {
   useEffect,
   useLayoutEffect,
   useContext,
-  useRef
+  useRef,
 } from "react";
+import { getSnapshot } from "mobx-state-tree";
 import MainContext from "../../MainContext";
 import styles from "./ShaderEditorComponent.module.css";
 import { observer } from "mobx-react";
@@ -34,7 +35,7 @@ const ShaderEditor = observer(props => {
   const mainRef = useRef(null);
   const editorRef = useRef(null);
   const [editType, setEditType] = useState("vert");
-  
+
   const [selectingCollection, setSelectingCollection] = useState(false);
 
   const graph = store.scene.shaderGraph;
@@ -56,14 +57,25 @@ const ShaderEditor = observer(props => {
       data.setFrag(value);
     }
   };
-  
-  const handleSave = () => {
-    // TODO: if collection isn't defined, ask user to choose one
+
+  const handleSaveToFile = () => {    
     data.save();
-  }
+  };
+
+  const handleSaveToCollection = (e) => {
+    // TODO: if collection isn't defined, ask user to choose one
+    console.log('handling the ' + e.name)
+    if(data.collection) {      
+      data.saveToCollection();
+      store.persistShaderCollection();
+    } else {
+      console.log('theres no collection')
+      setSelectingCollection(true)
+    }
+  };
 
   const showEditor = node !== undefined && data;
-
+console.log('CHECK', getSnapshot(store.shader_collection))
   const toolbar = (
     <ToolbarComponent
       style={{ zIndex: 6 }}
@@ -105,22 +117,33 @@ const ShaderEditor = observer(props => {
                       </div>
                     )
                   },
-                  SaveShader: {
-                    id: "SaveShader",
-                    label: "Save Shader",
-                    onClick: () => handleSave(),
-                    dropDown: selectingCollection ? ({
-                      aintmuch: {label: 'hey it aint much'},
-                      something: {label: 'but its something'}
-                    }) : null
+                  SaveToShader: {
+                    id: "SaveToShader",
+                    label: "Save to File",
+                    onClick: () => handleSaveToFile()
                   },
-                  SaveCollection: {
-                    id: "SaveCollection",
+                  SaveToCollection: {
+                    id: "SaveToCollection",
                     label: "Save to Collection",
-                    onClick: () => {
-                      data.saveToCollection();
-                      store.persistShaderCollection();
+                    // TODO: this is another option, offer full collection tree here
+                    dropDown: {
+                      ...store.shader_collection.children.map((e,i) => {
+                        // console.log('E',e)
+                        return ({
+                          [e.name]: {
+                            label: e.name,
+                            onClick: () => handleSaveToCollection(e)
+                          }
+                        })
+                      })
                     }
+                    // onClick: () => handleSaveToCollection(),
+                    // dropDown: selectingCollection
+                    //   ? {
+                    //       aintmuch: { label: "hey it aint much" },
+                    //       something: { label: "but its something" }
+                    //     }
+                    //   : null
                   },
                   LoadShader: {
                     id: "LoadShader",
