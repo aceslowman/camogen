@@ -6,6 +6,7 @@ import ParameterEditorComponent from "./ParameterEditorComponent";
 import OperatorGraphComponent from "./OperatorGraphComponent";
 import OperatorControlsComponent from "./OperatorControlsComponent";
 import HelpComponent from "./HelpComponent";
+import MediaLibraryComponent from "./MediaLibraryComponent";
 import MessagesComponent from "./MessagesComponent";
 import DebugInfoComponent from "./DebugInfoComponent";
 
@@ -18,6 +19,7 @@ export const Panels = new Map([
   ["OPERATOR_GRAPH", OperatorGraphComponent],
   ["OPERATOR_CONTROLS", OperatorControlsComponent],
   ["HELP", HelpComponent],
+  ["MEDIA_LIBRARY", MediaLibraryComponent],
   ["MESSAGES", MessagesComponent],
   ["DEBUG", DebugInfoComponent]
 ]);
