@@ -61,6 +61,7 @@ const RootStore = types
     breakoutControlled: false,
     messages: Messages.create(),    
     missingAssets: [],
+    mediaLibrary: {},
     // 'show' individual panels
     showSplash: null,
     showUpdates: null,
