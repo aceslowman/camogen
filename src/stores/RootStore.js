@@ -102,11 +102,13 @@ const RootStore = types
               id: e.id,
               label: e.name,
               buttons: {
-                remove: {
-                  id: "remove",
-                  label: "x",
-                  title: "remove"
-                }
+                // NOTE: taking out the 'remove' button
+                // to prevent accidental data loss
+                // remove: {
+                //   id: "remove",
+                //   label: "x",
+                //   title: "remove"
+                // }
               },
               onClick: () => {
                 self.addToRecentShaders(e);
@@ -125,17 +127,20 @@ const RootStore = types
                 id: c.id,
                 label: c.name,
                 buttons: {
-                  remove: {
-                    id: "remove",
-                    label: "x",
-                    title: "remove",
-                    onClick: event => {
-                      // should I add a confirmation?
-                      event.preventDefault();
-                      event.stopPropagation();
-                      e.removeChild(c);
-                    }
-                  }
+                  // NOTE: taking out the 'remove' button
+                  // to prevent accidental data loss
+
+                  // remove: {
+                  //   id: "remove",
+                  //   label: "x",
+                  //   title: "remove",
+                  //   onClick: event => {
+                  //     // should I add a confirmation?
+                  //     event.preventDefault();
+                  //     event.stopPropagation();
+                  //     e.removeChild(c);
+                  //   }
+                  // }
                 },
                 onClick: () => {
                   self.addToRecentShaders(c);
@@ -152,25 +157,25 @@ const RootStore = types
               label: e.name,
               dropDown: {
                 ...subitems,
-                NewShader: {
-                  id: "NewShader",
-                  label: "+ New Shader",
-                  onClick: () => {
-                    // create short random string for new shader name
-                    let new_shader = Shader.create({ name: nanoid(5) });
+//                 NewShader: {
+//                   id: "NewShader",
+//                   label: "+ New Shader",
+//                   onClick: () => {
+//                     // create short random string for new shader name
+//                     let new_shader = Shader.create({ name: nanoid(5) });
 
-                    e.addChild(
-                      Collection.create({
-                        id: new_shader.name,
-                        name: new_shader.name,
-                        type: "file",
-                        data: new_shader
-                      })
-                    );
+//                     e.addChild(
+//                       Collection.create({
+//                         id: new_shader.name,
+//                         name: new_shader.name,
+//                         type: "file",
+//                         data: new_shader
+//                       })
+//                     );
 
-                    self.persistShaderCollection();
-                  }
-                }
+//                     self.persistShaderCollection();
+//                   }
+//                 }
               }
             }
           };
