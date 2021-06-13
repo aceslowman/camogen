@@ -4,6 +4,7 @@ import GraphComponent from "../graph/GraphComponent";
 import { GenericPanel } from "maco-ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
+import style from "./MediaLibraryComponent.module.css";
 
 const MediaLibrary = observer(props => {
   const store = useContext(MainContext).store;
@@ -99,7 +100,17 @@ const MediaLibrary = observer(props => {
       onFocus={handleFocus}
       onBlur={handleBlur}      
     >
-      this is the media library
+      <div className={style.wrapper}>
+        <div className={style.itemPreviewGrid}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        this is the media library
+      </div>      
     </GenericPanel>
   );
 });

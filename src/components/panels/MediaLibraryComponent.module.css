@@ -1,0 +1,13 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: orange;
+  display: flex;
+}
+
+.itemPreviewGrid {
+  width: 100%;
+  height: 100%;
+  background-color: red;
+  display: flex;
+}

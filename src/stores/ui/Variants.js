@@ -67,6 +67,19 @@ export const PanelVariants = {
     dimensions: [300, 450],
     position: [30, 30]
   },
+  MEDIA_LIBRARY: {
+    id: "MEDIA_LIBRARY",
+    title: "Media Library",
+    component_type: "MEDIA_LIBRARY",
+    subtitle: "",
+    floating: false,
+    fullscreen: false,
+    canFloat: true,
+    canRemove: true,
+    canFullscreen: false,
+    dimensions: [100, 300],
+    position: [30, 30]
+  },
   DEBUG: {
     id: "DEBUG",
     title: "Debug",
@@ -286,6 +299,21 @@ export const LayoutVariants = {
     ],
     panels: {
       PREFERENCES: PanelVariants['PREFERENCES']
+    }
+  },
+  MEDIA_LIBRARY: {
+    id: "MEDIA_LIBRARY",
+    title: "Media Library",
+    size: 1, 
+    children: [
+      {
+        id: "MEDIA_LIBRARY",
+        panel: "MEDIA_LIBRARY",
+        size: 1
+      }
+    ],
+    panels: {
+      MEDIA_LIBRARY: PanelVariants['MEDIA_LIBRARY']
     }
   }
 };
