@@ -10,22 +10,26 @@
   height: 100%;
   background-color: red;
   display: flex;
+  flex-flow: row wrap;
 }
 
 .itemPreviewGrid div {
 /*   width: 100%; */
 /*   height: 100%; */
 /*  should be variable in state  */
+  width: auto;
   height: 100px;
   margin: 5px; 
   background-color: blue;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column;
 }
 
 .itemPreviewGrid div img {
+/*   width: 100%;
+  height: auto; */
   width: 100%;
-  height: auto;
+  height: 100%;  
 }
 
 .itemInfo {
