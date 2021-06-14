@@ -17,9 +17,10 @@
 }
 
 .itemPreviewGrid > div {
+  margin: 15px;
   width: 200px;
   height: auto;
-  margin: 5px; 
+/*   margin: 5px;  */
 /*   background-color: blue; */
   display: flex;
   flex-flow: column;
