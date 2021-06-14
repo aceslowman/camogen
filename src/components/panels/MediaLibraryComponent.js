@@ -10,6 +10,8 @@ const MediaLibrary = observer(props => {
   const store = useContext(MainContext).store;
   const data = store.mediaLibrary;
   const mainRef = useRef();
+  
+  const [previewSize, setPreviewSize] = useState(100);
 
   return (
     <GenericPanel
@@ -17,6 +19,30 @@ const MediaLibrary = observer(props => {
     >
       <div className={style.wrapper}>
         <div className={style.itemPreviewGrid}>
+          <div>
+            <img src="https://via.placeholder.com/150/150"/>
+            <p>placeholder.png</p>
+          </div>
+          <div>
+            <img src="https://via.placeholder.com/250/150"/>
+            <p>placeholder.png</p>
+          </div>
+          <div>
+            <img src="https://via.placeholder.com/150/250"/>
+            <p>placeholder.png</p>
+          </div>
+          <div>
+            <img src="https://via.placeholder.com/350/150"/>
+            <p>placeholder.png</p>
+          </div>
+          <div>
+            <img src="https://via.placeholder.com/150/350"/>
+            <p>placeholder.png</p>
+          </div>
+          <div>
+            <img src="https://via.placeholder.com/150/150"/>
+            <p>placeholder.png</p>
+          </div>
           <div>
             <img src="https://via.placeholder.com/150/150"/>
             <p>placeholder.png</p>
