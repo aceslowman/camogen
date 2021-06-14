@@ -5,7 +5,7 @@ import { GenericPanel, TextComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 import style from "./MediaLibraryComponent.module.css";
-import { ThemeContext } from "maco-ui";
+import { ThemeContext, SplitContainer } from "maco-ui";
 import Dropzone from "react-dropzone";
 
 const MediaLibrary = observer(props => {
@@ -38,8 +38,8 @@ const MediaLibrary = observer(props => {
 
   return (
     <GenericPanel panel={props.panel}>
-      <div className={style.wrapper}>
-        <div
+      <SplitContainer horizontal split={[70,30]}>
+      <div
           className={style.itemPreviewGrid}
           style={{ backgroundColor: theme.secondary_color }}
         >
@@ -48,7 +48,7 @@ const MediaLibrary = observer(props => {
         <div className={style.itemInfo}>
           <TextComponent>some basic info</TextComponent>
         </div>
-      </div>
+      </SplitContainer>
     </GenericPanel>
   );
 });
