@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 import style from "./MediaLibraryComponent.module.css";
 import { ThemeContext } from "maco-ui";
+import Dropzone from "react-dropzone";
 
 const MediaLibrary = observer(props => {
   const theme = useContext(ThemeContext);
