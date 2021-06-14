@@ -38,7 +38,7 @@ const MediaLibrary = observer(props => {
 
   return (
     <GenericPanel panel={props.panel}>
-      <SplitContainer horizontal>
+      <SplitContainer horizontal className={style.wrapper}>
       <div
           defaultSize={0.7}
           className={style.itemPreviewGrid}
