@@ -31,15 +31,16 @@ const MediaLibrary = observer(props => {
           <img src="https://via.placeholder.com/150x150" />
         </div>
 
-        <p>placeholder.png</p>
+        <div className={style.imageName}>placeholder.png</div>
       </div>
     ));
   };
 
   return (
     <GenericPanel panel={props.panel}>
-      <SplitContainer horizontal split={[70,30]}>
+      <SplitContainer horizontal>
       <div
+          defaultSize={0.7}
           className={style.itemPreviewGrid}
           style={{ backgroundColor: theme.secondary_color }}
         >
