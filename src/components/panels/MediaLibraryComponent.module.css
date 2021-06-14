@@ -11,6 +11,7 @@
   background-color: red;
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-evenly;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -30,6 +31,7 @@
   background-color:yellow;
   display: flex;
   flex-flow: column;
+  justify-content: center;
 }
 
 .imageContainer img {
