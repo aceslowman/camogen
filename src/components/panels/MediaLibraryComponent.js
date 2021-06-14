@@ -12,6 +12,10 @@ const MediaLibrary = observer(props => {
   const mainRef = useRef();
 
   const [previewSize, setPreviewSize] = useState(100);
+  
+  const generatePreviews = () => {
+    
+  }
 
   return (
     <GenericPanel panel={props.panel}>
