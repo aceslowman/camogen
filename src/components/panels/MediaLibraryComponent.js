@@ -37,8 +37,8 @@ const MediaLibrary = observer(props => {
     ));
   };
 
-  const handleDrop = e => {
-    console.log("e", e);
+  const handleDrop = e => {    
+    store.mediaLibrary.addMedia(e);
   };
 
   return (

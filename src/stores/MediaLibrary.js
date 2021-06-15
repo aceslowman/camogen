@@ -22,7 +22,7 @@ const Media = types
 const MediaLibrary = types
   .model("MediaLibrary", {
     id: types.identifier,
-    media: types.array(Media)
+    media: types.map(Media)
   })
   .views(self => ({
     getInfo: () => {
@@ -33,9 +33,14 @@ const MediaLibrary = types
   }))
   .actions(self => {
     // TODO: should also double check for duplicates (filename and size match)
-    const addMedia = media => {};
+    const addMedia = media => {
+      console.log('adding media', media)
+      self.media.put(media);
+    };
 
-    const removeMedia = media_id => {};
+    const removeMedia = media_id => {
+      console.log('removing media', media_id)
+    };
 
     return {
       addMedia,
