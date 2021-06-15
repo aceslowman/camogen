@@ -309,7 +309,8 @@ const RootStore = types
       
       // TESTING:
       // set up media library
-      // self.mediaLibrary = 
+      self.mediaLibrary = MediaLibrary.create({id: nanoid()});
+      
     },
 
     setupP5: () => {

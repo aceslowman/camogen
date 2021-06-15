@@ -35,7 +35,15 @@ const MediaLibrary = types
     // TODO: should also double check for duplicates (filename and size match)
     const addMedia = media => {
       console.log('adding media', media)
-      self.media.put(media);
+            
+      if(media.length) {
+        for(let i = 0; i < media.length7d, i++)
+        self.media.put(media[0]);
+      } else {
+        
+      }
+      
+      // receiving [{"path":"DSCN2621.JPG"}]
     };
 
     const removeMedia = media_id => {
