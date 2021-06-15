@@ -12,8 +12,8 @@ const Media = types
     filename: types.string,
     filesize: types.integer    
   })
-  .views(self => ({
-
+  .volatile(self => ({
+    content: null
   }))
   .actions(self => {
     
@@ -25,7 +25,7 @@ const Media = types
 const MediaLibrary = types
   .model("MediaLibrary", {
     id: types.identifier,
-    media: types.array(types.custom)
+    media: types.array(Media)
   })
   .views(self => ({
 

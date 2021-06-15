@@ -16,6 +16,7 @@ import Collection from "./utils/Collection";
 import Parameter from "./ParameterStore";
 import Shader from "./shaders/ShaderStore";
 import Scene from "./SceneStore";
+import MediaLibrary from "./MediaLibrary";
 import Runner from "../Runner";
 import { nanoid } from "nanoid";
 import p5 from "p5";
@@ -50,6 +51,7 @@ const RootStore = types
     selectedParameter: types.safeReference(Parameter),
     keyFocus: types.maybe(types.string),
     transport: types.optional(Transport, {}),
+    mediaLibrary: types.maybe(MediaLibrary),
     shader_collection: types.maybe(Collection),
     recentShaders: types.array(types.safeReference(Collection)),
     width: 512,
@@ -61,7 +63,7 @@ const RootStore = types
     breakoutControlled: false,
     messages: Messages.create(),    
     missingAssets: [],
-    mediaLibrary: {},
+    // mediaLibrary: {},
     // 'show' individual panels
     showSplash: null,
     showUpdates: null,
@@ -254,6 +256,7 @@ const RootStore = types
     afterCreate: () => {
       // window.localStorage.clear();
 
+      // whenever theme is changed, save in local storage
       onSnapshot(self.ui.theme, () => {
         console.log("snapshot is ready");
         window.localStorage.setItem(
@@ -263,7 +266,6 @@ const RootStore = types
       });
 
       if (window.localStorage.getItem("theme")) {
-        console.log(window.localStorage.getItem("theme"));
         self.ui.theme.setTheme(
           JSON.parse(window.localStorage.getItem("theme"))
         );
@@ -304,6 +306,10 @@ const RootStore = types
         // remove loading overlay
         document.querySelector(".loading").style.display = "none";
       });
+      
+      // TESTING:
+      // set up media library
+      // self.mediaLibrary = 
     },
 
     setupP5: () => {
