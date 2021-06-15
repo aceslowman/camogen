@@ -46,27 +46,18 @@ const MediaLibrary = observer(props => {
       <SplitContainer horizontal className={style.wrapper}>
         <Dropzone defaultSize={0.7} onDrop={handleDrop}>
           {({ getRootProps, getInputProps }) => (
-            <React.Fragment>
-              <div
-                {...{
-                  ...getRootProps(),
-                  className: style.dropzoneOverlay,
-                  style: {
-                    backgroundColor: theme.primary_color,
-                    color: theme.text_color
-                  }
-                }}
-              ></div>
-              <div
-                className={style.itemPreviewGrid}
-                style={{
-                  backgroundColor: theme.secondary_color,
-                  border: `1px dotted ${theme.text_color}`
-                }}
-              >
-                {generatePreviews()}
-              </div>
-            </React.Fragment>
+            <div
+              {...{
+                ...getRootProps()
+              }}
+              className={style.itemPreviewGrid}
+              style={{
+                backgroundColor: theme.secondary_color,
+                // border: `1px dotted ${theme.text_color}`
+              }}
+            >
+              {generatePreviews()}
+            </div>
           )}
         </Dropzone>
 

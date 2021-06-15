@@ -47,28 +47,3 @@
 .canvas {
   width: 100%;
 }
-
-/* TODO: this should probably live in its own css file */
-.dropzone {
-/*   position: relative;  */
-}
-
-/* .dropzone > div {
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: space-evenly;
-  float: left;
-} */
-
-.dropzoneOverlay {
-  width: 100% !important;
-  height: 100% !important;
-  position: absolute;
-  opacity: 0%;
-}
-
-.dropzoneOverlay:hover {
-  opacity: 80%;
-}
