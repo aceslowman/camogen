@@ -32,6 +32,7 @@ const MediaLibrary = types
     }
   }))
   .actions(self => {
+    // TODO: should also double check for duplicates (filename and size match)
     const addMedia = media => {};
 
     const removeMedia = media_id => {};

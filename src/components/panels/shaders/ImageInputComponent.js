@@ -19,6 +19,10 @@ const ImageInputComponent = observer(props => {
 
   const handleDrop = files => {
     data.loadImage(files[0]);
+    
+    // TODO: 
+    // should add the file to the media library instead
+    store.mediaLibrary.addMedia(files[0]);
   };
 
   const handleDisplayMode = e => data.setDisplayMode(e);
@@ -55,7 +59,7 @@ const ImageInputComponent = observer(props => {
   return (
     <React.Fragment>
       <ControlGroupComponent name="Image File">
-        <Dropzone onDrop={e => handleDrop(e)}>
+        <Dropzone onDrop={handleDrop}>
           {({ getRootProps, getInputProps }) => (
             <section
               className={styles.dropzone}

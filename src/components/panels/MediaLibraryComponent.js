@@ -35,17 +35,33 @@ const MediaLibrary = observer(props => {
       </div>
     ));
   };
+  
+  const handleDrop = e => {
+    
+  }
 
   return (
     <GenericPanel panel={props.panel}>
       <SplitContainer horizontal className={style.wrapper}>
-      <div
+        <Dropzone onDrop={handleDrop}>
+          {({ getRootProps, getInputProps }) => (
+            <section
+              className={style.dropzone}
+              style={{ border: `1px dotted ${theme.text_color}` }}
+            >
+              <div
           defaultSize={0.7}
           className={style.itemPreviewGrid}
           style={{ backgroundColor: theme.secondary_color }}
         >
+          
           {generatePreviews()}
         </div>
+              
+            </section>
+          )}
+        </Dropzone>
+        
         <div className={style.itemInfo}>
           <TextComponent>some basic info</TextComponent>
         </div>
