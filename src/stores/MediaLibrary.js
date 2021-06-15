@@ -37,8 +37,12 @@ const MediaLibrary = types
       console.log('adding media', media)
             
       if(media.length) {
-        for(let i = 0; i < media.length7d, i++)
-        self.media.put(media[0]);
+        for(let i = 0; i < media.length; i++) {          
+          self.media.put({
+            filename: media[0]
+          });  
+          
+        }        
       } else {
         
       }
