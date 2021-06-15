@@ -10,16 +10,13 @@ const Media = types
   .model("Media", {
     id: types.identifier,
     filename: types.string,
-    filesize: types.integer    
+    filesize: types.integer
   })
   .volatile(self => ({
     content: null
   }))
   .actions(self => {
-    
-    return {
-      
-    };
+    return {};
   });
 
 const MediaLibrary = types
@@ -28,12 +25,20 @@ const MediaLibrary = types
     media: types.array(Media)
   })
   .views(self => ({
-
+    getInfo: () => {
+      // this should return the memory usage of the media
+      // and maybe some info about how much space is left
+      // before crashing the browser
+    }
   }))
   .actions(self => {
-    
+    const addMedia = media => {};
+
+    const removeMedia = media_id => {};
+
     return {
-      
+      addMedia,
+      removeMedia
     };
   });
 
