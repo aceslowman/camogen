@@ -28,6 +28,7 @@ const MediaLibrary = observer(props => {
         }}
       >
         <div className={style.imageContainer}>
+          {/* TODO: should generate thumbnails */}
           <img src="https://via.placeholder.com/150x150" />
         </div>
 
@@ -35,33 +36,36 @@ const MediaLibrary = observer(props => {
       </div>
     ));
   };
-  
+
   const handleDrop = e => {
-    
-  }
+    console.log('e',e)
+  };
 
   return (
     <GenericPanel panel={props.panel}>
       <SplitContainer horizontal className={style.wrapper}>
-        <Dropzone onDrop={handleDrop}>
+        <Dropzone defaultSize={0.7} onDrop={handleDrop}>
           {({ getRootProps, getInputProps }) => (
-            <section
-              className={style.dropzone}
-              style={{ border: `1px dotted ${theme.text_color}` }}
+            <div              
+              {...{
+                  ...getRootProps(),
+                  className: style.dropzoneOverlay,
+                  style: {
+                    backgroundColor: theme.primary_color,
+                    color: theme.text_color
+                  }
+              }}
+              className={style.itemPreviewGrid}
+              style={{
+                backgroundColor: theme.secondary_color,
+                border: `1px dotted ${theme.text_color}`
+              }}
             >
-              <div
-          defaultSize={0.7}
-          className={style.itemPreviewGrid}
-          style={{ backgroundColor: theme.secondary_color }}
-        >
-          
-          {generatePreviews()}
-        </div>
-              
-            </section>
+              {generatePreviews()}
+            </div>
           )}
         </Dropzone>
-        
+
         <div className={style.itemInfo}>
           <TextComponent>some basic info</TextComponent>
         </div>
