@@ -14,17 +14,24 @@ const MediaLibrary = observer(props => {
   const data = store.mediaLibrary;
   const mainRef = useRef();
   const [previews, setPreviews] = useState();
+  
+  const [selectedFile, setSelectedFile] = useState();
 
   const [previewSize, setPreviewSize] = useState(100);
 
   const generatePreviews = useEffect(() => {
     console.log("store", Array.from(getSnapshot(store.mediaLibrary.media)));
+    const handleClick = (e) => {
+      console.log('here')
+      setSelectedFile()
+    }
     setPreviews(
-      Array.from(store.mediaLibrary.media).map((e, i) => {
+      Array.from(store.mediaLibrary.media.values()).map((e, i) => {
         console.log("e", e);
         return (
           <div
             key={i}
+            onClick={handleClick}
             style={{
               border: `1px solid ${theme.outline_color}`,
               backgroundColor: theme.primary_color
@@ -40,7 +47,7 @@ const MediaLibrary = observer(props => {
         );
       })
     );
-  }, [store.mediaLibrary, store.mediaLibrary.media.size]);
+  }, [store.mediaLibrary, store.mediaLibrary.media.size, selectedFile]);
 
   const handleDrop = e => {
     store.mediaLibrary.addMedia(e);
