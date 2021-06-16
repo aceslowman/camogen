@@ -5,11 +5,12 @@ import {
   getSnapshot,
   applySnapshot
 } from "mobx-state-tree";
+import { nanoid } from "nanoid";
 
 const Media = types
   .model("Media", {
     id: types.identifier,
-    filename: types.string,
+    path: types.string,
     filesize: types.integer
   })
   .volatile(self => ({
@@ -32,25 +33,25 @@ const MediaLibrary = types
     }
   }))
   .actions(self => {
-    // TODO: should also double check for duplicates (filename and size match)
+    // TODO: should also double check for duplicates (path and size match)
     const addMedia = media => {
-      console.log('adding media', media)
-            
-      if(media.length) {
-        for(let i = 0; i < media.length; i++) {          
+      if (media.length) {
+        for (let i = 0; i < media.length; i++) {
+          console.log("adding media", media[i]);
           self.media.put({
-            filename: media[0]
-          });            
-        }        
+            id: nanoid(),
+            path: media[i].path,
+            filesize: 0
+          });
+        }
       } else {
-        
       }
-      
+
       // receiving [{"path":"DSCN2621.JPG"}]
     };
 
     const removeMedia = media_id => {
-      console.log('removing media', media_id)
+      console.log("removing media", media_id);
     };
 
     return {

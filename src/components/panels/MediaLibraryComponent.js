@@ -18,7 +18,7 @@ const MediaLibrary = observer(props => {
   
   useEffect(() => {
     console.log('store', store.mediaLibrary)
-  }, [store.mediaLibrary])
+  }, [store.mediaLibrary,store.mediaLibrary.media])
 
   const generatePreviews = () => {
     let tmp = ["", "", "", ""];    
