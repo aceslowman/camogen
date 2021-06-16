@@ -22,7 +22,7 @@ const MediaLibrary = observer(props => {
   const generatePreviews = useEffect(() => {
     console.log("store", Array.from(getSnapshot(store.mediaLibrary.media)));
     const handleClick = (e) => {
-      console.log('here')
+      console.log('here', e)
       setSelectedFile()
     }
     setPreviews(
@@ -30,7 +30,7 @@ const MediaLibrary = observer(props => {
         console.log("e", e);
         return (
           <div
-            key={i}
+            key={e.id}
             onClick={handleClick}
             style={{
               border: `1px solid ${theme.outline_color}`,
