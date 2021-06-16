@@ -42,7 +42,7 @@ const MediaLibrary = observer(props => {
             <div className={style.imageContainer}>
               {/* TODO: should generate thumbnails */}
               {/*<img src="https://via.placeholder.com/150x150" />*/}
-              
+              <img src={media.dataURL} />
             </div>
 
             <div className={style.imageName}>{media.path}</div>
