@@ -25,25 +25,27 @@ const MediaLibrary = observer(props => {
     };
 
     setPreviews(
-      Array.from(store.mediaLibrary.media.values()).map((e, i) => {
-        console.log("e", getSnapshot(e));
+      Array.from(store.mediaLibrary.media.values()).map((media, i) => {
+        console.log("media", getSnapshot(media));
+        
         return (
           <div
-            key={e.id}
-            onClick={_e => handleClick(_e, e.id)}
+            key={media.id}
+            onClick={_e => handleClick(_e, media.id)}
             style={{
               border: `1px solid ${
-                e.id === selectedFile ? theme.accent_color : theme.outline_color
+                media.id === selectedFile ? theme.accent_color : theme.outline_color
               }`,
               backgroundColor: theme.primary_color
             }}
           >
             <div className={style.imageContainer}>
               {/* TODO: should generate thumbnails */}
-              <img src="https://via.placeholder.com/150x150" />
+              {/*<img src="https://via.placeholder.com/150x150" />*/}
+              
             </div>
 
-            <div className={style.imageName}>{e.path}</div>
+            <div className={style.imageName}>{media.path}</div>
           </div>
         );
       })
