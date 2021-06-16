@@ -17,8 +17,8 @@ const MediaLibrary = observer(props => {
   const [previewSize, setPreviewSize] = useState(100);
   
   useEffect(() => {
-    console.log('store', store.mediaLibrary)
-  }, [store.mediaLibrary,store.mediaLibrary.media])
+    console.log('store', getSnapshot(store.mediaLibrary.media))
+  }, [store.mediaLibrary,store.mediaLibrary.media.size])
 
   const generatePreviews = () => {
     let tmp = ["", "", "", ""];    

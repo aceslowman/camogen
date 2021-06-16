@@ -10,8 +10,10 @@ import { nanoid } from "nanoid";
 const Media = types
   .model("Media", {
     id: types.identifier,
+    // name: types.optional(types.string),
     path: types.string,
-    filesize: types.integer
+    // size: types.optional(types.integer),
+    // type: types.optional(types.string),
   })
   .volatile(self => ({
     content: null
@@ -37,11 +39,11 @@ const MediaLibrary = types
     const addMedia = media => {
       if (media.length) {
         for (let i = 0; i < media.length; i++) {
-          console.log("adding media", media[i]);
+          console.log("adding media", getSnapshot(self));
           self.media.put({
             id: nanoid(),
-            path: media[i].path,
-            filesize: 0
+            path: media[i].path
+            // ...media[i],            
           });
         }
       } else {
