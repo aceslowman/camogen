@@ -11,9 +11,9 @@ const Media = types
   .model("Media", {
     id: types.identifier,
     path: types.string,
-    name: types.maybe(types.string),    
+    name: types.maybe(types.string),
     size: types.maybe(types.integer),
-    type: types.maybe(types.string),
+    type: types.maybe(types.string)
   })
   .volatile(self => ({
     content: null,
@@ -21,29 +21,27 @@ const Media = types
   }))
   .actions(self => {
     const loadContent = () => {
-      console.log('loading content', self)
-      
-      
-//         // revoke previous url!
-//         if (self.dataURL) URL.revokeObjectURL(self.dataURL);
+      console.log("loading content", self);
 
-//         if (!file.type.startsWith("image/")) return;
+      //         // revoke previous url!
+      //         if (self.dataURL) URL.revokeObjectURL(self.dataURL);
 
-//         var reader = new FileReader();
+      //         if (!file.type.startsWith("image/")) return;
 
-//         reader.onload = e => {
-//           var image = document.createElement("img");
-//           self.setAsset(e.target.result);
-//           self.setUserFilename(file.name);
-//         };
+      //         var reader = new FileReader();
 
-//         reader.readAsDataURL(file);
-//         // dataURL helps retrieve the image for other places in the ui
-//         self.dataURL = URL.createObjectURL(file);
-//         console.log("URL.createObjectURL()", URL.createObjectURL(file));
-      
-    }
-    
+      //         reader.onload = e => {
+      //           var image = document.createElement("img");
+      //           self.setAsset(e.target.result);
+      //           self.setUserFilename(file.name);
+      //         };
+
+      //         reader.readAsDataURL(file);
+      //         // dataURL helps retrieve the image for other places in the ui
+      //         self.dataURL = URL.createObjectURL(file);
+      //         console.log("URL.createObjectURL()", URL.createObjectURL(file));
+    };
+
     return {
       loadContent
     };
@@ -64,23 +62,17 @@ const MediaLibrary = types
   .actions(self => {
     // TODO: should also double check for duplicates (path and size match)
     const addMedia = media => {
-      if (media.length) {
-        for (let i = 0; i < media.length; i++) {
-          console.log("adding media", JSON.stringify(media));
-          let media_id = nanoid();
-          
-          self.media.put({
-            id: media_id,
-            // path: media[i].path
-            ...media[i],            
-          });
-          
-          self.media.get(media_id).loadContent();
-        }
-      } else {
-      }
+      let media_id = nanoid();
 
-      // receiving [{"path":"DSCN2621.JPG"}]
+      self.media.put({
+        id: media_id,
+        path: media.path,
+        name: media.name,
+        size: media.size,
+        type: media.type
+      });
+
+      self.media.get(media_id).loadContent();
     };
 
     const removeMedia = media_id => {

@@ -20,7 +20,7 @@ const MediaLibrary = observer(props => {
   const [previewSize, setPreviewSize] = useState(100);
 
   const generatePreviews = useEffect(() => {
-    const handleClick = (e, id) => {    
+    const handleClick = (e, id) => {
       setSelectedFile(id);
     };
 
@@ -57,14 +57,19 @@ const MediaLibrary = observer(props => {
   ]);
 
   const handleDrop = e => {
-    console.log(e)
-    store.mediaLibrary.addMedia(e);
+    console.log("size", e[0].size);
+    store.mediaLibrary.addMedia(e[0]);
   };
 
   return (
     <GenericPanel panel={props.panel}>
       <SplitContainer horizontal className={style.wrapper}>
-        <Dropzone defaultSize={0.7} onDrop={handleDrop}>
+        <Dropzone
+          defaultSize={0.7}
+          onDrop={handleDrop}
+          onDragEnter={() => {}}
+          onDragLeave={() => {}}
+        >
           {({ getRootProps, getInputProps }) => (
             <div
               {...getRootProps({
