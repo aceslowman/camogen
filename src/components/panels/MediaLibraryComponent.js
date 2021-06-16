@@ -20,11 +20,7 @@ const MediaLibrary = observer(props => {
   const [previewSize, setPreviewSize] = useState(100);
 
   const generatePreviews = useEffect(() => {
-    console.log("store", Array.from(getSnapshot(store.mediaLibrary.media)));
-
-    const handleClick = (e, id) => {
-      console.log("here", e);
-      console.log("id", id);
+    const handleClick = (e, id) => {    
       setSelectedFile(id);
     };
 
@@ -58,10 +54,10 @@ const MediaLibrary = observer(props => {
     selectedFile,
     setSelectedFile,
     setPreviews
-    // previews
   ]);
 
   const handleDrop = e => {
+    console.log(e)
     store.mediaLibrary.addMedia(e);
   };
 
@@ -71,13 +67,15 @@ const MediaLibrary = observer(props => {
         <Dropzone defaultSize={0.7} onDrop={handleDrop}>
           {({ getRootProps, getInputProps }) => (
             <div
-              {...getRootProps()}
-              className={style.itemPreviewGrid}
-              style={{
-                backgroundColor: theme.secondary_color
-                // border: `1px dotted ${theme.text_color}`
-              }}
+              {...getRootProps({
+                className: style.itemPreviewGrid,
+                style: {
+                  backgroundColor: theme.secondary_color
+                  // border: `1px dotted ${theme.text_color}`
+                }
+              })}
             >
+              {/*<input {...getInputProps()} />*/}
               {previews}
             </div>
           )}
