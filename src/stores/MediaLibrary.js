@@ -40,8 +40,7 @@ const MediaLibrary = types
         for(let i = 0; i < media.length; i++) {          
           self.media.put({
             filename: media[0]
-          });  
-          
+          });            
         }        
       } else {
         
