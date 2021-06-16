@@ -81,8 +81,8 @@ const MediaLibrary = observer(props => {
         <Dropzone
           defaultSize={0.7}
           onDrop={handleDrop}
-          onDragEnter={() => {}}
-          onDragLeave={() => {}}
+          // onDragEnter={() => {}}
+          // onDragLeave={() => {}}
         >
           {({ getRootProps, getInputProps }) => (
             <div
