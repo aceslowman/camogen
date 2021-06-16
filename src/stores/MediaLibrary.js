@@ -26,20 +26,20 @@ const Media = types
       //         // revoke previous url!
       //         if (self.dataURL) URL.revokeObjectURL(self.dataURL);
 
-      //         if (!file.type.startsWith("image/")) return;
+      //               if (!self.type.startsWith("image/")) return;
 
-      //         var reader = new FileReader();
+      //               var reader = new FileReader();
 
-      //         reader.onload = e => {
-      //           var image = document.createElement("img");
-      //           self.setAsset(e.target.result);
-      //           self.setUserFilename(file.name);
-      //         };
+      //               reader.onload = e => {
+      //                 var image = document.createElement("img");
+      //                 self.setAsset(e.target.result);
+      //                 self.setUserFilename(self.name);
+      //               };
 
-      //         reader.readAsDataURL(file);
-      //         // dataURL helps retrieve the image for other places in the ui
-      //         self.dataURL = URL.createObjectURL(file);
-      //         console.log("URL.createObjectURL()", URL.createObjectURL(file));
+      //               reader.readAsDataURL(file);
+      //               // dataURL helps retrieve the image for other places in the ui
+      //               self.dataURL = URL.createObjectURL(file);
+      //               console.log("URL.createObjectURL()", URL.createObjectURL(file));
     };
 
     return {
@@ -63,16 +63,26 @@ const MediaLibrary = types
     // TODO: should also double check for duplicates (path and size match)
     const addMedia = media => {
       let media_id = nanoid();
+      // if (!self.type.startsWith("image/")) return;
 
+      var reader = new FileReader();
+
+      reader.onload = e => {
+        var image = document.createElement("img");
+      };
+
+      reader.readAsDataURL(media);
+      let dataURL = URL.createObjectURL(media);
+      console.log("URL.createObjectURL()", URL.createObjectURL(media));
+      
       self.media.put({
         id: media_id,
         path: media.path,
         name: media.name,
         size: media.size,
-        type: media.type
+        type: media.type,
+        dataURL: dataURL
       });
-
-      self.media.get(media_id).loadContent();
     };
 
     const removeMedia = media_id => {
