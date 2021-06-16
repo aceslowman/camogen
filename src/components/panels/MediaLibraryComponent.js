@@ -14,26 +14,31 @@ const MediaLibrary = observer(props => {
   const data = store.mediaLibrary;
   const mainRef = useRef();
   const [previews, setPreviews] = useState();
-  
+
   const [selectedFile, setSelectedFile] = useState();
 
   const [previewSize, setPreviewSize] = useState(100);
 
   const generatePreviews = useEffect(() => {
     console.log("store", Array.from(getSnapshot(store.mediaLibrary.media)));
-    const handleClick = (e) => {
-      console.log('here', e)
-      setSelectedFile()
-    }
+
+    const handleClick = (e, id) => {
+      console.log("here", e);
+      console.log("id", id);
+      setSelectedFile(id);
+    };
+
     setPreviews(
       Array.from(store.mediaLibrary.media.values()).map((e, i) => {
-        console.log("e", e);
+        console.log("e", getSnapshot(e));
         return (
           <div
             key={e.id}
-            onClick={handleClick}
+            onClick={_e => handleClick(_e, e.id)}
             style={{
-              border: `1px solid ${theme.outline_color}`,
+              border: `1px solid ${
+                e.id === selectedFile ? theme.accent_color : theme.outline_color
+              }`,
               backgroundColor: theme.primary_color
             }}
           >
@@ -47,7 +52,14 @@ const MediaLibrary = observer(props => {
         );
       })
     );
-  }, [store.mediaLibrary, store.mediaLibrary.media.size, selectedFile]);
+  }, [
+    store.mediaLibrary,
+    store.mediaLibrary.media.size,
+    selectedFile,
+    setSelectedFile,
+    setPreviews
+    // previews
+  ]);
 
   const handleDrop = e => {
     store.mediaLibrary.addMedia(e);
@@ -74,7 +86,11 @@ const MediaLibrary = observer(props => {
         </Dropzone>
 
         <div className={style.itemInfo}>
-          <TextComponent>some basic info</TextComponent>
+          {selectedFile && (
+            <TextComponent>
+              path: {store.mediaLibrary.media.get(selectedFile).path}
+            </TextComponent>
+          )}
         </div>
       </SplitContainer>
     </GenericPanel>
