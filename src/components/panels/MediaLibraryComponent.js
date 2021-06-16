@@ -71,9 +71,7 @@ const MediaLibrary = observer(props => {
         <Dropzone defaultSize={0.7} onDrop={handleDrop}>
           {({ getRootProps, getInputProps }) => (
             <div
-              {...{
-                ...getRootProps()
-              }}
+              {...getRootProps()}
               className={style.itemPreviewGrid}
               style={{
                 backgroundColor: theme.secondary_color

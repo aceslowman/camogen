@@ -105,7 +105,7 @@ const image = types
         self.inputs = [];
       },
 
-      //       
+      // TODO: this is being moved to the MediaLibrary      
       loadImage: file => {
         // revoke previous url!
         if (self.dataURL) URL.revokeObjectURL(self.dataURL);
