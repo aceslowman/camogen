@@ -7,17 +7,16 @@ import { getSnapshot } from "mobx-state-tree";
 import style from "./MediaLibraryComponent.module.css";
 import { ThemeContext, SplitContainer } from "maco-ui";
 import Dropzone from "react-dropzone";
-import filesize from 'file-size';
+import filesize from "file-size";
 
 const MediaLibrary = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
   const data = store.mediaLibrary;
   const mainRef = useRef();
+
   const [previews, setPreviews] = useState();
-
   const [selectedFile, setSelectedFile] = useState();
-
   const [previewSize, setPreviewSize] = useState(100);
 
   const generatePreviews = useEffect(() => {
@@ -42,7 +41,7 @@ const MediaLibrary = observer(props => {
           >
             <div className={style.imageContainer}>
               {/* 
-                TODO: should generate thumbnails 
+                TODO: generate thumbnails?
                 
                 I'm still unsure what is better, a large <img> or a 
                 resized image draw to <canvas>
@@ -69,10 +68,11 @@ const MediaLibrary = observer(props => {
   ]);
 
   const handleDrop = e => {
-    console.log("size", e[0].size);
-    store.mediaLibrary.addMedia(e[0]);
+    for (let i = 0; i < e.length; i++) {
+      store.mediaLibrary.addMedia(e[i]);
+    }
   };
-  
+
   let selectedMedia = store.mediaLibrary.media.get(selectedFile);
 
   return (
@@ -110,6 +110,15 @@ const MediaLibrary = observer(props => {
               <p>dimensions: {selectedMedia.getDimensions()}</p>
             </TextComponent>
           )}
+          <div
+            style={{
+              alignSelf: "flex-end",
+              backgroundColor: theme.primary_color,
+              color: theme.text_color
+            }}
+          >
+            <TextComponent>usage:</TextComponent>
+          </div>
         </div>
       </SplitContainer>
     </GenericPanel>
