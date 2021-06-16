@@ -19,7 +19,13 @@ const Media = types
     content: null
   }))
   .actions(self => {
-    return {};
+    const loadContent = () => {
+      console.log('loading content', self)
+    }
+    
+    return {
+      loadContent
+    };
   });
 
 const MediaLibrary = types
@@ -39,12 +45,16 @@ const MediaLibrary = types
     const addMedia = media => {
       if (media.length) {
         for (let i = 0; i < media.length; i++) {
-          console.log("adding media", getSnapshot(self));
+          console.log("adding media", media);
+          let media_id = nanoid();
+          
           self.media.put({
-            id: nanoid(),
+            id: media_id,
             path: media[i].path
             // ...media[i],            
           });
+          
+          self.media.get(media_id).loadContent();
         }
       } else {
       }

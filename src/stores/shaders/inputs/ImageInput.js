@@ -105,6 +105,7 @@ const image = types
         self.inputs = [];
       },
 
+      //       
       loadImage: file => {
         // revoke previous url!
         if (self.dataURL) URL.revokeObjectURL(self.dataURL);
