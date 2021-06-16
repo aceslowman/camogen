@@ -17,17 +17,16 @@ const Media = types
     dataURL: types.maybe(types.string)
   })
   .volatile(self => ({
-    asset: null,
-    
+    asset: null
   }))
   .views(self => ({
     getDimensions: () => {
-      console.log('self asset', self.asset)
-      return [self.asset.width, self.asset.height]
+      console.log("self asset", self.asset);
+      return [self.asset.width, self.asset.height];
     }
   }))
   .actions(self => ({
-    setAsset: (asset) => {
+    setAsset: asset => {
       self.asset = asset;
     }
   }));
@@ -42,6 +41,22 @@ const MediaLibrary = types
       // this should return the memory usage of the media
       // and maybe some info about how much space is left
       // before crashing the browser
+    },
+
+    getTotalSize: () => {
+      if(!self.media.size) return 0;
+      console.log('check',Array.from(self.media.values()).reduce((a,b) => {
+        return a.size + b.size;
+      }))
+      return Array.from(self.media.values()).reduce((a,b) => {
+        return a.size + b.size;
+      })
+    },
+    
+    getAllowedSize: () => {
+      if(!self.media.size) return 0;
+      console.log()
+      return 100;
     }
   }))
   .actions(self => {
@@ -60,7 +75,7 @@ const MediaLibrary = types
       reader.readAsDataURL(media);
       let dataURL = URL.createObjectURL(media);
       console.log("URL.createObjectURL()", URL.createObjectURL(media));
-      
+
       self.media.put({
         id: media_id,
         path: media.path,
