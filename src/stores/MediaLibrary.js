@@ -45,12 +45,10 @@ const MediaLibrary = types
 
     getTotalSize: () => {
       if(!self.media.size) return 0;
-      console.log('check',Array.from(self.media.values()).reduce((a,b) => {
-        return a.size + b.size;
-      }))
-      return Array.from(self.media.values()).reduce((a,b) => {
-        return a.size + b.size;
-      })
+      console.log('check',Array.from(self.media.values()))
+      return Array.from(self.media.values()).reduce((acc, curr) => {
+        return acc + curr.size;
+      }, 0)
     },
     
     getAllowedSize: () => {
