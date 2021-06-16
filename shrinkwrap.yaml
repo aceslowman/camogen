@@ -9,6 +9,7 @@ dependencies:
   directory-tree: 2.2.5
   express: 4.17.1
   file-loader: 6.2.0
+  file-size: 1.0.0
   html-webpack-plugin: 4.5.0
   http-proxy-middleware: 1.0.6
   maco-ui: 0.4.34
@@ -2372,6 +2373,10 @@ packages:
       node: '>= 10'
     resolution:
       integrity: sha512-ZDsQNbrv6qRi1YTDOEWzf5J2KjZ9KMI1Q2SGeTkCJmNNW25Jg4TW4UMcmoqcg4WrAyKRcpBXdbWRxkfrOzVRbA==
+  /file-size/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha1-MzgmfV0ga79g9N9gwZ1+04E6Rlc=
   /file-uri-to-path/1.0.0:
     dev: false
     optional: true
@@ -5390,6 +5395,7 @@ specifiers:
   directory-tree: ^2.2.4
   express: ^4.17.1
   file-loader: ^6.1.1
+  file-size: ^1.0.0
   html-webpack-plugin: ^4.5.0
   http-proxy-middleware: ^1.0.5
   maco-ui: ^0.4.34

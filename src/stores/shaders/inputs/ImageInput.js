@@ -115,7 +115,7 @@ const image = types
         var reader = new FileReader();
 
         reader.onload = e => {
-          var image = document.createElement("img");
+          // var image = document.createElement("img"); // NOTE: might not be needed
           self.setAsset(e.target.result);
           self.setUserFilename(file.name);
         };

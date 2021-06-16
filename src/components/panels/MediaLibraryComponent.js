@@ -72,6 +72,8 @@ const MediaLibrary = observer(props => {
     console.log("size", e[0].size);
     store.mediaLibrary.addMedia(e[0]);
   };
+  
+  let selectedMedia = store.mediaLibrary.media.get(selectedFile);
 
   return (
     <GenericPanel panel={props.panel}>
@@ -101,10 +103,11 @@ const MediaLibrary = observer(props => {
         <div className={style.itemInfo}>
           {selectedFile && (
             <TextComponent>
-              <p>name: {store.mediaLibrary.media.get(selectedFile).name}</p>
-              <p>path: {store.mediaLibrary.media.get(selectedFile).path}</p>
-              <p>size: {filesize(store.mediaLibrary.media.get(selectedFile).size)}</p>
-              <p>type: {store.mediaLibrary.media.get(selectedFile).type}</p>
+              <p>name: {selectedMedia.name}</p>
+              <p>path: {selectedMedia.path}</p>
+              <p>size: {filesize(selectedMedia.size).human()}</p>
+              <p>type: {selectedMedia.type}</p>
+              <p>dimensions: {selectedMedia.getDimensions()}</p>
             </TextComponent>
           )}
         </div>

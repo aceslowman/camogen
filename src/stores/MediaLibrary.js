@@ -17,36 +17,20 @@ const Media = types
     dataURL: types.maybe(types.string)
   })
   .volatile(self => ({
-    content: null,
+    asset: null,
     
   }))
-  .actions(self => {
-    const loadContent = () => {
-      console.log("loading content", self);
-
-      //         // revoke previous url!
-      //         if (self.dataURL) URL.revokeObjectURL(self.dataURL);
-
-      //               if (!self.type.startsWith("image/")) return;
-
-      //               var reader = new FileReader();
-
-      //               reader.onload = e => {
-      //                 var image = document.createElement("img");
-      //                 self.setAsset(e.target.result);
-      //                 self.setUserFilename(self.name);
-      //               };
-
-      //               reader.readAsDataURL(file);
-      //               // dataURL helps retrieve the image for other places in the ui
-      //               self.dataURL = URL.createObjectURL(file);
-      //               console.log("URL.createObjectURL()", URL.createObjectURL(file));
-    };
-
-    return {
-      loadContent
-    };
-  });
+  .views(self => ({
+    getDimensions: () => {
+      console.log('self asset', self.asset)
+      return [self.asset.width, self.asset.height]
+    }
+  }))
+  .actions(self => ({
+    setAsset: (asset) => {
+      self.asset = asset;
+    }
+  }));
 
 const MediaLibrary = types
   .model("MediaLibrary", {
@@ -70,6 +54,7 @@ const MediaLibrary = types
 
       reader.onload = e => {
         var image = document.createElement("img");
+        self.media.get(media_id).setAsset(e.target.result);
       };
 
       reader.readAsDataURL(media);
