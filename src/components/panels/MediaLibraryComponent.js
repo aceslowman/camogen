@@ -15,9 +15,13 @@ const MediaLibrary = observer(props => {
   const mainRef = useRef();
 
   const [previewSize, setPreviewSize] = useState(100);
+  
+  useEffect(() => {
+    console.log('store', store.mediaLibrary)
+  }, [store.mediaLibrary])
 
   const generatePreviews = () => {
-    let tmp = ["", "", "", ""];
+    let tmp = ["", "", "", ""];    
 
     return tmp.map((e, i) => (
       <div
