@@ -13,11 +13,12 @@ const Media = types
     path: types.string,
     name: types.maybe(types.string),
     size: types.maybe(types.integer),
-    type: types.maybe(types.string)
+    type: types.maybe(types.string),
+    dataURL: types.maybe(types.string)
   })
   .volatile(self => ({
     content: null,
-    dataURL: null
+    
   }))
   .actions(self => {
     const loadContent = () => {

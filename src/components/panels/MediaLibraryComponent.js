@@ -7,6 +7,7 @@ import { getSnapshot } from "mobx-state-tree";
 import style from "./MediaLibraryComponent.module.css";
 import { ThemeContext, SplitContainer } from "maco-ui";
 import Dropzone from "react-dropzone";
+import filesize from 'file-size';
 
 const MediaLibrary = observer(props => {
   const theme = useContext(ThemeContext);
@@ -26,23 +27,32 @@ const MediaLibrary = observer(props => {
 
     setPreviews(
       Array.from(store.mediaLibrary.media.values()).map((media, i) => {
-        console.log("media", getSnapshot(media));
-        
         return (
           <div
             key={media.id}
             onClick={_e => handleClick(_e, media.id)}
             style={{
               border: `1px solid ${
-                media.id === selectedFile ? theme.accent_color : theme.outline_color
+                media.id === selectedFile
+                  ? theme.accent_color
+                  : theme.outline_color
               }`,
               backgroundColor: theme.primary_color
             }}
           >
             <div className={style.imageContainer}>
-              {/* TODO: should generate thumbnails */}
-              {/*<img src="https://via.placeholder.com/150x150" />*/}
-              <img src={media.dataURL} />
+              {/* 
+                TODO: should generate thumbnails 
+                
+                I'm still unsure what is better, a large <img> or a 
+                resized image draw to <canvas>
+                                
+                placeholder: <img src="https://via.placeholder.com/150x150" />
+              */}
+              <img
+                alt={`thumbnail for asset titled ${media.name}`}
+                src={media.dataURL}
+              />
             </div>
 
             <div className={style.imageName}>{media.path}</div>
@@ -91,7 +101,10 @@ const MediaLibrary = observer(props => {
         <div className={style.itemInfo}>
           {selectedFile && (
             <TextComponent>
-              path: {store.mediaLibrary.media.get(selectedFile).path}
+              <p>name: {store.mediaLibrary.media.get(selectedFile).name}</p>
+              <p>path: {store.mediaLibrary.media.get(selectedFile).path}</p>
+              <p>size: {filesize(store.mediaLibrary.media.get(selectedFile).size)}</p>
+              <p>type: {store.mediaLibrary.media.get(selectedFile).type}</p>
             </TextComponent>
           )}
         </div>
