@@ -7,6 +7,13 @@ import {
 } from "mobx-state-tree";
 import { nanoid } from "nanoid";
 
+/*
+  MEDIA LIBRARY
+  
+  the media library stores assets to be used with any of the nodes
+  nodes can reuse images this way, reducing the overhead 
+*/
+
 const Media = types
   .model("Media", {
     id: types.identifier,
@@ -44,16 +51,16 @@ const MediaLibrary = types
     },
 
     getTotalSize: () => {
-      if(!self.media.size) return 0;
-      console.log('check',Array.from(self.media.values()))
+      if (!self.media.size) return 0;
+      console.log("check", Array.from(self.media.values()));
       return Array.from(self.media.values()).reduce((acc, curr) => {
         return acc + curr.size;
-      }, 0)
+      }, 0);
     },
-    
+
     getAllowedSize: () => {
-      if(!self.media.size) return 0;
-      console.log()
+      if (!self.media.size) return 0;
+      console.log();
       return 100;
     }
   }))
