@@ -2,6 +2,7 @@ import { observer } from "mobx-react";
 import React, { useLayoutEffect, useRef, useContext } from "react";
 import Dropzone from "react-dropzone";
 import MainContext from "../../../MainContext";
+import MediaSelector from "../reusables/MediaSelector";
 
 import {
   ControlGroupComponent,
@@ -57,7 +58,7 @@ const ImageInputComponent = observer(props => {
   }, [data.image_url]);
   
   const handleMediaSelect = e => {
-    console.log('selectedMedia', )
+    console.log('selectedMedia', e)
   }  
 
   return (
