@@ -95,6 +95,8 @@ const MediaLibrary = types
         type: media.type,
         dataURL: dataURL
       });
+      
+      return media_id;
     };
 
     const removeMedia = media_id => {
