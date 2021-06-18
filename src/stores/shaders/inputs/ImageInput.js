@@ -12,7 +12,7 @@ const image = types
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
     dataURL: "", // phasing this out
-    mediaID: types.reference(Media),
+    mediaID: types.maybe(types.reference(Media)),
     user_filename: "",
     display_mode: types.optional(
       types.enumeration("Display Mode", [
@@ -133,6 +133,12 @@ const image = types
         let p = root_store.p5_instance;
         self.img = p.loadImage(img_url);
         self.image_url = img_url;
+      },
+      
+      assignMedia: media_id => {
+        let p = root_store.p5_instance;
+        let url = 
+        self.img = p.loadImage(img_url);
       },
       
       setUserFilename: filename => {

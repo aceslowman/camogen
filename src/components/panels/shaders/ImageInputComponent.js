@@ -25,6 +25,7 @@ const ImageInputComponent = observer(props => {
     console.log('selectedMedia', e)
     console.log('data to add to', getSnapshot(data))
 //     instead of using dataURL, use mediaID
+    data.assignMedia(e);
   }  
 
   return (

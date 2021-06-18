@@ -101,33 +101,40 @@ const ShaderGraph = observer(props => {
       tooltip={
         <React.Fragment>
           <p>
-            Here you can combine your effects into a graph. You can right-click on any node to access the library and change the effect.
+            Here you can combine your effects into a graph. You can right-click
+            on any node to access the library and change the effect.
           </p>
-          
+
           <hr />
 
           <p>Keyboard Shortcuts:</p>
           <p>
-            <em><small>First, click within the graph to focus the keymap!</small></em>
+            <em>
+              <small>First, click within the graph to focus the keymap!</small>
+            </em>
           </p>
 
-          <table style={{width:'100%'}}>
-            <tr>
-              <th>Key</th>
-              <th>Action</th>
-            </tr>
-            <tr>
-              <td>Arrows</td>
-              <td>Select Node</td>
-            </tr>
-            <tr>
-              <td>Delete</td>
-              <td>Remove Selected</td>
-            </tr>
-            <tr>
-              <td>B</td>
-              <td>Bypass Selected</td>
-            </tr>
+          <table style={{ width: "100%" }}>
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Arrows</td>
+                <td>Select Node</td>
+              </tr>
+              <tr>
+                <td>Delete</td>
+                <td>Remove Selected</td>
+              </tr>
+              <tr>
+                <td>B</td>
+                <td>Bypass Selected</td>
+              </tr>
+            </tbody>
           </table>
         </React.Fragment>
       }
