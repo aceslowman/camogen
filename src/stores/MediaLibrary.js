@@ -20,6 +20,8 @@ import { nanoid } from "nanoid";
   orientation based on width.
   
   TODO: need to implement getDimensions
+  
+  TODO: need method for removing media
 */
 
 const Media = types

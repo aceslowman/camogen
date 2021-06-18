@@ -137,8 +137,8 @@ const image = types
       
       assignMedia: media_id => {
         let p = root_store.p5_instance;
-        let url = 
-        self.img = p.loadImage(img_url);
+        let url = root_store.mediaLibrary.media.get(media_id).dataURL;
+        self.img = p.loadImage(url);
       },
       
       setUserFilename: filename => {
