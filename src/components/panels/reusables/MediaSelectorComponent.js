@@ -9,6 +9,7 @@ import {
   TextComponent
 } from "maco-ui";
 import styles from "./MediaSelectorComponent.module.css";
+import { getSnapshot, isAlive } from "mobx-state-tree";
 
 const MediaSelectorComponent = observer(props => {
   const store = useContext(MainContext).store;
@@ -17,12 +18,14 @@ const MediaSelectorComponent = observer(props => {
   const [selectedMedia, setSelectedMedia] = useState();
 
   const handleDrop = files => {
-    setSelectedMedia(store.mediaLibrary.addMedia(files[0]));
-    props.onMediaSelect(store.mediaLibrary.addMedia(files[0]));
+    let new_media_id = store.mediaLibrary.addMedia(files[0]); 
+    setSelectedMedia(new_media_id);
+    // console.log('handling drop', new_media_id)
+    props.onMediaSelect(new_media_id);
   };
   
   const handleMediaSelect = value => {
-    consul.log
+    // console.log('handling media select', value)
     setSelectedMedia(value);
     props.onMediaSelect(value);
   };

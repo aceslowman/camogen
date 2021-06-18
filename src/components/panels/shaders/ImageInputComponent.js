@@ -3,6 +3,7 @@ import React, { useLayoutEffect, useRef, useContext } from "react";
 import Dropzone from "react-dropzone";
 import MainContext from "../../../MainContext";
 import MediaSelector from "../reusables/MediaSelectorComponent";
+import { getSnapshot, isAlive } from "mobx-state-tree";
 
 import {
   ControlGroupComponent,
@@ -22,6 +23,8 @@ const ImageInputComponent = observer(props => {
   
   const handleMediaSelect = e => {
     console.log('selectedMedia', e)
+    console.log('data to add to', getSnapshot(data))
+//     instead of using dataURL, use mediaID
   }  
 
   return (

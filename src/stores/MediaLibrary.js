@@ -115,3 +115,5 @@ const MediaLibrary = types
   });
 
 export default MediaLibrary;
+
+export {Media};

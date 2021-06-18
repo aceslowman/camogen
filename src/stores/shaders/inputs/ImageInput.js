@@ -3,6 +3,7 @@ import Shader, { Uniform } from "../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
 import { nanoid } from "nanoid";
 import Parameter from "../../ParameterStore";
+import {Media} from "../../MediaLibrary";
 
 const image = types
   .model("Image", {
@@ -10,7 +11,8 @@ const image = types
     name: "Image",
     precision: DefaultShader.precision,
     vert: DefaultShader.vert,
-    dataURL: "",
+    dataURL: "", // phasing this out
+    mediaID: types.reference(Media),
     user_filename: "",
     display_mode: types.optional(
       types.enumeration("Display Mode", [
