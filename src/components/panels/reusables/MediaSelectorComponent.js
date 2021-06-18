@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import React, { useLayoutEffect, useRef, useContext } from "react";
+import React, { useLayoutEffect, useRef, useContext, useState } from "react";
 import Dropzone from "react-dropzone";
 import MainContext from "../../../MainContext";
 import {
@@ -14,6 +14,7 @@ const MediaSelectorComponent = observer(props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const canvas_ref = useRef(null);
+  const [selectedMedia, setSelectedMedia] = useState();
 
   const handleDrop = files => {
     // TODO:
@@ -23,6 +24,7 @@ const MediaSelectorComponent = observer(props => {
 
   useLayoutEffect(
     () => {
+      if(!selectedMedia) return;
       /*
       I do not know whether or not this is efficient!
       I am grabbing the whole image each time and generating
@@ -47,17 +49,19 @@ const MediaSelectorComponent = observer(props => {
         ctx.drawImage(this, 0, 0, w, h);
       };
 
-      //img.src = data.image_url;
+      img.src = store.mediaLibrary.media.get(selectedMedia).dataURL;
     },
     [
-      /*data.image_url*/
+      selectedMedia
     ]
   );
+
+  const handleMediaSelect = value => {
+    console.log("value", value);
+    
+    setSelectedMedia(value);
+  };
   
-  const handleMediaSelect = (e) => {
-    console.log('e',e)
-  }
-  console.log('check here', Array.from(store.mediaLibrary.media.values()).map(e=>({label: e.name, value: e.id})))
   return (
     <React.Fragment>
       <Dropzone onDrop={handleDrop}>
@@ -86,13 +90,15 @@ const MediaSelectorComponent = observer(props => {
             </div>
           </section>
         )}
-      </Dropzone>      
+      </Dropzone>
       <InputSelect
-          className={styles.select}
-          options={Array.from(store.mediaLibrary.media.values()).map(e=>({label: e.name, value: e.id}))}
-}
-          onChange={handleMediaSelect}
-        />
+        className={styles.select}
+        options={Array.from(store.mediaLibrary.media.values()).map(e => ({
+          label: e.name,
+          value: e.id
+        }))}
+        onChange={handleMediaSelect}
+      />
     </React.Fragment>
   );
 });

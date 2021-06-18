@@ -59,7 +59,6 @@ const MediaLibrary = types
 
     getTotalSize: () => {
       if (!self.media.size) return 0;
-      console.log("check", Array.from(self.media.values()));
       return Array.from(self.media.values()).reduce((acc, curr) => {
         return acc + curr.size;
       }, 0);
