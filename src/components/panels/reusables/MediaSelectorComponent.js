@@ -13,22 +13,17 @@ import styles from "./MediaSelectorComponent.module.css";
 const MediaSelectorComponent = observer(props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
-  const { data } = props.data;
   const canvas_ref = useRef(null);
 
   const handleDrop = files => {
-    data.loadImage(files[0]);
-
     // TODO:
     // should add the file to the media library instead
     store.mediaLibrary.addMedia(files[0]);
   };
 
-  const handleDisplayMode = e => data.setDisplayMode(e);
-  const handlePan = (param, v) => param.setValue(v);
-
-  useLayoutEffect(() => {
-    /*
+  useLayoutEffect(
+    () => {
+      /*
       I do not know whether or not this is efficient!
       I am grabbing the whole image each time and generating
       a smaller thumbnail.
@@ -36,53 +31,62 @@ const MediaSelectorComponent = observer(props => {
       TODO: should limit width at some point, becomes too large
       when the control panel is made wider
     */
-    const ctx = canvas_ref.current.getContext("2d");
+      const ctx = canvas_ref.current.getContext("2d");
 
-    let img = new Image();
+      let img = new Image();
 
-    img.onload = function() {
-      let aspect = this.naturalWidth / this.naturalHeight;
-      let w = 0;
-      let h = 0;
+      img.onload = function() {
+        let aspect = this.naturalWidth / this.naturalHeight;
+        let w = 0;
+        let h = 0;
 
-      w = canvas_ref.current.width;
-      h = canvas_ref.current.width / aspect;
-      canvas_ref.current.height = h;
+        w = canvas_ref.current.width;
+        h = canvas_ref.current.width / aspect;
+        canvas_ref.current.height = h;
 
-      ctx.drawImage(this, 0, 0, w, h);
-    };
+        ctx.drawImage(this, 0, 0, w, h);
+      };
 
-    img.src = data.image_url;
-  }, [data.image_url]);
+      //img.src = data.image_url;
+    },
+    [
+      /*data.image_url*/
+    ]
+  );
 
   return (
-    <Dropzone onDrop={handleDrop}>
-      {({ getRootProps, getInputProps }) => (
-        <section
-          className={styles.dropzone}
-          style={{ border: `1px dotted ${theme.text_color}` }}
-        >
-          <div>
-            <canvas ref={canvas_ref} className={styles.canvas} />
-          </div>
-          <div
-            {...{
-              ...getRootProps(),
-              className: styles.dropzoneOverlay,
-              style: {
-                backgroundColor: theme.primary_color,
-                color: theme.text_color
-              }
-            }}
+    <React.Fragment>
+      <Dropzone onDrop={handleDrop}>
+        {({ getRootProps, getInputProps }) => (
+          <section
+            className={styles.dropzone}
+            style={{ border: `1px dotted ${theme.text_color}` }}
           >
-            <input {...getInputProps()} />
-            <TextComponent>
-              <p>click or drop an image</p>
-            </TextComponent>
-          </div>
-        </section>
-      )}
-    </Dropzone>
+            <div>
+              <canvas ref={canvas_ref} className={styles.canvas} />
+            </div>
+            <div
+              {...{
+                ...getRootProps(),
+                className: styles.dropzoneOverlay,
+                style: {
+                  backgroundColor: theme.primary_color,
+                  color: theme.text_color
+                }
+              }}
+            >
+              <input {...getInputProps()} />
+              <TextComponent>
+                <p>click or drop an image</p>
+              </TextComponent>
+            </div>
+          </section>
+        )}
+      </Dropzone>
+      <select>
+        <option></option>
+      </select>
+    </React.Fragment>
   );
 });
 
