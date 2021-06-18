@@ -19,7 +19,6 @@ const MediaSelectorComponent = observer(props => {
   const handleDrop = files => {
     // TODO:
     // should add the file to the media library instead
-    
     setSelectedMedia(store.mediaLibrary.addMedia(files[0]));
   };
 

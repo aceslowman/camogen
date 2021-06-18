@@ -12,7 +12,7 @@ dependencies:
   file-size: 1.0.0
   html-webpack-plugin: 4.5.0
   http-proxy-middleware: 1.0.6
-  maco-ui: 0.4.34
+  maco-ui: 0.4.35
   mobx: 6.0.5
   mobx-devtools-mst: 0.9.30
   mobx-react: 7.0.6
@@ -1612,10 +1612,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-qOhPa/Fj7s6TY8H8esGu5QNpMMQxz79h+urzrNYN6mn+9BnxlDGf5QZ+XeCDsxSjPqsSR56XOZOJmpeurnLMeg==
-  /classnames/2.2.6:
+  /classnames/2.3.1:
     dev: false
     resolution:
-      integrity: sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
+      integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
   /clean-css/4.2.3:
     dependencies:
       source-map: 0.6.1
@@ -3313,21 +3313,21 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
-  /maco-ui/0.4.34:
+  /maco-ui/0.4.35:
     dependencies:
-      classnames: 2.2.6
-      mobx: 6.1.6
-      mobx-react: /mobx-react/7.1.0/mobx@6.1.6
-      nanoid: 3.1.20
+      classnames: 2.3.1
+      mobx: 6.3.2
+      mobx-react: /mobx-react/7.2.0/mobx@6.3.2
+      nanoid: 3.1.23
       prop-types: 15.7.2
-      tinykeys: 1.1.1
+      tinykeys: 1.2.0
     dev: false
     engines:
       node: '>=10'
     peerDependencies:
       react: ^16.0.0
     resolution:
-      integrity: sha512-N6uTVuQ0+RNSto4zcDV0sHv2ll+vgT2Xe68cugRKp5oLvyveNs1UhYmXAmTeE2UPqRLcipqNc571ZVSUmh4ruw==
+      integrity: sha512-Wet+u+0Mg2rfiF5G3Ao8wpnot6p3scRI0Om69x2nbqTx6jVaCR332qnBAkPcLO1Fwzi70Sf/8+7zEvbIaCLA0w==
   /make-dir/3.1.0:
     dependencies:
       semver: 6.3.0
@@ -3490,9 +3490,9 @@ packages:
       react: ^16.8.0 || ^17
     resolution:
       integrity: sha512-G6kgur98RrEpoi563ERzxlSwn606xY6Ay4BOtfYXl/QaHZYXbhbCe3YJGROPU2ao4f2bfhnt8iZW3YnBW2BqXQ==
-  /mobx-react-lite/3.2.0/mobx@6.1.6:
+  /mobx-react-lite/3.2.0/mobx@6.3.2:
     dependencies:
-      mobx: 6.1.6
+      mobx: 6.3.2
     dev: false
     id: registry.npmjs.org/mobx-react-lite/3.2.0
     peerDependencies:
@@ -3509,17 +3509,17 @@ packages:
       react: ^16.8.0 || ^17
     resolution:
       integrity: sha512-EBNfDXnXNd0KmxtykioybOrJVX0Rc446aPZ69gDxguJnHPl/pPE032PhZ83EGWSZO3KiYsC251Ax3JlPqUwWBw==
-  /mobx-react/7.1.0/mobx@6.1.6:
+  /mobx-react/7.2.0/mobx@6.3.2:
     dependencies:
-      mobx: 6.1.6
-      mobx-react-lite: /mobx-react-lite/3.2.0/mobx@6.1.6
+      mobx: 6.3.2
+      mobx-react-lite: /mobx-react-lite/3.2.0/mobx@6.3.2
     dev: false
-    id: registry.npmjs.org/mobx-react/7.1.0
+    id: registry.npmjs.org/mobx-react/7.2.0
     peerDependencies:
       mobx: ^6.1.0
       react: ^16.8.0 || ^17
     resolution:
-      integrity: sha512-DxvA6VXmnZ+N9f/UTtolWtdRnAAQY2iHWTSPLktfpj8NKlXUe4dabBAjuXrBcZUM8GjLWnxD1ZEjssXq1M0RAw==
+      integrity: sha512-KHUjZ3HBmZlNnPd1M82jcdVsQRDlfym38zJhZEs33VxyVQTvL77hODCArq6+C1P1k/6erEeo2R7rpE7ZeOL7dg==
   /mobx-state-tree/5.0.0:
     dev: false
     peerDependencies:
@@ -3530,10 +3530,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-Q3/GiSj/QyazDn1n44PjdiMlokCE6gVs85BnFR0xCJmkF2d34k/ZnWAEG7wGbnJYEi+0f5CdvzDquBiKeo56bA==
-  /mobx/6.1.6:
+  /mobx/6.3.2:
     dev: false
     resolution:
-      integrity: sha512-3by0Avodad/3cdPAuJuj8jWXhe1YByHKaEkonD9yOdcMoMuot2jrjlSXmQPhR1bJpNHfSsOx122tM9Pv3IzFWA==
+      integrity: sha512-xGPM9dIE1qkK9Nrhevp0gzpsmELKU4MFUJRORW/jqxVFIHHWIoQrjDjL8vkwoJYY3C2CeVJqgvl38hgKTalTWg==
   /ms/2.0.0:
     dev: false
     resolution:
@@ -3580,6 +3580,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-a1cQNyczgKbLX9jwbS/+d7W8fX/RfgYR7lVWwWOGIPNgK2m0MWvrGF6/m4kk6U3QcFMnZf3RIhL0v2Jgh/0Uxw==
+  /nanoid/3.1.23:
+    dev: false
+    engines:
+      node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1
+    hasBin: true
+    resolution:
+      integrity: sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==
   /nanomatch/1.2.13:
     dependencies:
       arr-diff: 4.0.0
@@ -4916,6 +4923,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-YEA1TGMlkMabXI0NGddRFti+c1eMO2QP7wefwibSz0Pip8sA+d99yX5Pp7pK7wUeTKmrF4ys4XZVz44YydlTYg==
+  /tinykeys/1.2.0:
+    dev: false
+    resolution:
+      integrity: sha512-zrTdr+78Akihb5TAxmLKG8OAKIpyKWHk/YIOyA90UuDPzJ0OHf4RHR/TwmABgNMXLca1LOUhRf6NpOFIIKezyA==
   /to-fast-properties/2.0.0:
     dev: false
     engines:
@@ -5398,7 +5409,7 @@ specifiers:
   file-size: ^1.0.0
   html-webpack-plugin: ^4.5.0
   http-proxy-middleware: ^1.0.5
-  maco-ui: ^0.4.34
+  maco-ui: ^0.4.35
   mobx: ^6.0.4
   mobx-devtools-mst: ^0.9.26
   mobx-react: ^7.0.5
