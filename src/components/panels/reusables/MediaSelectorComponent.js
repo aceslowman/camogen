@@ -53,7 +53,11 @@ const MediaSelectorComponent = observer(props => {
       /*data.image_url*/
     ]
   );
-
+  
+  const handleMediaSelect = (e) => {
+    console.log('e',e)
+  }
+  console.log('check here', Array.from(store.mediaLibrary.media.values()).map(e=>({label: e.name, value: e.id})))
   return (
     <React.Fragment>
       <Dropzone onDrop={handleDrop}>
@@ -82,10 +86,13 @@ const MediaSelectorComponent = observer(props => {
             </div>
           </section>
         )}
-      </Dropzone>
-      <select>
-        <option></option>
-      </select>
+      </Dropzone>      
+      <InputSelect
+          className={styles.select}
+          options={Array.from(store.mediaLibrary.media.values()).map(e=>({label: e.name, value: e.id}))}
+}
+          onChange={handleMediaSelect}
+        />
     </React.Fragment>
   );
 });

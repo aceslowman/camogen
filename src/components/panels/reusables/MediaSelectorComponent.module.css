@@ -23,3 +23,7 @@
 .dropzoneOverlay:hover {
   opacity: 80%;
 }
+
+.select {
+  width: 100%;
+}
