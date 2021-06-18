@@ -11,7 +11,7 @@ import {
 } from "maco-ui";
 import styles from "./ImageInputComponent.module.css";
 
-const ImageInputComponent = observer(props => {
+const MediaSelectorComponent = observer(props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const { data } = props.data;
@@ -55,15 +55,37 @@ const ImageInputComponent = observer(props => {
 
     img.src = data.image_url;
   }, [data.image_url]);
-  
-  const handleMediaSelect = e => {
-    console.log('selectedMedia', )
-  }  
 
   return (
     <React.Fragment>
       <ControlGroupComponent name="Image File">
-        <MediaSelector mediaType="image" onMediaSelect={handleMediaSelect} />
+        <Dropzone onDrop={handleDrop}>
+          {({ getRootProps, getInputProps }) => (
+            <section
+              className={styles.dropzone}
+              style={{ border: `1px dotted ${theme.text_color}` }}
+            >
+              <div>
+                <canvas ref={canvas_ref} className={styles.canvas} />
+              </div>
+              <div
+                {...{
+                  ...getRootProps(),
+                  className: styles.dropzoneOverlay,
+                  style: {
+                    backgroundColor: theme.primary_color,
+                    color: theme.text_color
+                  }
+                }}
+              >
+                <input {...getInputProps()} />
+                <TextComponent>
+                  <p>click or drop an image</p>
+                </TextComponent>
+              </div>
+            </section>
+          )}
+        </Dropzone>
       </ControlGroupComponent>
       <ControlGroupComponent name="Display Mode">
         <InputSelect
@@ -88,4 +110,4 @@ const ImageInputComponent = observer(props => {
   );
 });
 
-export default ImageInputComponent;
+export default MediaSelectorComponent;
