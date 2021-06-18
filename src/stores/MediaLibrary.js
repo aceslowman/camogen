@@ -12,6 +12,9 @@ import { nanoid } from "nanoid";
   
   the media library stores assets to be used with any of the nodes
   nodes can reuse images this way, reducing the overhead 
+  
+  each media (image, video) node holds a reference to an asset held
+  here.
 */
 
 const Media = types
