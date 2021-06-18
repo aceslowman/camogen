@@ -18,7 +18,12 @@ const MediaSelectorComponent = observer(props => {
 
   const handleDrop = files => {
     setSelectedMedia(store.mediaLibrary.addMedia(files[0]));
-    props.onMediaSelect(files[0]);
+    props.onMediaSelect(store.mediaLibrary.addMedia(files[0]));
+  };
+  
+  const handleMediaSelect = value => {
+    setSelectedMedia(value);
+    props.onMediaSelect(value);
   };
 
   useLayoutEffect(() => {
@@ -49,11 +54,6 @@ const MediaSelectorComponent = observer(props => {
 
     img.src = store.mediaLibrary.media.get(selectedMedia).dataURL;
   }, [selectedMedia]);
-
-  const handleMediaSelect = value => {
-    setSelectedMedia(value);
-    props.onMediaSelect(value);
-  };
 
   return (
     <React.Fragment>

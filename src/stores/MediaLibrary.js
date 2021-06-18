@@ -15,6 +15,11 @@ import { nanoid } from "nanoid";
   
   each media (image, video) node holds a reference to an asset held
   here.
+  
+  TODO: need to add 'auto' mode to SplitContainer to make it change
+  orientation based on width.
+  
+  TODO: need to implement getDimensions
 */
 
 const Media = types
@@ -31,7 +36,7 @@ const Media = types
   }))
   .views(self => ({
     getDimensions: () => { // incomplete
-      console.log("self asset", self.asset);
+      // console.log("self asset", self.asset);
       return [self.asset.width, self.asset.height];
     }
   }))
@@ -85,7 +90,7 @@ const MediaLibrary = types
 
       reader.readAsDataURL(media);
       let dataURL = URL.createObjectURL(media);
-      console.log("URL.createObjectURL()", URL.createObjectURL(media));
+      // console.log("URL.createObjectURL()", URL.createObjectURL(media));
 
       self.media.put({
         id: media_id,
@@ -100,7 +105,7 @@ const MediaLibrary = types
     };
 
     const removeMedia = media_id => {
-      console.log("removing media", media_id);
+      // console.log("removing media", media_id);
     };
 
     return {
