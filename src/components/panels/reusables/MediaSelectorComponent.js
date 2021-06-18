@@ -17,15 +17,13 @@ const MediaSelectorComponent = observer(props => {
   const [selectedMedia, setSelectedMedia] = useState();
 
   const handleDrop = files => {
-    // TODO:
-    // should add the file to the media library instead
     setSelectedMedia(store.mediaLibrary.addMedia(files[0]));
+    props.onMediaSelect(files[0]);
   };
 
-  useLayoutEffect(
-    () => {
-      if(!selectedMedia) return;
-      /*
+  useLayoutEffect(() => {
+    if (!selectedMedia) return;
+    /*
       I do not know whether or not this is efficient!
       I am grabbing the whole image each time and generating
       a smaller thumbnail.
@@ -33,35 +31,30 @@ const MediaSelectorComponent = observer(props => {
       TODO: should limit width at some point, becomes too large
       when the control panel is made wider
     */
-      const ctx = canvas_ref.current.getContext("2d");
+    const ctx = canvas_ref.current.getContext("2d");
 
-      let img = new Image();
+    let img = new Image();
 
-      img.onload = function() {
-        let aspect = this.naturalWidth / this.naturalHeight;
-        let w = 0;
-        let h = 0;
+    img.onload = function() {
+      let aspect = this.naturalWidth / this.naturalHeight;
+      let w = 0;
+      let h = 0;
 
-        w = canvas_ref.current.width;
-        h = canvas_ref.current.width / aspect;
-        canvas_ref.current.height = h;
+      w = canvas_ref.current.width;
+      h = canvas_ref.current.width / aspect;
+      canvas_ref.current.height = h;
 
-        ctx.drawImage(this, 0, 0, w, h);
-      };
+      ctx.drawImage(this, 0, 0, w, h);
+    };
 
-      img.src = store.mediaLibrary.media.get(selectedMedia).dataURL;
-    },
-    [
-      selectedMedia
-    ]
-  );
+    img.src = store.mediaLibrary.media.get(selectedMedia).dataURL;
+  }, [selectedMedia]);
 
   const handleMediaSelect = value => {
-    console.log("value", value);
-    
     setSelectedMedia(value);
+    props.onMediaSelect(value);
   };
-  
+
   return (
     <React.Fragment>
       <Dropzone onDrop={handleDrop}>
@@ -98,6 +91,7 @@ const MediaSelectorComponent = observer(props => {
           value: e.id
         }))}
         onChange={handleMediaSelect}
+        selectedOption={selectedMedia}
       />
     </React.Fragment>
   );
