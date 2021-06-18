@@ -18,8 +18,8 @@ const MediaSelectorComponent = observer(props => {
 
   const handleDrop = files => {
     data.loadImage(files[0]);
-    
-    // TODO: 
+
+    // TODO:
     // should add the file to the media library instead
     store.mediaLibrary.addMedia(files[0]);
   };
@@ -56,56 +56,33 @@ const MediaSelectorComponent = observer(props => {
   }, [data.image_url]);
 
   return (
-    <React.Fragment>
-      <ControlGroupComponent name="Image File">
-        <Dropzone onDrop={handleDrop}>
-          {({ getRootProps, getInputProps }) => (
-            <section
-              className={styles.dropzone}
-              style={{ border: `1px dotted ${theme.text_color}` }}
-            >
-              <div>
-                <canvas ref={canvas_ref} className={styles.canvas} />
-              </div>
-              <div
-                {...{
-                  ...getRootProps(),
-                  className: styles.dropzoneOverlay,
-                  style: {
-                    backgroundColor: theme.primary_color,
-                    color: theme.text_color
-                  }
-                }}
-              >
-                <input {...getInputProps()} />
-                <TextComponent>
-                  <p>click or drop an image</p>
-                </TextComponent>
-              </div>
-            </section>
-          )}
-        </Dropzone>
-      </ControlGroupComponent>
-      <ControlGroupComponent name="Display Mode">
-        <InputSelect
-          options={[
-            { label: "fit vertical", value: "fit_vertical" },
-            { label: "fit horizontal", value: "fit_horizontal" },
-            { label: "stretch", value: "stretch" }
-          ]}
-          onChange={handleDisplayMode}
-        />
-      </ControlGroupComponent>
-      <ControlGroupComponent name="Pan">
-        {data.getUniform("pan").elements.map((e, i) => (
-          <InputFloat
-            key={e.uuid}
-            value={e.value}
-            onChange={v => handlePan(e, v)}
-          />
-        ))}
-      </ControlGroupComponent>
-    </React.Fragment>
+    <Dropzone onDrop={handleDrop}>
+      {({ getRootProps, getInputProps }) => (
+        <section
+          className={styles.dropzone}
+          style={{ border: `1px dotted ${theme.text_color}` }}
+        >
+          <div>
+            <canvas ref={canvas_ref} className={styles.canvas} />
+          </div>
+          <div
+            {...{
+              ...getRootProps(),
+              className: styles.dropzoneOverlay,
+              style: {
+                backgroundColor: theme.primary_color,
+                color: theme.text_color
+              }
+            }}
+          >
+            <input {...getInputProps()} />
+            <TextComponent>
+              <p>click or drop an image</p>
+            </TextComponent>
+          </div>
+        </section>
+      )}
+    </Dropzone>
   );
 });
 
