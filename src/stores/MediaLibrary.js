@@ -30,12 +30,16 @@ const Media = types
     asset: null
   }))
   .views(self => ({
-    getDimensions: () => {
+    getDimensions: () => { // incomplete
       console.log("self asset", self.asset);
       return [self.asset.width, self.asset.height];
     }
   }))
   .actions(self => ({
+    beforeDestroy: () => {
+      // revoke previous url!
+      if (self.dataURL) URL.revokeObjectURL(self.dataURL);
+    },
     setAsset: asset => {
       self.asset = asset;
     }

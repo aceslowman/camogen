@@ -217,12 +217,18 @@ export const LayoutVariants = {
       },
       {
         id: "SHADER_CONTROLS",
-        panel: "SHADER_CONTROLS"
-      }
+        panel: "SHADER_CONTROLS",
+        size: 1 / 3
+      },
+      {
+        id: "MEDIA_LIBRARY",
+        panel: "MEDIA_LIBRARY"
+      },
     ],
     panels: {
       SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
-      SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"]
+      SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"],
+      MEDIA_LIBRARY: PanelVariants["MEDIA_LIBRARY"]
     }
   },
   DEBUG: {

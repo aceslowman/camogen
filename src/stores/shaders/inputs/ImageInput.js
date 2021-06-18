@@ -76,6 +76,7 @@ const image = types
         }
       },
 
+      // removing
       beforeDestroy: () => {
         // revoke previous url!
         if (self.dataURL) URL.revokeObjectURL(self.dataURL);
