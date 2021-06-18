@@ -22,6 +22,7 @@ const MediaSelectorComponent = observer(props => {
   };
   
   const handleMediaSelect = value => {
+    consul.log
     setSelectedMedia(value);
     props.onMediaSelect(value);
   };
