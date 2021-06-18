@@ -2,14 +2,13 @@ import { observer } from "mobx-react";
 import React, { useLayoutEffect, useRef, useContext } from "react";
 import Dropzone from "react-dropzone";
 import MainContext from "../../../MainContext";
-
 import {
   ControlGroupComponent,
   InputSelect,
   InputFloat,
   TextComponent
 } from "maco-ui";
-import styles from "./ImageInputComponent.module.css";
+import styles from "./MediaSelectorComponent.module.css";
 
 const MediaSelectorComponent = observer(props => {
   const store = useContext(MainContext).store;

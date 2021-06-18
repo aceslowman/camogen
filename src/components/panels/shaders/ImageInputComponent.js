@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React, { useLayoutEffect, useRef, useContext } from "react";
 import Dropzone from "react-dropzone";
 import MainContext from "../../../MainContext";
-import MediaSelector from "../reusables/MediaSelector";
+import MediaSelector from "../reusables/MediaSelectorComponent";
 
 import {
   ControlGroupComponent,
