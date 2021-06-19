@@ -77,9 +77,9 @@ const MediaLibrary = observer(props => {
 
   return (
     <GenericPanel panel={props.panel}>
-      <SplitContainer horizontal className={style.wrapper}>
+      <SplitContainer auto className={style.wrapper}>
         <Dropzone
-          defaultSize={0.7}
+          defaultsize={0.7}
           onDrop={handleDrop}
           // onDragEnter={() => {}}
           // onDragLeave={() => {}}
@@ -101,27 +101,38 @@ const MediaLibrary = observer(props => {
         </Dropzone>
 
         <div className={style.itemInfo}>
-          <div>
-          {selectedFile && (
-            <TextComponent>
-              <p>name: {selectedMedia.name}</p>
-              <p>path: {selectedMedia.path}</p>
-              <p>size: {filesize(selectedMedia.size).human()}</p>
-              <p>type: {selectedMedia.type}</p>
-              <p>dimensions: {selectedMedia.getDimensions()}</p>
-            </TextComponent>
-          )}          
-          </div>
+          <SplitContainer auto>
+            <div>
+              {selectedFile && (
+                <TextComponent>
+                  <p>name: {selectedMedia.name}</p>
+                  <p>path: {selectedMedia.path}</p>
+                  <p>size: {filesize(selectedMedia.size).human()}</p>
+                  <p>type: {selectedMedia.type}</p>
+                  <p>dimensions: {selectedMedia.getDimensions()}</p>
+                </TextComponent>
+              )}
+            </div>
 
-          <div
-            style={{
-              // alignSelf: "flex-end",
-              backgroundColor: theme.primary_color,
-              color: theme.text_color
-            }}
-          >
-            <TextComponent>usage: {`${filesize(store.mediaLibrary.getTotalSize()).human()} / ${filesize(store.mediaLibrary.getAllowedSize()).human()}`}</TextComponent>
-          </div>
+            <div
+              style={{
+                // alignSelf: "flex-end",
+                backgroundColor: theme.primary_color,
+                color: theme.text_color,
+                height:'100%',
+                width:'100%'
+              }}
+            >
+              <TextComponent>
+                usage:{" "}
+                {`${filesize(
+                  store.mediaLibrary.getTotalSize()
+                ).human()} / ${filesize(
+                  store.mediaLibrary.getAllowedSize()
+                ).human()}`}
+              </TextComponent>
+            </div>
+          </SplitContainer>
         </div>
       </SplitContainer>
     </GenericPanel>
