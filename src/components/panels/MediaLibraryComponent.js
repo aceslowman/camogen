@@ -101,8 +101,8 @@ const MediaLibrary = observer(props => {
         </Dropzone>
 
         <div className={style.itemInfo}>
-          <SplitContainer auto>
-            <div>
+          <SplitContainer vertical>
+            <div className={style.details}>
               {selectedFile && (
                 <TextComponent>
                   <p>name: {selectedMedia.name}</p>
@@ -115,20 +115,17 @@ const MediaLibrary = observer(props => {
             </div>
 
             <div
+              className={style.usage}
               style={{
                 // alignSelf: "flex-end",
                 backgroundColor: theme.primary_color,
-                color: theme.text_color,
-                height:'100%',
-                width:'100%'
+                color: theme.text_color
               }}
             >
               <TextComponent>
-                usage:{" "}
+                usage:<br />
                 {`${filesize(
                   store.mediaLibrary.getTotalSize()
-                ).human()} / ${filesize(
-                  store.mediaLibrary.getAllowedSize()
                 ).human()}`}
               </TextComponent>
             </div>
