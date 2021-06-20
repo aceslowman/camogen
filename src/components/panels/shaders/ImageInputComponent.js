@@ -20,13 +20,7 @@ const ImageInputComponent = observer(props => {
 
   const handleDisplayMode = e => data.setDisplayMode(e);
   const handlePan = (param, v) => param.setValue(v);
-  
-  const handleMediaSelect = e => {
-    console.log('selectedMedia', e)
-    console.log('data to add to', getSnapshot(data))
-//     instead of using dataURL, use mediaID
-    data.assignMedia(e);
-  }  
+  const handleMediaSelect = e => data.assignMedia(e);
 
   return (
     <React.Fragment>

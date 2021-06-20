@@ -61,6 +61,9 @@ const MediaSelectorComponent = observer(props => {
 
   return (
     <React.Fragment>
+      {selectedMedia && (
+      
+      )}
       <Dropzone onDrop={handleDrop}>
         {({ getRootProps, getInputProps }) => (
           <section

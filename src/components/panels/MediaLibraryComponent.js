@@ -77,61 +77,65 @@ const MediaLibrary = observer(props => {
 
   return (
     <GenericPanel panel={props.panel}>
-      {!store.mediaLibrary.media.size && (
-        <div
-          className={style.noMedia}
-          style={{
-            backgroundColor: theme.secondary_color
-            // border: `1px dotted ${theme.text_color}`
-          }}
-        >
-          no media! drag files here
-        </div>
-      )}
-      {store.mediaLibrary.media.size && (
-        <SplitContainer auto className={style.wrapper}>
-          <Dropzone
-            defaultsize={0.7}
-            onDrop={handleDrop}
-            // onDragEnter={() => {}}
-            // onDragLeave={() => {}}
-          >
-            {({ getRootProps, getInputProps }) => (
+      <Dropzone        
+        onDrop={handleDrop}
+        // onDragEnter={() => {}}
+        // onDragLeave={() => {}}
+      >
+        {({ getRootProps, getInputProps }) => (
+          <React.Fragment>
+            {!store.mediaLibrary.media.size && (
               <div
                 {...getRootProps({
-                  className: style.itemPreviewGrid,
+                  className: style.noMedia,
                   style: {
-                    backgroundColor: theme.secondary_color
-                    // border: `1px dotted ${theme.text_color}`
+                    backgroundColor: theme.secondary_color,
+                    border: `1px dotted ${theme.text_color}`
                   }
                 })}
               >
-                {/*<input {...getInputProps()} />*/}
-                {previews}
+                <input {...getInputProps()} />
+                no media! drag files here
               </div>
             )}
-          </Dropzone>
-
-          <div className={style.itemInfo}>
-            <div className={style.details}>
-              {selectedFile && (
-                <TextComponent>
-                  <p>
-                    usage:
-                    <br />
-                    {`${filesize(store.mediaLibrary.getTotalSize()).human()}`}
-                  </p>
-                  <p>name: {selectedMedia.name}</p>
-                  <p>path: {selectedMedia.path}</p>
-                  <p>size: {filesize(selectedMedia.size).human()}</p>
-                  <p>type: {selectedMedia.type}</p>
-                  <p>dimensions: {selectedMedia.getDimensions()}</p>
-                </TextComponent>
-              )}
-            </div>
-          </div>
-        </SplitContainer>
-      )}
+            {store.mediaLibrary.media.size && (
+              <SplitContainer auto className={style.wrapper}>
+                <div
+                  defaultsize={0.7}
+                  {...getRootProps({
+                    className: style.itemPreviewGrid,
+                    style: {
+                      backgroundColor: theme.secondary_color
+                      // border: `1px dotted ${theme.text_color}`
+                    }
+                  })}
+                >                  
+                  {previews}
+                </div>
+                <div className={style.itemInfo}>
+                  <div className={style.details}>
+                    {selectedFile && (
+                      <TextComponent>
+                        <p>
+                          usage:
+                          {`${filesize(
+                            store.mediaLibrary.getTotalSize()
+                          ).human()}`}
+                        </p>
+                        <p>name: {selectedMedia.name}</p>
+                        <p>path: {selectedMedia.path}</p>
+                        <p>size: {filesize(selectedMedia.size).human()}</p>
+                        <p>type: {selectedMedia.type}</p>
+                        <p>dimensions: {selectedMedia.getDimensions()}</p>
+                      </TextComponent>
+                    )}
+                  </div>
+                </div>
+              </SplitContainer>
+            )}
+          </React.Fragment>
+        )}
+      </Dropzone>
     </GenericPanel>
   );
 });
