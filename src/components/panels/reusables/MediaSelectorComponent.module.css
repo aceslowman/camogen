@@ -4,6 +4,7 @@
 
 .dropzone {
   position: relative; 
+  cursor: pointer;
 }
 
 .dropzone > div {
@@ -22,6 +23,10 @@
 
 .dropzoneOverlay:hover {
   opacity: 80%;
+}
+
+.noMediaOverlay {
+  position: absolute;
 }
 
 .select {

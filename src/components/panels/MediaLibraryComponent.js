@@ -77,13 +77,14 @@ const MediaLibrary = observer(props => {
 
   return (
     <GenericPanel panel={props.panel}>
-      <Dropzone        
+      <Dropzone
         onDrop={handleDrop}
         // onDragEnter={() => {}}
         // onDragLeave={() => {}}
       >
         {({ getRootProps, getInputProps }) => (
           <React.Fragment>
+            {/* when there is NO media present */}
             {!store.mediaLibrary.media.size && (
               <div
                 {...getRootProps({
@@ -98,6 +99,8 @@ const MediaLibrary = observer(props => {
                 no media! drag files here
               </div>
             )}
+
+            {/* when there IS media present */}
             {store.mediaLibrary.media.size && (
               <SplitContainer auto className={style.wrapper}>
                 <div
@@ -106,10 +109,9 @@ const MediaLibrary = observer(props => {
                     className: style.itemPreviewGrid,
                     style: {
                       backgroundColor: theme.secondary_color
-                      // border: `1px dotted ${theme.text_color}`
                     }
                   })}
-                >                  
+                >
                   {previews}
                 </div>
                 <div className={style.itemInfo}>

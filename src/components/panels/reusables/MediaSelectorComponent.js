@@ -61,9 +61,6 @@ const MediaSelectorComponent = observer(props => {
 
   return (
     <React.Fragment>
-      {selectedMedia && (
-      
-      )}
       <Dropzone onDrop={handleDrop}>
         {({ getRootProps, getInputProps }) => (
           <section
@@ -76,7 +73,7 @@ const MediaSelectorComponent = observer(props => {
             <div
               {...{
                 ...getRootProps(),
-                className: styles.dropzoneOverlay,
+                className: selectedMedia ? styles.dropzoneOverlay : styles.noMediaOverlay,
                 style: {
                   backgroundColor: theme.primary_color,
                   color: theme.text_color
