@@ -78,7 +78,7 @@ const App = observer(props => {
       <MainProvider value={{ store: store }}>
         {props.store.ready && <MainToolbar />}
 
-        {<CanvasDisplay panel={canvasPanel} />}
+        {/*<CanvasDisplay panel={canvasPanel} />*/}
 
         {store.ready && (
           <GenericPanel panel={mainPanel} subtitle={store.name}>
