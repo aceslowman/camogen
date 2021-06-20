@@ -96,6 +96,13 @@ const MediaLibrary = observer(props => {
             >
               {/*<input {...getInputProps()} />*/}
               {previews}
+              {!store.mediaLibrary.media.size && (
+                <div className={style.noMedia}>
+                  <TextComponent>
+                    no media! drag files here
+                  </TextComponent>
+                </div>
+              )}
             </div>
           )}
         </Dropzone>
