@@ -16,6 +16,7 @@ import {
   MacoWrapperComponent
 } from "maco-ui";
 import "maco-ui/dist/index.css";
+import "./App.css";
 
 // Dialogs
 import MissingAssets from "./components/dialogs/MissingAssetsComponent";
@@ -74,7 +75,7 @@ const App = observer(props => {
   };
 
   return (
-    <MacoWrapperComponent store={store}>
+    <MacoWrapperComponent store={store} className='patterned'>
       <MainProvider value={{ store: store }}>
         {props.store.ready && <MainToolbar />}
 

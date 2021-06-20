@@ -1,0 +1,21 @@
+/*https://github.com/BillyNate/css-spreading-shapes/blob/master/dist/css/blueprint-grid.css*/
+.patterned {
+  background-color: #269;
+  background-image: -webkit-linear-gradient(
+      rgba(255, 255, 255, 0.2) 2px,
+      transparent 2px
+    ),
+    -webkit-linear-gradient(0deg, rgba(255, 255, 255, 0.2) 2px, transparent 2px),
+        -webkit-linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+            -webkit-linear-gradient(0deg, rgba(255, 255, 255, 0.2) 1px, transparent
+                  1px);
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.2) 2px,
+      transparent 2px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.2) 2px, transparent 2px),
+      linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+}
