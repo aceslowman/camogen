@@ -237,7 +237,7 @@ const CanvasDisplay = observer(props => {
         />
       }
       style={{
-        zIndex: 0
+        // zIndex: 0
       }}
     >
       <div ref={wrapper_ref} id="canvastest" className={style.canvastest}></div>
