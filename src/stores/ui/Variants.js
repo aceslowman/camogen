@@ -80,6 +80,19 @@ export const PanelVariants = {
     dimensions: [100, 300],
     position: [30, 30]
   },
+  CANVAS: {
+    id: "CANVAS",
+    title: "Canvas",
+    component_type: "CANVAS",
+    subtitle: "",
+    floating: false,
+    fullscreen: false,
+    canFloat: true,
+    canRemove: true,
+    canFullscreen: false,
+    dimensions: [100, 300],
+    position: [30, 30]
+  },  
   DEBUG: {
     id: "DEBUG",
     title: "Debug",
@@ -219,16 +232,30 @@ export const LayoutVariants = {
         id: "SHADER_CONTROLS",
         panel: "SHADER_CONTROLS",
         size: 1 / 3
-      },
+      },    
       {
-        id: "MEDIA_LIBRARY",
-        panel: "MEDIA_LIBRARY"
-      },
+        id: "inner",
+        direction: "VERTICAL",
+        size: 1 / 4,
+        children: [
+          {
+            id: "MEDIA_LIBRARY",
+            panel: "MEDIA_LIBRARY",
+            size: 3 / 4
+          },
+          {
+            id: "CANVAS",
+            panel: "CANVAS",
+            size: 1 / 4
+          }
+        ]
+      }
     ],
     panels: {
       SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
       SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"],
-      MEDIA_LIBRARY: PanelVariants["MEDIA_LIBRARY"]
+      MEDIA_LIBRARY: PanelVariants["MEDIA_LIBRARY"],
+      CANVAS: PanelVariants["CANVAS"]
     }
   },
   DEBUG: {
