@@ -1,5 +1,5 @@
 import { getParent, getSnapshot, types } from "mobx-state-tree";
-import {nanoid} from 'nanoid';
+import { nanoid } from "nanoid";
 
 export const PanelVariants = {
   SHADER_GRAPH: {
@@ -92,7 +92,7 @@ export const PanelVariants = {
     canFullscreen: false,
     dimensions: [100, 300],
     position: [30, 30]
-  },  
+  },
   DEBUG: {
     id: "DEBUG",
     title: "Debug",
@@ -232,21 +232,21 @@ export const LayoutVariants = {
         id: "SHADER_CONTROLS",
         panel: "SHADER_CONTROLS",
         size: 1 / 3
-      },    
+      },
       {
         id: "inner",
         direction: "VERTICAL",
         size: 1 / 4,
         children: [
           {
-            id: "MEDIA_LIBRARY",
-            panel: "MEDIA_LIBRARY",
-            size: 1 / 4
-          },
-          {
             id: "CANVAS",
             panel: "CANVAS",
             size: 3 / 4
+          },
+          {
+            id: "MEDIA_LIBRARY",
+            panel: "MEDIA_LIBRARY",
+            size: 1 / 4
           }
         ]
       }
@@ -317,12 +317,12 @@ export const LayoutVariants = {
       SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
       SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"],
       PARAMETER_EDITOR: PanelVariants["PARAMETER_EDITOR"]
-    },    
+    }
   },
   PREFERENCES: {
     id: "PREFERENCES",
     title: "Preferences",
-    size: 1, 
+    size: 1,
     children: [
       {
         id: "PREFERENCES",
@@ -331,13 +331,13 @@ export const LayoutVariants = {
       }
     ],
     panels: {
-      PREFERENCES: PanelVariants['PREFERENCES']
+      PREFERENCES: PanelVariants["PREFERENCES"]
     }
   },
   MEDIA_LIBRARY: {
     id: "MEDIA_LIBRARY",
     title: "Media Library",
-    size: 1, 
+    size: 1,
     children: [
       {
         id: "MEDIA_LIBRARY",
@@ -346,7 +346,7 @@ export const LayoutVariants = {
       }
     ],
     panels: {
-      MEDIA_LIBRARY: PanelVariants['MEDIA_LIBRARY']
+      MEDIA_LIBRARY: PanelVariants["MEDIA_LIBRARY"]
     }
   }
 };
