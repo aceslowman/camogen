@@ -85,7 +85,7 @@ const MediaLibrary = observer(props => {
         {({ getRootProps, getInputProps }) => (
           <React.Fragment>
             {/* when there is NO media present */}
-            {!store.mediaLibrary.media.size && (
+            {(store.mediaLibrary.media.size === 0) && (
               <div
                 {...getRootProps({
                   className: style.noMedia,
@@ -101,7 +101,7 @@ const MediaLibrary = observer(props => {
             )}
 
             {/* when there IS media present */}
-            {store.mediaLibrary.media.size && (
+            {(store.mediaLibrary.media.size > 0) && (
               <SplitContainer auto className={style.wrapper}>
                 <div
                   defaultsize={0.7}
