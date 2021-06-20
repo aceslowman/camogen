@@ -98,9 +98,7 @@ const MediaLibrary = observer(props => {
               {previews}
               {!store.mediaLibrary.media.size && (
                 <div className={style.noMedia}>
-                  <TextComponent>
                     no media! drag files here
-                  </TextComponent>
                 </div>
               )}
             </div>
