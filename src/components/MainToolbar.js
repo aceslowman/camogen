@@ -55,17 +55,17 @@ const MainToolbar = observer(props => {
         zIndex: 6
       }}
       items={{
-        Fullscreen: {
-          id: "Fullscreen",
-          title: canvasPanel.fullscreen ? "float canvas" : "fullscreen canvas",
-          label: "✳",
-          onClick: () => {
-            canvasPanel.toggleFullscreen();
-            canvasPanel.toggleFloating();
-            canvasPanel.fitScreen();
-          },
-          highlight: !canvasPanel.fullscreen
-        },
+        // Fullscreen: {
+        //   id: "Fullscreen",
+        //   // title: canvasPanel.fullscreen ? "float canvas" : "fullscreen canvas",
+        //   label: "✳",
+        //   onClick: () => {
+        //     canvasPanel.toggleFullscreen();
+        //     canvasPanel.toggleFloating();
+        //     canvasPanel.fitScreen();
+        //   },
+        //   // highlight: !canvasPanel.fullscreen
+        // },
         Title: {
           id: "Title",
           label: <h1>camogen</h1>,

@@ -241,12 +241,12 @@ export const LayoutVariants = {
           {
             id: "MEDIA_LIBRARY",
             panel: "MEDIA_LIBRARY",
-            size: 3 / 4
+            size: 1 / 4
           },
           {
             id: "CANVAS",
             panel: "CANVAS",
-            size: 1 / 4
+            size: 3 / 4
           }
         ]
       }

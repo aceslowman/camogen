@@ -101,35 +101,22 @@ const MediaLibrary = observer(props => {
         </Dropzone>
 
         <div className={style.itemInfo}>
-          <SplitContainer vertical>
-            <div className={style.details}>
-              {selectedFile && (
-                <TextComponent>
-                  <p>name: {selectedMedia.name}</p>
-                  <p>path: {selectedMedia.path}</p>
-                  <p>size: {filesize(selectedMedia.size).human()}</p>
-                  <p>type: {selectedMedia.type}</p>
-                  <p>dimensions: {selectedMedia.getDimensions()}</p>
-                </TextComponent>
-              )}
-            </div>
-
-            <div
-              className={style.usage}
-              style={{
-                // alignSelf: "flex-end",
-                backgroundColor: theme.primary_color,
-                color: theme.text_color
-              }}
-            >
+          <div className={style.details}>
+            {selectedFile && (
               <TextComponent>
-                usage:<br />
-                {`${filesize(
-                  store.mediaLibrary.getTotalSize()
-                ).human()}`}
+                <p>
+                  usage:
+                  <br />
+                  {`${filesize(store.mediaLibrary.getTotalSize()).human()}`}
+                </p>
+                <p>name: {selectedMedia.name}</p>
+                <p>path: {selectedMedia.path}</p>
+                <p>size: {filesize(selectedMedia.size).human()}</p>
+                <p>type: {selectedMedia.type}</p>
+                <p>dimensions: {selectedMedia.getDimensions()}</p>
               </TextComponent>
-            </div>
-          </SplitContainer>
+            )}
+          </div>
         </div>
       </SplitContainer>
     </GenericPanel>
