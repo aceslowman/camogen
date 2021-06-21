@@ -16,7 +16,7 @@ const Target = types
 
       let p = root_store.p5_instance;
 
-      self.ref = p.createGraphics(p.width, p.height, p.WEBGL);
+      self.ref = p.createGraphics(p.width ?? 512, p.height ?? 512, p.WEBGL);
     },
 
     clear: () => {

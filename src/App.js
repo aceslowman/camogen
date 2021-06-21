@@ -105,10 +105,8 @@ const App = observer(props => {
               store.setShowMissingAssets(!store.showMissingAssets)
             }
           />
-        )}
-        
-        <canvas id="MAINOUTPUT" />
-      </MainProvider>
+        )}        
+      </MainProvider>      
     </MacoWrapperComponent>
   );
 });

@@ -5,7 +5,7 @@
     */
     // let container = document.getElementById("MAINOUTPUT");
 
-    let canvas = p.createCanvas(50, 50);
+    let canvas = p.createCanvas(512, 512);
     p.frameRate(30);
 
     // container.append(canvas.canvas);
@@ -13,6 +13,8 @@
     // let bounds = container.getBoundingClientRect();
 
     // canvas.resize(bounds.width, bounds.height);
+    // TEMP
+    // canvas.resize(512, 512);
     p.background(store.ui.theme.secondary_color);
     
     // console.log('p', p)
@@ -30,7 +32,7 @@
             shader_node.data.update(p);
           }
         }
-
+        console.log(store.scene.targets[0].ref)
         p.image(store.scene.targets[0].ref, 0, 0, p.width, p.height);
       } else {
         p.background(0);
