@@ -238,14 +238,14 @@ const CanvasDisplay = observer(props => {
                 alignSelf: "flex-end"
               }
             },
-            Zoom: {
+            Zoom: { // TODO IN PROGRESS
               id: "Zoom",
               label: (
                 <div
                   style={{
                     display: "flex",
                     flexFlow: "row",
-                    width: "80px",
+                    width: "105px",
                     alignItems: "center"
                   }}
                 >

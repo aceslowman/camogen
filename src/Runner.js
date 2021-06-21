@@ -1,5 +1,8 @@
  const Runner = (p, store) => {
   p.setup = () => {
+    /*
+      TODO this should point to an offscreen graphics buffer
+    */
     let container = document.getElementById("canvastest");
 
     let canvas = p.createCanvas(50, 50);
@@ -12,7 +15,7 @@
     canvas.resize(bounds.width, bounds.height);
     p.background(store.ui.theme.secondary_color);
     
-    console.log('p', p)
+    // console.log('p', p)
   };
 
   p.draw = () => {
