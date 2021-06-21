@@ -17,6 +17,7 @@ const CanvasDisplay = observer(props => {
   const [useKeys, setUseKeys] = useState(false);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+  const [zoom, setZoom] = useState(50);
   const wrapper_ref = useRef(null);
   const panel_ref = useRef(null);
 
@@ -46,6 +47,11 @@ const CanvasDisplay = observer(props => {
     // make sure panel is detached so it can change size
     props.panel.setFloating(true);
     props.panel.setFullscreen(false);
+  };
+
+  const handleZoomChange = amount => {
+    console.log("amount", amount);
+    setZoom(amount);
   };
 
   const handlePlay = e => store.transport.play();
@@ -226,33 +232,36 @@ const CanvasDisplay = observer(props => {
                       />
                     </div>
                   )
-                },
-                // create zoom selector
-                ZoomSelect: {
-                  id: "ZoomSelect",
-                  label: (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexFlow: "row"
-                      }}
-                    >
-                      <label>w:</label>
-                      <input
-                        className={style.dimensions_input}
-                        type="number"
-                        placeholder={width}
-                        onBlur={e => {
-                          handleDimensionChange(e.target.value, height);
-                        }}
-                      />
-                    </div>
-                  )
                 }
               },
               style: {
                 alignSelf: "flex-end"
               }
+            },
+            Zoom: {
+              id: "Zoom",
+              label: (
+                <div
+                  style={{
+                    display: "flex",
+                    flexFlow: "row",
+                    width: "80px",
+                    alignItems: "center"
+                  }}
+                >
+                  <label>zoom: </label>
+                  <input
+                    className={style.zoom_input}
+                    type="number"
+                    placeholder={50}
+                    step=""
+                    onBlur={e => {
+                      handleZoomChange(e.target.value);
+                    }}
+                  />
+                  %
+                </div>
+              )
             }
           }}
         />
