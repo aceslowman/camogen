@@ -32,7 +32,6 @@
             shader_node.data.update(p);
           }
         }
-        console.log(store.scene.targets[0].ref)
         p.image(store.scene.targets[0].ref, 0, 0, p.width, p.height);
       } else {
         p.background(0);
