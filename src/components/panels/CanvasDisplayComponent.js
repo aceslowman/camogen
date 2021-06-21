@@ -21,10 +21,11 @@ const CanvasDisplay = observer(props => {
   const wrapper_ref = useRef(null);
   const panel_ref = useRef(null);
   
-  const [showDimensions, setShowDimensions] = useState(false);
-  const [showCapture, setShowCapture] = useState(false);
+  const [showDimensions, setShowDimensions] = useState(true);
+  const [showCapture, setShowCapture] = useState(true);
   const [showTransport, setShowTransport] = useState(false);
 
+  /* I no longer need to set the dimensions for the canvas here */
   useResizeObserver(() => {
     if (store.breakoutControlled) return;
     if (!store.p5_instance) return;
@@ -37,20 +38,25 @@ const CanvasDisplay = observer(props => {
 
     let w = Math.round(inner_bounds.width);
     let h = Math.round(inner_bounds.height);
-
-    store.resizeCanvas(w, h);
+   
+    // if(fit panel)
+    // store.resizeCanvas(w, h);
 
     setWidth(w);
     setHeight(h);
   }, wrapper_ref);
 
   const handleDimensionChange = (w, h) => {
-    setWidth(w);
-    setHeight(h);
+//     setWidth(w);
+//     setHeight(h);
 
-    // make sure panel is detached so it can change size
-    props.panel.setFloating(true);
-    props.panel.setFullscreen(false);
+//     // make sure panel is detached so it can change size
+//     props.panel.setFloating(true);
+//     props.panel.setFullscreen(false);
+    
+    /* this is no longer change the panel size, 
+    but instead this is the internal texture size*/
+    store.resizeCanvas(w, h);
   };
 
   const handleZoomChange = amount => {
@@ -81,7 +87,7 @@ const CanvasDisplay = observer(props => {
     let _w = width + offset_x;
     let _h = height + offset_y;
 
-    props.panel.setDimensions([_w, _h]);
+    props.panel.setDimensions([_w, _h]);    
   }, [width, height]);
 
   let toolbar = {};
@@ -295,7 +301,7 @@ const CanvasDisplay = observer(props => {
         }
       }
     >
-      <div ref={wrapper_ref} id="canvastest" className={style.canvastest}></div>
+      <div ref={wrapper_ref} className={style.canvastest}></div>
     </GenericPanel>
   );
 });

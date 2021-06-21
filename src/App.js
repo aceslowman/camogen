@@ -106,6 +106,8 @@ const App = observer(props => {
             }
           />
         )}
+        
+        <canvas id="MAINOUTPUT" />
       </MainProvider>
     </MacoWrapperComponent>
   );

@@ -3,16 +3,16 @@
     /*
       TODO this should point to an offscreen graphics buffer
     */
-    let container = document.getElementById("canvastest");
+    // let container = document.getElementById("MAINOUTPUT");
 
     let canvas = p.createCanvas(50, 50);
     p.frameRate(30);
 
-    container.append(canvas.canvas);
+    // container.append(canvas.canvas);
 
-    let bounds = container.getBoundingClientRect();
+    // let bounds = container.getBoundingClientRect();
 
-    canvas.resize(bounds.width, bounds.height);
+    // canvas.resize(bounds.width, bounds.height);
     p.background(store.ui.theme.secondary_color);
     
     // console.log('p', p)
