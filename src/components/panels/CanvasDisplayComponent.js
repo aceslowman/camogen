@@ -72,7 +72,6 @@ const CanvasDisplay = observer(props => {
     let _h = height + offset_y;
 
     props.panel.setDimensions([_w, _h]);
-    
   }, [width, height]);
 
   return (
@@ -81,7 +80,7 @@ const CanvasDisplay = observer(props => {
       showTitle={!props.panel.fullscreen}
       floating={false}
       onRef={panel_ref}
-      onContextMenu={()=>store.ui.context.setContextmenu()}
+      onContextMenu={() => store.ui.context.setContextmenu()}
       footbar={
         <ToolbarComponent
           style={{
@@ -227,6 +226,28 @@ const CanvasDisplay = observer(props => {
                       />
                     </div>
                   )
+                },
+                // create zoom selector
+                ZoomSelect: {
+                  id: "ZoomSelect",
+                  label: (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexFlow: "row"
+                      }}
+                    >
+                      <label>w:</label>
+                      <input
+                        className={style.dimensions_input}
+                        type="number"
+                        placeholder={width}
+                        onBlur={e => {
+                          handleDimensionChange(e.target.value, height);
+                        }}
+                      />
+                    </div>
+                  )
                 }
               },
               style: {
@@ -236,9 +257,11 @@ const CanvasDisplay = observer(props => {
           }}
         />
       }
-      style={{
-        // zIndex: 0
-      }}
+      style={
+        {
+          // zIndex: 0
+        }
+      }
     >
       <div ref={wrapper_ref} id="canvastest" className={style.canvastest}></div>
     </GenericPanel>
