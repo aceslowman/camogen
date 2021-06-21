@@ -18,10 +18,12 @@ const CanvasDisplay = observer(props => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [zoom, setZoom] = useState(50);
-  const [showTransport, setShowTransport] = useState(false);
-  const [showCanvas, setShowCanvas] = useState(false);
   const wrapper_ref = useRef(null);
   const panel_ref = useRef(null);
+  
+  const [showDimensions, setShowDimensions] = useState(false);
+  const [showCapture, setShowCapture] = useState(false);
+  const [showTransport, setShowTransport] = useState(false);
 
   useResizeObserver(() => {
     if (store.breakoutControlled) return;
@@ -52,6 +54,7 @@ const CanvasDisplay = observer(props => {
   };
 
   const handleZoomChange = amount => {
+    console.log("amount", amount);
     setZoom(amount);
   };
 
@@ -83,81 +86,192 @@ const CanvasDisplay = observer(props => {
 
   let toolbar = {};
 
-  const transport = {
-    play: {
-      id: "play",
-      title: "play",
-      label: "▶",
-      onClick: handlePlay,
-      highlight: store.transport.playing
-    },
-    stop: {
-      id: "stop",
-      title: "stop",
-      label: "■",
-      onClick: handleStop,
-      highlight: !store.transport.playing
-    },
-    record: {
-      id: "record",
-      title: "record",
-      label: "●",
-      // label: store.transport.recording
-      // // ? `● ${Date.now() - store.transport.recordStart}`
-      // : "●",
-      onClick: handleRecord,
-      highlight: store.transport.recording,
-      style: {
-        color: store.transport.recording ? "red" : store.ui.theme.text_color
-      }
-    },
-    rewind: {
-      id: "rewind",
-      label: "rewind",
-      onClick: handleSkipToStart,
-      highlight: store.transport.playing
-    },
-    Frameclock: {
-      id: "Frameclock",
-      label: `frames: ${store.transport.frameclock}`,
-      style: {}
-    }
-  };  
-
-  const capture = {
-    snap: {
-      id: "snap",
-      title: "snap",
-      label: "snap",
-      onClick: handleSnap
-    },
-
-    format: {
-      id: "format",
-      label: "format " + format,
-      dropDown: {
-        png: {
-          id: "png",
-          label: "png",
-          onClick: () => handleFormatSelect("PNG"),
-          highlight: format === "PNG"
+  if (showDimensions) {
+    toolbar = {
+      ...toolbar,
+      Zoom: {
+        // TODO IN PROGRESS
+        id: "Zoom",
+        label: (
+          <div
+            style={{
+              display: "flex",
+              flexFlow: "row",
+              width: "105px",
+              alignItems: "center"
+            }}
+          >
+            <label>zoom: </label>
+            <input
+              className={style.zoom_input}
+              type="number"
+              placeholder={50}
+              step=""
+              onBlur={e => {
+                handleZoomChange(e.target.value);
+              }}
+            />
+            %
+          </div>
+        )
+      },
+      Dimensions: {
+        id: "Dimensions",
+        label: `[${width} x ${height}]`,
+        dropDown: {
+          standard: {
+            id: "standard",
+            label: "standard",
+            dropDown: {
+              "256x256": {
+                id: "256x256",
+                label: "256x256",
+                onClick: () => handleDimensionChange(256, 256)
+              },
+              "512x512": {
+                id: "512x512",
+                label: "512x512",
+                onClick: () => handleDimensionChange(512, 512)
+              },
+              "1024x1024": {
+                id: "1024x1024",
+                label: "1024x1024",
+                onClick: () => handleDimensionChange(1024, 1024)
+              }
+            }
+          },
+          instagram: {
+            id: "instagram",
+            label: "instagram",
+            dropDown: {
+              landscape1080x608: {
+                id: "landscape1080x608",
+                label: "landscape 1080x608",
+                onClick: () => handleDimensionChange(1080, 608)
+              },
+              square1080x1080: {
+                id: "square1080x1080",
+                label: "square 1080x1080",
+                onClick: () => handleDimensionChange(1080, 1080)
+              },
+              portrait1080x1350: {
+                id: "portrait1080x1350",
+                label: "portrait 1080x1350",
+                onClick: () => handleDimensionChange(1080, 1350)
+              }
+            }
+          },
+          DimensionSelect: {
+            id: "DimensionSelect",
+            label: (
+              <div
+                style={{
+                  display: "flex",
+                  flexFlow: "row"
+                }}
+              >
+                <label>w:</label>
+                <input
+                  className={style.dimensions_input}
+                  type="number"
+                  placeholder={width}
+                  onBlur={e => {
+                    handleDimensionChange(e.target.value, height);
+                  }}
+                />
+                <label>h:</label>
+                <input
+                  className={style.dimensions_input}
+                  type="number"
+                  placeholder={height}
+                  onBlur={e => {
+                    handleDimensionChange(width, e.target.value);
+                  }}
+                />
+              </div>
+            )
+          }
         },
-        jpeg: {
-          id: "jpeg",
-          label: "jpeg",
-          onClick: () => handleFormatSelect("JPEG"),
-          highlight: format === "JPEG"
+        style: {
+          alignSelf: "flex-end"
         }
       }
-    }
-  };
-  
-  if(showTransport) {
-    toolbar = {...toolbar, ...transport}
+    };
   }
-  
-  if(showCapture) {
-    toolbar = {...toolbar, ...capture}
+
+  if (showCapture) {
+    toolbar = {
+      ...toolbar,
+      snap: {
+        id: "snap",
+        title: "snap",
+        label: "snap",
+        onClick: handleSnap
+      },
+
+      format: {
+        id: "format",
+        label: "format " + format,
+        dropDown: {
+          png: {
+            id: "png",
+            label: "png",
+            onClick: () => handleFormatSelect("PNG"),
+            highlight: format === "PNG"
+          },
+          jpeg: {
+            id: "jpeg",
+            label: "jpeg",
+            onClick: () => handleFormatSelect("JPEG"),
+            highlight: format === "JPEG"
+          }
+        }
+      }
+    };
+  }
+
+  if (showTransport) {
+    toolbar = {
+      ...toolbar,
+      play: {
+        id: "play",
+        title: "play",
+        label: "▶",
+        onClick: handlePlay,
+        highlight: store.transport.playing
+      },
+      stop: {
+        id: "stop",
+        title: "stop",
+        label: "■",
+        onClick: handleStop,
+        highlight: !store.transport.playing
+      },
+      record: {
+        id: "record",
+        title: "record",
+        label: "●",
+        // label: store.transport.recording
+        // // ? `● ${Date.now() - store.transport.recordStart}`
+        // : "●",
+        onClick: handleRecord,
+        highlight: store.transport.recording,
+        style: {
+          color: store.transport.recording ? "red" : store.ui.theme.text_color
+        }
+      },
+      rewind: {
+        id: "rewind",
+        label: "rewind",
+        onClick: handleSkipToStart,
+        highlight: store.transport.playing
+      },
+      Frameclock: {
+        id: "Frameclock",
+        label: `frames: ${store.transport.frameclock}`,
+        style: {}
+      }
+    };
   }
 
   return (
