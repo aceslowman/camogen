@@ -79,21 +79,9 @@ const CanvasDisplay = observer(props => {
 
     props.panel.setDimensions([_w, _h]);
   }, [width, height]);
-
-  return (
-    <GenericPanel
-      panel={props.panel}
-      showTitle={!props.panel.fullscreen}
-      floating={false}
-      onRef={panel_ref}
-      onContextMenu={() => store.ui.context.setContextmenu()}
-      footbar={
-        <ToolbarComponent
-          style={{
-            zIndex: 0
-          }}
-          items={{
-            play: {
+  
+  const transport = {
+    play: {
               id: "play",
               title: "play",
               label: "▶",
@@ -122,6 +110,22 @@ const CanvasDisplay = observer(props => {
                   : store.ui.theme.text_color
               }
             },
+  }
+
+  return (
+    <GenericPanel
+      panel={props.panel}
+      showTitle={!props.panel.fullscreen}
+      floating={false}
+      onRef={panel_ref}
+      onContextMenu={() => store.ui.context.setContextmenu()}
+      footbar={
+        <ToolbarComponent
+          style={{
+            zIndex: 0
+          }}
+          items={{
+            
             snap: {
               id: "snap",
               title: "snap",
