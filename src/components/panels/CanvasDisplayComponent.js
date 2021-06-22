@@ -60,7 +60,6 @@ const CanvasDisplay = observer(props => {
   };
 
   const handleZoomChange = amount => {
-    console.log("amount", amount);
     setZoom(amount);
   };
 
@@ -301,7 +300,7 @@ const CanvasDisplay = observer(props => {
         }
       }
     >
-      <div ref={wrapper_ref} className={style.canvastest}></div>
+      <canvas ref={wrapper_ref} className={style.canvas} />
     </GenericPanel>
   );
 });
