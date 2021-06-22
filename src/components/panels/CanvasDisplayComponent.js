@@ -99,10 +99,57 @@ const CanvasDisplay = observer(props => {
     setZoom(prev => prev + e.deltaY / 100);
   };
 
-  const handleCanvasMouseDown = e => {
-    if (e.touches && e.touches[0]) e = e.touches[0]
-    console.log("dragging", e.target);
-    // setPan()
+  const handleCanvasMouseDrag = e => {
+    let dragging = true;
+    let 
+
+    const handleMove = e => {
+      if (e.touches) e = e.touches[0];
+
+      if (e.pageY && dragging) {
+        let canvas_bounds = wrapper_ref.current.getBoundingClientRect();
+        
+        let x, y;
+        
+        // need offset so image corner doesn't snap to mouse
+
+        x = e.pageX - canvas_bounds.x;
+        y = e.pageY - canvas_bounds.y;
+
+        console.log([x, y]);
+        setPan({x,y})
+      }
+    };
+
+    const handleMoveEnd = e => {
+      dragging = false;
+      if (e.touches) e = e.touches[0];
+
+      if (e.pageY && dragging) {
+        let x, y;
+
+        x = e.pageX;
+        y = e.pageY;
+
+        console.log([x, y]);
+      }
+
+      document.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseup", handleMoveEnd);
+      document.removeEventListener("touchmove", handleMove);
+      document.removeEventListener("touchend", handleMoveEnd);
+    };
+
+    if (e.touches && e.touches[0]) e = e.touches[0];
+    
+            
+    // need offset so image corner doesn't snap to mouse
+    
+
+    document.addEventListener("mousemove", handleMove);
+    document.addEventListener("mouseup", handleMoveEnd);
+    document.addEventListener("touchmove", handleMove);
+    document.addEventListener("touchend", handleMoveEnd);
   };
 
   useLayoutEffect(() => {
@@ -326,9 +373,8 @@ const CanvasDisplay = observer(props => {
         ref={wrapper_ref}
         className={style.canvasContainer}
         onWheel={handleCanvasOnWheel}
-        onMouseDown={handleCanvasMouseDown}
-        onTouchStart={handleCanvasMouseDown}
-           
+        onMouseDown={handleCanvasMouseDrag}
+        onTouchStart={handleCanvasMouseDrag}
       >
         <canvas ref={canvas_ref} className={style.canvas} />
       </div>
