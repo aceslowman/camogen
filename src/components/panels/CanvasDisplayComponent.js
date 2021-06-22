@@ -89,9 +89,12 @@ const CanvasDisplay = observer(props => {
         
     console.log("initializing", canvas_ref.current);
     let gl = canvas_ref.current.getContext('2d');
+    gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
+    gl.fillStyle = "#FF0000";
+    gl.fillRect(0,0,60,70)
     
-    console.log('P5 CANVAS', store.canvas)
-    // gl.drawImage(store.p5_instance.canvas,0,0);
+    // console.log('P5 CANVAS', store.canvas)
+    // gl.drawImage(store.canvas,0,0);
   }, [store.ready, store.canvas]);
 
   let toolbar = {};

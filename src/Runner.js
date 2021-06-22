@@ -21,6 +21,7 @@
     
     /* TODO: this isn't happening until after elements of already rendered */
     console.log('setup new canvas...', canvas)
+    store.setReady(true);
   };
 
   p.draw = () => {

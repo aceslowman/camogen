@@ -299,7 +299,7 @@ const RootStore = types
         // self.scene.shaderGraph.update();
         // self.scene.shaderGraph.afterUpdate();
 
-        self.setReady(true);
+        // self.setReady(true);
         // console.log("layouts", getSnapshot(self.ui.layouts.get("MAIN")));
         // self.ui.layouts.get('main').fitScreen();
         // self.ui.layouts.get('main').center();
