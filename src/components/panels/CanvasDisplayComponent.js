@@ -10,6 +10,7 @@ import useResizeObserver from "../hooks/ResizeHook";
 import { GenericPanel, ToolbarComponent, InputSelect } from "maco-ui";
 import { observer } from "mobx-react";
 import style from "./CanvasDisplayComponent.module.css";
+import { getSnapshot } from 'mobx-state-tree';
 
 const CanvasDisplay = observer(props => {
   const store = useContext(MainContext).store;
@@ -84,6 +85,11 @@ const CanvasDisplay = observer(props => {
 
   useEffect(() => {
     console.log("initializing", canvas_ref.current);
+    
+    let gl = canvas_ref.current.getContext('2d');
+    
+    console.log(store.p5_instance.canvas)
+    gl.drawImage(store.p5_instance.canvas,0,0);
   }, []);
 
   let toolbar = {};
