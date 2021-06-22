@@ -65,8 +65,8 @@ const CanvasDisplay = observer(props => {
   const redrawCanvas = () => {
     let gl = canvas_ref.current.getContext("2d");
     gl.clearRect(0, 0, gl.canvas.width, gl.canvas.height);
-    gl.fillStyle = "#FF0000";
-    gl.fillRect(20, 20, 150, 100);
+    // gl.fillStyle = "#FF0000";
+    // gl.fillRect(20, 20, 150, 100);
     gl.drawImage(
       store.canvas,
       pan.x,
@@ -102,7 +102,7 @@ const CanvasDisplay = observer(props => {
   const handleCanvasMouseDrag = e => {
     let dragging = true;
     let canvas_bounds = wrapper_ref.current.getBoundingClientRect();
-    let offset = {x:e.pageX - canvas_bounds.x,y:e.pageY - canvas_bounds.y};
+    let offset = {x:e.pageX - canvas_bounds.x - pan.x,y:e.pageY - canvas_bounds.y - pan.y};
 
     const handleMove = e => {
       if (e.touches) e = e.touches[0];
@@ -110,14 +110,9 @@ const CanvasDisplay = observer(props => {
       if (e.pageY && dragging) {
         let canvas_bounds = wrapper_ref.current.getBoundingClientRect();
         
-        let x, y;
-        
-        // need offset so image corner doesn't snap to mouse
+        let x = e.pageX - canvas_bounds.x - offset.x;
+        let y = e.pageY - canvas_bounds.y - offset.y;
 
-        x = e.pageX - canvas_bounds.x - offset.x;
-        y = e.pageY - canvas_bounds.y - offset.y;
-
-        console.log([x, y]);
         setPan({x,y})
       }
     };
@@ -127,12 +122,12 @@ const CanvasDisplay = observer(props => {
       if (e.touches) e = e.touches[0];
 
       if (e.pageY && dragging) {
-        let x, y;
+        let canvas_bounds = wrapper_ref.current.getBoundingClientRect();
+        
+        let x = e.pageX - canvas_bounds.x - offset.x;
+        let y = e.pageY - canvas_bounds.y - offset.y;
 
-        x = e.pageX;
-        y = e.pageY;
-
-        console.log([x, y]);
+        setPan({x,y});
       }
 
       document.removeEventListener("mousemove", handleMove);
@@ -143,10 +138,6 @@ const CanvasDisplay = observer(props => {
 
     if (e.touches && e.touches[0]) e = e.touches[0];
     
-            
-    // need offset so image corner doesn't snap to mouse
-    
-
     document.addEventListener("mousemove", handleMove);
     document.addEventListener("mouseup", handleMoveEnd);
     document.addEventListener("touchmove", handleMove);
@@ -192,7 +183,7 @@ const CanvasDisplay = observer(props => {
             <input
               className={style.zoom_input}
               type="number"
-              placeholder={50}
+              value={zoom}
               step=""
               onChange={e => {
                 handleZoomChange(e.target.value);
