@@ -10,7 +10,7 @@ import useResizeObserver from "../hooks/ResizeHook";
 import { GenericPanel, ToolbarComponent, InputSelect } from "maco-ui";
 import { observer } from "mobx-react";
 import style from "./CanvasDisplayComponent.module.css";
-import { getSnapshot } from 'mobx-state-tree';
+import { getSnapshot } from "mobx-state-tree";
 
 const CanvasDisplay = observer(props => {
   const store = useContext(MainContext).store;
@@ -49,6 +49,8 @@ const CanvasDisplay = observer(props => {
 
     canvas_ref.current.width = w;
     canvas_ref.current.height = h;
+    canvas_ref.current.style.width = w + "px";
+    canvas_ref.current.style.height = h + "px";
   }, wrapper_ref);
 
   const handleDimensionChange = (w, h) => {
@@ -86,13 +88,13 @@ const CanvasDisplay = observer(props => {
   useEffect(() => {
     // console.log('retrying', store.ready)
     // if(!store.canvas) return;
-        
-    console.log("initializing", canvas_ref.current);
-    let gl = canvas_ref.current.getContext('2d');
-    gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
+
+    console.log("initializing", canvas_ref.current.getContext("2d"));
+    let gl = canvas_ref.current.getContext("2d");
+    // gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
     gl.fillStyle = "#FF0000";
-    gl.fillRect(0,0,60,70)
-    
+    gl.fillRect(20, 20, 150, 100);
+
     // console.log('P5 CANVAS', store.canvas)
     // gl.drawImage(store.canvas,0,0);
   }, [store.ready, store.canvas]);
