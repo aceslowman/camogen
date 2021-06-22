@@ -58,7 +58,7 @@ const CanvasDisplay = observer(props => {
     gl.fillStyle = "#FF0000";
     gl.fillRect(20, 20, 150, 100);
 
-    gl.drawImage(store.canvas, 0, 0);
+    gl.drawImage(store.canvas, 0, 0, store.canvas.width * (zoom/100), store.canvas.height * (zoom/100));
   }, wrapper_ref);
 
   const handleDimensionChange = (w, h) => {
