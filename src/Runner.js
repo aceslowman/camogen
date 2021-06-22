@@ -18,6 +18,9 @@
     p.background(store.ui.theme.secondary_color);
     
     // console.log('p', p)
+    
+    /* TODO: this isn't happening until after elements of already rendered */
+    console.log('setup new canvas...', canvas)
   };
 
   p.draw = () => {

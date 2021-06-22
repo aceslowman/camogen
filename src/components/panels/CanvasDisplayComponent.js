@@ -90,7 +90,7 @@ const CanvasDisplay = observer(props => {
     console.log("initializing", canvas_ref.current);
     let gl = canvas_ref.current.getContext('2d');
     
-    console.log('P5 CANVAS',store)
+    console.log('P5 CANVAS', store.canvas)
     // gl.drawImage(store.p5_instance.canvas,0,0);
   }, [store.ready, store.canvas]);
 
