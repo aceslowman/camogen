@@ -18,7 +18,10 @@ const CanvasDisplay = observer(props => {
   const [useKeys, setUseKeys] = useState(false);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+
   const [zoom, setZoom] = useState(50);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+
   const wrapper_ref = useRef(null);
   const canvas_ref = useRef(null);
   const panel_ref = useRef(null);
@@ -51,15 +54,27 @@ const CanvasDisplay = observer(props => {
     canvas_ref.current.height = h;
     canvas_ref.current.style.width = w + "px";
     canvas_ref.current.style.height = h + "px";
+
+    redrawCanvas();
   }, wrapper_ref);
-  
+
+  useEffect(() => {
+    redrawCanvas();
+  }, [zoom, store.canvas, canvas_ref]);
+
   const redrawCanvas = () => {
     let gl = canvas_ref.current.getContext("2d");
-    gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
+    gl.clearRect(0, 0, gl.canvas.width, gl.canvas.height);
     gl.fillStyle = "#FF0000";
     gl.fillRect(20, 20, 150, 100);
-    gl.drawImage(store.canvas, 0, 0, store.canvas.width * (zoom/100), store.canvas.height * (zoom/100));
-  }
+    gl.drawImage(
+      store.canvas,
+      pan.x,
+      pan.y,
+      store.canvas.width * (zoom / 100),
+      store.canvas.height * (zoom / 100)
+    );
+  };
 
   const handleDimensionChange = (w, h) => {
     store.resizeCanvas(w, h);
@@ -91,25 +106,11 @@ const CanvasDisplay = observer(props => {
     let _h = height + offset_y;
 
     props.panel.setDimensions([_w, _h]);
-
-    // console.log("initializing", canvas_ref.current.getContext("2d"));
-    // let gl = canvas_ref.current.getContext("2d");
-    // // gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
-    // gl.fillStyle = "#FF0000";
-    // gl.fillRect(20, 20, 150, 100);
   }, [width, height]);
 
   useEffect(() => {
-    // console.log('retrying', store.ready)
-    // if(!store.canvas) return;
-    // console.log("initializing", canvas_ref.current.getContext("2d"));
-    // let gl = canvas_ref.current.getContext("2d");
-    // // gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
-    // gl.fillStyle = "#FF0000";
-    // gl.fillRect(20, 20, 150, 100);
-    // console.log('P5 CANVAS', store.canvas)
-    // gl.drawImage(store.canvas,0,0);
-  }, [store.ready, store.canvas]);
+    redrawCanvas();
+  }, [store.ready, store.canvas, redrawCanvas, canvas_ref, pan, zoom]);
 
   let toolbar = {};
 
@@ -134,7 +135,7 @@ const CanvasDisplay = observer(props => {
               type="number"
               placeholder={50}
               step=""
-              onBlur={e => {
+              onChange={e => {
                 handleZoomChange(e.target.value);
               }}
             />
