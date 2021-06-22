@@ -101,7 +101,8 @@ const CanvasDisplay = observer(props => {
 
   const handleCanvasMouseDrag = e => {
     let dragging = true;
-    let 
+    let canvas_bounds = wrapper_ref.current.getBoundingClientRect();
+    let offset = {x:e.pageX - canvas_bounds.x,y:e.pageY - canvas_bounds.y};
 
     const handleMove = e => {
       if (e.touches) e = e.touches[0];
@@ -113,8 +114,8 @@ const CanvasDisplay = observer(props => {
         
         // need offset so image corner doesn't snap to mouse
 
-        x = e.pageX - canvas_bounds.x;
-        y = e.pageY - canvas_bounds.y;
+        x = e.pageX - canvas_bounds.x - offset.x;
+        y = e.pageY - canvas_bounds.y - offset.y;
 
         console.log([x, y]);
         setPan({x,y})
