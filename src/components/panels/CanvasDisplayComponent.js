@@ -51,15 +51,15 @@ const CanvasDisplay = observer(props => {
     canvas_ref.current.height = h;
     canvas_ref.current.style.width = w + "px";
     canvas_ref.current.style.height = h + "px";
-
-    console.log("initializing", canvas_ref.current.getContext("2d"));
+  }, wrapper_ref);
+  
+  const redrawCanvas = () => {
     let gl = canvas_ref.current.getContext("2d");
-    // gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
+    gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
     gl.fillStyle = "#FF0000";
     gl.fillRect(20, 20, 150, 100);
-
     gl.drawImage(store.canvas, 0, 0, store.canvas.width * (zoom/100), store.canvas.height * (zoom/100));
-  }, wrapper_ref);
+  }
 
   const handleDimensionChange = (w, h) => {
     store.resizeCanvas(w, h);
