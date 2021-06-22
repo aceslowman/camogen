@@ -19,8 +19,9 @@ const CanvasDisplay = observer(props => {
   const [height, setHeight] = useState(0);
   const [zoom, setZoom] = useState(50);
   const wrapper_ref = useRef(null);
+  const canvas_ref = useRef(null);
   const panel_ref = useRef(null);
-  
+
   const [showDimensions, setShowDimensions] = useState(true);
   const [showCapture, setShowCapture] = useState(true);
   const [showTransport, setShowTransport] = useState(false);
@@ -38,30 +39,23 @@ const CanvasDisplay = observer(props => {
 
     let w = Math.round(inner_bounds.width);
     let h = Math.round(inner_bounds.height);
-   
+
     // if(fit panel)
     // store.resizeCanvas(w, h);
 
     setWidth(w);
     setHeight(h);
+    
+    canvas_ref.current.width = w;
+    canvas_ref.current.height = h;
+    
   }, wrapper_ref);
 
   const handleDimensionChange = (w, h) => {
-//     setWidth(w);
-//     setHeight(h);
-
-//     // make sure panel is detached so it can change size
-//     props.panel.setFloating(true);
-//     props.panel.setFullscreen(false);
-    
-    /* this is no longer change the panel size, 
-    but instead this is the internal texture size*/
     store.resizeCanvas(w, h);
   };
 
-  const handleZoomChange = amount => {
-    setZoom(amount);
-  };
+  const handleZoomChange = amount => setZoom(amount);
 
   const handlePlay = e => store.transport.play();
 
@@ -86,8 +80,12 @@ const CanvasDisplay = observer(props => {
     let _w = width + offset_x;
     let _h = height + offset_y;
 
-    props.panel.setDimensions([_w, _h]);    
+    props.panel.setDimensions([_w, _h]);
   }, [width, height]);
+  
+  useEffect(() => {
+    console.log('initializing', canvas_ref.current)
+  }, []);
 
   let toolbar = {};
 
@@ -294,13 +292,10 @@ const CanvasDisplay = observer(props => {
           items={toolbar}
         />
       }
-      style={
-        {
-          // zIndex: 0
-        }
-      }
     >
-      <canvas ref={wrapper_ref} className={style.canvas} />
+      <div ref={wrapper_ref} className={style.canvasContainer}>
+        <canvas ref={canvas_ref} className={style.canvas} />
+      </div>
     </GenericPanel>
   );
 });
