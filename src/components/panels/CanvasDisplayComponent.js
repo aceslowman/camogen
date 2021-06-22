@@ -84,13 +84,15 @@ const CanvasDisplay = observer(props => {
   }, [width, height]);
 
   useEffect(() => {
+    // console.log('retrying', store.ready)
+    // if(!store.canvas) return;
+        
     console.log("initializing", canvas_ref.current);
-    
     let gl = canvas_ref.current.getContext('2d');
     
-    console.log(store.p5_instance.canvas)
-    gl.drawImage(store.p5_instance.canvas,0,0);
-  }, []);
+    console.log('P5 CANVAS',store)
+    // gl.drawImage(store.p5_instance.canvas,0,0);
+  }, [store.ready, store.canvas]);
 
   let toolbar = {};
 

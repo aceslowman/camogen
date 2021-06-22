@@ -70,6 +70,9 @@ const RootStore = types
     showMissingAssets: null
   }))
   .views(self => ({
+    get canvas() {
+      return self.p5_instance.canvas;
+    },
     get recentShaderLibrary() {
       let recentItems = {};
 
@@ -309,8 +312,7 @@ const RootStore = types
       
       // TESTING:
       // set up media library
-      self.mediaLibrary = MediaLibrary.create({id: nanoid()});
-      
+      self.mediaLibrary = MediaLibrary.create({id: nanoid()});      
     },
 
     setupP5: () => {
