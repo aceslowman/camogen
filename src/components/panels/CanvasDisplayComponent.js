@@ -45,10 +45,9 @@ const CanvasDisplay = observer(props => {
 
     setWidth(w);
     setHeight(h);
-    
+
     canvas_ref.current.width = w;
     canvas_ref.current.height = h;
-    
   }, wrapper_ref);
 
   const handleDimensionChange = (w, h) => {
@@ -82,9 +81,9 @@ const CanvasDisplay = observer(props => {
 
     props.panel.setDimensions([_w, _h]);
   }, [width, height]);
-  
+
   useEffect(() => {
-    console.log('initializing', canvas_ref.current)
+    console.log("initializing", canvas_ref.current);
   }, []);
 
   let toolbar = {};
@@ -284,14 +283,7 @@ const CanvasDisplay = observer(props => {
       floating={false}
       onRef={panel_ref}
       onContextMenu={() => store.ui.context.setContextmenu()}
-      footbar={
-        <ToolbarComponent
-          style={{
-            zIndex: 0
-          }}
-          items={toolbar}
-        />
-      }
+      footbar={<ToolbarComponent style={{ zIndex: 0 }} items={toolbar} />}
     >
       <div ref={wrapper_ref} className={style.canvasContainer}>
         <canvas ref={canvas_ref} className={style.canvas} />
