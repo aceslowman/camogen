@@ -51,15 +51,14 @@ const CanvasDisplay = observer(props => {
     canvas_ref.current.height = h;
     canvas_ref.current.style.width = w + "px";
     canvas_ref.current.style.height = h + "px";
-    
+
     console.log("initializing", canvas_ref.current.getContext("2d"));
     let gl = canvas_ref.current.getContext("2d");
     // gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
     gl.fillStyle = "#FF0000";
     gl.fillRect(20, 20, 150, 100);
-    
-        // gl.drawImage(store.canvas,0,0);
 
+    gl.drawImage(store.canvas, 0, 0);
   }, wrapper_ref);
 
   const handleDimensionChange = (w, h) => {
@@ -92,8 +91,7 @@ const CanvasDisplay = observer(props => {
     let _h = height + offset_y;
 
     props.panel.setDimensions([_w, _h]);
-    
-    
+
     // console.log("initializing", canvas_ref.current.getContext("2d"));
     // let gl = canvas_ref.current.getContext("2d");
     // // gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
@@ -104,13 +102,11 @@ const CanvasDisplay = observer(props => {
   useEffect(() => {
     // console.log('retrying', store.ready)
     // if(!store.canvas) return;
-
     // console.log("initializing", canvas_ref.current.getContext("2d"));
     // let gl = canvas_ref.current.getContext("2d");
     // // gl.clearRect( 0, 0, gl.canvas.width, gl.canvas.height);
     // gl.fillStyle = "#FF0000";
     // gl.fillRect(20, 20, 150, 100);
-
     // console.log('P5 CANVAS', store.canvas)
     // gl.drawImage(store.canvas,0,0);
   }, [store.ready, store.canvas]);
