@@ -94,6 +94,17 @@ const CanvasDisplay = observer(props => {
 
   const handleFormatSelect = e => setFormat(e);
 
+  const handleCanvasOnWheel = e => {
+    console.log("Wheeling", e.deltaY); // -100 +100
+    setZoom(prev => prev + e.deltaY / 100);
+  };
+
+  const handleCanvasMouseDown = e => {
+    if (e.touches && e.touches[0]) e = e.touches[0]
+    console.log("dragging", e.target);
+    // setPan()
+  };
+
   useLayoutEffect(() => {
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
     let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
@@ -311,7 +322,14 @@ const CanvasDisplay = observer(props => {
       onContextMenu={() => store.ui.context.setContextmenu()}
       footbar={<ToolbarComponent style={{ zIndex: 0 }} items={toolbar} />}
     >
-      <div ref={wrapper_ref} className={style.canvasContainer}>
+      <div
+        ref={wrapper_ref}
+        className={style.canvasContainer}
+        onWheel={handleCanvasOnWheel}
+        onMouseDown={handleCanvasMouseDown}
+        onTouchStart={handleCanvasMouseDown}
+           
+      >
         <canvas ref={canvas_ref} className={style.canvas} />
       </div>
     </GenericPanel>
