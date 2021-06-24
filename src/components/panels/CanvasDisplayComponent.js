@@ -23,6 +23,7 @@ const CanvasDisplay = observer(props => {
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [fitWidth, setFitWidth] = useState(false);
   const [fitHeight, setFitHeight] = useState(false);
+  const [fitView, setFitView] = useState(false);
 
   const wrapper_ref = useRef(null);
   const canvas_ref = useRef(null);
@@ -115,6 +116,10 @@ const CanvasDisplay = observer(props => {
   };
 
   const handleFitView = e => {
+    setFitWidth(false);
+    setFitView(false);
+    setFitHeight(prev => !prev);
+    
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
     let w = Math.round(inner_bounds.width);
     let h = Math.round(inner_bounds.height);
@@ -243,14 +248,16 @@ const CanvasDisplay = observer(props => {
         title: "fit width",
         label: "⍄", //⍄
         onClick: handleFitWidth,
-        highlight: fitWidth
+        highlight: fitWidth,
+        style: {top: '1px'}
       },
       FitHeight: {
         id: "FitHeight",
         title: "fit height",
         label: "⍓", //⍓ &#9040;
         onClick: handleFitHeight,
-        highlight: fitHeight
+        highlight: fitHeight,
+        style: {top: '1px'}
       },
       FitView: {
         id: "FitView",
