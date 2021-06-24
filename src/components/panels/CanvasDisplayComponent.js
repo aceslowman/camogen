@@ -413,7 +413,7 @@ const CanvasDisplay = observer(props => {
     >
       <div
         ref={wrapper_ref}
-        className={style.canvasContainer + ' crosspatterned'}
+        className={style.canvasContainer + ' diamondpatterned'}
         onWheel={handleCanvasOnWheel}
         onMouseDown={handleCanvasMouseDrag}
         onTouchStart={handleCanvasMouseDrag}
