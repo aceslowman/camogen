@@ -32,7 +32,6 @@ const CanvasDisplay = observer(props => {
   const [showCapture, setShowCapture] = useState(true);
   const [showTransport, setShowTransport] = useState(false);
 
-  /* I no longer need to set the dimensions for the canvas here */
   useResizeObserver(() => {
     if (store.breakoutControlled) return;
     if (!store.p5_instance) return;
@@ -73,8 +72,6 @@ const CanvasDisplay = observer(props => {
   const redrawCanvas = () => {
     let gl = canvas_ref.current.getContext("2d");
     gl.clearRect(0, 0, gl.canvas.width, gl.canvas.height);
-    // gl.fillStyle = "#FF0000";
-    // gl.fillRect(20, 20, 150, 100);
     
     let x = pan.x;
     let y = pan.y;
@@ -134,6 +131,7 @@ const CanvasDisplay = observer(props => {
   const handleFormatSelect = e => setFormat(e);
 
   const handleCanvasOnWheel = e => {
+    if(fitWidth || fitHeight) return;
     setZoom(prev => prev + e.deltaY / 100);
   };
 
