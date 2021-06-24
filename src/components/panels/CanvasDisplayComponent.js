@@ -85,13 +85,15 @@ const CanvasDisplay = observer(props => {
   const handleZoomChange = amount => setZoom(amount);
   
   const handleFitWidth = e => {
-    console.log('fitting to width', e) 
-    setFitWidth(prev => !prev)
+    console.log('fitting to width', e)
+    setFitHeight(fitWidth);
+    setFitWidth(prev => !prev);
   }
   
   const handleFitHeight = e => {
     console.log('fitting to height', e) 
-    setFitWidth(prev => !prev)
+    setFitWidth(fitHeight); 
+    setFitHeight(prev => !prev);
   }
 
   const handlePlay = e => store.transport.play();
@@ -191,7 +193,7 @@ const CanvasDisplay = observer(props => {
               alignItems: "center"
             }}
           >
-            <label>&#x1F50D;: </label>
+            <label>&#x1F50D;:</label>
             <input
               className={style.zoom_input}
               type="number"
@@ -205,15 +207,15 @@ const CanvasDisplay = observer(props => {
           </div>
         )
       },
-      FitWidth: {
+      FitWidth: { // TODO
         id: "FitWidth",
-        label: "fit width",
+        label: "⍄", //⍄
         onClick: handleFitWidth,
         highlight: fitWidth
       },
-      FitHeight: {
+      FitHeight: { // TODO
         id: "FitHeight",
-        label: "fit height",
+        label: "⍓", //⍓ &#9040;
         onClick: handleFitHeight,
         highlight: fitHeight
       },
