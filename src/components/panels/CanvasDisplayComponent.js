@@ -23,7 +23,6 @@ const CanvasDisplay = observer(props => {
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [fitWidth, setFitWidth] = useState(false);
   const [fitHeight, setFitHeight] = useState(false);
-  const [fitView, setFitView] = useState(false);
 
   const wrapper_ref = useRef(null);
   const canvas_ref = useRef(null);
@@ -116,20 +115,13 @@ const CanvasDisplay = observer(props => {
   };
 
   const handleFitView = e => {
-    // setFitWidth(false);
-    // setFitHeight(false);
-    // setFitView(prev => !prev);
-
-    // resize canvas along with panel
-    // if (fitView) {
-      let inner_bounds = wrapper_ref.current.getBoundingClientRect();
-      let w = Math.round(inner_bounds.width);
-      let h = Math.round(inner_bounds.height);
-      store.resizeCanvas(w, h);
-      setWidth(w);
-      setHeight(h);
-      setZoom(100);
-    // }
+    let inner_bounds = wrapper_ref.current.getBoundingClientRect();
+    let w = Math.round(inner_bounds.width);
+    let h = Math.round(inner_bounds.height);
+    store.resizeCanvas(w, h);
+    setWidth(w);
+    setHeight(h);
+    setZoom(100);
   };
 
   const handlePlay = e => store.transport.play();
@@ -264,7 +256,7 @@ const CanvasDisplay = observer(props => {
         id: "FitView",
         title: "fit view",
         label: "⛶",
-        onClick: handleFitView,
+        onClick: handleFitView
         // highlight: fitView
       },
       Dimensions: {
