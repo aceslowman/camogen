@@ -69,18 +69,18 @@ const CanvasDisplay = observer(props => {
   useEffect(() => {
     setWidth(store.canvas.width);
     setHeight(store.canvas.height);
+    centerCanvas();
   }, []);
 
   const centerCanvas = () => {
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
-    
+
     let w = store.canvas.width * (zoom / 100);
     let h = store.canvas.height * (zoom / 100);
-    let x = w/2;
-    let y = h/2;
-    
-    console.log([x,y])
-    setPan({x, y});
+    let x = inner_bounds.width / 2;
+    let y = inner_bounds.height / 2;
+
+    setPan({ x, y });
   };
 
   const redrawCanvas = () => {
@@ -97,13 +97,13 @@ const CanvasDisplay = observer(props => {
       w = gl.canvas.width;
       h = store.canvas.height * (gl.canvas.width / store.canvas.width);
       x = 0;
-      y = gl.canvas.height / 2 - h / 2;
+      // y = gl.canvas.height / 2 - h / 2;
     }
 
     if (fitHeight) {
       w = store.canvas.width * (gl.canvas.height / store.canvas.height);
       h = gl.canvas.height;
-      x = gl.canvas.width / 2 - w / 2;
+      // x = gl.canvas.width / 2 - w / 2;
       y = 0;
     }
 
@@ -123,12 +123,16 @@ const CanvasDisplay = observer(props => {
   const handleZoomChange = amount => setZoom(amount);
 
   const handleFitWidth = e => {
+    // centerCanvas();
+    // setPan({x:0,y:0})
     setFitHeight(false);
     setFitView(false);
     setFitWidth(prev => !prev);
   };
 
   const handleFitHeight = e => {
+    // centerCanvas();
+    // setPan({x:0,y:0})
     setFitWidth(false);
     setFitView(false);
     setFitHeight(prev => !prev);
@@ -138,14 +142,6 @@ const CanvasDisplay = observer(props => {
     setFitWidth(false);
     setFitHeight(false);
     setFitView(prev => !prev);
-
-    // let inner_bounds = wrapper_ref.current.getBoundingClientRect();
-    // let w = Math.round(inner_bounds.width);
-    // let h = Math.round(inner_bounds.height);
-    // store.resizeCanvas(w, h);
-    // setWidth(w);
-    // setHeight(h);
-    // setZoom(100);
   };
 
   const handlePlay = e => store.transport.play();
@@ -162,7 +158,8 @@ const CanvasDisplay = observer(props => {
 
   const handleCanvasOnWheel = e => {
     if (fitWidth || fitHeight) return;
-    setZoom(prev => prev + e.deltaY / 100);
+    let sensitivity = 3;
+    setZoom(prev => prev + (e.deltaY / 100) * sensitivity);
   };
 
   const handleCanvasMouseDrag = e => {
@@ -282,15 +279,14 @@ const CanvasDisplay = observer(props => {
         id: "FitView",
         title: "fit view",
         label: "⛶",
-        onClick: handleFitView
-        // highlight: fitView
+        onClick: handleFitView,
+        highlight: fitView
       },
       Center: {
         id: "Center",
         title: "center",
         label: "▣",
         onClick: centerCanvas
-        // highlight: fitView
       },
       Dimensions: {
         id: "Dimensions",
