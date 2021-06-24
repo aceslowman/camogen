@@ -51,6 +51,13 @@ const CanvasDisplay = observer(props => {
     canvas_ref.current.style.width = w + "px";
     canvas_ref.current.style.height = h + "px";
 
+    if (fitView) {
+      store.resizeCanvas(w, h);
+      setWidth(w);
+      setHeight(h);
+      setZoom(100);
+    }
+
     redrawCanvas();
   }, wrapper_ref);
 
@@ -63,6 +70,15 @@ const CanvasDisplay = observer(props => {
     setWidth(store.canvas.width);
     setHeight(store.canvas.height);
   }, []);
+
+  const centerCanvas = () => {
+    let inner_bounds = wrapper_ref.current.getBoundingClientRect();
+    let w = store.canvas.width * (zoom / 100);
+    let h = store.canvas.height * (zoom / 100);
+    let x = pan.x + w / 2;
+    let y = pan.y + h / 2;
+    setPan(x, y);
+  };
 
   const redrawCanvas = () => {
     let gl = canvas_ref.current.getContext("2d");
@@ -88,13 +104,13 @@ const CanvasDisplay = observer(props => {
       y = 0;
     }
 
-    // if(fitView) {
-    //   x = 0;
-    //   y = 0;
-    //   // w = gl.canvas.height
-    // }
+    if (fitView) {
+      x = 0;
+      y = 0;
+      //   // w = gl.canvas.height
+    }
 
-    gl.drawImage(store.canvas, x + w / 2, y + h / 2, w, h);
+    gl.drawImage(store.canvas, x, y, w, h);
   };
 
   const handleDimensionChange = (w, h) => {
@@ -117,16 +133,16 @@ const CanvasDisplay = observer(props => {
 
   const handleFitView = e => {
     setFitWidth(false);
-    setFitView(false);
-    setFitHeight(prev => !prev);
-    
-    let inner_bounds = wrapper_ref.current.getBoundingClientRect();
-    let w = Math.round(inner_bounds.width);
-    let h = Math.round(inner_bounds.height);
-    store.resizeCanvas(w, h);
-    setWidth(w);
-    setHeight(h);
-    setZoom(100);
+    setFitHeight(false);
+    setFitView(prev => !prev);
+
+    // let inner_bounds = wrapper_ref.current.getBoundingClientRect();
+    // let w = Math.round(inner_bounds.width);
+    // let h = Math.round(inner_bounds.height);
+    // store.resizeCanvas(w, h);
+    // setWidth(w);
+    // setHeight(h);
+    // setZoom(100);
   };
 
   const handlePlay = e => store.transport.play();
@@ -249,7 +265,7 @@ const CanvasDisplay = observer(props => {
         label: "⍄", //⍄
         onClick: handleFitWidth,
         highlight: fitWidth,
-        style: {top: '1px'}
+        style: { bottom: "1px", position: "relative" }
       },
       FitHeight: {
         id: "FitHeight",
@@ -257,7 +273,7 @@ const CanvasDisplay = observer(props => {
         label: "⍓", //⍓ &#9040;
         onClick: handleFitHeight,
         highlight: fitHeight,
-        style: {top: '1px'}
+        style: { bottom: "1px", position: "relative" }
       },
       FitView: {
         id: "FitView",
@@ -265,6 +281,9 @@ const CanvasDisplay = observer(props => {
         label: "⛶",
         onClick: handleFitView
         // highlight: fitView
+      },
+      Center: {
+        
       },
       Dimensions: {
         id: "Dimensions",
