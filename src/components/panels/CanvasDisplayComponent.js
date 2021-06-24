@@ -49,8 +49,8 @@ const CanvasDisplay = observer(props => {
     // if(fit panel)
     // store.resizeCanvas(w, h);
 
-    setWidth(w);
-    setHeight(h);
+    // setWidth(w);
+    // setHeight(h);
 
     canvas_ref.current.width = w;
     canvas_ref.current.height = h;
@@ -63,6 +63,12 @@ const CanvasDisplay = observer(props => {
   useEffect(() => {
     redrawCanvas();
   }, [zoom, store.canvas, canvas_ref]);
+  
+  // INITIALIZING
+  useEffect(() => {
+    setWidth(store.canvas.width);
+    setHeight(store.canvas.height);
+  }, []);
 
   const redrawCanvas = () => {
     let gl = canvas_ref.current.getContext("2d");
@@ -106,16 +112,12 @@ const CanvasDisplay = observer(props => {
   const handleZoomChange = amount => setZoom(amount);
   
   const handleFitWidth = e => {
-    console.log('fitting to width', e)
-    setFitHeight(fitWidth);
-    setFitWidth(prev => !prev);
-    
-    //     
+    setFitHeight(false);
+    setFitWidth(prev => !prev); 
   }
   
   const handleFitHeight = e => {
-    console.log('fitting to height', e) 
-    setFitWidth(fitHeight); 
+    setFitWidth(false); 
     setFitHeight(prev => !prev);
   }
 
@@ -132,7 +134,6 @@ const CanvasDisplay = observer(props => {
   const handleFormatSelect = e => setFormat(e);
 
   const handleCanvasOnWheel = e => {
-    console.log("Wheeling", e.deltaY); // -100 +100
     setZoom(prev => prev + e.deltaY / 100);
   };
 
@@ -205,7 +206,6 @@ const CanvasDisplay = observer(props => {
     toolbar = {
       ...toolbar,
       Zoom: {
-        // TODO IN PROGRESS
         id: "Zoom",
         label: (
           <div
@@ -230,14 +230,16 @@ const CanvasDisplay = observer(props => {
           </div>
         )
       },
-      FitWidth: { // TODO
-        id: "FitWidth",
+      FitWidth: { 
+        id: "FitWidth",        
+        title: "fit width",
         label: "⍄", //⍄
         onClick: handleFitWidth,
         highlight: fitWidth
       },
-      FitHeight: { // TODO
+      FitHeight: { 
         id: "FitHeight",
+        title: "fit height",
         label: "⍓", //⍓ &#9040;
         onClick: handleFitHeight,
         highlight: fitHeight
