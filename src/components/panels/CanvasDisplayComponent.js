@@ -225,7 +225,7 @@ const CanvasDisplay = observer(props => {
               value={zoom}
               step=""
               onChange={e => {
-                handleZoomChange(e.target.value);
+                handleZoomChange(Number.parseFloat(e.target.value));
               }}
             />
             %
