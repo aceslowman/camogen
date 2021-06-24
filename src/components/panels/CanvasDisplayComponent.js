@@ -85,11 +85,13 @@ const CanvasDisplay = observer(props => {
   const handleZoomChange = amount => setZoom(amount);
   
   const handleFitWidth = e => {
-    console.log('fitting to width', e.target.value) 
+    console.log('fitting to width', e) 
+    setFitWidth(prev => !prev)
   }
   
   const handleFitHeight = e => {
-    console.log('fitting to height', e.target.value) 
+    console.log('fitting to height', e) 
+    setFitWidth(prev => !prev)
   }
 
   const handlePlay = e => store.transport.play();
@@ -185,11 +187,11 @@ const CanvasDisplay = observer(props => {
             style={{
               display: "flex",
               flexFlow: "row",
-              width: "105px",
+              width: "85px",
               alignItems: "center"
             }}
           >
-            <label>zoom: </label>
+            <label>&#x1F50D;: </label>
             <input
               className={style.zoom_input}
               type="number"
@@ -351,9 +353,6 @@ const CanvasDisplay = observer(props => {
         id: "record",
         title: "record",
         label: "●",
-        // label: store.transport.recording
-        // // ? `● ${Date.now() - store.transport.recordStart}`
-        // : "●",
         onClick: handleRecord,
         highlight: store.transport.recording,
         style: {

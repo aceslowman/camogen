@@ -23,10 +23,10 @@
   color: inherit;
   border: none;
   width: 100%;
-  margin-left: 5px;
+/*   margin-left: 5px; */
   font-family: inherit;
 }
 
 .zoom_input {
-  padding-right: 5px;
+/*   padding-right: 5px; */
 }
