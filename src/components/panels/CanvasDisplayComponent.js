@@ -69,12 +69,31 @@ const CanvasDisplay = observer(props => {
     gl.clearRect(0, 0, gl.canvas.width, gl.canvas.height);
     // gl.fillStyle = "#FF0000";
     // gl.fillRect(20, 20, 150, 100);
+    
+    let x = pan.x;
+    let y = pan.y;
+    
+    let w = store.canvas.width * (zoom / 100);
+    let h = store.canvas.height * (zoom / 100);
+    
+    if(fitWidth) {
+      x = 0;
+      // center this vertically
+      // y = 
+      w = gl.canvas.width;
+      h = 
+    }
+    
+    if(fitHeight) {
+      
+    }
+    
     gl.drawImage(
       store.canvas,
-      pan.x,
-      pan.y,
-      store.canvas.width * (zoom / 100),
-      store.canvas.height * (zoom / 100)
+      x,
+      y,
+      w,
+      h
     );
   };
 
@@ -88,6 +107,8 @@ const CanvasDisplay = observer(props => {
     console.log('fitting to width', e)
     setFitHeight(fitWidth);
     setFitWidth(prev => !prev);
+    
+    //     
   }
   
   const handleFitHeight = e => {
