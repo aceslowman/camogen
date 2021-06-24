@@ -30,3 +30,7 @@
 .zoom_input {
 /*   padding-right: 5px; */
 }
+
+.zoom_input:disabled {
+  opacity: 0.5;
+}

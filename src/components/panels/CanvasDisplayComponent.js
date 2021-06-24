@@ -218,6 +218,7 @@ const CanvasDisplay = observer(props => {
           >
             <label>&#x1F50D;:</label>
             <input
+              disabled={fitWidth || fitHeight}
               className={style.zoom_input}
               type="number"
               value={zoom}
