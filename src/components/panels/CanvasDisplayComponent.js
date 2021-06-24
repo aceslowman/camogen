@@ -21,6 +21,8 @@ const CanvasDisplay = observer(props => {
 
   const [zoom, setZoom] = useState(50);
   const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [fitWidth, setFitWidth] = useState(false);
+  const [fitHeight, setFitHeight] = useState(false);
 
   const wrapper_ref = useRef(null);
   const canvas_ref = useRef(null);
@@ -81,6 +83,14 @@ const CanvasDisplay = observer(props => {
   };
 
   const handleZoomChange = amount => setZoom(amount);
+  
+  const handleFitWidth = e => {
+    console.log('fitting to width', e.target.value) 
+  }
+  
+  const handleFitHeight = e => {
+    console.log('fitting to height', e.target.value) 
+  }
 
   const handlePlay = e => store.transport.play();
 
@@ -192,6 +202,18 @@ const CanvasDisplay = observer(props => {
             %
           </div>
         )
+      },
+      FitWidth: {
+        id: "FitWidth",
+        label: "fit width",
+        onClick: handleFitWidth,
+        highlight: fitWidth
+      },
+      FitHeight: {
+        id: "FitHeight",
+        label: "fit height",
+        onClick: handleFitHeight,
+        highlight: fitHeight
       },
       Dimensions: {
         id: "Dimensions",
