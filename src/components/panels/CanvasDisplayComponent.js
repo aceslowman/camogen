@@ -23,6 +23,7 @@ const CanvasDisplay = observer(props => {
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [fitWidth, setFitWidth] = useState(false);
   const [fitHeight, setFitHeight] = useState(false);
+  const [fitView, setFitView] = useState(false);
 
   const wrapper_ref = useRef(null);
   const canvas_ref = useRef(null);
@@ -45,12 +46,6 @@ const CanvasDisplay = observer(props => {
     let w = Math.round(inner_bounds.width);
     let h = Math.round(inner_bounds.height);
 
-    // if(fit panel)
-    // store.resizeCanvas(w, h);
-
-    // setWidth(w);
-    // setHeight(h);
-
     canvas_ref.current.width = w;
     canvas_ref.current.height = h;
     canvas_ref.current.style.width = w + "px";
@@ -62,7 +57,7 @@ const CanvasDisplay = observer(props => {
   useEffect(() => {
     redrawCanvas();
   }, [zoom, store.canvas, canvas_ref]);
-  
+
   // INITIALIZING
   useEffect(() => {
     setWidth(store.canvas.width);
@@ -72,37 +67,34 @@ const CanvasDisplay = observer(props => {
   const redrawCanvas = () => {
     let gl = canvas_ref.current.getContext("2d");
     gl.clearRect(0, 0, gl.canvas.width, gl.canvas.height);
-    
-    
-    
-    
+
     let w = store.canvas.width * (zoom / 100);
     let h = store.canvas.height * (zoom / 100);
-    
-    let x = pan.x - (w/2);
-    let y = pan.y - (h/2);
-    
-    if(fitWidth) {
+
+    let x = pan.x - w / 2;
+    let y = pan.y - h / 2;
+
+    if (fitWidth) {
       w = gl.canvas.width;
-      h = store.canvas.height * (gl.canvas.width/store.canvas.width);
+      h = store.canvas.height * (gl.canvas.width / store.canvas.width);
       x = 0;
-      y = (gl.canvas.height / 2) - (h/2);
+      y = gl.canvas.height / 2 - h / 2;
     }
-    
-    if(fitHeight) {
-      w = store.canvas.width * (gl.canvas.height/store.canvas.height);
+
+    if (fitHeight) {
+      w = store.canvas.width * (gl.canvas.height / store.canvas.height);
       h = gl.canvas.height;
-      x = (gl.canvas.width / 2) - (w/2);
+      x = gl.canvas.width / 2 - w / 2;
       y = 0;
     }
-    
-    gl.drawImage(
-      store.canvas,
-      x,
-      y,
-      w,
-      h
-    );
+
+    // if(fitView) {
+    //   x = 0;
+    //   y = 0;
+    //   // w = gl.canvas.height
+    // }
+
+    gl.drawImage(store.canvas, x + w / 2, y + h / 2, w, h);
   };
 
   const handleDimensionChange = (w, h) => {
@@ -110,16 +102,35 @@ const CanvasDisplay = observer(props => {
   };
 
   const handleZoomChange = amount => setZoom(amount);
-  
+
   const handleFitWidth = e => {
     setFitHeight(false);
-    setFitWidth(prev => !prev); 
-  }
-  
+    setFitView(false);
+    setFitWidth(prev => !prev);
+  };
+
   const handleFitHeight = e => {
-    setFitWidth(false); 
+    setFitWidth(false);
+    setFitView(false);
     setFitHeight(prev => !prev);
-  }
+  };
+
+  const handleFitView = e => {
+    // setFitWidth(false);
+    // setFitHeight(false);
+    // setFitView(prev => !prev);
+
+    // resize canvas along with panel
+    // if (fitView) {
+      let inner_bounds = wrapper_ref.current.getBoundingClientRect();
+      let w = Math.round(inner_bounds.width);
+      let h = Math.round(inner_bounds.height);
+      store.resizeCanvas(w, h);
+      setWidth(w);
+      setHeight(h);
+      setZoom(100);
+    // }
+  };
 
   const handlePlay = e => store.transport.play();
 
@@ -134,25 +145,28 @@ const CanvasDisplay = observer(props => {
   const handleFormatSelect = e => setFormat(e);
 
   const handleCanvasOnWheel = e => {
-    if(fitWidth || fitHeight) return;
+    if (fitWidth || fitHeight) return;
     setZoom(prev => prev + e.deltaY / 100);
   };
 
   const handleCanvasMouseDrag = e => {
     let dragging = true;
     let canvas_bounds = wrapper_ref.current.getBoundingClientRect();
-    let offset = {x:e.pageX - canvas_bounds.x - pan.x,y:e.pageY - canvas_bounds.y - pan.y};
+    let offset = {
+      x: e.pageX - canvas_bounds.x - pan.x,
+      y: e.pageY - canvas_bounds.y - pan.y
+    };
 
     const handleMove = e => {
       if (e.touches) e = e.touches[0];
 
       if (e.pageY && dragging) {
         let canvas_bounds = wrapper_ref.current.getBoundingClientRect();
-        
+
         let x = e.pageX - canvas_bounds.x - offset.x;
         let y = e.pageY - canvas_bounds.y - offset.y;
 
-        setPan({x,y})
+        setPan({ x, y });
       }
     };
 
@@ -162,11 +176,11 @@ const CanvasDisplay = observer(props => {
 
       if (e.pageY && dragging) {
         let canvas_bounds = wrapper_ref.current.getBoundingClientRect();
-        
+
         let x = e.pageX - canvas_bounds.x - offset.x;
         let y = e.pageY - canvas_bounds.y - offset.y;
 
-        setPan({x,y});
+        setPan({ x, y });
       }
 
       document.removeEventListener("mousemove", handleMove);
@@ -176,7 +190,7 @@ const CanvasDisplay = observer(props => {
     };
 
     if (e.touches && e.touches[0]) e = e.touches[0];
-    
+
     document.addEventListener("mousemove", handleMove);
     document.addEventListener("mouseup", handleMoveEnd);
     document.addEventListener("touchmove", handleMove);
@@ -232,19 +246,26 @@ const CanvasDisplay = observer(props => {
           </div>
         )
       },
-      FitWidth: { 
-        id: "FitWidth",        
+      FitWidth: {
+        id: "FitWidth",
         title: "fit width",
         label: "⍄", //⍄
         onClick: handleFitWidth,
         highlight: fitWidth
       },
-      FitHeight: { 
+      FitHeight: {
         id: "FitHeight",
         title: "fit height",
         label: "⍓", //⍓ &#9040;
         onClick: handleFitHeight,
         highlight: fitHeight
+      },
+      FitView: {
+        id: "FitView",
+        title: "fit view",
+        label: "⛶",
+        onClick: handleFitView,
+        // highlight: fitView
       },
       Dimensions: {
         id: "Dimensions",
@@ -413,7 +434,7 @@ const CanvasDisplay = observer(props => {
     >
       <div
         ref={wrapper_ref}
-        className={style.canvasContainer + ' diamondpatterned'}
+        className={style.canvasContainer + " diamondpatterned"}
         onWheel={handleCanvasOnWheel}
         onMouseDown={handleCanvasMouseDrag}
         onTouchStart={handleCanvasMouseDrag}
