@@ -73,11 +73,14 @@ const CanvasDisplay = observer(props => {
 
   const centerCanvas = () => {
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
+    
     let w = store.canvas.width * (zoom / 100);
     let h = store.canvas.height * (zoom / 100);
-    let x = pan.x + w / 2;
-    let y = pan.y + h / 2;
-    setPan(x, y);
+    let x = w/2;
+    let y = h/2;
+    
+    console.log([x,y])
+    setPan({x, y});
   };
 
   const redrawCanvas = () => {
@@ -283,7 +286,11 @@ const CanvasDisplay = observer(props => {
         // highlight: fitView
       },
       Center: {
-        
+        id: "Center",
+        title: "center",
+        label: "▣",
+        onClick: centerCanvas
+        // highlight: fitView
       },
       Dimensions: {
         id: "Dimensions",
