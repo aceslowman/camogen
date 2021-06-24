@@ -73,11 +73,14 @@ const CanvasDisplay = observer(props => {
     let gl = canvas_ref.current.getContext("2d");
     gl.clearRect(0, 0, gl.canvas.width, gl.canvas.height);
     
-    let x = pan.x;
-    let y = pan.y;
+    
+    
     
     let w = store.canvas.width * (zoom / 100);
     let h = store.canvas.height * (zoom / 100);
+    
+    let x = pan.x - (w/2);
+    let y = pan.y - (h/2);
     
     if(fitWidth) {
       w = gl.canvas.width;
@@ -406,11 +409,11 @@ const CanvasDisplay = observer(props => {
       floating={false}
       onRef={panel_ref}
       onContextMenu={() => store.ui.context.setContextmenu()}
-      footbar={<ToolbarComponent style={{ zIndex: 0 }} items={toolbar} />}
+      footbar={<ToolbarComponent style={{ zIndex: 1 }} items={toolbar} />}
     >
       <div
         ref={wrapper_ref}
-        className={style.canvasContainer}
+        className={style.canvasContainer + ' crosspatterned'}
         onWheel={handleCanvasOnWheel}
         onMouseDown={handleCanvasMouseDrag}
         onTouchStart={handleCanvasMouseDrag}

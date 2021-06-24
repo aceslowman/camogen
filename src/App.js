@@ -75,7 +75,7 @@ const App = observer(props => {
   };
 
   return (
-    <MacoWrapperComponent store={store} className='patterned'>
+    <MacoWrapperComponent store={store} className='gridpatterned'>
       <MainProvider value={{ store: store }}>
         {props.store.ready && <MainToolbar />}
 
