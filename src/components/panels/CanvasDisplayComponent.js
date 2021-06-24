@@ -123,6 +123,7 @@ const CanvasDisplay = observer(props => {
   const handleZoomChange = amount => setZoom(amount);
 
   const handleFitWidth = e => {
+    // setZoom(100);
     // centerCanvas();
     // setPan({x:0,y:0})
     setFitHeight(false);
@@ -131,6 +132,7 @@ const CanvasDisplay = observer(props => {
   };
 
   const handleFitHeight = e => {
+    // setZoom(100);
     // centerCanvas();
     // setPan({x:0,y:0})
     setFitWidth(false);
