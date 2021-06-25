@@ -21,6 +21,7 @@ import { getSnapshot } from "mobx-state-tree";
     cropping tool for snapshots
     fix issues with dimension inputs
     'full size' button
+    double-click to re-center
     
     in maco ui: 
       make highlighted toolbar buttons way more distinct
