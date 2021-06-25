@@ -14,6 +14,8 @@ const ShaderLibrary = observer(props => {
   const store = useContext(MainContext).store;
   const data = store.mediaLibrary;
   
+  let items = [];
+  
   // TODO: working on making assinging collections more straightforward
   let collections = {};
 
@@ -34,12 +36,14 @@ const ShaderLibrary = observer(props => {
   console.log("COLLECTIONS", collections);
   
   store.shader_collection.traverse(e => {
-    console.log('e', e.name)
+    console.log('e', getSnapshot(e))
+    
+    items.push((<div>{e.name}</div>))
   })
 
   return (
     <GenericPanel panel={props.panel}>
-      shader library
+      {items}
     </GenericPanel>
   );
 });
