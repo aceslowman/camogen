@@ -7,6 +7,13 @@ import {
 } from "mobx-state-tree";
 import Shader from "../shaders/ShaderStore";
 
+/* 
+  COLLECTION 
+  
+  TODO: 
+    this has too much overlap with the Graph class
+*/
+
 const Collection = types
   .model("Collection", {
     id: types.identifier,
@@ -42,10 +49,52 @@ const Collection = types
     },
     parent: () => {
       return getParent(self, 2);
+    },
+    get root() {
+      let node = self.nodes.values().next().value;
+
+      while (node && node.children.length) {
+        node = node.children[0];
+      }
+
+      return node;
+    },
+
+    distanceBetween(a, b) {
+      let node = a;
+      let count = 0;
+
+      while (node !== b && node.children[0]) {
+        node = node.children[0];
+        count++;
+      }
+
+      return count;
+    },
+
+    distanceFromTrunk(a) {
+      let node = a;
+      let count = 0;
+
+      while (node.children.length) {
+        if (node.children[0].parents.length > 1) {
+          if (node.children[0].parents[0] !== node) {
+            count++;
+          }
+        }
+
+        node = node.children[0];
+      }
+
+      return count;
+    },
+
+    get selectedNode() {
+      // if (isAlive(self)) return self.clipboard.currentlySelected;
     }
   }))
   .actions(self => {
-    const traverse = (f = null, depthFirst = false) => {
+    traverse: (f = null, depthFirst = false) => {
       let result = [];
       let container = [self];
       let next_node;
@@ -67,33 +116,27 @@ const Collection = types
       }
 
       return result;
-    };
+    },
 
-    const addChild = child => {
+    addChild: child => {
       // console.log("adding to collection", self);
       self.children.push(child);
-    };
+    },
 
-    const removeChild = child => {
+    removeChild: child => {
       // console.log("removing from collection", {self:self,child:child});
       self.children = self.children.filter(e => e !== child);
-    };
+    },
 
-    const setData = datasnap => {
+    setData: datasnap => {
       // console.log('setting collection!',getSnapshot(self))
       // console.log('with this shader', getSnapshot(data))
       // let d = getSnapshot(data);
 
       self.name = datasnap.name;
       self.data = datasnap;
-    };
+    },
 
-    return {
-      traverse,
-      addChild,
-      removeChild,
-      setData
-    };
   });
 
 export default Collection;

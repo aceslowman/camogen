@@ -23,7 +23,7 @@ export const branch_colors = [
   "#FFFF00", // yellow
   "#00FF00", // neon green
   "#9900FF", // purple
-  "#FF6000" // orange
+  "#FF6000"  // orange
 ];
 
 const Graph = types

@@ -18,6 +18,7 @@ const ShaderLibrary = observer(props => {
   let collections = {};
 
   store.shader_collection.children.forEach((e, i) => {
+    
     // console.log("E", e);
     if (e.children) {
       collections = {
@@ -31,6 +32,10 @@ const ShaderLibrary = observer(props => {
   });
 
   console.log("COLLECTIONS", collections);
+  
+  store.shader_collection.traverse(e => {
+    console.log('e', e.name)
+  })
 
   return (
     <GenericPanel panel={props.panel}>
