@@ -97,13 +97,13 @@ const CanvasDisplay = observer(props => {
       w = gl.canvas.width;
       h = store.canvas.height * (gl.canvas.width / store.canvas.width);
       x = 0;
-      // y = gl.canvas.height / 2 - h / 2;
+      y = gl.canvas.height / 2 - h / 2;
     }
 
     if (fitHeight) {
       w = store.canvas.width * (gl.canvas.height / store.canvas.height);
       h = gl.canvas.height;
-      // x = gl.canvas.width / 2 - w / 2;
+      x = gl.canvas.width / 2 - w / 2;
       y = 0;
     }
 
