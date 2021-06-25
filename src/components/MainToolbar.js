@@ -22,22 +22,22 @@ const MainToolbar = observer(props => {
   const canvasPanel = ui.getPanel("CANVAS");
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
-  
+
   const handleBreakout = () => {
     store.breakout();
   };
-  
+
   const handleLayoutSelect = name => {
     let variant = ui.getLayoutVariant(name);
     mainPanel.setLayout(variant);
   };
 
   const handleAddPanel = name => {};
-  
+
   let layouts = {};
-      
-  Object.keys(ui.layoutVariants).forEach((_e,i) => {
-    let e = ui.layoutVariants[_e];    
+
+  Object.keys(ui.layoutVariants).forEach((_e, i) => {
+    let e = ui.layoutVariants[_e];
     layouts = {
       ...layouts,
       [e.id]: {
@@ -45,9 +45,9 @@ const MainToolbar = observer(props => {
         label: e.title,
         onClick: () => handleLayoutSelect(e.id)
       }
-    }
+    };
   });
-  
+
   return (
     <ToolbarComponent
       style={{
@@ -68,7 +68,10 @@ const MainToolbar = observer(props => {
         // },
         Title: {
           id: "Title",
-          label: <h1>camogen</h1>,
+          label: (
+            <h1 style={{ position: "relative", bottom: "1px" }}>camogen</h1>
+          )
+
           // onClick: () => {
           //   setShowAbout(!showAbout);
           // },
@@ -150,7 +153,7 @@ const MainToolbar = observer(props => {
           id: "Layout",
           label: "Layout",
           dropDown: {
-            ...layouts,
+            ...layouts
             // Panels: {
             //   id: 'Panels',
             //   dropDown: {

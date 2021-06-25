@@ -20,6 +20,10 @@ import { getSnapshot } from "mobx-state-tree";
   TODO
     cropping tool for snapshots
     fix issues with dimension inputs
+    'full size' button
+    
+    in maco ui: 
+      make highlighted toolbar buttons way more distinct
 */
 
 const Display = observer(props => {
