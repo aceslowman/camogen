@@ -5,7 +5,6 @@ import { observer } from "mobx-react";
 import { MainProvider } from "./MainContext";
 import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 import { Panels } from "./components/panels";
-import CanvasDisplay from "./components/panels/CanvasDisplayComponent";
 
 import {
   ThemeContext,

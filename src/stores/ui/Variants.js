@@ -80,10 +80,10 @@ export const PanelVariants = {
     dimensions: [100, 300],
     position: [30, 30]
   },
-  CANVAS: {
-    id: "CANVAS",
-    title: "Canvas",
-    component_type: "CANVAS",
+  DISPLAY: {
+    id: "DISPLAY",
+    title: "Display",
+    component_type: "DISPLAY",
     subtitle: "",
     floating: false,
     fullscreen: false,
@@ -239,8 +239,8 @@ export const LayoutVariants = {
         size: 1 / 4,
         children: [
           {
-            id: "CANVAS",
-            panel: "CANVAS",
+            id: "DISPLAY",
+            panel: "DISPLAY",
             size: 3 / 4
           },
           {
@@ -255,7 +255,7 @@ export const LayoutVariants = {
       SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
       SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"],
       MEDIA_LIBRARY: PanelVariants["MEDIA_LIBRARY"],
-      CANVAS: PanelVariants["CANVAS"]
+      DISPLAY: PanelVariants["DISPLAY"]
     }
   },
   DEBUG: {

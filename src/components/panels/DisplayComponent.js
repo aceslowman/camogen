@@ -9,10 +9,20 @@ import MainContext from "../../MainContext";
 import useResizeObserver from "../hooks/ResizeHook";
 import { GenericPanel, ToolbarComponent, InputSelect } from "maco-ui";
 import { observer } from "mobx-react";
-import style from "./CanvasDisplayComponent.module.css";
+import style from "./DisplayComponent.module.css";
 import { getSnapshot } from "mobx-state-tree";
 
-const CanvasDisplay = observer(props => {
+/* 
+  DISPLAY
+  
+  the display component lets the user pan and zoom the main canvas. 
+  
+  TODO
+    cropping tool for snapshots
+    fix issues with dimension inputs
+*/
+
+const Display = observer(props => {
   const store = useContext(MainContext).store;
   const [format, setFormat] = useState("PNG");
   const [useKeys, setUseKeys] = useState(false);
@@ -62,17 +72,16 @@ const CanvasDisplay = observer(props => {
   }, wrapper_ref);
 
   useEffect(() => {
+    // NOTE this seems to be working with store.updateFlag
+    // but keep an eye on this for the time being
     redrawCanvas();
-  }, [zoom, store.canvas, canvas_ref]);
+  }, [zoom, store.canvas, canvas_ref, store.updateFlag]);
 
   // INITIALIZING
   useEffect(() => {
     setWidth(store.canvas.width);
     setHeight(store.canvas.height);
     centerCanvas();
-    
-    // register draw loop
-    store.addToUpdateGroup(redrawCanvas);
   }, []);
 
   const centerCanvas = () => {
@@ -468,4 +477,4 @@ const CanvasDisplay = observer(props => {
   );
 });
 
-export default CanvasDisplay;
+export default Display;

@@ -9,7 +9,7 @@ import HelpComponent from "./HelpComponent";
 import MediaLibraryComponent from "./MediaLibraryComponent";
 import MessagesComponent from "./MessagesComponent";
 import DebugInfoComponent from "./DebugInfoComponent";
-import CanvasDisplayComponent from "./CanvasDisplayComponent";
+import DisplayComponent from "./DisplayComponent";
 
 export const Panels = new Map([
   ["SHADER_GRAPH", ShaderGraphComponent],
@@ -23,5 +23,5 @@ export const Panels = new Map([
   ["MEDIA_LIBRARY", MediaLibraryComponent],
   ["MESSAGES", MessagesComponent],
   ["DEBUG", DebugInfoComponent],
-  ["CANVAS", CanvasDisplayComponent]
+  ["DISPLAY", DisplayComponent]
 ]);

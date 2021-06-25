@@ -68,6 +68,7 @@ const RootStore = types
     showSplash: null,
     showUpdates: null,
     showMissingAssets: null,
+    updateFlag: false
     // updateGroup: []
   }))
   .views(self => ({
@@ -318,6 +319,10 @@ const RootStore = types
 
     setupP5: () => {
       self.p5_instance = new p5(p => Runner(p, self));
+    },
+    
+    setUpdateFlag: () => {
+      self.updateFlag = !self.updateFlag;
     },
     
     // addToUpdateGroup: (f) => {
