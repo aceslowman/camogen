@@ -67,7 +67,8 @@ const RootStore = types
     // 'show' individual panels
     showSplash: null,
     showUpdates: null,
-    showMissingAssets: null
+    showMissingAssets: null,
+    updateGroup: []
   }))
   .views(self => ({
     get canvas() {
@@ -317,6 +318,10 @@ const RootStore = types
 
     setupP5: () => {
       self.p5_instance = new p5(p => Runner(p, self));
+    },
+    
+    addToUpdateGroup: (f) => {
+      self.updateGroup.push(f);
     },
 
     selectParameter: param => {

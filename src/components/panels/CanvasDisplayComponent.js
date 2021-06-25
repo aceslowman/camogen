@@ -70,6 +70,9 @@ const CanvasDisplay = observer(props => {
     setWidth(store.canvas.width);
     setHeight(store.canvas.height);
     centerCanvas();
+    
+    // register draw loop
+    store.addToUpdateGroup(redrawCanvas);
   }, []);
 
   const centerCanvas = () => {
@@ -123,18 +126,12 @@ const CanvasDisplay = observer(props => {
   const handleZoomChange = amount => setZoom(amount);
 
   const handleFitWidth = e => {
-    // setZoom(100);
-    // centerCanvas();
-    // setPan({x:0,y:0})
     setFitHeight(false);
     setFitView(false);
     setFitWidth(prev => !prev);
   };
 
   const handleFitHeight = e => {
-    // setZoom(100);
-    // centerCanvas();
-    // setPan({x:0,y:0})
     setFitWidth(false);
     setFitView(false);
     setFitHeight(prev => !prev);
@@ -227,7 +224,7 @@ const CanvasDisplay = observer(props => {
   }, [width, height]);
 
   useEffect(() => {
-    redrawCanvas();
+    // redrawCanvas();
   }, [store.ready, store.canvas, redrawCanvas, canvas_ref, pan, zoom]);
 
   let footbar = {};

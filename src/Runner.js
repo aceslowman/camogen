@@ -36,6 +36,13 @@
             shader_node.data.update(p);
           }
         }
+        
+        // update all other update groups
+        for(let i = 0; i < store.updateGroup.length; i++) {
+          console.log('updating group')
+          // store.updateGroup[i]();
+        }
+        
         p.image(store.scene.targets[0].ref, 0, 0, p.width, p.height);
       } else {
         p.background(0);
