@@ -215,11 +215,8 @@ const Graph = types
 
       traverseFrom: (node = self.root, f = null, depthFirst = false) => {
         /*
-          self method will crawl through the graph structure
+          traverseFrom will crawl through the graph structure
           either depth first or breadth first.
-
-          it's first argument is function that will be called
-          during each step of the traversal.
         */
         let result = [];
         let container = [node];

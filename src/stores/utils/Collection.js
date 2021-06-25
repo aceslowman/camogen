@@ -93,24 +93,54 @@ const Collection = types
       // if (isAlive(self)) return self.clipboard.currentlySelected;
     }
   }))
-  .actions(self => {
-    traverse: (f = null, depthFirst = false) => {
+  .actions(self => ({
+    traverseFrom: (node = self.root, f = null, depthFirst = false) => {
+    // traverse: (f = null, depthFirst = false) => {
+      //       let result = [];
+      //       let container = [self];
+      //       let next_node;
+
+      //       while (container.length) {
+      //         next_node = container.shift();
+
+      //         if (next_node) {
+      //           result.push(next_node);
+
+      //           if (f) f(next_node);
+
+      //           if (next_node.children) {
+      //             container = depthFirst
+      //               ? container.concat(next_node.children) // depth first search
+      //               : next_node.children.concat(container); // breadth first search
+      //           }
+      //         }
+      //       }
+
+      //       return result;
+      /*
+          traverseFrom will crawl through the graph structure
+          either depth first or breadth first.
+        */
       let result = [];
-      let container = [self];
+      let container = [node];
       let next_node;
+      let distance_from_root = 0;
+      let distance_from_trunk = 0;
 
       while (container.length) {
         next_node = container.shift();
 
         if (next_node) {
           result.push(next_node);
+          distance_from_root = self.distanceBetween(next_node, node);
+          distance_from_trunk = self.distanceFromTrunk(next_node);
 
-          if (f) f(next_node);
+          if (f) f(next_node, distance_from_root, distance_from_trunk);
 
-          if (next_node.children) {
+          if (next_node.parents) {
             container = depthFirst
-              ? container.concat(next_node.children) // depth first search
-              : next_node.children.concat(container); // breadth first search
+              ? container.concat(next_node.parents) // depth first search
+              : next_node.parents.concat(container); // breadth first search
           }
         }
       }
@@ -135,8 +165,7 @@ const Collection = types
 
       self.name = datasnap.name;
       self.data = datasnap;
-    },
-
-  });
+    }
+  }));
 
 export default Collection;
