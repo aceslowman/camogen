@@ -230,11 +230,94 @@ const CanvasDisplay = observer(props => {
     redrawCanvas();
   }, [store.ready, store.canvas, redrawCanvas, canvas_ref, pan, zoom]);
 
-  let toolbar = {};
+  let footbar = {};
+  let toolbar = {
+    Dimensions: {
+      id: "Dimensions",
+      label: `[${width} x ${height}]`,
+      dropDown: {
+        standard: {
+          id: "standard",
+          label: "standard",
+          dropDown: {
+            "256x256": {
+              id: "256x256",
+              label: "256x256",
+              onClick: () => handleDimensionChange(256, 256)
+            },
+            "512x512": {
+              id: "512x512",
+              label: "512x512",
+              onClick: () => handleDimensionChange(512, 512)
+            },
+            "1024x1024": {
+              id: "1024x1024",
+              label: "1024x1024",
+              onClick: () => handleDimensionChange(1024, 1024)
+            }
+          }
+        },
+        instagram: {
+          id: "instagram",
+          label: "instagram",
+          dropDown: {
+            landscape1080x608: {
+              id: "landscape1080x608",
+              label: "landscape 1080x608",
+              onClick: () => handleDimensionChange(1080, 608)
+            },
+            square1080x1080: {
+              id: "square1080x1080",
+              label: "square 1080x1080",
+              onClick: () => handleDimensionChange(1080, 1080)
+            },
+            portrait1080x1350: {
+              id: "portrait1080x1350",
+              label: "portrait 1080x1350",
+              onClick: () => handleDimensionChange(1080, 1350)
+            }
+          }
+        },
+        DimensionSelect: {
+          id: "DimensionSelect",
+          label: (
+            <div
+              style={{
+                display: "flex",
+                flexFlow: "row"
+              }}
+            >
+              <label>w:</label>
+              <input
+                className={style.dimensions_input}
+                type="number"
+                placeholder={width}
+                onBlur={e => {
+                  handleDimensionChange(e.target.value, height);
+                }}
+              />
+              <label>h:</label>
+              <input
+                className={style.dimensions_input}
+                type="number"
+                placeholder={height}
+                onBlur={e => {
+                  handleDimensionChange(width, e.target.value);
+                }}
+              />
+            </div>
+          )
+        }
+      },
+      style: {
+        alignSelf: "flex-end"
+      }
+    }
+  };
 
   if (showDimensions) {
-    toolbar = {
-      ...toolbar,
+    footbar = {
+      ...footbar,
       Zoom: {
         id: "Zoom",
         label: (
@@ -289,94 +372,13 @@ const CanvasDisplay = observer(props => {
         title: "center",
         label: "▣",
         onClick: centerCanvas
-      },
-      Dimensions: {
-        id: "Dimensions",
-        label: `[${width} x ${height}]`,
-        dropDown: {
-          standard: {
-            id: "standard",
-            label: "standard",
-            dropDown: {
-              "256x256": {
-                id: "256x256",
-                label: "256x256",
-                onClick: () => handleDimensionChange(256, 256)
-              },
-              "512x512": {
-                id: "512x512",
-                label: "512x512",
-                onClick: () => handleDimensionChange(512, 512)
-              },
-              "1024x1024": {
-                id: "1024x1024",
-                label: "1024x1024",
-                onClick: () => handleDimensionChange(1024, 1024)
-              }
-            }
-          },
-          instagram: {
-            id: "instagram",
-            label: "instagram",
-            dropDown: {
-              landscape1080x608: {
-                id: "landscape1080x608",
-                label: "landscape 1080x608",
-                onClick: () => handleDimensionChange(1080, 608)
-              },
-              square1080x1080: {
-                id: "square1080x1080",
-                label: "square 1080x1080",
-                onClick: () => handleDimensionChange(1080, 1080)
-              },
-              portrait1080x1350: {
-                id: "portrait1080x1350",
-                label: "portrait 1080x1350",
-                onClick: () => handleDimensionChange(1080, 1350)
-              }
-            }
-          },
-          DimensionSelect: {
-            id: "DimensionSelect",
-            label: (
-              <div
-                style={{
-                  display: "flex",
-                  flexFlow: "row"
-                }}
-              >
-                <label>w:</label>
-                <input
-                  className={style.dimensions_input}
-                  type="number"
-                  placeholder={width}
-                  onBlur={e => {
-                    handleDimensionChange(e.target.value, height);
-                  }}
-                />
-                <label>h:</label>
-                <input
-                  className={style.dimensions_input}
-                  type="number"
-                  placeholder={height}
-                  onBlur={e => {
-                    handleDimensionChange(width, e.target.value);
-                  }}
-                />
-              </div>
-            )
-          }
-        },
-        style: {
-          alignSelf: "flex-end"
-        }
       }
     };
   }
 
   if (showCapture) {
-    toolbar = {
-      ...toolbar,
+    footbar = {
+      ...footbar,
       snap: {
         id: "snap",
         title: "snap",
@@ -406,8 +408,8 @@ const CanvasDisplay = observer(props => {
   }
 
   if (showTransport) {
-    toolbar = {
-      ...toolbar,
+    footbar = {
+      ...footbar,
       play: {
         id: "play",
         title: "play",
@@ -453,7 +455,8 @@ const CanvasDisplay = observer(props => {
       floating={false}
       onRef={panel_ref}
       onContextMenu={() => store.ui.context.setContextmenu()}
-      footbar={<ToolbarComponent style={{ zIndex: 1 }} items={toolbar} />}
+      toolbar={<ToolbarComponent style={{ zIndex: 1 }} items={toolbar} />}
+      footbar={<ToolbarComponent style={{ zIndex: 1 }} items={footbar} />}
     >
       <div
         ref={wrapper_ref}
