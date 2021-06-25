@@ -38,10 +38,10 @@
         }
         
         // update all other update groups
-        for(let i = 0; i < store.updateGroup.length; i++) {
-          console.log('updating group')
-          // store.updateGroup[i]();
-        }
+        // for(let i = 0; i < store.updateGroup.length; i++) {
+        //   console.log('updating group')
+        //   // store.updateGroup[i]();
+        // }
         
         p.image(store.scene.targets[0].ref, 0, 0, p.width, p.height);
       } else {
@@ -53,6 +53,8 @@
       
       if (store.transport.recording) 
         store.transport.stream.getVideoTracks()[0].requestFrame();
+      
+      store.setUpdateFlag();
       
     } catch (error) {
       console.error("error in runner, stopping draw loop", error);

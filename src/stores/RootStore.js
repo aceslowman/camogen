@@ -68,7 +68,7 @@ const RootStore = types
     showSplash: null,
     showUpdates: null,
     showMissingAssets: null,
-    updateGroup: []
+    // updateGroup: []
   }))
   .views(self => ({
     get canvas() {
@@ -320,9 +320,9 @@ const RootStore = types
       self.p5_instance = new p5(p => Runner(p, self));
     },
     
-    addToUpdateGroup: (f) => {
-      self.updateGroup.push(f);
-    },
+    // addToUpdateGroup: (f) => {
+    //   self.updateGroup.push(f);
+    // },
 
     selectParameter: param => {
       if (param && !param.graph) param.createGraph();
