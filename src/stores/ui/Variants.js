@@ -41,6 +41,19 @@ export const PanelVariants = {
     dimensions: [100, 300],
     position: [30, 30]
   },
+  SHADER_LIBRARY: {
+    id: "SHADER_LIBRARY",
+    title: "Shader Library",
+    component_type: "SHADER_LIBRARY",
+    subtitle: "",
+    floating: false,
+    fullscreen: false,
+    canFloat: true,
+    canRemove: true,
+    canFullscreen: false,
+    dimensions: [100, 300],
+    position: [30, 30]
+  },
   PARAMETER_EDITOR: {
     id: "PARAMETER_EDITOR",
     title: "Parameter Editor",
@@ -176,26 +189,26 @@ export const LayoutVariants = {
       SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"]
     }
   },
-  SHADER_EDIT: {
-    id: "SHADER_EDIT",
+  SHADER_EDITOR: {
+    id: "SHADER_EDITOR",
     title: "Shader Edit",
     direction: "HORIZONTAL",
     size: 1,
     children: [
       {
-        id: "SHADER_CONTROLS",
-        panel: "SHADER_CONTROLS",
-        size: 1 / 4
+        id: "SHADER_LIBRARY",
+        panel: "SHADER_LIBRARY",
+        size: 2 / 6
       },
       {
         id: "SHADER_EDITOR",
         panel: "SHADER_EDITOR",
-        size: 2 / 4
+        size: 3 / 6
       },
       {
         id: "inner",
         direction: "VERTICAL",
-        size: 1 / 4,
+        size: 1 / 6,
         children: [
           {
             id: "SHADER_GRAPH",
@@ -214,7 +227,7 @@ export const LayoutVariants = {
       SHADER_GRAPH: PanelVariants["SHADER_GRAPH"],
       MESSAGES: PanelVariants["MESSAGES"],
       SHADER_EDITOR: PanelVariants["SHADER_EDITOR"],
-      SHADER_CONTROLS: PanelVariants["SHADER_CONTROLS"]
+      SHADER_LIBRARY: PanelVariants["SHADER_LIBRARY"]
     }
   },
   SHADER_CONTROL: {

@@ -97,7 +97,7 @@ const ShaderEditor = observer(props => {
 
   const toolbar = (
     <ToolbarComponent
-      style={{ zIndex: 6 }}
+      style={{ zIndex: 1 }}
       items={
         showEditor
           ? {

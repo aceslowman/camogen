@@ -10,10 +10,12 @@ import MediaLibraryComponent from "./MediaLibraryComponent";
 import MessagesComponent from "./MessagesComponent";
 import DebugInfoComponent from "./DebugInfoComponent";
 import DisplayComponent from "./DisplayComponent";
+import ShaderLibraryComponent from "./ShaderLibraryComponent";
 
 export const Panels = new Map([
   ["SHADER_GRAPH", ShaderGraphComponent],
   ["SHADER_EDITOR", ShaderEditorComponent],
+  ["SHADER_LIBRARY", ShaderLibraryComponent],
   ["SHADER_CONTROLS", ShaderControlsComponent],
   ["PREFERENCES", PreferencesComponent],
   ["PARAMETER_EDITOR", ParameterEditorComponent],
