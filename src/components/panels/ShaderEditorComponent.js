@@ -75,7 +75,7 @@ const ShaderEditor = observer(props => {
   };
 
   const showEditor = node !== undefined && data;
-  console.log("CHECK", getSnapshot(store.shader_collection));
+  // console.log("CHECK", getSnapshot(store.shader_collection));
 
   // TODO: working on making assinging collections more straightforward
   let collections = {};
@@ -93,7 +93,7 @@ const ShaderEditor = observer(props => {
     }
   });
 
-  console.log("COLLECTIONS", collections);
+  // console.log("COLLECTIONS", collections);
 
   const toolbar = (
     <ToolbarComponent
