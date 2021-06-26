@@ -3,12 +3,25 @@
 }
 
 .wrapper button {
-  border: 0px;
-  padding: 2px 5px;
+    padding: 2px 5px;    
+    border: none;
+/*     border-right: 1px dotted white; */
+/*     border-color:inherit; */
+    cursor: pointer;
+    background-color: inherit;
+    color: inherit;
+    font-family:inherit;
+    white-space: pre;
 }
 
 .wrapper button:hover {
-  background-color: white;
+  background-color: white !important;
   mix-blend-mode: exclusion;
-  color: black;
+  color: black !important;
+}
+
+.activeButton {
+  background-color: white !important;
+  mix-blend-mode: exclusion;
+  color: black !important;
 }

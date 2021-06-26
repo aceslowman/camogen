@@ -20,8 +20,11 @@ const ShaderLibrary = observer(props => {
   const handleClick = item => {
     console.log("item", item);
   };
+  
+  console.log(getSnapshot(store.shader_collection))
 
   store.shader_collection.traverse(e => {
+    if(e.path)
     // console.log('e', getSnapshot(e))
     let path = e.path.split("/").slice(1);
     // ["app", "shaders", "Math", "Subtract"]

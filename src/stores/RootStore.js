@@ -97,6 +97,8 @@ const RootStore = types
       /*
        currently limited to two levels, just haven't figured out the best
        way to traverse and remap the directory tree
+       
+       NOTE: I think I started addressing this in the Collection class
       */
 
       let items = {};
