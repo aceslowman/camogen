@@ -110,9 +110,10 @@ const Collection = types
           path: self.path+'/'+new_shader.name
         });
       }
-      console.log("adding to collection", getSnapshot(self));
+      // console.log("adding to collection", getSnapshot(self));
       self.children.push(child);
-      self.getRoot().flagForUpdate();
+      // console.log('root',getSnapshot(getRoot(self)))
+      getRoot(self).shader_collection.flagForUpdate();
       
       return child;
     };
@@ -120,7 +121,7 @@ const Collection = types
     const removeChild = child => {
       // console.log("removing from collection", {self:self,child:child});
       self.children = self.children.filter(e => e !== child);
-      getRoot(self).flagForUpdate();
+      getRoot(self).shader_collection.flagForUpdate();
     };
 
     const setData = datasnap => {

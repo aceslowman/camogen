@@ -30,7 +30,7 @@ const ShaderLibrary = observer(props => {
   };
 
   const handleAddNewShader = collection => {
-    console.log("collection to add to", collection);
+    // console.log("collection to add to", collection);
     // store.shader_collection.addItem(collection)
     collection.addChild();
   };
@@ -42,7 +42,7 @@ const ShaderLibrary = observer(props => {
   };
 
   useLayoutEffect(() => {
-    console.log('i')
+    console.log('rendering')
     store.shader_collection.traverse(e => {
       // this temporarily removes the top level from the tree
       if (e.path === "/app/shaders") return;
@@ -98,8 +98,6 @@ const ShaderLibrary = observer(props => {
     
     setTree(directories)
   }, [store.shader_collection, store.shader_collection.updateFlag]);
-  
-  console.log('tree', tree.length)
 
   return (
     <GenericPanel panel={props.panel}>
