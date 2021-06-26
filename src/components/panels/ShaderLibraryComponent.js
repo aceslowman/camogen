@@ -15,30 +15,20 @@ const ShaderLibrary = observer(props => {
   const data = store.mediaLibrary;
   
   let items = [];
-  
-  // TODO: working on making assinging collections more straightforward
-  let collections = {};
 
-  store.shader_collection.children.forEach((e, i) => {
-    
-    // console.log("E", e);
-    if (e.children) {
-      collections = {
-        ...collections,
-        [e.name]: {
-          label: e.name,
-          // onClick: () => handleSaveToCollection(e)
-        }
-      };
-    }
-  });
-
-  console.log("COLLECTIONS", collections);
-  
   store.shader_collection.traverse(e => {
     console.log('e', getSnapshot(e))
-    
-    items.push((<div>{e.name}</div>))
+    /* 
+      there are a lot of overlaps between the graph
+      system and the collection system and they should 
+      probably be collapsed into one
+      
+      for the time being, I'm using the path string
+      (ie "/app/shaders/Math/Subtract") to get the distance
+      between the current item add to the root
+    */
+    let distance_to_trunk = e.path
+    items.push((<div key={e.id}>{e.name}</div>))
   })
 
   return (

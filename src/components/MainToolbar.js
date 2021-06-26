@@ -152,15 +152,7 @@ const MainToolbar = observer(props => {
         Layout: {
           id: "Layout",
           label: "Layout",
-          dropDown: {
-            ...layouts
-            // Panels: {
-            //   id: 'Panels',
-            //   dropDown: {
-            //     // somethi
-            //   }
-            // }
-          }
+          dropDown: layouts          
         },
         Breakout: {
           id: "Breakout",
