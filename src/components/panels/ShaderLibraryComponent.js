@@ -16,10 +16,10 @@ const ShaderLibrary = observer(props => {
 
   let files = [];
   let directories = [];
-  
-  const handleClick = (item) => {
-    console.log('item',item)
-  }
+
+  const handleClick = item => {
+    console.log("item", item);
+  };
 
   store.shader_collection.traverse(e => {
     // console.log('e', getSnapshot(e))
@@ -27,21 +27,29 @@ const ShaderLibrary = observer(props => {
     // ["app", "shaders", "Math", "Subtract"]
     let distance_from_root = path.length - 2;
 
-    if(e.type === "directory") {
+    if (e.type === "directory") {
       let children = [];
-        e.children.forEach((c, i) => {
-          if (c.type === "file") children.push((
+      e.children.forEach((c, i) => {
+        if (c.type === "file")
+          children.push(
             <li key={c.id}>
-              <button onClick={()=>handleClick(c)}>{c.name}</button>
-            </li>));
-        });
+              <button
+                style={{ backgroundColor: theme.secondary_color, color: theme.text_color }}
+                onClick={() => handleClick(c)}
+              >
+                {c.name}
+              </button>
+            </li>
+          );
+      });
 
-        directories.push(
-          <React.Fragment>
-            <h3>{e.name}</h3>
-            <ul>{children}</ul>
-          </React.Fragment>
-        );
+      directories.push(
+        <div key={e.id}>
+          {/* this name should be editable */}
+          <h3>{e.name}</h3>
+          <ul>{children}</ul>
+        </div>
+      );
     }
   }, true);
 
@@ -51,7 +59,7 @@ const ShaderLibrary = observer(props => {
   //   console.log(e.name)
   // });
 
-  return <GenericPanel panel={props.panel}>{directories}</GenericPanel>;
+  return <GenericPanel panel={props.panel}><div className={style.wrapper}>{directories}</div></GenericPanel>;
 });
 
 export default ShaderLibrary;

@@ -1,0 +1,14 @@
+.wrapper {
+  padding: 15px;
+}
+
+.wrapper button {
+  border: 0px;
+  padding: 2px 5px;
+}
+
+.wrapper button:hover {
+  background-color: white;
+  mix-blend-mode: exclusion;
+  color: black;
+}
