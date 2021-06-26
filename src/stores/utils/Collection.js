@@ -72,12 +72,12 @@ const Collection = types
           (ie "/app/shaders/Math/Subtract") to get the distance
           between the current item and the root directory
           */
-          let path = next_node.path.split("/");
-          path.shift();
-          // ["app", "shaders", "Math", "Subtract"]
-          let distance_from_root = path.length - 2;
+          // let path = next_node.path.split("/");
+          // path.shift();
+          // // ["app", "shaders", "Math", "Subtract"]
+          // let distance_from_root = path.length - 2;
 
-          if (f) f(next_node, distance_from_root);
+          if (f) f(next_node);
 
           if (next_node.children) {
             container = depthFirst

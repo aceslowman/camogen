@@ -13,37 +13,32 @@ const ShaderLibrary = observer(props => {
   const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
   const data = store.mediaLibrary;
-  
+
   let items = [];
   let directory = [];
 
-  store.shader_collection.traverse((e,distance_from_root) => {
-    
-    // console.log('e', getSnapshot(e))
-    
-    
-    
-    
-    switch(e.type) {
-      case 'file':
-        // items.push((<div key={e.id}>{e.name}</div>))
-        console.log('file', getSnapshot(e))
-        break;
-      case 'directory':
-        console.log('directory', getSnapshot(e))        
-        break;
-      default:
-        break;
-    }
-    
-    
-  }, true)
+//   store.shader_collection.traverse(e => {
+//     // console.log('e', getSnapshot(e))
+//     let path = e.path.split("/").slice(1);
+//     // ["app", "shaders", "Math", "Subtract"]
+//     let distance_from_root = path.length - 2;
 
-  return (
-    <GenericPanel panel={props.panel}>
-      {items}
-    </GenericPanel>
-  );
+//     switch (e.type) {
+//       case "file":
+//         // items.push((<div key={e.id}>{e.name}</div>))
+//         console.log("file", e.name);
+//         break;
+//       case "directory":
+//         console.log("directory", e.name);
+//         break;
+//       default:
+//         break;
+//     }
+//   }, true);
+  
+  console.log(store.shader_collection.children)
+
+  return <GenericPanel panel={props.panel}>{items}</GenericPanel>;
 });
 
 export default ShaderLibrary;
