@@ -63,13 +63,11 @@ const RootStore = types
     breakoutControlled: false,
     messages: Messages.create(),    
     missingAssets: [],
-    // mediaLibrary: {},
     // 'show' individual panels
     showSplash: null,
     showUpdates: null,
     showMissingAssets: null,
     updateFlag: false
-    // updateGroup: []
   }))
   .views(self => ({
     get canvas() {

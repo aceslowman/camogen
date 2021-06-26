@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+bimport React, { useContext, useEffect, useState, useRef } from "react";
 import MainContext from "../../MainContext";
 import GraphComponent from "../graph/GraphComponent";
 import { GenericPanel, TextComponent } from "maco-ui";
@@ -63,7 +63,28 @@ const ShaderLibrary = observer(props => {
           >
             <h3>{e.name}</h3>
           </button>
-          <ul>{children}</ul>
+          <ul>
+            {children}
+                             NewShader: {
+                  id: "NewShader",
+                  label: "+ New Shader",
+                  onClick: () => {
+                    // create short random string for new shader name
+                    let new_shader = Shader.create({ name: nanoid(5) });
+
+                    e.addChild(
+                      Collection.create({
+                        id: new_shader.name,
+                        name: new_shader.name,
+                        type: "file",
+                        data: new_shader
+                      })
+                    );
+
+                    self.persistShaderCollection();
+                  }
+                }
+          </ul>
         </div>
       );
     }
