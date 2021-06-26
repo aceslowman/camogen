@@ -17,6 +17,7 @@ const ShaderLibrary = observer(props => {
   let items = [];
 
   store.shader_collection.traverse(e => {
+    let directory = []
     console.log('e', getSnapshot(e))
     /* 
       there are a lot of overlaps between the graph
@@ -25,10 +26,18 @@ const ShaderLibrary = observer(props => {
       
       for the time being, I'm using the path string
       (ie "/app/shaders/Math/Subtract") to get the distance
-      between the current item add to the root
+      between the current item and the root directory
     */
-    let distance_to_trunk = e.path
-    items.push((<div key={e.id}>{e.name}</div>))
+    let path = e.path.split('/');
+    path.shift();
+    // ["app", "shaders", "Math", "Subtract"]
+    let distance_from_root = path.length - 2;
+    
+    console.log('distance_from_root', distance_from_root)
+    
+    (<div key={e.id}>{e.name}</div>)
+    
+    items.push()
   })
 
   return (
