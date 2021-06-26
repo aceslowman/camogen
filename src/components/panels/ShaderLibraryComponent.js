@@ -72,21 +72,7 @@ const ShaderLibrary = observer(props => {
             {children}
             <li>
               <button
-                onClick={() => {
-                  // create short random string for new shader name
-                  let new_shader = Shader.create({ name: nanoid(5) });
-
-                  e.addChild(
-                    Collection.create({
-                      id: new_shader.name,
-                      name: new_shader.name,
-                      type: "file",
-                      data: new_shader
-                    })
-                  );
-
-                  self.persistShaderCollection();
-                }}
+                onClick={()=>handleAddNewShader(e.id)}
               >
                 + New Shader
               </button>

@@ -6,6 +6,7 @@ import {
   applySnapshot
 } from "mobx-state-tree";
 import Shader from "../shaders/ShaderStore";
+import { nanoid } from "nanoid"; 
 
 /* 
   COLLECTION 
@@ -91,6 +92,19 @@ const Collection = types
     };
 
     const addChild = child => {
+      
+                /*self.persistShaderCollection();*/
+      
+      if(!child) {
+        // create short random string for new shader name
+                  let new_shader = Shader.create({ name: nanoid(5) });
+        child = Collection.create({
+                      id: new_shader.name,
+                      name: new_shader.name,
+                      type: "file",
+                      data: new_shader
+                    })
+      }
       // console.log("adding to collection", self);
       self.children.push(child);
     };
