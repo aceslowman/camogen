@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useRef
+} from "react";
 import MainContext from "../../MainContext";
 import GraphComponent from "../graph/GraphComponent";
 import { GenericPanel, TextComponent } from "maco-ui";
@@ -15,7 +21,7 @@ const ShaderLibrary = observer(props => {
   const data = store.mediaLibrary;
 
   let files = [];
-  let directories = [];
+  const [directories, setDirectories] = useState([]);
 
   const handleClick = item => {
     // console.log("item", item);
@@ -33,59 +39,64 @@ const ShaderLibrary = observer(props => {
     store.shader_collection.addChild(undefined, "directory");
   };
 
-  store.shader_collection.traverse(e => {
-    // this temporarily removes the top level from the tree
-    if (e.path === "/app/shaders") return;
-
-    // console.log('e', getSnapshot(e))
-    let path = e.path.split("/").slice(1);
-    // ["app", "shaders", "Math", "Subtract"]
-    let distance_from_root = path.length - 2;
-
-    if (e.type === "directory") {
-      let children = [];
+  useLayoutEffect(() => {
+    console.log('i')
+    setDirectories([]))
+    store.shader_collection.traverse(e => {
+      // this temporarily removes the top level from the tree
+      if (e.path === "/app/shaders") return;
       
-      e.children.forEach((c, i) => {
-        if (c.type === "file")
-          children.push(
-            <li key={c.id}>
-              <button
-                style={{
-                  backgroundColor: theme.secondary_color,
-                  color: theme.text_color
-                }}
-                onClick={() => handleClick(c)}
-              >
-                {c.name}
-              </button>
-            </li>
-          );
-      });
+      // ["app", "shaders", "Math", "Subtract"]
+      let path = e.path.split("/").slice(1);
+      let distance_from_root = path.length - 2;
 
-      directories.push(
-        <div key={e.id}>
-          {/* this name should be editable */}
-          <button
-            style={{
-              backgroundColor: theme.secondary_color,
-              color: theme.text_color
-            }}
-            onClick={() => handleClick(e)}
-          >
-            <h3>{e.name}</h3>
-          </button>
-          <ul>
-            {children}
-            <li>
-              <button onClick={() => handleAddNewShader(e)}>
-                + New Shader
-              </button>
-            </li>
-          </ul>
-        </div>
-      );
-    }
-  }, true);
+      if (e.type === "directory") {
+        let children = [];
+
+        e.children.forEach((c, i) => {
+          if (c.type === "file")
+            children.push(
+              <li key={c.id}>
+                <button
+                  style={{
+                    backgroundColor: theme.secondary_color,
+                    color: theme.text_color
+                  }}
+                  onClick={() => handleClick(c)}
+                >
+                  {c.name}
+                </button>
+              </li>
+            );
+        });
+
+        setDirectories(prev => [...prev, (
+          <div key={e.id}>
+            {/* this name should be editable */}
+            <button
+              style={{
+                backgroundColor: theme.secondary_color,
+                color: theme.text_color
+              }}
+              onClick={() => handleClick(e)}
+            >
+              <h3>{e.name}</h3>
+            </button>
+            <ul>
+              {children}
+              <li>
+                <button onClick={() => handleAddNewShader(e)}>
+                  + New Shader
+                </button>
+              </li>
+            </ul>
+          </div>
+        )]);
+      }
+    }, true);
+  });
+  
+  console.log('directories', directories.length)
 
   return (
     <GenericPanel panel={props.panel}>
