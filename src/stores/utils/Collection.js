@@ -6,7 +6,7 @@ import {
   applySnapshot
 } from "mobx-state-tree";
 import Shader from "../shaders/ShaderStore";
-import { nanoid } from "nanoid"; 
+import { nanoid } from "nanoid";
 
 /* 
   COLLECTION 
@@ -73,6 +73,7 @@ const Collection = types
             (ie "/app/shaders/Math/Subtract") to get the distance
             between the current item and the root directory
           */
+
           // let path = next_node.path.split("/");
           // path.shift();
           // // ["app", "shaders", "Math", "Subtract"]
@@ -91,22 +92,24 @@ const Collection = types
       return result;
     };
 
-    const addChild = child => {
-      
-                /*self.persistShaderCollection();*/
-      
-      if(!child) {
+    const addChild = (child, type = "file") => {
+      /*self.persistShaderCollection();*/
+
+      if (!child) {
         // create short random string for new shader name
-                  let new_shader = Shader.create({ name: nanoid(5) });
+        let new_shader = Shader.create({ name: nanoid(5) });
         child = Collection.create({
-                      id: new_shader.name,
-                      name: new_shader.name,
-                      type: "file",
-                      data: new_shader
-                    })
+          id: new_shader.name,
+          name: new_shader.name,
+          type: type,
+          data: type === "file" ? new_shader : undefined,
+          path: self.path+'/'+new_shader.name
+        });
       }
-      // console.log("adding to collection", self);
+      console.log("adding to collection", self);
       self.children.push(child);
+      
+      return child;
     };
 
     const removeChild = child => {

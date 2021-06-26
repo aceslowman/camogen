@@ -29,6 +29,8 @@ const ShaderLibrary = observer(props => {
   
   const handleAddNewCollection = () => {
     console.log('new collection')
+    /* for now this will only be on the base level */
+    store.shader_collection.addChild(null,'directory');
   }
 
   console.log(getSnapshot(store.shader_collection));
@@ -44,6 +46,7 @@ const ShaderLibrary = observer(props => {
 
     if (e.type === "directory") {
       let children = [];
+      if(!e.children) return;
       e.children.forEach((c, i) => {
         if (c.type === "file")
           children.push(

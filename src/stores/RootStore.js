@@ -102,6 +102,7 @@ const RootStore = types
       let items = {};
       let collection = self.shader_collection;
 
+      
       collection.children.forEach(e => {
         if (e.type === "file") {
           items = {
@@ -127,6 +128,7 @@ const RootStore = types
         } else if (e.type === "directory") {
           let subitems = {};
 
+          if(!e.children) return
           // get all dropdown items
           e.children.forEach(c => {
             subitems = {
