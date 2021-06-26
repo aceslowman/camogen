@@ -14,31 +14,40 @@ const ShaderLibrary = observer(props => {
   const store = useContext(MainContext).store;
   const data = store.mediaLibrary;
 
-  let items = [];
-  let directory = [];
+  let files = [];
+  let directories = [];
 
-//   store.shader_collection.traverse(e => {
-//     // console.log('e', getSnapshot(e))
-//     let path = e.path.split("/").slice(1);
-//     // ["app", "shaders", "Math", "Subtract"]
-//     let distance_from_root = path.length - 2;
+  store.shader_collection.traverse(e => {
+    // console.log('e', getSnapshot(e))
+    let path = e.path.split("/").slice(1);
+    // ["app", "shaders", "Math", "Subtract"]
+    let distance_from_root = path.length - 2;
 
-//     switch (e.type) {
-//       case "file":
-//         // items.push((<div key={e.id}>{e.name}</div>))
-//         console.log("file", e.name);
-//         break;
-//       case "directory":
-//         console.log("directory", e.name);
-//         break;
-//       default:
-//         break;
-//     }
-//   }, true);
-  
-  console.log(store.shader_collection.children)
+    switch (e.type) {
+      case "file":
+        // files.push((<div key={e.id}>{e.name}</div>))
+        console.log("file", e.name);
+        break;
+      case "directory":
+        console.log("directory", e.name);
+        // items.push((<div key={e.id}>{e.name}</div>))
+        e.children.forEach((c, i) => {
+          console.log('needing to add',c.name);
+          files.push((<div key={e.id}>{e.name}</div>))
+        });
+        break;
+      default:
+        break;
+    }
+  }, true);
 
-  return <GenericPanel panel={props.panel}>{items}</GenericPanel>;
+  // console.log(getSnapshot(store.shader_collection.children))
+
+  // store.shader_collection.children.forEach((e,i) => {
+  //   console.log(e.name)
+  // });
+
+  return <GenericPanel panel={props.panel}>{directories}</GenericPanel>;
 });
 
 export default ShaderLibrary;
