@@ -21,7 +21,9 @@ const ShaderLibrary = observer(props => {
   const data = store.mediaLibrary;
 
   let files = [];
-  const [directories, setDirectories] = useState([]);
+  let directories = [];
+  
+  const [tree, setTree] = useState([]);
 
   const handleClick = item => {
     // console.log("item", item);
@@ -41,7 +43,6 @@ const ShaderLibrary = observer(props => {
 
   useLayoutEffect(() => {
     console.log('i')
-    setDirectories([]))
     store.shader_collection.traverse(e => {
       // this temporarily removes the top level from the tree
       if (e.path === "/app/shaders") return;
@@ -70,7 +71,7 @@ const ShaderLibrary = observer(props => {
             );
         });
 
-        setDirectories(prev => [...prev, (
+        directories.push(
           <div key={e.id}>
             {/* this name should be editable */}
             <button
@@ -91,17 +92,19 @@ const ShaderLibrary = observer(props => {
               </li>
             </ul>
           </div>
-        )]);
+        );
       }
     }, true);
-  });
+    
+    setTree(directories)
+  }, [store.shader_collection, store.shader_collection.updateFlag]);
   
-  console.log('directories', directories.length)
+  console.log('tree', tree.length)
 
   return (
     <GenericPanel panel={props.panel}>
       <div className={style.wrapper}>
-        {directories}
+        {tree}
         <div>
           {/* this name should be editable */}
           <button

@@ -3,6 +3,7 @@ import {
   flow,
   getParent,
   getSnapshot,
+  getRoot,
   applySnapshot
 } from "mobx-state-tree";
 import Shader from "../shaders/ShaderStore";
@@ -26,6 +27,9 @@ const Collection = types
     extension: types.maybe(types.string),
     data: types.maybe(types.late(() => Shader))
   })
+  .volatile(self => ({
+    updateFlag: false
+  }))
   .views(self => ({
     getByName: name => {
       let result = [];
@@ -108,6 +112,7 @@ const Collection = types
       }
       console.log("adding to collection", getSnapshot(self));
       self.children.push(child);
+      self.getRoot().flagForUpdate();
       
       return child;
     };
@@ -115,18 +120,24 @@ const Collection = types
     const removeChild = child => {
       // console.log("removing from collection", {self:self,child:child});
       self.children = self.children.filter(e => e !== child);
+      getRoot(self).flagForUpdate();
     };
 
     const setData = datasnap => {
       self.name = datasnap.name;
       self.data = datasnap;
     };
+    
+    const flagForUpdate = () => {
+      self.updateFlag = !self.updateFlag;
+    }
 
     return {
       traverse,
       addChild,
       removeChild,
-      setData
+      setData,
+      flagForUpdate
     };
   });
 
