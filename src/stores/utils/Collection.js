@@ -62,10 +62,22 @@ const Collection = types
 
         if (next_node) {
           result.push(next_node);
-          
-          // need to pass along the distance from root
 
-          if (f) f(next_node);
+          /* 
+          there are a lot of overlaps between the graph
+          system and the collection system and they should 
+          probably be collapsed into one
+      
+          for the time being, I'm using the path string
+          (ie "/app/shaders/Math/Subtract") to get the distance
+          between the current item and the root directory
+          */
+          let path = next_node.path.split("/");
+          path.shift();
+          // ["app", "shaders", "Math", "Subtract"]
+          let distance_from_root = path.length - 2;
+
+          if (f) f(next_node, distance_from_root);
 
           if (next_node.children) {
             container = depthFirst
@@ -89,10 +101,6 @@ const Collection = types
     };
 
     const setData = datasnap => {
-      // console.log('setting collection!',getSnapshot(self))
-      // console.log('with this shader', getSnapshot(data))
-      // let d = getSnapshot(data);
-
       self.name = datasnap.name;
       self.data = datasnap;
     };

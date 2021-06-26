@@ -15,30 +15,29 @@ const ShaderLibrary = observer(props => {
   const data = store.mediaLibrary;
   
   let items = [];
+  let directory = [];
 
-  store.shader_collection.traverse(e => {
-    let directory = []
-    console.log('e', getSnapshot(e))
-    /* 
-      there are a lot of overlaps between the graph
-      system and the collection system and they should 
-      probably be collapsed into one
-      
-      for the time being, I'm using the path string
-      (ie "/app/shaders/Math/Subtract") to get the distance
-      between the current item and the root directory
-    */
-    let path = e.path.split('/');
-    path.shift();
-    // ["app", "shaders", "Math", "Subtract"]
-    let distance_from_root = path.length - 2;
+  store.shader_collection.traverse((e,distance_from_root) => {
     
-    console.log('distance_from_root', distance_from_root)
+    // console.log('e', getSnapshot(e))
     
-    (<div key={e.id}>{e.name}</div>)
     
-    items.push()
-  })
+    
+    
+    switch(e.type) {
+      case 'file':
+        // items.push((<div key={e.id}>{e.name}</div>))
+        console.log('file', getSnapshot(e))
+        break;
+      case 'directory':
+        console.log('directory', getSnapshot(e))        
+        break;
+      default:
+        break;
+    }
+    
+    
+  }, true)
 
   return (
     <GenericPanel panel={props.panel}>
