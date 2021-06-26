@@ -20,11 +20,13 @@ const ShaderLibrary = observer(props => {
   const handleClick = item => {
     console.log("item", item);
   };
-  
-  console.log(getSnapshot(store.shader_collection))
+
+  console.log(getSnapshot(store.shader_collection));
 
   store.shader_collection.traverse(e => {
-    if(e.path)
+    // this temporarily removes the top level from the tree
+    if (e.path === "/app/shaders") return;
+
     // console.log('e', getSnapshot(e))
     let path = e.path.split("/").slice(1);
     // ["app", "shaders", "Math", "Subtract"]
@@ -37,7 +39,10 @@ const ShaderLibrary = observer(props => {
           children.push(
             <li key={c.id}>
               <button
-                style={{ backgroundColor: theme.secondary_color, color: theme.text_color }}
+                style={{
+                  backgroundColor: theme.secondary_color,
+                  color: theme.text_color
+                }}
                 onClick={() => handleClick(c)}
               >
                 {c.name}
@@ -49,7 +54,15 @@ const ShaderLibrary = observer(props => {
       directories.push(
         <div key={e.id}>
           {/* this name should be editable */}
-          <h3>{e.name}</h3>
+          <button
+            style={{
+              backgroundColor: theme.secondary_color,
+              color: theme.text_color
+            }}
+            onClick={() => handleClick(e)}
+          >
+            <h3>{e.name}</h3>
+          </button>
           <ul>{children}</ul>
         </div>
       );
@@ -62,7 +75,11 @@ const ShaderLibrary = observer(props => {
   //   console.log(e.name)
   // });
 
-  return <GenericPanel panel={props.panel}><div className={style.wrapper}>{directories}</div></GenericPanel>;
+  return (
+    <GenericPanel panel={props.panel}>
+      <div className={style.wrapper}>{directories}</div>
+    </GenericPanel>
+  );
 });
 
 export default ShaderLibrary;

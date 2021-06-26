@@ -2,16 +2,31 @@
   padding: 15px;
 }
 
+
+.wrapper ul {
+  margin: 5px 0px 15px 0px;
+}
+.wrapper ul li {
+  list-style: none;
+  padding:1px; 
+}
+
+.wrapper h3 {
+  margin: 0px;
+}
+
 .wrapper button {
-    padding: 2px 5px;    
-    border: none;
-/*     border-right: 1px dotted white; */
-/*     border-color:inherit; */
-    cursor: pointer;
-    background-color: inherit;
-    color: inherit;
-    font-family:inherit;
-    white-space: pre;
+  width: 100%;
+  padding: 2px 5px;
+  border: none;
+  /*     border-right: 1px dotted white; */
+  /*     border-color:inherit; */
+  cursor: pointer;
+  background-color: inherit;
+  color: inherit;
+  font-family: inherit;
+  white-space: pre;
+  text-align: left;
 }
 
 .wrapper button:hover {
