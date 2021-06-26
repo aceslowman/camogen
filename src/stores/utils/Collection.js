@@ -65,13 +65,13 @@ const Collection = types
           result.push(next_node);
 
           /* 
-          there are a lot of overlaps between the graph
-          system and the collection system and they should 
-          probably be collapsed into one
-      
-          for the time being, I'm using the path string
-          (ie "/app/shaders/Math/Subtract") to get the distance
-          between the current item and the root directory
+            there are a lot of overlaps between the graph
+            system and the collection system and they should 
+            probably be collapsed into one
+
+            for the time being, I'm using the path string
+            (ie "/app/shaders/Math/Subtract") to get the distance
+            between the current item and the root directory
           */
           // let path = next_node.path.split("/");
           // path.shift();

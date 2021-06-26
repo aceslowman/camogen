@@ -22,8 +22,13 @@ const ShaderLibrary = observer(props => {
   };
   
   const handleAddNewShader = (collection) => {
-    console.log('collection', collection)
+    console.log('collection to add to', collection)
     // store.shader_collection.addItem(collection)
+    collection.addChild();
+  }
+  
+  const handleAddNewCollection = () => {
+    console.log('new collection')
   }
 
   console.log(getSnapshot(store.shader_collection));
@@ -72,7 +77,7 @@ const ShaderLibrary = observer(props => {
             {children}
             <li>
               <button
-                onClick={()=>handleAddNewShader(e.id)}
+                onClick={()=>handleAddNewShader(e)}
               >
                 + New Shader
               </button>
@@ -91,7 +96,21 @@ const ShaderLibrary = observer(props => {
 
   return (
     <GenericPanel panel={props.panel}>
-      <div className={style.wrapper}>{directories}</div>
+      <div className={style.wrapper}>
+        {directories}
+        <div>
+          {/* this name should be editable */}
+          <button
+            style={{
+              backgroundColor: theme.secondary_color,
+              color: theme.text_color
+            }}
+            onClick={() => handleAddNewCollection()}
+          >
+            <h3>+ New Collection</h3>
+          </button>
+        </div>
+      </div>
     </GenericPanel>
   );
 });
