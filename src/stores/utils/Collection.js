@@ -22,7 +22,7 @@ const Collection = types
     name: types.maybe(types.string),
     size: types.maybe(types.number),
     type: types.maybe(types.enumeration("Type", ["directory", "file"])),
-    children: types.maybe(types.array(types.late(() => Collection))),
+    children: types.array(types.late(() => Collection)),
     extension: types.maybe(types.string),
     data: types.maybe(types.late(() => Shader))
   })
@@ -106,7 +106,7 @@ const Collection = types
           path: self.path+'/'+new_shader.name
         });
       }
-      console.log("adding to collection", self);
+      console.log("adding to collection", getSnapshot(self));
       self.children.push(child);
       
       return child;

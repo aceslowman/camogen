@@ -128,7 +128,6 @@ const RootStore = types
         } else if (e.type === "directory") {
           let subitems = {};
 
-          if(!e.children) return
           // get all dropdown items
           e.children.forEach(c => {
             subitems = {

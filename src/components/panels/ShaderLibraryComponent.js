@@ -18,22 +18,20 @@ const ShaderLibrary = observer(props => {
   let directories = [];
 
   const handleClick = item => {
-    console.log("item", item);
+    // console.log("item", item);
   };
-  
-  const handleAddNewShader = (collection) => {
-    console.log('collection to add to', collection)
+
+  const handleAddNewShader = collection => {
+    console.log("collection to add to", collection);
     // store.shader_collection.addItem(collection)
     collection.addChild();
-  }
-  
-  const handleAddNewCollection = () => {
-    console.log('new collection')
-    /* for now this will only be on the base level */
-    store.shader_collection.addChild(null,'directory');
-  }
+  };
 
-  console.log(getSnapshot(store.shader_collection));
+  const handleAddNewCollection = () => {
+    // console.log("new collection");
+    /* for now this will only be on the base level */
+    store.shader_collection.addChild(undefined, "directory");
+  };
 
   store.shader_collection.traverse(e => {
     // this temporarily removes the top level from the tree
@@ -46,7 +44,7 @@ const ShaderLibrary = observer(props => {
 
     if (e.type === "directory") {
       let children = [];
-      if(!e.children) return;
+      
       e.children.forEach((c, i) => {
         if (c.type === "file")
           children.push(
@@ -79,9 +77,7 @@ const ShaderLibrary = observer(props => {
           <ul>
             {children}
             <li>
-              <button
-                onClick={()=>handleAddNewShader(e)}
-              >
+              <button onClick={() => handleAddNewShader(e)}>
                 + New Shader
               </button>
             </li>
@@ -90,12 +86,6 @@ const ShaderLibrary = observer(props => {
       );
     }
   }, true);
-
-  // console.log(getSnapshot(store.shader_collection.children))
-
-  // store.shader_collection.children.forEach((e,i) => {
-  //   console.log(e.name)
-  // });
 
   return (
     <GenericPanel panel={props.panel}>
