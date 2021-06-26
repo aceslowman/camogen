@@ -16,6 +16,10 @@ const ShaderLibrary = observer(props => {
 
   let files = [];
   let directories = [];
+  
+  const handleClick = (item) => {
+    console.log('item',item)
+  }
 
   store.shader_collection.traverse(e => {
     // console.log('e', getSnapshot(e))
@@ -23,21 +27,21 @@ const ShaderLibrary = observer(props => {
     // ["app", "shaders", "Math", "Subtract"]
     let distance_from_root = path.length - 2;
 
-    switch (e.type) {
-      case "file":
-        // files.push((<div key={e.id}>{e.name}</div>))
-        console.log("file", e.name);
-        break;
-      case "directory":
-        console.log("directory", e.name);
-        // items.push((<div key={e.id}>{e.name}</div>))
+    if(e.type === "directory") {
+      let children = [];
         e.children.forEach((c, i) => {
-          console.log('needing to add',c.name);
-          files.push((<div key={e.id}>{e.name}</div>))
+          if (c.type === "file") children.push((
+            <li key={c.id}>
+              <button onClick={()=>handleClick(c)}>{c.name}</button>
+            </li>));
         });
-        break;
-      default:
-        break;
+
+        directories.push(
+          <React.Fragment>
+            <h3>{e.name}</h3>
+            <ul>{children}</ul>
+          </React.Fragment>
+        );
     }
   }, true);
 
