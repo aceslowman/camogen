@@ -40,6 +40,10 @@ const ShaderLibrary = observer(props => {
     /* for now this will only be on the base level */
     store.shader_collection.addChild(undefined, "directory");
   };
+  
+  const handleRenameItem = (item) => {
+    console.log('renaming',item)
+  }
 
   useLayoutEffect(() => {
     console.log('rendering')
@@ -64,6 +68,7 @@ const ShaderLibrary = observer(props => {
                     color: theme.text_color
                   }}
                   onClick={() => handleClick(c)}
+                  onDoubleClick={() => handleRenameItem(c)}
                 >
                   {c.name}
                 </button>
@@ -73,13 +78,14 @@ const ShaderLibrary = observer(props => {
 
         directories.push(
           <div key={e.id}>
-            {/* this name should be editable */}
+            {/* this name should be editable on double-click */}
             <button
               style={{
                 backgroundColor: theme.secondary_color,
                 color: theme.text_color
               }}
               onClick={() => handleClick(e)}
+              onDoubleClick={() => handleRenameItem(e)}
             >
               <h3>{e.name}</h3>
             </button>
@@ -103,8 +109,7 @@ const ShaderLibrary = observer(props => {
     <GenericPanel panel={props.panel}>
       <div className={style.wrapper}>
         {tree}
-        <div>
-          {/* this name should be editable */}
+        <div>          
           <button
             style={{
               backgroundColor: theme.secondary_color,
