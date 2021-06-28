@@ -28,6 +28,7 @@ const ShaderEditor = observer(props => {
   const [selectingCollection, setSelectingCollection] = useState(false);
 
   const graph = store.scene.shaderGraph;
+  // TODO create new global variable for currentlyEditing
   const node = graph.selectedNode;
   const data = node.data;
   const hasChanged = data ? data.hasChanged : null;

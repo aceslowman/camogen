@@ -49,6 +49,7 @@ const RootStore = types
     ui: UIStore,
     scene: types.maybe(Scene),
     selectedParameter: types.safeReference(Parameter),
+    selectedShader: types.safeReference(Shader),
     keyFocus: types.maybe(types.string),
     transport: types.optional(Transport, {}),
     mediaLibrary: types.maybe(MediaLibrary),
@@ -313,7 +314,6 @@ const RootStore = types
         document.querySelector(".loading").style.display = "none";
       });
       
-      // TESTING:
       // set up media library
       self.mediaLibrary = MediaLibrary.create({id: nanoid()});      
     },
@@ -325,14 +325,14 @@ const RootStore = types
     setUpdateFlag: () => {
       self.updateFlag = !self.updateFlag;
     },
-    
-    // addToUpdateGroup: (f) => {
-    //   self.updateGroup.push(f);
-    // },
 
     selectParameter: param => {
       if (param && !param.graph) param.createGraph();
       self.selectedParameter = param;
+    },
+    
+    selectShader: shader => {
+      self.selectedShader = shader;
     },
 
     save: () => {
