@@ -19,17 +19,6 @@ import { GenericPanel, ToolbarComponent } from "maco-ui";
 
 let editor;
 
-// key={panel.id}
-//         node={scene.shaderGraph.selectedNode}
-//         data={scene.shaderGraph.selectedNode.data}
-//         graph={scene.shaderGraph}
-//         hasChanged={
-//           scene.shaderGraph.selectedNode.data
-//             ? scene.shaderGraph.selectedNode.data.hasChanged
-//             : null
-//         }
-//         panel={panel}
-
 const ShaderEditor = observer(props => {
   const store = useContext(MainContext).store;
   const mainRef = useRef(null);
@@ -75,13 +64,9 @@ const ShaderEditor = observer(props => {
   };
 
   const showEditor = node !== undefined && data;
-  // console.log("CHECK", getSnapshot(store.shader_collection));
-
-  // TODO: working on making assinging collections more straightforward
   let collections = {};
 
   store.shader_collection.children.forEach((e, i) => {
-    // console.log("E", e);
     if (e.children) {
       collections = {
         ...collections,
@@ -92,8 +77,6 @@ const ShaderEditor = observer(props => {
       };
     }
   });
-
-  // console.log("COLLECTIONS", collections);
 
   const toolbar = (
     <ToolbarComponent
