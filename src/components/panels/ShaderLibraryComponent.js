@@ -22,36 +22,34 @@ const ShaderLibrary = observer(props => {
 
   let files = [];
   let directories = [];
-  
+
   const [tree, setTree] = useState([]);
+  
 
   const handleClick = item => {
-    console.log("item", getSnapshot(item));
     store.selectShader(item);
   };
 
   const handleAddNewShader = collection => {
-    // console.log("collection to add to", collection);
-    // store.shader_collection.addItem(collection)
     collection.addChild();
   };
 
   const handleAddNewCollection = () => {
-    // console.log("new collection");
     /* for now this will only be on the base level */
     store.shader_collection.addChild(undefined, "directory");
   };
-  
-  const handleRenameItem = (item) => {
-    console.log('renaming',item)
-  }
+
+  const handleRenameItem = item => {
+    console.log("renaming", item);
+    item.setName('something');
+  };
 
   useLayoutEffect(() => {
-    console.log('rendering')
+    console.log("rendering");
     store.shader_collection.traverse(e => {
       // this temporarily removes the top level from the tree
       if (e.path === "/app/shaders") return;
-      
+
       // ["app", "shaders", "Math", "Subtract"]
       let path = e.path.split("/").slice(1);
       let distance_from_root = path.length - 2;
@@ -68,6 +66,9 @@ const ShaderLibrary = observer(props => {
                     backgroundColor: theme.secondary_color,
                     color: theme.text_color
                   }}
+                  className={
+                    c === store.selectedShader ? style.activeButton : ""
+                  }
                   onClick={() => handleClick(c)}
                   onDoubleClick={() => handleRenameItem(c)}
                 >
@@ -102,15 +103,19 @@ const ShaderLibrary = observer(props => {
         );
       }
     }, true);
-    
-    setTree(directories)
-  }, [store.shader_collection, store.shader_collection.updateFlag]);
+
+    setTree(directories);
+  }, [
+    store.shader_collection,
+    store.selectedShader,
+    store.shader_collection.updateFlag
+  ]);
 
   return (
     <GenericPanel panel={props.panel}>
       <div className={style.wrapper}>
         {tree}
-        <div>          
+        <div>
           <button
             style={{
               backgroundColor: theme.secondary_color,

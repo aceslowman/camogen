@@ -14,6 +14,7 @@ import { nanoid } from "nanoid";
   
   TODO: 
     this has too much overlap with the Graph class
+    think it's best to calculate the 'path' string in view()
 */
 
 const Collection = types
@@ -129,15 +130,21 @@ const Collection = types
       self.data = datasnap;
     };
     
+    const setName = name => {
+      self.name = name;
+      getRoot(self).shader_collection.flagForUpdate();
+    };
+    
     const flagForUpdate = () => {
       self.updateFlag = !self.updateFlag;
-    }
+    };
 
     return {
       traverse,
       addChild,
       removeChild,
       setData,
+      setName,
       flagForUpdate
     };
   });

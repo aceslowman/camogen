@@ -31,7 +31,7 @@ const ShaderEditor = observer(props => {
   // TODO create new global variable for currentlyEditing
   // const node = graph.selectedNode;
   const node = store.selectedShader;
-  const data = node.data;
+  const data = node ? node.data : null;
   const hasChanged = data ? data.hasChanged : null;
 
   const handleRefresh = () => {
