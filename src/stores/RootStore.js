@@ -49,7 +49,7 @@ const RootStore = types
     ui: UIStore,
     scene: types.maybe(Scene),
     selectedParameter: types.safeReference(Parameter),
-    selectedShader: types.safeReference(Shader),
+    selectedShader: types.safeReference(Collection),
     keyFocus: types.maybe(types.string),
     transport: types.optional(Transport, {}),
     mediaLibrary: types.maybe(MediaLibrary),

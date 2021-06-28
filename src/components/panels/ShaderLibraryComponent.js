@@ -27,7 +27,7 @@ const ShaderLibrary = observer(props => {
 
   const handleClick = item => {
     console.log("item", getSnapshot(item));
-    store.selectShader(item.data);
+    store.selectShader(item);
   };
 
   const handleAddNewShader = collection => {
