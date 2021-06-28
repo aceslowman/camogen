@@ -50,6 +50,7 @@ const ShaderLibrary = observer(props => {
       // this temporarily removes the top level from the tree
       if (e.path === "/app/shaders") return;
 
+      // TODO paths should be calculated in collection store
       // ["app", "shaders", "Math", "Subtract"]
       let path = e.path.split("/").slice(1);
       let distance_from_root = path.length - 2;
