@@ -24,9 +24,10 @@ const ShaderLibrary = observer(props => {
   let directories = [];
 
   const [tree, setTree] = useState([]);
-  
+  const [currentlyRenaming, setCurrentlyRenaming] = useState();
 
   const handleClick = item => {
+    setCurrentlyRenaming(undefined);
     store.selectShader(item);
   };
 
@@ -40,8 +41,7 @@ const ShaderLibrary = observer(props => {
   };
 
   const handleRenameItem = item => {
-    console.log("renaming", item);
-    item.setName('something');
+    setCurrentlyRenaming(item.id);
   };
 
   useLayoutEffect(() => {
@@ -58,24 +58,40 @@ const ShaderLibrary = observer(props => {
         let children = [];
 
         e.children.forEach((c, i) => {
-          if (c.type === "file")
-            children.push(
-              <li key={c.id}>
-                <button
-                  style={{
-                    backgroundColor: theme.secondary_color,
-                    color: theme.text_color
-                  }}
-                  className={
-                    c === store.selectedShader ? style.activeButton : ""
-                  }
-                  onClick={() => handleClick(c)}
-                  onDoubleClick={() => handleRenameItem(c)}
-                >
-                  {c.name}
-                </button>
-              </li>
-            );
+          if (c.type === "file") {
+            if (c.id === currentlyRenaming) {
+              children.push(
+                <li key={c.id}>
+                  <input
+                    style={{
+                      backgroundColor: theme.secondary_color,
+                      color: theme.text_color
+                    }}
+                    placeholder={"renaming " + c.name}
+                    onChange={_e => c.setName(_e.target.value)}
+                  />
+                </li>
+              );
+            } else {
+              children.push(
+                <li key={c.id}>
+                  <button
+                    style={{
+                      backgroundColor: theme.secondary_color,
+                      color: theme.text_color
+                    }}
+                    className={
+                      c === store.selectedShader ? style.activeButton : ""
+                    }
+                    onClick={() => handleClick(c)}
+                    onDoubleClick={() => handleRenameItem(c)}
+                  >
+                    {c.name}
+                  </button>
+                </li>
+              );
+            }
+          }
         });
 
         directories.push(
@@ -108,7 +124,8 @@ const ShaderLibrary = observer(props => {
   }, [
     store.shader_collection,
     store.selectedShader,
-    store.shader_collection.updateFlag
+    store.shader_collection.updateFlag,
+    currentlyRenaming
   ]);
 
   return (

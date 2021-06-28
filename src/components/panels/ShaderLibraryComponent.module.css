@@ -16,7 +16,7 @@
   margin: 0px;
 }
 
-.wrapper button {
+.wrapper button, .wrapper input {
   width: 100%;
   padding: 2px 5px;
   border: none;
@@ -26,6 +26,10 @@
   font-family: inherit;
   white-space: pre;
   text-align: left;
+}
+
+.wrapper input {
+  cursor: text;
 }
 
 .wrapper button:hover {
