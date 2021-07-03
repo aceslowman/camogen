@@ -11,13 +11,13 @@ import { GenericPanel, TextComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 import style from "./ShaderLibraryComponent.module.css";
-import { ThemeContext, SplitContainer } from "maco-ui";
+import { UIContext, SplitContainer } from "maco-ui";
 import Dropzone from "react-dropzone";
 import filesize from "file-size";
 
-const ShaderLibrary = observer(props => {
-  const theme = useContext(ThemeContext);
+const ShaderLibrary = observer(props => {  
   const store = useContext(MainContext).store;
+  const theme = store.ui.theme;
   const data = store.mediaLibrary;
 
   let files = [];
@@ -45,7 +45,6 @@ const ShaderLibrary = observer(props => {
   };
 
   useLayoutEffect(() => {
-    console.log("rendering");
     store.shader_collection.traverse(e => {
       // this temporarily removes the top level from the tree
       if (e.path === "/app/shaders") return;

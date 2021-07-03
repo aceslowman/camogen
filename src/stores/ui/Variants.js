@@ -145,19 +145,19 @@ export const PanelVariants = {
     dimensions: [100, 300],
     position: [30, 30]
   },
-  CAPTURE: {
-    id: "CAPTURE",
-    title: "Capture",
-    component_type: "CAPTURE",
-    subtitle: "",
-    floating: false,
-    fullscreen: false,
-    canFloat: true,
-    canRemove: true,
-    canFullscreen: false,
-    dimensions: [100, 300],
-    position: [30, 30]
-  }
+  // CAPTURE: {
+  //   id: "CAPTURE",
+  //   title: "Capture",
+  //   component_type: "CAPTURE",
+  //   subtitle: "",
+  //   floating: false,
+  //   fullscreen: false,
+  //   canFloat: true,
+  //   canRemove: true,
+  //   canFullscreen: false,
+  //   dimensions: [100, 300],
+  //   position: [30, 30]
+  // }
 };
 
 export const LayoutVariants = {

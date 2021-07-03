@@ -72,6 +72,11 @@ const App = observer(props => {
       return <Component key={panel.component_type} panel={panel} />;
     }
   };
+  
+  console.log('icomponents',               Object.values(store.ui.panelVariants).map((e) => {
+                console.log('e',e)
+                return getPanelComponent(e);
+              }))
 
   return (
     <MacoWrapperComponent store={store} className='gridpatterned'>
@@ -82,7 +87,7 @@ const App = observer(props => {
           <GenericPanel panel={mainPanel} subtitle={store.name}>
             <LayoutContainer layout={mainLayout}>
               {Object.values(store.ui.panelVariants).map((e) => {
-                console.log()
+                console.log('e',e)
                 return getPanelComponent(e);
               })}
             </LayoutContainer>

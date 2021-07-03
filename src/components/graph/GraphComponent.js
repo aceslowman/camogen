@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import styles from "./GraphComponent.module.css";
 import { observer } from "mobx-react";
-import { ThemeContext } from "maco-ui";
 import useResizeObserver from "../hooks/ResizeHook";
 import { branch_colors } from "../../stores/GraphStore";
 import MainContext from "../../MainContext";
@@ -16,8 +15,8 @@ import { getSnapshot } from "mobx-state-tree";
 import { nanoid } from "nanoid";
 
 const GraphComponent = observer(props => {
-  const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
+  const theme = store.ui.theme;
   const { clipboard } = props.data;
   const wrapper_ref = useRef(null);
   const canvas_ref = useRef(null);
@@ -275,12 +274,18 @@ const GraphComponent = observer(props => {
         },
         // select down
         ArrowDown: () => {
-          if (props.data.selectedNode && props.data.selectedNode.children.length)
+          if (
+            props.data.selectedNode &&
+            props.data.selectedNode.children.length
+          )
             props.data.selectedNode.children[0].select();
         },
         // select left
         ArrowLeft: () => {
-          if (props.data.selectedNode && props.data.selectedNode.children.length) {
+          if (
+            props.data.selectedNode &&
+            props.data.selectedNode.children.length
+          ) {
             let idx = props.data.selectedNode.children[0].parents.indexOf(
               props.data.selectedNode
             );
@@ -293,7 +298,10 @@ const GraphComponent = observer(props => {
         },
         // select right
         ArrowRight: () => {
-          if (props.data.selectedNode && props.data.selectedNode.children.length) {
+          if (
+            props.data.selectedNode &&
+            props.data.selectedNode.children.length
+          ) {
             let idx = props.data.selectedNode.children[0].parents.indexOf(
               props.data.selectedNode
             );
@@ -317,7 +325,10 @@ const GraphComponent = observer(props => {
         },
         // add selection down
         "Shift+ArrowDown": () => {
-          if (props.data.selectedNode && props.data.selectedNode.children.length) {
+          if (
+            props.data.selectedNode &&
+            props.data.selectedNode.children.length
+          ) {
             let next = props.data.selectedNode.children[0];
 
             if (clipboard.selection.includes(next)) {
@@ -360,7 +371,10 @@ const GraphComponent = observer(props => {
         },
         // swap down
         "$mod+Shift+ArrowDown": () => {
-          if (props.data.selectedNode && props.data.selectedNode.children.length)
+          if (
+            props.data.selectedNode &&
+            props.data.selectedNode.children.length
+          )
             props.data.selectedNode.swapData(
               props.data.selectedNode.children[0].select()
             );
@@ -392,7 +406,7 @@ const GraphComponent = observer(props => {
         },
         // delete
         Delete: () => {
-          console.log('deleting')
+          console.log("deleting");
           props.data.removeSelected();
         },
         // copy
@@ -420,7 +434,7 @@ const GraphComponent = observer(props => {
     props.data.history,
     props.data,
     store.context,
-    props.useKeys    
+    props.useKeys
   ]);
 
   return (
