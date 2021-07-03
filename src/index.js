@@ -13,19 +13,6 @@ const root = RootStore.create({
   ui: UIStore.create({
     theme: Themes.yutani,
     panels: {
-      // CANVAS: {
-      //   id: "CANVAS",
-      //   title: "canvas",
-      //   floating: false,
-      //   canFloat: false,
-      //   collapsible: true,
-      //   fullscreen: true,
-      //   canFullscreen: true,
-      //   showTitle: false,
-      //   dimensions: [window.innerWidth - 100, window.innerHeight - 100],
-      //   // position: [window.innerWidth / 2 - (window.innerWidth - 100)/2, window.innerHeight / 2 - (window.innerHeight - 100)/2]
-      //   position: [0,15]
-      // },
       MAIN: {
         id: "MAIN",
         floating: true,

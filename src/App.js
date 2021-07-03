@@ -67,10 +67,10 @@ const App = observer(props => {
   }, []);
 
   const getPanelComponent = panel => {
-    if (Panels.has(panel.id)) {
-      let Component = Panels.get(panel.id);
-      return <Component key={panel.id} panel={panel} />;
-    }
+    // if (Panels.has(panel.id)) {
+    //   let Component = Panels.get(panel.id);
+    //   return <Component key={panel.id} panel={panel} />;
+    // }
   };
 
   return (
