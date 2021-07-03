@@ -126,6 +126,7 @@ const OperatorEditor = observer(props => {
 
   return (
     <GenericPanel
+      showTitle={false}
       panel={props.panel}
       toolbar={data && toolbar}
       title="Parameter Editor"

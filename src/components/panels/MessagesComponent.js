@@ -23,7 +23,7 @@ const Messages = observer(props => {
   );
 
   return (
-    <GenericPanel panel={props.panel} toolbar={toolbar}>
+    <GenericPanel showTitle={false} panel={props.panel} toolbar={toolbar}>
       <TextComponent>
         <ul className={styles.loglist}>
           {log

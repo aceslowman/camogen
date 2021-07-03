@@ -41,6 +41,7 @@ const OperatorGraph = observer(props => {
   
   return (
     <PanelComponent
+      showTitle={false}
       detachable
       onDetach={props.onDetach ? props.onDetach : () => {}}
       // collapsed={props.collapsed}

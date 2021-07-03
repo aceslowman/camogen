@@ -94,6 +94,7 @@ const ShaderGraph = observer(props => {
 
   return (
     <GenericPanel
+      showTitle={false}
       panel={props.panel}
       onContextMenu={handlePanelContextMenu}
       onFocus={handleFocus}

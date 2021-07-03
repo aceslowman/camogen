@@ -42,6 +42,7 @@ const OperatorControls = observer(props => {
 
   return (
     <PanelComponent
+      showTitle={false}
       //title="Op Controls"
       onRemove={handleRemove}
       className={styles.shader_graph}

@@ -185,6 +185,7 @@ const ShaderControls = observer(props => {
 
   return (
     <GenericPanel
+      showTitle={false}
       panel={props.panel}
       toolbar={
         <ToolbarComponent

@@ -76,7 +76,7 @@ const MediaLibrary = observer(props => {
   let selectedMedia = store.mediaLibrary.media.get(selectedFile);
 
   return (
-    <GenericPanel panel={props.panel}>
+    <GenericPanel showTitle={false} panel={props.panel}>
       <Dropzone
         onDrop={handleDrop}
         // onDragEnter={() => {}}

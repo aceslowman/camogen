@@ -17,7 +17,7 @@ const Preferences = observer(props => {
   const { ui } = store;
 
   return (
-    <GenericPanel panel={props.panel}>
+    <GenericPanel showTitle={false} panel={props.panel}>
       <TextComponent>Hello World</TextComponent>
       <ControlGroupComponent name="theme">
         <InputSelect

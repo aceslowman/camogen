@@ -214,6 +214,11 @@ const ShaderEditor = observer(props => {
 
   return (
     <GenericPanel
+      // TODO: temporarily hiding title
+      // because panel frames are now being handled by the
+      // layout component, but there are situations where 
+      // toolbars and footbars need to be applied
+      showTitle={false}
       panel={props.panel}
       subtitle={
         <span

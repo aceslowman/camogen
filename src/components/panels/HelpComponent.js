@@ -3,7 +3,7 @@ import { TextComponent, GenericPanel, PagesContainer } from "maco-ui";
 
 const Help = props => {
   return (
-    <GenericPanel panel={props.panel}>
+    <GenericPanel showTitle={false} panel={props.panel}>
       <PagesContainer>
         <TextComponent>
           <h1>camogen</h1>
