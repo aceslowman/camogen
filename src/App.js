@@ -7,7 +7,6 @@ import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 import { Panels } from "./components/panels";
 
 import {
-  ThemeContext,
   ToolbarComponent,
   LayoutContainer,
   GenericPanel,
@@ -72,22 +71,17 @@ const App = observer(props => {
       return <Component key={panel.component_type} panel={panel} />;
     }
   };
-  
-  console.log('icomponents',               Object.values(store.ui.panelVariants).map((e) => {
-                console.log('e',e)
-                return getPanelComponent(e);
-              }))
 
   return (
-    <MacoWrapperComponent store={store} className='gridpatterned'>
+    <MacoWrapperComponent store={store} className="gridpatterned">
       <MainProvider value={{ store: store }}>
         {props.store.ready && <MainToolbar />}
 
         {store.ready && (
           <GenericPanel panel={mainPanel} subtitle={store.name}>
             <LayoutContainer layout={mainLayout}>
-              {Object.values(store.ui.panelVariants).map((e) => {
-                console.log('e',e)
+              {Object.values(store.ui.panelVariants).map(e => {
+                console.log("e", e);
                 return getPanelComponent(e);
               })}
             </LayoutContainer>
@@ -108,8 +102,8 @@ const App = observer(props => {
               store.setShowMissingAssets(!store.showMissingAssets)
             }
           />
-        )}        
-      </MainProvider>      
+        )}
+      </MainProvider>
     </MacoWrapperComponent>
   );
 });

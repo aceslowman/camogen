@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import {
   InputSelect,
   InputBool,
-  ThemeContext,
   PanelComponent,
   TextComponent,
   PagesContainer
@@ -12,8 +11,8 @@ import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 
 const Splash = observer(props => {
-  const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
+  const theme = store.ui.theme;
 
   const [position, setPosition] = useState([
     window.innerWidth / 2 - 312,

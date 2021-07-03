@@ -233,6 +233,8 @@ const Display = observer(props => {
 
     let _w = width + offset_x;
     let _h = height + offset_y;
+    
+    console.log('panel', props.panel)
 
     props.panel.setDimensions([_w, _h]);
   }, [width, height]);
@@ -461,6 +463,7 @@ const Display = observer(props => {
 
   return (
     <GenericPanel
+      showTitle={false}
       panel={props.panel}
       showTitle={!props.panel.fullscreen}
       floating={false}

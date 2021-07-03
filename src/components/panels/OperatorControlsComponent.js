@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import MainContext from "../../MainContext";
 import {
   PanelComponent,
-  ThemeContext,
   ControlGroupComponent,
   ToolbarComponent
 } from "maco-ui";
@@ -20,9 +19,9 @@ import { observer } from "mobx-react";
 import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 
-const OperatorControls = observer(props => {
-  const theme = useContext(ThemeContext);
+const OperatorControls = observer(props => {  
   const store = useContext(MainContext).store;
+  const theme = store.ui.theme;
 
   const [useKeys, setUseKeys] = useState(false);
   const [expandAll, setExpandAll] = useState(true);

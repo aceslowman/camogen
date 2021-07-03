@@ -4,7 +4,6 @@ import { observer } from "mobx-react";
 import MainContext from "../MainContext";
 
 import {
-  ThemeContext,
   ToolbarComponent,
   LayoutContainer,
   GenericPanel,

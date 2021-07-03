@@ -5,13 +5,13 @@ import { GenericPanel, TextComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 import style from "./MediaLibraryComponent.module.css";
-import { ThemeContext, SplitContainer } from "maco-ui";
+import { SplitContainer } from "maco-ui";
 import Dropzone from "react-dropzone";
 import filesize from "file-size";
 
-const MediaLibrary = observer(props => {
-  const theme = useContext(ThemeContext);
+const MediaLibrary = observer(props => {  
   const store = useContext(MainContext).store;
+  const theme = store.ui.theme;
   const data = store.mediaLibrary;
   const mainRef = useRef();
 

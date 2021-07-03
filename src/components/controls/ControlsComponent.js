@@ -6,7 +6,6 @@ import {
   ControlGroupComponent,
   InputBool,
   InputFloat,
-  ThemeContext,
   ToolbarComponent
 } from "maco-ui";
 
@@ -22,8 +21,8 @@ import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 
 const Controls = observer(props => {
-  const theme = useContext(ThemeContext);
   const store = useContext(MainContext).store;
+  const theme = store.ui.theme;
 
   const [useKeys, setUseKeys] = useState(false);
 

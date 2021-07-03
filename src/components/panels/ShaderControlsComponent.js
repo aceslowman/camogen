@@ -6,7 +6,6 @@ import {
   ControlGroupComponent,
   InputBool,
   InputFloat,
-  ThemeContext,
   ToolbarComponent
 } from "maco-ui";
 
@@ -16,9 +15,9 @@ import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 import ControlsComponent from "../controls/ControlsComponent";
 
-const ShaderControls = observer(props => {
-  const theme = useContext(ThemeContext);
+const ShaderControls = observer(props => {  
   const store = useContext(MainContext).store;
+  const theme = store.ui.theme;
   const data = store.scene.shaderGraph;
 
   const [useKeys, setUseKeys] = useState(false);

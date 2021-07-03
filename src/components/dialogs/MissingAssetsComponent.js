@@ -4,7 +4,6 @@ import { getSnapshot } from "mobx-state-tree";
 import {
   InputSelect,
   InputBool,
-  ThemeContext,
   PanelComponent,
   TextComponent
 } from "maco-ui";
@@ -12,10 +11,10 @@ import styles from "./MissingAssetsComponent.module.css";
 import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 
-const MissingAssets = observer(props => {
-  const theme = useContext(ThemeContext);
+const MissingAssets = observer(props => {  
   const store = useContext(MainContext).store;
-
+  const theme = store.ui.theme;
+  
   const [position, setPosition] = useState([
     window.innerWidth / 2 - 312,
     window.innerHeight / 2 - 212
