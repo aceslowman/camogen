@@ -192,17 +192,18 @@ export const LayoutVariants = {
     children: [
       {
         id: "SHADER_LIBRARY",
-        panel: PanelVariants["SHADER_LIBRARY"]
+        panel: PanelVariants["SHADER_LIBRARY"],
+        size: 1 / 3,
       },
       {
         id: "SHADER_EDITOR",
         panel: PanelVariants["SHADER_EDITOR"],
-        size: 3 / 6
+        size: 1 / 3
       },
       {
         id: "inner",
         direction: "VERTICAL",
-        size: 1 / 6,
+        size: 1 / 3,
         children: [
           {
             id: "SHADER_GRAPH",

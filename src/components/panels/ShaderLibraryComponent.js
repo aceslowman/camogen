@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import MainContext from "../../MainContext";
 import GraphComponent from "../graph/GraphComponent";
-import { GenericPanel, TextComponent } from "maco-ui";
+import { TextComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 import style from "./ShaderLibraryComponent.module.css";
@@ -15,7 +15,7 @@ import { UIContext, SplitContainer } from "maco-ui";
 import Dropzone from "react-dropzone";
 import filesize from "file-size";
 
-const ShaderLibrary = observer(props => {  
+const ShaderLibrary = observer(props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const data = store.mediaLibrary;
@@ -129,22 +129,20 @@ const ShaderLibrary = observer(props => {
   ]);
 
   return (
-    <GenericPanel panel={props.panel}>
-      <div className={style.wrapper}>
-        {tree}
-        <div>
-          <button
-            style={{
-              backgroundColor: theme.secondary_color,
-              color: theme.text_color
-            }}
-            onClick={() => handleAddNewCollection()}
-          >
-            <h3>+ New Collection</h3>
-          </button>
-        </div>
+    <div className={style.wrapper}>
+      {tree}
+      <div>
+        <button
+          style={{
+            backgroundColor: theme.secondary_color,
+            color: theme.text_color
+          }}
+          onClick={() => handleAddNewCollection()}
+        >
+          <h3>+ New Collection</h3>
+        </button>
       </div>
-    </GenericPanel>
+    </div>
   );
 });
 
