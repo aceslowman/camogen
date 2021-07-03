@@ -82,6 +82,7 @@ const App = observer(props => {
           <GenericPanel panel={mainPanel} subtitle={store.name}>
             <LayoutContainer layout={mainLayout}>
               {Object.values(store.ui.panelVariants).map((e) => {
+                console.log()
                 return getPanelComponent(e);
               })}
             </LayoutContainer>
