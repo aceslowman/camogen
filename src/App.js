@@ -68,7 +68,7 @@ const App = observer(props => {
   const getPanelComponent = panel => {
     if (Panels.has(panel.component_type)) {
       let Component = Panels.get(panel.component_type);
-      return <Component key={panel.component_type} panel={panel} />;
+      return <Component key={panel.component_type} />;
     }
   };
 
