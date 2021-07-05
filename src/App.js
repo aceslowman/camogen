@@ -68,7 +68,7 @@ const App = observer(props => {
   const getPanelComponent = panel => {
     if (Panels.has(panel.component_type)) {
       let Component = Panels.get(panel.component_type);
-      return <Component key={panel.component_type} />;
+      return <Component key={panel.component_type} panel={panel} />;
     }
   };
 
@@ -80,10 +80,7 @@ const App = observer(props => {
         {store.ready && (
           <GenericPanel panel={mainPanel} subtitle={store.name}>
             <LayoutContainer layout={mainLayout}>
-              {Object.values(store.ui.panelVariants).map(e => {
-                console.log("e", e);
-                return getPanelComponent(e);
-              })}
+              {Object.values(store.ui.panelVariants).map(getPanelComponent)}
             </LayoutContainer>
           </GenericPanel>
         )}
