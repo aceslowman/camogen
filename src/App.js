@@ -35,6 +35,8 @@ const App = observer(props => {
   const canvasPanel = ui.getPanel("CANVAS");
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
+  
+  console.log('mainLayout', mainLayout)
 
   useKeymap(
     {
@@ -68,7 +70,7 @@ const App = observer(props => {
   const getPanelComponent = panel => {
     if (Panels.has(panel.component_type)) {
       let Component = Panels.get(panel.component_type);
-      return <Component key={panel.component_type} panel={panel} />;
+      return <Component key={panel.component_type} id={panel.id} />;
     }
   };
 
