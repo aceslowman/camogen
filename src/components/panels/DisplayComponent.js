@@ -236,7 +236,8 @@ const Display = observer(props => {
     
     console.log('panel', props.panel)
 
-    props.panel.setDimensions([_w, _h]);
+    if(props.panel.setDimensions)
+      props.panel.setDimensions([_w, _h]);
   }, [width, height]);
 
   useEffect(() => {
@@ -465,7 +466,6 @@ const Display = observer(props => {
     <GenericPanel
       showTitle={false}
       panel={props.panel}
-      showTitle={!props.panel.fullscreen}
       floating={false}
       onRef={panel_ref}
       onContextMenu={() => store.ui.context.setContextmenu()}
