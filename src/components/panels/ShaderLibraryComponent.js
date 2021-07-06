@@ -86,6 +86,7 @@ const ShaderLibrary = observer(props => {
                     }
                     onClick={() => handleClick(c)}
                     onDoubleClick={() => handleRenameItem(c)}
+                    onContextMenu={(e) => handleContextMenu(e)}
                   >
                     {c.name}
                   </button>
@@ -161,7 +162,7 @@ const ShaderLibrary = observer(props => {
     <GenericPanel
       showTitle={false}
       panel={props.panel}
-      onContextMenu={handleContextMenu}
+      //onContextMenu={handleContextMenu}
       //onFocus={handleFocus}
       //onBlur={handleBlur}
     >
