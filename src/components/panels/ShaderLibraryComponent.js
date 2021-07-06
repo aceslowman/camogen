@@ -11,7 +11,7 @@ import { TextComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 import style from "./ShaderLibraryComponent.module.css";
-import { UIContext, SplitContainer } from "maco-ui";
+import { UIContext, SplitContainer, GenericPanel } from "maco-ui";
 import Dropzone from "react-dropzone";
 import filesize from "file-size";
 
@@ -41,6 +41,7 @@ const ShaderLibrary = observer(props => {
   };
 
   const handleRenameItem = item => {
+    console.log("item", item);
     setCurrentlyRenaming(item.id);
   };
 
@@ -96,17 +97,29 @@ const ShaderLibrary = observer(props => {
 
         directories.push(
           <div key={e.id}>
-            {/* this name should be editable on double-click */}
-            <button
-              style={{
-                backgroundColor: theme.secondary_color,
-                color: theme.text_color
-              }}
-              onClick={() => handleClick(e)}
-              onDoubleClick={() => handleRenameItem(e)}
-            >
-              <h3>{e.name}</h3>
-            </button>
+            {/* TODO this name should be editable on double-click */}
+            {e.id === currentlyRenaming ? (
+              <input
+                style={{
+                  backgroundColor: theme.secondary_color,
+                  color: theme.text_color
+                }}
+                placeholder={"renaming " + e.name}
+                onChange={_e => e.setName(_e.target.value)}
+              />
+            ) : (
+              <button
+                style={{
+                  backgroundColor: theme.secondary_color,
+                  color: theme.text_color
+                }}
+                onClick={() => handleClick(e)}
+                onDoubleClick={() => handleRenameItem(e)}
+              >
+                <h3>{e.name}</h3>
+              </button>
+            )}
+
             <ul>
               {children}
               <li>
@@ -128,21 +141,41 @@ const ShaderLibrary = observer(props => {
     currentlyRenaming
   ]);
 
+  const handleContextMenu = e => {
+    e.stopPropagation();
+
+    store.ui.context.setContextmenu({
+      Clear: {
+        id: "Clear",
+        label: "Clear",
+        onClick: () => store.scene.clear()
+      }
+    });
+  };
+
   return (
-    <div className={style.wrapper}>
-      {tree}
-      <div>
-        <button
-          style={{
-            backgroundColor: theme.secondary_color,
-            color: theme.text_color
-          }}
-          onClick={() => handleAddNewCollection()}
-        >
-          <h3>+ New Collection</h3>
-        </button>
+    <GenericPanel
+      showTitle={false}
+      panel={props.panel}
+      onContextMenu={handleContextMenu}
+      //onFocus={handleFocus}
+      //onBlur={handleBlur}
+    >
+      <div className={style.wrapper}>
+        {tree}
+        <div>
+          <button
+            style={{
+              backgroundColor: theme.secondary_color,
+              color: theme.text_color
+            }}
+            onClick={() => handleAddNewCollection()}
+          >
+            <h3>+ New Collection</h3>
+          </button>
+        </div>
       </div>
-    </div>
+    </GenericPanel>
   );
 });
 
