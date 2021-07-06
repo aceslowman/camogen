@@ -143,12 +143,16 @@ const ShaderLibrary = observer(props => {
 
   const handleContextMenu = e => {
     e.stopPropagation();
+    
+    console.log('event', e.target) // the button
 
     store.ui.context.setContextmenu({
-      Clear: {
-        id: "Clear",
-        label: "Clear",
-        onClick: () => store.scene.clear()
+      Delete: {
+        id: "Delete",
+        label: "Delete",
+        onClick: () => {
+          
+        }
       }
     });
   };
