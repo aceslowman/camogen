@@ -45,13 +45,16 @@ const MainToolbar = observer(props => {
         /* no clue why this isn't working */
         highlight: mainLayout.id === e.id,
         buttons: {
-          button_one: e.id==="WELCOME" ? {
+          button_one: {
             id: "button_one",
             label: "x",
             title: "remove",
             onClick: () => {
-              ui.removeLayoutVariant(e)
-              store.persistLayouts()
+              // can't remove WELCOME
+              if(e.id !== 'WELCOME') {
+                ui.removeLayoutVariant(e)
+                store.persistLayouts()
+              }
             }
           }
         }
@@ -199,13 +202,13 @@ const MainToolbar = observer(props => {
                 </div>
               )
             },
-            SaveLayouts: {
-              id: "SaveLayouts",
-              label: "Save Layouts",
-              onClick: () => {
-                store.persistLayouts()
-              }
-            },
+            // SaveLayouts: {
+            //   id: "SaveLayouts",
+            //   label: "Save Layouts",
+            //   onClick: () => {
+            //     store.persistLayouts()
+            //   }
+            // },
             ...layouts
           }
         },
