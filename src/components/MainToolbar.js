@@ -175,7 +175,7 @@ const MainToolbar = observer(props => {
                     type="text"
                     placeholder={mainLayout.title}
                     onChange={e => {
-                      store.setName(e.target.value);
+                      ui.addLayoutVariant(getSnapshot(mainLayout), e.target.value);
                     }}
                   />
                 </div>
