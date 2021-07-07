@@ -198,13 +198,13 @@ const MainToolbar = observer(props => {
                 </div>
               )
             },
-            Save_Layout: {
-              id: "Save_Layout",
-              label: "Save Layout",
-              onClick: () => {
-                store.save();
-              }
-            },
+            // Save_Layout: {
+            //   id: "Save_Layout",
+            //   label: "Save Layout",
+            //   onClick: () => {
+            //     store.save();
+            //   }
+            // },
             ...layouts
           }
         },
