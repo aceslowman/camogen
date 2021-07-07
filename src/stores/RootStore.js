@@ -62,7 +62,7 @@ const RootStore = types
     p5_instance: null,
     ready: false,
     breakoutControlled: false,
-    messages: Messages.create(),    
+    messages: Messages.create(),
     missingAssets: [],
     // 'show' individual panels
     showSplash: null,
@@ -103,7 +103,6 @@ const RootStore = types
       let items = {};
       let collection = self.shader_collection;
 
-      
       collection.children.forEach(e => {
         if (e.type === "file") {
           items = {
@@ -139,7 +138,6 @@ const RootStore = types
                 buttons: {
                   // NOTE: taking out the 'remove' button
                   // to prevent accidental data loss
-
                   // remove: {
                   //   id: "remove",
                   //   label: "x",
@@ -166,26 +164,26 @@ const RootStore = types
               id: e.id,
               label: e.name,
               dropDown: {
-                ...subitems,
-//                 NewShader: {
-//                   id: "NewShader",
-//                   label: "+ New Shader",
-//                   onClick: () => {
-//                     // create short random string for new shader name
-//                     let new_shader = Shader.create({ name: nanoid(5) });
+                ...subitems
+                //                 NewShader: {
+                //                   id: "NewShader",
+                //                   label: "+ New Shader",
+                //                   onClick: () => {
+                //                     // create short random string for new shader name
+                //                     let new_shader = Shader.create({ name: nanoid(5) });
 
-//                     e.addChild(
-//                       Collection.create({
-//                         id: new_shader.name,
-//                         name: new_shader.name,
-//                         type: "file",
-//                         data: new_shader
-//                       })
-//                     );
+                //                     e.addChild(
+                //                       Collection.create({
+                //                         id: new_shader.name,
+                //                         name: new_shader.name,
+                //                         type: "file",
+                //                         data: new_shader
+                //                       })
+                //                     );
 
-//                     self.persistShaderCollection();
-//                   }
-//                 }
+                //                     self.persistShaderCollection();
+                //                   }
+                //                 }
               }
             }
           };
@@ -264,18 +262,35 @@ const RootStore = types
       // window.localStorage.clear();
 
       // whenever theme is changed, save in local storage
-      onSnapshot(self.ui.theme, () => {
-        console.log("snapshot is ready");
-        window.localStorage.setItem(
-          "theme",
-          JSON.stringify(getSnapshot(self.ui.theme))
-        );
-      });
+//       onSnapshot(self.ui.theme, () => {
+//         console.log("saving theme");
+//         window.localStorage.setItem(
+//           "theme",
+//           JSON.stringify(getSnapshot(self.ui.theme))
+//         );
+//       });
 
+//       // whenever layouts are changed, save in local storage
+//       onSnapshot(self.ui.layoutVariants, () => {
+//         console.log("saving layouts");
+//         window.localStorage.setItem(
+//           "layouts",
+//           JSON.stringify(getSnapshot(self.ui.layoutVariants))
+//         );
+//       });
+
+      // initialize to stored values
       if (window.localStorage.getItem("theme")) {
-        self.ui.theme.setTheme(
-          JSON.parse(window.localStorage.getItem("theme"))
-        );
+        // self.ui.theme.setTheme(
+        //   JSON.parse(window.localStorage.getItem("theme"))
+        // );
+      }
+
+      // initialize to stored values
+      if (window.localStorage.getItem("layouts")) {
+        // self.ui.setLayoutVariants(
+        //   JSON.parse(window.localStorage.getItem("layouts"))
+        // );
       }
 
       if (window.localStorage.getItem("showSplash") !== null) {
@@ -313,15 +328,15 @@ const RootStore = types
         // remove loading overlay
         document.querySelector(".loading").style.display = "none";
       });
-      
+
       // set up media library
-      self.mediaLibrary = MediaLibrary.create({id: nanoid()});      
+      self.mediaLibrary = MediaLibrary.create({ id: nanoid() });
     },
 
     setupP5: () => {
       self.p5_instance = new p5(p => Runner(p, self));
     },
-    
+
     setUpdateFlag: () => {
       self.updateFlag = !self.updateFlag;
     },
@@ -330,7 +345,7 @@ const RootStore = types
       if (param && !param.graph) param.createGraph();
       self.selectedParameter = param;
     },
-    
+
     selectShader: shader => {
       self.selectedShader = shader;
     },
@@ -403,14 +418,14 @@ const RootStore = types
         self.scene.shaderGraph.update();
         self.scene.shaderGraph.afterUpdate();
       } else {
-        console.log('no recent saves!')
+        console.log("no recent saves!");
       }
     },
 
     flagAssetsAsMissing: model => {
       let missing_asset_filename = getSnapshot(model).user_filename;
       self.missingAssets.push(model);
-      console.log('MISSING_ASSETS', self.missingAssets)
+      console.log("MISSING_ASSETS", self.missingAssets);
       self.showMissingAssets = true;
     },
 
@@ -544,12 +559,12 @@ const RootStore = types
         JSON.stringify(getSnapshot(self.shader_collection))
       );
     },
-    
+
     persistLayouts: () => {
       // save layouts to local storage
       window.localStorage.setItem(
         "layouts",
-        JSON.stringify(getSnapshot(self.ui.))
+        JSON.stringify(getSnapshot(self.ui.layoutVariants))
       );
     },
 

@@ -17,7 +17,6 @@ const root = RootStore.create({
         id: "MAIN",
         floating: true,
         canFloat: false,
-        // collapsible: true,
         collapsible: false,
         fullscreen: false,
         canFullscreen: true,
