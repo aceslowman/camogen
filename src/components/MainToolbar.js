@@ -43,7 +43,18 @@ const MainToolbar = observer(props => {
         label: e.title,
         onClick: () => handleLayoutSelect(e.id),
         /* no clue why this isn't working */
-        highlight: mainLayout.id === e.id
+        highlight: mainLayout.id === e.id,
+        buttons: {
+          button_one: {
+            id: "button_one",
+            label: "x",
+            title: "remove",
+            onClick: () => {
+              console.log('removing', )
+              ui.removeLayoutVariant(e)
+            }
+          }
+        }
       }
     };
   });
@@ -174,8 +185,14 @@ const MainToolbar = observer(props => {
                     }}
                     type="text"
                     placeholder={mainLayout.title}
-                    onChange={e => {
-                      ui.addLayoutVariant(getSnapshot(mainLayout), e.target.value);
+                    onKeyDown={e => {
+                      if (e.key === "Enter") {
+                        console.log("check");
+                        ui.addLayoutVariant(
+                          getSnapshot(mainLayout),
+                          e.target.value
+                        );
+                      }
                     }}
                   />
                 </div>
