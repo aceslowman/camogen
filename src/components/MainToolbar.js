@@ -37,13 +37,14 @@ const MainToolbar = observer(props => {
 
   Object.keys(ui.layoutVariants).forEach((_e, i) => {
     let e = ui.layoutVariants[_e];
+    console.log(mainLayout.id === e.id)
     layouts = {
       ...layouts,
       [e.id]: {
         id: e.id,
         label: e.title,
         onClick: () => handleLayoutSelect(e.id),
-        highlight: mainLayout === e
+        highlight: mainLayout.id === e.id
       }
     };
   });
