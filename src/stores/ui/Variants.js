@@ -184,149 +184,149 @@ export const LayoutVariants = {
       }
     ]
   },
-  SHADER_EDITOR: {
-    id: "SHADER_EDITOR",
-    title: "Shader Edit",
-    direction: "HORIZONTAL",
-    size: 1,
-    children: [
-      {
-        id: "SHADER_LIBRARY",
-        panel: PanelVariants["SHADER_LIBRARY"],
-        size: 1 / 3,
-      },
-      {
-        id: "SHADER_EDITOR",
-        panel: PanelVariants["SHADER_EDITOR"],
-        size: 1 / 3
-      },
-      {
-        id: "inner",
-        direction: "VERTICAL",
-        size: 1 / 3,
-        children: [
-          {
-            id: "SHADER_GRAPH",
-            panel: PanelVariants["SHADER_GRAPH"],
-            size: 3 / 4
-          },
-          {
-            id: "MESSAGES",
-            panel: PanelVariants["MESSAGES"],
-            size: 1 / 4
-          }
-        ]
-      }
-    ]
-  },
-  SHADER_CONTROL: {
-    id: "SHADER_CONTROL",
-    title: "Shader Control",
-    direction: "HORIZONTAL",
-    size: 1,
-    children: [
-      {
-        id: "SHADER_GRAPH",
-        panel: PanelVariants["SHADER_GRAPH"],
-        size: 1 / 3
-      },
-      {
-        id: "SHADER_CONTROLS",
-        panel: PanelVariants["SHADER_CONTROLS"],
-        size: 1 / 3
-      },
-      {
-        id: "inner",
-        direction: "VERTICAL",
-        size: 1 / 4,
-        children: [
-          {
-            id: "DISPLAY",
-            panel: PanelVariants["DISPLAY"],
-            size: 3 / 4
-          },
-          {
-            id: "MEDIA_LIBRARY",
-            panel: PanelVariants["MEDIA_LIBRARY"],
-            size: 1 / 4
-          }
-        ]
-      }
-    ]
-  },
-  DEBUG: {
-    id: "DEBUG",
-    title: "Debug",
-    direction: "HORIZONTAL",
-    size: 1,
-    children: [
-      {
-        id: "DEBUG",
-        panel: PanelVariants["DEBUG"],
-        size: 2 / 3
-      },
-      {
-        id: "inner",
-        direction: "VERTICAL",
-        children: [
-          {
-            id: "SHADER_GRAPH",
-            panel: PanelVariants["SHADER_GRAPH"],
-            size: 2 / 3
-          },
-          {
-            id: "MESSAGES",
-            panel: PanelVariants["MESSAGES"],
-          }
-        ]
-      }
-    ]
-  },
-  PARAMETER: {
-    id: "PARAMETER",
-    title: "Parameter",
-    direction: "HORIZONTAL",
-    size: 1,
-    children: [
-      {
-        id: "SHADER_GRAPH",
-        panel: PanelVariants["SHADER_GRAPH"],
-        size: 1 / 3
-      },
-      {
-        id: "SHADER_CONTROLS",
-        panel: PanelVariants["SHADER_CONTROLS"],
-        size: 1 / 3
-      },
-      {
-        id: "PARAMETER_EDITOR",
-        panel: PanelVariants["PARAMETER_EDITOR"],
-        size: 1 / 3
-      }
-    ]
-  },
-  PREFERENCES: {
-    id: "PREFERENCES",
-    title: "Preferences",
-    size: 1,
-    children: [
-      {
-        id: "PREFERENCES",
-        panel: PanelVariants["PREFERENCES"],
-        size: 1
-      }
-    ]
-  },
-  MEDIA_LIBRARY: {
-    id: "MEDIA_LIBRARY",
-    title: "Media Library",
-    size: 1,
-    children: [
-      {
-        id: "MEDIA_LIBRARY",
-        panel: PanelVariants["MEDIA_LIBRARY"],
-        size: 1
-      }
-    ]
-  }
+  // SHADER_EDITOR: {
+  //   id: "SHADER_EDITOR",
+  //   title: "Shader Edit",
+  //   direction: "HORIZONTAL",
+  //   size: 1,
+  //   children: [
+  //     {
+  //       id: "SHADER_LIBRARY",
+  //       panel: PanelVariants["SHADER_LIBRARY"],
+  //       size: 1 / 3,
+  //     },
+  //     {
+  //       id: "SHADER_EDITOR",
+  //       panel: PanelVariants["SHADER_EDITOR"],
+  //       size: 1 / 3
+  //     },
+  //     {
+  //       id: "inner",
+  //       direction: "VERTICAL",
+  //       size: 1 / 3,
+  //       children: [
+  //         {
+  //           id: "SHADER_GRAPH",
+  //           panel: PanelVariants["SHADER_GRAPH"],
+  //           size: 3 / 4
+  //         },
+  //         {
+  //           id: "MESSAGES",
+  //           panel: PanelVariants["MESSAGES"],
+  //           size: 1 / 4
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
+  // SHADER_CONTROL: {
+  //   id: "SHADER_CONTROL",
+  //   title: "Shader Control",
+  //   direction: "HORIZONTAL",
+  //   size: 1,
+  //   children: [
+  //     {
+  //       id: "SHADER_GRAPH",
+  //       panel: PanelVariants["SHADER_GRAPH"],
+  //       size: 1 / 3
+  //     },
+  //     {
+  //       id: "SHADER_CONTROLS",
+  //       panel: PanelVariants["SHADER_CONTROLS"],
+  //       size: 1 / 3
+  //     },
+  //     {
+  //       id: "inner",
+  //       direction: "VERTICAL",
+  //       size: 1 / 4,
+  //       children: [
+  //         {
+  //           id: "DISPLAY",
+  //           panel: PanelVariants["DISPLAY"],
+  //           size: 3 / 4
+  //         },
+  //         {
+  //           id: "MEDIA_LIBRARY",
+  //           panel: PanelVariants["MEDIA_LIBRARY"],
+  //           size: 1 / 4
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
+  // DEBUG: {
+  //   id: "DEBUG",
+  //   title: "Debug",
+  //   direction: "HORIZONTAL",
+  //   size: 1,
+  //   children: [
+  //     {
+  //       id: "DEBUG",
+  //       panel: PanelVariants["DEBUG"],
+  //       size: 2 / 3
+  //     },
+  //     {
+  //       id: "inner",
+  //       direction: "VERTICAL",
+  //       children: [
+  //         {
+  //           id: "SHADER_GRAPH",
+  //           panel: PanelVariants["SHADER_GRAPH"],
+  //           size: 2 / 3
+  //         },
+  //         {
+  //           id: "MESSAGES",
+  //           panel: PanelVariants["MESSAGES"],
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
+  // PARAMETER: {
+  //   id: "PARAMETER",
+  //   title: "Parameter",
+  //   direction: "HORIZONTAL",
+  //   size: 1,
+  //   children: [
+  //     {
+  //       id: "SHADER_GRAPH",
+  //       panel: PanelVariants["SHADER_GRAPH"],
+  //       size: 1 / 3
+  //     },
+  //     {
+  //       id: "SHADER_CONTROLS",
+  //       panel: PanelVariants["SHADER_CONTROLS"],
+  //       size: 1 / 3
+  //     },
+  //     {
+  //       id: "PARAMETER_EDITOR",
+  //       panel: PanelVariants["PARAMETER_EDITOR"],
+  //       size: 1 / 3
+  //     }
+  //   ]
+  // },
+  // PREFERENCES: {
+  //   id: "PREFERENCES",
+  //   title: "Preferences",
+  //   size: 1,
+  //   children: [
+  //     {
+  //       id: "PREFERENCES",
+  //       panel: PanelVariants["PREFERENCES"],
+  //       size: 1
+  //     }
+  //   ]
+  // },
+  // MEDIA_LIBRARY: {
+  //   id: "MEDIA_LIBRARY",
+  //   title: "Media Library",
+  //   size: 1,
+  //   children: [
+  //     {
+  //       id: "MEDIA_LIBRARY",
+  //       panel: PanelVariants["MEDIA_LIBRARY"],
+  //       size: 1
+  //     }
+  //   ]
+  // }
 };
