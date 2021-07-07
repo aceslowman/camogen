@@ -561,15 +561,15 @@ const RootStore = types
       );
     },
 
-    persistLayouts: () => {
-      // save layouts to local storage
-      window.localStorage.setItem(
-        "layouts",
-        JSON.stringify(self.ui.layoutVariants)
-      );
+//     persistLayouts: () => {
+//       // save layouts to local storage
+//       window.localStorage.setItem(
+//         "layouts",
+//         JSON.stringify(self.ui.layoutVariants)
+//       );
       
-      console.log('persisting layouts', JSON.stringify(self.ui.layoutVariants))
-    },
+//       console.log('persisting layouts', JSON.stringify(self.ui.layoutVariants))
+//     },
 
     resizeCanvas: (w, h) => {
       if (!w) w = 1; // never resize canvas to 0
