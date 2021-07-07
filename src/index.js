@@ -26,7 +26,7 @@ const root = RootStore.create({
         // layout: LayoutVariants['SHADER_CONTROL']
         // layout: LayoutVariants['SHADER_EDITOR']
       }
-    }
+    },
   })
 });
 
