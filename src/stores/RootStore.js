@@ -544,6 +544,14 @@ const RootStore = types
         JSON.stringify(getSnapshot(self.shader_collection))
       );
     },
+    
+    persistLayouts: () => {
+      // save layouts to local storage
+      window.localStorage.setItem(
+        "layouts",
+        JSON.stringify(getSnapshot(self.ui.))
+      );
+    },
 
     resizeCanvas: (w, h) => {
       if (!w) w = 1; // never resize canvas to 0
