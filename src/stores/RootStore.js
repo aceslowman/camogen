@@ -271,14 +271,14 @@ const RootStore = types
       });
       
       //       // whenever layouts are changed, save in local storage
-      onSnapshot(self.ui.layoutVariants, () => {
-        console.log("saving layouts");
-        if (window.localStorage.getItem("layouts"))
-          window.localStorage.setItem(
-            "layouts",
-            JSON.stringify(getSnapshot(self.ui.layoutVariants))
-          );
-      });
+      // onSnapshot(self.ui.layoutVariants, () => {
+      //   console.log("saving layouts");
+      //   if (window.localStorage.getItem("layouts"))
+      //     window.localStorage.setItem(
+      //       "layouts",
+      //       JSON.stringify(getSnapshot(self.ui.layoutVariants))
+      //     );
+      // });
 
       // initialize to stored values
       if (window.localStorage.getItem("theme")) {
@@ -289,9 +289,9 @@ const RootStore = types
 
       // initialize to stored values
       if (window.localStorage.getItem("layouts")) {
-        // self.ui.setLayoutVariants(
-        //   JSON.parse(window.localStorage.getItem("layouts"))
-        // );
+        self.ui.setLayoutVariants(
+          JSON.parse(window.localStorage.getItem("layouts"))
+        );
       }
 
       if (window.localStorage.getItem("showSplash") !== null) {
@@ -565,8 +565,10 @@ const RootStore = types
       // save layouts to local storage
       window.localStorage.setItem(
         "layouts",
-        JSON.stringify(getSnapshot(self.ui.layoutVariants))
+        JSON.stringify(self.ui.layoutVariants)
       );
+      
+      console.log('persisting layouts', JSON.stringify(self.ui.layoutVariants))
     },
 
     resizeCanvas: (w, h) => {

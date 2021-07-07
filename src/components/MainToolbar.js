@@ -45,13 +45,13 @@ const MainToolbar = observer(props => {
         /* no clue why this isn't working */
         highlight: mainLayout.id === e.id,
         buttons: {
-          button_one: {
+          button_one: e.id==="WELCOME" ? {
             id: "button_one",
             label: "x",
             title: "remove",
             onClick: () => {
-              console.log('removing', e)
               ui.removeLayoutVariant(e)
+              store.persistLayouts()
             }
           }
         }
@@ -192,6 +192,7 @@ const MainToolbar = observer(props => {
                           getSnapshot(mainLayout),
                           e.target.value
                         );
+                        store.persistLayouts()
                       }
                     }}
                   />
