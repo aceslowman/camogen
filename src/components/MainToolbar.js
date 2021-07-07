@@ -42,7 +42,8 @@ const MainToolbar = observer(props => {
       [e.id]: {
         id: e.id,
         label: e.title,
-        onClick: () => handleLayoutSelect(e.id)
+        onClick: () => handleLayoutSelect(e.id),
+        highlight: mainLayout === e
       }
     };
   });
@@ -151,7 +152,44 @@ const MainToolbar = observer(props => {
         Layout: {
           id: "Layout",
           label: "Layout",
-          dropDown: layouts          
+          dropDown: {
+            Edit_Layout_Name: {
+              id: "Edit_Layout_Name",
+              label: (
+                <div
+                  style={{
+                    display: "flex",
+                    flexFlow: "row"
+                  }}
+                >
+                  <label>name:</label>
+                  <input
+                    style={{
+                      backgroundColor: "inherit",
+                      color: "inherit",
+                      border: "none",
+                      width: "100%",
+                      marginLeft: 4,
+                      fontFamily: "inherit"
+                    }}
+                    type="text"
+                    placeholder={mainLayout.title}
+                    onChange={e => {
+                      store.setName(e.target.value);
+                    }}
+                  />
+                </div>
+              )
+            },
+            Save_Layout: {
+              id: "Save_Layout",
+              label: "Save Layout",
+              onClick: () => {
+                store.save();
+              }
+            },
+            ...layouts
+          }
         },
         Breakout: {
           id: "Breakout",
