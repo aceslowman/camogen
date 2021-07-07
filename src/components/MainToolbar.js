@@ -50,7 +50,7 @@ const MainToolbar = observer(props => {
             label: "x",
             title: "remove",
             onClick: () => {
-              console.log('removing', )
+              console.log('removing', e)
               ui.removeLayoutVariant(e)
             }
           }
