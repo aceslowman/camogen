@@ -35,15 +35,14 @@ const MainToolbar = observer(props => {
 
   let layouts = {};
 
-  Object.keys(ui.layoutVariants).forEach((_e, i) => {
-    let e = ui.layoutVariants[_e];
-    console.log(mainLayout.id === e.id)
+  Object.values(ui.layoutVariants).forEach((e, i) => {
     layouts = {
       ...layouts,
       [e.id]: {
         id: e.id,
         label: e.title,
         onClick: () => handleLayoutSelect(e.id),
+        /* no clue why this isn't working */
         highlight: mainLayout.id === e.id
       }
     };
