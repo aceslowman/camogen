@@ -33,7 +33,7 @@ const root = RootStore.create({
 root.ui.setPanelVariants(PanelVariants);
 
 if(!window.localStorage.getItem("layouts"))
-  root.ui.setLayoutVariants(LayoutVariants);
+  root.ui.setLayouts(LayoutVariants);
 
 makeInspectable(root);
 

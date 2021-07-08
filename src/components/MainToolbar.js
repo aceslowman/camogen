@@ -27,7 +27,7 @@ const MainToolbar = observer(props => {
   };
 
   const handleLayoutSelect = name => {
-    let variant = ui.getLayoutVariant(name);
+    let variant = ui.getLayout(name);
     mainPanel.setLayout(variant);
   };
 
@@ -35,7 +35,7 @@ const MainToolbar = observer(props => {
 
   let layouts = {};
 
-  Object.values(ui.layoutVariants).forEach((e, i) => {
+  Array.from(ui.layouts.values()).forEach((e, i) => {
     layouts = {
       ...layouts,
       [e.id]: {
@@ -52,8 +52,7 @@ const MainToolbar = observer(props => {
             onClick: () => {
               // can't remove WELCOME
               if(e.id !== 'WELCOME') {
-                ui.removeLayoutVariant(e)
-                store.persistLayouts()
+                ui.removeLayout(e)
               }
             }
           }
@@ -191,24 +190,21 @@ const MainToolbar = observer(props => {
                     onKeyDown={e => {
                       if (e.key === "Enter") {
                         console.log("check");
-                        ui.addLayoutVariant(
+                        ui.addLayout(
                           getSnapshot(mainLayout),
                           e.target.value
                         );
-                        store.persistLayouts()
                       }
                     }}
                   />
                 </div>
               )
             },
-            // SaveLayouts: {
-            //   id: "SaveLayouts",
-            //   label: "Save Layouts",
-            //   onClick: () => {
-            //     store.persistLayouts()
-            //   }
-            // },
+              DumpLayouts: {
+              id: "DumpLayouts",
+              label: "Dump Layouts",
+              onClick: () => console.log('layouts', getSnapshot(ui.layouts))
+            },
             ...layouts
           }
         },

@@ -261,39 +261,6 @@ const RootStore = types
     afterCreate: () => {
       // window.localStorage.clear();
 
-      // whenever theme is changed, save in local storage
-      onSnapshot(self.ui.theme, () => {
-        console.log("saving theme");
-        window.localStorage.setItem(
-          "theme",
-          JSON.stringify(getSnapshot(self.ui.theme))
-        );
-      });
-      
-      //       // whenever layouts are changed, save in local storage
-      // onSnapshot(self.ui.layoutVariants, () => {
-      //   console.log("saving layouts");
-      //   if (window.localStorage.getItem("layouts"))
-      //     window.localStorage.setItem(
-      //       "layouts",
-      //       JSON.stringify(getSnapshot(self.ui.layoutVariants))
-      //     );
-      // });
-
-      // initialize to stored values
-      if (window.localStorage.getItem("theme")) {
-        self.ui.theme.setTheme(
-          JSON.parse(window.localStorage.getItem("theme"))
-        );
-      }
-
-      // initialize to stored values
-      if (window.localStorage.getItem("layouts")) {
-        self.ui.setLayoutVariants(
-          JSON.parse(window.localStorage.getItem("layouts"))
-        );
-      }
-
       if (window.localStorage.getItem("showSplash") !== null) {
         self.showSplash = JSON.parse(window.localStorage.getItem("showSplash"));
       } else {
