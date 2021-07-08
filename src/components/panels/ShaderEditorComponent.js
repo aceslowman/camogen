@@ -64,6 +64,10 @@ const ShaderEditor = observer(props => {
       setSelectingCollection(true);
     }
   };
+  
+  const handleSave = (shader) => {
+    console.log('saving', shader)
+  }
 
   const showEditor = node !== undefined && data;
   let collections = {};
@@ -126,12 +130,12 @@ const ShaderEditor = observer(props => {
                     label: "Save to File",
                     onClick: () => handleSaveToFile()
                   },
-                  SaveToCollection: {
-                    id: "SaveToCollection",
-                    label: "Save to Collection",
+                  Save: {
+                    id: "Save",
+                    label: "Save",
                     // TODO: this is another option, offer full collection tree here
-                    dropDown: collections
-                    // onClick: () => handleSaveToCollection(),
+                    // dropDown: collections
+                    onClick: () => handleSave(node),
                     // dropDown: selectingCollection
                     //   ? {
                     //       aintmuch: { label: "hey it aint much" },

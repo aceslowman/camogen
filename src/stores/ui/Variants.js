@@ -184,41 +184,41 @@ export const LayoutVariants = {
       }
     ]
   },
-  // SHADER_EDITOR: {
-  //   id: "SHADER_EDITOR",
-  //   title: "Shader Edit",
-  //   direction: "HORIZONTAL",
-  //   size: 1,
-  //   children: [
-  //     {
-  //       id: "SHADER_LIBRARY",
-  //       panel: PanelVariants["SHADER_LIBRARY"],
-  //       size: 1 / 3,
-  //     },
-  //     {
-  //       id: "SHADER_EDITOR",
-  //       panel: PanelVariants["SHADER_EDITOR"],
-  //       size: 1 / 3
-  //     },
-  //     {
-  //       id: "inner",
-  //       direction: "VERTICAL",
-  //       size: 1 / 3,
-  //       children: [
-  //         {
-  //           id: "SHADER_GRAPH",
-  //           panel: PanelVariants["SHADER_GRAPH"],
-  //           size: 3 / 4
-  //         },
-  //         {
-  //           id: "MESSAGES",
-  //           panel: PanelVariants["MESSAGES"],
-  //           size: 1 / 4
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // },
+  SHADER_EDITOR: {
+    id: "SHADER_EDITOR",
+    title: "Shader Edit",
+    direction: "HORIZONTAL",
+    size: 1,
+    children: [
+      {
+        id: "SHADER_LIBRARY",
+        panel: PanelVariants["SHADER_LIBRARY"],
+        size: 1 / 3,
+      },
+      {
+        id: "SHADER_EDITOR",
+        panel: PanelVariants["SHADER_EDITOR"],
+        size: 1 / 3
+      },
+      {
+        id: "inner",
+        direction: "VERTICAL",
+        size: 1 / 3,
+        children: [
+          {
+            id: "SHADER_GRAPH",
+            panel: PanelVariants["SHADER_GRAPH"],
+            size: 3 / 4
+          },
+          {
+            id: "MESSAGES",
+            panel: PanelVariants["MESSAGES"],
+            size: 1 / 4
+          }
+        ]
+      }
+    ]
+  },
   // SHADER_CONTROL: {
   //   id: "SHADER_CONTROL",
   //   title: "Shader Control",
