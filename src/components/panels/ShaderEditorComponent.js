@@ -52,21 +52,10 @@ const ShaderEditor = observer(props => {
   const handleSaveToFile = () => {
     data.save();
   };
-
-  const handleSaveToCollection = e => {
-    // TODO: if collection isn't defined, ask user to choose one
-    console.log("handling the " + e.name + " collection");
-    if (data.collection) {
-      data.saveToCollection();
-      store.persistShaderCollection();
-    } else {
-      console.log("theres no collection");
-      setSelectingCollection(true);
-    }
-  };
   
   const handleSave = (shader) => {
-    console.log('saving', shader)
+    // console.log('saving', shader)
+    shader.saveToLocalStorage()
   }
 
   const showEditor = node !== undefined && data;
@@ -78,7 +67,7 @@ const ShaderEditor = observer(props => {
         ...collections,
         [e.name]: {
           label: e.name,
-          onClick: () => handleSaveToCollection(e)
+          onClick: () => handleSave(e)
         }
       };
     }
@@ -133,15 +122,7 @@ const ShaderEditor = observer(props => {
                   Save: {
                     id: "Save",
                     label: "Save",
-                    // TODO: this is another option, offer full collection tree here
-                    // dropDown: collections
                     onClick: () => handleSave(node),
-                    // dropDown: selectingCollection
-                    //   ? {
-                    //       aintmuch: { label: "hey it aint much" },
-                    //       something: { label: "but its something" }
-                    //     }
-                    //   : null
                   },
                   LoadShader: {
                     id: "LoadShader",

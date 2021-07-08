@@ -363,7 +363,7 @@ let shader = types
         // console.log("destroying shader!");
       },
 
-      saveToCollection: () => {
+      saveToLocalStorage: () => {
         // TODO: this needs to be offered to user when creating
         // a shader with no collection already defined1
         console.log("saving to collection", self);
@@ -379,7 +379,7 @@ let shader = types
         }
       },
 
-      save: () => {
+      saveToFile: () => {
         console.log("saving project");
 
         let src = JSON.stringify(getSnapshot(self));
