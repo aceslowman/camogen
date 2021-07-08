@@ -51,8 +51,8 @@ const MainToolbar = observer(props => {
             title: "remove",
             onClick: () => {
               // can't remove WELCOME
-              if(e.id !== 'WELCOME') {
-                ui.removeLayout(e)
+              if (e.id !== "WELCOME") {
+                ui.removeLayout(e);
               }
             }
           }
@@ -190,21 +190,14 @@ const MainToolbar = observer(props => {
                     onKeyDown={e => {
                       if (e.key === "Enter") {
                         console.log("check");
-                        ui.addLayout(
-                          getSnapshot(mainLayout),
-                          e.target.value
-                        );
+                        ui.addLayout(getSnapshot(mainLayout), e.target.value);
                       }
                     }}
                   />
                 </div>
               )
             },
-              DumpLayouts: {
-              id: "DumpLayouts",
-              label: "Dump Layouts",
-              onClick: () => console.log('layouts', getSnapshot(ui.layouts))
-            },
+
             ...layouts
           }
         },
