@@ -194,7 +194,10 @@ const GraphComponent = observer(props => {
           className={`
             ${styles.label}
           `}
-          onClick={() => node.select()}
+          onClick={() => {
+            node.select();
+            if (props.onNodeSelect) props.onNodeSelect(node);
+          }}
           onContextMenu={e => props.onContextMenu(e, node)}
           style={{
             left: x + spacing.x / 2 - 15,

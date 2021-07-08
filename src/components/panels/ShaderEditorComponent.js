@@ -30,7 +30,7 @@ const ShaderEditor = observer(props => {
   const graph = store.scene.shaderGraph;
   // TODO create new global variable for currentlyEditing
   // const node = graph.selectedNode;
-  const node = store.selectedShader;
+  const node = store.selectedShader || graph.selectedNode;
   const data = node ? node.data : null;
   const hasChanged = data ? data.hasChanged : null;
 

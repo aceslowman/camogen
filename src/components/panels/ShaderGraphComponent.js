@@ -91,6 +91,12 @@ const ShaderGraph = observer(props => {
         : {})
     });
   };
+  
+  const handleNodeSelect = shaderNode => {
+    /* select the shader for editing */
+    if(shaderNode.data.collection)
+      store.selectShader(shaderNode.data.collection)
+  }
 
   return (
     <GenericPanel
@@ -157,6 +163,7 @@ const ShaderGraph = observer(props => {
           data={data}
           onContextMenu={handleContextMenu}
           useKeys={useKeys}
+          onNodeSelect={handleNodeSelect}
         />
       )}
 

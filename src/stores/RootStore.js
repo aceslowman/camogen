@@ -315,6 +315,7 @@ const RootStore = types
     },
 
     selectShader: shader => {
+      console.log('selecting', shader)
       self.selectedShader = shader;
     },
 
