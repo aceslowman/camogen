@@ -91,12 +91,15 @@ const ShaderGraph = observer(props => {
         : {})
     });
   };
-  
+
   const handleNodeSelect = shaderNode => {
     /* select the shader for editing */
-    if(shaderNode.data.collection)
-      store.selectShader(shaderNode.data.collection)
-  }
+    if (shaderNode.data) {
+      store.selectShader(shaderNode.data.collection);
+    } else {
+      store.selectShader(undefined);
+    }
+  };
 
   return (
     <GenericPanel

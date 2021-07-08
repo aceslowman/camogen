@@ -98,7 +98,6 @@ const ShaderLibrary = observer(props => {
 
         directories.push(
           <div key={e.id}>
-            {/* TODO this name should be editable on double-click */}
             {e.id === currentlyRenaming ? (
               <input
                 style={{
