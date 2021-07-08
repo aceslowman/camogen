@@ -377,6 +377,8 @@ let shader = types
             uniforms: []
           });
         }
+                
+        getRoot(self).persistShaderCollection()
       },
 
       saveToFile: () => {

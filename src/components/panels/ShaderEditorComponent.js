@@ -53,9 +53,8 @@ const ShaderEditor = observer(props => {
     data.save();
   };
   
-  const handleSave = (shader) => {
-    // console.log('saving', shader)
-    shader.saveToLocalStorage()
+  const handleSave = (shaderNode) => {
+    shaderNode.data.saveToLocalStorage()
   }
 
   const showEditor = node !== undefined && data;
