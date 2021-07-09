@@ -20,11 +20,9 @@ const root = RootStore.create({
         collapsible: false,
         fullscreen: false,
         canFullscreen: true,
-        dimensions: [700, 500],
-        position: [window.innerWidth / 2 - 350, window.innerHeight / 2 - 250],
+        dimensions: [800, 500],
+        position: [window.innerWidth / 2 - 400, window.innerHeight / 2 - 250],
         layout: LayoutVariants['WELCOME']
-        // layout: LayoutVariants['SHADER_CONTROL']
-        // layout: LayoutVariants['SHADER_EDITOR']
       }
     },
   })

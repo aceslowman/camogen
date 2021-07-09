@@ -134,6 +134,7 @@ const Display = observer(props => {
   };
 
   const handleDimensionChange = (w, h) => {
+    console.log([w,h])
     store.resizeCanvas(w, h);
   };
 
@@ -306,7 +307,7 @@ const Display = observer(props => {
                 className={style.dimensions_input}
                 type="number"
                 placeholder={width}
-                onBlur={e => {
+                onInput={e => {
                   handleDimensionChange(e.target.value, height);
                 }}
               />
@@ -315,7 +316,7 @@ const Display = observer(props => {
                 className={style.dimensions_input}
                 type="number"
                 placeholder={height}
-                onBlur={e => {
+                onInput={e => {
                   handleDimensionChange(width, e.target.value);
                 }}
               />

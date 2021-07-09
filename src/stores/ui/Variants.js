@@ -144,7 +144,7 @@ export const PanelVariants = {
     canFullscreen: false,
     dimensions: [100, 300],
     position: [30, 30]
-  },
+  }
   // CAPTURE: {
   //   id: "CAPTURE",
   //   title: "Capture",
@@ -170,17 +170,30 @@ export const LayoutVariants = {
       {
         id: "HELP",
         panel: PanelVariants["HELP"],
-        size: 1 / 3
+        size: 4 / 12
       },
       {
-        id: "SHADER_GRAPH",
-        panel: PanelVariants["SHADER_GRAPH"],
-        size: 1 / 3
+        id: "DISPLAY",
+        panel: PanelVariants["DISPLAY"],
+        size: 4 / 12
       },
       {
-        id: "SHADER_CONTROLS",
-        panel: PanelVariants["SHADER_CONTROLS"],
-        size: 1 / 3
+        id: "INNER",
+        title: "Welcome",
+        direction: "VERTICAL",
+        size: 4 / 12,
+        children: [
+          {
+            id: "SHADER_GRAPH",
+            panel: PanelVariants["SHADER_GRAPH"],
+            size: 5 / 12
+          },
+          {
+            id: "SHADER_CONTROLS",
+            panel: PanelVariants["SHADER_CONTROLS"],
+            size: 7 / 12
+          }
+        ]
       }
     ]
   },
@@ -193,7 +206,7 @@ export const LayoutVariants = {
       {
         id: "SHADER_LIBRARY",
         panel: PanelVariants["SHADER_LIBRARY"],
-        size: 1 / 3,
+        size: 1 / 3
       },
       {
         id: "SHADER_EDITOR",
@@ -218,7 +231,7 @@ export const LayoutVariants = {
         ]
       }
     ]
-  },
+  }
   // SHADER_CONTROL: {
   //   id: "SHADER_CONTROL",
   //   title: "Shader Control",
