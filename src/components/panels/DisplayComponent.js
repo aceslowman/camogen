@@ -134,7 +134,6 @@ const Display = observer(props => {
   };
 
   const handleDimensionChange = (w, h) => {
-    console.log([w,h])
     store.resizeCanvas(w, h);
   };
 
@@ -234,11 +233,8 @@ const Display = observer(props => {
 
     let _w = width + offset_x;
     let _h = height + offset_y;
-    
-    console.log('panel', props.panel)
 
-    if(props.panel.setDimensions)
-      props.panel.setDimensions([_w, _h]);
+    if (props.panel.setDimensions) props.panel.setDimensions([_w, _h]);
   }, [width, height]);
 
   useEffect(() => {
@@ -295,6 +291,12 @@ const Display = observer(props => {
         },
         DimensionSelect: {
           id: "DimensionSelect",
+          /*  
+            this item allows the user to select the main drawing
+            canvas dimensions 
+            
+            at the moment changes take place after blur
+          */
           label: (
             <div
               style={{
@@ -306,19 +308,21 @@ const Display = observer(props => {
               <input
                 className={style.dimensions_input}
                 type="number"
-                placeholder={width}
-                onInput={e => {
-                  handleDimensionChange(e.target.value, height);
+                value={width}
+                onChange={e => {
+                  setWidth(parseInt(e.target.value) || 1);
                 }}
+                onBlur={e => handleDimensionChange(width, height)}
               />
               <label>h:</label>
               <input
                 className={style.dimensions_input}
                 type="number"
-                placeholder={height}
-                onInput={e => {
-                  handleDimensionChange(width, e.target.value);
+                value={height}
+                onChange={e => {
+                  setHeight(parseInt(e.target.value) || 1);
                 }}
+                onBlur={e => handleDimensionChange(width, height)}
               />
             </div>
           )
