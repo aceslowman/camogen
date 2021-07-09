@@ -86,7 +86,7 @@ const ShaderLibrary = observer(props => {
                     }
                     onClick={() => handleClick(c)}
                     onDoubleClick={() => handleRenameItem(c)}
-                    onContextMenu={(_e) => handleContextMenu(_e, e, c)}
+                    onContextMenu={_e => handleContextMenu(_e, e, c)}
                     dataid={c.id}
                   >
                     {c.name}
@@ -145,32 +145,31 @@ const ShaderLibrary = observer(props => {
 
   const handleContextMenu = (e, collection, child) => {
     e.stopPropagation();
-    
-    console.log('collection',getSnapshot(collection))
-    console.log('child',getSnapshot(child))
-//     console.log('event', e.target) // the button
-    
-//     // get the shader
-//     let target = e.target.dataid
 
-    store.ui.context.setContextmenu({
-      Delete: {
-        id: "Delete",
-        label: "Delete",
-        onClick: () => {
-          console.log('i')
-          collection.removeChild(child)
-          store.ui.context.setContextmenu({})
+    if (!child) {
+      store.ui.context.setContextmenu({});
+    } else {
+      // select on right click
+      handleClick(child);
+
+      store.ui.context.setContextmenu({
+        Delete: {
+          id: "Delete",
+          label: "Delete",
+          onClick: () => {
+            collection.removeChild(child);
+            store.ui.context.setContextmenu({});
+          }
         }
-      }
-    });
+      });
+    }
   };
 
   return (
     <GenericPanel
       showTitle={false}
       panel={props.panel}
-      //onContextMenu={handleContextMenu}
+      onContextMenu={handleContextMenu}
       //onFocus={handleFocus}
       //onBlur={handleBlur}
     >
