@@ -120,7 +120,7 @@ const Collection = types
     };
 
     const removeChild = child => {
-      // console.log("removing from collection", {self:self,child:child});
+      console.log("removing from collection", {self:self,child:child});
       self.children = self.children.filter(e => e !== child);
       getRoot(self).shader_collection.flagForUpdate();
     };
