@@ -308,9 +308,9 @@ const Display = observer(props => {
               <input
                 className={style.dimensions_input}
                 type="number"
-                value={width}
+                value={width || ""}
                 onChange={e => {
-                  setWidth(parseInt(e.target.value) || 1);
+                  setWidth(parseInt(e.target.value));
                 }}
                 onBlur={e => handleDimensionChange(width, height)}
               />
@@ -318,9 +318,9 @@ const Display = observer(props => {
               <input
                 className={style.dimensions_input}
                 type="number"
-                value={height}
+                value={height || ""}
                 onChange={e => {
-                  setHeight(parseInt(e.target.value) || 1);
+                  setHeight(parseInt(e.target.value));
                 }}
                 onBlur={e => handleDimensionChange(width, height)}
               />

@@ -115,6 +115,7 @@ const ShaderLibrary = observer(props => {
                 }}
                 onClick={() => handleClick(e)}
                 onDoubleClick={() => handleRenameItem(e)}
+                dataID={}
               >
                 <h3>{e.name}</h3>
               </button>
@@ -144,14 +145,17 @@ const ShaderLibrary = observer(props => {
   const handleContextMenu = e => {
     e.stopPropagation();
     
-    console.log('event', e.target) // the button
+    console.log('event', e.target.key) // the button
+    
+    // get the shader
+    let target = e.target.key
 
     store.ui.context.setContextmenu({
       Delete: {
         id: "Delete",
         label: "Delete",
         onClick: () => {
-          
+          //removeChild(child)
         }
       }
     });
