@@ -137,6 +137,8 @@ const Display = observer(props => {
   };
 
   const handleDimensionChange = (w, h) => {
+    setWidth(w);
+    setHeight(h);
     store.resizeCanvas(w, h);
   };
 
