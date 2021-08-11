@@ -45,3 +45,8 @@
 .CodeMirror {
   z-index: 0;
 }
+
+.p5Canvas {
+/*   visibility: hidden; */
+  display: contents;
+}
