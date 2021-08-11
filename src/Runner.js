@@ -21,6 +21,8 @@
   };
 
   p.draw = () => {
+    p.clear();
+    
     try {
       if (
         store.scene.shaderGraph &&

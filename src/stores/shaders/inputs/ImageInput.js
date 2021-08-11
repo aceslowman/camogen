@@ -182,7 +182,10 @@ const image = types
         shader.setUniform("img_dimensions", [self.img.width, self.img.height]);
         shader.setUniform("display_mode", self.displayModeId);
 
-        /* TODO clear background */
+        /* TODO clear background 
+          the problem isn't that the target is in clearing, but it's that the main output
+          isn't clearing
+        */
         target.clear();
         target.shader(shader);
 
