@@ -15,12 +15,8 @@
     // canvas.resize(bounds.width, bounds.height);
     // TEMP
     // canvas.resize(512, 512);
-    p.background(store.ui.theme.secondary_color);
+    p.background(store.ui.theme.secondary_color);    
     
-    // console.log('p', p)
-    
-    /* TODO: this isn't happening until after elements of already rendered */
-    console.log('setup new canvas...', canvas)
     store.setReady(true);
   };
 

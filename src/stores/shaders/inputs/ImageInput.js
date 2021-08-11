@@ -3,7 +3,17 @@ import Shader, { Uniform } from "../ShaderStore";
 import * as DefaultShader from "../defaults/DefaultShader";
 import { nanoid } from "nanoid";
 import Parameter from "../../ParameterStore";
-import {Media} from "../../MediaLibrary";
+import { Media } from "../../MediaLibrary";
+
+/* 
+  IMAGE
+  
+  this class handles all image input for camogen.
+  
+  TODO:
+    clear before updating image, to prevent images with alpha to show trails
+      create new param for clear/noclear
+*/
 
 const image = types
   .model("Image", {
@@ -72,8 +82,8 @@ const image = types
       afterAttach: () => {
         console.log("attached image input", getSnapshot(self));
         root_store = getRoot(self);
-        if(self.user_filename) {
-          console.log('flag RootStore!', getRoot(self))
+        if (self.user_filename) {
+          console.log("flag RootStore!", getRoot(self));
           let rootStore = getRoot(self).flagAssetsAsMissing(self);
         }
       },
@@ -97,9 +107,9 @@ const image = types
           }
         }
 
-        
+        // default checkerboard image
         self.setAsset("images/checkerboard1024.png");
-        // "images/muybridge.jpg" also works
+
         // prevents init() from being called twice
         self.ready = true;
 
@@ -108,7 +118,7 @@ const image = types
         self.inputs = [];
       },
 
-      // TODO: this is being moved to the MediaLibrary      
+      // TODO: this is being moved to the MediaLibrary
       loadImage: file => {
         // revoke previous url!
         if (self.dataURL) URL.revokeObjectURL(self.dataURL);
@@ -134,13 +144,13 @@ const image = types
         self.img = p.loadImage(img_url);
         self.image_url = img_url;
       },
-      
+
       assignMedia: media_id => {
         let p = root_store.p5_instance;
         let url = root_store.mediaLibrary.media.get(media_id).dataURL;
         self.img = p.loadImage(url);
       },
-      
+
       setUserFilename: filename => {
         self.user_filename = filename;
       },
@@ -153,6 +163,7 @@ const image = types
         let shader = self.ref;
         let target = self.target.ref;
 
+        /* process uniforms */
         for (let uniform_data of self.uniforms) {
           if (uniform_data.elements.length > 1) {
             let elements = uniform_data.elements.map(e => e.value);
@@ -165,11 +176,14 @@ const image = types
           }
         }
 
+        /* shader default uniforms */
         shader.setUniform("tex0", self.img);
         shader.setUniform("resolution", [target.width, target.height]);
         shader.setUniform("img_dimensions", [self.img.width, self.img.height]);
         shader.setUniform("display_mode", self.displayModeId);
 
+        /* TODO clear background */
+        target.clear();
         target.shader(shader);
 
         try {
@@ -183,8 +197,10 @@ const image = types
     };
   });
 
-const Image = types.compose(
-  Shader,
-  image
-).named("ImageInput");
+const Image = types
+  .compose(
+    Shader,
+    image
+  )
+  .named("ImageInput");
 export default Image;
