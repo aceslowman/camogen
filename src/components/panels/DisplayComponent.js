@@ -479,8 +479,8 @@ const Display = observer(props => {
       floating={false}
       onRef={panel_ref}
       onContextMenu={() => store.ui.context.setContextmenu()}
-      toolbar={<ToolbarComponent style={{ zIndex: 1 }} items={toolbar} />}
-      footbar={<ToolbarComponent style={{ zIndex: 1 }} items={footbar} />}
+      toolbar={<ToolbarComponent items={toolbar} />}
+      footbar={<ToolbarComponent items={footbar} />}
     >
       <div
         ref={wrapper_ref}
