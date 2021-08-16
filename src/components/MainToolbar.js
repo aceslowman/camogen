@@ -29,7 +29,7 @@ const MainToolbar = observer(props => {
   const handleLayoutSelect = name => {
     let variant = ui.getLayout(name);
     // mainPanel.setLayout(variant);
-    
+
     store.ui.applyLayoutToMainPanel(variant);
   };
 
@@ -67,20 +67,9 @@ const MainToolbar = observer(props => {
     <ToolbarComponent
       style={{
         position: "static",
-        // zIndex: 6
+        zIndex: 6
       }}
       items={{
-        // Fullscreen: {
-        //   id: "Fullscreen",
-        //   // title: canvasPanel.fullscreen ? "float canvas" : "fullscreen canvas",
-        //   label: "✳",
-        //   onClick: () => {
-        //     canvasPanel.toggleFullscreen();
-        //     canvasPanel.toggleFloating();
-        //     canvasPanel.fitScreen();
-        //   },
-        //   // highlight: !canvasPanel.fullscreen
-        // },
         Title: {
           id: "Title",
           label: (
@@ -191,9 +180,10 @@ const MainToolbar = observer(props => {
                     placeholder={mainLayout.title}
                     onKeyDown={e => {
                       if (e.key === "Enter") {
-                        // console.log("check");
-                        ui.addNewMainLayout(getSnapshot(store.ui.getPanel('MAIN')), e.target.value);
-                        // ui.addLayout(getSnapshot(mainLayout), e.target.value);
+                        ui.addNewMainLayout(
+                          getSnapshot(store.ui.getPanel("MAIN")),
+                          e.target.value
+                        );
                       }
                     }}
                   />
