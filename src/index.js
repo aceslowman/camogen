@@ -9,11 +9,7 @@ import { UIStore, Themes } from "maco-ui";
 
 import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 
-const root = RootStore.create({
-  ui: UIStore.create({
-    theme: Themes.yutani,
-    panels: {
-      MAIN: {
+const mainPanel = {
         id: "MAIN",
         floating: true,
         canFloat: false,
@@ -23,15 +19,21 @@ const root = RootStore.create({
         dimensions: [800, 500],
         position: [window.innerWidth / 2 - 400, window.innerHeight / 2 - 250],
         layout: LayoutVariants['WELCOME']
-      }
+      };
+
+const root = RootStore.create({
+  ui: UIStore.create({
+    theme: Themes.yutani,
+    panels: {
+      MAIN: mainPanel
     },
   })
 });
 
 root.ui.setPanelVariants(PanelVariants);
-
-if(!window.localStorage.getItem("layouts"))
-  root.ui.setLayouts(LayoutVariants);
+root.ui.setCustomLayouts({'WELCOME': {...mainPanel, id: 'WELCOME', title: 'Welcome'}})
+// if(!window.localStorage.getItem("layouts"))
+//   root.ui.setCustomLayouts(LayoutVariants);
 
 makeInspectable(root);
 

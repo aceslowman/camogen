@@ -27,8 +27,10 @@ const MainToolbar = observer(props => {
   };
 
   const handleLayoutSelect = name => {
-    let variant = ui.getLayout(name);
-    mainPanel.setLayout(variant);
+    let variant = ui.getCustomLayout(name);
+    // mainPanel.setLayout(variant);
+    
+    store.ui.applyLayoutToMainPanel(variant);
   };
 
   const handleAddPanel = name => {};
@@ -41,7 +43,7 @@ const MainToolbar = observer(props => {
       [e.id]: {
         id: e.id,
         label: e.title,
-        onClick: () => handleLayoutSelect(e.id),
+        onClick: () => handleLayoutSelect(e),
         /* no clue why this isn't working */
         highlight: mainLayout.id === e.id,
         buttons: {
@@ -189,8 +191,9 @@ const MainToolbar = observer(props => {
                     placeholder={mainLayout.title}
                     onKeyDown={e => {
                       if (e.key === "Enter") {
-                        console.log("check");
-                        ui.addLayout(getSnapshot(mainLayout), e.target.value);
+                        // console.log("check");
+                        ui.applyLayoutToMainPanel(getSnapshot(store.ui.getPanel('MAIN')), e.target.value);
+                        // ui.addLayout(getSnapshot(mainLayout), e.target.value);
                       }
                     }}
                   />
