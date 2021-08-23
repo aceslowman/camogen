@@ -4,8 +4,7 @@
       TODO this should point to an offscreen graphics buffer
     */
     // let container = document.getElementById("MAINOUTPUT");
-
-    let canvas = p.createCanvas(512, 512);
+    let canvas = p.createCanvas(store.width, store.height);
     p.frameRate(30);
 
     // container.append(canvas.canvas);

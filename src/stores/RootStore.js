@@ -359,7 +359,7 @@ const RootStore = types
           let content = e.target.result;
 
           self.setName(name);
-          self.scene.clear(); // this just fails early
+          self.scene.clear();
           console.log("clearing");
           // destroy(self.scene)
 
