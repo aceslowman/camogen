@@ -19,6 +19,7 @@ const MissingAssets = props => {
     window.innerWidth / 2 - 312,
     window.innerHeight / 2 - 212
   ]);
+  
   const [dimensions, setDimensions] = useState([625, 425]);
   const [matches, setMatches] = useState([]);
 

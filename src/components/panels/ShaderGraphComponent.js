@@ -11,11 +11,11 @@ const ShaderGraph = props => {
   const data = store.scene.shaderGraph;
 
   const { clipboard } = data;
-  const [useKeys, setUseKeys] = useState(false);
-  const mainRef = useRef();
+  // const [useKeys, setUseKeys] = useState(false);
+  // const mainRef = useRef();
 
-  const handleFocus = e => setUseKeys(true);
-  const handleBlur = e => setUseKeys(false);
+  // const handleFocus = e => setUseKeys(true);
+  // const handleBlur = e => setUseKeys(false);
 
   const handleContextMenu = (e, node) => {
     e.stopPropagation();
