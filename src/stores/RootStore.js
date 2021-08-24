@@ -373,6 +373,7 @@ const RootStore = types
       link.click();
     }),
 
+    /* should utilize save... */
     loadRecentSave: () => {
       let content = window.localStorage.getItem("recent_save");
 
@@ -385,6 +386,7 @@ const RootStore = types
         applySnapshot(self, JSON.parse(content));
         self.scene.shaderGraph.update();
         self.scene.shaderGraph.afterUpdate();
+        
       } else {
         console.log("no recent saves!");
       }
