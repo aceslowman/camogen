@@ -14,7 +14,7 @@ import GraphNode from "../../stores/GraphStore";
 import { getSnapshot } from "mobx-state-tree";
 import { nanoid } from "nanoid";
 
-const GraphComponent = observer(props => {
+const GraphComponent = props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const { clipboard } = props.data;
@@ -446,6 +446,6 @@ const GraphComponent = observer(props => {
       <div className={styles.labels}>{labels}</div>
     </div>
   );
-});
+};
 
-export default GraphComponent;
+export default observer(GraphComponent);

@@ -15,7 +15,7 @@ import { UIContext, SplitContainer, GenericPanel } from "maco-ui";
 import Dropzone from "react-dropzone";
 import filesize from "file-size";
 
-const ShaderLibrary = observer(props => {
+const ShaderLibrary = props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const data = store.mediaLibrary;
@@ -189,6 +189,6 @@ const ShaderLibrary = observer(props => {
       </div>
     </GenericPanel>
   );
-});
+};
 
-export default ShaderLibrary;
+export default observer(ShaderLibrary);

@@ -12,7 +12,7 @@ import {
 
 import { observer } from "mobx-react";
 
-const Preferences = observer(props => {
+const Preferences = props => {
   const store = useContext(MainContext).store;
   const { ui } = store;
 
@@ -92,6 +92,6 @@ const Preferences = observer(props => {
       </ControlGroupComponent>
     </GenericPanel>
   );
-});
+};
 
-export default Preferences;
+export default observer(Preferences);

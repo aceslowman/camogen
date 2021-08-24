@@ -5,7 +5,7 @@ import { GenericPanel, TextComponent, ToolbarComponent } from "maco-ui";
 import styles from "./MessagesComponent.module.css";
 import { observer } from "mobx-react";
 
-const Messages = observer(props => {
+const Messages = props => {
   const store = useContext(MainContext).store;
   const data = store.messages;
   const log = data.log;
@@ -44,6 +44,6 @@ const Messages = observer(props => {
       </TextComponent>
     </GenericPanel>
   );
-});
+};
 
-export default Messages;
+export default observer(Messages);

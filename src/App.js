@@ -25,7 +25,7 @@ import MainToolbar from "./components/MainToolbar";
 
 import useKeymap from "./components/hooks/UseKeymap";
 
-const App = observer(props => {
+const App = props => {
   const { store } = props;
   const { ui, scene } = store;
 
@@ -105,6 +105,6 @@ const App = observer(props => {
       </MainProvider>
     </MacoWrapperComponent>
   );
-});
+};
 
-export default App;
+export default observer(App);

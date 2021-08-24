@@ -9,7 +9,7 @@ import {
 
 import styles from './TextInputComponent.module.css';
 
-const TextInputComponent = observer(props => {
+const TextInputComponent = props => {
   const { data } = props.data;
 
   const handleTextChange = e => data.setContent(e.target.value);  
@@ -48,6 +48,6 @@ const TextInputComponent = observer(props => {
       </ControlGroupComponent>
     </React.Fragment>
   );
-});
+};
 
-export default TextInputComponent;
+export default observer(TextInputComponent);

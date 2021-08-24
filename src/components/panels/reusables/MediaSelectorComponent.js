@@ -11,7 +11,7 @@ import {
 import styles from "./MediaSelectorComponent.module.css";
 import { getSnapshot, isAlive } from "mobx-state-tree";
 
-const MediaSelectorComponent = observer(props => {
+const MediaSelectorComponent = props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const canvas_ref = useRef(null);
@@ -99,8 +99,6 @@ const MediaSelectorComponent = observer(props => {
       />
     </React.Fragment>
   );
-});
+};
 
-MediaSelectorComponent.displayName = 'MediaSelectorComponent';
-
-export default MediaSelectorComponent;
+export default observer(MediaSelectorComponent);

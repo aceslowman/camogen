@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 import OperatorControls from "./OperatorControlsComponent";
 import MainContext from "../../MainContext";
 
-const OperatorEditor = observer(props => {
+const OperatorEditor = props => {
   const store = useContext(MainContext).store;
   const { ui } = store;
   const data = store.selectedParameter;
@@ -149,6 +149,6 @@ const OperatorEditor = observer(props => {
       )}
     </GenericPanel>
   );
-});
+};
 
-export default OperatorEditor;
+export default observer(OperatorEditor);

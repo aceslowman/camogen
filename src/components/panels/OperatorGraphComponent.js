@@ -6,7 +6,7 @@ import { PanelComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import useKeymap from "../hooks/UseKeymap";
 
-const OperatorGraph = observer(props => {
+const OperatorGraph = props => {
   const store = useContext(MainContext).store;
   const [useKeys, setUseKeys] = useState(false);
 
@@ -72,6 +72,6 @@ const OperatorGraph = observer(props => {
       {props.data && props.data.updateFlag}
     </PanelComponent>
   );
-});
+};
 
-export default OperatorGraph;
+export default observer(OperatorGraph);

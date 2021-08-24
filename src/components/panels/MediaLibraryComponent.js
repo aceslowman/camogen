@@ -9,7 +9,7 @@ import { SplitContainer } from "maco-ui";
 import Dropzone from "react-dropzone";
 import filesize from "file-size";
 
-const MediaLibrary = observer(props => {  
+const MediaLibrary = props => {  
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const data = store.mediaLibrary;
@@ -140,6 +140,6 @@ const MediaLibrary = observer(props => {
       </Dropzone>
     </GenericPanel>
   );
-});
+};
 
-export default MediaLibrary;
+export default observer(MediaLibrary);

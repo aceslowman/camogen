@@ -19,7 +19,7 @@ import { observer } from "mobx-react";
 import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 
-const OperatorControls = observer(props => {  
+const OperatorControls = props => {  
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
 
@@ -67,6 +67,6 @@ const OperatorControls = observer(props => {
       />
     </PanelComponent>
   );
-});
+};
 
-export default OperatorControls;
+export default observer(OperatorControls);

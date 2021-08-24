@@ -19,7 +19,7 @@ import { GenericPanel, ToolbarComponent } from "maco-ui";
 
 let editor;
 
-const ShaderEditor = observer(props => {
+const ShaderEditor = props => {
   const store = useContext(MainContext).store;
   const mainRef = useRef(null);
   const editorRef = useRef(null);
@@ -219,6 +219,6 @@ const ShaderEditor = observer(props => {
       <div className={styles.editor} ref={editorRef}></div>
     </GenericPanel>
   );
-});
+};
 
-export default ShaderEditor;
+export default observer(ShaderEditor);

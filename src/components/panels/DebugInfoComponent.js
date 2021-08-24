@@ -4,7 +4,7 @@ import { GenericPanel, PanelComponent, TextComponent } from "maco-ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 
-const DebugInfo = observer(props => {  
+const DebugInfo = props => {  
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
 
@@ -111,6 +111,6 @@ const DebugInfo = observer(props => {
       </PanelComponent>
     </GenericPanel>
   );
-});
+};
 
-export default DebugInfo;
+export default observer(DebugInfo);

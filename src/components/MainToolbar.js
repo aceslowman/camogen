@@ -14,7 +14,7 @@ import "maco-ui/dist/index.css";
 
 import { PanelVariants, LayoutVariants } from "../stores/ui/Variants";
 
-const MainToolbar = observer(props => {
+const MainToolbar = props => {
   const store = useContext(MainContext).store;
   const { ui, scene } = store;
 
@@ -202,6 +202,6 @@ const MainToolbar = observer(props => {
       }}
     />
   );
-});
+};
 
-export default MainToolbar;
+export default observer(MainToolbar);

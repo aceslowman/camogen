@@ -113,4 +113,4 @@ const SketchInputComponent = props => {
   );
 };
 
-export default observer(SketchInputComponent;
+export default observer(SketchInputComponent);

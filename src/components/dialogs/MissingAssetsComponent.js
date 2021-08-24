@@ -11,7 +11,7 @@ import styles from "./MissingAssetsComponent.module.css";
 import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 
-const MissingAssets = observer(props => {  
+const MissingAssets = props => {  
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   
@@ -135,8 +135,6 @@ const MissingAssets = observer(props => {
       </div>
     </PanelComponent>
   );
-});
+};
 
-MissingAssets.displayName = 'MissingAssets';
-
-export default MissingAssets;
+export default observer(MissingAssets);

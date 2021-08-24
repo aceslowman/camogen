@@ -4,7 +4,7 @@ import { ControlGroupComponent, InputSelect, InputFloat } from "maco-ui";
 import styles from "./WebcamInputComponent.module.css";
 import MainContext from "../../../MainContext";
 
-const WebcamInputComponent = observer(props => {
+const WebcamInputComponent = props => {
   const { data } = props.data;
   const store = useContext(MainContext).store;
   const { theme } = store.ui;
@@ -64,6 +64,6 @@ const WebcamInputComponent = observer(props => {
       </ControlGroupComponent>
     </React.Fragment>
   );
-});
+};
 
-export default WebcamInputComponent;
+export default observer(WebcamInputComponent);

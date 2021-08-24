@@ -10,7 +10,7 @@ import styles from "./SplashComponent.module.css";
 import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 
-const Splash = observer(props => {
+const Splash = props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
 
@@ -135,6 +135,6 @@ const Splash = observer(props => {
       </PagesContainer>
     </PanelComponent>
   );
-});
+};
 
-export default Splash;
+export default observer(Splash);

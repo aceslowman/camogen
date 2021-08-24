@@ -5,7 +5,7 @@ import styles from "./VideoInputComponent.module.css";
 import Dropzone from "react-dropzone";
 import MainContext from "../../../MainContext";
 
-const VideoInputComponent = observer(props => {
+const VideoInputComponent = props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const { data } = props.data;
@@ -98,6 +98,6 @@ const VideoInputComponent = observer(props => {
       </ControlGroupComponent>
     </React.Fragment>
   );
-});
+};
 
-export default VideoInputComponent;
+export default observer(VideoInputComponent);
