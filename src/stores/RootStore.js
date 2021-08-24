@@ -360,12 +360,14 @@ const RootStore = types
 
           self.setName(name);
           self.scene.clear();
-          console.log("clearing");
+          console.log("clearing", JSON.parse(content));
           // destroy(self.scene)
 
           applySnapshot(self, JSON.parse(content));
           self.scene.shaderGraph.update();
           self.scene.shaderGraph.afterUpdate();
+          
+          self.resizeCanvas(self.width, self.height);
           // undoManager.clear();
         };
       };
@@ -373,7 +375,6 @@ const RootStore = types
       link.click();
     }),
 
-    /* should utilize save... */
     loadRecentSave: () => {
       let content = window.localStorage.getItem("recent_save");
 

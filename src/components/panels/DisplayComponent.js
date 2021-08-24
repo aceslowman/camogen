@@ -31,8 +31,8 @@ const Display = observer(props => {
   const store = useContext(MainContext).store;
   const [format, setFormat] = useState("PNG");
   const [useKeys, setUseKeys] = useState(false);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(store.width);
+  const [height, setHeight] = useState(store.height);
 
   const [zoom, setZoom] = useState(50);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -75,6 +75,13 @@ const Display = observer(props => {
 
     redrawCanvas();
   }, wrapper_ref);
+  
+  // when the width or height changes from outside, update
+  useEffect(() => {
+    console.log('changed',[store.width,store.height])
+    setWidth(store.width);
+    setHeight(store.height);
+  }, [store.width,store.height]);
 
   useEffect(() => {
     // NOTE this seems to be working with store.updateFlag
