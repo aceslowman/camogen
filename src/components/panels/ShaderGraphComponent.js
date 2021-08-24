@@ -9,11 +9,11 @@ const ShaderGraph = props => {
   const store = useContext(MainContext).store;
 
   const data = store.scene.shaderGraph;
-  // const [data, setData] = useState(store.scene.shaderGraph);
+//   const [data, setData] = useState();
   
 //   useLayoutEffect(() => {setData(store.scene.shaderGraph)}, [store.scene.shaderGraph])
 
-  const { clipboard } = data;
+  // const { clipboard } = data;
   const [useKeys, setUseKeys] = useState(false);
   const mainRef = useRef();
 

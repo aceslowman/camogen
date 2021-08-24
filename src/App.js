@@ -31,6 +31,10 @@ const App = props => {
 
   const mainRef = useRef(null);
   const [showAbout, setShowAbout] = useState(false);
+  
+  const [showMissingAssets, setShowMissingAssets] = useState(false);
+  
+  useEffect(()=>{},)
 
   const canvasPanel = ui.getPanel("CANVAS");
   const mainPanel = ui.getPanel("MAIN");
@@ -98,10 +102,10 @@ const App = props => {
         {/* as soon as this renders, an error gets thrown 
         the problem doesn't occur though when 'loaded from last save' instead of 
         throught he main toolbar*/}
-        {store.showMissingAssets && (
+        {showMissingAssets && (
           <MissingAssets
             onRemove={() =>
-              store.setShowMissingAssets(!store.showMissingAssets)
+              store.setShowMissingAssets(!showMissingAssets)
             }
           />
         )}                
