@@ -345,34 +345,34 @@ const RootStore = types
     },
 
     // does this need to be flow?
-    load: () => {
+    load: flow(function* load() {
       let link = document.createElement("input");
       link.type = "file";
 
       link.onchange = e => {
         var file = e.target.files[0];
 
-        let reader = new FileReader();
-        reader.readAsText(file, "UTF-8");
+        let textPromise = file.text();
 
-        reader.onload = e => {
-          let content = e.target.result;
-
-          self.setName(name);
-          self.scene.clear();
-          // console.log("clearing", JSON.parse(content));
-
-          /* TODO the problem is here */
-          applySnapshot(self, JSON.parse(content));
-          self.scene.shaderGraph.update();
-          self.scene.shaderGraph.afterUpdate();
-          
-          self.resizeCanvas(self.width, self.height);
-          // undoManager.clear();
-        };
+        file.text().then(text => {
+          self.applyLoadedFile(text);
+        });
       };
 
       link.click();
+    }),
+
+    applyLoadedFile: text => {
+      self.setName(name);
+      self.scene.clear();
+
+      /* TODO the problem is here */
+      applySnapshot(self, JSON.parse(text));
+      self.scene.shaderGraph.update();
+      self.scene.shaderGraph.afterUpdate();
+
+      self.resizeCanvas(self.width, self.height);
+      // undoManager.clear();
     },
 
     loadRecentSave: () => {
@@ -387,7 +387,6 @@ const RootStore = types
         applySnapshot(self, JSON.parse(content));
         self.scene.shaderGraph.update();
         self.scene.shaderGraph.afterUpdate();
-        
       } else {
         console.log("no recent saves!");
       }
@@ -531,15 +530,15 @@ const RootStore = types
       );
     },
 
-//     persistLayouts: () => {
-//       // save layouts to local storage
-//       window.localStorage.setItem(
-//         "layouts",
-//         JSON.stringify(self.ui.layoutVariants)
-//       );
-      
-//       console.log('persisting layouts', JSON.stringify(self.ui.layoutVariants))
-//     },
+    //     persistLayouts: () => {
+    //       // save layouts to local storage
+    //       window.localStorage.setItem(
+    //         "layouts",
+    //         JSON.stringify(self.ui.layoutVariants)
+    //       );
+
+    //       console.log('persisting layouts', JSON.stringify(self.ui.layoutVariants))
+    //     },
 
     resizeCanvas: (w, h) => {
       if (!w) w = 1; // never resize canvas to 0
