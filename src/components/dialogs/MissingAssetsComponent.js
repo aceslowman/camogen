@@ -38,6 +38,7 @@ const MissingAssets = props => {
 
           reader.onload = e => {
             // var image = document.createElement("img");
+            // console.log(e.target.result)
             asset.setAsset(e.target.result);
             asset.setUserFilename(file.name);
           };
@@ -46,8 +47,6 @@ const MissingAssets = props => {
         }
       });
     });
-
-    console.log("MATCHES", matches);
   };
 
   return (
