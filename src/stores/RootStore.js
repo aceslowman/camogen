@@ -360,8 +360,7 @@ const RootStore = types
 
           self.setName(name);
           self.scene.clear();
-          console.log("clearing", JSON.parse(content));
-          // destroy(self.scene)
+          // console.log("clearing", JSON.parse(content));
 
           applySnapshot(self, JSON.parse(content));
           self.scene.shaderGraph.update();

@@ -83,6 +83,10 @@ const image = types
         console.log("attached image input", getSnapshot(self));
         root_store = getRoot(self);
         if (self.user_filename) {
+          /*  
+            if this already has a filename, then it should hold
+            an active asset. 
+          */
           console.log("flag RootStore!", getRoot(self));
           let rootStore = getRoot(self).flagAssetsAsMissing(self);
         }
@@ -149,6 +153,8 @@ const image = types
         let p = root_store.p5_instance;
         let url = root_store.mediaLibrary.media.get(media_id).dataURL;
         self.img = p.loadImage(url);
+        // console.log('check',root_store.mediaLibrary.media.get(media_id).nme)
+        self.user_filename = root_store.mediaLibrary.media.get(media_id).name;
       },
 
       setUserFilename: filename => {
