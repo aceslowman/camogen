@@ -137,4 +137,6 @@ const MissingAssets = observer(props => {
   );
 });
 
+MissingAssets.displayName = 'MissingAssets';
+
 export default MissingAssets;

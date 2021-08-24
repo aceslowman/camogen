@@ -502,4 +502,6 @@ const Display = observer(props => {
   );
 });
 
+Display.displayName = 'Display';
+
 export default Display;

@@ -207,4 +207,6 @@ const ShaderControls = observer(props => {
   );
 });
 
+ShaderControls.displayName = 'ShaderControls';
+
 export default ShaderControls;
