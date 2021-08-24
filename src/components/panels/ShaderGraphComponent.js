@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState, useRef } from "react";
 import MainContext from "../../MainContext";
 import GraphComponent from "../graph/GraphComponent";
 import { GenericPanel } from "maco-ui";
@@ -9,6 +9,9 @@ const ShaderGraph = props => {
   const store = useContext(MainContext).store;
 
   const data = store.scene.shaderGraph;
+  // const [data, setData] = useState(store.scene.shaderGraph);
+  
+//   useLayoutEffect(() => {setData(store.scene.shaderGraph)}, [store.scene.shaderGraph])
 
   const { clipboard } = data;
   const [useKeys, setUseKeys] = useState(false);
