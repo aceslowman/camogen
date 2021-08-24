@@ -95,7 +95,9 @@ const App = props => {
           <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
         )}
 
-        {/* as soon as this renders, an error gets thrown */}
+        {/* as soon as this renders, an error gets thrown 
+        the problem doesn't occur though when 'loaded from last save' instead of 
+        throught he main toolbar*/}
         {store.showMissingAssets && (
           <MissingAssets
             onRemove={() =>

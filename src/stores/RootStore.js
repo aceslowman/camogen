@@ -344,8 +344,8 @@ const RootStore = types
       console.log("project saved!");
     },
 
-    //     does this need to be flow?
-    load: flow(function* load() {
+    // does this need to be flow?
+    load: () => {
       let link = document.createElement("input");
       link.type = "file";
 
@@ -362,6 +362,7 @@ const RootStore = types
           self.scene.clear();
           // console.log("clearing", JSON.parse(content));
 
+          /* TODO the problem is here */
           applySnapshot(self, JSON.parse(content));
           self.scene.shaderGraph.update();
           self.scene.shaderGraph.afterUpdate();
@@ -372,7 +373,7 @@ const RootStore = types
       };
 
       link.click();
-    }),
+    },
 
     loadRecentSave: () => {
       let content = window.localStorage.getItem("recent_save");
