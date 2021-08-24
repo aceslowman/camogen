@@ -13,7 +13,7 @@ import {
 } from "maco-ui";
 import styles from "./ImageInputComponent.module.css";
 
-const ImageInputComponent = observer(props => {
+const ImageInputComponent = props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const { data } = props.data;
@@ -48,6 +48,6 @@ const ImageInputComponent = observer(props => {
       </ControlGroupComponent>
     </React.Fragment>
   );
-});
+};
 
-export default ImageInputComponent;
+export default observer(ImageInputComponent);

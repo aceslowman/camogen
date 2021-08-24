@@ -101,4 +101,6 @@ const MediaSelectorComponent = observer(props => {
   );
 });
 
+MediaSelectorComponent.displayName = 'MediaSelectorComponent';
+
 export default MediaSelectorComponent;

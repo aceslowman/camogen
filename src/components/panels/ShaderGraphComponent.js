@@ -5,7 +5,7 @@ import { GenericPanel } from "maco-ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 
-const ShaderGraph = observer(props => {
+const ShaderGraph = props => {
   const store = useContext(MainContext).store;
 
   const data = store.scene.shaderGraph;
@@ -173,6 +173,6 @@ const ShaderGraph = observer(props => {
       {data && data.updateFlag}
     </GenericPanel>
   );
-});
+};
 
-export default ShaderGraph;
+export default observer(ShaderGraph);

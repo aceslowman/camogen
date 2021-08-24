@@ -20,7 +20,7 @@ import { getSnapshot } from "mobx-state-tree";
 let isDrawing = false;
 let x,y = 0;
 
-const SketchInputComponent = observer(props => {
+const SketchInputComponent = props => {
   const store = useContext(MainContext).store;
   const { data } = props.data;
   const [drawing, setDrawing] = useState(false);
@@ -111,6 +111,6 @@ const SketchInputComponent = observer(props => {
       </ControlGroupComponent>
     </React.Fragment>
   );
-});
+};
 
-export default SketchInputComponent;
+export default observer(SketchInputComponent;

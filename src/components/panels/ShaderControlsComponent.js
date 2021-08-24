@@ -15,7 +15,7 @@ import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 import ControlsComponent from "../controls/ControlsComponent";
 
-const ShaderControls = observer(props => {  
+const ShaderControls = props => {  
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const data = store.scene.shaderGraph;
@@ -205,8 +205,6 @@ const ShaderControls = observer(props => {
       />
     </GenericPanel>
   );
-});
+};
 
-ShaderControls.displayName = 'ShaderControls';
-
-export default ShaderControls;
+export default observer(ShaderControls);

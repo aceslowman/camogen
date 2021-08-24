@@ -27,7 +27,7 @@ import { getSnapshot } from "mobx-state-tree";
       make highlighted toolbar buttons way more distinct
 */
 
-const Display = observer(props => {
+const Display = props => {
   const store = useContext(MainContext).store;
   const [format, setFormat] = useState("PNG");
   const [useKeys, setUseKeys] = useState(false);
@@ -500,8 +500,6 @@ const Display = observer(props => {
       </div>
     </GenericPanel>
   );
-});
+};
 
-Display.displayName = 'Display';
-
-export default Display;
+export default observer(Display);
