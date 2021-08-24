@@ -15,7 +15,7 @@ dependencies:
   maco-ui: 0.5.8
   mobx: 6.3.2
   mobx-devtools-mst: 0.9.30
-  mobx-react: 7.0.6
+  mobx-react: 7.2.0
   mobx-state-tree: 5.0.2
   mst-middlewares: 5.0.2
   nanoid: 3.1.20
@@ -3484,13 +3484,13 @@ packages:
       mobx-state-tree: '*'
     resolution:
       integrity: sha512-6fIYeFG4xT4syIeKddmK55zQbc3ZZZr/272/cCbfaAAM5YiuFdteGZGUgdsz8wxf/mGxWZbFOM3WmASAnpwrbw==
-  /mobx-react-lite/3.1.7:
+  /mobx-react-lite/3.2.0:
     dev: false
     peerDependencies:
-      mobx: ^6.0.5
+      mobx: ^6.1.0
       react: ^16.8.0 || ^17
     resolution:
-      integrity: sha512-G6kgur98RrEpoi563ERzxlSwn606xY6Ay4BOtfYXl/QaHZYXbhbCe3YJGROPU2ao4f2bfhnt8iZW3YnBW2BqXQ==
+      integrity: sha512-q5+UHIqYCOpBoFm/PElDuOhbcatvTllgRp3M1s+Hp5j0Z6XNgDbgqxawJ0ZAUEyKM8X1zs70PCuhAIzX1f4Q/g==
   /mobx-react-lite/3.2.0/mobx@6.3.2:
     dependencies:
       mobx: 6.3.2
@@ -3501,15 +3501,15 @@ packages:
       react: ^16.8.0 || ^17
     resolution:
       integrity: sha512-q5+UHIqYCOpBoFm/PElDuOhbcatvTllgRp3M1s+Hp5j0Z6XNgDbgqxawJ0ZAUEyKM8X1zs70PCuhAIzX1f4Q/g==
-  /mobx-react/7.0.6:
+  /mobx-react/7.2.0:
     dependencies:
-      mobx-react-lite: 3.1.7
+      mobx-react-lite: 3.2.0
     dev: false
     peerDependencies:
-      mobx: ^6.0.5
+      mobx: ^6.1.0
       react: ^16.8.0 || ^17
     resolution:
-      integrity: sha512-EBNfDXnXNd0KmxtykioybOrJVX0Rc446aPZ69gDxguJnHPl/pPE032PhZ83EGWSZO3KiYsC251Ax3JlPqUwWBw==
+      integrity: sha512-KHUjZ3HBmZlNnPd1M82jcdVsQRDlfym38zJhZEs33VxyVQTvL77hODCArq6+C1P1k/6erEeo2R7rpE7ZeOL7dg==
   /mobx-react/7.2.0/mobx@6.3.2:
     dependencies:
       mobx: 6.3.2
@@ -5409,7 +5409,7 @@ specifiers:
   maco-ui: ^0.5.8
   mobx: ^6.3.2
   mobx-devtools-mst: ^0.9.26
-  mobx-react: ^7.0.5
+  mobx-react: ^7.2.0
   mobx-state-tree: ^5.0.2
   mst-middlewares: ^5.0.2
   nanoid: ^3.1.19

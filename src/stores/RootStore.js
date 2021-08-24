@@ -345,22 +345,26 @@ const RootStore = types
     },
 
     // does this need to be flow?
-    load: flow(function* load() {
+    load: () => {
       let link = document.createElement("input");
       link.type = "file";
 
       link.onchange = e => {
         var file = e.target.files[0];
-
         let textPromise = file.text();
 
-        file.text().then(text => {
-          self.applyLoadedFile(text);
-        });
+        try {
+          let t = file.text()    
+          t.then(text => {
+            self.applyLoadedFile(text);
+          });
+        } catch (error) {
+          console.log('failed to load file')
+        }        
       };
 
       link.click();
-    }),
+    },
 
     applyLoadedFile: text => {
       self.setName(name);
