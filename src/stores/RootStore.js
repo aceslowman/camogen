@@ -396,11 +396,16 @@ const RootStore = types
       }
     },
 
-    flagAssetsAsMissing: model => {
-      let missing_asset_filename = getSnapshot(model).user_filename;
-      self.missingAssets.push(model);
+    flagAssetsAsMissing: media => {
+      console.log('media',getSnapshot(media))
+      let missing_asset_filename = getSnapshot(media).user_filename;
+      self.missingAssets.push(media);
       console.log("MISSING_ASSETS", self.missingAssets);
       self.showMissingAssets = true;
+      
+      /* TODO once the user is inserted the new media, 
+      create new media objects and update this 
+      mediaInput.mediaID */
     },
 
     breakout: () => {

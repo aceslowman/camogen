@@ -37,10 +37,19 @@ const MissingAssets = props => {
           var reader = new FileReader();
 
           reader.onload = e => {
+            /* TODO once the user has inserted the new media, 
+            create new media objects and update this 
+            mediaInput.mediaID */
+            
+            let mediaID = 
+            asset.mediaID = mediaID
+            
+            
             // var image = document.createElement("img");
             // console.log(e.target.result)
-            asset.setAsset(e.target.result);
-            asset.setUserFilename(file.name);
+            // console.log('asset', getSnapshot(asset))
+            // asset.setAsset(e.target.result);
+            // asset.setUserFilename(file.name);
           };
 
           reader.readAsDataURL(file);
