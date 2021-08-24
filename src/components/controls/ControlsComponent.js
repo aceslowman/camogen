@@ -20,7 +20,7 @@ import { observer } from "mobx-react";
 import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
 
-const Controls = observer(props => {
+const Controls = props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
 
@@ -125,6 +125,6 @@ const Controls = observer(props => {
   }, [props.data.selectedNode]);
 
   return panels;
-});
+};
 
-export default Controls;
+export default observer(Controls);

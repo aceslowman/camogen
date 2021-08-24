@@ -95,13 +95,14 @@ const App = props => {
           <Splash onRemove={() => store.setShowSplash(!store.showSplash)} />
         )}
 
+        {/* as soon as this renders, an error gets thrown */}
         {store.showMissingAssets && (
           <MissingAssets
             onRemove={() =>
               store.setShowMissingAssets(!store.showMissingAssets)
             }
           />
-        )}
+        )}                
       </MainProvider>
     </MacoWrapperComponent>
   );
