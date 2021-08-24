@@ -13,15 +13,15 @@ dependencies:
   html-webpack-plugin: 4.5.0
   http-proxy-middleware: 1.0.6
   maco-ui: 0.5.8
-  mobx: 6.0.5
+  mobx: 6.3.2
   mobx-devtools-mst: 0.9.30
   mobx-react: 7.0.6
-  mobx-state-tree: 5.0.0
-  mst-middlewares: 4.0.3
+  mobx-state-tree: 5.0.2
+  mst-middlewares: 5.0.2
   nanoid: 3.1.20
   p5: 0.10.2
   prop-types: 15.7.2
-  react: 17.0.1
+  react: 17.0.2
   react-dom: 17.0.1
   react-dropzone: 11.2.4
   regenerator-runtime: 0.13.7
@@ -3521,16 +3521,12 @@ packages:
       react: ^16.8.0 || ^17
     resolution:
       integrity: sha512-KHUjZ3HBmZlNnPd1M82jcdVsQRDlfym38zJhZEs33VxyVQTvL77hODCArq6+C1P1k/6erEeo2R7rpE7ZeOL7dg==
-  /mobx-state-tree/5.0.0:
+  /mobx-state-tree/5.0.2:
     dev: false
     peerDependencies:
-      mobx: ^6.0.0
+      mobx: ^6.3.0
     resolution:
-      integrity: sha512-4YFzJN5K3fTgwnNtDiuJleopF41ZYm6mR0GkGl6tqVgfCX0BzlyF3BKbeiI8jDw12Z9/N7Sib9Gj1efhd1DCxA==
-  /mobx/6.0.5:
-    dev: false
-    resolution:
-      integrity: sha512-Q3/GiSj/QyazDn1n44PjdiMlokCE6gVs85BnFR0xCJmkF2d34k/ZnWAEG7wGbnJYEi+0f5CdvzDquBiKeo56bA==
+      integrity: sha512-hQ2Ewbf2hwB4BNAq0ysYMXywbXQ4bHMpAJRnquzKtUBY1OclZTMBg1Dc2gkZNWfU9PrJ03s2tHK5X5c8wtHAHA==
   /mobx/6.3.2:
     dev: false
     resolution:
@@ -3551,12 +3547,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
-  /mst-middlewares/4.0.3:
+  /mst-middlewares/5.0.2:
     dev: false
     peerDependencies:
       mobx-state-tree: ^3.11.0
     resolution:
-      integrity: sha512-oRmlcku80P/opxJq4jzDGdLyViPACx2XT+1zJScC76CaW7Re8OaxYgxXxr8n3GsFkdCyms0V7jaEUyygsIj9wg==
+      integrity: sha512-CDbcYygGl/dU82gKjFd5C1DHsepJYEyL40z7IXSBbBe3oT5Bug+kHCLBzzd7qEHDgmV+Zo//utG6INgS/v/vRg==
   /multicast-dns-service-types/1.1.0:
     dev: false
     resolution:
@@ -4193,7 +4189,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
-  /react/17.0.1:
+  /react/17.0.2:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
@@ -4201,7 +4197,7 @@ packages:
     engines:
       node: '>=0.10.0'
     resolution:
-      integrity: sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w==
+      integrity: sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
   /readable-stream/2.3.7:
     dependencies:
       core-util-is: 1.0.2
@@ -5411,15 +5407,15 @@ specifiers:
   html-webpack-plugin: ^4.5.0
   http-proxy-middleware: ^1.0.5
   maco-ui: ^0.5.8
-  mobx: ^6.0.4
+  mobx: ^6.3.2
   mobx-devtools-mst: ^0.9.26
   mobx-react: ^7.0.5
-  mobx-state-tree: ^5.0.0
-  mst-middlewares: ^4.0.3
+  mobx-state-tree: ^5.0.2
+  mst-middlewares: ^5.0.2
   nanoid: ^3.1.19
   p5: ^0.10.2
   prop-types: ^15.7.2
-  react: ^17.0.1
+  react: ^17.0.2
   react-dom: ^17.0.1
   react-dropzone: ^11.2.3
   regenerator-runtime: ^0.13.7
