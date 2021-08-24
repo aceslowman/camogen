@@ -1,25 +1,21 @@
 import React, { useContext, useState } from "react";
 import Dropzone from "react-dropzone";
 import { getSnapshot } from "mobx-state-tree";
-import {
-  InputSelect,
-  InputBool,
-  PanelComponent,
-  TextComponent
-} from "maco-ui";
+import { InputSelect, InputBool, PanelComponent, TextComponent } from "maco-ui";
 import styles from "./MissingAssetsComponent.module.css";
 import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
+import { Media } from "../../stores/MediaLibrary";
 
-const MissingAssets = props => {  
+const MissingAssets = props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
-  
+
   const [position, setPosition] = useState([
     window.innerWidth / 2 - 312,
     window.innerHeight / 2 - 212
   ]);
-  
+
   const [dimensions, setDimensions] = useState([625, 425]);
   const [matches, setMatches] = useState([]);
 
@@ -41,10 +37,16 @@ const MissingAssets = props => {
             create new media objects and update this 
             mediaInput.mediaID */
             
-            let mediaID = 
-            asset.mediaID = mediaID
+            let new_media_id = store.mediaLibrary.addMedia(file); 
+            // setSelectedMedia(new_media_id);
+            // console.log('handling drop', new_media_id)
+            // props.onMediaSelect(new_media_id);
+  
             
+            // asset.mediaID = new_media_id;
             
+            asset.assignMedia(new_media_id);
+
             // var image = document.createElement("img");
             // console.log(e.target.result)
             // console.log('asset', getSnapshot(asset))
@@ -89,7 +91,8 @@ const MissingAssets = props => {
                     key={e.user_filename}
                     style={{
                       color: "red",
-                      textDecoration: // line-through when asset has been found
+                      // line-through when asset has been found
+                      textDecoration:
                         matches.indexOf(e.user_filename) !== -1
                           ? "line-through"
                           : "none"
