@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import React, { useLayoutEffect, useRef, useContext } from "react";
+import React, { useLayoutEffect, useRef, useEffect, useContext } from "react";
 import Dropzone from "react-dropzone";
 import MainContext from "../../../MainContext";
 import MediaSelector from "../reusables/MediaSelectorComponent";
@@ -21,11 +21,18 @@ const ImageInputComponent = props => {
   const handleDisplayMode = e => data.setDisplayMode(e);
   const handlePan = (param, v) => param.setValue(v);
   const handleMediaSelect = e => data.assignMedia(e);
+  
+  console.log('data',data)
+  
+  /* need to re-render whenever the image media ID changes */
+  useEffect(()=>{
+    console.log('re-render this')
+  },[data.mediaID])
 
   return (
     <React.Fragment>
       <ControlGroupComponent name="Image File">
-        <MediaSelector mediaType="image" onMediaSelect={handleMediaSelect} />
+        <MediaSelector mediaType="image" onMediaSelect={handleMediaSelect} selectedMedia={data.mediaID}/>
       </ControlGroupComponent>
       <ControlGroupComponent name="Display Mode">
         <InputSelect

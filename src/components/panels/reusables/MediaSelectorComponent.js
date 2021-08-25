@@ -15,22 +15,24 @@ const MediaSelectorComponent = props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
   const canvas_ref = useRef(null);
-  const [selectedMedia, setSelectedMedia] = useState();
+  // const [selectedMedia, setSelectedMedia] = useState();
+  
+  console.log('selectedMedia',props.selectedMedia)
 
   const handleDrop = files => {
     let new_media_id = store.mediaLibrary.addMedia(files[0]); 
-    setSelectedMedia(new_media_id);    
+    // setSelectedMedia(new_media_id);    
     props.onMediaSelect(new_media_id);
   };
   
   const handleMediaSelect = value => {
     // console.log('handling media select', value)
-    setSelectedMedia(value);
+    // setSelectedMedia(value);
     props.onMediaSelect(value);
   };
 
   useLayoutEffect(() => {
-    if (!selectedMedia) return;
+    if (!props.selectedMedia) return;
     /*
       I do not know whether or not this is efficient!
       I am grabbing the whole image each time and generating
@@ -55,8 +57,8 @@ const MediaSelectorComponent = props => {
       ctx.drawImage(this, 0, 0, w, h);
     };
 
-    img.src = store.mediaLibrary.media.get(selectedMedia).dataURL;
-  }, [selectedMedia]);
+    img.src = store.mediaLibrary.media.get(props.selectedMedia).dataURL;
+  }, [props.selectedMedia]);
 
   return (
     <React.Fragment>
@@ -72,7 +74,7 @@ const MediaSelectorComponent = props => {
             <div
               {...{
                 ...getRootProps(),
-                className: selectedMedia ? styles.dropzoneOverlay : styles.noMediaOverlay,
+                className: props.selectedMedia ? styles.dropzoneOverlay : styles.noMediaOverlay,
                 style: {
                   backgroundColor: theme.primary_color,
                   color: theme.text_color
@@ -94,7 +96,7 @@ const MediaSelectorComponent = props => {
           value: e.id
         }))}
         onChange={handleMediaSelect}
-        selectedOption={selectedMedia}
+        selectedOption={props.selectedMedia}
       />
     </React.Fragment>
   );
