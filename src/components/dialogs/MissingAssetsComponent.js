@@ -33,25 +33,8 @@ const MissingAssets = props => {
           var reader = new FileReader();
 
           reader.onload = e => {
-            /* TODO once the user has inserted the new media, 
-            create new media objects and update this 
-            mediaInput.mediaID */
-            
-            let new_media_id = store.mediaLibrary.addMedia(file); 
-            // setSelectedMedia(new_media_id);
-            // console.log('handling drop', new_media_id)
-            // props.onMediaSelect(new_media_id);
-  
-            
-            // asset.mediaID = new_media_id;
-            
+            let new_media_id = store.mediaLibrary.addMedia(file);
             asset.assignMedia(new_media_id);
-
-            // var image = document.createElement("img");
-            // console.log(e.target.result)
-            // console.log('asset', getSnapshot(asset))
-            // asset.setAsset(e.target.result);
-            // asset.setUserFilename(file.name);
           };
 
           reader.readAsDataURL(file);

@@ -19,8 +19,7 @@ const MediaSelectorComponent = props => {
 
   const handleDrop = files => {
     let new_media_id = store.mediaLibrary.addMedia(files[0]); 
-    setSelectedMedia(new_media_id);
-    // console.log('handling drop', new_media_id)
+    setSelectedMedia(new_media_id);    
     props.onMediaSelect(new_media_id);
   };
   
