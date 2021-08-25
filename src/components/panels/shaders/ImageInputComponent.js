@@ -21,18 +21,22 @@ const ImageInputComponent = props => {
   const handleDisplayMode = e => data.setDisplayMode(e);
   const handlePan = (param, v) => param.setValue(v);
   const handleMediaSelect = e => data.assignMedia(e);
-  
-  console.log('data',data)
-  
+
+  console.log("data", getSnapshot(data));
+
   /* need to re-render whenever the image media ID changes */
-  useEffect(()=>{
-    console.log('re-render this')
-  },[data.mediaID])
+  useEffect(() => {
+    console.log("re-render this");
+  }, [data.mediaID]);
 
   return (
     <React.Fragment>
       <ControlGroupComponent name="Image File">
-        <MediaSelector mediaType="image" onMediaSelect={handleMediaSelect} selectedMedia={data.mediaID}/>
+        <MediaSelector
+          mediaType="image"
+          onMediaSelect={handleMediaSelect}
+          selectedMedia={data.mediaID}
+        />
       </ControlGroupComponent>
       <ControlGroupComponent name="Display Mode">
         <InputSelect

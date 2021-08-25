@@ -154,6 +154,7 @@ const image = types
         let url = root_store.mediaLibrary.media.get(media_id).dataURL;
         self.img = p.loadImage(url);
         self.user_filename = root_store.mediaLibrary.media.get(media_id).name;
+        self.mediaID
       },
 
       setUserFilename: filename => {

@@ -57,6 +57,7 @@ const MediaSelectorComponent = props => {
       ctx.drawImage(this, 0, 0, w, h);
     };
 
+    console.log('getting media', props.selectedMedia)
     img.src = store.mediaLibrary.media.get(props.selectedMedia).dataURL;
   }, [props.selectedMedia]);
 
