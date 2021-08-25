@@ -93,6 +93,7 @@ const MediaSelectorComponent = props => {
       </Dropzone>
       <InputSelect
         className={styles.select}
+        style={{width:'100%'}}
         options={Array.from(store.mediaLibrary.media.values()).map(e => ({
           label: e.name,
           value: e.id
