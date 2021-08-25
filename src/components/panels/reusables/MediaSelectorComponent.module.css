@@ -1,3 +1,8 @@
+.wrapper {
+  display: flex;
+  flex-flow: column;
+}
+
 .canvas {
   width: 100%;
 }
@@ -31,4 +36,5 @@
 
 .select {
   width: 100%;
+  background-color: orange;
 }

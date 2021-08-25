@@ -58,11 +58,12 @@ const MediaSelectorComponent = props => {
     };
 
     console.log('getting media', props.selectedMedia)
-    img.src = store.mediaLibrary.media.get(props.selectedMedia).dataURL;
+    img.src = props.selectedMedia.dataURL;
+    // img.src = store.mediaLibrary.media.get(props.selectedMedia).dataURL;
   }, [props.selectedMedia]);
 
   return (
-    <React.Fragment>
+    <div className={styles.wrapper}>
       <Dropzone onDrop={handleDrop}>
         {({ getRootProps, getInputProps }) => (
           <section
@@ -99,7 +100,7 @@ const MediaSelectorComponent = props => {
         onChange={handleMediaSelect}
         selectedOption={props.selectedMedia}
       />
-    </React.Fragment>
+    </div>
   );
 };
 
