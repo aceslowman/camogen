@@ -10,31 +10,36 @@ import { UIStore, Themes } from "maco-ui";
 import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 
 const mainPanel = {
-        id: "MAIN",
-        floating: true,
-        canFloat: false,
-        collapsible: false,
-        fullscreen: false,
-        canFullscreen: true,
-        dimensions: [800, 500],
-        position: [window.innerWidth / 2 - 400, window.innerHeight / 2 - 250],
-        layout: LayoutVariants['WELCOME']
-      };
+  id: "MAIN",
+  floating: true,
+  canFloat: false,
+  collapsible: false,
+  fullscreen: false,
+  canFullscreen: true,
+  dimensions: [800, 500],
+  position: [window.innerWidth / 2 - 400, window.innerHeight / 2 - 250],
+  layout: LayoutVariants["WELCOME"]
+};
 
 const root = RootStore.create({
   ui: UIStore.create({
     theme: Themes.yutani,
     panels: {
       MAIN: mainPanel
-    },
+    }
   })
 });
 
 root.ui.setPanelVariants(PanelVariants);
-root.ui.setCustomLayouts({'WELCOME': {...mainPanel, id: 'WELCOME', title: 'Welcome'}})
+root.ui.setCustomLayouts({
+  WELCOME: { ...mainPanel, id: "WELCOME", title: "Welcome" }
+});
 // if(!window.localStorage.getItem("layouts"))
 //   root.ui.setCustomLayouts(LayoutVariants);
 
 makeInspectable(root);
 
-ReactDOM.render(<App store={root} history={undoManager}/>, document.getElementById('root'));
+ReactDOM.render(
+  <App store={root} history={undoManager} />,
+  document.getElementById("root")
+);
