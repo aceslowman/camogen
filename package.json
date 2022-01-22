@@ -35,7 +35,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "tinykeys": "^1.1.0",
     "codemirror": "^5.58.3",
-    "nanoid": "^3.1.19",
+    "nanoid": "^3.1.31",
     "prop-types": "^15.7.2",
     "regenerator-runtime": "^0.13.7",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
