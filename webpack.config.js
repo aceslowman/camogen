@@ -37,14 +37,14 @@ module.exports = {
     liveReload: false,
     disableHostCheck: true,
     port: process.env.PORT,
-    public:
-      process.env.NODE_ENV === "development"
-        ? "level-legend-answer.glitch.me"
-        : "camogen.glitch.me",
-    // https: true,
+    // public: "http://localhost:8080",
+    //   process.env.NODE_ENV === "development"
+    //     ? "level-legend-answer.glitch.me"
+    //     : "camogen.glitch.me",
+    https: true,
     proxy: {
       "/api": "http://localhost:3001"
     }
   },
-  // devtool: "source-map"
+  devtool: "source-map"
 };
