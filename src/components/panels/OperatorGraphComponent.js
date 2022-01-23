@@ -20,7 +20,7 @@ const OperatorGraph = props => {
       Clear: {
         id: "Clear",
         label: "Clear",
-        onClick: () => store.scene.clear()
+        onClick: () => store.scene.clear() 
       },
       ...(process.env.NODE_ENV === "development"
         ? {

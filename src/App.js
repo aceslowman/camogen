@@ -11,7 +11,7 @@ import {
   LayoutContainer,
   GenericPanel,
   ContextMenuComponent,
-  MacoWrapperComponent
+  MacoWrapperComponent,
 } from "maco-ui";
 import "maco-ui/dist/index.css";
 import "./App.css";
@@ -25,7 +25,7 @@ import MainToolbar from "./components/MainToolbar";
 
 import useKeymap from "./components/hooks/UseKeymap";
 
-const App = props => {
+const App = (props) => {
   const { store } = props;
   const { ui, scene } = store;
 
@@ -35,19 +35,19 @@ const App = props => {
   const canvasPanel = ui.getPanel("CANVAS");
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
-  
-  console.log('mainLayout', mainLayout)
+
+  console.log("mainLayout", mainLayout);
 
   useKeymap(
     {
-      "$mod+KeyS": e => {
+      "$mod+KeyS": (e) => {
         e.preventDefault();
         props.store.save();
       },
-      "$mod+KeyO": e => {
+      "$mod+KeyO": (e) => {
         e.preventDefault();
         props.store.load();
-      }
+      },
     },
     true
   );
@@ -56,7 +56,7 @@ const App = props => {
     if (process.env.NODE_ENV !== "development") {
       // TODO:                                   // TODO:
       // this should only occur if something in state has changed
-      const beforeUnload = e => {
+      const beforeUnload = (e) => {
         let message = "You have unsaved data!";
         e.returnValue = message;
         return message;
@@ -67,7 +67,7 @@ const App = props => {
     }
   }, []);
 
-  const getPanelComponent = panel => {
+  const getPanelComponent = (panel) => {
     if (Panels.has(panel.component_type)) {
       let Component = Panels.get(panel.component_type);
       return <Component key={panel.component_type} panel={panel} />;
@@ -104,7 +104,7 @@ const App = props => {
               store.setShowMissingAssets(!store.showMissingAssets)
             }
           />
-        )}                
+        )}
       </MainProvider>
     </MacoWrapperComponent>
   );
