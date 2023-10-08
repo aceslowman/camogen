@@ -1668,7 +1668,7 @@ packages:
   /array-flatten/1.1.1:
     dev: false
     resolution:
-      integrity: sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=
+      integrity: sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg==
   /array-flatten/2.1.2:
     dev: false
     resolution:
@@ -2158,7 +2158,7 @@ packages:
   /cookie-signature/1.0.6:
     dev: false
     resolution:
-      integrity: sha1-4wOogrNCzD7oylE6eZmXNNqzriw=
+      integrity: sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==
   /cookie/0.5.0:
     dev: false
     engines:
@@ -2466,7 +2466,7 @@ packages:
     engines:
       node: '>= 0.8'
     resolution:
-      integrity: sha1-rT/0yG7C0CkyL1oCw6mmBslbP1k=
+      integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==
   /end-of-stream/1.4.4:
     dependencies:
       once: 1.4.0
@@ -2583,7 +2583,7 @@ packages:
   /escape-html/1.0.3:
     dev: false
     resolution:
-      integrity: sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
+      integrity: sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==
   /escape-string-regexp/1.0.5:
     dev: false
     engines:
@@ -2630,7 +2630,7 @@ packages:
     engines:
       node: '>= 0.6'
     resolution:
-      integrity: sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
+      integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==
   /eventemitter3/4.0.7:
     dev: false
     resolution:
@@ -2892,7 +2892,7 @@ packages:
     engines:
       node: '>= 0.6'
     resolution:
-      integrity: sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=
+      integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==
   /fs.realpath/1.0.0:
     dev: false
     resolution:
@@ -3862,7 +3862,7 @@ packages:
     engines:
       node: '>= 0.6'
     resolution:
-      integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
+      integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==
   /memory-fs/0.4.1:
     dependencies:
       errno: 0.1.8
@@ -3873,7 +3873,7 @@ packages:
   /merge-descriptors/1.0.1:
     dev: false
     resolution:
-      integrity: sha1-sAqqVW3YtEVoFQ7J0blT8/kMu2E=
+      integrity: sha512-cCi6g3/Zr1iqQi6ySbseM1Xvooa98N0w31jzUYrXPX2xqObmFGHJ0tQ5u74H3mVh7wLouTseZyYIq39g8cNp1w==
   /merge-stream/2.0.0:
     dev: false
     resolution:
@@ -3883,7 +3883,7 @@ packages:
     engines:
       node: '>= 0.6'
     resolution:
-      integrity: sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
+      integrity: sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w==
   /micromatch/3.1.10:
     dependencies:
       arr-diff: 4.0.0
@@ -4028,7 +4028,7 @@ packages:
   /ms/2.0.0:
     dev: false
     resolution:
-      integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
+      integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==
   /ms/2.1.2:
     dev: false
     resolution:
@@ -4382,7 +4382,7 @@ packages:
   /path-to-regexp/0.1.7:
     dev: false
     resolution:
-      integrity: sha1-32BBeABfUi8V60SQ5yR6G/qmf4w=
+      integrity: sha512-5DFkuoqlv1uYQKxy8omFBeJPQcdoE07Kv2sferDCrAq1ohOU+MSDswDIbnx3YAM60qIOnYa53wBhXW0EbMonrQ==
   /picocolors/1.0.0:
     dev: false
     resolution:
@@ -5654,7 +5654,7 @@ packages:
     engines:
       node: '>= 0.4.0'
     resolution:
-      integrity: sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
+      integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
   /uuid/3.4.0:
     deprecated: 'Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.'
     dev: false
@@ -5671,7 +5671,7 @@ packages:
     engines:
       node: '>= 0.8'
     resolution:
-      integrity: sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
+      integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
   /watchpack/2.4.0:
     dependencies:
       glob-to-regexp: 0.4.1
@@ -5950,8 +5950,8 @@ specifiers:
   codemirror: ^5.58.3
   css-loader: ^5.0.0
   directory-tree: ^2.2.4
-  express: ^4.17.1
-  file-loader: ^6.1.1
+  express: ^4.18.2
+  file-loader: ^6.2.0
   file-size: ^1.0.0
   html-webpack-plugin: ^4.5.0
   http-proxy-middleware: ^1.0.5
