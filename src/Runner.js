@@ -1,19 +1,8 @@
  const Runner = (p, store) => {
   p.setup = () => {
-    /*
-      TODO this should point to an offscreen graphics buffer
-    */
-    // let container = document.getElementById("MAINOUTPUT");
     let canvas = p.createCanvas(store.width, store.height);
     p.frameRate(30);
 
-    // container.append(canvas.canvas);
-
-    // let bounds = container.getBoundingClientRect();
-
-    // canvas.resize(bounds.width, bounds.height);
-    // TEMP
-    // canvas.resize(512, 512);
     p.background(store.ui.theme.secondary_color);    
     
     store.setReady(true);

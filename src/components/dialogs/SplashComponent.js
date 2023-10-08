@@ -31,7 +31,6 @@ const Splash = props => {
       onDimensionsChange={handleDimensions}
       className={styles.wrapper}
       floating={true}
-      //title="about"
       subtitle={
         <InputBool
           hLabel
@@ -63,7 +62,7 @@ const Splash = props => {
             <small>{store.version}</small>
 
             <p style={{ color: "red", fontSize: "0.5em" }}>
-              Note: for the time being, camogen works best in Chrome!
+              Note: for the time being, camogen works best in Chrome
             </p>
           </div>
           {window.localStorage.getItem("recent_save") && (

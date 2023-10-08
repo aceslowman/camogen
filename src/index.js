@@ -31,11 +31,11 @@ const root = RootStore.create({
 });
 
 root.ui.setPanelVariants(PanelVariants);
+
+/* this populates the layout system */
 root.ui.setCustomLayouts({
   WELCOME: { ...mainPanel, id: "WELCOME", title: "Welcome" }
 });
-// if(!window.localStorage.getItem("layouts"))
-//   root.ui.setCustomLayouts(LayoutVariants);
 
 makeInspectable(root);
 
