@@ -39,7 +39,7 @@ module.exports = {
     port: process.env.PORT,
     public:
       process.env.NODE_ENV === "development"
-        ? "level-legend-answer.glitch.me"
+        ? "https://feather-darkened-sombrero.glitch.me"
         : "camogen.glitch.me",
     // https: true,
     proxy: {
