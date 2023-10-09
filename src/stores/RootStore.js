@@ -457,6 +457,9 @@ const RootStore = types
         } else {
           console.log("no cached shaders found, fetching from server...");
 
+          // TODO 
+          // I am removing this api, in favor of something that 
+          // can run without server side code
           yield fetch("api/shaders")
             .then(d => d.json())
             .then(d => {
