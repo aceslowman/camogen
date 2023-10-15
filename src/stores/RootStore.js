@@ -20,6 +20,7 @@ import MediaLibrary from "./MediaLibrary";
 import Runner from "../Runner";
 import { nanoid } from "nanoid";
 import p5 from "p5";
+import defaultShaderCollection from "./shaders/defaults/defaultCollection.js"
 
 /*
   [RootStore]
@@ -460,15 +461,21 @@ const RootStore = types
           // TODO 
           // I am removing this api, in favor of something that 
           // can run without server side code
-          yield fetch("api/shaders")
-            .then(d => d.json())
-            .then(d => {
-              self.setShaderCollection(d);
-              window.localStorage.setItem(
-                "shader_collection",
-                JSON.stringify(getSnapshot(self.shader_collection))
-              );
-            });
+          // yield fetch("api/shaders")
+          //   .then(d => d.json())
+          //   .then(d => {
+          //     self.setShaderCollection(d);
+          //     window.localStorage.setItem(
+          //       "shader_collection",
+          //       JSON.stringify(getSnapshot(self.shader_collection))
+          //     );
+          //   });
+          self.setShaderCollection(defaultShaderCollection);
+                    //     self.setShaderCollection(d);
+          //     window.localStorage.setItem(
+          //       "shader_collection",
+          //       JSON.stringify(getSnapshot(self.shader_collection))
+          //     );
         }
       } catch (err) {
         console.error("failed to fetch shaders", err);

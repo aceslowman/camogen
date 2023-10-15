@@ -7,14 +7,14 @@ import {
   ToolbarComponent,
   LayoutContainer,
   GenericPanel,
-  ContextMenuComponent
+  ContextMenuComponent,
 } from "maco-ui";
 
 import "maco-ui/dist/index.css";
 
 import { PanelVariants, LayoutVariants } from "../stores/ui/Variants";
 
-const MainToolbar = props => {
+const MainToolbar = (props) => {
   const store = useContext(MainContext).store;
   const { ui, scene } = store;
 
@@ -26,14 +26,14 @@ const MainToolbar = props => {
     store.breakout();
   };
 
-  const handleLayoutSelect = name => {
+  const handleLayoutSelect = (name) => {
     let variant = ui.getLayout(name);
     // mainPanel.setLayout(variant);
 
     store.ui.applyLayoutToMainPanel(variant);
   };
 
-  const handleAddPanel = name => {};
+  const handleAddPanel = (name) => {};
 
   let layouts = {};
 
@@ -56,10 +56,10 @@ const MainToolbar = props => {
               if (e.id !== "WELCOME") {
                 ui.removeLayout(e);
               }
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     };
   });
 
@@ -67,14 +67,14 @@ const MainToolbar = props => {
     <ToolbarComponent
       style={{
         position: "static",
-        zIndex: 6
+        zIndex: 6,
       }}
       items={{
         Title: {
           id: "Title",
           label: (
             <h1 style={{ position: "relative", bottom: "1px" }}>camogen</h1>
-          )
+          ),
 
           // onClick: () => {
           //   setShowAbout(!showAbout);
@@ -91,7 +91,7 @@ const MainToolbar = props => {
                 <div
                   style={{
                     display: "flex",
-                    flexFlow: "row"
+                    flexFlow: "row",
                   }}
                 >
                   <label>name:</label>
@@ -102,44 +102,44 @@ const MainToolbar = props => {
                       border: "none",
                       width: "100%",
                       marginLeft: 4,
-                      fontFamily: "inherit"
+                      fontFamily: "inherit",
                     }}
                     type="text"
                     placeholder={store.name}
-                    onChange={e => {
+                    onChange={(e) => {
                       store.setName(e.target.value);
                     }}
                   />
                 </div>
-              )
+              ),
             },
             Save_Scene: {
               id: "Save_Scene",
               label: "Save Scene",
               onClick: () => {
                 store.save();
-              }
+              },
             },
             Load_Scene: {
               id: "Load_Scene",
               label: "Load Scene",
-              onClick: () => store.load()
+              onClick: () => store.load(),
             },
             New_Scene: {
               id: "New_Scene",
               label: "New Scene",
               onClick: () => {
                 store.scene.clear();
-              }
+              },
             },
             Preferences: {
               id: "Preferences",
               label: "Preferences",
               onClick: () => {
                 handleLayoutSelect("PREFERENCES");
-              }
-            }
-          }
+              },
+            },
+          },
         },
         Library: {
           id: "Library",
@@ -149,9 +149,9 @@ const MainToolbar = props => {
             Reload: {
               id: "Reload",
               label: "Reload Defaults",
-              onClick: () => store.reloadDefaults()
-            }
-          }
+              onClick: () => store.reloadDefaults(),
+            },
+          },
         },
         Layout: {
           id: "Layout",
@@ -163,7 +163,7 @@ const MainToolbar = props => {
                 <div
                   style={{
                     display: "flex",
-                    flexFlow: "row"
+                    flexFlow: "row",
                   }}
                 >
                   <label>name:</label>
@@ -174,11 +174,11 @@ const MainToolbar = props => {
                       border: "none",
                       width: "100%",
                       marginLeft: 4,
-                      fontFamily: "inherit"
+                      fontFamily: "inherit",
                     }}
                     type="text"
                     placeholder={mainLayout.title}
-                    onKeyDown={e => {
+                    onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         ui.addNewMainLayout(
                           getSnapshot(store.ui.getPanel("MAIN")),
@@ -188,17 +188,17 @@ const MainToolbar = props => {
                     }}
                   />
                 </div>
-              )
+              ),
             },
 
-            ...layouts
-          }
+            ...layouts,
+          },
         },
         Breakout: {
           id: "Breakout",
           label: "Breakout",
-          onClick: handleBreakout
-        }
+          onClick: handleBreakout,
+        },
       }}
     />
   );

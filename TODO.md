@@ -1,2 +1,4 @@
-- [ ] remove and refactor the api stuff
-- [ ] remove unused packages
+- [x] remove and refactor the api stuff
+- [x] remove unused packages
+- [x] fix missing checkboard pattern
+- [x] update splash page with art

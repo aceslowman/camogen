@@ -57,8 +57,8 @@ const Splash = props => {
         minHeight: 425
       }}
     >
-      <PagesContainer>
-        <TextComponent>
+      {/* <PagesContainer> */}
+        {/* <TextComponent>
           <h1>alpha updates and caveats!</h1>
           <p>below are a number of critical issues and caveats</p>
 
@@ -95,7 +95,7 @@ const Splash = props => {
               https://github.com/aceslowman/camogen/issues
             </a>
           </p>
-        </TextComponent>
+        </TextComponent> */}
         <TextComponent>
           <h1>changelog</h1>
           <h2>v1.0.1-alpha</h2>
@@ -132,7 +132,7 @@ const Splash = props => {
           </ul>
           
         </TextComponent>
-      </PagesContainer>
+      {/* </PagesContainer> */}
     </PanelComponent>
   );
 };

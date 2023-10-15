@@ -29,22 +29,13 @@ module.exports = {
   ],
   devServer: {
     contentBase: path.join(__dirname, "public"),
-    publicPath: "/",
-    overlay: true,
-    compress: true,
-    hot: false,
-    inline: false,
+    // // publicPath: "/",
+    // compress: true,
+    // hot: false,
+    // inline: false,
     liveReload: false,
-    disableHostCheck: true,
-    port: process.env.PORT,
-    public:
-      process.env.NODE_ENV === "development"
-        ? "https://feather-darkened-sombrero.glitch.me"
-        : "camogen.glitch.me",
-    // https: true,
-    proxy: {
-      "/api": "http://localhost:3001"
-    }
+    // disableHostCheck: true,
+    port: process.env.PORT
   },
   // devtool: "source-map"
 };

@@ -18,7 +18,7 @@
   height: 100%;
   width: 50%;
   font-size: 1.5em;
-  padding-left: 30px;
+  padding-left: 15px;
   height: 100%;
 }
 
@@ -57,4 +57,20 @@
   display: flex;
   flex-flow: column;
   height: 100%;
+}
+
+.splashImage {
+  /* object-fit: cover; */
+  height:250px;
+  overflow:hidden;
+}
+
+.splashImage img {
+  width: 100%;
+}
+
+.splashTitle img{
+  width:100%;
+  filter:invert(1);
+  margin-top: 25px;
 }
