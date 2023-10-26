@@ -43,8 +43,9 @@ const ShaderGraph = props => {
         id: "EditShader",
         label: "Edit Shader",
         onClick: () => {
-          let variant = store.ui.getLayoutVariant("SHADER_EDIT");
-          store.ui.getPanel("MAIN").setLayout(variant);
+          let variant = store.ui.getPanelVariant("SHADER_EDITOR");
+          // variant.floating = true
+          store.ui.getPanel('MAIN').layout.addPanel(variant)
           store.ui.context.setContextmenu(); // removes menu
         }
       },

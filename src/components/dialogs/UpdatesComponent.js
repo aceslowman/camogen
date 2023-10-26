@@ -98,35 +98,35 @@ const Splash = props => {
         </TextComponent> */}
         <TextComponent>
           <h1>changelog</h1>
-          <h2>v1.0.1-alpha</h2>
+          <h2>v1.0.1</h2>
           <ul>
             <li>Added 'Float' node to operator graphs.</li>
             <li>Fixed issues with operator controls and refactored.</li>
           </ul>
-          <h2>v1.0.2-alpha</h2>
+          <h2>v1.0.2</h2>
           <ul>
             <li>Restored keybindings to operator graphs.</li>
             <li>Cleaned up some styling around operator graphs.</li>
           </ul>
-          <h2>v1.0.3-alpha</h2>
+          <h2>v1.0.3</h2>
           <ul>
             <li>Fixed deserialization issues with motion graphs.</li>
             <li>Fixed and refactored operator controls.</li>
           </ul>
-          <h2>v1.1.3-alpha</h2>
+          <h2>v1.1.3</h2>
           <ul>
             <li>Added video node</li>
             <li>Added 'missing assets' dialog when loading a project.</li>
             <li>Improved image node dropzone.</li>
           </ul>
-          <h2>v1.1.4-alpha</h2>
+          <h2>v1.1.4</h2>
           <ul>
             <li>Fixed control collapse/expand buttons.</li>
             <li>Fixed issue where adding a new shader wouldn't persist to storage.</li>
             <li>Added warning before navigating away from page.</li>
             <li>Fixed issue with delete button</li>
           </ul>
-          <h2>v1.1.5-alpha</h2>
+          <h2>v1.1.5</h2>
           <ul>
             <li>Fixed issue where Shader Editor didn't update properly.</li>
           </ul>
