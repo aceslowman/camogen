@@ -22,10 +22,10 @@ const useObserver = (
         if (observer && observer.current && current) {
             observer.current.unobserve(current);
         }
-        const resizeObserverOrPolyfill = ResizeObserver;
+        // const resizeObserverOrPolyfill = ResizeObserver;
 
-        observer.current = new resizeObserverOrPolyfill(callback);
-        observe();
+        // observer.current = new resizeObserverOrPolyfill(callback);
+        // observe();
 
         return () => {
             if (observer && observer.current && current) {
