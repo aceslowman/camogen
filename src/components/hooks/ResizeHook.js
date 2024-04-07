@@ -1,42 +1,11 @@
-import { useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import ResizeObserver from "resize-observer-polyfill";
+import useResizeObserver from '@react-hook/resize-observer'
 
 const useObserver = (
     callback,
     element
 ) => {
-
-    const observer = useRef(null);
-
-    useLayoutEffect(() => {
-        const observe = () => {
-            if (element && element.current && observer.current) {
-                observer.current.observe(element.current);
-            }
-        };
-
-        const current = element.current;
-
-        // if we are already observing old element
-        if (observer && observer.current && current) {
-            observer.current.unobserve(current);
-        }
-        // const resizeObserverOrPolyfill = ResizeObserver;
-
-        // observer.current = new resizeObserverOrPolyfill(callback);
-        // observe();
-
-        return () => {
-            if (observer && observer.current && current) {
-                observer.current.unobserve(current);
-            }
-        };
-    }, [
-        callback,
-        element,
-        observer
-    ]);
+    useResizeObserver(element.current, callback)
 };
 
 useObserver.propTypes = {

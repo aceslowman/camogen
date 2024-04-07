@@ -26,16 +26,5 @@ module.exports = {
     new HTMLwebpackplugin({
       template: "./public/index.html"
     })
-  ],
-  // devServer: {
-  //   // contentBase: path.join(__dirname, "public"),
-  //   // // publicPath: "/",
-  //   // compress: true,
-  //   // hot: false,
-  //   // inline: false,
-  //   // liveReload: false,
-  //   // disableHostCheck: true,
-  //   port: process.env.PORT
-  // },
-  // devtool: "source-map"
+  ]
 };
