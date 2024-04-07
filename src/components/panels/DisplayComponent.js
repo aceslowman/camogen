@@ -36,6 +36,7 @@ const Display = props => {
 
   const [zoom, setZoom] = useState(50);
   const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [displaySmoothing, setDisplaySmoothing] = useState(store.displaySmoothing);
   const [fitWidth, setFitWidth] = useState(false);
   const [fitHeight, setFitHeight] = useState(false);
   const [fitView, setFitView] = useState(false);
@@ -110,7 +111,6 @@ const Display = props => {
     let gl = canvas_ref.current.getContext("2d");
     
     // disable interpolation
-    // TODO make this something that can be toggled in settings!
     gl.imageSmoothingEnabled = store.displaySmoothing;
     gl.clearRect(0, 0, gl.canvas.width, gl.canvas.height);
 
@@ -168,6 +168,12 @@ const Display = props => {
     setFitHeight(false);
     setFitView(prev => !prev);
   };
+
+  const handleDisplaySmoothing = e => {
+    setDisplaySmoothing(!store.displaySmoothing);
+    store.setDisplaySmoothing(!store.displaySmoothing)
+    window.localStorage.setItem("displaySmoothing", !displaySmoothing);
+  }
 
   const handlePlay = e => store.transport.play();
 
@@ -343,6 +349,15 @@ const Display = props => {
       style: {
         alignSelf: "flex-end"
       }
+    },
+    Smoothing: {
+      id: "DisplaySmoothing",
+      label: "smooth",
+      onClick: handleDisplaySmoothing,
+      style: {
+        alignSelf: "flex-end"
+      },
+      highlight: store.displaySmoothing
     }
   };
 

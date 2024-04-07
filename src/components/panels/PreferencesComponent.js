@@ -15,10 +15,6 @@ const Preferences = props => {
   const store = useContext(MainContext).store;
   const { ui } = store;
 
-console.log(store.showSplash)
-console.log(store.showUpdates)
-console.log(store.displaySmoothing)
-
   return (
     <GenericPanel showTitle={false} panel={props.panel}>
       <ControlGroupComponent name="theme">
