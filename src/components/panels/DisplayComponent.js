@@ -78,7 +78,6 @@ const Display = props => {
   
   // when the width or height changes from outside, update
   useEffect(() => {
-    console.log('changed',[store.width,store.height])
     setWidth(store.width);
     setHeight(store.height);
   }, [store.width,store.height]);

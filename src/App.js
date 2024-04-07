@@ -35,8 +35,6 @@ const App = props => {
   const canvasPanel = ui.getPanel("CANVAS");
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
-  
-  console.log('mainLayout', mainLayout)
 
   useKeymap(
     {

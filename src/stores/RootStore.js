@@ -67,8 +67,8 @@ const RootStore = types
     missingAssets: [],
     displaySmoothing: true,
     // 'show' individual panels
-    showSplash: null,
-    showUpdates: null,
+    showSplash: true,
+    showUpdates: true,
     showMissingAssets: null,
     updateFlag: false
   }))
@@ -288,7 +288,6 @@ const RootStore = types
         self.displaySmoothing = true;
       }
       
-
       // fetch default shaders
       self.fetchShaderFiles().then(d => {
         self.setupP5();

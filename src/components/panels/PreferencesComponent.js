@@ -6,7 +6,6 @@ import {
   InputColor,
   InputBool,
   InputSelect,
-  TextComponent,
   Themes
 } from "maco-ui";
 
@@ -16,9 +15,12 @@ const Preferences = props => {
   const store = useContext(MainContext).store;
   const { ui } = store;
 
+console.log(store.showSplash)
+console.log(store.showUpdates)
+console.log(store.displaySmoothing)
+
   return (
     <GenericPanel showTitle={false} panel={props.panel}>
-      {/* <TextComponent>Hello World</TextComponent> */}
       <ControlGroupComponent name="theme">
         <InputSelect
           options={[

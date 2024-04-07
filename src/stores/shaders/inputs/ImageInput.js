@@ -80,14 +80,14 @@ const image = types
     let root_store;
     return {
       afterAttach: () => {
-        console.log("attached image input", getSnapshot(self));
+        // console.log("attached image input", getSnapshot(self));
         root_store = getRoot(self);
         if (self.user_filename && !self.mediaID) {
           /*  
             media should exist, but it doesn't. 
             flag the asset as missing.
           */
-          console.log("flag RootStore!", getRoot(self));
+          // console.log("flag RootStore!", getRoot(self));
           let rootStore = getRoot(self).flagAssetsAsMissing(self);
         }
       },

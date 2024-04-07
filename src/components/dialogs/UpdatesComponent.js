@@ -45,10 +45,6 @@ const Splash = props => {
         />
       }
       showTitle={true}
-      style={{
-        backgroundColor: theme.primary_color,
-        color: theme.text_color
-      }}
       canRemove={true}
       onRemove={props.onRemove}
       style={{

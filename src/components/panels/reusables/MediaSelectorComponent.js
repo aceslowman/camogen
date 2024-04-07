@@ -16,8 +16,6 @@ const MediaSelectorComponent = props => {
   const theme = store.ui.theme;
   const canvas_ref = useRef(null);
   // const [selectedMedia, setSelectedMedia] = useState();
-  
-  console.log('selectedMedia',props.selectedMedia)
 
   const handleDrop = files => {
     let new_media_id = store.mediaLibrary.addMedia(files[0]); 
@@ -57,7 +55,7 @@ const MediaSelectorComponent = props => {
       ctx.drawImage(this, 0, 0, w, h);
     };
 
-    console.log('getting media', props.selectedMedia)
+    // console.log('getting media', props.selectedMedia)
     img.src = props.selectedMedia.dataURL;
     // img.src = store.mediaLibrary.media.get(props.selectedMedia).dataURL;
   }, [props.selectedMedia]);

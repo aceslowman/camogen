@@ -22,11 +22,11 @@ const ImageInputComponent = props => {
   const handlePan = (param, v) => param.setValue(v);
   const handleMediaSelect = e => data.assignMedia(e);
 
-  console.log("data", getSnapshot(data));
+  // console.log("data", getSnapshot(data));
 
   /* need to re-render whenever the image media ID changes */
   useEffect(() => {
-    console.log("re-render this");
+    // console.log("re-render this");
   }, [data.mediaID]);
 
   return (

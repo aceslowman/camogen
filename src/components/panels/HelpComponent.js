@@ -16,7 +16,7 @@ const Help = props => {
           </p>
         </TextComponent>
         <TextComponent>
-          <h2>Adding Effects</h2>
+          <h2>Adding Effects</h2> 
           <p>
             Individual effects in camogen (and webgl in general) are called{" "}
             <em>shaders</em>, and each shader can be composed within camogen's shader graph system.
