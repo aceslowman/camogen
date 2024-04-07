@@ -18,7 +18,7 @@ const Preferences = props => {
 
   return (
     <GenericPanel showTitle={false} panel={props.panel}>
-      <TextComponent>Hello World</TextComponent>
+      {/* <TextComponent>Hello World</TextComponent> */}
       <ControlGroupComponent name="theme">
         <InputSelect
           options={[
@@ -89,6 +89,19 @@ const Preferences = props => {
             store.setShowUpdates(e);
           }}
         />
+      </ControlGroupComponent>
+
+      <ControlGroupComponent>
+        <InputBool
+          hLabel
+          label="display smoothing"
+          checked={store.displaySmoothing}
+          onChange={e => {
+            window.localStorage.setItem("displaySmoothing", e);
+            store.setDisplaySmoothing(e);
+          }}
+        />
+
       </ControlGroupComponent>
     </GenericPanel>
   );

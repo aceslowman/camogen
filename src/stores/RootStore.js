@@ -65,6 +65,7 @@ const RootStore = types
     breakoutControlled: false,
     messages: Messages.create(),
     missingAssets: [],
+    displaySmoothing: true,
     // 'show' individual panels
     showSplash: null,
     showUpdates: null,
@@ -277,6 +278,16 @@ const RootStore = types
         window.localStorage.setItem("showUpdates", true);
         self.showUpdates = true;
       }
+
+      if (window.localStorage.getItem("displaySmoothing") !== null) {
+        self.displaySmoothing = JSON.parse(
+          window.localStorage.getItem("displaySmoothing")
+        );
+      } else {
+        window.localStorage.setItem("displaySmoothing", true);
+        self.displaySmoothing = true;
+      }
+      
 
       // fetch default shaders
       self.fetchShaderFiles().then(d => {
@@ -591,6 +602,8 @@ const RootStore = types
     setShowSplash: s => (self.showSplash = s),
 
     setShowUpdates: s => (self.showUpdates = s),
+
+    setDisplaySmoothing: s => (self.displaySmoothing = s),
 
     setShowMissingAssets: s => (self.showMissingAssets = s)
   }));

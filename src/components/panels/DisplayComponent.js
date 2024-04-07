@@ -111,7 +111,8 @@ const Display = props => {
     let gl = canvas_ref.current.getContext("2d");
     
     // disable interpolation
-    gl.imageSmoothingEnabled = false;
+    // TODO make this something that can be toggled in settings!
+    gl.imageSmoothingEnabled = store.displaySmoothing;
     gl.clearRect(0, 0, gl.canvas.width, gl.canvas.height);
 
     let w = store.canvas.width * (zoom / 100);

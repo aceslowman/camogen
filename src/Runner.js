@@ -4,6 +4,8 @@
     p.frameRate(30);
 
     p.background(store.ui.theme.secondary_color);    
+
+    // p.smooth();
     
     store.setReady(true);
   };
