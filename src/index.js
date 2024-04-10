@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./App";
 import { undoManager } from "./stores/UndoManager";
 import RootStore from "./stores/RootStore";
@@ -39,7 +40,13 @@ root.ui.setCustomLayouts({
 
 makeInspectable(root);
 
-ReactDOM.render(
-  <App store={root} history={undoManager} />,
-  document.getElementById("root")
-);
+
+
+// ReactDOM.render(
+//   <App store={root} history={undoManager} />,
+//   document.getElementById("root")
+// );
+
+const container = document.getElementById('root');
+const r = createRoot(container) 
+r.render(<App store={root} history={undoManager} />);
