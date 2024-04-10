@@ -30,7 +30,7 @@ export const WebcamInput = _WebcamInput;
 export const SketchInput = _SketchInput;
 
 /*
-adding new shader effects:
+adding new shader effects (excluding custom shaders):
 
 TODO: needs to be massively simplified...
 

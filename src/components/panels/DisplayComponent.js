@@ -137,7 +137,7 @@ const Display = props => {
     if (fitView) {
       x = 0;
       y = 0;
-      //   // w = gl.canvas.height
+      // w = gl.canvas.height
     }
 
     gl.drawImage(store.canvas, x, y, w, h);
@@ -493,6 +493,12 @@ const Display = props => {
       }
     };
   }
+
+  /* 
+    NOTE: I am currently having an issue with context menus not updating when an 
+    event happens (adding a shader doesn't add to ui until it's closed and reopened).
+    This is not the case for the toolbar. Don't remember why, trying to investigate.
+  */
 
   return (
     <GenericPanel

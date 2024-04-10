@@ -39,15 +39,24 @@ const ShaderGraph = props => {
           store.ui.context.setContextmenu(); // removes menu
         }
       },
-      EditShader: {
-        id: "EditShader",
-        label: "Edit Shader",
-        onClick: () => {
-          let variant = store.ui.getLayoutVariant("SHADER_EDIT");
-          store.ui.getPanel("MAIN").setLayout(variant);
-          store.ui.context.setContextmenu(); // removes menu
-        }
-      },
+      /*
+        4-8-24 NOTE:
+
+        this is disabled because there are some issues with getting some things to 
+        play with maco-ui. not really necessary to have these kinds of buttons
+
+        TODO re-enable this
+      */      
+      // EditShader: {
+      //   id: "EditShader",
+      //   label: "Edit Shader",
+      //   onClick: () => {
+      //     console.log('here', store.ui)
+      //     let variant = store.ui.getLayout("SHADER_EDITOR");
+      //     store.ui.getPanel("MAIN").setLayout(variant);
+      //     store.ui.context.setContextmenu(); // removes menu
+      //   }
+      // },
       ResetToDefault: {
         id: "ResetToDefault",
         label: "Reset To Default",

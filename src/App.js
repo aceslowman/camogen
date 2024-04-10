@@ -1,16 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 
-import { getSnapshot, applySnapshot } from "mobx-state-tree";
 import { observer } from "mobx-react";
 import { MainProvider } from "./MainContext";
-import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 import { Panels } from "./components/panels";
 
 import {
-  ToolbarComponent,
   LayoutContainer,
   GenericPanel,
-  ContextMenuComponent,
   MacoWrapperComponent
 } from "maco-ui";
 import "maco-ui/dist/index.css";
@@ -36,12 +32,14 @@ const App = props => {
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
 
-  useKeymap(
+  useKeymap(    
     {
+    // SAVE SHORTCUT
       "$mod+KeyS": e => {
         e.preventDefault();
         props.store.save();
       },
+    // LOAD SHORTCUT
       "$mod+KeyO": e => {
         e.preventDefault();
         props.store.load();

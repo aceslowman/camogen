@@ -28,6 +28,9 @@
 
 .recent {
   width: 50%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: end;
 }
 
 /* this should be simplified and added in maco UI */

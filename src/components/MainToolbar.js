@@ -5,9 +5,6 @@ import MainContext from "../MainContext";
 
 import {
   ToolbarComponent,
-  LayoutContainer,
-  GenericPanel,
-  ContextMenuComponent,
 } from "maco-ui";
 
 import "maco-ui/dist/index.css";

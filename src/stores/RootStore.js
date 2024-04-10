@@ -115,11 +115,11 @@ const RootStore = types
               buttons: {
                 // NOTE: taking out the 'remove' button
                 // to prevent accidental data loss
-                // remove: {
-                //   id: "remove",
-                //   label: "x",
-                //   title: "remove"
-                // }
+                remove: {
+                  id: "remove",
+                  label: "x",
+                  title: "remove"
+                }
               },
               onClick: () => {
                 self.addToRecentShaders(e);
@@ -138,19 +138,17 @@ const RootStore = types
                 id: c.id,
                 label: c.name,
                 buttons: {
-                  // NOTE: taking out the 'remove' button
-                  // to prevent accidental data loss
-                  // remove: {
-                  //   id: "remove",
-                  //   label: "x",
-                  //   title: "remove",
-                  //   onClick: event => {
-                  //     // should I add a confirmation?
-                  //     event.preventDefault();
-                  //     event.stopPropagation();
-                  //     e.removeChild(c);
-                  //   }
-                  // }
+                  remove: {
+                    id: "remove",
+                    label: "x",
+                    title: "remove",
+                    onClick: event => {
+                      // TODO add a confirmation!
+                      event.preventDefault();
+                      event.stopPropagation();
+                      e.removeChild(c);
+                    }
+                  }
                 },
                 onClick: () => {
                   self.addToRecentShaders(c);
@@ -166,26 +164,26 @@ const RootStore = types
               id: e.id,
               label: e.name,
               dropDown: {
-                ...subitems
-                //                 NewShader: {
-                //                   id: "NewShader",
-                //                   label: "+ New Shader",
-                //                   onClick: () => {
-                //                     // create short random string for new shader name
-                //                     let new_shader = Shader.create({ name: nanoid(5) });
+                ...subitems,
+                NewShader: {
+                  id: "NewShader",
+                  label: "+ New Shader",
+                  onClick: () => {
+                    // create short random string for new shader name
+                    let new_shader = Shader.create({ name: nanoid(5) });
 
-                //                     e.addChild(
-                //                       Collection.create({
-                //                         id: new_shader.name,
-                //                         name: new_shader.name,
-                //                         type: "file",
-                //                         data: new_shader
-                //                       })
-                //                     );
+                    e.addChild(
+                      Collection.create({
+                        id: new_shader.name,
+                        name: new_shader.name,
+                        type: "file",
+                        data: new_shader
+                      })
+                    );
 
-                //                     self.persistShaderCollection();
-                //                   }
-                //                 }
+                    self.persistShaderCollection();
+                  }
+                }
               }
             }
           };
@@ -287,7 +285,7 @@ const RootStore = types
         window.localStorage.setItem("displaySmoothing", true);
         self.displaySmoothing = true;
       }
-      
+
       // fetch default shaders
       self.fetchShaderFiles().then(d => {
         self.setupP5();
@@ -365,13 +363,13 @@ const RootStore = types
         let textPromise = file.text();
 
         try {
-          let t = file.text()    
+          let t = file.text()
           t.then(text => {
             self.applyLoadedFile(text);
           });
         } catch (error) {
           console.log('failed to load file')
-        }        
+        }
       };
 
       link.click();
@@ -408,12 +406,12 @@ const RootStore = types
     },
 
     flagAssetsAsMissing: media => {
-      console.log('media',getSnapshot(media))
+      console.log('media', getSnapshot(media))
       let missing_asset_filename = getSnapshot(media).user_filename;
       self.missingAssets.push(media);
       console.log("MISSING_ASSETS", self.missingAssets);
       self.showMissingAssets = true;
-      
+
       /* TODO once the user is inserted the new media, 
       create new media objects and update this 
       mediaInput.mediaID */
@@ -466,26 +464,8 @@ const RootStore = types
             res();
           });
         } else {
-          console.log("no cached shaders found, fetching from server...");
-
-          // TODO 
-          // I am removing this api, in favor of something that 
-          // can run without server side code
-          // yield fetch("api/shaders")
-          //   .then(d => d.json())
-          //   .then(d => {
-          //     self.setShaderCollection(d);
-          //     window.localStorage.setItem(
-          //       "shader_collection",
-          //       JSON.stringify(getSnapshot(self.shader_collection))
-          //     );
-          //   });
+          console.log("no cached shaders found, going with default");
           self.setShaderCollection(defaultShaderCollection);
-                    //     self.setShaderCollection(d);
-          //     window.localStorage.setItem(
-          //       "shader_collection",
-          //       JSON.stringify(getSnapshot(self.shader_collection))
-          //     );
         }
       } catch (err) {
         console.error("failed to fetch shaders", err);
@@ -559,15 +539,16 @@ const RootStore = types
       );
     },
 
-    //     persistLayouts: () => {
-    //       // save layouts to local storage
-    //       window.localStorage.setItem(
-    //         "layouts",
-    //         JSON.stringify(self.ui.layoutVariants)
-    //       );
+    // TODO working on restoring this functionality
+    persistLayouts: () => {
+      // save layouts to local storage
+      window.localStorage.setItem(
+        "layouts",
+        JSON.stringify(self.ui.layoutVariants)
+      );
 
-    //       console.log('persisting layouts', JSON.stringify(self.ui.layoutVariants))
-    //     },
+      console.log('persisting layouts', JSON.stringify(self.ui.layoutVariants))
+    },
 
     resizeCanvas: (w, h) => {
       if (!w) w = 1; // never resize canvas to 0

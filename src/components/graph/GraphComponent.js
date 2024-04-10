@@ -12,7 +12,6 @@ import { branch_colors } from "../../stores/GraphStore";
 import MainContext from "../../MainContext";
 import GraphNode from "../../stores/GraphStore";
 import { getSnapshot } from "mobx-state-tree";
-import { nanoid } from "nanoid";
 
 const GraphComponent = props => {
   const store = useContext(MainContext).store;
