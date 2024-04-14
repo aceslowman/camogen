@@ -221,12 +221,12 @@ export const LayoutVariants = {
           {
             id: "SHADER_GRAPH",
             panel: PanelVariants["SHADER_GRAPH"],
-            size: 3 / 4
+            size: 1 / 2
           },
           {
-            id: "MESSAGES",
-            panel: PanelVariants["MESSAGES"],
-            size: 1 / 4
+            id: "DISPLAY",
+            panel: PanelVariants["DISPLAY"],
+            size: 1 / 2
           }
         ]
       }

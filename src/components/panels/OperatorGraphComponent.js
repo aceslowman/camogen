@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import MainContext from "../../MainContext";
 import GraphComponent from "../graph/GraphComponent";
 import { getSnapshot, applySnapshot } from "mobx-state-tree";
-import { PanelComponent } from "maco-ui";
+import { PanelComponent } from "../../ui";
 import { observer } from "mobx-react";
 import useKeymap from "../hooks/UseKeymap";
 

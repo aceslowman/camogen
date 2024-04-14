@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useLayoutEffect, useState, useRef } from "react";
 import MainContext from "../../MainContext";
 import GraphComponent from "../graph/GraphComponent";
-import { GenericPanel } from "maco-ui";
+import { GenericPanel } from "../../ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 
@@ -43,27 +43,34 @@ const ShaderGraph = props => {
         4-8-24 NOTE:
 
         this is disabled because there are some issues with getting some things to 
-        play with maco-ui. not really necessary to have these kinds of buttons
+        play with ../../ui. not really necessary to have these kinds of buttons
 
         TODO re-enable this
       */      
-      // EditShader: {
-      //   id: "EditShader",
-      //   label: "Edit Shader",
-      //   onClick: () => {
-      //     console.log('here', store.ui)
-      //     let variant = store.ui.getLayout("SHADER_EDITOR");
-      //     store.ui.getPanel("MAIN").setLayout(variant);
-      //     store.ui.context.setContextmenu(); // removes menu
-      //   }
-      // },
-      ResetToDefault: {
-        id: "ResetToDefault",
-        label: "Reset To Default",
+      EditShader: {
+        id: "EditShader",
+        label: "Edit Shader",
         onClick: () => {
-          node.data.resetToDefault();
+          console.log('here', store.ui)
+          
+          let variant = store.ui.getLayout("SHADER_EDITOR");
+          store.ui.applyLayoutToMainPanel(variant)
+          // store.ui.getPanel("MAIN").setLayout(variant);
+          store.ui.context.setContextmenu(); // removes menu
         }
       },
+      /*
+        4-12-24 NOTE:
+
+        this is a confusing button without much use
+      */
+      // ResetToDefault: {
+      //   id: "ResetToDefault",
+      //   label: "Reset To Default",
+      //   onClick: () => {
+      //     node.data.resetToDefault();
+      //   }
+      // },
       ...(process.env.NODE_ENV === "development"
         ? {
             PrintDebug: {

@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import MainContext from "../../MainContext";
-import { GenericPanel, TextComponent, ToolbarComponent } from "maco-ui";
+import { GenericPanel, TextComponent, ToolbarComponent } from "../../ui";
 
-import styles from "./MessagesComponent.module.css";
+import * as styles from "./MessagesComponent.module.css";
 import { observer } from "mobx-react";
 
 const Messages = props => {

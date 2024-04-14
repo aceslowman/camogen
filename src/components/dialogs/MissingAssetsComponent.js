@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import Dropzone from "react-dropzone";
 import { getSnapshot } from "mobx-state-tree";
-import { InputSelect, InputBool, PanelComponent, TextComponent } from "maco-ui";
-import styles from "./MissingAssetsComponent.module.css";
+import { InputSelect, InputBool, PanelComponent, TextComponent } from "../../ui";
+import * as styles from "./MissingAssetsComponent.module.css";
 import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 import { Media } from "../../stores/MediaLibrary";

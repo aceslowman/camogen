@@ -1,0 +1,38 @@
+.wrapper {
+    /* background-color: aqua; */
+    display:flex;
+    flex-flow:row;
+    justify-content: center;
+}
+
+.slider_track {
+    /* border: 1px solid black; */
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.handle {
+    width: 10px;
+    height:100%;
+    position:relative;
+    opacity:0;
+}
+
+.handle > div {
+    height:100%;
+    width:10px;
+}
+
+.vertical {
+    height: 100%;
+}
+
+.horizontal {
+    width:100%;
+}
+
+.sleeve {
+    height:100%;
+    float:left;
+}

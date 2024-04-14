@@ -1,12 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { undoManager } from "./stores/UndoManager";
 import RootStore from "./stores/RootStore";
-import makeInspectable from "mobx-devtools-mst";
 import "regenerator-runtime/runtime";
-import { UIStore, Themes } from "maco-ui";
+import { UIStore, Themes } from "./ui";
 
 import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 
@@ -35,17 +33,9 @@ root.ui.setPanelVariants(PanelVariants);
 
 /* this populates the layout system */
 root.ui.setCustomLayouts({
-  WELCOME: { ...mainPanel, id: "WELCOME", title: "Welcome" }
+  WELCOME: { ...mainPanel, id: "WELCOME", title: "Welcome" },
+  SHADER_EDITOR: { ...mainPanel, id: "SHADER_EDITOR", title: "Shader Editor", layout: LayoutVariants["SHADER_EDITOR"] },
 });
-
-makeInspectable(root);
-
-
-
-// ReactDOM.render(
-//   <App store={root} history={undoManager} />,
-//   document.getElementById("root")
-// );
 
 const container = document.getElementById('root');
 const r = createRoot(container) 

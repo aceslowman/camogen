@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import MainContext from "../../MainContext";
-import { GenericPanel, PanelComponent, TextComponent } from "maco-ui";
+import { GenericPanel, PanelComponent, TextComponent } from "../../ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 

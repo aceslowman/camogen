@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+}
+
+.wrapper,
+.panel_content {
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.wrapper.vertical {
+  flex-flow: column;
+}
+
+.wrapper.horizontal {
+  flex-flow: row;
+}
+
+.drag_container.horizontal {
+  height: 100%;
+  width: 0px;
+}
+
+.drag_container.vertical {
+  width: 100%;
+  height: 0px;
+}
+
+.drag_handle {
+  position: relative;
+  opacity: 0;
+  z-index: 1;
+}
+
+.drag_handle:hover {
+  opacity: 0.2;
+}
+
+.drag_handle.horizontal {
+  height: 100%;
+  width: 10px;
+  left: -5px;
+  cursor: col-resize;
+}
+
+.drag_handle.vertical {
+  width: 100%;
+  height: 10px;
+  top: -5px;
+  cursor: row-resize;
+}
+
+.lastDrag.horizontal {
+  cursor: initial;
+  left: -10px;
+}
+
+.lastDrag.vertical {
+  cursor: initial;
+  top: -10px;
+}
+
+.firstDrag.horizontal {
+  cursor: initial;
+  left: 0px;
+}
+
+.firstDrag.vertical {
+  cursor: initial;
+  top: 0px;
+}
+
+.panel_container {
+  padding: 2px;
+}
+
+.layout_container {
+  padding: 0px;
+}
+
+.float_container {
+  padding: 0px;
+}
+
+.debug {
+  position: absolute;
+  z-index: 100;
+  visibility: hidden;
+}
+
+.empty {
+  background-color: transparent !important;
+}

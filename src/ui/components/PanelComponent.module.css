@@ -1,0 +1,265 @@
+.panel {
+  display: flex;
+  flex-flow: column;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.panel:focus {
+  outline: none;
+}
+
+.panelSelect {
+  font-family: inherit;
+  position: absolute;
+  top: 1px;
+  width: inherit;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  background-color: transparent;
+  color: inherit;
+}
+
+.panelSelect > option {
+  color: black;
+}
+
+.title_bar {
+  display: flex;
+  align-content: center;
+  word-break: break-all;
+  font-size: 1.1em;
+  white-space: pre;
+}
+
+.title_bar h1 {
+  padding: 0px;
+  margin: 0px;
+  font-size: x-large;
+}
+
+.title_bar button {
+  color: inherit;
+  background-color: inherit;
+  border: none;
+  border-right: 1px dotted white;
+  border-color: inherit;
+  padding: 3px 5px;
+  z-index: 0;
+}
+
+.title_bar button:focus {
+  outline: 0;
+}
+
+.title_bar button:hover {
+  background-color: white;
+  mix-blend-mode: exclusion;
+  color: black;
+}
+
+.subtitle {
+  align-self: center;
+  /* padding: 0px 5px; */
+  padding: 0px 2px;
+  font-size: 0.8em;
+  /* position: absolute; */
+  /* right: 0px; */
+}
+
+.panel_content {
+  color: inherit;
+  overflow-y: auto;
+  overflow-x: hidden; /* quick fix for x scroll */
+  box-sizing: border-box;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.fullscreen {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: static;
+}
+
+.collapsed {
+  flex-grow: 0 !important;
+  overflow: initial;
+  min-height: 0px;
+}
+
+.horizontal {
+  display: flex;
+  flex-flow: row;
+}
+
+.vertical {
+  display: flex;
+  flex-flow: column;
+}
+
+.floating {
+  position: fixed;
+  border: 1px solid white;
+  margin: 0px;
+  z-index: 5;
+  min-width: 175px;
+  min-height: 27px;
+  /*NOTE: relates to bugs with collapse*/
+}
+
+.resizeHandle {
+  position: absolute;
+  border: 2px solid white;
+  border-left: none;
+  border-top: none;
+  z-index: 1;
+}
+
+.resizeSE {
+  cursor: se-resize;
+  bottom: -5px;
+  right: -5px;
+  width: 15px;
+  height: 15px;
+}
+
+.resizeE {
+  /* background-color: purple; */
+  cursor: e-resize;
+  right: -4px;
+  width: 5px;
+  margin-left: 2px;
+  height: calc(100% - 15px);
+  border: none;
+}
+
+.resizeS {
+  /* background-color: red; */
+  cursor: s-resize;
+  /* right: 0px; */
+  bottom: -4px;
+  width: calc(100% - 15px);
+  height: 5px;
+  border: none;
+}
+
+.resizeN {
+  /* background-color: red; */
+  cursor: n-resize;
+  /* right: 0px; */
+  top: -4px;
+  width: calc(100% - 15px);
+  height: 5px;
+  border: none;
+}
+
+.resizeNW {
+  cursor: nw-resize;
+  top: -5px;
+  left: -5px;
+  width: 15px;
+  height: 15px;
+  border: none;
+}
+
+.resizeNE {
+  cursor: ne-resize;
+  top: -5px;
+  right: -5px;
+  width: 15px;
+  height: 15px;
+  border: none;
+}
+
+.resizeSW {
+  cursor: sw-resize;
+  bottom: -5px;
+  left: -5px;
+  width: 15px;
+  height: 15px;
+  border: none;
+}
+
+.resizeW {
+  cursor: w-resize;
+  left: -4px;
+  width: 5px;
+  margin-right: 2px;
+  height: calc(100% - 15px);
+  border: none;
+}
+
+.moveHandle {
+  width: 100%;
+  height: 27px;
+  /*NOTE: relates to bugs with collapse*/
+  opacity: 0;
+  cursor: move;
+  z-index: 1;
+}
+
+.floating .dragContainer {
+  /* width: 80%; */
+  padding-right: 20px;
+}
+
+.dragContainer {
+  width: 100%;
+  display: flex;
+  align-content: center;
+  position: relative;
+}
+
+.dragContainer > legend {
+  padding: 0px 5px;
+  word-break: keep-all;
+  align-self: center;
+  float: left;
+  overflow-x: hidden;
+  position: absolute;
+}
+
+.indicators {
+  flex-grow: 2;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+}
+
+.indicator {
+  text-align: center;
+  width: 15px;
+  height: 15px;
+  font-size: 0.6em;
+}
+
+.tooltip {
+  flex-grow: 2;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+  z-index: 3;
+}
+
+.tooltip_symbol {
+  /* background-color: orange; */
+  padding: 0px 5px;
+}
+
+.tooltip_content {
+  white-space: normal;
+  word-break: break-word;
+  font-size: 0.8em;
+  max-width: 300px;
+  position: fixed;
+  z-index: 100;
+}
+
+.tooltip_content p {
+  padding: 5px;
+  margin: 0px;
+}

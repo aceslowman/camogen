@@ -7,8 +7,8 @@ import {
   InputSelect,
   InputFloat,
   TextComponent
-} from "maco-ui";
-import styles from "./MediaSelectorComponent.module.css";
+} from "../../../ui";
+import * as styles from "./MediaSelectorComponent.module.css";
 import { getSnapshot, isAlive } from "mobx-state-tree";
 
 const MediaSelectorComponent = props => {

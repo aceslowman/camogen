@@ -7,7 +7,7 @@ import {
   InputBool,
   InputFloat,
   ToolbarComponent
-} from "maco-ui";
+} from "../../ui";
 
 // built-in operators
 import { OperatorComponents } from "../panels/operators";
@@ -15,7 +15,7 @@ import { OperatorComponents } from "../panels/operators";
 // built in inputs
 import { ShaderComponents } from "../panels/shaders";
 
-import styles from "./ControlsComponent.module.css";
+import * as styles from "./ControlsComponent.module.css";
 import { observer } from "mobx-react";
 import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";

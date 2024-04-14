@@ -1,0 +1,32 @@
+.wrapper {
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
+  min-width: 50px;
+  overflow: hidden;
+  flex-grow:2;
+}
+
+.wrapper label {
+  font-size: 0.8em;
+  padding: 0px 5px;
+  font-style: italic;
+}
+
+.wrapper_inner {
+  height: 100%;
+  flex-grow: 2;
+}
+
+.wrapper_inner input {
+  /* float: left; */
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: none;
+  /* padding-left: 5px; */
+}
+
+.wrapper_inner input:focus {
+  outline: none;
+}

@@ -7,9 +7,9 @@ import React, {
 } from "react";
 import MainContext from "../../MainContext";
 import useResizeObserver from "../hooks/ResizeHook";
-import { GenericPanel, ToolbarComponent, InputSelect } from "maco-ui";
+import { GenericPanel, ToolbarComponent, InputSelect } from "../../ui";
 import { observer } from "mobx-react";
-import style from "./DisplayComponent.module.css";
+import * as style from "./DisplayComponent.module.css";
 import { getSnapshot } from "mobx-state-tree";
 
 /* 
@@ -186,6 +186,8 @@ const Display = props => {
   const handleSnap = e => store.transport.snapshot(format);
 
   const handleFormatSelect = e => setFormat(e);
+
+  const handleDoubleClick = e => centerCanvas()
 
   const handleCanvasOnWheel = e => {
     if (fitWidth || fitHeight) return;
@@ -406,17 +408,22 @@ const Display = props => {
         highlight: fitHeight,
         style: { bottom: "1px", position: "relative" }
       },
-      FitView: {
-        id: "FitView",
-        title: "fit view",
-        label: "⛶",
-        onClick: handleFitView,
-        highlight: fitView
-      },
+      /*
+        4-12-24 NOTE:
+
+        disabled, didn't seem to have expected effect, possibly redundant with fit width and fit height
+      */
+      // FitView: {
+      //   id: "FitView",
+      //   title: "fit view",
+      //   label: "⛶",
+      //   onClick: handleFitView,
+      //   highlight: fitView
+      // },
       Center: {
         id: "Center",
         title: "center",
-        label: "▣",
+        label: "⛶",
         onClick: centerCanvas
       }
     };
@@ -516,8 +523,9 @@ const Display = props => {
         onWheel={handleCanvasOnWheel}
         onMouseDown={handleCanvasMouseDrag}
         onTouchStart={handleCanvasMouseDrag}
+        onDoubleClick={handleDoubleClick}
       >
-        <canvas ref={canvas_ref} className={style.canvas} />
+        <canvas ref={canvas_ref} />
       </div>
     </GenericPanel>
   );

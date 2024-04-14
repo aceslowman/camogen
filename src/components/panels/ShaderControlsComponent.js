@@ -7,9 +7,9 @@ import {
   InputBool,
   InputFloat,
   ToolbarComponent
-} from "maco-ui";
+} from "../../ui";
 
-import styles from "./ShaderControlsComponent.module.css";
+import * as styles from "./ShaderControlsComponent.module.css";
 import { observer } from "mobx-react";
 import { getSnapshot, isAlive } from "mobx-state-tree";
 import { branch_colors } from "../../stores/GraphStore";
@@ -37,7 +37,7 @@ const ShaderControls = props => {
         4-8-24 NOTE:
 
         this is disabled because there are some issues with getting some things to 
-        play with maco-ui. not really necessary to have these kinds of buttons
+        play with ../../ui. not really necessary to have these kinds of buttons
       */
       // ParamEdit: {
       //   id: "ParamEdit",

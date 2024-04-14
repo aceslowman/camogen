@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import React from 'react';
-import { ControlGroupComponent, InputFloat } from 'maco-ui';
+import { ControlGroupComponent, InputFloat } from '../../../ui';
 
 const FloatComponent = observer((props) => {
   let {data} = props.data; 

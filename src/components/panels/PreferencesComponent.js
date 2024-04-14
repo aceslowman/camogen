@@ -7,7 +7,7 @@ import {
   InputBool,
   InputSelect,
   Themes
-} from "maco-ui";
+} from "../../ui";
 
 import { observer } from "mobx-react";
 

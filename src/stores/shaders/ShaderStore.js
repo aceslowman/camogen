@@ -144,10 +144,12 @@ let shader = types
       },
 
       refresh: () => {
-        self.ref = self.target.ref.createShader(self.vertex, self.fragment);
+        if(self.ref)
+          self.ref = self.target.ref.createShader(self.vertex, self.fragment);
       },
 
       init: () => {
+        if(!self.target) return
         // create shader for given target
         self.ref = self.target.ref.createShader(self.vertex, self.fragment);
 
@@ -379,6 +381,7 @@ let shader = types
         }
                 
         getRoot(self).persistShaderCollection()
+        self.hasChanged = false
       },
 
       saveToFile: () => {
@@ -404,6 +407,7 @@ let shader = types
         }
 
         link.click();
+        self.hasChanged = false
       },
 
       load: () => {

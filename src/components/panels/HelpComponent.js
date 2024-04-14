@@ -1,5 +1,5 @@
 import React from "react";
-import { TextComponent, GenericPanel, PagesContainer } from "maco-ui";
+import { TextComponent, GenericPanel, PagesContainer } from "../../ui";
 
 const Help = props => {
   return (

@@ -1,13 +1,11 @@
 import React, {
   useState,
-  useEffect,
   useLayoutEffect,
   useContext,
   useRef
 } from "react";
-import { getSnapshot } from "mobx-state-tree";
 import MainContext from "../../MainContext";
-import styles from "./ShaderEditorComponent.module.css";
+import * as styles from "./ShaderEditorComponent.module.css";
 import { observer } from "mobx-react";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
@@ -15,7 +13,7 @@ import "codemirror/theme/monokai.css";
 import "codemirror/keymap/sublime";
 import "codemirror/mode/clike/clike";
 
-import { GenericPanel, ToolbarComponent } from "maco-ui";
+import { GenericPanel, ToolbarComponent } from "../../ui";
 
 let editor;
 
@@ -28,8 +26,6 @@ const ShaderEditor = props => {
   const [selectingCollection, setSelectingCollection] = useState(false);
 
   const graph = store.scene.shaderGraph;
-  // TODO create new global variable for currentlyEditing
-  // const node = graph.selectedNode;
   const node = store.selectedShader || graph.selectedNode;
   const data = node ? node.data : null;
   const hasChanged = data ? data.hasChanged : null;
@@ -52,8 +48,9 @@ const ShaderEditor = props => {
   const handleSaveToFile = () => {
     data.save();
   };
-  
+
   const handleSave = (shaderNode) => {
+    // TODO: show confirmation
     shaderNode.data.saveToLocalStorage()
   }
 
@@ -78,88 +75,101 @@ const ShaderEditor = props => {
       items={
         showEditor
           ? {
-              File: {
-                id: "File",
-                label: "File",
-                dropDown: {
-                  NameShader: {
-                    id: "NameShader",
-                    label: (
-                      <div
+            File: {
+              id: "File",
+              label: "File",
+              dropDown: {
+                NameShader: {
+                  id: "NameShader",
+                  label: (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexFlow: "row"
+                      }}
+                    >
+                      <label>name:</label>
+                      <input
                         style={{
-                          display: "flex",
-                          flexFlow: "row"
+                          backgroundColor: "inherit",
+                          color: "inherit",
+                          border: "none",
+                          width: "100%",
+                          marginLeft: 4,
+                          fontFamily: "inherit"
                         }}
-                      >
-                        <label>name:</label>
-                        <input
-                          style={{
-                            backgroundColor: "inherit",
-                            color: "inherit",
-                            border: "none",
-                            width: "100%",
-                            marginLeft: 4,
-                            fontFamily: "inherit"
-                          }}
-                          type="text"
-                          placeholder={data.name}
-                          onChange={e => {
-                            node.data.setName(e.target.value);
-                          }}
-                          onFocus={e => {
-                            e.stopPropagation();
-                          }}
-                        />
-                      </div>
-                    )
-                  },
-                  SaveToShader: {
-                    id: "SaveToShader",
-                    label: "Save to File",
-                    onClick: () => handleSaveToFile()
-                  },
-                  Save: {
-                    id: "Save",
-                    label: "Save",
-                    onClick: () => handleSave(node),
-                  },
-                  LoadShader: {
-                    id: "LoadShader",
-                    label: "Load Shader",
-                    onClick: () => data.load()
-                  },
-                  NewShader: {
-                    id: "NewShader",
-                    label: "New Shader",
-                    onClick: () => graph.setSelectedByName("Thru")
-                  }
+                        type="text"
+                        placeholder={data.name}
+                        onChange={e => {
+                          node.data.setName(e.target.value);
+                        }}
+                        onFocus={e => {
+                          e.stopPropagation();
+                        }}
+                      />
+                    </div>
+                  )
+                },
+                SaveToShader: {
+                  id: "SaveToShader",
+                  label: "Save to File",
+                  onClick: () => handleSaveToFile()
+                },
+                Save: {
+                  id: "Save",
+                  label: "Save",
+                  onClick: () => handleSave(node),
+                },
+                LoadShader: {
+                  id: "LoadShader",
+                  label: "Load Shader",
+                  onClick: () => data.load()
+                },
+                NewShader: {
+                  id: "NewShader",
+                  label: "New Shader",
+                  onClick: () => graph.setSelectedByName("Thru")
                 }
-              },
-              Vertex: {
-                id: "Vertex",
-                label: "Vertex",
-                onClick: () => setEditType("vert"),
-                highlight: editType === "vert"
-              },
-              Fragment: {
-                id: "Fragment",
-                label: "Fragment",
-                onClick: () => setEditType("frag"),
-                highlight: editType === "frag"
-              },
-              Refresh: {
-                id: "Refresh",
-                label: "↻ Refresh",
-                onClick: () => handleRefresh()
               }
-            }
+            },
+            Vertex: {
+              id: "Vertex",
+              label: "Vertex",
+              onClick: () => setEditType("vert"),
+              highlight: editType === "vert"
+            },
+            Fragment: {
+              id: "Fragment",
+              label: "Fragment",
+              onClick: () => setEditType("frag"),
+              highlight: editType === "frag"
+            },
+            Refresh: {
+              id: "Refresh",
+              label: "↻ Refresh",
+              onClick: () => handleRefresh()
+            },
+            HasRecentlyChanged: {
+              id: "HasRecentlyChanged",
+              label: (<span
+                style={{
+                  fontStyle: hasChanged ? "italic" : "normal",
+                  color: hasChanged ? "red" : store.ui.theme.text_color
+                }}
+              >
+                {hasChanged ? "✗ unsaved" : "✓ saved"}
+              </span>),
+              onClick: () => handleSave(node)
+            },
+            
+          }
           : {
-              NewShaderEmpty: {
-                id: "NewShaderEmpty",
-                label: "New Shader",
-                onClick: () => graph.setSelectedByName("Thru")
-              }
+            NewShaderEmpty: {
+              id: "NewShaderEmpty",
+              label: "New Shader",
+              onClick: () => graph.setSelectedByName("Thru")
             }
+          }
       }
     />
   );
@@ -198,21 +208,8 @@ const ShaderEditor = props => {
 
   return (
     <GenericPanel
-      // TODO: temporarily hiding title
-      // because panel frames are now being handled by the
-      // layout component, but there are situations where 
-      // toolbars and footbars need to be applied
       showTitle={false}
       panel={props.panel}
-      subtitle={
-        <span
-          style={{
-            fontStyle: hasChanged ? "italic" : "normal"
-          }}
-        >
-          {hasChanged ? "unsaved" : ""}
-        </span>
-      }
       toolbar={toolbar}
       onFocus={e => editor.focus()}
     >

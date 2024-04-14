@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
-import tinykeys from "tinykeys";
+import {tinykeys} from "tinykeys";
 
 const useKeymap = (keymap, active) => {
   useEffect(() => {

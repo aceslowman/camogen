@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import React, { useLayoutEffect, useRef, useContext } from "react";
-import { ControlGroupComponent, InputSelect, InputFloat, TextComponent } from "maco-ui";
-import styles from "./VideoInputComponent.module.css";
+import { ControlGroupComponent, InputSelect, InputFloat, TextComponent } from "../../../ui";
+import * as styles from "./VideoInputComponent.module.css";
 import Dropzone from "react-dropzone";
 import MainContext from "../../../MainContext";
 
@@ -61,7 +61,7 @@ const VideoInputComponent = props => {
               <div
                 {...{
                   ...getRootProps(),
-                  className: styles.dropzoneOverlay,
+                  // className: styles.dropzoneOverlay,
                   style: {
                     backgroundColor: theme.primary_color,
                     color: theme.text_color

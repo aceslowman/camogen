@@ -1,0 +1,23 @@
+.wrapper {
+    margin: 10px;
+}
+
+.wrapper > fieldset {
+    border: 1px solid white;
+    padding: 0px;
+    margin: 0;
+}
+
+.wrapper > fieldset > div {
+    display: flex;   
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    padding:3px;
+}
+
+.wrapper > fieldset > legend {
+    font-size: 0.75em;
+    margin-left:3px;
+    background-color: white; 
+    color: black;
+} 

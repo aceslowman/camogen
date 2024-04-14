@@ -10,8 +10,8 @@ import {
   InputSelect,
   InputFloat,
   TextComponent
-} from "maco-ui";
-import styles from "./ImageInputComponent.module.css";
+} from "../../../ui";
+import * as styles from "./ImageInputComponent.module.css";
 
 const ImageInputComponent = props => {
   const store = useContext(MainContext).store;

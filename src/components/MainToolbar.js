@@ -5,9 +5,9 @@ import MainContext from "../MainContext";
 
 import {
   ToolbarComponent,
-} from "maco-ui";
+} from "../ui";
 
-import "maco-ui/dist/index.css";
+import "../ui/index.css";
 
 import { PanelVariants, LayoutVariants } from "../stores/ui/Variants";
 

@@ -12,9 +12,9 @@ import {
   InputFloat,
   InputSelect,
   InputColor
-} from "maco-ui";
+} from "../../../ui";
 import MainContext from "../../../MainContext";
-import styles from "./SketchInputComponent.module.css";
+import * as styles from "./SketchInputComponent.module.css";
 import { getSnapshot } from "mobx-state-tree";
 
 let isDrawing = false;

@@ -5,9 +5,9 @@ import {
   InputFloat,
   InputSelect,
   InputColor
-} from "maco-ui";
+} from "../../../ui";
 
-import styles from './TextInputComponent.module.css';
+import * as styles from './TextInputComponent.module.css';
 
 const TextInputComponent = props => {
   const { data } = props.data;

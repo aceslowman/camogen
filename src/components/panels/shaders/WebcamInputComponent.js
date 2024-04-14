@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import React, { useContext } from "react";
-import { ControlGroupComponent, InputSelect, InputFloat } from "maco-ui";
-import styles from "./WebcamInputComponent.module.css";
+import { ControlGroupComponent, InputSelect, InputFloat } from "../../../ui";
+import * as styles from "./WebcamInputComponent.module.css";
 import MainContext from "../../../MainContext";
 
 const WebcamInputComponent = props => {

@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import MainContext from "../../MainContext";
 import GraphComponent from "../graph/GraphComponent";
-import { GenericPanel, TextComponent } from "maco-ui";
+import { GenericPanel, TextComponent, SplitContainer } from "../../ui";
 import { observer } from "mobx-react";
 import { getSnapshot } from "mobx-state-tree";
 import style from "./MediaLibraryComponent.module.css";
-import { SplitContainer } from "maco-ui";
 import Dropzone from "react-dropzone";
 import filesize from "file-size";
 

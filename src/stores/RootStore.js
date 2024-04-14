@@ -7,7 +7,7 @@ import {
   applySnapshot,
   destroy
 } from "mobx-state-tree";
-import { PanelStore as Panel, Themes, UIStore } from "maco-ui";
+import { PanelStore as Panel, Themes, UIStore } from "../ui";
 import { PanelVariants, LayoutVariants } from "./ui/Variants";
 import defaultSnapshot from "../snapshots/default.json";
 import Messages from "./utils/Messages";
@@ -144,9 +144,14 @@ const RootStore = types
                     title: "remove",
                     onClick: event => {
                       // TODO add a confirmation!
-                      event.preventDefault();
-                      event.stopPropagation();
-                      e.removeChild(c);
+
+                      let conf = confirm("are you sure you want to delete this shader? You can always back up and restore your shader library by using the Library menu in the toolbar.")
+                      
+                      if(conf) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        e.removeChild(c);
+                      }
                     }
                   }
                 },

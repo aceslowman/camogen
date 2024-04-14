@@ -4,7 +4,7 @@ import {
   PanelComponent,
   ControlGroupComponent,
   ToolbarComponent
-} from "maco-ui";
+} from "../../ui";
 
 // built-in operators
 // TODO: remove in favor of single import
@@ -13,7 +13,7 @@ import MIDIComponent from "./operators/MIDIComponent";
 import FloatComponent from "./operators/FloatComponent";
 
 import ControlsComponent from "../controls/ControlsComponent";
-import styles from "./OperatorControlsComponent.module.css";
+import * as styles from "./OperatorControlsComponent.module.css";
 import { observer } from "mobx-react";
 
 import { getSnapshot, isAlive } from "mobx-state-tree";
@@ -44,7 +44,7 @@ const OperatorControls = props => {
       showTitle={false}
       //title="Op Controls"
       onRemove={handleRemove}
-      className={styles.shader_graph}
+      // className={styles.shader_graph}
       defaultSize={props.defaultSize}
       detachable
       onDetach={props.onDetach ? props.onDetach : () => {}}

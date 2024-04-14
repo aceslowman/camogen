@@ -5,7 +5,7 @@ import React, {
   useState,
   useContext
 } from "react";
-import styles from "./GraphComponent.module.css";
+import * as styles from "./GraphComponent.module.css";
 import { observer } from "mobx-react";
 import useResizeObserver from "../hooks/ResizeHook";
 import { branch_colors } from "../../stores/GraphStore";

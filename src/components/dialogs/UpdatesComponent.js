@@ -5,8 +5,8 @@ import {
   PanelComponent,
   TextComponent,
   PagesContainer
-} from "maco-ui";
-import styles from "./SplashComponent.module.css";
+} from "../../ui";
+import * as styles from "./SplashComponent.module.css";
 import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 

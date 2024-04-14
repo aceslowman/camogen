@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { InputSelect, InputBool, PanelComponent, TextComponent } from "maco-ui";
-import styles from "./SplashComponent.module.css";
+import { InputSelect, InputBool, PanelComponent, TextComponent } from "../../ui";
+import * as styles from "./SplashComponent.module.css";
 import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 

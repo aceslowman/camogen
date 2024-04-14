@@ -449,6 +449,7 @@ export default {
         },
         {
           "id": "4kkTh",
+          "path": "/app/shaders/Image/Contrast",
           "name": "Contrast",
           "type": "file",
           "data": {

@@ -8,8 +8,8 @@ import {
   LayoutContainer,
   GenericPanel,
   MacoWrapperComponent
-} from "maco-ui";
-import "maco-ui/dist/index.css";
+} from "./ui";
+import "./ui/index.css";
 import "./App.css";
 
 // Dialogs

@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import OperatorGraph from "./OperatorGraphComponent";
-import styles from "./ParameterEditorComponent.module.css";
+import * as styles from "./ParameterEditorComponent.module.css";
 import { opList } from "../../stores/operators";
 import { getSnapshot, applySnapshot } from "mobx-state-tree";
-import { GenericPanel, SplitContainer, ToolbarComponent } from "maco-ui";
+import { GenericPanel, SplitContainer, ToolbarComponent } from "../../ui";
 import { observer } from "mobx-react";
 import OperatorControls from "./OperatorControlsComponent";
 import MainContext from "../../MainContext";
@@ -143,7 +143,9 @@ const OperatorEditor = props => {
       )}
 
       {!data && (
-        <p className={styles.no_node_selected}>
+        <p 
+          // className={styles.no_node_selected}
+        >
           <em> no param selected</em>
         </p>
       )}
