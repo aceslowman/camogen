@@ -10,7 +10,7 @@ const Help = props => {
           <p>
             <span style={{ color: "orange" }}>camogen</span> is a tool for
             creating visual art. It includes a library of inputs and effects
-            (WebGL Shaders) that can be combined in a graph system, and each
+            that can be combined in a graph system, and each
             individual effect parameter can be tweaked or driven by another
             graph subsystem.
           </p>
@@ -49,18 +49,16 @@ const Help = props => {
           <h2>Navigating the Interface</h2>
           <p>
             Camogen's panels can either float or be organized in a split layout.
-            Try resizing the individual panels or click the rectangle next to
-            the "Help" text above.
+            Try resizing the individual panels or right click on the space between panels.
           </p>
           <p>
-            Your canvas in camogen is set to fullscreen by default, but if you'd
-            like to move and resize the canvas individually, click the '*' in
-            the upper left hand corner of the screen.
+            Your workspace in camogen is set to windowed mode by default, if you'd like the
+            layout to fill the full screen, click the '*' in the top right corner of the main panel.
           </p>
           <p>
             Camogen has a number of layouts containing different panels. Explore
             each of these layouts by clicking on 'Layout' in the toolbar on the
-            top of the page.
+            top of the page. You can also create and save your own layouts this way.
           </p>
         </TextComponent>
         <TextComponent>
@@ -72,6 +70,7 @@ const Help = props => {
             but is used to shape changing values.
           </p>
         </TextComponent>
+        {/* <TextComponent>
         {/* <TextComponent>
           <h2>Roadmap</h2>
           <p>Below is the list of priorities. I'll cross things off this list as camogen is updated.</p>
@@ -85,6 +84,7 @@ const Help = props => {
             <li>Print media tools.</li>
             <li>3D tools.</li>
           </ol>
+        </TextComponent> */}
         </TextComponent> */}
       </PagesContainer>
     </GenericPanel>

@@ -32,23 +32,20 @@ const ShaderControls = props => {
     e.stopPropagation();
     e.preventDefault();
 
-    store.ui.context.setContextmenu({
-      /*
-        4-8-24 NOTE:
+    console.log(store.ui)
 
-        this is disabled because there are some issues with getting some things to 
-        play with ../../ui. not really necessary to have these kinds of buttons
-      */
-      // ParamEdit: {
-      //   id: "ParamEdit",
-      //   label: "Edit Parameter",
-      //   onClick: () => {
-      //     store.selectParameter(param);
-      //     let variant = store.ui.getLayoutVariant("PARAMETER");
-      //     store.ui.getPanel("MAIN").setLayout(variant);
-      //     store.ui.context.setContextmenu(); // removes menu
-      //   }
-      // },
+    store.ui.context.setContextmenu({
+      ParamEdit: {
+        id: "ParamEdit",
+        label: "Edit Parameter",
+        onClick: () => {
+          store.selectParameter(param);
+          let variant = store.ui.getPanelVariant("PARAMETER_EDITOR");
+          // variant.floating = true
+          store.ui.getPanel('MAIN').layout.addPanel(variant)
+          store.ui.context.setContextmenu(); // removes menu
+        }
+      },
       ResetDefault: {
         id: "ResetDefault",
         label: "Reset to Default",
