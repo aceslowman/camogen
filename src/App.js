@@ -32,6 +32,8 @@ const App = props => {
   const mainPanel = ui.getPanel("MAIN");
   const mainLayout = mainPanel.layout;
 
+  // mainPanel.setFullscreen(true)
+
   useKeymap(    
     {
     // SAVE SHORTCUT

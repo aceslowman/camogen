@@ -24,9 +24,8 @@ const MainToolbar = (props) => {
   };
 
   const handleLayoutSelect = (name) => {
+    let isFullscreen = store.ui.getPanel('MAIN').fullscreen
     let variant = ui.getLayout(name);
-    // mainPanel.setLayout(variant);
-
     store.ui.applyLayoutToMainPanel(variant);
   };
 
@@ -146,7 +145,14 @@ const MainToolbar = (props) => {
             Reload: {
               id: "Reload",
               label: "Reload Defaults",
-              onClick: () => store.reloadDefaults(),
+              onClick: () => {
+                let conf = confirm("this will restore all shaders to their defaults and can't be undone. if you want to keep your custom shaders, save them as a collection first. are you sure? ")
+
+                if (conf) {
+                  store.reloadDefaults()
+                }
+                
+              },
             },
           },
         },

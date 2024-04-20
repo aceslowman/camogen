@@ -2,7 +2,6 @@ import { nanoid } from "nanoid";
 import { getSnapshot, types, destroy } from "mobx-state-tree";
 import ShaderGraph from "./ShaderGraphStore";
 import Target from "./TargetStore";
-import { OperatorGraph } from "./GraphStore";
 
 const Scene = types
   .model("Scene", {

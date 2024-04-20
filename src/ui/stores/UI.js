@@ -111,7 +111,7 @@ const UI = types
       const main = self.panels.get('MAIN')
       const snap = getSnapshot(panel)
 
-      applySnapshot(main, { ...main, ...snap, id: 'MAIN', title: main.title })
+      applySnapshot(main, { ...main, ...snap, id: 'MAIN', title: main.title, fullscreen: main.fullscreen, position: main.position, dimensions: main.dimensions })
     }
   }))
 

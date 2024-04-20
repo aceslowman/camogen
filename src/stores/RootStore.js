@@ -1,15 +1,10 @@
-import React from "react";
 import {
-  onSnapshot,
   getSnapshot,
   types,
   flow,
-  applySnapshot,
-  destroy
+  applySnapshot
 } from "mobx-state-tree";
-import { PanelStore as Panel, Themes, UIStore } from "../ui";
-import { PanelVariants, LayoutVariants } from "./ui/Variants";
-import defaultSnapshot from "../snapshots/default.json";
+import { UIStore } from "../ui";
 import Messages from "./utils/Messages";
 import Transport from "./utils/Transport";
 import Collection from "./utils/Collection";
@@ -143,11 +138,9 @@ const RootStore = types
                     label: "x",
                     title: "remove",
                     onClick: event => {
-                      // TODO add a confirmation!
-
                       let conf = confirm("are you sure you want to delete this shader? You can always back up and restore your shader library by using the Library menu in the toolbar.")
-                      
-                      if(conf) {
+
+                      if (conf) {
                         event.preventDefault();
                         event.stopPropagation();
                         e.removeChild(c);
@@ -182,11 +175,10 @@ const RootStore = types
                         id: new_shader.name,
                         name: new_shader.name,
                         type: "file",
-                        data: new_shader
+                        data: new_shader,
+                        path: e.path + `/` + new_shader.name
                       })
                     );
-
-                    self.persistShaderCollection();
                   }
                 }
               }
@@ -196,6 +188,20 @@ const RootStore = types
       });
 
       return {
+        SaveCollection: {
+          id: "SaveCollection",
+          label: "Save Collection",
+          onClick: () => {
+            self.saveShaderCollection();
+          }
+        },
+        LoadCollection: {
+          id: "LoadCollecdtion",
+          label: "Load Collection",
+          onClick: () => {
+            self.loadShaderCollection();
+          }
+        },
         Recents: {
           id: "Recents",
           label: "Recent Shaders",
@@ -237,28 +243,7 @@ const RootStore = types
             }
           }
         },
-        ...items,
-        PersistCollection: {
-          id: "PersistCollection",
-          label: "Persist Collection",
-          onClick: () => {
-            self.persistShaderCollection();
-          }
-        },
-        SaveCollection: {
-          id: "SaveCollection",
-          label: "Save Collection",
-          onClick: () => {
-            self.saveShaderCollection();
-          }
-        },
-        LoadCollection: {
-          id: "LoadCollection",
-          label: "Load Collection",
-          onClick: () => {
-            self.loadShaderCollection();
-          }
-        }
+        ...items
       };
     }
   }))
@@ -292,7 +277,8 @@ const RootStore = types
       }
 
       // fetch default shaders
-      self.fetchShaderFiles().then(d => {
+      self.restoreDefaultShaders()
+      
         self.setupP5();
         self.setScene(Scene.create());
 
@@ -309,7 +295,7 @@ const RootStore = types
 
         // remove loading overlay
         document.querySelector(".loading").style.display = "none";
-      });
+      
 
       // set up media library
       self.mediaLibrary = MediaLibrary.create({ id: nanoid() });
@@ -384,7 +370,6 @@ const RootStore = types
       self.setName(name);
       self.scene.clear();
 
-      /* TODO the problem is here */
       applySnapshot(self, JSON.parse(text));
       self.scene.shaderGraph.update();
       self.scene.shaderGraph.afterUpdate();
@@ -398,9 +383,8 @@ const RootStore = types
 
       if (content) {
         self.setName(name);
-        self.scene.clear(); // this just fails early
+        self.scene.clear();
         console.log("clearing");
-        // destroy(self.scene)
 
         applySnapshot(self, JSON.parse(content));
         self.scene.shaderGraph.update();
@@ -446,40 +430,29 @@ const RootStore = types
       self.p5_instance.draw();
     },
 
-    fetchShaderFiles: flow(function* fetchShaderFiles() {
+    restoreDefaultShaders: () => {
       /*
-          fetchShaderFiles()
+          restoreDefaultShaders()
 
-          loads all shaders. defaults to the users localStorage,
-          but if that fails, it will phone home for a default 
-          shader collection
+          loads all shaders. defaults to the users localStorage
       */
-      try {
-        if (window.localStorage.getItem("shader_collection")) {
-          console.log("cached shaders found, loading...", window.localStorage);
+      if (window.localStorage.getItem("shader_collection")) {
+        console.log("cached shaders found, loading...", window.localStorage);
 
-          let data = JSON.parse(
-            window.localStorage.getItem("shader_collection")
-          );
+        let data = JSON.parse(
+          window.localStorage.getItem("shader_collection")
+        );
 
-          self.setShaderCollection(data);
-
-          // should be changed to match the flow / yield syntax
-          return new Promise((res, rej) => {
-            res();
-          });
-        } else {
-          console.log("no cached shaders found, going with default");
-          self.setShaderCollection(defaultShaderCollection);
-        }
-      } catch (err) {
-        console.error("failed to fetch shaders", err);
+        self.setShaderCollection(data);
+      } else {
+        console.log("no cached shaders found, going with default");
+        self.setShaderCollection(defaultShaderCollection);
       }
-    }),
+    },
 
     reloadDefaults: () => {
       window.localStorage.clear();
-      self.fetchShaderFiles();
+      self.restoreDefaultShaders();
     },
 
     saveShaderCollection: () => {

@@ -167,18 +167,18 @@ export const LayoutVariants = {
       {
         id: "HELP",
         panel: PanelVariants["HELP"],
-        size: 4 / 12
+        size: 3 / 12
       },
       {
         id: "DISPLAY",
         panel: PanelVariants["DISPLAY"],
-        size: 4 / 12
+        size: 6 / 12
       },
       {
         id: "INNER",
         title: "Welcome",
         direction: "VERTICAL",
-        size: 4 / 12,
+        size: 3 / 12,
         children: [
           {
             id: "SHADER_GRAPH",

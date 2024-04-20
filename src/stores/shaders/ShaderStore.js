@@ -146,10 +146,14 @@ let shader = types
       refresh: () => {
         if(self.ref)
           self.ref = self.target.ref.createShader(self.vertex, self.fragment);
+          getRoot(self).shader_collection.flagForUpdate()
       },
 
       init: () => {
-        if(!self.target) return
+        if(!self.target) {
+          console.log('target for this shader doesnt exist', self)
+          return
+        }
         // create shader for given target
         self.ref = self.target.ref.createShader(self.vertex, self.fragment);
 
@@ -382,6 +386,7 @@ let shader = types
                 
         getRoot(self).persistShaderCollection()
         self.hasChanged = false
+        getRoot(self).shader_collection.flagForUpdate()
       },
 
       saveToFile: () => {
@@ -408,6 +413,7 @@ let shader = types
 
         link.click();
         self.hasChanged = false
+        getRoot(self).shader_collection.flagForUpdate()
       },
 
       load: () => {
@@ -454,16 +460,22 @@ let shader = types
       setVert: v => {
         self.vert = v;
         self.hasChanged = true;
+        // console.log(getRoot(self))
+        getRoot(self).shader_collection.flagForUpdate()
       },
 
       setFrag: v => {
         self.frag = v;
         self.hasChanged = true;
+        // console.log(getRoot(self))
+        getRoot(self).shader_collection.flagForUpdate()
       },
 
       setName: n => {
         self.name = n;
+        //TODO issue here, parent node is undefined
         parent_node.setName(n);
+        getRoot(self).shader_collection.flagForUpdate()
       },
 
       setCollection: c => (self.collection = c),

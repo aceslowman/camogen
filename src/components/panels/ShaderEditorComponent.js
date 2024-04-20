@@ -30,6 +30,12 @@ const ShaderEditor = props => {
   const data = node ? node.data : null;
   const hasChanged = data ? data.hasChanged : null;
 
+  const handleNewShader = () => {
+    let newShader = collection.addChild();
+    newShader.data.saveToLocalStorage()
+    graph.setSelectedByName("Thru")
+  }
+
   const handleRefresh = () => {
     store.p5_instance.loop();
     data.init();
@@ -125,11 +131,11 @@ const ShaderEditor = props => {
                   label: "Load Shader",
                   onClick: () => data.load()
                 },
-                NewShader: {
-                  id: "NewShader",
-                  label: "New Shader",
-                  onClick: () => graph.setSelectedByName("Thru")
-                }
+                // NewShader: {
+                //   id: "NewShader",
+                //   label: "New Shader",
+                //   onClick: () => graph.setSelectedByName("Thru")
+                // }
               }
             },
             Vertex: {
@@ -163,13 +169,14 @@ const ShaderEditor = props => {
             },
             
           }
-          : {
-            NewShaderEmpty: {
-              id: "NewShaderEmpty",
-              label: "New Shader",
-              onClick: () => graph.setSelectedByName("Thru")
-            }
-          }
+          : {}
+          // {
+          //   NewShaderEmpty: {
+          //     id: "NewShaderEmpty",
+          //     label: "New Shader",
+          //     onClick: () => handleNewShader()
+          //   }
+          // }
       }
     />
   );
@@ -198,7 +205,7 @@ const ShaderEditor = props => {
       );
       editor.swapDoc(doc);
     } else {
-      doc = CodeMirror.Doc("no shader selected!");
+      doc = CodeMirror.Doc("no shader selected! \n\nuse the shader library panel \nor the library menu at the top \nto add and remove shaders");
       editor.swapDoc(doc);
     }
 

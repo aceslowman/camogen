@@ -30,33 +30,36 @@ const ShaderLibrary = props => {
 
   const handleAddNewShader = collection => {
     let newShader = collection.addChild();
-    // TODO ADD PERSIST
-    newShader.data.saveToLocalStorage()
+    // newShader.data.saveToLocalStorage()
+    // store.setUpdateFlag()
   };
 
   const handleAddNewCollection = () => {
-  /* for now this will only be on the base level */
+    /* for now this will only be on the base level */
     store.shader_collection.addChild(undefined, "directory");
   };
 
   const handleRenameItem = item => {
-    // console.log("item", item);
-    item.data.saveToLocalStorage()
+    if (item.data) item.data.saveToLocalStorage()
     setCurrentlyRenaming(item.id);
   };
 
   const handleRenameInput = (e, c) => {
-    
     c.setName(e.target.value)
-    c.data.saveToLocalStorage()
+    if (c.data)
+      c.data.saveToLocalStorage()
   }
 
   useLayoutEffect(() => {
     store.shader_collection.traverse(e => {
       // this temporarily removes the top level from the tree
       if (e.path === "/app/shaders") return;
+
       // TODO paths should be calculated in collection store
       // ["app", "shaders", "Math", "Subtract"]
+      // TODO when a shader is added from the dropdown menu, it doesn't have a 
+      // proper path
+
       let path = e.path.split("/").slice(1);
       let distance_from_root = path.length - 2;
 
@@ -80,11 +83,13 @@ const ShaderLibrary = props => {
               );
             } else {
               children.push(
-                <li key={c.id}>
+                <li style={{ display: "flex" }} key={c.id}>
                   <button
                     style={{
                       backgroundColor: theme.secondary_color,
-                      color: theme.text_color
+                      color: theme.text_color,
+                      display: "flex",
+                      justifyContent: "space-between"
                     }}
                     className={
                       c === store.selectedShader ? style.activeButton : ""
@@ -94,7 +99,18 @@ const ShaderLibrary = props => {
                     onContextMenu={_e => handleContextMenu(_e, e, c)}
                     dataid={c.id}
                   >
-                    {c.name}
+                    {c.name}{c.data ? (c.data.hasChanged ? '*' : '') : ''}
+                    <a onClick={event => {
+                      let conf = confirm("are you sure you want to delete this shader? You can always back up and restore your shader library by using the Library menu in the toolbar.")
+
+                      if (conf) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        e.removeChild(c);
+                      }
+                    }}>
+                      x
+                    </a>
                   </button>
                 </li>
               );
@@ -123,7 +139,7 @@ const ShaderLibrary = props => {
                 onDoubleClick={() => handleRenameItem(e)}
                 dataid={e.id}
               >
-                <h3>{e.name}</h3>
+                <h3>{e.name} {e.data ? e.data.hasChanged : ''}</h3>
               </button>
             )}
 
@@ -145,6 +161,7 @@ const ShaderLibrary = props => {
     store.shader_collection,
     store.selectedShader,
     store.shader_collection.updateFlag,
+    store.updateFlag,
     currentlyRenaming
   ]);
 
@@ -175,8 +192,8 @@ const ShaderLibrary = props => {
       showTitle={false}
       panel={props.panel}
       onContextMenu={handleContextMenu}
-      //onFocus={handleFocus}
-      //onBlur={handleBlur}
+    //onFocus={handleFocus}
+    //onBlur={handleBlur}
     >
       <div className={style.wrapper}>
         {tree}

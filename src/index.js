@@ -15,8 +15,8 @@ const mainPanel = {
   collapsible: false,
   fullscreen: false,
   canFullscreen: true,
-  dimensions: [800, 500],
-  position: [window.innerWidth / 2 - 400, window.innerHeight / 2 - 250],
+  dimensions: [window.innerWidth - 250, window.innerHeight - 200],
+  position: [125, 100],
   layout: LayoutVariants["WELCOME"]
 };
 

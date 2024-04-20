@@ -9,10 +9,13 @@ const Help = props => {
           <h1>camogen</h1>
           <p>
             <span style={{ color: "orange" }}>camogen</span> is a tool for
-            creating visual art. It includes a library of inputs and effects
-            that can be combined in a graph system, and each
-            individual effect parameter can be tweaked or driven by another
-            graph subsystem.
+            creating visual art. It includes a library of inputs (i.e. images, videos, webcam) and effects (i.e. threshold, blur, invert)
+            that can be combined using a graph system. You can either use pre-built effects, or program your own within camogen using the 
+            GLSL shader language.
+          </p>
+          <p>You can read a short tutorial by clicking the {`<`+ ' and '+`>`} at the bottom of this textbox.</p>
+          <p style={{ color: "crimson", fontSize: "1em" }}>
+            Note: for the time being, camogen works best in Chrome. If you run into any issues, please let me know at <a style={{color:'skyblue'}} href="https://aceslowman.itch.io/camogen/community">the itch.io community page.</a>
           </p>
         </TextComponent>
         <TextComponent>
@@ -70,22 +73,6 @@ const Help = props => {
             but is used to shape changing values.
           </p>
         </TextComponent>
-        {/* <TextComponent>
-        {/* <TextComponent>
-          <h2>Roadmap</h2>
-          <p>Below is the list of priorities. I'll cross things off this list as camogen is updated.</p>
-          <ol>
-            <li>Stable save system and shader collection.</li>
-            <li>Stable <em>static</em> tools.</li>
-            <li>Stable undo/redo.</li>
-            <li>Stable motion graphs.</li>
-            <li>MIDI control tools.</li>
-            <li>Audio reactive tools.</li>
-            <li>Print media tools.</li>
-            <li>3D tools.</li>
-          </ol>
-        </TextComponent> */}
-        </TextComponent> */}
       </PagesContainer>
     </GenericPanel>
   );

@@ -98,8 +98,6 @@ const Collection = types
     };
 
     const addChild = (child, type = "file") => {
-      /*self.persistShaderCollection();*/
-
       if (!child) {
         // create short random string for new shader name
         let new_shader = Shader.create({ name: nanoid(5) });
@@ -111,18 +109,24 @@ const Collection = types
           path: self.path+'/'+new_shader.name
         });
       }
-      // console.log("adding to collection", getSnapshot(self));
-      self.children.push(child);
-      // console.log('root',getSnapshot(getRoot(self)))
-      getRoot(self).shader_collection.flagForUpdate();
+
+      console.log("adding to collection", getSnapshot(self));
       
+      self.children.push(child);
+      getRoot(self).shader_collection.flagForUpdate();
+      getRoot(self).setUpdateFlag()
+      getRoot(self).persistShaderCollection();
+
       return child;
     };
 
     const removeChild = child => {
       console.log("removing from collection", {self:self,child:child});
       self.children = self.children.filter(e => e !== child);
+
       getRoot(self).shader_collection.flagForUpdate();
+      getRoot(self).setUpdateFlag()
+      getRoot(self).persistShaderCollection();
     };
 
     const setData = datasnap => {

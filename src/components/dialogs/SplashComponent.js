@@ -72,11 +72,11 @@ const Splash = (props) => {
           )}
         </div>
 
-        <div className={styles.credit}>
+        {/* <div className={styles.credit}>
           <p style={{ color: "red", fontSize: "1em" }}>
             Note: for the time being, camogen works best in Chrome
           </p>
-        </div>
+        </div> */}
 
         <div className={styles.credit}>
           <p>
