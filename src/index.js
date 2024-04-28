@@ -10,10 +10,10 @@ import { PanelVariants, LayoutVariants } from "./stores/ui/Variants";
 
 const mainPanel = {
   id: "MAIN",
-  floating: true,
+  floating: false,
   canFloat: false,
   collapsible: false,
-  fullscreen: false,
+  fullscreen: true,
   canFullscreen: true,
   dimensions: [window.innerWidth - 250, window.innerHeight - 200],
   position: [125, 100],

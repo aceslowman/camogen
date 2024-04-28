@@ -19,22 +19,13 @@ let editor;
 
 const ShaderEditor = props => {
   const store = useContext(MainContext).store;
-  const mainRef = useRef(null);
   const editorRef = useRef(null);
   const [editType, setEditType] = useState("vert");
 
-  const [selectingCollection, setSelectingCollection] = useState(false);
-
   const graph = store.scene.shaderGraph;
-  const node = store.selectedShader || graph.selectedNode;
+  const node = graph.selectedNode;
   const data = node ? node.data : null;
   const hasChanged = data ? data.hasChanged : null;
-
-  const handleNewShader = () => {
-    let newShader = collection.addChild();
-    newShader.data.saveToLocalStorage()
-    graph.setSelectedByName("Thru")
-  }
 
   const handleRefresh = () => {
     store.p5_instance.loop();
@@ -52,28 +43,14 @@ const ShaderEditor = props => {
   };
 
   const handleSaveToFile = () => {
-    data.save();
+    data.saveToFile();
   };
 
   const handleSave = (shaderNode) => {
-    // TODO: show confirmation
     shaderNode.data.saveToLocalStorage()
   }
 
   const showEditor = node !== undefined && data;
-  let collections = {};
-
-  store.shader_collection.children.forEach((e, i) => {
-    if (e.children) {
-      collections = {
-        ...collections,
-        [e.name]: {
-          label: e.name,
-          onClick: () => handleSave(e)
-        }
-      };
-    }
-  });
 
   const toolbar = (
     <ToolbarComponent
@@ -130,12 +107,7 @@ const ShaderEditor = props => {
                   id: "LoadShader",
                   label: "Load Shader",
                   onClick: () => data.load()
-                },
-                // NewShader: {
-                //   id: "NewShader",
-                //   label: "New Shader",
-                //   onClick: () => graph.setSelectedByName("Thru")
-                // }
+                }
               }
             },
             Vertex: {
@@ -167,16 +139,9 @@ const ShaderEditor = props => {
               </span>),
               onClick: () => handleSave(node)
             },
-            
+
           }
           : {}
-          // {
-          //   NewShaderEmpty: {
-          //     id: "NewShaderEmpty",
-          //     label: "New Shader",
-          //     onClick: () => handleNewShader()
-          //   }
-          // }
       }
     />
   );
@@ -213,12 +178,14 @@ const ShaderEditor = props => {
     doc.on("change", handleEditorChange);
   }, [editType, data]);
 
+  console.log(node)
   return (
     <GenericPanel
       showTitle={false}
       panel={props.panel}
       toolbar={toolbar}
       onFocus={e => editor.focus()}
+      styles={{width:'100%'}}
     >
       <div className={styles.editor} ref={editorRef}></div>
     </GenericPanel>

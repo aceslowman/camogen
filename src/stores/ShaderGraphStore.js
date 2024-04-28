@@ -85,7 +85,7 @@ let shaderGraph = types.model("ShaderGraph", {}).actions(self => {
         })
       default:
         try {
-          data = state_root.shader_collection.getByName(name).data;
+          data = state_root.shader_collection.getByName(name)[0].data;
           shader = Shader.create();
           applySnapshot(shader, getSnapshot(data));
           return shader;

@@ -48,10 +48,8 @@ const Collection = types
           }
         }
       }
-      if (result.length > 1)
-        console.log("multiple results found for " + name, result);
 
-      return result[0];
+      return result;
     },
     parent: () => {
       return getParent(self, 2);
@@ -106,22 +104,22 @@ const Collection = types
           name: new_shader.name,
           type: type,
           data: type === "file" ? new_shader : undefined,
-          path: self.path+'/'+new_shader.name
+          path: self.path + '/' + new_shader.name
         });
       }
 
       console.log("adding to collection", getSnapshot(self));
-      
+
       self.children.push(child);
       getRoot(self).shader_collection.flagForUpdate();
-      getRoot(self).setUpdateFlag()
+      getRoot(self).setUpdateFlag() // check setUpdateFlag  
       getRoot(self).persistShaderCollection();
 
       return child;
     };
 
     const removeChild = child => {
-      console.log("removing from collection", {self:self,child:child});
+      console.log("removing from collection", { self: self, child: child });
       self.children = self.children.filter(e => e !== child);
 
       getRoot(self).shader_collection.flagForUpdate();
@@ -133,12 +131,21 @@ const Collection = types
       self.name = datasnap.name;
       self.data = datasnap;
     };
-    
+
     const setName = name => {
-      self.name = name;
-      getRoot(self).shader_collection.flagForUpdate();
+      if (getRoot(self).shader_collection.getByName(name).length > 0) {
+        alert("there is already a node with the name of " + name)        
+        return false
+      } else {
+        self.name = name;
+        if (self.data.name) self.data.name = name;
+        if (self.data) self.data.saveToLocalStorage()
+        getRoot(self).shader_collection.flagForUpdate();
+        getRoot(self).setUpdateFlag()
+        return true
+      }
     };
-    
+
     const flagForUpdate = () => {
       self.updateFlag = !self.updateFlag;
     };

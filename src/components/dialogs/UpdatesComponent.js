@@ -53,82 +53,18 @@ const Splash = props => {
         minHeight: 425
       }}
     >
-      {/* <PagesContainer> */}
-        {/* <TextComponent>
-          <h1>alpha updates and caveats!</h1>
-          <p>below are a number of critical issues and caveats</p>
 
-          <ul>            
-            <li style={{ color: "red" }}>
-              Copy / paste is in progress but is temporarily disabled.
-            </li>
-            <li style={{ color: "red" }}>
-              Shader library can be added to and deleted from by using the
-              toolbar at the top of the screen. The same functionality is not
-              currently working when using the library through a context menu.
-            </li>
-            <li style={{ color: "red" }}>
-              Undo/redo is in progress but is temporarily disabled.
-            </li>
-          </ul>
-
-          <p>
-            I'll be adding to this list often, and at the moment, camogen will
-            be updated often and there will be a chance that save files and / or
-            shader collections could be overwritten. You can backup your
-            collection by going to Library {"->"} Save Collection.
-          </p>
-
-          <p>
-            if/when you run into issues, please let me know by creating an issue
-            at{" "}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: theme.accent_color }}
-              href="https://github.com/aceslowman/camogen/issues"
-            >
-              https://github.com/aceslowman/camogen/issues
-            </a>
-          </p>
-        </TextComponent> */}
         <TextComponent>
-          <h1>changelog</h1>
-          <h2>v1.0.1</h2>
+          <h1>patch notes</h1>
+          <h2>April 28th 2024</h2>
           <ul>
-            <li>Added 'Float' node to operator graphs.</li>
-            <li>Fixed issues with operator controls and refactored.</li>
+            <li>Completed a major overhaul of camogen, fixing significant bugs, major ui improvements, and removing unreliable features. 
+              To play it straight with you, camogen is a large and unwieldy personal project that I have found useful
+              and distinct for my own uses. It is much less janky now, but it still has some gaps and quirks that I am going
+              to continue slowly working on. Issues that get posted in the itch.io page will get my attention!
+            </li>
           </ul>
-          <h2>v1.0.2</h2>
-          <ul>
-            <li>Restored keybindings to operator graphs.</li>
-            <li>Cleaned up some styling around operator graphs.</li>
-          </ul>
-          <h2>v1.0.3</h2>
-          <ul>
-            <li>Fixed deserialization issues with motion graphs.</li>
-            <li>Fixed and refactored operator controls.</li>
-          </ul>
-          <h2>v1.1.3</h2>
-          <ul>
-            <li>Added video node</li>
-            <li>Added 'missing assets' dialog when loading a project.</li>
-            <li>Improved image node dropzone.</li>
-          </ul>
-          <h2>v1.1.4</h2>
-          <ul>
-            <li>Fixed control collapse/expand buttons.</li>
-            <li>Fixed issue where adding a new shader wouldn't persist to storage.</li>
-            <li>Added warning before navigating away from page.</li>
-            <li>Fixed issue with delete button</li>
-          </ul>
-          <h2>v1.1.5</h2>
-          <ul>
-            <li>Fixed issue where Shader Editor didn't update properly.</li>
-          </ul>
-          
         </TextComponent>
-      {/* </PagesContainer> */}
     </PanelComponent>
   );
 };

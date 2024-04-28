@@ -278,6 +278,7 @@ const Panel = observer((props) => {
   }
 
   const handleFullscreen = () => {
+    // if toggling off, center the window
     if (!props.fullscreen) handleCenter()
 
     props.onFullscreen(!props.fullscreen)
@@ -308,8 +309,6 @@ const Panel = observer((props) => {
   const handleFocus = (e) => {
     // this prevents the child and parent elements from focusing at once
     e.stopPropagation()
-    // console.log('props', props)
-    // console.log('focusing', wrapperElement.current)
     setFocused(true)
     if (props.onFocus) props.onFocus(e)
   }

@@ -104,6 +104,13 @@ const Splash = (props) => {
           >
             github
           </a>
+          <a
+            style={{ color: theme.accent_color }}
+            target="_blank"
+            href="https://aceslowman.itch.io/"
+          >
+            itch.io
+          </a>          
         </div>
       </div>
     </PanelComponent>

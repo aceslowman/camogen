@@ -7,10 +7,9 @@ import React, {
 } from "react";
 import MainContext from "../../MainContext";
 import useResizeObserver from "../hooks/ResizeHook";
-import { GenericPanel, ToolbarComponent, InputSelect } from "../../ui";
+import { GenericPanel, ToolbarComponent } from "../../ui";
 import { observer } from "mobx-react";
 import * as style from "./DisplayComponent.module.css";
-import { getSnapshot } from "mobx-state-tree";
 
 /* 
   DISPLAY
@@ -21,16 +20,11 @@ import { getSnapshot } from "mobx-state-tree";
     cropping tool for snapshots
     fix issues with dimension inputs
     'full size' button
-    double-click to re-center
-    
-    in maco ui: 
-      make highlighted toolbar buttons way more distinct
 */
 
 const Display = props => {
   const store = useContext(MainContext).store;
   const [format, setFormat] = useState("PNG");
-  const [useKeys, setUseKeys] = useState(false);
   const [width, setWidth] = useState(store.width);
   const [height, setHeight] = useState(store.height);
 
@@ -47,7 +41,7 @@ const Display = props => {
 
   const [showDimensions, setShowDimensions] = useState(true);
   const [showCapture, setShowCapture] = useState(true);
-  const [showTransport, setShowTransport] = useState(false);
+  const [showTransport, setShowTransport] = useState(true);
 
   useResizeObserver(() => {
     if (store.breakoutControlled) return;
@@ -55,9 +49,6 @@ const Display = props => {
 
     let inner_bounds = wrapper_ref.current.getBoundingClientRect();
     let panel_bounds = panel_ref.current.parentElement.getBoundingClientRect();
-
-    let offset_x = panel_bounds.width - inner_bounds.width;
-    let offset_y = panel_bounds.height - inner_bounds.height;
 
     let w = Math.round(inner_bounds.width);
     let h = Math.round(inner_bounds.height);
@@ -285,12 +276,17 @@ const Display = props => {
               id: "1024x1024",
               label: "1024x1024",
               onClick: () => handleDimensionChange(1024, 1024)
-            }
+            },
+            "2048x2048": {
+              id: "2048x2048",
+              label: "2048x2048",
+              onClick: () => handleDimensionChange(2048, 2048)
+            }            
           }
         },
-        instagram: {
-          id: "instagram",
-          label: "instagram",
+        socials: {
+          id: "socials",
+          label: "socials",
           dropDown: {
             landscape1080x608: {
               id: "landscape1080x608",
@@ -408,18 +404,6 @@ const Display = props => {
         highlight: fitHeight,
         style: { bottom: "1px", position: "relative" }
       },
-      /*
-        4-12-24 NOTE:
-
-        disabled, didn't seem to have expected effect, possibly redundant with fit width and fit height
-      */
-      // FitView: {
-      //   id: "FitView",
-      //   title: "fit view",
-      //   label: "⛶",
-      //   onClick: handleFitView,
-      //   highlight: fitView
-      // },
       Center: {
         id: "Center",
         title: "center",

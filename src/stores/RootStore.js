@@ -1,7 +1,6 @@
 import {
   getSnapshot,
   types,
-  flow,
   applySnapshot
 } from "mobx-state-tree";
 import { UIStore } from "../ui";
@@ -9,7 +8,6 @@ import Messages from "./utils/Messages";
 import Transport from "./utils/Transport";
 import Collection from "./utils/Collection";
 import Parameter from "./ParameterStore";
-import Shader from "./shaders/ShaderStore";
 import Scene from "./SceneStore";
 import MediaLibrary from "./MediaLibrary";
 import Runner from "../Runner";
@@ -133,20 +131,20 @@ const RootStore = types
                 id: c.id,
                 label: c.name,
                 buttons: {
-                  remove: {
-                    id: "remove",
-                    label: "x",
-                    title: "remove",
-                    onClick: event => {
-                      let conf = confirm("are you sure you want to delete this shader? You can always back up and restore your shader library by using the Library menu in the toolbar.")
+                  // remove: {
+                  //   id: "remove",
+                  //   label: "x",
+                  //   title: "remove",
+                  //   onClick: event => {
+                  //     let conf = confirm("are you sure you want to delete this shader? You can always back up and restore your shader library by using the Library menu in the toolbar.")
 
-                      if (conf) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        e.removeChild(c);
-                      }
-                    }
-                  }
+                  //     if (conf) {
+                  //       event.preventDefault();
+                  //       event.stopPropagation();
+                  //       e.removeChild(c);
+                  //     }
+                  //   }
+                  // }
                 },
                 onClick: () => {
                   self.addToRecentShaders(c);
@@ -163,24 +161,24 @@ const RootStore = types
               label: e.name,
               dropDown: {
                 ...subitems,
-                NewShader: {
-                  id: "NewShader",
-                  label: "+ New Shader",
-                  onClick: () => {
-                    // create short random string for new shader name
-                    let new_shader = Shader.create({ name: nanoid(5) });
+                // NewShader: {
+                //   id: "NewShader",
+                //   label: "+ New Shader",
+                //   onClick: () => {
+                //     // create short random string for new shader name
+                //     let new_shader = Shader.create({ name: nanoid(5) });
 
-                    e.addChild(
-                      Collection.create({
-                        id: new_shader.name,
-                        name: new_shader.name,
-                        type: "file",
-                        data: new_shader,
-                        path: e.path + `/` + new_shader.name
-                      })
-                    );
-                  }
-                }
+                //     e.addChild(
+                //       Collection.create({
+                //         id: new_shader.name,
+                //         name: new_shader.name,
+                //         type: "file",
+                //         data: new_shader,
+                //         path: e.path + `/` + new_shader.name
+                //       })
+                //     );
+                //   }
+                // }
               }
             }
           };
@@ -278,24 +276,24 @@ const RootStore = types
 
       // fetch default shaders
       self.restoreDefaultShaders()
-      
-        self.setupP5();
-        self.setScene(Scene.create());
 
-        // applySnapshot(self, defaultSnapshot);
-        // self.scene.shaderGraph.update();
-        // self.scene.shaderGraph.afterUpdate();
+      self.setupP5();
+      self.setScene(Scene.create());
 
-        // self.setReady(true);
-        // console.log("layouts", getSnapshot(self.ui.layouts.get("MAIN")));
-        // self.ui.layouts.get('main').fitScreen();
-        // self.ui.layouts.get('main').center();
+      // applySnapshot(self, defaultSnapshot);
+      // self.scene.shaderGraph.update();
+      // self.scene.shaderGraph.afterUpdate();
 
-        // console.log("APP LOCAL STORAGE", window.localStorage);
+      // self.setReady(true);
+      // console.log("layouts", getSnapshot(self.ui.layouts.get("MAIN")));
+      // self.ui.layouts.get('main').fitScreen();
+      // self.ui.layouts.get('main').center();
 
-        // remove loading overlay
-        document.querySelector(".loading").style.display = "none";
-      
+      // console.log("APP LOCAL STORAGE", window.localStorage);
+
+      // remove loading overlay
+      document.querySelector(".loading").style.display = "none";
+
 
       // set up media library
       self.mediaLibrary = MediaLibrary.create({ id: nanoid() });

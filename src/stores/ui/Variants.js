@@ -208,22 +208,27 @@ export const LayoutVariants = {
       {
         id: "SHADER_EDITOR",
         panel: PanelVariants["SHADER_EDITOR"],
-        size: 1 / 3
+        size: 3 / 6
       },
       {
         id: "inner",
         direction: "VERTICAL",
-        size: 1 / 3,
+        size: 2 / 6,
         children: [
           {
             id: "SHADER_GRAPH",
             panel: PanelVariants["SHADER_GRAPH"],
-            size: 1 / 2
+            size: 1 / 3
+          },
+          {
+            id: "SHADER_CONTROLS",
+            panel: PanelVariants["SHADER_CONTROLS"],
+            size: 1 / 3
           },
           {
             id: "DISPLAY",
             panel: PanelVariants["DISPLAY"],
-            size: 1 / 2
+            size: 1 / 3
           }
         ]
       }

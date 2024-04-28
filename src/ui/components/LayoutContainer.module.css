@@ -77,6 +77,8 @@
 
 .panel_container {
   padding: 2px;
+  /* FIXED issue with code editor messing up the layout widths */
+  overflow:auto;
 }
 
 .layout_container {

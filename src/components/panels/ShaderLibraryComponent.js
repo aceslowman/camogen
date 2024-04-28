@@ -1,23 +1,17 @@
 import React, {
   useContext,
-  useEffect,
   useLayoutEffect,
-  useState,
-  useRef
+  useState
 } from "react";
 import MainContext from "../../MainContext";
 import { observer } from "mobx-react";
 import * as style from "./ShaderLibraryComponent.module.css";
-import { UIContext, SplitContainer, GenericPanel, TextComponent } from "../../ui";
-import Dropzone from "react-dropzone";
-import filesize from "file-size";
+import { GenericPanel } from "../../ui";
 
 const ShaderLibrary = props => {
   const store = useContext(MainContext).store;
   const theme = store.ui.theme;
-  const data = store.mediaLibrary;
 
-  let files = [];
   let directories = [];
 
   const [tree, setTree] = useState([]);
@@ -25,13 +19,26 @@ const ShaderLibrary = props => {
 
   const handleClick = item => {
     setCurrentlyRenaming(undefined);
-    store.selectShader(item);
+    store.scene.shaderGraph.setSelectedByName(item.name, item);
   };
+
+  const handleDeleteItem = (event, e, c) => {
+    if (c.name === "UV") {
+      alert("You can't delete the UV shader!")
+    } else {
+      let conf = confirm("are you sure you want to delete this shader? You can always back up and restore your shader library by using the Library menu in the toolbar.")
+
+      if (conf) {
+        event.preventDefault();
+        event.stopPropagation();
+        e.removeChild(c);
+      }
+    }
+  }
 
   const handleAddNewShader = collection => {
     let newShader = collection.addChild();
-    // newShader.data.saveToLocalStorage()
-    // store.setUpdateFlag()
+    store.scene.shaderGraph.setSelectedByName(newShader.name, newShader);
   };
 
   const handleAddNewCollection = () => {
@@ -40,25 +47,23 @@ const ShaderLibrary = props => {
   };
 
   const handleRenameItem = item => {
-    if (item.data) item.data.saveToLocalStorage()
-    setCurrentlyRenaming(item.id);
+    if (item.name === "UV") {
+      alert("You cant rename the UV shader!")
+    } else {
+      if (item.data) item.data.saveToLocalStorage()
+      setCurrentlyRenaming(item);
+    }
   };
 
   const handleRenameInput = (e, c) => {
-    c.setName(e.target.value)
-    if (c.data)
-      c.data.saveToLocalStorage()
+      let res = currentlyRenaming.setName(e.target.value)
+      if (!res) setCurrentlyRenaming(undefined);
   }
 
   useLayoutEffect(() => {
     store.shader_collection.traverse(e => {
       // this temporarily removes the top level from the tree
       if (e.path === "/app/shaders") return;
-
-      // TODO paths should be calculated in collection store
-      // ["app", "shaders", "Math", "Subtract"]
-      // TODO when a shader is added from the dropdown menu, it doesn't have a 
-      // proper path
 
       let path = e.path.split("/").slice(1);
       let distance_from_root = path.length - 2;
@@ -68,16 +73,24 @@ const ShaderLibrary = props => {
 
         e.children.forEach((c, i) => {
           if (c.type === "file") {
-            if (c.id === currentlyRenaming) {
+            if (currentlyRenaming && c.id === currentlyRenaming.id) {
               children.push(
                 <li key={c.id}>
                   <input
+                    autoFocus={true}
                     style={{
                       backgroundColor: theme.secondary_color,
                       color: theme.text_color
                     }}
                     placeholder={"renaming " + c.name}
-                    onChange={_e => handleRenameInput(_e, c)}
+                    onKeyDown={e => {
+                      if(e.key === 'Enter') {
+                        handleRenameInput(e, c)
+                        e.currentTarget.blur()
+                        // allows for node in shader graph to be replaced
+                        handleClick(c)
+                      }
+                    }}          
                   />
                 </li>
               );
@@ -92,7 +105,7 @@ const ShaderLibrary = props => {
                       justifyContent: "space-between"
                     }}
                     className={
-                      c === store.selectedShader ? style.activeButton : ""
+                      c.name === store.scene.shaderGraph.selectedNode.name ? style.activeButton : ""
                     }
                     onClick={() => handleClick(c)}
                     onDoubleClick={() => handleRenameItem(c)}
@@ -100,15 +113,7 @@ const ShaderLibrary = props => {
                     dataid={c.id}
                   >
                     {c.name}{c.data ? (c.data.hasChanged ? '*' : '') : ''}
-                    <a onClick={event => {
-                      let conf = confirm("are you sure you want to delete this shader? You can always back up and restore your shader library by using the Library menu in the toolbar.")
-
-                      if (conf) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        e.removeChild(c);
-                      }
-                    }}>
+                    <a onClick={event => handleDeleteItem(event, e, c)}>
                       x
                     </a>
                   </button>
@@ -120,7 +125,7 @@ const ShaderLibrary = props => {
 
         directories.push(
           <div key={e.id}>
-            {e.id === currentlyRenaming ? (
+            {currentlyRenaming && e.id === currentlyRenaming.id ? (
               <input
                 style={{
                   backgroundColor: theme.secondary_color,
@@ -159,10 +164,10 @@ const ShaderLibrary = props => {
     setTree(directories);
   }, [
     store.shader_collection,
-    store.selectedShader,
+    store.scene.shaderGraph.selectedNode,
     store.shader_collection.updateFlag,
     store.updateFlag,
-    currentlyRenaming
+    currentlyRenaming,
   ]);
 
   const handleContextMenu = (e, collection, child) => {

@@ -2,6 +2,9 @@
     display: flex;
     flex-flow: column;
     background-color: black;
+    width: auto !important;
+    /* width:0%; */
+    /* position:absolute; */
 }
 
 .toolbar {

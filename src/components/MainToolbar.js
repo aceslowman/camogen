@@ -135,16 +135,9 @@ const MainToolbar = (props) => {
                 handleLayoutSelect("PREFERENCES");
               },
             },
-          },
-        },
-        Library: {
-          id: "Library",
-          label: "Library",
-          dropDown: {
-            ...store.shaderLibrary,
-            Reload: {
-              id: "Reload",
-              label: "Reload Defaults",
+            Reset: {
+              id: "Reset",
+              label: "Factory Reset",
               onClick: () => {
                 let conf = confirm("this will restore all shaders to their defaults and can't be undone. if you want to keep your custom shaders, save them as a collection first. are you sure? ")
 
@@ -154,6 +147,13 @@ const MainToolbar = (props) => {
                 
               },
             },
+          },
+        },
+        Library: {
+          id: "Library",
+          label: "Library",
+          dropDown: {
+            ...store.shaderLibrary
           },
         },
         Layout: {

@@ -432,9 +432,10 @@ const GraphComponent = props => {
     props.data.selectedNode.data,
     props.data.nodes,
     props.data.nodes.size,
+    store.shader_collection.updateFlag,
     props.data.root // helped with clear() rerender
   ]);
-
+  
   // TODO: swap out with useKeymap hook?
   useEffect(() => {
     if (props.useKeys) {
